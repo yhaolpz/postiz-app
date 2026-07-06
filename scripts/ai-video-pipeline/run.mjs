@@ -246,7 +246,7 @@ function isHumanDebugStyle(content) {
 }
 
 function isSketchbookStyle(content) {
-  return ['agent-sketchbook', 'tiny-agent-lab-whiteboard'].includes(content.style);
+  return ['agent-sketchbook', 'tiny-agent-whiteboard'].includes(content.style);
 }
 
 function drawTinyAgent(ctx, x, y, scale = 1) {
@@ -384,7 +384,7 @@ function drawSketchbookScene(ctx, scene, index, content) {
 
   ctx.fillStyle = '#111827';
   ctx.font = '900 58px Arial';
-  const seriesTitle = content.seriesTitle || 'Tiny Agent Lab';
+  const seriesTitle = content.seriesTitle || 'Tiny Agent';
   ctx.fillText(seriesTitle, (width - ctx.measureText(seriesTitle).width) / 2, 132);
   ctx.fillStyle = '#6b7280';
   ctx.font = '600 26px Arial';
@@ -1129,13 +1129,13 @@ async function contentFromPlan(args) {
   }));
 
   return {
-    style: 'tiny-agent-lab-whiteboard',
-    seriesTitle: 'Tiny Agent Lab',
+    style: 'tiny-agent-whiteboard',
+    seriesTitle: 'Tiny Agent',
     planDate,
     sourcePlanFile: planFile,
     title: youtubeTitle,
     description: caption || episodeTitle,
-    hashtags: hashtags.length ? hashtags : ['AI', 'AIAgents', 'TechExplained', 'TinyAgentLab'],
+    hashtags: hashtags.length ? hashtags : ['AI', 'AIAgents', 'TechExplained', 'TinyAgent'],
     narration,
     scenes,
   };

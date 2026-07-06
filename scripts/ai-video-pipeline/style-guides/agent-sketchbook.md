@@ -1,15 +1,15 @@
-# Tiny Agent Lab 白板火柴人风格档案
+# Tiny Agent 白板火柴人风格档案
 
 ## 用途
 
 这份文档是后续 AI Agent 科普短视频的 active 风格基准。当前最终选择为 `A - 白板火柴人风`，不是之前的 `C - 手账涂鸦风`。后续生成脚本、图片、语音和合成视频时，都按这份文档对齐。
 
-核心目标是稳定个人 IP：固定“中国程序员火柴人”人物、固定 `Tiny Agent` AI 机器人、固定白板简笔画画面、固定底部大字幕框和短视频讲解节奏。观众应该能从白底、粗黑线、少量蓝/红点缀、左侧程序员、右侧 AI 小机器人和 `Tiny Agent Lab` 标题里快速识别这个系列。
+核心目标是稳定个人 IP：固定“中国程序员火柴人”人物、固定 `Tiny Agent` AI 机器人、固定白板简笔画画面、固定底部大字幕框和短视频讲解节奏。观众应该能从白底、粗黑线、少量蓝/红点缀、左侧程序员、右侧 AI 小机器人和 `Tiny Agent` 标题里快速识别这个系列。
 
 ## 样片和图片锚点
 
 - 风格名：`A - 白板火柴人 / Whiteboard Stick Figure`
-- 系列展示名：`Tiny Agent Lab`
+- 系列展示名：`Tiny Agent`
 - 样片主题：`What Makes an AI Agent Different?`
 - 本地样片：`/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/style-a-whiteboard.mp4`
 - 样片规格：`1080x1920`，`30 fps`，`24.0s`，`h264` 视频，`aac` 单声道音频
@@ -76,7 +76,7 @@
 - 背景接近纯白，轻微纸面/白板质感可以保留，但不要明显手账纸。
 - 粗黑 marker 线条，边缘略带手绘感。
 - 色彩极少，只保留蓝色高光和少量红色提示。
-- 顶部固定或半固定出现 `Tiny Agent Lab`，字体粗、黑、干净。
+- 顶部固定或半固定出现 `Tiny Agent`，字体粗、黑、干净。
 - 中上部留出大量白底空间，主体画面集中在中部。
 - 底部使用大号圆角字幕框，黑色描边，白底，粗体英文字幕。
 - 画面要像白板上快速画出的清楚图解，轻松、易懂、低干扰。
@@ -109,7 +109,7 @@
 ```text
 Vertical 9:16 whiteboard stick figure explainer, clean white background,
 thick black marker line art, simple hand-drawn shapes, fixed title text
-"Tiny Agent Lab" at the top, one recurring Chinese software engineer stick
+"Tiny Agent" at the top, one recurring Chinese software engineer stick
 figure on the left with short black hair and black glasses, one recurring
 friendly AI robot named Tiny Agent on the right with a white rounded head,
 black face screen, blue eyes, tiny antenna, round ear covers, and small tool
@@ -138,7 +138,7 @@ unreadable labels, overlapping subtitles, random logos, watermark.
 - 默认建议：`20-24s`。
 - 英文旁白：约 `45-75` 个英文词。
 - 字幕块：`3-5` 组，每组最多两行。
-- 屏幕上除顶部 `Tiny Agent Lab` 和底部字幕外，尽量少放文字。
+- 屏幕上除顶部 `Tiny Agent` 和底部字幕外，尽量少放文字。
 
 ### 叙事结构
 
@@ -228,7 +228,7 @@ audio_channels=mono
 motion=soft pan/zoom only
 keyframes=3-4
 subtitle_style=bottom large rounded white box, black outline, bold English text
-title_style=top centered "Tiny Agent Lab"
+title_style=top centered "Tiny Agent"
 ```
 
 默认流水线命令模板：
@@ -245,7 +245,7 @@ node scripts/ai-video-pipeline/run.mjs \
   --visibility private \
   --media-mode serve \
   --wait \
-  --output-dir var/ai-video-pipeline/runs/YYYY-MM-DD-tiny-agent-lab
+  --output-dir var/ai-video-pipeline/runs/YYYY-MM-DD-tiny-agent
 ```
 
 平台可见性备注：
@@ -259,7 +259,7 @@ node scripts/ai-video-pipeline/run.mjs \
 接受一条生成视频前，必须检查：
 
 - 风格是 A 白板火柴人，不是 C 手账涂鸦。
-- 顶部展示名是 `Tiny Agent Lab`。
+- 顶部展示名是 `Tiny Agent`。
 - 中国程序员在外形上稳定：短黑发、黑眼镜、火柴人/简笔画比例。
 - Tiny Agent 稳定：白色圆头、黑脸屏、蓝眼睛、小天线、耳罩结构。
 - 背景是白底，粗黑线为主，只有少量蓝色和红色。
@@ -276,7 +276,7 @@ node scripts/ai-video-pipeline/run.mjs \
 | 做 | 不做 |
 | --- | --- |
 | 固定 A 白板火柴人风 | 回到 C 手账涂鸦风 |
-| 保持 `Tiny Agent Lab` 顶部标题 | 每条视频换系列名 |
+| 保持 `Tiny Agent` 顶部标题 | 每条视频换系列名 |
 | 左侧中国程序员 + 右侧 Tiny Agent | 每天重设计人物和机器人 |
 | 白底、粗黑线、少量蓝/红 | 大面积彩色漫画或渐变背景 |
 | 底部大字幕框 | 普通小字幕浮层 |

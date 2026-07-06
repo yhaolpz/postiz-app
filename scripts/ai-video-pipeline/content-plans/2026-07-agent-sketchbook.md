@@ -1,8 +1,8 @@
-# Tiny Agent Lab July 2026 content plan
+# Tiny Agent July 2026 content plan
 
 ## Scope
 
-This plan prepares the first daily batch for `Tiny Agent Lab` from
+This plan prepares the first daily batch for `Tiny Agent` from
 2026-07-06 to 2026-07-31.
 
 Style source of truth:
@@ -59,7 +59,7 @@ beat.
 ```text
 Vertical 9:16 whiteboard stick figure explainer, clean white background,
 thick black marker line art, simple hand-drawn shapes, fixed title text
-"Tiny Agent Lab" at the top, one recurring Chinese software engineer stick
+"Tiny Agent" at the top, one recurring Chinese software engineer stick
 figure on the left with short black hair and black glasses, one recurring
 friendly AI robot named Tiny Agent on the right with a white rounded head,
 black face screen, blue eyes, tiny antenna, round ear covers, and small tool
@@ -91,7 +91,7 @@ no missing limbs.
   - Simple loop diagram around the robot with one blue highlight.
 - TikTok caption: "A chatbot talks. An agent runs a tiny loop."
 - YouTube Shorts title: "What Makes an AI Agent Different?"
-- Hashtags: `#AI #AIAgents #LearnAI #TechExplained #TinyAgentLab`
+- Hashtags: `#AI #AIAgents #LearnAI #TechExplained #TinyAgent`
 
 ### 2026-07-07 Tue - Tools are the agent's hands
 
@@ -105,7 +105,7 @@ no missing limbs.
   - Engineer adds a safety glove icon before Tiny Agent touches a tool.
 - TikTok caption: "The real power of agents is tool access."
 - YouTube Shorts title: "AI Agent Tools Explained Simply"
-- Hashtags: `#AI #AIAgents #Automation #TechTok #TinyAgentLab`
+- Hashtags: `#AI #AIAgents #Automation #TechTok #TinyAgent`
 
 ### 2026-07-08 Wed - MCP is a common adapter
 
@@ -119,7 +119,7 @@ no missing limbs.
   - Simple hub diagram connects agent to three apps.
 - TikTok caption: "MCP is the adapter layer for agent tools."
 - YouTube Shorts title: "MCP Explained in 25 Seconds"
-- Hashtags: `#MCP #AIAgents #AItools #TechExplained #TinyAgentLab`
+- Hashtags: `#MCP #AIAgents #AItools #TechExplained #TinyAgent`
 
 ### 2026-07-09 Thu - Context is a backpack
 
@@ -133,7 +133,7 @@ no missing limbs.
   - Backpack becomes small, with a search arrow pointing outward.
 - TikTok caption: "Better context beats bigger context."
 - YouTube Shorts title: "AI Context Windows, Explained"
-- Hashtags: `#AI #ContextWindow #AIAgents #LearnAI #TinyAgentLab`
+- Hashtags: `#AI #ContextWindow #AIAgents #LearnAI #TinyAgent`
 
 ### 2026-07-10 Fri - RAG is an open-book test
 
@@ -147,7 +147,7 @@ no missing limbs.
   - Wrong page has a red X; right page has a blue check.
 - TikTok caption: "RAG is open-book answering for AI."
 - YouTube Shorts title: "RAG Explained with One Example"
-- Hashtags: `#RAG #AI #AIAgents #LearnAI #TinyAgentLab`
+- Hashtags: `#RAG #AI #AIAgents #LearnAI #TinyAgent`
 
 ### 2026-07-11 Sat - Planner and executor
 
@@ -161,7 +161,7 @@ no missing limbs.
   - Engineer blocks a big red button labeled `click first`.
 - TikTok caption: "Good agents separate planning from doing."
 - YouTube Shorts title: "Planner vs Executor in AI Agents"
-- Hashtags: `#AIAgents #AIWorkflow #Automation #TechExplained #TinyAgentLab`
+- Hashtags: `#AIAgents #AIWorkflow #Automation #TechExplained #TinyAgent`
 
 ### 2026-07-12 Sun - Agents need receipts
 
@@ -175,7 +175,7 @@ no missing limbs.
   - Engineer pins the receipt beside a small bug icon.
 - TikTok caption: "Agent logs are action receipts."
 - YouTube Shorts title: "Why AI Agents Need Logs"
-- Hashtags: `#AIAgents #AIEngineering #Debugging #TechTok #TinyAgentLab`
+- Hashtags: `#AIAgents #AIEngineering #Debugging #TechTok #TinyAgent`
 
 ### 2026-07-13 Mon - Human-in-the-loop is a seatbelt
 
@@ -189,7 +189,7 @@ no missing limbs.
   - Engineer presses approve only at the final gate.
 - TikTok caption: "Put human approval where the risk is."
 - YouTube Shorts title: "Human-in-the-Loop, Explained"
-- Hashtags: `#AIAgents #AISafety #Automation #LearnAI #TinyAgentLab`
+- Hashtags: `#AIAgents #AISafety #Automation #LearnAI #TinyAgent`
 
 ### 2026-07-14 Tue - Guardrails are boundaries
 
@@ -203,7 +203,7 @@ no missing limbs.
   - Engineer erases a dangerous shortcut arrow.
 - TikTok caption: "Guardrails are the agent's allowed lane."
 - YouTube Shorts title: "AI Guardrails in Plain English"
-- Hashtags: `#AISafety #AIAgents #AI #TechExplained #TinyAgentLab`
+- Hashtags: `#AISafety #AIAgents #AI #TechExplained #TinyAgent`
 
 ### 2026-07-15 Wed - Prompt injection is a fake instruction
 
@@ -217,7 +217,7 @@ no missing limbs.
   - Two boxes: trusted instruction vs untrusted content.
 - TikTok caption: "The webpage should not boss your agent around."
 - YouTube Shorts title: "Prompt Injection Explained Simply"
-- Hashtags: `#PromptInjection #AISafety #AIAgents #Cybersecurity #TinyAgentLab`
+- Hashtags: `#PromptInjection #AISafety #AIAgents #Cybersecurity #TinyAgent`
 
 ### 2026-07-16 Thu - Memory is not a diary dump
 
@@ -231,7 +231,7 @@ no missing limbs.
   - Small memory drawer with an edit pencil.
 - TikTok caption: "Good AI memory is selective."
 - YouTube Shorts title: "AI Agent Memory, Explained"
-- Hashtags: `#AIAgents #Memory #AI #TechExplained #TinyAgentLab`
+- Hashtags: `#AIAgents #Memory #AI #TechExplained #TinyAgent`
 
 ### 2026-07-17 Fri - Evaluation is the scoreboard
 
@@ -245,7 +245,7 @@ no missing limbs.
   - Red `vibes` cloud fades into a clean scoreboard.
 - TikTok caption: "Evaluate agents with a scoreboard, not vibes."
 - YouTube Shorts title: "How to Evaluate AI Agents"
-- Hashtags: `#AIEvaluation #AIAgents #AIEngineering #LearnAI #TinyAgentLab`
+- Hashtags: `#AIEvaluation #AIAgents #AIEngineering #LearnAI #TinyAgent`
 
 ### 2026-07-18 Sat - Cost is part of design
 
@@ -259,7 +259,7 @@ no missing limbs.
   - Engineer chooses agent for messy task, workflow for simple task.
 - TikTok caption: "Not every automation needs an agent."
 - YouTube Shorts title: "AI Agent Cost Trap"
-- Hashtags: `#AIAgents #Automation #AIEngineering #TechExplained #TinyAgentLab`
+- Hashtags: `#AIAgents #Automation #AIEngineering #TechExplained #TinyAgent`
 
 ### 2026-07-19 Sun - Timeouts save you
 
@@ -273,7 +273,7 @@ no missing limbs.
   - Spiral turns into a clean exit arrow.
 - TikTok caption: "Every agent loop needs an escape hatch."
 - YouTube Shorts title: "Why AI Agents Need Limits"
-- Hashtags: `#AIAgents #AIEngineering #Automation #LearnAI #TinyAgentLab`
+- Hashtags: `#AIAgents #AIEngineering #Automation #LearnAI #TinyAgent`
 
 ### 2026-07-20 Mon - OpenAI Agents SDK in one sentence
 
@@ -287,7 +287,7 @@ no missing limbs.
   - Finished sketch shows agent loop with tracing line underneath.
 - TikTok caption: "Agent SDKs give you the building blocks."
 - YouTube Shorts title: "OpenAI Agents SDK in Plain English"
-- Hashtags: `#OpenAI #AIAgents #AItools #TechExplained #TinyAgentLab`
+- Hashtags: `#OpenAI #AIAgents #AItools #TechExplained #TinyAgent`
 
 ### 2026-07-21 Tue - LangGraph is a map for loops
 
@@ -301,7 +301,7 @@ no missing limbs.
   - Highlighted route: plan -> tool -> check -> human.
 - TikTok caption: "Agent loops are easier when you can see the map."
 - YouTube Shorts title: "LangGraph Explained Simply"
-- Hashtags: `#LangGraph #AIAgents #AIEngineering #TechExplained #TinyAgentLab`
+- Hashtags: `#LangGraph #AIAgents #AIEngineering #TechExplained #TinyAgent`
 
 ### 2026-07-22 Wed - Google ADK is a starter kit
 
@@ -315,7 +315,7 @@ no missing limbs.
   - Engineer points from framework sketch to real user workflow.
 - TikTok caption: "Agent frameworks are scaffolding, not strategy."
 - YouTube Shorts title: "Google ADK Explained in 25 Seconds"
-- Hashtags: `#GoogleADK #AIAgents #AItools #LearnAI #TinyAgentLab`
+- Hashtags: `#GoogleADK #AIAgents #AItools #LearnAI #TinyAgent`
 
 ### 2026-07-23 Thu - CrewAI is role play for work
 
@@ -329,7 +329,7 @@ no missing limbs.
   - Clear handoff chain with one artifact moving forward.
 - TikTok caption: "Multi-agent should reduce work, not create a meeting."
 - YouTube Shorts title: "CrewAI and Multi-Agent Roles"
-- Hashtags: `#CrewAI #AIAgents #MultiAgent #AIWorkflow #TinyAgentLab`
+- Hashtags: `#CrewAI #AIAgents #MultiAgent #AIWorkflow #TinyAgent`
 
 ### 2026-07-24 Fri - LlamaIndex Workflows are recipes
 
@@ -343,7 +343,7 @@ no missing limbs.
   - Engineer stamps `testable` on the recipe.
 - TikTok caption: "For many AI products, workflows beat wandering agents."
 - YouTube Shorts title: "AI Workflows vs Agents"
-- Hashtags: `#LlamaIndex #AIWorkflow #AIAgents #AIEngineering #TinyAgentLab`
+- Hashtags: `#LlamaIndex #AIWorkflow #AIAgents #AIEngineering #TinyAgent`
 
 ### 2026-07-25 Sat - Coding agents read the repo
 
@@ -357,7 +357,7 @@ no missing limbs.
   - Four-step coding loop with a green test check.
 - TikTok caption: "Coding agents are useful when they verify."
 - YouTube Shorts title: "What Makes Coding Agents Useful?"
-- Hashtags: `#CodingAgent #AIcoding #OpenAI #ClaudeCode #TinyAgentLab`
+- Hashtags: `#CodingAgent #AIcoding #OpenAI #ClaudeCode #TinyAgent`
 
 ### 2026-07-26 Sun - A2A is agent messaging
 
@@ -371,7 +371,7 @@ no missing limbs.
   - Three labels: request, capability, result.
 - TikTok caption: "Agent-to-agent is mostly about clean handshakes."
 - YouTube Shorts title: "Agent2Agent Explained Simply"
-- Hashtags: `#A2A #AIAgents #AItools #TechExplained #TinyAgentLab`
+- Hashtags: `#A2A #AIAgents #AItools #TechExplained #TinyAgent`
 
 ### 2026-07-27 Mon - Public posting needs a final gate
 
@@ -385,7 +385,7 @@ no missing limbs.
   - Final public button is behind a small approval gate.
 - TikTok caption: "Automate the pipeline. Keep the final review."
 - YouTube Shorts title: "Safe AI Content Automation"
-- Hashtags: `#AIAutomation #ContentCreation #AIAgents #CreatorTools #TinyAgentLab`
+- Hashtags: `#AIAutomation #ContentCreation #AIAgents #CreatorTools #TinyAgent`
 
 ### 2026-07-28 Tue - The smallest agent product
 
@@ -399,7 +399,7 @@ no missing limbs.
   - Single scoreboard shows one metric moving up.
 - TikTok caption: "Start agent products smaller than your ego wants."
 - YouTube Shorts title: "How to Pick an AI Agent MVP"
-- Hashtags: `#StartupAI #AIAgents #ProductDesign #AItools #TinyAgentLab`
+- Hashtags: `#StartupAI #AIAgents #ProductDesign #AItools #TinyAgent`
 
 ### 2026-07-29 Wed - Bad tools make bad agents
 
@@ -413,7 +413,7 @@ no missing limbs.
   - Output card becomes clean and readable.
 - TikTok caption: "Tool design is agent design."
 - YouTube Shorts title: "Why AI Agent Tools Fail"
-- Hashtags: `#AIAgents #AIEngineering #Automation #DeveloperTools #TinyAgentLab`
+- Hashtags: `#AIAgents #AIEngineering #Automation #DeveloperTools #TinyAgent`
 
 ### 2026-07-30 Thu - Agents should ask better questions
 
@@ -427,7 +427,7 @@ no missing limbs.
   - Wrong-path maze fades into one straight path.
 - TikTok caption: "A good agent knows when to ask."
 - YouTube Shorts title: "Why AI Agents Should Ask Questions"
-- Hashtags: `#AIAgents #AIUX #Automation #TechExplained #TinyAgentLab`
+- Hashtags: `#AIAgents #AIUX #Automation #TechExplained #TinyAgent`
 
 ### 2026-07-31 Fri - The agent checklist
 
@@ -438,10 +438,10 @@ no missing limbs.
 - Keyframes:
   - Engineer holds a five-item checklist beside Tiny Agent.
   - Each item lights up as a tiny icon: flag, wrench, eye, stop sign, gate.
-  - Final frame: `Tiny Agent Lab` whiteboard title with the checklist.
+  - Final frame: `Tiny Agent` whiteboard title with the checklist.
 - TikTok caption: "The 5-question AI agent checklist."
 - YouTube Shorts title: "Is It Really an AI Agent?"
-- Hashtags: `#AIAgents #AI #LearnAI #TechExplained #TinyAgentLab`
+- Hashtags: `#AIAgents #AI #LearnAI #TechExplained #TinyAgent`
 
 ## Batch production notes
 

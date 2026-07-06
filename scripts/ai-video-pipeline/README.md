@@ -11,7 +11,7 @@ topic -> script JSON -> Canvas frames -> local TTS -> FFmpeg MP4 -> Postiz Publi
 
 ## Chosen series style
 
-The current direction is `Tiny Agent Lab`: short AI Agent explainers for an
+The current direction is `Tiny Agent`: short AI Agent explainers for an
 overseas TikTok and YouTube Shorts audience. Each video should explain one tiny
 technical idea in 20-30 seconds with a fixed, low-distraction whiteboard
 stick-figure look.
@@ -23,7 +23,7 @@ Style rules:
   whiteboard diagrams.
 - Keep a stable IP: a Chinese software engineer stick figure plus a small
   `Tiny Agent` robot. These two characters should appear across the series.
-- Keep the top title as `Tiny Agent Lab` and use a large rounded subtitle box
+- Keep the top title as `Tiny Agent` and use a large rounded subtitle box
   at the bottom.
 - Keep on-screen text in English. Avoid Chinese text except for a tiny signature
   or intentional cultural detail.
@@ -43,7 +43,7 @@ Postiz publish
 
 The current Canvas renderer is still useful for mechanical smoke tests,
 publishing checks, and layout experiments. It is not the final visual standard
-for `Tiny Agent Lab` production output.
+for `Tiny Agent` production output.
 
 ## Run
 
@@ -150,7 +150,7 @@ variables:
 - `AI_VIDEO_PLAN_DATE`: optional planned date in `YYYY-MM-DD` format.
 - `AI_VIDEO_TTS_PROVIDER`: `say`, `edge-tts`, or `openai`. `say` is free on
   macOS; `edge-tts` uses `uvx edge-tts` by default and is the recommended
-  prototype voice for `Tiny Agent Lab`.
+  prototype voice for `Tiny Agent`.
 - `AI_VIDEO_TTS_VOICE`: voice name for the selected TTS provider.
 - `AI_VIDEO_TTS_RATE`: speech rate. For `edge-tts`, use values like `+8%`; for
   macOS `say`, use numeric words per minute like `188`.
