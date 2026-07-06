@@ -246,7 +246,7 @@ function isHumanDebugStyle(content) {
 }
 
 function isSketchbookStyle(content) {
-  return content.style === 'agent-sketchbook';
+  return ['agent-sketchbook', 'tiny-agent-lab-whiteboard'].includes(content.style);
 }
 
 function drawTinyAgent(ctx, x, y, scale = 1) {
@@ -303,61 +303,113 @@ function drawTinyAgent(ctx, x, y, scale = 1) {
   ctx.restore();
 }
 
+function drawWhiteboardEngineer(ctx, x, y, scale = 1) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  ctx.lineWidth = 7;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#111827';
+  ctx.fillStyle = '#ffffff';
+
+  ctx.beginPath();
+  ctx.arc(0, -170, 64, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = '#111827';
+  ctx.beginPath();
+  ctx.moveTo(-62, -208);
+  ctx.quadraticCurveTo(-34, -258, 20, -232);
+  ctx.quadraticCurveTo(62, -222, 58, -176);
+  ctx.quadraticCurveTo(22, -196, -16, -188);
+  ctx.quadraticCurveTo(-38, -214, -62, -208);
+  ctx.fill();
+
+  ctx.strokeStyle = '#111827';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.ellipse(-24, -168, 18, 24, 0, 0, Math.PI * 2);
+  ctx.ellipse(26, -168, 18, 24, 0, 0, Math.PI * 2);
+  ctx.moveTo(-6, -168);
+  ctx.lineTo(8, -168);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(-20, -134);
+  ctx.quadraticCurveTo(0, -122, 24, -134);
+  ctx.stroke();
+
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(0, -104);
+  ctx.lineTo(0, 56);
+  ctx.moveTo(0, -52);
+  ctx.lineTo(-78, 10);
+  ctx.moveTo(0, -52);
+  ctx.lineTo(96, -24);
+  ctx.moveTo(96, -24);
+  ctx.lineTo(118, -42);
+  ctx.moveTo(96, -24);
+  ctx.lineTo(118, -10);
+  ctx.moveTo(0, 56);
+  ctx.lineTo(-48, 148);
+  ctx.moveTo(0, 56);
+  ctx.lineTo(52, 148);
+  ctx.stroke();
+
+  ctx.fillStyle = '#111827';
+  ctx.beginPath();
+  ctx.ellipse(-48, 156, 28, 9, 0, 0, Math.PI * 2);
+  ctx.ellipse(52, 156, 28, 9, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 function drawSketchbookScene(ctx, scene, index, content) {
   const width = 1080;
   const height = 1920;
-  ctx.fillStyle = '#f7f0de';
+  ctx.fillStyle = '#fffefa';
   ctx.fillRect(0, 0, width, height);
 
-  ctx.strokeStyle = 'rgba(17,24,39,0.08)';
+  ctx.strokeStyle = 'rgba(17,24,39,0.05)';
   ctx.lineWidth = 2;
-  for (let y = 160; y < height - 120; y += 64) {
+  for (let y = 180; y < height - 260; y += 96) {
     ctx.beginPath();
-    ctx.moveTo(64, y);
-    ctx.lineTo(width - 64, y);
+    ctx.moveTo(96, y);
+    ctx.lineTo(width - 96, y);
     ctx.stroke();
   }
 
-  ctx.strokeStyle = 'rgba(20,184,166,0.35)';
-  ctx.lineWidth = 4;
-  ctx.beginPath();
-  ctx.moveTo(132, 110);
-  ctx.lineTo(132, height - 110);
-  ctx.stroke();
-
   ctx.fillStyle = '#111827';
-  ctx.font = '700 34px Arial';
-  ctx.fillText('Agent Sketchbook', 172, 104);
+  ctx.font = '900 58px Arial';
+  const seriesTitle = content.seriesTitle || 'Tiny Agent Lab';
+  ctx.fillText(seriesTitle, (width - ctx.measureText(seriesTitle).width) / 2, 132);
   ctx.fillStyle = '#6b7280';
   ctx.font = '600 26px Arial';
-  ctx.fillText(`page ${String(index + 1).padStart(2, '0')}`, 842, 104);
-
-  ctx.save();
-  ctx.fillStyle = '#fde68a';
-  ctx.globalAlpha = 0.8;
-  roundRect(ctx, 166, 176, 748, 116, 18);
-  ctx.fill();
-  ctx.restore();
+  ctx.fillText(`scene ${String(index + 1).padStart(2, '0')}`, 812, 194);
 
   ctx.fillStyle = '#111827';
   ctx.font = '800 68px Arial';
-  drawTextBlock(ctx, scene.headline || content.title, 172, 250, 780, 78, 3, '#111827');
+  drawTextBlock(ctx, scene.headline || content.title, 112, 306, 856, 78, 2, '#111827');
 
-  drawTinyAgent(ctx, 858, 520, 1.35);
+  drawWhiteboardEngineer(ctx, 246, 760, 1.35);
+  drawTinyAgent(ctx, 808, 800, 1.55);
 
   ctx.save();
   ctx.strokeStyle = '#111827';
-  ctx.fillStyle = '#fffaf0';
+  ctx.fillStyle = '#ffffff';
   ctx.lineWidth = 5;
-  roundRect(ctx, 172, 500, 596, 430, 24);
+  roundRect(ctx, 364, 580, 304, 282, 24);
   ctx.fill();
   ctx.stroke();
-  ctx.fillStyle = '#14b8a6';
-  roundRect(ctx, 202, 530, 18, 370, 9);
+  ctx.fillStyle = '#3b82f6';
+  roundRect(ctx, 392, 618, 14, 206, 7);
   ctx.fill();
   ctx.fillStyle = '#111827';
-  ctx.font = '700 42px Arial';
-  drawTextBlock(ctx, scene.subhead || scene.body || '', 242, 590, 470, 54, 5, '#111827');
+  ctx.font = '700 32px Arial';
+  drawTextBlock(ctx, scene.subhead || scene.body || '', 428, 648, 202, 42, 4, '#111827');
   ctx.restore();
 
   const labels = String(scene.footer || '')
@@ -373,7 +425,7 @@ function drawSketchbookScene(ctx, scene, index, content) {
     ctx.save();
     ctx.font = '700 31px Arial';
     const pillWidth = Math.min(240, Math.max(150, ctx.measureText(label).width + 46));
-    ctx.fillStyle = i % 2 === 0 ? '#ccfbf1' : '#fef3c7';
+    ctx.fillStyle = i % 2 === 0 ? '#dbeafe' : '#ffffff';
     ctx.strokeStyle = '#111827';
     ctx.lineWidth = 4;
     roundRect(ctx, x, y, pillWidth, 68, 16);
@@ -392,20 +444,17 @@ function drawSketchbookScene(ctx, scene, index, content) {
   ctx.strokeStyle = '#111827';
   ctx.fillStyle = '#ffffff';
   ctx.lineWidth = 5;
-  roundRect(ctx, 172, 1298, 736, 246, 22);
+  roundRect(ctx, 90, 1488, 900, 232, 34);
   ctx.fill();
   ctx.stroke();
-  ctx.fillStyle = '#14b8a6';
-  ctx.font = '800 30px Arial';
-  ctx.fillText('tiny takeaway', 208, 1360);
   ctx.fillStyle = '#111827';
-  ctx.font = '700 43px Arial';
-  drawTextBlock(ctx, scene.footer || content.title, 208, 1430, 668, 52, 2, '#111827');
+  ctx.font = '900 58px Arial';
+  drawTextBlock(ctx, scene.footer || content.title, 142, 1582, 796, 68, 2, '#111827');
   ctx.restore();
 
   ctx.fillStyle = '#6b7280';
   ctx.font = '600 26px Arial';
-  ctx.fillText('one idea, one metaphor, one useful loop', 172, 1768);
+  ctx.fillText('one idea, one example, one useful rule', 172, 1800);
 }
 
 function drawComicText(
@@ -1072,7 +1121,7 @@ async function contentFromPlan(args) {
 
   const scenes = keyframes.slice(0, 3).map((keyframe, index) => ({
     duration: index === 0 ? 6 : 7,
-    visual: 'sketchbook',
+    visual: 'whiteboard',
     headline: index === 0 ? hook || episodeTitle : onScreenText || episodeTitle,
     subhead: viewerBeats[index] || caption || episodeTitle,
     keyframePrompt: keyframe,
@@ -1080,12 +1129,13 @@ async function contentFromPlan(args) {
   }));
 
   return {
-    style: 'agent-sketchbook',
+    style: 'tiny-agent-lab-whiteboard',
+    seriesTitle: 'Tiny Agent Lab',
     planDate,
     sourcePlanFile: planFile,
     title: youtubeTitle,
     description: caption || episodeTitle,
-    hashtags: hashtags.length ? hashtags : ['AI', 'AIAgents', 'TechExplained', 'AgentSketchbook'],
+    hashtags: hashtags.length ? hashtags : ['AI', 'AIAgents', 'TechExplained', 'TinyAgentLab'],
     narration,
     scenes,
   };

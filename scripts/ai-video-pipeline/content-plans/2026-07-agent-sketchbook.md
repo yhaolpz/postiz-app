@@ -1,8 +1,8 @@
-# Agent Sketchbook July 2026 content plan
+# Tiny Agent Lab July 2026 content plan
 
 ## Scope
 
-This plan prepares the first daily batch for `Agent Sketchbook` from
+This plan prepares the first daily batch for `Tiny Agent Lab` from
 2026-07-06 to 2026-07-31.
 
 Style source of truth:
@@ -17,8 +17,9 @@ Assumptions:
   YouTube Shorts.
 - Publishing time: TikTok at 09:00 US Eastern / 21:00 Beijing, YouTube Shorts
   at 09:30 US Eastern / 21:30 Beijing. Adjust after the first 7 days of data.
-- Style: notebook doodle, warm paper, black ink, sparse teal/yellow highlights,
-  Chinese software engineer character, and the recurring `Tiny Agent` robot.
+- Style: whiteboard stick-figure explainer, clean white background, thick black
+  marker lines, sparse blue/red highlights, a recurring Chinese software
+  engineer stick figure, and the recurring `Tiny Agent` robot.
 - Language: English voice and on-screen text. Do not add Chinese text in the
   video except a tiny creator signature if needed.
 - Review gate: render and manually preview every video before public posting.
@@ -56,12 +57,17 @@ Use this base prompt for keyframe images, then append the per-episode visual
 beat.
 
 ```text
-Vertical 9:16 notebook sketchbook illustration, warm off-white paper texture,
-hand-drawn black ink lines, sparse teal and yellow marker highlights, clean
-margin notes, simple arrows and diagrams, one Chinese software engineer doodle
-with glasses and a small friendly robot named Tiny Agent, clear empty space for
-English subtitles, charming but not childish, no Chinese text, no photorealism,
-no distorted hands, no missing limbs, no dense UI, no clutter.
+Vertical 9:16 whiteboard stick figure explainer, clean white background,
+thick black marker line art, simple hand-drawn shapes, fixed title text
+"Tiny Agent Lab" at the top, one recurring Chinese software engineer stick
+figure on the left with short black hair and black glasses, one recurring
+friendly AI robot named Tiny Agent on the right with a white rounded head,
+black face screen, blue eyes, tiny antenna, round ear covers, and small tool
+props, sparse blue highlights and tiny red warning marks only, large empty
+space, clear visual metaphor, bottom rounded subtitle box with bold English
+caption space, simple and funny but not childish, no Chinese text, no
+photorealism, no anime, no 3D, no clutter, no dense UI, no distorted hands,
+no missing limbs.
 ```
 
 ## Weekly structure
@@ -82,10 +88,10 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
 - Keyframes:
   - Engineer points at two boxes: `Chatbot: answer` and `Agent: action loop`.
   - Tiny Agent picks up a tiny wrench and checks a clipboard.
-  - Simple loop diagram around the robot with one yellow highlight.
+  - Simple loop diagram around the robot with one blue highlight.
 - TikTok caption: "A chatbot talks. An agent runs a tiny loop."
 - YouTube Shorts title: "What Makes an AI Agent Different?"
-- Hashtags: `#AI #AIAgents #LearnAI #TechExplained #AgentSketchbook`
+- Hashtags: `#AI #AIAgents #LearnAI #TechExplained #TinyAgentLab`
 
 ### 2026-07-07 Tue - Tools are the agent's hands
 
@@ -99,7 +105,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Engineer adds a safety glove icon before Tiny Agent touches a tool.
 - TikTok caption: "The real power of agents is tool access."
 - YouTube Shorts title: "AI Agent Tools Explained Simply"
-- Hashtags: `#AI #AIAgents #Automation #TechTok #AgentSketchbook`
+- Hashtags: `#AI #AIAgents #Automation #TechTok #TinyAgentLab`
 
 ### 2026-07-08 Wed - MCP is a common adapter
 
@@ -113,7 +119,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Simple hub diagram connects agent to three apps.
 - TikTok caption: "MCP is the adapter layer for agent tools."
 - YouTube Shorts title: "MCP Explained in 25 Seconds"
-- Hashtags: `#MCP #AIAgents #AItools #TechExplained #AgentSketchbook`
+- Hashtags: `#MCP #AIAgents #AItools #TechExplained #TinyAgentLab`
 
 ### 2026-07-09 Thu - Context is a backpack
 
@@ -127,7 +133,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Backpack becomes small, with a search arrow pointing outward.
 - TikTok caption: "Better context beats bigger context."
 - YouTube Shorts title: "AI Context Windows, Explained"
-- Hashtags: `#AI #ContextWindow #AIAgents #LearnAI #AgentSketchbook`
+- Hashtags: `#AI #ContextWindow #AIAgents #LearnAI #TinyAgentLab`
 
 ### 2026-07-10 Fri - RAG is an open-book test
 
@@ -138,10 +144,10 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
 - Keyframes:
   - Tiny Agent opens a book before answering a question.
   - Magnifying glass highlights one useful paragraph from a messy shelf.
-  - Wrong page has a red X; right page has a teal check.
+  - Wrong page has a red X; right page has a blue check.
 - TikTok caption: "RAG is open-book answering for AI."
 - YouTube Shorts title: "RAG Explained with One Example"
-- Hashtags: `#RAG #AI #AIAgents #LearnAI #AgentSketchbook`
+- Hashtags: `#RAG #AI #AIAgents #LearnAI #TinyAgentLab`
 
 ### 2026-07-11 Sat - Planner and executor
 
@@ -155,7 +161,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Engineer blocks a big red button labeled `click first`.
 - TikTok caption: "Good agents separate planning from doing."
 - YouTube Shorts title: "Planner vs Executor in AI Agents"
-- Hashtags: `#AIAgents #AIWorkflow #Automation #TechExplained #AgentSketchbook`
+- Hashtags: `#AIAgents #AIWorkflow #Automation #TechExplained #TinyAgentLab`
 
 ### 2026-07-12 Sun - Agents need receipts
 
@@ -169,7 +175,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Engineer pins the receipt beside a small bug icon.
 - TikTok caption: "Agent logs are action receipts."
 - YouTube Shorts title: "Why AI Agents Need Logs"
-- Hashtags: `#AIAgents #AIEngineering #Debugging #TechTok #AgentSketchbook`
+- Hashtags: `#AIAgents #AIEngineering #Debugging #TechTok #TinyAgentLab`
 
 ### 2026-07-13 Mon - Human-in-the-loop is a seatbelt
 
@@ -183,7 +189,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Engineer presses approve only at the final gate.
 - TikTok caption: "Put human approval where the risk is."
 - YouTube Shorts title: "Human-in-the-Loop, Explained"
-- Hashtags: `#AIAgents #AISafety #Automation #LearnAI #AgentSketchbook`
+- Hashtags: `#AIAgents #AISafety #Automation #LearnAI #TinyAgentLab`
 
 ### 2026-07-14 Tue - Guardrails are boundaries
 
@@ -197,7 +203,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Engineer erases a dangerous shortcut arrow.
 - TikTok caption: "Guardrails are the agent's allowed lane."
 - YouTube Shorts title: "AI Guardrails in Plain English"
-- Hashtags: `#AISafety #AIAgents #AI #TechExplained #AgentSketchbook`
+- Hashtags: `#AISafety #AIAgents #AI #TechExplained #TinyAgentLab`
 
 ### 2026-07-15 Wed - Prompt injection is a fake instruction
 
@@ -211,7 +217,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Two boxes: trusted instruction vs untrusted content.
 - TikTok caption: "The webpage should not boss your agent around."
 - YouTube Shorts title: "Prompt Injection Explained Simply"
-- Hashtags: `#PromptInjection #AISafety #AIAgents #Cybersecurity #AgentSketchbook`
+- Hashtags: `#PromptInjection #AISafety #AIAgents #Cybersecurity #TinyAgentLab`
 
 ### 2026-07-16 Thu - Memory is not a diary dump
 
@@ -225,7 +231,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Small memory drawer with an edit pencil.
 - TikTok caption: "Good AI memory is selective."
 - YouTube Shorts title: "AI Agent Memory, Explained"
-- Hashtags: `#AIAgents #Memory #AI #TechExplained #AgentSketchbook`
+- Hashtags: `#AIAgents #Memory #AI #TechExplained #TinyAgentLab`
 
 ### 2026-07-17 Fri - Evaluation is the scoreboard
 
@@ -239,7 +245,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Red `vibes` cloud fades into a clean scoreboard.
 - TikTok caption: "Evaluate agents with a scoreboard, not vibes."
 - YouTube Shorts title: "How to Evaluate AI Agents"
-- Hashtags: `#AIEvaluation #AIAgents #AIEngineering #LearnAI #AgentSketchbook`
+- Hashtags: `#AIEvaluation #AIAgents #AIEngineering #LearnAI #TinyAgentLab`
 
 ### 2026-07-18 Sat - Cost is part of design
 
@@ -253,7 +259,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Engineer chooses agent for messy task, workflow for simple task.
 - TikTok caption: "Not every automation needs an agent."
 - YouTube Shorts title: "AI Agent Cost Trap"
-- Hashtags: `#AIAgents #Automation #AIEngineering #TechExplained #AgentSketchbook`
+- Hashtags: `#AIAgents #Automation #AIEngineering #TechExplained #TinyAgentLab`
 
 ### 2026-07-19 Sun - Timeouts save you
 
@@ -267,7 +273,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Spiral turns into a clean exit arrow.
 - TikTok caption: "Every agent loop needs an escape hatch."
 - YouTube Shorts title: "Why AI Agents Need Limits"
-- Hashtags: `#AIAgents #AIEngineering #Automation #LearnAI #AgentSketchbook`
+- Hashtags: `#AIAgents #AIEngineering #Automation #LearnAI #TinyAgentLab`
 
 ### 2026-07-20 Mon - OpenAI Agents SDK in one sentence
 
@@ -281,7 +287,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Finished sketch shows agent loop with tracing line underneath.
 - TikTok caption: "Agent SDKs give you the building blocks."
 - YouTube Shorts title: "OpenAI Agents SDK in Plain English"
-- Hashtags: `#OpenAI #AIAgents #AItools #TechExplained #AgentSketchbook`
+- Hashtags: `#OpenAI #AIAgents #AItools #TechExplained #TinyAgentLab`
 
 ### 2026-07-21 Tue - LangGraph is a map for loops
 
@@ -295,7 +301,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Highlighted route: plan -> tool -> check -> human.
 - TikTok caption: "Agent loops are easier when you can see the map."
 - YouTube Shorts title: "LangGraph Explained Simply"
-- Hashtags: `#LangGraph #AIAgents #AIEngineering #TechExplained #AgentSketchbook`
+- Hashtags: `#LangGraph #AIAgents #AIEngineering #TechExplained #TinyAgentLab`
 
 ### 2026-07-22 Wed - Google ADK is a starter kit
 
@@ -309,7 +315,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Engineer points from framework sketch to real user workflow.
 - TikTok caption: "Agent frameworks are scaffolding, not strategy."
 - YouTube Shorts title: "Google ADK Explained in 25 Seconds"
-- Hashtags: `#GoogleADK #AIAgents #AItools #LearnAI #AgentSketchbook`
+- Hashtags: `#GoogleADK #AIAgents #AItools #LearnAI #TinyAgentLab`
 
 ### 2026-07-23 Thu - CrewAI is role play for work
 
@@ -323,7 +329,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Clear handoff chain with one artifact moving forward.
 - TikTok caption: "Multi-agent should reduce work, not create a meeting."
 - YouTube Shorts title: "CrewAI and Multi-Agent Roles"
-- Hashtags: `#CrewAI #AIAgents #MultiAgent #AIWorkflow #AgentSketchbook`
+- Hashtags: `#CrewAI #AIAgents #MultiAgent #AIWorkflow #TinyAgentLab`
 
 ### 2026-07-24 Fri - LlamaIndex Workflows are recipes
 
@@ -337,7 +343,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Engineer stamps `testable` on the recipe.
 - TikTok caption: "For many AI products, workflows beat wandering agents."
 - YouTube Shorts title: "AI Workflows vs Agents"
-- Hashtags: `#LlamaIndex #AIWorkflow #AIAgents #AIEngineering #AgentSketchbook`
+- Hashtags: `#LlamaIndex #AIWorkflow #AIAgents #AIEngineering #TinyAgentLab`
 
 ### 2026-07-25 Sat - Coding agents read the repo
 
@@ -351,7 +357,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Four-step coding loop with a green test check.
 - TikTok caption: "Coding agents are useful when they verify."
 - YouTube Shorts title: "What Makes Coding Agents Useful?"
-- Hashtags: `#CodingAgent #AIcoding #OpenAI #ClaudeCode #AgentSketchbook`
+- Hashtags: `#CodingAgent #AIcoding #OpenAI #ClaudeCode #TinyAgentLab`
 
 ### 2026-07-26 Sun - A2A is agent messaging
 
@@ -365,7 +371,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Three labels: request, capability, result.
 - TikTok caption: "Agent-to-agent is mostly about clean handshakes."
 - YouTube Shorts title: "Agent2Agent Explained Simply"
-- Hashtags: `#A2A #AIAgents #AItools #TechExplained #AgentSketchbook`
+- Hashtags: `#A2A #AIAgents #AItools #TechExplained #TinyAgentLab`
 
 ### 2026-07-27 Mon - Public posting needs a final gate
 
@@ -379,7 +385,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Final public button is behind a small approval gate.
 - TikTok caption: "Automate the pipeline. Keep the final review."
 - YouTube Shorts title: "Safe AI Content Automation"
-- Hashtags: `#AIAutomation #ContentCreation #AIAgents #CreatorTools #AgentSketchbook`
+- Hashtags: `#AIAutomation #ContentCreation #AIAgents #CreatorTools #TinyAgentLab`
 
 ### 2026-07-28 Tue - The smallest agent product
 
@@ -393,7 +399,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Single scoreboard shows one metric moving up.
 - TikTok caption: "Start agent products smaller than your ego wants."
 - YouTube Shorts title: "How to Pick an AI Agent MVP"
-- Hashtags: `#StartupAI #AIAgents #ProductDesign #AItools #AgentSketchbook`
+- Hashtags: `#StartupAI #AIAgents #ProductDesign #AItools #TinyAgentLab`
 
 ### 2026-07-29 Wed - Bad tools make bad agents
 
@@ -407,7 +413,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Output card becomes clean and readable.
 - TikTok caption: "Tool design is agent design."
 - YouTube Shorts title: "Why AI Agent Tools Fail"
-- Hashtags: `#AIAgents #AIEngineering #Automation #DeveloperTools #AgentSketchbook`
+- Hashtags: `#AIAgents #AIEngineering #Automation #DeveloperTools #TinyAgentLab`
 
 ### 2026-07-30 Thu - Agents should ask better questions
 
@@ -421,7 +427,7 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
   - Wrong-path maze fades into one straight path.
 - TikTok caption: "A good agent knows when to ask."
 - YouTube Shorts title: "Why AI Agents Should Ask Questions"
-- Hashtags: `#AIAgents #AIUX #Automation #TechExplained #AgentSketchbook`
+- Hashtags: `#AIAgents #AIUX #Automation #TechExplained #TinyAgentLab`
 
 ### 2026-07-31 Fri - The agent checklist
 
@@ -432,10 +438,10 @@ no distorted hands, no missing limbs, no dense UI, no clutter.
 - Keyframes:
   - Engineer holds a five-item checklist beside Tiny Agent.
   - Each item lights up as a tiny icon: flag, wrench, eye, stop sign, gate.
-  - Final frame: `Agent Sketchbook` notebook cover with the checklist.
+  - Final frame: `Tiny Agent Lab` whiteboard title with the checklist.
 - TikTok caption: "The 5-question AI agent checklist."
 - YouTube Shorts title: "Is It Really an AI Agent?"
-- Hashtags: `#AIAgents #AI #LearnAI #TechExplained #AgentSketchbook`
+- Hashtags: `#AIAgents #AI #LearnAI #TechExplained #TinyAgentLab`
 
 ## Batch production notes
 
