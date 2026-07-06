@@ -1,7 +1,7 @@
 # AI video pipeline
 
 Generates a vertical AI concept explainer video and optionally sends it to
-Postiz Public API for YouTube and TikTok publishing.
+Postiz Public API for YouTube, TikTok, and Facebook Reels publishing.
 
 The default path has no video model dependency:
 
@@ -82,28 +82,48 @@ pnpm ai-video:run -- \
   --dry-run
 ```
 
-Generate and publish through connected YouTube/TikTok channels:
+Generate the planned video for a specific day:
 
 ```bash
-pnpm ai-video:run -- \
-  --topic "What is MCP in AI agents?" \
+node scripts/ai-video-pipeline/run.mjs \
+  --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
+  --date 2026-07-06 \
+  --tts edge-tts \
+  --voice en-US-BrianNeural \
+  --rate '+8%' \
+  --dry-run
+```
+
+Generate and publish through connected YouTube/TikTok/Facebook channels:
+
+```bash
+node scripts/ai-video-pipeline/run.mjs \
+  --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
+  --tts edge-tts \
+  --voice en-US-BrianNeural \
+  --rate '+8%' \
+  --platform all \
+  --skip-missing-platforms \
   --post \
   --visibility private \
   --media-mode serve \
   --wait
 ```
 
-`private` maps to YouTube `private` and TikTok `SELF_ONLY`. Use
-`--visibility public` only after reviewing the rendered MP4.
+`private` maps to YouTube `private`, TikTok `SELF_ONLY`, and Facebook Reel
+`DRAFT`. Use `--visibility public` only after reviewing the rendered MP4.
 
 Useful publishing switches:
 
-- `--platform both|youtube|tiktok`: limit which connected channel receives the
-  post.
+- `--platform both|all|youtube|tiktok|facebook`: limit which connected channel
+  receives the post. A comma-separated list such as `youtube,tiktok,facebook`
+  is also supported.
 - `--micro`: generate a shorter 20-30 second script with one tiny point for
   TikTok and YouTube Shorts testing.
 - `--tiktok-method DIRECT_POST|UPLOAD`: `UPLOAD` sends the video to TikTok inbox
   when Direct Post is not available for the app/account.
+- `--skip-missing-platforms`: publish to connected channels and skip channels
+  that are not connected yet.
 - `--skip-token-refresh`: skip local YouTube/TikTok access-token refresh.
 - `--skip-temporal-init`: skip local Temporal search-attribute preflight.
 - `--skip-workflow-kick`: skip the local workflow fallback after API post
@@ -117,8 +137,13 @@ variables:
 - `POSTIZ_URL`: backend URL, usually `http://localhost:3000`.
 - `POSTIZ_API_KEY`: Public API key. If omitted locally, the script reads the
   first organization from `DATABASE_URL`.
-- `POSTIZ_YOUTUBE_INTEGRATION_ID` and `POSTIZ_TIKTOK_INTEGRATION_ID`: optional.
-  If omitted, the first enabled YouTube/TikTok integrations are used.
+- `POSTIZ_YOUTUBE_INTEGRATION_ID`, `POSTIZ_TIKTOK_INTEGRATION_ID`, and
+  `POSTIZ_FACEBOOK_INTEGRATION_ID`: optional. If omitted, the first enabled
+  matching integrations are used.
+- `AI_VIDEO_PLAN_FILE`: optional daily content-plan Markdown file. When set,
+  the script reads the entry matching `AI_VIDEO_PLAN_DATE` or today's
+  Asia/Shanghai date instead of generating a new script from `--topic`.
+- `AI_VIDEO_PLAN_DATE`: optional planned date in `YYYY-MM-DD` format.
 - `AI_VIDEO_TTS_PROVIDER`: `say`, `edge-tts`, or `openai`. `say` is free on
   macOS; `edge-tts` uses `uvx edge-tts` by default and is the recommended
   prototype voice for `Agent Sketchbook`.
@@ -129,8 +154,13 @@ variables:
 - `AI_VIDEO_MEDIA_MODE`: `serve` or `upload`. Use `serve` for local immediate
   publishing when the frontend upload host is not running. Use `upload` for a
   deployed Postiz instance with publicly reachable media URLs.
-- `AI_VIDEO_PLATFORM`: `both`, `youtube`, or `tiktok`.
+- `AI_VIDEO_PLATFORM`: `both`, `all`, `youtube`, `tiktok`, `facebook`, or a
+  comma-separated list such as `youtube,tiktok,facebook`.
 - `AI_VIDEO_TIKTOK_METHOD`: `DIRECT_POST` or `UPLOAD`.
+- `AI_VIDEO_FACEBOOK_REEL_STATE`: `DRAFT`, `PUBLISHED`, or `SCHEDULED`.
+  The automation defaults to `DRAFT` while the channel is still being reviewed.
+- `AI_VIDEO_SKIP_MISSING_PLATFORMS`: set to `true` to publish to connected
+  channels and skip channels that are not connected yet.
 - `AI_VIDEO_SKIP_TOKEN_REFRESH`: set to `true` to skip local access-token
   refresh.
 - `AI_VIDEO_SKIP_TEMPORAL_INIT`: set to `true` to skip local Temporal
@@ -139,6 +169,39 @@ variables:
   start workflows.
 
 Outputs are written under `var/ai-video-pipeline/runs/`.
+
+## Codex daily automation
+
+The preferred source of truth for daily posting is Codex automation, not Postiz
+calendar scheduling. Codex should generate the day's video from the content
+plan, then call Postiz for immediate delivery to YouTube, TikTok, and Facebook
+Reels.
+
+Recommended rollout:
+
+1. First 7 days: generate the planned video and publish only as private/draft
+   where the platform allows it. Manually preview the MP4 before public release.
+2. After the visual/audio/factual checks are consistently clean, switch the
+   automation to public posting.
+
+The automation command should use the plan file and the current Asia/Shanghai
+date. For an immediate private Postiz run:
+
+```bash
+node scripts/ai-video-pipeline/run.mjs \
+  --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
+  --tts edge-tts \
+  --voice en-US-BrianNeural \
+  --rate '+8%' \
+  --platform all \
+  --skip-missing-platforms \
+  --post \
+  --visibility private \
+  --media-mode serve \
+  --wait
+```
+
+Use `--visibility public` only after the daily output quality is stable.
 
 ## Current platform notes
 
@@ -157,3 +220,6 @@ Outputs are written under `var/ai-video-pipeline/runs/`.
 - `--media-mode serve` is only for immediate local publishing while this process
   is alive. For scheduled future posts, use a deployed/public media URL or a
   working Postiz upload host.
+- Facebook Reels are published through a connected Facebook Page. Meta's Reels
+  API is Page-scoped, not personal-profile scoped. The provider uses the
+  official `video_reels` flow when `post_type` is `reel`.

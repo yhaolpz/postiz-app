@@ -73,6 +73,7 @@ function parseArgs(argv) {
         'skip-token-refresh',
         'skip-temporal-init',
         'skip-workflow-kick',
+        'skip-missing-platforms',
       ].includes(key)
     ) {
       args[key] = true;
@@ -242,6 +243,169 @@ function drawPill(ctx, x, y, text, color = '#60a5fa') {
 
 function isHumanDebugStyle(content) {
   return content.style === 'human-debug';
+}
+
+function isSketchbookStyle(content) {
+  return content.style === 'agent-sketchbook';
+}
+
+function drawTinyAgent(ctx, x, y, scale = 1) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#111827';
+  ctx.fillStyle = '#ffffff';
+
+  roundRect(ctx, -54, -92, 108, 82, 20);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(-22, -52, 7, 0, Math.PI * 2);
+  ctx.arc(22, -52, 7, 0, Math.PI * 2);
+  ctx.fillStyle = '#111827';
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(-16, -28);
+  ctx.quadraticCurveTo(0, -18, 16, -28);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(0, -94);
+  ctx.lineTo(0, -122);
+  ctx.arc(0, -130, 8, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.fillStyle = '#dff7f0';
+  roundRect(ctx, -42, -8, 84, 92, 18);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(-42, 20);
+  ctx.lineTo(-92, 52);
+  ctx.moveTo(42, 20);
+  ctx.lineTo(92, 52);
+  ctx.moveTo(-24, 84);
+  ctx.lineTo(-34, 128);
+  ctx.moveTo(24, 84);
+  ctx.lineTo(34, 128);
+  ctx.stroke();
+
+  ctx.fillStyle = '#facc15';
+  roundRect(ctx, -18, 22, 36, 24, 8);
+  ctx.fill();
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawSketchbookScene(ctx, scene, index, content) {
+  const width = 1080;
+  const height = 1920;
+  ctx.fillStyle = '#f7f0de';
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.strokeStyle = 'rgba(17,24,39,0.08)';
+  ctx.lineWidth = 2;
+  for (let y = 160; y < height - 120; y += 64) {
+    ctx.beginPath();
+    ctx.moveTo(64, y);
+    ctx.lineTo(width - 64, y);
+    ctx.stroke();
+  }
+
+  ctx.strokeStyle = 'rgba(20,184,166,0.35)';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(132, 110);
+  ctx.lineTo(132, height - 110);
+  ctx.stroke();
+
+  ctx.fillStyle = '#111827';
+  ctx.font = '700 34px Arial';
+  ctx.fillText('Agent Sketchbook', 172, 104);
+  ctx.fillStyle = '#6b7280';
+  ctx.font = '600 26px Arial';
+  ctx.fillText(`page ${String(index + 1).padStart(2, '0')}`, 842, 104);
+
+  ctx.save();
+  ctx.fillStyle = '#fde68a';
+  ctx.globalAlpha = 0.8;
+  roundRect(ctx, 166, 176, 748, 116, 18);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.fillStyle = '#111827';
+  ctx.font = '800 68px Arial';
+  drawTextBlock(ctx, scene.headline || content.title, 172, 250, 780, 78, 3, '#111827');
+
+  drawTinyAgent(ctx, 858, 520, 1.35);
+
+  ctx.save();
+  ctx.strokeStyle = '#111827';
+  ctx.fillStyle = '#fffaf0';
+  ctx.lineWidth = 5;
+  roundRect(ctx, 172, 500, 596, 430, 24);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = '#14b8a6';
+  roundRect(ctx, 202, 530, 18, 370, 9);
+  ctx.fill();
+  ctx.fillStyle = '#111827';
+  ctx.font = '700 42px Arial';
+  drawTextBlock(ctx, scene.subhead || scene.body || '', 242, 590, 470, 54, 5, '#111827');
+  ctx.restore();
+
+  const labels = String(scene.footer || '')
+    .split(/\s*(?:->|\.|\+)\s*/)
+    .map((label) => label.trim())
+    .filter(Boolean)
+    .slice(0, 5);
+  const pills = labels.length ? labels : ['Goal', 'Tool', 'Check'];
+  let x = 172;
+  const y = 1078;
+  for (let i = 0; i < pills.length; i += 1) {
+    const label = pills[i];
+    ctx.save();
+    ctx.font = '700 31px Arial';
+    const pillWidth = Math.min(240, Math.max(150, ctx.measureText(label).width + 46));
+    ctx.fillStyle = i % 2 === 0 ? '#ccfbf1' : '#fef3c7';
+    ctx.strokeStyle = '#111827';
+    ctx.lineWidth = 4;
+    roundRect(ctx, x, y, pillWidth, 68, 16);
+    ctx.fill();
+    ctx.stroke();
+    drawTextBlock(ctx, label, x + 22, y + 45, pillWidth - 44, 34, 1, '#111827');
+    ctx.restore();
+    if (i < pills.length - 1) {
+      drawArrow(ctx, x + pillWidth + 14, y + 34, x + pillWidth + 74, y + 34, '#111827');
+    }
+    x += pillWidth + 92;
+    if (x > 820) break;
+  }
+
+  ctx.save();
+  ctx.strokeStyle = '#111827';
+  ctx.fillStyle = '#ffffff';
+  ctx.lineWidth = 5;
+  roundRect(ctx, 172, 1298, 736, 246, 22);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = '#14b8a6';
+  ctx.font = '800 30px Arial';
+  ctx.fillText('tiny takeaway', 208, 1360);
+  ctx.fillStyle = '#111827';
+  ctx.font = '700 43px Arial';
+  drawTextBlock(ctx, scene.footer || content.title, 208, 1430, 668, 52, 2, '#111827');
+  ctx.restore();
+
+  ctx.fillStyle = '#6b7280';
+  ctx.font = '600 26px Arial';
+  ctx.fillText('one idea, one metaphor, one useful loop', 172, 1768);
 }
 
 function drawComicText(
@@ -811,6 +975,122 @@ function drawDiagram(ctx, scene, index) {
   drawArrow(ctx, 588, 1205, 510, 1205);
 }
 
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function stripMarkdownValue(value) {
+  return String(value || '')
+    .trim()
+    .replace(/`/g, '')
+    .replace(/^"|"$/g, '')
+    .trim();
+}
+
+function readPlanField(section, name) {
+  const match = section.match(
+    new RegExp(`^- ${escapeRegExp(name)}:\\s*(.+)$`, 'm')
+  );
+  return match ? stripMarkdownValue(match[1]) : '';
+}
+
+function readPlanKeyframes(section) {
+  const match = section.match(
+    /^- Keyframes:\n([\s\S]*?)(?=^- [A-Za-z][A-Za-z -]+:|\n### |\n## |(?![\s\S]))/m
+  );
+  if (!match) return [];
+  return match[1]
+    .split('\n')
+    .map((line) => line.match(/^\s+-\s+(.+)$/)?.[1])
+    .filter(Boolean)
+    .map(stripMarkdownValue);
+}
+
+function parsePlanHashtags(value) {
+  return String(value || '')
+    .replace(/`/g, '')
+    .split(/\s+/)
+    .map((tag) => tag.trim().replace(/^#/, ''))
+    .filter(Boolean);
+}
+
+function formatDateInShanghai(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+async function contentFromPlan(args) {
+  const planFile = path.resolve(
+    args['plan-file'] ||
+      process.env.AI_VIDEO_PLAN_FILE ||
+      path.join(
+        rootDir,
+        'scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md'
+      )
+  );
+  const planDate =
+    args.date || process.env.AI_VIDEO_PLAN_DATE || formatDateInShanghai();
+  const planText = await fs.readFile(planFile, 'utf8');
+  const sectionMatch = planText.match(
+    new RegExp(
+      `(?:^|\\n)### ${escapeRegExp(planDate)}[^\\n]* - ([^\\n]+)\\n([\\s\\S]*?)(?=\\n### \\d{4}-\\d{2}-\\d{2}|\\n## |(?![\\s\\S]))`
+    )
+  );
+
+  if (!sectionMatch) {
+    throw new Error(`No content plan entry found for ${planDate} in ${planFile}`);
+  }
+
+  const episodeTitle = stripMarkdownValue(sectionMatch[1]);
+  const section = sectionMatch[2];
+  const tinyPoint = readPlanField(section, 'Tiny point');
+  const hook = readPlanField(section, 'Hook');
+  const narration = readPlanField(section, 'Narration');
+  const onScreenText = readPlanField(section, 'On-screen text');
+  const caption = readPlanField(section, 'TikTok caption');
+  const youtubeTitle = readPlanField(section, 'YouTube Shorts title') || episodeTitle;
+  const hashtags = parsePlanHashtags(readPlanField(section, 'Hashtags'));
+  const keyframes = readPlanKeyframes(section);
+
+  if (!narration || !keyframes.length) {
+    throw new Error(`Content plan entry for ${planDate} is missing narration or keyframes.`);
+  }
+
+  const sentences =
+    narration.match(/[^.!?]+[.!?]+/g)?.map((sentence) => sentence.trim()) || [];
+  const viewerBeats = [
+    tinyPoint,
+    sentences.slice(0, 2).join(' '),
+    sentences.slice(-2).join(' '),
+  ].map(stripMarkdownValue);
+
+  const scenes = keyframes.slice(0, 3).map((keyframe, index) => ({
+    duration: index === 0 ? 6 : 7,
+    visual: 'sketchbook',
+    headline: index === 0 ? hook || episodeTitle : onScreenText || episodeTitle,
+    subhead: viewerBeats[index] || caption || episodeTitle,
+    keyframePrompt: keyframe,
+    footer: onScreenText || episodeTitle,
+  }));
+
+  return {
+    style: 'agent-sketchbook',
+    planDate,
+    sourcePlanFile: planFile,
+    title: youtubeTitle,
+    description: caption || episodeTitle,
+    hashtags: hashtags.length ? hashtags : ['AI', 'AIAgents', 'TechExplained', 'AgentSketchbook'],
+    narration,
+    scenes,
+  };
+}
+
 async function renderFrames(content, outputDir) {
   const framesDir = path.join(outputDir, 'frames');
   await fs.mkdir(framesDir, { recursive: true });
@@ -826,41 +1106,43 @@ async function renderFrames(content, outputDir) {
 
     if (isHumanDebugStyle(content)) {
       drawHumanDebugScene(ctx, scene, i, content);
+    } else if (isSketchbookStyle(content)) {
+      drawSketchbookScene(ctx, scene, i, content);
     } else {
-    const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, '#07111f');
-    gradient.addColorStop(0.55, '#0f172a');
-    gradient.addColorStop(1, '#18181b');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#07111f');
+      gradient.addColorStop(0.55, '#0f172a');
+      gradient.addColorStop(1, '#18181b');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
 
-    ctx.strokeStyle = 'rgba(148,163,184,0.09)';
-    ctx.lineWidth = 2;
-    for (let x = 80; x < width; x += 120) {
-      ctx.beginPath();
-      ctx.moveTo(x, 140);
-      ctx.lineTo(x - 360, height - 120);
-      ctx.stroke();
-    }
+      ctx.strokeStyle = 'rgba(148,163,184,0.09)';
+      ctx.lineWidth = 2;
+      for (let x = 80; x < width; x += 120) {
+        ctx.beginPath();
+        ctx.moveTo(x, 140);
+        ctx.lineTo(x - 360, height - 120);
+        ctx.stroke();
+      }
 
-    ctx.font = '700 34px Arial';
-    ctx.fillStyle = '#40d9a6';
-    ctx.fillText('AGENT SCHOOL', 72, 96);
-    ctx.fillStyle = '#64748b';
-    ctx.fillText(`SCENE ${String(i + 1).padStart(2, '0')}`, 790, 96);
+      ctx.font = '700 34px Arial';
+      ctx.fillStyle = '#40d9a6';
+      ctx.fillText('AGENT SCHOOL', 72, 96);
+      ctx.fillStyle = '#64748b';
+      ctx.fillText(`SCENE ${String(i + 1).padStart(2, '0')}`, 790, 96);
 
-    ctx.font = '800 76px Arial';
-    drawTextBlock(ctx, scene.headline || content.title, 72, 220, 936, 86, 4, '#ffffff');
+      ctx.font = '800 76px Arial';
+      drawTextBlock(ctx, scene.headline || content.title, 72, 220, 936, 86, 4, '#ffffff');
 
-    ctx.font = '400 40px Arial';
-    drawTextBlock(ctx, scene.subhead || scene.body || '', 76, 530, 920, 52, 3, '#cbd5e1');
+      ctx.font = '400 40px Arial';
+      drawTextBlock(ctx, scene.subhead || scene.body || '', 76, 530, 920, 52, 3, '#cbd5e1');
 
-    drawDiagram(ctx, scene, i);
+      drawDiagram(ctx, scene, i);
 
-    ctx.font = '700 42px Arial';
-    if (scene.footer) {
-      drawTextBlock(ctx, scene.footer, 72, 1730, 936, 52, 2, '#e5e7eb');
-    }
+      ctx.font = '700 42px Arial';
+      if (scene.footer) {
+        drawTextBlock(ctx, scene.footer, 72, 1730, 936, 52, 2, '#e5e7eb');
+      }
     }
 
     const framePath = path.join(
@@ -1391,6 +1673,9 @@ async function postizFetch(pathname, options = {}) {
 
 async function resolvePublishingConfig(args) {
   const platforms = getPlatforms(args);
+  const skipMissingPlatforms =
+    args['skip-missing-platforms'] ||
+    process.env.AI_VIDEO_SKIP_MISSING_PLATFORMS === 'true';
   const localOrganization = await getLocalOrganization();
   const apiKey = process.env.POSTIZ_API_KEY || localOrganization?.apiKey;
   if (!apiKey) {
@@ -1417,18 +1702,30 @@ async function resolvePublishingConfig(args) {
       (integration) => integration.identifier === 'tiktok' && !integration.disabled
     )?.id;
 
-  if (platforms.includes('youtube') && !youtubeId) {
+  const facebookId =
+    args.facebookIntegration ||
+    process.env.POSTIZ_FACEBOOK_INTEGRATION_ID ||
+    integrations.find(
+      (integration) => integration.identifier === 'facebook' && !integration.disabled
+    )?.id;
+
+  if (platforms.includes('youtube') && !youtubeId && !skipMissingPlatforms) {
     throw new Error('An enabled YouTube integration is required.');
   }
 
-  if (platforms.includes('tiktok') && !tiktokId) {
+  if (platforms.includes('tiktok') && !tiktokId && !skipMissingPlatforms) {
     throw new Error('An enabled TikTok integration is required.');
+  }
+
+  if (platforms.includes('facebook') && !facebookId && !skipMissingPlatforms) {
+    throw new Error('An enabled Facebook integration is required.');
   }
 
   return {
     apiKey,
     youtubeId,
     tiktokId,
+    facebookId,
     organizationId: process.env.POSTIZ_ORGANIZATION_ID || localOrganization?.id,
   };
 }
@@ -1558,10 +1855,11 @@ async function refreshLocalIntegrationTokens(publishing, args) {
 function getPlatforms(args) {
   const raw = args.platform || args.platforms || process.env.AI_VIDEO_PLATFORM || 'both';
   if (raw === 'both') return ['youtube', 'tiktok'];
+  if (raw === 'all') return ['youtube', 'tiktok', 'facebook'];
   return raw
     .split(',')
     .map((platform) => platform.trim().toLowerCase())
-    .filter((platform) => ['youtube', 'tiktok'].includes(platform));
+    .filter((platform) => ['youtube', 'tiktok', 'facebook'].includes(platform));
 }
 
 function startStaticServer(filePath, preferredPort) {
@@ -1639,7 +1937,7 @@ function makeCaption(content) {
   return cleanForCaption(`${content.description}\n\n${tags}`, 1200);
 }
 
-async function createPost({ apiKey, youtubeId, tiktokId, media, content, args }) {
+async function createPost({ apiKey, youtubeId, tiktokId, facebookId, media, content, args }) {
   const platforms = getPlatforms(args);
   const visibility = args.visibility || process.env.AI_VIDEO_VISIBILITY || 'private';
   const youtubePrivacy =
@@ -1648,6 +1946,10 @@ async function createPost({ apiKey, youtubeId, tiktokId, media, content, args })
     args.tiktokPrivacy ||
     process.env.AI_VIDEO_TIKTOK_PRIVACY ||
     (visibility === 'public' ? 'PUBLIC_TO_EVERYONE' : 'SELF_ONLY');
+  const facebookReelState =
+    args.facebookState ||
+    process.env.AI_VIDEO_FACEBOOK_REEL_STATE ||
+    (visibility === 'public' ? 'PUBLISHED' : 'DRAFT');
 
   const caption = makeCaption(content);
   const nowIso = new Date(Date.now() + 15_000).toISOString();
@@ -1655,7 +1957,7 @@ async function createPost({ apiKey, youtubeId, tiktokId, media, content, args })
   const postType = args['post-type'] || process.env.AI_VIDEO_POST_TYPE || 'now';
   const posts = [];
 
-  if (platforms.includes('youtube')) {
+  if (platforms.includes('youtube') && youtubeId) {
     posts.push({
         integration: { id: youtubeId },
         settings: {
@@ -1676,7 +1978,7 @@ async function createPost({ apiKey, youtubeId, tiktokId, media, content, args })
       });
   }
 
-  if (platforms.includes('tiktok')) {
+  if (platforms.includes('tiktok') && tiktokId) {
     posts.push({
         integration: { id: tiktokId },
         settings: {
@@ -1701,6 +2003,27 @@ async function createPost({ apiKey, youtubeId, tiktokId, media, content, args })
           },
         ],
       });
+  }
+
+  if (platforms.includes('facebook') && facebookId) {
+    posts.push({
+        integration: { id: facebookId },
+        settings: {
+          post_type: 'reel',
+          video_state: facebookReelState,
+          title: content.title.slice(0, 100),
+        },
+        value: [
+          {
+            content: caption,
+            image: [mediaDto],
+          },
+        ],
+      });
+  }
+
+  if (!posts.length) {
+    throw new Error('No enabled integrations found for the requested platforms.');
   }
 
   const body = {
@@ -1740,6 +2063,7 @@ async function startLocalPostWorkflows(postResponse, publishing, args) {
     [
       [publishing.youtubeId, 'youtube'],
       [publishing.tiktokId, 'tiktok'],
+      [publishing.facebookId, 'facebook'],
     ].filter(([id]) => Boolean(id))
   );
 
@@ -1820,12 +2144,22 @@ async function waitForPosts(postIds, timeoutMs = 600_000) {
 async function main() {
   loadDotEnv(path.join(rootDir, '.env'));
   const args = parseArgs(process.argv.slice(2));
+  const shouldUsePlan =
+    args['plan-file'] ||
+    args.date ||
+    process.env.AI_VIDEO_PLAN_FILE ||
+    process.env.AI_VIDEO_PLAN_DATE;
   const topic = args.topic || process.env.AI_VIDEO_TOPIC || 'What is MCP in AI agents?';
-  const runId = `${new Date().toISOString().replace(/[:.]/g, '-')}-${slugify(topic)}`;
+  const runName = shouldUsePlan
+    ? `planned-${args.date || process.env.AI_VIDEO_PLAN_DATE || formatDateInShanghai()}`
+    : topic;
+  const runId = `${new Date().toISOString().replace(/[:.]/g, '-')}-${slugify(runName)}`;
   const outputDir = path.resolve(args['output-dir'] || path.join(defaultOutputRoot, runId));
   await fs.mkdir(outputDir, { recursive: true });
 
-  const content = await generateContent(topic, args);
+  const content = shouldUsePlan
+    ? await contentFromPlan(args)
+    : await generateContent(topic, args);
   await fs.writeFile(path.join(outputDir, 'content.json'), JSON.stringify(content, null, 2));
 
   const frames = await renderFrames(content, outputDir);

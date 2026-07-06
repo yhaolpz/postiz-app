@@ -47,6 +47,14 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
     [firstPost]: Array<ValidityMedia[]>,
     settings: any
   ): Promise<string | true> {
+    if (settings?.post_type === 'reel') {
+      if ((firstPost?.length ?? 0) !== 1) {
+        return 'Reel should have exactly one video';
+      }
+      if (!hasExtension(firstPost?.[0]?.path, 'mp4')) {
+        return 'Reel should be an MP4 video';
+      }
+    }
     if (settings?.post_type === 'story') {
       if (!firstPost?.length) {
         return 'Story should have at least one media';
@@ -234,6 +242,10 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
   }
 
   async generateAuthUrl() {
+    if (!process.env.FACEBOOK_APP_ID || !process.env.FACEBOOK_APP_SECRET) {
+      throw new Error('Missing Facebook app credentials');
+    }
+
     const state = makeId(6);
     return {
       url:
@@ -464,10 +476,112 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
   ): Promise<PostResponse[]> {
     const [firstPost] = postDetails;
     const isStory = firstPost?.settings?.post_type === 'story';
+    const isReel = firstPost?.settings?.post_type === 'reel';
 
     let finalId = '';
     let finalUrl = '';
-    if (isStory) {
+    if (isReel) {
+      const { video_id, upload_url } = await (
+        await this.fetch(
+          `https://graph.facebook.com/v20.0/${id}/video_reels?upload_phase=start&access_token=${accessToken}`,
+          {
+            method: 'POST',
+          },
+          'start reel upload'
+        )
+      ).json();
+
+      const reelUrl = firstPost?.media?.[0]?.path!;
+      const isLocalReelUrl = /^https?:\/\/(127\.0\.0\.1|localhost|\[::1\])(?::\d+)?\//i.test(
+        reelUrl
+      );
+      if (isLocalReelUrl) {
+        const reelResponse = await fetch(reelUrl);
+        if (!reelResponse.ok) {
+          throw new Error(`Could not read local reel media: ${reelResponse.status}`);
+        }
+        const reelBuffer = Buffer.from(await reelResponse.arrayBuffer());
+        await this.fetch(
+          upload_url,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `OAuth ${accessToken}`,
+              offset: '0',
+              file_size: String(reelBuffer.byteLength),
+              'Content-Type': 'application/octet-stream',
+            },
+            body: reelBuffer,
+          },
+          'upload local reel'
+        );
+      } else {
+        await this.fetch(
+          upload_url,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `OAuth ${accessToken}`,
+              file_url: reelUrl,
+            },
+          },
+          'upload reel'
+        );
+      }
+
+      let videoStatus = 'in_progress';
+      let attempts = 0;
+      const maxAttempts = 54; // ~9 minutes at 10s interval
+      while (videoStatus !== 'upload_complete' && videoStatus !== 'ready') {
+        if (attempts++ >= maxAttempts) {
+          throw new Error('Reel processing timed out');
+        }
+
+        const { status } = await (
+          await this.fetch(
+            `https://graph.facebook.com/v20.0/${video_id}?fields=status&access_token=${accessToken}`,
+            undefined,
+            '',
+            0,
+            true
+          )
+        ).json();
+        videoStatus = status?.video_status || 'in_progress';
+        if (videoStatus === 'error') {
+          throw new Error('Reel processing failed');
+        }
+        if (videoStatus !== 'upload_complete' && videoStatus !== 'ready') {
+          await timer(10000);
+        }
+      }
+
+      const reelState = firstPost?.settings?.video_state || 'PUBLISHED';
+      const finishParams = new URLSearchParams({
+        upload_phase: 'finish',
+        video_id,
+        video_state: reelState,
+        access_token: accessToken,
+      });
+      if (firstPost.message) {
+        finishParams.set('description', firstPost.message);
+      }
+      if (firstPost?.settings?.title) {
+        finishParams.set('title', firstPost.settings.title);
+      }
+
+      await (
+        await this.fetch(
+          `https://graph.facebook.com/v20.0/${id}/video_reels?${finishParams.toString()}`,
+          {
+            method: 'POST',
+          },
+          'finish reel upload'
+        )
+      ).json();
+
+      finalId = video_id;
+      finalUrl = 'https://www.facebook.com/reel/' + video_id;
+    } else if (isStory) {
       let lastPostId = '';
       for (const media of firstPost?.media || []) {
         const isVideoStory = hasExtension(media.path, 'mp4');

@@ -26,6 +26,10 @@ const postType = [
     value: 'story',
     label: 'Story',
   },
+  {
+    value: 'reel',
+    label: 'Reel',
+  },
 ];
 
 export const FacebookSettings = () => {
