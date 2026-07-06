@@ -5,6 +5,10 @@
 This plan prepares the first daily batch for `Agent Sketchbook` from
 2026-07-06 to 2026-07-31.
 
+Style source of truth:
+
+- `scripts/ai-video-pipeline/style-guides/agent-sketchbook.md`
+
 Assumptions:
 
 - Audience: global English-speaking TikTok and YouTube Shorts viewers who are
