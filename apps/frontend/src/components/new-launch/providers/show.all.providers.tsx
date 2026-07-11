@@ -39,11 +39,16 @@ import MoltbookProvider from '@gitroom/frontend/components/new-launch/providers/
 import SkoolProvider from '@gitroom/frontend/components/new-launch/providers/skool/skool.provider';
 import WhopProvider from '@gitroom/frontend/components/new-launch/providers/whop/whop.provider';
 import MeweProvider from '@gitroom/frontend/components/new-launch/providers/mewe/mewe.provider';
+import CnblogsProvider from '@gitroom/frontend/components/new-launch/providers/cnblogs/cnblogs.provider';
 
 export const Providers = [
   {
     identifier: 'devto',
     component: DevtoProvider,
+  },
+  {
+    identifier: 'cnblogs',
+    component: CnblogsProvider,
   },
   {
     identifier: 'x',

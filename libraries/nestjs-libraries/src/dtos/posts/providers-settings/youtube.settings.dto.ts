@@ -89,4 +89,17 @@ export class YoutubeSettingsDto {
   @IsYoutubeTagsLength()
   @Type(() => YoutubeTagsSettings)
   tags: YoutubeTagsSettings[];
+
+  @IsString()
+  @IsOptional()
+  playlistId?: string;
+
+  @IsString()
+  @MaxLength(150)
+  @IsOptional()
+  playlistTitle?: string;
+
+  @IsIn(['public', 'private', 'unlisted'])
+  @IsOptional()
+  playlistPrivacyStatus?: 'public' | 'private' | 'unlisted';
 }

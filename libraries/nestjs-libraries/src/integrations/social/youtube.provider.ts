@@ -85,6 +85,96 @@ export class YoutubeProvider extends SocialAbstract implements SocialProvider {
     return true;
   }
 
+  private async findPlaylistByTitle(
+    youtubeClient: youtube_v3.Youtube,
+    title: string
+  ) {
+    const normalizedTitle = title.trim().toLowerCase();
+    let pageToken: string | undefined;
+
+    do {
+      const response = await youtubeClient.playlists.list({
+        part: ['id', 'snippet'],
+        mine: true,
+        maxResults: 50,
+        pageToken,
+      });
+      const playlist = response.data.items?.find(
+        (item) => item.snippet?.title?.trim().toLowerCase() === normalizedTitle
+      );
+      if (playlist?.id) {
+        return playlist.id;
+      }
+      pageToken = response.data.nextPageToken || undefined;
+    } while (pageToken);
+
+    return undefined;
+  }
+
+  private async createPlaylist(
+    youtubeClient: youtube_v3.Youtube,
+    title: string,
+    privacyStatus: 'public' | 'private' | 'unlisted'
+  ) {
+    const response = await youtubeClient.playlists.insert({
+      part: ['id', 'snippet', 'status'],
+      requestBody: {
+        snippet: {
+          title,
+        },
+        status: {
+          privacyStatus,
+        },
+      },
+    });
+
+    return response.data.id;
+  }
+
+  private async addVideoToPlaylist(
+    youtubeClient: youtube_v3.Youtube,
+    videoId: string,
+    settings: YoutubeSettingsDto
+  ) {
+    const playlistTitle = settings.playlistTitle?.trim();
+    let playlistId = settings.playlistId?.trim();
+
+    if (!playlistId && playlistTitle) {
+      playlistId =
+        (await this.findPlaylistByTitle(youtubeClient, playlistTitle)) ||
+        (await this.createPlaylist(
+          youtubeClient,
+          playlistTitle,
+          settings.playlistPrivacyStatus || 'public'
+        ));
+    }
+
+    if (!playlistId) {
+      return;
+    }
+
+    try {
+      await youtubeClient.playlistItems.insert({
+        part: ['snippet'],
+        requestBody: {
+          snippet: {
+            playlistId,
+            resourceId: {
+              kind: 'youtube#video',
+              videoId,
+            },
+          },
+        },
+      });
+    } catch (error: any) {
+      const body = JSON.stringify(error?.response?.data || error);
+      if (body.includes('videoAlreadyInPlaylist')) {
+        return;
+      }
+      throw error;
+    }
+  }
+
   override handleErrors(body: string):
     | {
         type: 'refresh-token' | 'bad-body';
@@ -470,6 +560,12 @@ export class YoutubeProvider extends SocialAbstract implements SocialProvider {
             ).data,
           },
         })
+      );
+    }
+
+    if (all?.data?.id && (settings.playlistId || settings.playlistTitle)) {
+      await this.runInConcurrent(async () =>
+        this.addVideoToPlaylist(youtubeClient, all.data.id!, settings)
       );
     }
 

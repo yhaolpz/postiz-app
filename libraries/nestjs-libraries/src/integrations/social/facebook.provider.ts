@@ -68,10 +68,22 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
     status: number
   ):
     | {
-        type: 'refresh-token' | 'bad-body';
+        type: 'refresh-token' | 'bad-body' | 'retry';
         value: string;
       }
     | undefined {
+    const graphError = (() => {
+      try {
+        return JSON.parse(body)?.error;
+      } catch {
+        return undefined;
+      }
+    })();
+    const graphMessage =
+      typeof graphError?.message === 'string' ? graphError.message : '';
+    const graphCode =
+      typeof graphError?.code === 'number' ? graphError.code : undefined;
+
     // Access token validation errors - require re-authentication
     if (body.indexOf('Error validating access token') > -1) {
       return {
@@ -121,7 +133,7 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
       return {
         type: 'bad-body' as const,
         value: 'Invalid file',
-      }
+      };
     }
 
     if (body.indexOf('1404102') > -1) {
@@ -215,6 +227,31 @@ export class FacebookProvider extends SocialAbstract implements SocialProvider {
       return {
         type: 'refresh-token' as const,
         value: 'Access token expired, please re-authenticate',
+      };
+    }
+
+    if (
+      /Cannot call API for app .* on behalf of user/i.test(graphMessage) ||
+      /API access blocked/i.test(graphMessage)
+    ) {
+      return {
+        type: 'bad-body' as const,
+        value:
+          'Facebook app access is blocked for this Page/user. Verify the Meta developer account and app status, then reconnect the Facebook Page.',
+      };
+    }
+
+    if (graphCode === 190) {
+      return {
+        type: 'refresh-token' as const,
+        value: 'Facebook access token expired, please re-authenticate',
+      };
+    }
+
+    if (graphMessage) {
+      return {
+        type: 'bad-body' as const,
+        value: `Facebook returned: ${graphMessage}`,
       };
     }
 

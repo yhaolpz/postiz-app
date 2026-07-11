@@ -9,8 +9,8 @@ import { execFile as execFileCallback } from 'node:child_process';
 import { promisify } from 'node:util';
 
 const require = createRequire(import.meta.url);
-const { createCanvas } = require('canvas');
 const OpenAI = require('openai');
+const sharp = require('sharp');
 const { PrismaClient } = require('@prisma/client');
 const { google } = require('googleapis');
 const {
@@ -120,908 +120,387 @@ function splitWords(text) {
     .filter(Boolean);
 }
 
-function wrapLines(ctx, text, maxWidth, maxLines = 6) {
-  const words = splitWords(text);
+const VIDEO_WIDTH = 1080;
+const VIDEO_HEIGHT = 1920;
+const VIDEO_FPS = 30;
+const TINY_AGENT_LAYOUT_STANDARD = 'cross-platform-balanced-v1';
+const LAYOUT_LEFT = 80;
+const LAYOUT_RIGHT = 1000;
+const LAYOUT_CENTER_X = 540;
+const MAIN_ART_TOP = 300;
+const MAIN_ART_BOTTOM = 1110;
+const MAIN_ART_SAFE_WIDTH = 820;
+const MAIN_ART_SAFE_HEIGHT = 780;
+const MAIN_ART_REGION_HEIGHT = MAIN_ART_BOTTOM - MAIN_ART_TOP;
+const MIN_MAIN_ART_WIDTH_RATIO = 0.68;
+const MIN_MAIN_ART_HEIGHT_RATIO = 0.52;
+const MAIN_ART_TRANSITION_FRAMES = 4;
+const DEFAULT_IMAGE_MODEL = 'gpt-image-1.5';
+const SUPPORTED_KEYFRAME_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp']);
+const FIXED_ZOOM_RENDERER = path.join(
+  rootDir,
+  'scripts/ai-video-pipeline/render-fixed-zoom.py'
+);
+
+function usesTinyAgentLayout(content) {
+  return ['agent-sketchbook', 'tiny-agent-whiteboard'].includes(content?.style);
+}
+
+function tinyAgentLayoutSpec() {
+  return {
+    canvas: [VIDEO_WIDTH, VIDEO_HEIGHT],
+    centerX: LAYOUT_CENTER_X,
+    sideMargins: [LAYOUT_LEFT, VIDEO_WIDTH - LAYOUT_RIGHT],
+    titleBaselineY: 240,
+    mainArtRegion: [LAYOUT_LEFT, MAIN_ART_TOP, LAYOUT_RIGHT, MAIN_ART_BOTTOM],
+    mainArtMaxSize: [MAIN_ART_SAFE_WIDTH, MAIN_ART_SAFE_HEIGHT],
+    minMainArtWidthRatio: MIN_MAIN_ART_WIDTH_RATIO,
+    subtitleBox: [80, 1130, 1000, 1430],
+    criticalContentBottom: 1430,
+  };
+}
+
+function xmlEscape(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function wrapPlainText(value, maxChars = 26, maxLines = 2) {
+  const words = splitWords(value);
   const lines = [];
   let line = '';
-  let truncated = false;
 
-  for (let i = 0; i < words.length; i += 1) {
-    const word = words[i];
+  for (const word of words) {
     const next = line ? `${line} ${word}` : word;
-    if (ctx.measureText(next).width <= maxWidth) {
+    if (next.length <= maxChars) {
       line = next;
       continue;
     }
-
     if (line) lines.push(line);
     line = word;
-    if (lines.length === maxLines) {
-      truncated = i < words.length - 1;
-      break;
-    }
+    if (lines.length === maxLines) break;
   }
 
   if (line && lines.length < maxLines) lines.push(line);
-  if (truncated && lines.length === maxLines) {
-    const last = lines[lines.length - 1];
-    if (ctx.measureText(`${last}...`).width <= maxWidth) {
-      lines[lines.length - 1] = `${last}...`;
-    }
-  }
-  return lines;
+  if (!lines.length && value) lines.push(String(value).slice(0, maxChars));
+  return lines.slice(0, maxLines);
 }
 
-function roundRect(ctx, x, y, width, height, radius) {
-  const r = Math.min(radius, width / 2, height / 2);
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + width, y, x + width, y + height, r);
-  ctx.arcTo(x + width, y + height, x, y + height, r);
-  ctx.arcTo(x, y + height, x, y, r);
-  ctx.arcTo(x, y, x + width, y, r);
-  ctx.closePath();
+function buildOverlaySvg(scene, content) {
+  const title = xmlEscape(content.seriesTitle || 'Tiny Agent');
+  const caption = scene.footer || scene.subhead || scene.headline || content.title;
+  const explicitCaptionLines = String(caption)
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const captionLines =
+    explicitCaptionLines.length > 1
+      ? explicitCaptionLines.slice(0, 2)
+      : wrapPlainText(caption, 27, 2);
+  const lineHeight = 62;
+  const firstY = captionLines.length === 1 ? 1290 : 1258;
+  const captionTspans = captionLines
+    .map((line, index) => `<tspan x="${LAYOUT_CENTER_X}" y="${firstY + index * lineHeight}">${xmlEscape(line)}</tspan>`)
+    .join('');
+
+  return Buffer.from(`
+<svg width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" viewBox="0 0 ${VIDEO_WIDTH} ${VIDEO_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .title { font-family: Arial, Helvetica, sans-serif; font-size: 68px; font-weight: 900; fill: #111827; }
+    .caption { font-family: Arial, Helvetica, sans-serif; font-size: 50px; font-weight: 900; fill: #111827; }
+  </style>
+  <text class="title" x="${LAYOUT_CENTER_X}" y="240" text-anchor="middle">${title}</text>
+  <path d="M115 1130 H965 Q1000 1130 1000 1165 V1395 Q1000 1430 965 1430 H115 Q80 1430 80 1395 V1165 Q80 1130 115 1130 Z" fill="#fff" stroke="#111827" stroke-width="7"/>
+  <text class="caption" text-anchor="middle">${captionTspans}</text>
+</svg>`);
 }
 
-function drawTextBlock(
-  ctx,
-  text,
-  x,
-  y,
-  maxWidth,
-  lineHeight,
-  maxLines,
-  color = '#eef4ff'
-) {
-  const lines = wrapLines(ctx, text, maxWidth, maxLines);
-  ctx.fillStyle = color;
-  lines.forEach((line, index) => {
-    ctx.fillText(line, x, y + index * lineHeight);
-  });
-  return y + lines.length * lineHeight;
-}
-
-function drawCard(ctx, x, y, width, height, title, body, accent = '#40d9a6') {
-  ctx.save();
-  ctx.fillStyle = '#111827';
-  ctx.strokeStyle = '#2b3954';
-  ctx.lineWidth = 3;
-  roundRect(ctx, x, y, width, height, 28);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = accent;
-  roundRect(ctx, x + 24, y + 24, 12, height - 48, 6);
-  ctx.fill();
-
-  ctx.font = '700 40px Arial';
-  drawTextBlock(ctx, title, x + 56, y + 58, width - 88, 46, 2, '#ffffff');
-  ctx.font = '400 31px Arial';
-  drawTextBlock(ctx, body, x + 56, y + 138, width - 88, 39, 4, '#cbd5e1');
-  ctx.restore();
-}
-
-function drawArrow(ctx, fromX, fromY, toX, toY, color = '#f59e0b') {
-  ctx.save();
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-  ctx.lineWidth = 8;
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(fromX, fromY);
-  ctx.lineTo(toX, toY);
-  ctx.stroke();
-
-  const angle = Math.atan2(toY - fromY, toX - fromX);
-  const size = 28;
-  ctx.beginPath();
-  ctx.moveTo(toX, toY);
-  ctx.lineTo(
-    toX - size * Math.cos(angle - Math.PI / 6),
-    toY - size * Math.sin(angle - Math.PI / 6)
+function whiteRectSvg(width, height) {
+  return Buffer.from(
+    `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#fff"/></svg>`
   );
-  ctx.lineTo(
-    toX - size * Math.cos(angle + Math.PI / 6),
-    toY - size * Math.sin(angle + Math.PI / 6)
-  );
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
 }
 
-function drawPill(ctx, x, y, text, color = '#60a5fa') {
-  ctx.save();
-  ctx.font = '700 34px Arial';
-  const width = Math.max(180, ctx.measureText(text).width + 56);
-  roundRect(ctx, x, y, width, 70, 35);
-  ctx.fillStyle = color;
-  ctx.fill();
-  ctx.fillStyle = '#07111f';
-  ctx.fillText(text, x + 28, y + 46);
-  ctx.restore();
+function smoothstep(t) {
+  return t * t * (3 - 2 * t);
 }
 
-function isHumanDebugStyle(content) {
-  return content.style === 'human-debug';
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
 }
 
-function isSketchbookStyle(content) {
-  return ['agent-sketchbook', 'tiny-agent-whiteboard'].includes(content.style);
+async function listImageFiles(dir) {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  return entries
+    .filter((entry) => entry.isFile())
+    .map((entry) => path.join(dir, entry.name))
+    .filter((filePath) =>
+      SUPPORTED_KEYFRAME_EXTENSIONS.has(path.extname(filePath).toLowerCase())
+    )
+    .sort((a, b) => a.localeCompare(b));
 }
 
-function drawTinyAgent(ctx, x, y, scale = 1) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(scale, scale);
-  ctx.lineWidth = 5;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.strokeStyle = '#111827';
-  ctx.fillStyle = '#ffffff';
-
-  roundRect(ctx, -54, -92, 108, 82, 20);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(-22, -52, 7, 0, Math.PI * 2);
-  ctx.arc(22, -52, 7, 0, Math.PI * 2);
-  ctx.fillStyle = '#111827';
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.moveTo(-16, -28);
-  ctx.quadraticCurveTo(0, -18, 16, -28);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(0, -94);
-  ctx.lineTo(0, -122);
-  ctx.arc(0, -130, 8, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.fillStyle = '#dff7f0';
-  roundRect(ctx, -42, -8, 84, 92, 18);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(-42, 20);
-  ctx.lineTo(-92, 52);
-  ctx.moveTo(42, 20);
-  ctx.lineTo(92, 52);
-  ctx.moveTo(-24, 84);
-  ctx.lineTo(-34, 128);
-  ctx.moveTo(24, 84);
-  ctx.lineTo(34, 128);
-  ctx.stroke();
-
-  ctx.fillStyle = '#facc15';
-  roundRect(ctx, -18, 22, 36, 24, 8);
-  ctx.fill();
-  ctx.stroke();
-  ctx.restore();
-}
-
-function drawWhiteboardEngineer(ctx, x, y, scale = 1) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(scale, scale);
-  ctx.lineWidth = 7;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.strokeStyle = '#111827';
-  ctx.fillStyle = '#ffffff';
-
-  ctx.beginPath();
-  ctx.arc(0, -170, 64, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = '#111827';
-  ctx.beginPath();
-  ctx.moveTo(-62, -208);
-  ctx.quadraticCurveTo(-34, -258, 20, -232);
-  ctx.quadraticCurveTo(62, -222, 58, -176);
-  ctx.quadraticCurveTo(22, -196, -16, -188);
-  ctx.quadraticCurveTo(-38, -214, -62, -208);
-  ctx.fill();
-
-  ctx.strokeStyle = '#111827';
-  ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.ellipse(-24, -168, 18, 24, 0, 0, Math.PI * 2);
-  ctx.ellipse(26, -168, 18, 24, 0, 0, Math.PI * 2);
-  ctx.moveTo(-6, -168);
-  ctx.lineTo(8, -168);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(-20, -134);
-  ctx.quadraticCurveTo(0, -122, 24, -134);
-  ctx.stroke();
-
-  ctx.lineWidth = 8;
-  ctx.beginPath();
-  ctx.moveTo(0, -104);
-  ctx.lineTo(0, 56);
-  ctx.moveTo(0, -52);
-  ctx.lineTo(-78, 10);
-  ctx.moveTo(0, -52);
-  ctx.lineTo(96, -24);
-  ctx.moveTo(96, -24);
-  ctx.lineTo(118, -42);
-  ctx.moveTo(96, -24);
-  ctx.lineTo(118, -10);
-  ctx.moveTo(0, 56);
-  ctx.lineTo(-48, 148);
-  ctx.moveTo(0, 56);
-  ctx.lineTo(52, 148);
-  ctx.stroke();
-
-  ctx.fillStyle = '#111827';
-  ctx.beginPath();
-  ctx.ellipse(-48, 156, 28, 9, 0, 0, Math.PI * 2);
-  ctx.ellipse(52, 156, 28, 9, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawSketchbookScene(ctx, scene, index, content) {
-  const width = 1080;
-  const height = 1920;
-  ctx.fillStyle = '#fffefa';
-  ctx.fillRect(0, 0, width, height);
-
-  ctx.strokeStyle = 'rgba(17,24,39,0.05)';
-  ctx.lineWidth = 2;
-  for (let y = 180; y < height - 260; y += 96) {
-    ctx.beginPath();
-    ctx.moveTo(96, y);
-    ctx.lineTo(width - 96, y);
-    ctx.stroke();
-  }
-
-  ctx.fillStyle = '#111827';
-  ctx.font = '900 58px Arial';
-  const seriesTitle = content.seriesTitle || 'Tiny Agent';
-  ctx.fillText(seriesTitle, (width - ctx.measureText(seriesTitle).width) / 2, 132);
-  ctx.fillStyle = '#6b7280';
-  ctx.font = '600 26px Arial';
-  ctx.fillText(`scene ${String(index + 1).padStart(2, '0')}`, 812, 194);
-
-  ctx.fillStyle = '#111827';
-  ctx.font = '800 68px Arial';
-  drawTextBlock(ctx, scene.headline || content.title, 112, 306, 856, 78, 2, '#111827');
-
-  drawWhiteboardEngineer(ctx, 246, 760, 1.35);
-  drawTinyAgent(ctx, 808, 800, 1.55);
-
-  ctx.save();
-  ctx.strokeStyle = '#111827';
-  ctx.fillStyle = '#ffffff';
-  ctx.lineWidth = 5;
-  roundRect(ctx, 364, 580, 304, 282, 24);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = '#3b82f6';
-  roundRect(ctx, 392, 618, 14, 206, 7);
-  ctx.fill();
-  ctx.fillStyle = '#111827';
-  ctx.font = '700 32px Arial';
-  drawTextBlock(ctx, scene.subhead || scene.body || '', 428, 648, 202, 42, 4, '#111827');
-  ctx.restore();
-
-  const labels = String(scene.footer || '')
-    .split(/\s*(?:->|\.|\+)\s*/)
-    .map((label) => label.trim())
+function parseKeyframeFiles(value) {
+  return String(value || '')
+    .split(',')
+    .map((item) => item.trim())
     .filter(Boolean)
-    .slice(0, 5);
-  const pills = labels.length ? labels : ['Goal', 'Tool', 'Check'];
-  let x = 172;
-  const y = 1078;
-  for (let i = 0; i < pills.length; i += 1) {
-    const label = pills[i];
-    ctx.save();
-    ctx.font = '700 31px Arial';
-    const pillWidth = Math.min(240, Math.max(150, ctx.measureText(label).width + 46));
-    ctx.fillStyle = i % 2 === 0 ? '#dbeafe' : '#ffffff';
-    ctx.strokeStyle = '#111827';
-    ctx.lineWidth = 4;
-    roundRect(ctx, x, y, pillWidth, 68, 16);
-    ctx.fill();
-    ctx.stroke();
-    drawTextBlock(ctx, label, x + 22, y + 45, pillWidth - 44, 34, 1, '#111827');
-    ctx.restore();
-    if (i < pills.length - 1) {
-      drawArrow(ctx, x + pillWidth + 14, y + 34, x + pillWidth + 74, y + 34, '#111827');
-    }
-    x += pillWidth + 92;
-    if (x > 820) break;
-  }
-
-  ctx.save();
-  ctx.strokeStyle = '#111827';
-  ctx.fillStyle = '#ffffff';
-  ctx.lineWidth = 5;
-  roundRect(ctx, 90, 1488, 900, 232, 34);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = '#111827';
-  ctx.font = '900 58px Arial';
-  drawTextBlock(ctx, scene.footer || content.title, 142, 1582, 796, 68, 2, '#111827');
-  ctx.restore();
-
-  ctx.fillStyle = '#6b7280';
-  ctx.font = '600 26px Arial';
-  ctx.fillText('one idea, one example, one useful rule', 172, 1800);
+    .map((item) => path.resolve(item));
 }
 
-function drawComicText(
-  ctx,
-  text,
-  x,
-  y,
-  maxWidth,
-  lineHeight,
-  maxLines,
-  color = '#111827',
-  align = 'left'
-) {
-  ctx.save();
-  ctx.fillStyle = color;
-  ctx.textAlign = align;
-  const lines = wrapLines(ctx, text, maxWidth, maxLines);
-  const drawX = align === 'center' ? x + maxWidth / 2 : x;
-  lines.forEach((line, index) => {
-    ctx.fillText(line, drawX, y + index * lineHeight);
-  });
-  ctx.restore();
-  return y + lines.length * lineHeight;
-}
-
-function drawComicPopup(
-  ctx,
-  x,
-  y,
-  width,
-  height,
-  title,
-  body,
-  accent = '#ef4444',
-  buttonLabel = 'JOIN'
-) {
-  ctx.save();
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = '#111827';
-  ctx.fillStyle = '#ffffff';
-  roundRect(ctx, x, y, width, height, 18);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = accent;
-  roundRect(ctx, x, y, width, 46, 18);
-  ctx.fill();
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '800 22px Arial';
-  ctx.fillText(title, x + 22, y + 31);
-
-  ctx.fillStyle = '#111827';
-  ctx.font = '700 28px Arial';
-  ctx.fillText(body, x + 22, y + 91);
-
-  if (buttonLabel) {
-    ctx.fillStyle = '#14b8a6';
-    roundRect(ctx, x + 22, y + height - 54, 96, 34, 12);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '800 16px Arial';
-    ctx.fillText(buttonLabel, x + 50, y + height - 31);
-  }
-  ctx.restore();
-}
-
-function drawDebugTool(ctx, x, y, scale = 1) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(scale, scale);
-  ctx.rotate(-0.35);
-  ctx.lineWidth = 8;
-  ctx.strokeStyle = '#111827';
-  ctx.fillStyle = '#14b8a6';
-  roundRect(ctx, -40, -150, 80, 145, 24);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = '#111827';
-  roundRect(ctx, -18, -16, 36, 95, 16);
-  ctx.fill();
-  ctx.strokeStyle = '#e5fffb';
-  ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.arc(0, -92, 24, 0, Math.PI * 2);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(-32, -92);
-  ctx.lineTo(32, -92);
-  ctx.moveTo(0, -124);
-  ctx.lineTo(0, -60);
-  ctx.stroke();
-  ctx.font = '800 14px Arial';
-  ctx.fillStyle = '#e5fffb';
-  ctx.rotate(Math.PI / 2);
-  ctx.fillText('DEBUG', -132, 6);
-  ctx.restore();
-}
-
-function drawCalendarEgg(ctx, x, y, scale = 1, cracked = false) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(scale, scale);
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = '#111827';
-  ctx.fillStyle = '#fff7ed';
-  ctx.beginPath();
-  ctx.ellipse(0, 0, 38, 50, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-
-  if (cracked) {
-    ctx.strokeStyle = '#111827';
-    ctx.beginPath();
-    ctx.moveTo(-22, -8);
-    ctx.lineTo(-4, 8);
-    ctx.lineTo(10, -4);
-    ctx.lineTo(24, 12);
-    ctx.stroke();
-  }
-
-  ctx.fillStyle = '#ef4444';
-  roundRect(ctx, -20, -18, 40, 34, 4);
-  ctx.fill();
-  ctx.fillStyle = '#ffffff';
-  roundRect(ctx, -20, -6, 40, 24, 3);
-  ctx.fill();
-  ctx.strokeStyle = '#ef4444';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(-12, 2);
-  ctx.lineTo(12, 2);
-  ctx.moveTo(-12, 10);
-  ctx.lineTo(12, 10);
-  ctx.moveTo(-5, -3);
-  ctx.lineTo(-5, 16);
-  ctx.moveTo(6, -3);
-  ctx.lineTo(6, 16);
-  ctx.stroke();
-  ctx.restore();
-}
-
-function drawMeetingBug(ctx, x, y, scale = 1, mood = 'happy') {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(scale, scale);
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  ctx.strokeStyle = '#111827';
-  ctx.lineWidth = 9;
-  for (const [sx, sy, ex, ey] of [
-    [-116, 4, -166, -30],
-    [-120, 46, -180, 58],
-    [-94, 88, -142, 128],
-    [116, 4, 166, -30],
-    [120, 46, 180, 58],
-    [94, 88, 142, 128],
-  ]) {
-    ctx.beginPath();
-    ctx.moveTo(sx, sy);
-    ctx.lineTo(ex, ey);
-    ctx.stroke();
-  }
-
-  ctx.beginPath();
-  ctx.moveTo(-48, -120);
-  ctx.quadraticCurveTo(-64, -170, -92, -174);
-  ctx.moveTo(48, -120);
-  ctx.quadraticCurveTo(64, -170, 92, -174);
-  ctx.stroke();
-
-  ctx.fillStyle = '#a7f3d0';
-  ctx.beginPath();
-  ctx.ellipse(0, 8, 122, 132, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = '#ffffff';
-  ctx.beginPath();
-  ctx.ellipse(-42, -30, 28, 36, 0, 0, Math.PI * 2);
-  ctx.ellipse(42, -30, 28, 36, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = '#111827';
-  ctx.beginPath();
-  ctx.arc(-36, -22, mood === 'panic' ? 6 : 10, 0, Math.PI * 2);
-  ctx.arc(36, -22, mood === 'panic' ? 6 : 10, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.strokeStyle = '#111827';
-  ctx.lineWidth = 7;
-  ctx.beginPath();
-  if (mood === 'panic') {
-    ctx.moveTo(-30, 42);
-    ctx.quadraticCurveTo(0, 20, 30, 42);
-  } else {
-    ctx.moveTo(-34, 36);
-    ctx.quadraticCurveTo(0, 70, 34, 36);
-  }
-  ctx.stroke();
-
-  ctx.font = '800 30px Arial';
-  ctx.fillStyle = '#111827';
-  ctx.textAlign = 'center';
-  ctx.fillText('Meeting.exe', 0, 92);
-  ctx.restore();
-}
-
-function drawEngineer(ctx, x, y, scale = 1, mood = 'tired') {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(scale, scale);
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  ctx.strokeStyle = '#111827';
-  ctx.lineWidth = 8;
-  ctx.fillStyle = '#f5c7a9';
-  ctx.beginPath();
-  ctx.ellipse(0, -190, 72, 82, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.fillStyle = '#111827';
-  ctx.beginPath();
-  ctx.moveTo(-74, -230);
-  ctx.quadraticCurveTo(-46, -290, 12, -270);
-  ctx.quadraticCurveTo(72, -266, 78, -204);
-  ctx.quadraticCurveTo(32, -226, -8, -214);
-  ctx.quadraticCurveTo(-34, -242, -74, -230);
-  ctx.fill();
-
-  ctx.strokeStyle = '#111827';
-  ctx.lineWidth = 6;
-  ctx.beginPath();
-  if (mood === 'panic') {
-    ctx.arc(-26, -188, 10, 0, Math.PI * 2);
-    ctx.arc(26, -188, 10, 0, Math.PI * 2);
-  } else {
-    ctx.moveTo(-44, -190);
-    ctx.quadraticCurveTo(-24, -180, -6, -190);
-    ctx.moveTo(8, -190);
-    ctx.quadraticCurveTo(28, -180, 46, -190);
-  }
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(-24, -146);
-  ctx.quadraticCurveTo(0, mood === 'panic' ? -132 : -138, 24, -146);
-  ctx.stroke();
-
-  ctx.fillStyle = '#1f2937';
-  roundRect(ctx, -86, -98, 172, 220, 48);
-  ctx.fill();
-  ctx.stroke();
-  ctx.strokeStyle = '#e5e7eb';
-  ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.moveTo(-28, -62);
-  ctx.lineTo(-42, 8);
-  ctx.moveTo(28, -62);
-  ctx.lineTo(42, 8);
-  ctx.stroke();
-
-  ctx.strokeStyle = '#111827';
-  ctx.lineWidth = 12;
-  ctx.beginPath();
-  ctx.moveTo(-68, -36);
-  ctx.lineTo(-140, 36);
-  ctx.moveTo(68, -36);
-  ctx.lineTo(144, 14);
-  ctx.stroke();
-
-  ctx.fillStyle = '#111827';
-  roundRect(ctx, -70, 115, 48, 128, 18);
-  roundRect(ctx, 22, 115, 48, 128, 18);
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawHumanDebugScene(ctx, scene, index, content) {
-  const width = 1080;
-  const height = 1920;
-  ctx.fillStyle = '#fbfbf7';
-  ctx.fillRect(0, 0, width, height);
-
-  ctx.strokeStyle = '#d1d5db';
-  ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.moveTo(80, 405);
-  ctx.lineTo(260, 405);
-  ctx.lineTo(260, 540);
-  ctx.moveTo(820, 440);
-  ctx.lineTo(980, 440);
-  ctx.moveTo(860, 482);
-  ctx.lineTo(980, 482);
-  ctx.stroke();
-
-  ctx.font = '900 62px Arial';
-  drawComicText(
-    ctx,
-    content.seriesTitle || 'HUMAN DEBUG LOG #001',
-    110,
-    145,
-    860,
-    70,
-    2,
-    '#111827',
-    'center'
+async function resolveProvidedKeyframes(args) {
+  const keyframeFiles = parseKeyframeFiles(
+    args['keyframe-files'] || process.env.AI_VIDEO_KEYFRAME_FILES
   );
-  ctx.strokeStyle = '#111827';
-  ctx.lineWidth = 7;
-  ctx.beginPath();
-  ctx.moveTo(250, 240);
-  ctx.quadraticCurveTo(540, 270, 830, 240);
-  ctx.stroke();
+  if (keyframeFiles.length) return keyframeFiles;
 
-  ctx.fillStyle = '#14b8a6';
-  for (const [x, y, rotation] of [
-    [144, 150, -0.6],
-    [930, 150, 0.6],
-    [122, 1605, 0.8],
-    [955, 1615, -0.8],
-  ]) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rotation);
-    roundRect(ctx, -8, -34, 16, 68, 8);
-    ctx.fill();
-    ctx.restore();
+  const keyframesDir = args['keyframes-dir'] || process.env.AI_VIDEO_KEYFRAMES_DIR;
+  if (!keyframesDir) return [];
+  return listImageFiles(path.resolve(keyframesDir));
+}
+
+function buildKeyframePrompt(content, scene, index) {
+  const beat = scene.keyframePrompt || scene.visual || scene.headline || content.title;
+  return [
+    'Vertical 9:16 whiteboard stick figure explainer, clean white background.',
+    'Use thick black marker line art, simple hand-drawn shapes, sparse blue highlights and tiny red warning marks only.',
+    'Use the canonical first-video character proportions: engineer plus Tiny Agent plus objects should fill about 75-90% of the main art width, never miniature icon scale.',
+    'Recurring Chinese software engineer stick figure on the left: large full-body whiteboard character, spiky short black hair with visible marker strokes, black round glasses, oval eyes, small nose and smile, simple white T-shirt, black shoes, friendly pointing or thumbs-up pose.',
+    'Recurring friendly AI robot named Tiny Agent on the right: large white rounded head/body, black rounded face screen, two blue oval eyes, small blue smile, single antenna with blue dot, round ear covers, white limbs, brown tool belt with red and blue tools, small tool props or clipboard.',
+    'Leave the top title area and bottom subtitle area mostly blank; do not render the final title text or final subtitle box because they are added as fixed overlays later.',
+    'Do not shrink the characters to leave excessive whitespace. Do not change the engineer hairstyle/glasses or the robot head, face screen, antenna, ear covers, blue eyes, tool belt, and white rounded body.',
+    'No Chinese text, no photorealism, no anime, no glossy 3D, no dense UI, no crowded background, no watermark, no logo, no distorted hands, no missing limbs, no tiny characters.',
+    `Scene ${index + 1}: ${beat}`,
+  ].join('\n');
+}
+
+async function writeImageResponse(image, destination) {
+  if (image?.b64_json) {
+    await fs.writeFile(destination, Buffer.from(image.b64_json, 'base64'));
+    return;
   }
 
-  if (index === 0) {
-    drawEngineer(ctx, 300, 980, 1.6, 'tired');
-    drawDebugTool(ctx, 410, 930, 1.15);
-    drawMeetingBug(ctx, 760, 930, 1.55, 'happy');
-    drawCalendarEgg(ctx, 615, 1175, 1.25);
-    drawCalendarEgg(ctx, 720, 1190, 1.25);
-    drawCalendarEgg(ctx, 825, 1175, 1.25);
-    drawComicPopup(ctx, 572, 1335, 220, 130, 'MEETING', '10:00');
-    drawComicPopup(ctx, 812, 1335, 220, 130, 'MEETING', '10:30');
-  } else if (index === 1) {
-    drawEngineer(ctx, 270, 1008, 1.5, 'panic');
-    drawMeetingBug(ctx, 755, 930, 1.38, 'happy');
-    drawComicPopup(ctx, 88, 465, 260, 142, 'QUICK SYNC', '10:00');
-    drawComicPopup(ctx, 410, 385, 260, 142, 'FOLLOW-UP', '10:30');
-    drawComicPopup(ctx, 718, 510, 260, 142, 'PRE-SYNC', '9:45');
-    drawComicPopup(ctx, 520, 1278, 305, 142, 'MEETING', 'about meeting');
-    drawCalendarEgg(ctx, 690, 1198, 1.2, true);
-    ctx.fillStyle = '#111827';
-    ctx.font = '900 96px Arial';
-    ctx.fillText('x3', 784, 760);
-  } else if (index === 2) {
-    drawEngineer(ctx, 300, 1038, 1.5, 'tired');
-    drawDebugTool(ctx, 430, 955, 1.08);
-    drawMeetingBug(ctx, 765, 955, 1.44, 'happy');
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#111827';
-    ctx.lineWidth = 6;
-    roundRect(ctx, 130, 445, 820, 220, 42);
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = '#111827';
-    ctx.font = '900 56px Arial';
-    drawComicText(ctx, 'I closed my laptop.', 185, 525, 720, 68, 2, '#111827', 'center');
-    ctx.font = '700 28px Arial';
-    drawComicText(ctx, 'The calendar kept going.', 185, 604, 720, 36, 1, '#ef4444', 'center');
-    drawComicPopup(ctx, 610, 1290, 310, 142, 'CALENDAR', 'won', '#14b8a6', null);
-  } else {
-    drawEngineer(ctx, 298, 1018, 1.5, 'tired');
-    drawDebugTool(ctx, 430, 935, 1.08);
-    drawMeetingBug(ctx, 772, 955, 1.44, 'happy');
-    drawComicPopup(ctx, 105, 455, 345, 145, 'PATCH', 'Decline', '#ef4444', null);
-    drawComicPopup(ctx, 630, 455, 345, 145, 'STATUS', 'Multiplying', '#ef4444', null);
-    for (const [x, y, s] of [
-      [595, 1190, 1.05],
-      [700, 1218, 1.0],
-      [812, 1190, 1.05],
-      [907, 1222, 0.9],
-    ]) {
-      drawCalendarEgg(ctx, x, y, s, true);
+  if (image?.url) {
+    const response = await fetch(image.url);
+    if (!response.ok) {
+      throw new Error(`Image download failed: ${response.status} ${response.statusText}`);
+    }
+    await fs.writeFile(destination, Buffer.from(await response.arrayBuffer()));
+    return;
+  }
+
+  throw new Error('Image generation returned no b64_json or url payload.');
+}
+
+async function generateImageKeyframes(content, outputDir, args) {
+  const keyframesDir = path.join(outputDir, 'keyframes');
+  await fs.mkdir(keyframesDir, { recursive: true });
+  const provided = await resolveProvidedKeyframes(args);
+  const requiredCount = content.scenes.length;
+
+  if (provided.length) {
+    if (provided.length < requiredCount) {
+      throw new Error(
+        `Only ${provided.length} keyframe image(s) provided, but ${requiredCount} scene(s) need keyframes.`
+      );
+    }
+
+    const copied = [];
+    for (let i = 0; i < requiredCount; i += 1) {
+      const source = provided[i];
+      const destination = path.join(
+        keyframesDir,
+        `keyframe-${String(i + 1).padStart(2, '0')}${path.extname(source).toLowerCase() || '.png'}`
+      );
+      await fs.copyFile(source, destination);
+      copied.push(destination);
+    }
+    return { paths: copied, source: 'provided-image-keyframes' };
+  }
+
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error(
+      'Image keyframes are required. The Canvas renderer has been removed; set OPENAI_API_KEY for image generation or pass --keyframes-dir/--keyframe-files.'
+    );
+  }
+
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const model = args['image-model'] || process.env.AI_VIDEO_IMAGE_MODEL || DEFAULT_IMAGE_MODEL;
+  const quality = args['image-quality'] || process.env.AI_VIDEO_IMAGE_QUALITY || 'medium';
+  const paths = [];
+
+  for (let i = 0; i < requiredCount; i += 1) {
+    const prompt = buildKeyframePrompt(content, content.scenes[i], i);
+    const response = await client.images.generate({
+      model,
+      prompt,
+      size: '1024x1536',
+      quality,
+      output_format: 'png',
+      n: 1,
+    });
+    const destination = path.join(keyframesDir, `keyframe-${String(i + 1).padStart(2, '0')}.png`);
+    await writeImageResponse(response.data?.[0], destination);
+    paths.push(destination);
+  }
+
+  return { paths, source: `openai-images:${model}` };
+}
+
+async function prepareArtLayer(keyframePath, outputDir, index) {
+  const artDir = path.join(outputDir, 'art-layers');
+  await fs.mkdir(artDir, { recursive: true });
+
+  const trimmed = await sharp(keyframePath)
+    .rotate()
+    .flatten({ background: '#fff' })
+    .trim({ background: '#fff', threshold: 18 })
+    .png()
+    .toBuffer();
+
+  const resized = await sharp(trimmed)
+    .resize({
+      width: MAIN_ART_SAFE_WIDTH,
+      height: MAIN_ART_SAFE_HEIGHT,
+      fit: 'inside',
+      withoutEnlargement: false,
+    })
+    .flatten({ background: '#fff' })
+    .png()
+    .toBuffer({ resolveWithObject: true });
+
+  const left = Math.round(LAYOUT_CENTER_X - resized.info.width / 2);
+  const top = Math.round(
+    MAIN_ART_TOP + (MAIN_ART_REGION_HEIGHT - resized.info.height) / 2
+  );
+  const buffer = await sharp({
+    create: {
+      width: VIDEO_WIDTH,
+      height: VIDEO_HEIGHT,
+      channels: 4,
+      background: { r: 255, g: 255, b: 255, alpha: 1 },
+    },
+  })
+    .composite([
+      { input: resized.data, left, top },
+      { input: whiteRectSvg(VIDEO_WIDTH, MAIN_ART_TOP), left: 0, top: 0 },
+      {
+        input: whiteRectSvg(VIDEO_WIDTH, VIDEO_HEIGHT - MAIN_ART_BOTTOM),
+        left: 0,
+        top: MAIN_ART_BOTTOM,
+      },
+    ])
+    .png()
+    .toBuffer();
+
+  const artPath = path.join(artDir, `art-${String(index + 1).padStart(2, '0')}.png`);
+  await fs.writeFile(artPath, buffer);
+  return { path: artPath, buffer };
+}
+
+async function detectMainArtAnchor(artBuffer) {
+  const raw = await sharp(artBuffer)
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const { data, info } = raw;
+  const channels = info.channels;
+  let minX = VIDEO_WIDTH;
+  let minY = MAIN_ART_BOTTOM;
+  let maxX = 0;
+  let maxY = MAIN_ART_TOP;
+
+  for (let y = MAIN_ART_TOP; y < MAIN_ART_BOTTOM; y += 1) {
+    for (let x = 0; x < VIDEO_WIDTH; x += 1) {
+      const offset = (y * info.width + x) * channels;
+      const r = data[offset];
+      const g = data[offset + 1];
+      const b = data[offset + 2];
+      const colorRange = Math.max(r, g, b) - Math.min(r, g, b);
+      if (Math.min(r, g, b) < 238 || (colorRange > 18 && Math.min(r, g, b) < 250)) {
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x + 1);
+        maxY = Math.max(maxY, y + 1);
+      }
     }
   }
 
-  ctx.fillStyle = '#ffffff';
-  ctx.strokeStyle = '#111827';
-  ctx.lineWidth = 7;
-  roundRect(ctx, 110, 1585, 860, 190, 36);
-  ctx.fill();
-  ctx.stroke();
-  ctx.font = '900 52px Arial';
-  drawComicText(
-    ctx,
-    scene.footer || scene.headline || content.title,
-    155,
-    1665,
-    770,
-    62,
-    2,
-    '#111827',
-    'center'
+  const bbox = minX <= maxX && minY <= maxY
+    ? [minX, minY, maxX, maxY]
+    : [0, MAIN_ART_TOP, VIDEO_WIDTH, MAIN_ART_BOTTOM];
+  const scale = {
+    widthRatio: Number(((bbox[2] - bbox[0]) / VIDEO_WIDTH).toFixed(3)),
+    heightRatio: Number(((bbox[3] - bbox[1]) / MAIN_ART_REGION_HEIGHT).toFixed(3)),
+  };
+  const anchorX = clamp(
+    (bbox[0] + bbox[2]) / 2,
+    LAYOUT_LEFT + 240,
+    LAYOUT_RIGHT - 240
+  );
+  const anchorY = clamp((bbox[1] + bbox[3]) / 2, 480, 950);
+  return {
+    bbox,
+    scale,
+    anchor: [Number(anchorX.toFixed(2)), Number(anchorY.toFixed(2))],
+  };
+}
+
+function assertMainArtScale(anchor, index) {
+  if (
+    anchor.scale.widthRatio >= MIN_MAIN_ART_WIDTH_RATIO &&
+    anchor.scale.heightRatio >= MIN_MAIN_ART_HEIGHT_RATIO
+  ) {
+    return;
+  }
+
+  throw new Error(
+    `Main art scale QA failed for segment ${index + 1}: content bbox is ` +
+      `${anchor.scale.widthRatio}w x ${anchor.scale.heightRatio}h of the main art region. ` +
+      `Use the first-video Tiny Agent character scale: engineer + robot + objects should ` +
+      `fill at least ${MIN_MAIN_ART_WIDTH_RATIO} width and ${MIN_MAIN_ART_HEIGHT_RATIO} height.`
   );
 }
 
-function drawDiagram(ctx, scene, index) {
-  const visual =
-    scene.visual || ['flow', 'beforeAfter', 'hub', 'example', 'warning'][index % 5];
-  const body = scene.body || '';
-  const labels =
-    Array.isArray(scene.labels) && scene.labels.length
-      ? scene.labels
-      : ['User', 'Agent', 'Tool'];
+async function renderOverlay(scene, content, outputDir, index) {
+  const overlaysDir = path.join(outputDir, 'overlays');
+  await fs.mkdir(overlaysDir, { recursive: true });
+  const overlayPath = path.join(overlaysDir, `overlay-${String(index + 1).padStart(2, '0')}.png`);
+  await sharp(buildOverlaySvg(scene, content)).png().toFile(overlayPath);
+  return overlayPath;
+}
 
-  if (visual === 'beforeAfter') {
-    drawCard(
-      ctx,
-      86,
-      740,
-      408,
-      420,
-      'Before',
-      scene.before || 'Every app needs a custom connector.',
-      '#fb7185'
+async function renderFrames(content, outputDir, args = {}) {
+  const keyframes = await generateImageKeyframes(content, outputDir, args);
+  const scenes = [];
+  const footerSet = new Set(content.scenes.map((scene) => scene.footer).filter(Boolean));
+  if (content.scenes.length > 1 && footerSet.size <= 1) {
+    throw new Error(
+      'Subtitle QA failed: every scene has the same bottom caption. Add per-scene Subtitle blocks to the content plan.'
     );
-    drawCard(
-      ctx,
-      586,
-      740,
-      408,
-      420,
-      'After',
-      scene.after || 'One shared protocol connects tools.',
-      '#40d9a6'
-    );
-    drawArrow(ctx, 510, 950, 570, 950);
-    return;
   }
 
-  if (visual === 'hub') {
-    drawCard(
-      ctx,
-      320,
-      775,
-      440,
-      250,
-      labels[0] || 'AI Agent',
-      body || 'Plans the task and chooses a tool.',
-      '#38bdf8'
-    );
-    drawCard(
-      ctx,
-      74,
-      1110,
-      280,
-      210,
-      labels[1] || 'Files',
-      scene.left || 'Read context.',
-      '#a78bfa'
-    );
-    drawCard(
-      ctx,
-      400,
-      1210,
-      280,
-      210,
-      labels[2] || 'API',
-      scene.center || 'Take action.',
-      '#f59e0b'
-    );
-    drawCard(
-      ctx,
-      726,
-      1110,
-      280,
-      210,
-      labels[3] || 'Database',
-      scene.right || 'Check facts.',
-      '#40d9a6'
-    );
-    drawArrow(ctx, 420, 1030, 245, 1110, '#38bdf8');
-    drawArrow(ctx, 540, 1030, 540, 1210, '#38bdf8');
-    drawArrow(ctx, 660, 1030, 835, 1110, '#38bdf8');
-    return;
+  for (let i = 0; i < content.scenes.length; i += 1) {
+    const artLayer = await prepareArtLayer(keyframes.paths[i], outputDir, i);
+    const anchor = await detectMainArtAnchor(artLayer.buffer);
+    assertMainArtScale(anchor, i);
+    const overlayPath = await renderOverlay(content.scenes[i], content, outputDir, i);
+    scenes.push({
+      ...content.scenes[i],
+      keyframePath: keyframes.paths[i],
+      keyframeSource: keyframes.source,
+      artPath: artLayer.path,
+      overlayPath,
+      anchor,
+      duration: Number(content.scenes[i].duration || 6),
+    });
   }
 
-  if (visual === 'example') {
-    drawPill(ctx, 90, 770, labels[0] || 'Request', '#93c5fd');
-    drawArrow(ctx, 320, 805, 470, 805, '#93c5fd');
-    drawPill(ctx, 490, 770, labels[1] || 'Agent', '#40d9a6');
-    drawArrow(ctx, 700, 805, 840, 805, '#40d9a6');
-    drawPill(ctx, 855, 770, labels[2] || 'Result', '#fbbf24');
-    drawCard(
-      ctx,
-      112,
-      935,
-      856,
-      420,
-      scene.exampleTitle || 'Simple example',
-      scene.example || body,
-      '#fbbf24'
-    );
-    return;
-  }
-
-  if (visual === 'warning') {
-    drawCard(
-      ctx,
-      112,
-      760,
-      856,
-      230,
-      'Use it when',
-      scene.useWhen || 'The task needs multiple steps and outside tools.',
-      '#40d9a6'
-    );
-    drawCard(
-      ctx,
-      112,
-      1040,
-      856,
-      230,
-      'Do not use it when',
-      scene.avoidWhen || 'A normal function or workflow is enough.',
-      '#fb7185'
-    );
-    drawCard(
-      ctx,
-      112,
-      1320,
-      856,
-      200,
-      'Rule of thumb',
-      scene.rule || body,
-      '#f59e0b'
-    );
-    return;
-  }
-
-  const steps = labels.slice(0, 4);
-  const positions = [
-    { x: 92, y: 770 },
-    { x: 588, y: 770 },
-    { x: 92, y: 1085 },
-    { x: 588, y: 1085 },
-  ];
-  const defaultStepBodies = [
-    body || 'Name the outcome.',
-    'Add the facts the model needs.',
-    'Call one controlled external tool.',
-    'Return an answer you can inspect.',
-  ];
-  steps.forEach((label, stepIndex) => {
-    const { x, y } = positions[stepIndex];
-    drawCard(
-      ctx,
-      x,
-      y,
-      400,
-      240,
-      `${stepIndex + 1}. ${label}`,
-      scene.stepBodies?.[stepIndex] || defaultStepBodies[stepIndex],
-      ['#38bdf8', '#40d9a6', '#f59e0b', '#a78bfa'][stepIndex]
-    );
-  });
-  drawArrow(ctx, 492, 890, 570, 890);
-  drawArrow(ctx, 790, 1010, 790, 1060);
-  drawArrow(ctx, 588, 1205, 510, 1205);
+  return scenes;
 }
 
 function escapeRegExp(value) {
@@ -1053,6 +532,61 @@ function readPlanKeyframes(section) {
     .map((line) => line.match(/^\s+-\s+(.+)$/)?.[1])
     .filter(Boolean)
     .map(stripMarkdownValue);
+}
+
+function readPlanList(section, name) {
+  const match = section.match(
+    new RegExp(
+      `^- ${escapeRegExp(name)}:\\n([\\s\\S]*?)(?=^- [A-Za-z][A-Za-z -]+:|\\n### |\\n## |(?![\\s\\S]))`,
+      'm'
+    )
+  );
+  if (!match) return [];
+  return match[1]
+    .split('\n')
+    .map((line) => line.match(/^\s+-\s+(.+)$/)?.[1])
+    .filter(Boolean)
+    .map((value) => stripMarkdownValue(value).replace(/\s*\/\s*/g, '\n'));
+}
+
+function compactCaption(value, maxChars = 54) {
+  const cleaned = stripMarkdownValue(value)
+    .replace(/\bAI agent\b/gi, 'agent')
+    .replace(/\ban agent\b/gi, 'an agent')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (cleaned.length <= maxChars) return cleaned;
+  const clause = cleaned.split(/,\s+|;\s+|\s+then\s+/i)[0]?.trim();
+  return clause && clause.length <= maxChars ? clause : `${cleaned.slice(0, maxChars - 1).trim()}…`;
+}
+
+function buildFallbackSubtitleBlocks({
+  hook,
+  narration,
+  onScreenText,
+  count,
+}) {
+  const sentences =
+    narration.match(/[^.!?]+[.!?]+/g)?.map((sentence) => sentence.trim()) || [];
+  const blocks = [];
+  if (hook) blocks.push(hook);
+
+  const toolSentence = sentences.find(
+    (sentence) => /tool|check|verify|result/i.test(sentence)
+  );
+  if (toolSentence) blocks.push(compactCaption(toolSentence));
+
+  for (const sentence of sentences) {
+    if (blocks.length >= count - 1) break;
+    const caption = compactCaption(sentence);
+    if (!blocks.includes(caption)) blocks.push(caption);
+  }
+
+  if (onScreenText) blocks.push(onScreenText);
+  while (blocks.length < count) {
+    blocks.push(compactCaption(sentences[blocks.length] || onScreenText || hook || 'Tiny Agent'));
+  }
+  return blocks.slice(0, count);
 }
 
 function parsePlanHashtags(value) {
@@ -1106,26 +640,38 @@ async function contentFromPlan(args) {
   const youtubeTitle = readPlanField(section, 'YouTube Shorts title') || episodeTitle;
   const hashtags = parsePlanHashtags(readPlanField(section, 'Hashtags'));
   const keyframes = readPlanKeyframes(section);
+  const explicitSubtitleBlocks = readPlanList(section, 'Subtitle blocks');
 
   if (!narration || !keyframes.length) {
     throw new Error(`Content plan entry for ${planDate} is missing narration or keyframes.`);
   }
 
+  const sceneCount = Math.min(keyframes.length, 4);
   const sentences =
     narration.match(/[^.!?]+[.!?]+/g)?.map((sentence) => sentence.trim()) || [];
   const viewerBeats = [
-    tinyPoint,
+    hook || tinyPoint,
     sentences.slice(0, 2).join(' '),
-    sentences.slice(-2).join(' '),
+    sentences.slice(2, 4).join(' '),
+    onScreenText || sentences.slice(-1).join(' '),
   ].map(stripMarkdownValue);
+  const subtitleBlocks = explicitSubtitleBlocks.length
+    ? explicitSubtitleBlocks
+    : buildFallbackSubtitleBlocks({
+        hook,
+        narration,
+        onScreenText,
+        count: sceneCount,
+      });
 
-  const scenes = keyframes.slice(0, 3).map((keyframe, index) => ({
-    duration: index === 0 ? 6 : 7,
+  const defaultDurations = keyframes.length >= 4 ? [5, 6, 6, 7] : [6, 7, 7];
+  const scenes = keyframes.slice(0, sceneCount).map((keyframe, index) => ({
+    duration: defaultDurations[index] || 6,
     visual: 'whiteboard',
     headline: index === 0 ? hook || episodeTitle : onScreenText || episodeTitle,
     subhead: viewerBeats[index] || caption || episodeTitle,
     keyframePrompt: keyframe,
-    footer: onScreenText || episodeTitle,
+    footer: subtitleBlocks[index] || onScreenText || episodeTitle,
   }));
 
   return {
@@ -1139,71 +685,6 @@ async function contentFromPlan(args) {
     narration,
     scenes,
   };
-}
-
-async function renderFrames(content, outputDir) {
-  const framesDir = path.join(outputDir, 'frames');
-  await fs.mkdir(framesDir, { recursive: true });
-
-  const width = 1080;
-  const height = 1920;
-  const frames = [];
-
-  for (let i = 0; i < content.scenes.length; i += 1) {
-    const scene = content.scenes[i];
-    const canvas = createCanvas(width, height);
-    const ctx = canvas.getContext('2d');
-
-    if (isHumanDebugStyle(content)) {
-      drawHumanDebugScene(ctx, scene, i, content);
-    } else if (isSketchbookStyle(content)) {
-      drawSketchbookScene(ctx, scene, i, content);
-    } else {
-      const gradient = ctx.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, '#07111f');
-      gradient.addColorStop(0.55, '#0f172a');
-      gradient.addColorStop(1, '#18181b');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
-
-      ctx.strokeStyle = 'rgba(148,163,184,0.09)';
-      ctx.lineWidth = 2;
-      for (let x = 80; x < width; x += 120) {
-        ctx.beginPath();
-        ctx.moveTo(x, 140);
-        ctx.lineTo(x - 360, height - 120);
-        ctx.stroke();
-      }
-
-      ctx.font = '700 34px Arial';
-      ctx.fillStyle = '#40d9a6';
-      ctx.fillText('AGENT SCHOOL', 72, 96);
-      ctx.fillStyle = '#64748b';
-      ctx.fillText(`SCENE ${String(i + 1).padStart(2, '0')}`, 790, 96);
-
-      ctx.font = '800 76px Arial';
-      drawTextBlock(ctx, scene.headline || content.title, 72, 220, 936, 86, 4, '#ffffff');
-
-      ctx.font = '400 40px Arial';
-      drawTextBlock(ctx, scene.subhead || scene.body || '', 76, 530, 920, 52, 3, '#cbd5e1');
-
-      drawDiagram(ctx, scene, i);
-
-      ctx.font = '700 42px Arial';
-      if (scene.footer) {
-        drawTextBlock(ctx, scene.footer, 72, 1730, 936, 52, 2, '#e5e7eb');
-      }
-    }
-
-    const framePath = path.join(
-      framesDir,
-      `scene-${String(i + 1).padStart(2, '0')}.png`
-    );
-    await fs.writeFile(framePath, canvas.toBuffer('image/png'));
-    frames.push({ path: framePath, duration: Number(scene.duration || 7) });
-  }
-
-  return frames;
 }
 
 function fallbackContent(topic, args = {}) {
@@ -1562,57 +1043,425 @@ async function getDuration(filePath) {
   return Number(stdout.trim());
 }
 
-function concatEscape(filePath) {
-  return filePath.replace(/'/g, "'\\''");
+async function probeMedia(filePath) {
+  const { stdout } = await execFile('ffprobe', [
+    '-v',
+    'error',
+    '-show_entries',
+    'stream=index,codec_type,codec_name,width,height,r_frame_rate,duration,nb_frames,channels',
+    '-show_entries',
+    'format=duration',
+    '-of',
+    'json',
+    filePath,
+  ]);
+  return JSON.parse(stdout);
 }
 
-async function renderVideo(frames, audioPath, outputDir) {
-  const audioDuration = await getDuration(audioPath);
-  const baseDuration = frames.reduce((total, frame) => total + frame.duration, 0);
-  const targetDuration = Math.max(audioDuration + 1.0, baseDuration);
-  const scale = targetDuration / baseDuration;
-  const concatPath = path.join(outputDir, 'frames.txt');
-  const lines = [];
+function bboxFromRawRgb(data, width, region, threshold = 28) {
+  const [left, top, right, bottom] = region;
+  let minX = right;
+  let minY = bottom;
+  let maxX = left;
+  let maxY = top;
 
-  for (const frame of frames) {
-    lines.push(`file '${concatEscape(frame.path)}'`);
-    lines.push(`duration ${(frame.duration * scale).toFixed(3)}`);
+  for (let y = top; y < bottom; y += 1) {
+    for (let x = left; x < right; x += 1) {
+      const offset = (y * width + x) * 3;
+      const r = data[offset];
+      const g = data[offset + 1];
+      const b = data[offset + 2];
+      const diff = Math.max(
+        Math.abs(255 - r),
+        Math.abs(255 - g),
+        Math.abs(255 - b)
+      );
+      if (diff > threshold) {
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x + 1);
+        maxY = Math.max(maxY, y + 1);
+      }
+    }
   }
-  lines.push(`file '${concatEscape(frames[frames.length - 1].path)}'`);
-  await fs.writeFile(concatPath, `${lines.join('\n')}\n`, 'utf8');
 
-  const videoPath = path.join(outputDir, 'video.mp4');
+  if (minX > maxX || minY > maxY) return null;
+  return [minX, minY, maxX, maxY];
+}
+
+async function bboxFromImageRegion(imagePath, region) {
+  const image = sharp(imagePath).removeAlpha().raw();
+  const { data, info } = await image.toBuffer({ resolveWithObject: true });
+  return bboxFromRawRgb(data, info.width, region);
+}
+
+function bboxesWithinTolerance(a, b, tolerance = 2) {
+  if (!a || !b) return false;
+  return a.every((value, index) => Math.abs(value - b[index]) <= tolerance);
+}
+
+async function extractPreviewFrame(videoPath, time, outputPath) {
   await execFile('ffmpeg', [
     '-y',
     '-hide_banner',
     '-loglevel',
     'error',
-    '-f',
-    'concat',
-    '-safe',
-    '0',
+    '-ss',
+    Math.max(0, time).toFixed(3),
     '-i',
-    concatPath,
-    '-i',
-    audioPath,
-    '-vf',
-    'fps=30,format=yuv420p',
-    '-af',
-    'loudnorm=I=-16:TP=-1.5:LRA=11,apad',
-    '-c:v',
-    'libx264',
-    '-preset',
-    'veryfast',
-    '-c:a',
-    'aac',
-    '-b:a',
-    '160k',
-    '-t',
-    targetDuration.toFixed(3),
-    '-movflags',
-    '+faststart',
     videoPath,
+    '-frames:v',
+    '1',
+    outputPath,
   ]);
+}
+
+async function checkStaticOverlays(videoPath, frames, videoDuration, outputDir) {
+  const previewsDir = path.join(outputDir, 'previews');
+  await fs.mkdir(previewsDir, { recursive: true });
+  const baseDuration = frames.reduce((total, frame) => total + frame.duration, 0);
+  const durationScale = videoDuration / baseDuration;
+  let cursor = 0;
+  const checks = [];
+
+  for (let index = 0; index < frames.length; index += 1) {
+    const segmentDuration = frames[index].duration * durationScale;
+    const startTime = cursor + Math.min(0.2, segmentDuration / 4);
+    const endTime = cursor + Math.max(0, segmentDuration - Math.min(0.2, segmentDuration / 4));
+    cursor += segmentDuration;
+
+    const startPath = path.join(previewsDir, `scene${index + 1}-start.png`);
+    const endPath = path.join(previewsDir, `scene${index + 1}-end.png`);
+    await extractPreviewFrame(videoPath, startTime, startPath);
+    await extractPreviewFrame(videoPath, endTime, endPath);
+
+    const titleStart = await bboxFromImageRegion(startPath, [0, 0, VIDEO_WIDTH, MAIN_ART_TOP]);
+    const titleEnd = await bboxFromImageRegion(endPath, [0, 0, VIDEO_WIDTH, MAIN_ART_TOP]);
+    const captionStart = await bboxFromImageRegion(startPath, [0, MAIN_ART_BOTTOM, VIDEO_WIDTH, VIDEO_HEIGHT]);
+    const captionEnd = await bboxFromImageRegion(endPath, [0, MAIN_ART_BOTTOM, VIDEO_WIDTH, VIDEO_HEIGHT]);
+    const pass =
+      bboxesWithinTolerance(titleStart, titleEnd) &&
+      bboxesWithinTolerance(captionStart, captionEnd);
+
+    checks.push({
+      segment: index + 1,
+      titleStart,
+      titleEnd,
+      captionStart,
+      captionEnd,
+      pass,
+    });
+
+    if (!pass) {
+      throw new Error(
+        `Static overlay QA failed for segment ${index + 1}: title/subtitle moved or resized.`
+      );
+    }
+  }
+
+  return checks;
+}
+
+async function checkStableZoom(videoPath, frames, videoDuration) {
+  const sampleWidth = 270;
+  const sampleHeight = 480;
+  const sampleFps = 10;
+  const frameSize = sampleWidth * sampleHeight * 3;
+  const { stdout } = await execFile(
+    'ffmpeg',
+    [
+      '-hide_banner',
+      '-loglevel',
+      'error',
+      '-i',
+      videoPath,
+      '-vf',
+      `fps=${sampleFps},scale=${sampleWidth}:${sampleHeight}:flags=bicubic`,
+      '-f',
+      'rawvideo',
+      '-pix_fmt',
+      'rgb24',
+      '-',
+    ],
+    { encoding: 'buffer', maxBuffer: 256 * 1024 * 1024 }
+  );
+
+  const centers = [];
+  for (let offset = 0; offset + frameSize <= stdout.length; offset += frameSize) {
+    const frame = stdout.subarray(offset, offset + frameSize);
+    const bbox = bboxFromRawRgb(frame, sampleWidth, [0, 75, sampleWidth, 330]);
+    centers.push(
+      bbox
+        ? [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2]
+        : [Number.NaN, Number.NaN]
+    );
+  }
+
+  const baseDuration = frames.reduce((total, frame) => total + frame.duration, 0);
+  const durationScale = videoDuration / baseDuration;
+  let cursor = 0;
+  const checks = [];
+
+  for (let index = 0; index < frames.length; index += 1) {
+    const segmentDuration = frames[index].duration * durationScale;
+    const margin = Math.min(0.2, segmentDuration / 4);
+    const start = Math.ceil((cursor + margin) * sampleFps);
+    cursor += segmentDuration;
+    const end = Math.min(
+      centers.length,
+      Math.floor((cursor - margin) * sampleFps)
+    );
+    const segment = centers
+      .slice(start, end)
+      .filter(([x, y]) => Number.isFinite(x) && Number.isFinite(y));
+    let maxStep = 0;
+    for (let i = 1; i < segment.length; i += 1) {
+      const dx = segment[i][0] - segment[i - 1][0];
+      const dy = segment[i][1] - segment[i - 1][1];
+      maxStep = Math.max(maxStep, Math.hypot(dx, dy));
+    }
+    const pass = maxStep <= 1.0;
+    checks.push({
+      segment: index + 1,
+      sampledFrames: segment.length,
+      maxFrameToFrameCenterStepLowResPx: Number(maxStep.toFixed(3)),
+      pass,
+    });
+    if (!pass) {
+      throw new Error(
+        `Stable zoom QA failed for segment ${index + 1}: center step ${maxStep.toFixed(3)} low-res px.`
+      );
+    }
+  }
+
+  return checks;
+}
+
+async function verifyRenderedVideo(videoPath, audioPath, frames, outputDir) {
+  const probe = await probeMedia(videoPath);
+  const videoStream = probe.streams.find((stream) => stream.codec_type === 'video');
+  const audioStream = probe.streams.find((stream) => stream.codec_type === 'audio');
+  if (!videoStream || !audioStream) {
+    throw new Error('Rendered video must contain both video and audio streams.');
+  }
+
+  const videoDuration = Number(videoStream.duration || probe.format?.duration || 0);
+  const audioDuration = Number(audioStream.duration || 0);
+  const sourceAudioDuration = await getDuration(audioPath);
+
+  if (
+    Number(videoStream.width) !== VIDEO_WIDTH ||
+    Number(videoStream.height) !== VIDEO_HEIGHT ||
+    videoStream.r_frame_rate !== `${VIDEO_FPS}/1`
+  ) {
+    throw new Error(
+      `Rendered video spec mismatch: ${videoStream.width}x${videoStream.height} ${videoStream.r_frame_rate}.`
+    );
+  }
+
+  if (videoDuration < 20 || videoDuration > 30) {
+    throw new Error(
+      `Duration QA failed: video duration must be 20-30s, got ${videoDuration.toFixed(3)}s. Lengthen or tighten the narration instead of padding silence.`
+    );
+  }
+
+  if (videoDuration - audioDuration > 0.35 || videoDuration - sourceAudioDuration > 0.35) {
+    throw new Error(
+      `Audio tail QA failed: video=${videoDuration.toFixed(3)}s audio=${audioDuration.toFixed(3)}s source=${sourceAudioDuration.toFixed(3)}s.`
+    );
+  }
+
+  const staticOverlayChecks = await checkStaticOverlays(
+    videoPath,
+    frames,
+    videoDuration,
+    outputDir
+  );
+  const stableZoomChecks = await checkStableZoom(videoPath, frames, videoDuration);
+
+  return {
+    width: Number(videoStream.width),
+    height: Number(videoStream.height),
+    fps: videoStream.r_frame_rate,
+    durationSeconds: videoDuration,
+    videoFrames: Number(videoStream.nb_frames || 0),
+    videoCodec: videoStream.codec_name,
+    audioCodec: audioStream.codec_name,
+    audioChannels: Number(audioStream.channels || 0),
+    audioDurationSeconds: audioDuration,
+    sourceAudioDurationSeconds: sourceAudioDuration,
+    passesStaticOverlayCheck: true,
+    passesStableZoomCheck: true,
+    passesAudioTailCheck: true,
+    staticOverlayChecks,
+    stableZoomChecks,
+  };
+}
+
+async function readJsonIfExists(filePath) {
+  if (!filePath || !fssync.existsSync(filePath)) return null;
+  return JSON.parse(await fs.readFile(filePath, 'utf8'));
+}
+
+function assertReusableVideoSpec({ videoStream, audioStream, videoDuration, audioDuration }) {
+  if (!videoStream || !audioStream) {
+    throw new Error('Reusable video must contain both video and audio streams.');
+  }
+
+  if (
+    Number(videoStream.width) !== VIDEO_WIDTH ||
+    Number(videoStream.height) !== VIDEO_HEIGHT ||
+    videoStream.r_frame_rate !== `${VIDEO_FPS}/1`
+  ) {
+    throw new Error(
+      `Reusable video spec mismatch: ${videoStream.width}x${videoStream.height} ${videoStream.r_frame_rate}.`
+    );
+  }
+
+  if (videoDuration < 20 || videoDuration > 30) {
+    throw new Error(
+      `Reusable video duration must be 20-30s, got ${videoDuration.toFixed(3)}s.`
+    );
+  }
+
+  if (videoDuration - audioDuration > 0.35) {
+    throw new Error(
+      `Reusable video has a silent tail: video=${videoDuration.toFixed(3)}s audio=${audioDuration.toFixed(3)}s.`
+    );
+  }
+}
+
+async function verifyReusableVideo(videoPath, args = {}, content = null) {
+  const probe = await probeMedia(videoPath);
+  const videoStream = probe.streams.find((stream) => stream.codec_type === 'video');
+  const audioStream = probe.streams.find((stream) => stream.codec_type === 'audio');
+  const videoDuration = Number(videoStream?.duration || probe.format?.duration || 0);
+  const audioDuration = Number(audioStream?.duration || 0);
+
+  assertReusableVideoSpec({
+    videoStream,
+    audioStream,
+    videoDuration,
+    audioDuration,
+  });
+
+  const summaryPath =
+    args['reuse-summary'] ||
+    process.env.AI_VIDEO_REUSE_SUMMARY ||
+    path.join(path.dirname(videoPath), 'summary.json');
+  const sourceSummary = await readJsonIfExists(summaryPath);
+  const sourceVerification = sourceSummary?.verification || {};
+
+  if (
+    usesTinyAgentLayout(content) &&
+    sourceSummary?.layoutStandard !== TINY_AGENT_LAYOUT_STANDARD
+  ) {
+    throw new Error(
+      `Reusable Tiny Agent video must pass ${TINY_AGENT_LAYOUT_STANDARD}; ` +
+        'regenerate it with the current balanced layout before publishing.'
+    );
+  }
+
+  if (sourceSummary && sourceSummary.videoPath) {
+    const sourceVideoPath = path.resolve(sourceSummary.videoPath);
+    if (sourceVideoPath !== videoPath) {
+      throw new Error(
+        `Reusable summary belongs to a different video: ${sourceSummary.videoPath}`
+      );
+    }
+  }
+
+  for (const key of [
+    'passesStaticOverlayCheck',
+    'passesStableZoomCheck',
+    'passesAudioTailCheck',
+  ]) {
+    if (sourceSummary && sourceVerification[key] !== true) {
+      throw new Error(`Reusable video summary did not pass ${key}.`);
+    }
+  }
+
+  return {
+    sourceSummary,
+    summaryPath: sourceSummary ? summaryPath : null,
+    verification: {
+      ...sourceVerification,
+      width: Number(videoStream.width),
+      height: Number(videoStream.height),
+      fps: videoStream.r_frame_rate,
+      durationSeconds: videoDuration,
+      videoFrames: Number(videoStream.nb_frames || sourceVerification.videoFrames || 0),
+      videoCodec: videoStream.codec_name,
+      audioCodec: audioStream.codec_name,
+      audioChannels: Number(audioStream.channels || 0),
+      audioDurationSeconds: audioDuration,
+      reusedVideoProbe: true,
+      ...(sourceSummary ? { reusedSummaryPath: summaryPath } : {}),
+    },
+  };
+}
+
+function allocateSceneFrames(frames, audioDuration) {
+  const totalFrames = Math.max(1, Math.round(audioDuration * VIDEO_FPS));
+  const baseDuration = frames.reduce((total, frame) => total + frame.duration, 0);
+  let assignedFrames = 0;
+
+  return frames.map((frame, index) => {
+    const remainingScenes = frames.length - index;
+    const remainingFrames = totalFrames - assignedFrames;
+    const sceneFrames =
+      index === frames.length - 1
+        ? remainingFrames
+        : Math.max(
+            1,
+            Math.round((frame.duration / baseDuration) * totalFrames)
+          );
+    const boundedFrames = Math.max(
+      1,
+      Math.min(sceneFrames, remainingFrames - remainingScenes + 1)
+    );
+    assignedFrames += boundedFrames;
+    return boundedFrames;
+  });
+}
+
+async function renderVideo(frames, audioPath, outputDir) {
+  const audioDuration = await getDuration(audioPath);
+  if (!Number.isFinite(audioDuration) || audioDuration <= 0) {
+    throw new Error(`Invalid narration audio duration: ${audioDuration}`);
+  }
+
+  const videoPath = path.join(outputDir, 'video.mp4');
+  const sceneFrameCounts = allocateSceneFrames(frames, audioDuration);
+  const manifestPath = path.join(outputDir, 'render-manifest.json');
+  await fs.writeFile(
+    manifestPath,
+    JSON.stringify(
+      {
+        width: VIDEO_WIDTH,
+        height: VIDEO_HEIGHT,
+        fps: VIDEO_FPS,
+        zoomEnd: 1.04,
+        transitionFrames: MAIN_ART_TRANSITION_FRAMES,
+        mainArtTop: MAIN_ART_TOP,
+        mainArtBottom: MAIN_ART_BOTTOM,
+        audioPath,
+        videoPath,
+        scenes: frames.map((frame, index) => ({
+          artPath: frame.artPath,
+          overlayPath: frame.overlayPath,
+          anchor: frame.anchor.anchor,
+          frames: sceneFrameCounts[index],
+        })),
+      },
+      null,
+      2
+    )
+  );
+
+  await execFile('python3', [FIXED_ZOOM_RENDERER, manifestPath], {
+    cwd: rootDir,
+  });
   return videoPath;
 }
 
@@ -1840,8 +1689,15 @@ async function refreshTiktokIntegration(prisma, integration) {
 
   const body = await response.json().catch(() => ({}));
   if (!response.ok || !body.access_token) {
+    const errorText = JSON.stringify(body?.error || body);
+    if (errorText.includes('invalid_grant')) {
+      await prisma.integration.update({
+        where: { id: integration.id },
+        data: { refreshNeeded: true },
+      });
+    }
     throw new Error(
-      `TikTok refresh failed: ${JSON.stringify(body?.error || body)}`
+      `TikTok refresh failed: ${errorText}. Reconnect the TikTok channel in Postiz.`
     );
   }
 
@@ -1883,11 +1739,17 @@ async function refreshLocalIntegrationTokens(publishing, args) {
         providerIdentifier: true,
         tokenExpiration: true,
         refreshToken: true,
+        refreshNeeded: true,
       },
     });
 
     for (const integration of integrations) {
       if (!shouldRefreshToken(integration.tokenExpiration)) continue;
+      if (integration.refreshNeeded) {
+        throw new Error(
+          `${integration.providerIdentifier} channel is marked refreshNeeded; reconnect it in Postiz before retrying.`
+        );
+      }
 
       if (integration.providerIdentifier === 'youtube') {
         await refreshYoutubeIntegration(prisma, integration);
@@ -1987,19 +1849,54 @@ function makeCaption(content) {
   return cleanForCaption(`${content.description}\n\n${tags}`, 1200);
 }
 
-async function createPost({ apiKey, youtubeId, tiktokId, facebookId, media, content, args }) {
-  const platforms = getPlatforms(args);
-  const visibility = args.visibility || process.env.AI_VIDEO_VISIBILITY || 'private';
-  const youtubePrivacy =
-    visibility === 'public' ? 'public' : visibility === 'unlisted' ? 'unlisted' : 'private';
-  const tiktokPrivacy =
-    args.tiktokPrivacy ||
-    process.env.AI_VIDEO_TIKTOK_PRIVACY ||
-    (visibility === 'public' ? 'PUBLIC_TO_EVERYONE' : 'SELF_ONLY');
-  const facebookReelState =
+function normalizeVisibility(value, fallback = 'private') {
+  return ['public', 'private', 'unlisted'].includes(value) ? value : fallback;
+}
+
+function getFacebookReelState(args, content = {}) {
+  const visibility = normalizeVisibility(
+    args.visibility || process.env.AI_VIDEO_VISIBILITY || 'private'
+  );
+  return (
+    args['facebook-reel-state'] ||
     args.facebookState ||
     process.env.AI_VIDEO_FACEBOOK_REEL_STATE ||
-    (visibility === 'public' ? 'PUBLISHED' : 'DRAFT');
+    (content.seriesTitle === 'Tiny Agent' ? 'PUBLISHED' : undefined) ||
+    (visibility === 'public' ? 'PUBLISHED' : 'DRAFT')
+  );
+}
+
+async function createPost({ apiKey, youtubeId, tiktokId, facebookId, media, content, args }) {
+  const platforms = getPlatforms(args);
+  const visibility = normalizeVisibility(
+    args.visibility || process.env.AI_VIDEO_VISIBILITY || 'private'
+  );
+  const youtubeVisibility = normalizeVisibility(
+    args['youtube-visibility'] ||
+      process.env.AI_VIDEO_YOUTUBE_VISIBILITY ||
+      (content.seriesTitle === 'Tiny Agent' ? 'public' : visibility),
+    visibility
+  );
+  const youtubePrivacy =
+    youtubeVisibility === 'public'
+      ? 'public'
+      : youtubeVisibility === 'unlisted'
+        ? 'unlisted'
+        : 'private';
+  const youtubePlaylistId =
+    args['youtube-playlist-id'] || process.env.AI_VIDEO_YOUTUBE_PLAYLIST_ID;
+  const youtubePlaylistTitle =
+    args['youtube-playlist-title'] ||
+    process.env.AI_VIDEO_YOUTUBE_PLAYLIST_TITLE ||
+    (content.seriesTitle === 'Tiny Agent' ? 'Tiny Agent' : undefined);
+  const youtubePlaylistPrivacyStatus =
+    args['youtube-playlist-privacy'] ||
+    process.env.AI_VIDEO_YOUTUBE_PLAYLIST_PRIVACY ||
+    'public';
+  const tiktokPrivacy =
+    getTiktokPrivacy(args, content);
+  const facebookReelState =
+    getFacebookReelState(args, content);
 
   const caption = makeCaption(content);
   const nowIso = new Date(Date.now() + 15_000).toISOString();
@@ -2018,6 +1915,11 @@ async function createPost({ apiKey, youtubeId, tiktokId, facebookId, media, cont
             value: tag,
             label: tag,
           })),
+          ...(youtubePlaylistId ? { playlistId: youtubePlaylistId } : {}),
+          ...(youtubePlaylistTitle ? { playlistTitle: youtubePlaylistTitle } : {}),
+          ...(youtubePlaylistTitle || youtubePlaylistId
+            ? { playlistPrivacyStatus: youtubePlaylistPrivacyStatus }
+            : {}),
         },
         value: [
           {
@@ -2191,6 +2093,217 @@ async function waitForPosts(postIds, timeoutMs = 600_000) {
   }
 }
 
+function getPublishingIntegrationId(publishing, platform) {
+  if (platform === 'youtube') return publishing.youtubeId;
+  if (platform === 'tiktok') return publishing.tiktokId;
+  if (platform === 'facebook') return publishing.facebookId;
+  return undefined;
+}
+
+function getTiktokMethod(args) {
+  return args['tiktok-method'] || process.env.AI_VIDEO_TIKTOK_METHOD || 'DIRECT_POST';
+}
+
+function getTiktokPrivacy(args, content = {}) {
+  const visibility = normalizeVisibility(
+    args.visibility || process.env.AI_VIDEO_VISIBILITY || 'private'
+  );
+  return (
+    args['tiktok-privacy'] ||
+    args.tiktokPrivacy ||
+    process.env.AI_VIDEO_TIKTOK_PRIVACY ||
+    (content.seriesTitle === 'Tiny Agent' ? 'PUBLIC_TO_EVERYONE' : undefined) ||
+    (visibility === 'public' ? 'PUBLIC_TO_EVERYONE' : 'SELF_ONLY')
+  );
+}
+
+function summarizePostResults(postResults, options = {}) {
+  if (!postResults.length) return { status: 'CREATED', error: null };
+
+  const failedPosts = postResults.filter((post) => post.state === 'ERROR');
+  if (
+    !failedPosts.length &&
+    options.platform === 'tiktok' &&
+    options.tiktokMethod === 'UPLOAD' &&
+    postResults.some((post) => post.releaseURL?.includes('tiktok.com/messages'))
+  ) {
+    return {
+      status: 'SENT_TO_INBOX',
+      error: null,
+      requiresManualPublish: true,
+    };
+  }
+  if (
+    !failedPosts.length &&
+    options.platform === 'facebook' &&
+    options.facebookReelState === 'DRAFT'
+  ) {
+    return {
+      status: 'DRAFT_CREATED',
+      error: null,
+      requiresManualPublish: true,
+    };
+  }
+  if (
+    !failedPosts.length &&
+    options.platform === 'facebook' &&
+    options.facebookReelState === 'SCHEDULED'
+  ) {
+    return {
+      status: 'SCHEDULED',
+      error: null,
+    };
+  }
+  if (!failedPosts.length) return { status: 'PUBLISHED', error: null };
+
+  return {
+    status: 'ERROR',
+    error: failedPosts
+      .map((post) => {
+        const provider = post.integration?.providerIdentifier || 'unknown';
+        return `${provider}: ${post.error || 'Postiz workflow failed'}`;
+      })
+      .join('; '),
+  };
+}
+
+function normalizeErrorMessage(error) {
+  return error?.message || String(error);
+}
+
+function shouldTryTiktokUploadFallback(platform, args, attempt, content = {}) {
+  if (platform !== 'tiktok') return false;
+  if (getTiktokMethod(args) !== 'DIRECT_POST') return false;
+  if (attempt.status !== 'ERROR') return false;
+  if (getTiktokPrivacy(args, content) === 'PUBLIC_TO_EVERYONE') return false;
+  return !['config', 'token_refresh'].includes(attempt.stage);
+}
+
+async function publishPlatformOnce({ platform, publishing, media, content, args }) {
+  const integrationId = getPublishingIntegrationId(publishing, platform);
+  const tiktokMethod = platform === 'tiktok' ? getTiktokMethod(args) : undefined;
+  const tiktokPrivacy =
+    platform === 'tiktok' ? getTiktokPrivacy(args, content) : undefined;
+  const facebookReelState =
+    platform === 'facebook' ? getFacebookReelState(args, content) : undefined;
+  if (!integrationId) {
+    return {
+      platform,
+      status: 'SKIPPED',
+      stage: 'config',
+      error: `No enabled ${platform} integration found.`,
+      ...(tiktokMethod ? { tiktokMethod } : {}),
+      ...(tiktokPrivacy ? { tiktokPrivacy } : {}),
+      ...(facebookReelState ? { facebookReelState } : {}),
+      postResponse: null,
+      postResults: [],
+    };
+  }
+
+  const platformArgs = { ...args, platform };
+
+  try {
+    await refreshLocalIntegrationTokens(publishing, platformArgs);
+  } catch (error) {
+    return {
+      platform,
+      status: 'ERROR',
+      stage: 'token_refresh',
+      error: normalizeErrorMessage(error),
+      ...(tiktokMethod ? { tiktokMethod } : {}),
+      ...(tiktokPrivacy ? { tiktokPrivacy } : {}),
+      ...(facebookReelState ? { facebookReelState } : {}),
+      postResponse: null,
+      postResults: [],
+    };
+  }
+
+  try {
+    const postResponse = await createPost({
+      ...publishing,
+      media,
+      content,
+      args: platformArgs,
+    });
+    const postIds = (postResponse || []).map((post) => post.postId).filter(Boolean);
+    let postResults = [];
+
+    if (args.wait && postIds.length) {
+      await startLocalPostWorkflows(postResponse, publishing, platformArgs);
+      postResults = await waitForPosts(
+        postIds,
+        Number(args.timeout || 600) * 1000
+      );
+    }
+
+    const { status, error, requiresManualPublish } = summarizePostResults(
+      postResults,
+      {
+        platform,
+        tiktokMethod,
+        tiktokPrivacy,
+        facebookReelState,
+      }
+    );
+    return {
+      platform,
+      status,
+      stage: status === 'ERROR' ? 'workflow' : 'post',
+      error,
+      ...(requiresManualPublish ? { requiresManualPublish } : {}),
+      ...(tiktokMethod ? { tiktokMethod } : {}),
+      ...(tiktokPrivacy ? { tiktokPrivacy } : {}),
+      ...(facebookReelState ? { facebookReelState } : {}),
+      postResponse,
+      postResults,
+    };
+  } catch (error) {
+    return {
+      platform,
+      status: 'ERROR',
+      stage: 'post',
+      error: normalizeErrorMessage(error),
+      ...(tiktokMethod ? { tiktokMethod } : {}),
+      ...(tiktokPrivacy ? { tiktokPrivacy } : {}),
+      ...(facebookReelState ? { facebookReelState } : {}),
+      postResponse: null,
+      postResults: [],
+    };
+  }
+}
+
+async function publishPlatformWithFallback({ platform, publishing, media, content, args }) {
+  const primaryAttempt = await publishPlatformOnce({
+    platform,
+    publishing,
+    media,
+    content,
+    args,
+  });
+
+  if (!shouldTryTiktokUploadFallback(platform, args, primaryAttempt, content)) {
+    return {
+      ...primaryAttempt,
+      attempts: [primaryAttempt],
+    };
+  }
+
+  const fallbackArgs = { ...args, 'tiktok-method': 'UPLOAD' };
+  const fallbackAttempt = await publishPlatformOnce({
+    platform,
+    publishing,
+    media,
+    content,
+    args: fallbackArgs,
+  });
+
+  return {
+    ...fallbackAttempt,
+    recoveredBy: fallbackAttempt.status === 'ERROR' ? null : 'tiktok-upload',
+    attempts: [primaryAttempt, fallbackAttempt],
+  };
+}
+
 async function main() {
   loadDotEnv(path.join(rootDir, '.env'));
   const args = parseArgs(process.argv.slice(2));
@@ -2212,25 +2325,66 @@ async function main() {
     : await generateContent(topic, args);
   await fs.writeFile(path.join(outputDir, 'content.json'), JSON.stringify(content, null, 2));
 
-  const frames = await renderFrames(content, outputDir);
-  const audioPath = await generateSpeech(content, outputDir, args);
-  const videoPath = await renderVideo(frames, audioPath, outputDir);
+  const reuseVideo = args['reuse-video'] || process.env.AI_VIDEO_REUSE_VIDEO;
+  let frames = [];
+  let videoPath;
+  let verification;
+  let reuseMetadata = null;
+
+  if (reuseVideo) {
+    videoPath = path.resolve(reuseVideo);
+    reuseMetadata = await verifyReusableVideo(videoPath, args, content);
+    verification = reuseMetadata.verification;
+  } else {
+    frames = await renderFrames(content, outputDir, args);
+    const audioPath = await generateSpeech(content, outputDir, args);
+    videoPath = await renderVideo(frames, audioPath, outputDir);
+    verification = await verifyRenderedVideo(
+      videoPath,
+      audioPath,
+      frames,
+      outputDir
+    );
+  }
+
+  const sourceSummary = reuseMetadata?.sourceSummary;
 
   const summary = {
     topic,
     title: content.title,
+    layoutStandard: usesTinyAgentLayout(content) ? TINY_AGENT_LAYOUT_STANDARD : null,
+    layoutSpec: usesTinyAgentLayout(content) ? tinyAgentLayoutSpec() : null,
     outputDir,
     videoPath,
+    verification,
+    reusedVideo: Boolean(reuseVideo),
+    reuseSummaryPath: reuseMetadata?.summaryPath || null,
+    keyframeSource: sourceSummary?.keyframeSource || frames[0]?.keyframeSource || null,
+    keyframes: sourceSummary?.keyframes || frames.map((frame) => frame.keyframePath),
+    motion: sourceSummary?.motion || {
+      layering: 'main art layer zooms; title and subtitle overlay stay fixed',
+      implementation: 'image keyframes plus PIL fixed-anchor affine per-frame zoom',
+      zoomPerSegment: '1.000x to 1.040x',
+      transition: `${MAIN_ART_TRANSITION_FRAMES}-frame main-art fade-through-white at scene boundaries; fixed overlays stay unblended`,
+      fixedAnchorPerSegment: frames.map((frame, index) => ({
+        segment: index + 1,
+        bbox: frame.anchor.bbox,
+        scale: frame.anchor.scale,
+        anchor: frame.anchor.anchor,
+      })),
+    },
     posted: false,
+    postSucceeded: false,
+    hasFailures: false,
     postResponse: null,
     postResults: [],
+    platformAttempts: [],
   };
 
   let server;
   try {
     if (args.post && !args['dry-run']) {
       const publishing = await resolvePublishingConfig(args);
-      await refreshLocalIntegrationTokens(publishing, args);
       await ensureTemporalSearchAttributes(args);
       const mediaMode = args['media-mode'] || process.env.AI_VIDEO_MEDIA_MODE || 'serve';
       let media;
@@ -2242,18 +2396,38 @@ async function main() {
         media = { id: `generated-${makeId()}`, path: server.url };
       }
 
-      const postResponse = await createPost({ ...publishing, media, content, args });
-      const postIds = (postResponse || []).map((post) => post.postId).filter(Boolean);
-      summary.posted = true;
-      summary.postResponse = postResponse;
-
-      if (args.wait && postIds.length) {
-        await startLocalPostWorkflows(postResponse, publishing, args);
-        summary.postResults = await waitForPosts(
-          postIds,
-          Number(args.timeout || 600) * 1000
+      const platformAttempts = [];
+      for (const platform of getPlatforms(args)) {
+        platformAttempts.push(
+          await publishPlatformWithFallback({
+            platform,
+            publishing,
+            media,
+            content,
+            args,
+          })
         );
       }
+
+      const createdAttempts = platformAttempts
+        .flatMap((attempt) => attempt.attempts || [attempt])
+        .filter((attempt) => attempt.postResponse);
+      const hardFailures = platformAttempts.filter(
+        (attempt) => attempt.status === 'ERROR'
+      );
+
+      summary.platformAttempts = platformAttempts;
+      summary.posted = createdAttempts.length > 0;
+      summary.postSucceeded = platformAttempts.some((attempt) =>
+        ['CREATED', 'PUBLISHED', 'SENT_TO_INBOX', 'DRAFT_CREATED', 'SCHEDULED'].includes(attempt.status)
+      );
+      summary.hasFailures = hardFailures.length > 0;
+      summary.postResponse = createdAttempts.flatMap(
+        (attempt) => attempt.postResponse || []
+      );
+      summary.postResults = createdAttempts.flatMap(
+        (attempt) => attempt.postResults || []
+      );
     }
   } finally {
     if (server) await server.close();
@@ -2261,6 +2435,9 @@ async function main() {
 
   await fs.writeFile(path.join(outputDir, 'summary.json'), JSON.stringify(summary, null, 2));
   console.log(JSON.stringify(summary, null, 2));
+  if (summary.hasFailures || (args.post && !args['dry-run'] && !summary.postSucceeded)) {
+    process.exitCode = 1;
+  }
 }
 
 main().catch((error) => {

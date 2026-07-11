@@ -3,10 +3,12 @@
 Generates a vertical AI concept explainer video and optionally sends it to
 Postiz Public API for YouTube, TikTok, and Facebook Reels publishing.
 
-The default path has no video model dependency:
+The default path no longer has a Canvas renderer fallback:
 
 ```text
-topic -> script JSON -> Canvas frames -> local TTS -> FFmpeg MP4 -> Postiz Public API
+topic -> script JSON -> generated image keyframes -> fixed title/subtitle overlays ->
+PIL fixed-anchor affine zoom + short main-art white dissolves -> local TTS -> FFmpeg MP4 -> QA gates ->
+Postiz Public API
 ```
 
 ## Chosen series style
@@ -21,17 +23,23 @@ Style rules:
 - Use the selected `A - whiteboard stick figure` style: clean white background,
   thick black marker linework, sparse blue/red highlights, and simple
   whiteboard diagrams.
-- Keep a stable IP: a Chinese software engineer stick figure plus a small
+- Keep a stable IP: a Chinese software engineer stick figure plus a friendly
   `Tiny Agent` robot. These two characters should appear across the series.
+- Match the first published Tiny Agent character scale: the engineer, Tiny
+  Agent, and core props should fill most of the main art area, not shrink into
+  small icons.
 - Keep the top title as `Tiny Agent` and use a large rounded subtitle box
   at the bottom.
 - Keep on-screen text in English. Avoid Chinese text except for a tiny signature
   or intentional cultural detail.
 - Do not use the previous notebook sketchbook style or the polished colorful
   doodle style as the default.
-- For production videos, do not draw humans directly with Canvas. Use generated
-  keyframes or reusable illustration assets, then let code handle subtitles,
-  overlays, light pan/zoom, timing, audio, and FFmpeg composition.
+- Do not draw humans, Tiny Agent, whiteboard scenes, or final keyframes with
+  Canvas/SVG/HTML/code. Use generated keyframes or explicitly provided image
+  keyframes, then let code handle subtitles, overlays, fixed-anchor light
+  pan/zoom, timing, audio, and FFmpeg composition.
+- Use per-scene `Subtitle blocks` for the bottom caption box. Do not repeat the
+  same formula or on-screen text across every scene.
 
 Recommended production flow:
 
@@ -41,9 +49,40 @@ full keyframes -> subtitle/overlay layer -> FFmpeg MP4 -> manual preview ->
 Postiz publish
 ```
 
-The current Canvas renderer is still useful for mechanical smoke tests,
-publishing checks, and layout experiments. It is not the final visual standard
-for `Tiny Agent` production output.
+For Codex-run Tiny Agent automation, prefer Codex image generation for the
+episode keyframes first, then save the approved images under
+`var/ai-video-pipeline/provided-keyframes/<date>-<slug>/` and pass that
+directory with `--keyframes-dir`. This path has produced the most consistent
+engineer and Tiny Agent proportions. The Node runner itself cannot call the
+Codex image generation tool directly, so non-Codex unattended runs still need
+either pre-generated keyframes or a working `OPENAI_API_KEY`.
+
+If image generation or provided keyframes are unavailable, the runner fails
+instead of falling back to Canvas placeholders.
+
+The runner also fails before publishing if any required QA gate fails:
+
+- MP4 must be `1080x1920`, `30fps`, and `20-30s`.
+- Tiny Agent uses the shared YouTube Shorts/TikTok/Facebook Reels balanced
+  layout: all fixed layers are centered at `x=540`, the main art occupies
+  `y=300-1110` with an `820x780` maximum, and its content bbox must cover at
+  least `68%` of the full canvas width.
+- The title baseline is `y=240`. The rounded subtitle box is
+  `x=80-1000, y=1130-1430`, with centered `50px` text, `62px` line height, and
+  at most two lines. Critical text, faces, and props must not extend below
+  `y=1430`.
+- Tiny Agent summaries must record `layoutStandard: cross-platform-balanced-v1`.
+  `--reuse-video` rejects Tiny Agent videos whose summary is missing this
+  release-layout marker, even if their codec and duration otherwise pass.
+- MP4 must contain an audio stream, and the video must not run past the audio
+  into a silent tail.
+- Title and bottom subtitle overlays must stay fixed between segment start and
+  end frames.
+- Main art zoom must pass the fixed-center stability check on sampled
+  consecutive frames.
+- Multi-scene videos must use varied bottom subtitle blocks.
+- Main art must pass the character-scale check, so the recurring engineer and
+  robot remain close to the first-video proportions.
 
 ## Run
 
@@ -52,6 +91,19 @@ running. The generator refreshes near-expired local YouTube/TikTok access
 tokens before it posts, registers the local Temporal search attributes, and
 when `--wait` is used it also starts the matching local workflow if the backend
 swallowed a Temporal start error.
+
+The renderer requires `python3` with Pillow available. It uses
+`scripts/ai-video-pipeline/render-fixed-zoom.py` for subpixel fixed-anchor zoom;
+this avoids the visible jitter caused by integer crop/zoom filters. Scene
+changes use a short main-art-only fade through the whiteboard background, while
+title and subtitle overlays stay fixed and unblended.
+
+Publishing is attempted per platform. A TikTok token or workflow failure should
+not prevent YouTube or Facebook from being queued. If TikTok Direct Post fails
+after a post is created, the runner automatically retries TikTok with `UPLOAD`.
+If TikTok refresh returns `invalid_grant`, the local integration is marked
+`refreshNeeded`; reconnect the TikTok channel in Postiz, then rerun the same
+date.
 
 ```bash
 temporal server start-dev --db-filename var/temporal/dev.db --log-level warn
@@ -110,12 +162,16 @@ node scripts/ai-video-pipeline/run.mjs \
   --skip-missing-platforms \
   --post \
   --visibility private \
+  --youtube-visibility public \
   --media-mode serve \
   --wait
 ```
 
-`private` maps to YouTube `private`, TikTok `SELF_ONLY`, and Facebook Reel
-`DRAFT`. Use `--visibility public` only after reviewing the rendered MP4.
+Global `private` still maps TikTok to `SELF_ONLY`. Tiny Agent YouTube uploads
+default to `public`, and Tiny Agent Facebook Reels default to `PUBLISHED`; use
+`--youtube-visibility`, `AI_VIDEO_YOUTUBE_VISIBILITY`,
+`--facebook-reel-state`, or `AI_VIDEO_FACEBOOK_REEL_STATE` to override a single
+platform.
 
 Useful publishing switches:
 
@@ -126,6 +182,32 @@ Useful publishing switches:
   TikTok and YouTube Shorts testing.
 - `--tiktok-method DIRECT_POST|UPLOAD`: `UPLOAD` sends the video to TikTok inbox
   when Direct Post is not available for the app/account.
+- `--tiktok-privacy PUBLIC_TO_EVERYONE|SELF_ONLY|MUTUAL_FOLLOW_FRIENDS|FOLLOWER_OF_CREATOR`:
+  override TikTok Direct Post privacy. Tiny Agent plan entries default to
+  `PUBLIC_TO_EVERYONE`.
+- `--facebook-reel-state DRAFT|PUBLISHED|SCHEDULED`: override the Facebook
+  Reels `video_state`. `DRAFT` creates a Page Reel draft and is reported as
+  `DRAFT_CREATED`, not as a public Facebook publish.
+- `--youtube-visibility public|private|unlisted`: override YouTube visibility
+  without changing TikTok or Facebook behavior. Tiny Agent plan entries default
+  to YouTube `public`.
+- `--youtube-playlist-id`: add uploaded YouTube videos to this playlist ID.
+- `--youtube-playlist-title`: find or create a YouTube playlist by title, then
+  add uploaded videos to it. Tiny Agent plan entries default to `Tiny Agent`.
+- `--youtube-playlist-privacy public|private|unlisted`: privacy used only when
+  the playlist needs to be created. The default is `public`.
+- `--image-model`: override the OpenAI image model used for generated
+  keyframes.
+- `--image-quality`: override generated keyframe quality.
+- `--keyframes-dir`: use an existing directory of image keyframes instead of
+  calling the image model.
+- `--keyframe-files`: use a comma-separated list of image keyframes instead of
+  calling the image model.
+- `--reuse-video`: skip generation and publish an already approved local MP4.
+  The runner reads the sibling `summary.json` when available, verifies the MP4
+  with `ffprobe`, and keeps the original QA metadata in the new summary.
+- `--reuse-summary`: optional summary JSON path for `--reuse-video`; defaults
+  to `summary.json` beside the MP4.
 - `--skip-missing-platforms`: publish to connected channels and skip channels
   that are not connected yet.
 - `--skip-token-refresh`: skip local YouTube/TikTok access-token refresh.
@@ -148,6 +230,28 @@ variables:
   the script reads the entry matching `AI_VIDEO_PLAN_DATE` or today's
   Asia/Shanghai date instead of generating a new script from `--topic`.
 - `AI_VIDEO_PLAN_DATE`: optional planned date in `YYYY-MM-DD` format.
+- `AI_VIDEO_YOUTUBE_VISIBILITY`: optional YouTube-only visibility override.
+  Tiny Agent plan entries default to `public`; TikTok and Facebook still use the
+  global visibility mapping unless their own settings are provided.
+- `AI_VIDEO_YOUTUBE_PLAYLIST_ID`: optional playlist ID for YouTube uploads.
+  When set, it takes precedence over playlist title lookup.
+- `AI_VIDEO_YOUTUBE_PLAYLIST_TITLE`: optional playlist title for YouTube uploads.
+  Tiny Agent plan entries default to `Tiny Agent` when this is unset.
+- `AI_VIDEO_YOUTUBE_PLAYLIST_PRIVACY`: `public`, `private`, or `unlisted`; used
+  only when the playlist title is missing and the runner creates it.
+- `AI_VIDEO_IMAGE_MODEL`: image model for generated keyframes, default
+  `gpt-image-1.5`.
+- `AI_VIDEO_IMAGE_QUALITY`: image quality for generated keyframes, default
+  `medium`.
+- `AI_VIDEO_KEYFRAMES_DIR`: optional directory containing pre-generated
+  `.png`, `.jpg`, `.jpeg`, or `.webp` keyframes. Files are sorted by name and
+  copied into the run directory.
+- `AI_VIDEO_KEYFRAME_FILES`: optional comma-separated list of keyframe image
+  files. This takes precedence over `AI_VIDEO_KEYFRAMES_DIR`.
+- `AI_VIDEO_REUSE_VIDEO`: optional local MP4 path to publish without
+  regenerating video, audio, or keyframes.
+- `AI_VIDEO_REUSE_SUMMARY`: optional summary JSON path used with
+  `AI_VIDEO_REUSE_VIDEO`.
 - `AI_VIDEO_TTS_PROVIDER`: `say`, `edge-tts`, or `openai`. `say` is free on
   macOS; `edge-tts` uses `uvx edge-tts` by default and is the recommended
   prototype voice for `Tiny Agent`.
@@ -161,8 +265,11 @@ variables:
 - `AI_VIDEO_PLATFORM`: `both`, `all`, `youtube`, `tiktok`, `facebook`, or a
   comma-separated list such as `youtube,tiktok,facebook`.
 - `AI_VIDEO_TIKTOK_METHOD`: `DIRECT_POST` or `UPLOAD`.
+- `AI_VIDEO_TIKTOK_PRIVACY`: TikTok privacy level for Direct Post. Tiny Agent
+  automation defaults to `PUBLIC_TO_EVERYONE`.
 - `AI_VIDEO_FACEBOOK_REEL_STATE`: `DRAFT`, `PUBLISHED`, or `SCHEDULED`.
-  The automation defaults to `DRAFT` while the channel is still being reviewed.
+  Tiny Agent automation defaults to `PUBLISHED`; set this to `DRAFT` only for
+  draft-safe Facebook tests.
 - `AI_VIDEO_SKIP_MISSING_PLATFORMS`: set to `true` to publish to connected
   channels and skip channels that are not connected yet.
 - `AI_VIDEO_SKIP_TOKEN_REFRESH`: set to `true` to skip local access-token
@@ -181,19 +288,30 @@ calendar scheduling. Codex should generate the day's video from the content
 plan, then call Postiz for immediate delivery to YouTube, TikTok, and Facebook
 Reels.
 
-Recommended rollout:
+Current rollout:
 
-1. First 7 days: generate the planned video and publish only as private/draft
-   where the platform allows it. Manually preview the MP4 before public release.
-2. After the visual/audio/factual checks are consistently clean, switch the
-   automation to public posting.
+1. YouTube Tiny Agent uploads publish as `public` after the local MP4 QA gates
+   pass, and are added to the `Tiny Agent` playlist.
+2. Facebook Tiny Agent Reels publish as Page Reels with `video_state=PUBLISHED`.
+3. TikTok Tiny Agent videos use Direct Post with `PUBLIC_TO_EVERYONE`. Public
+   Direct Post failures are reported as failures and do not fall back to the
+   inbox upload flow.
+
+Every daily render must use the `cross-platform-balanced` release layout from
+`scripts/ai-video-pipeline/style-guides/agent-sketchbook.md`. The approved
+baseline is `var/ai-video-pipeline/runs/2026-07-11-cross-platform-balanced-preview-v2/video.mp4`.
+Do not restore the older left-shifted safe-zone experiment or the old subtitle
+box at `y=1530-1800`.
 
 The automation command should use the plan file and the current Asia/Shanghai
-date. For an immediate private Postiz run:
+date. Codex automation should first generate and inspect the day's 3-4
+keyframes with Codex image generation, save them as provided keyframes, then
+run Postiz publishing with that directory:
 
 ```bash
 node scripts/ai-video-pipeline/run.mjs \
   --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
+  --keyframes-dir var/ai-video-pipeline/provided-keyframes/<YYYY-MM-DD-slug> \
   --tts edge-tts \
   --voice en-US-BrianNeural \
   --rate '+8%' \
@@ -201,29 +319,58 @@ node scripts/ai-video-pipeline/run.mjs \
   --skip-missing-platforms \
   --post \
   --visibility private \
+  --youtube-visibility public \
+  --tiktok-method DIRECT_POST \
+  --tiktok-privacy PUBLIC_TO_EVERYONE \
+  --facebook-reel-state PUBLISHED \
   --media-mode serve \
   --wait
 ```
 
-Use `--visibility public` only after the daily output quality is stable.
+Keep the global visibility private only as a compatibility default for any
+non-overridden platform; use platform-specific visibility/state/privacy flags
+for public YouTube, TikTok, and Facebook delivery.
+
+If a future run has already been manually approved, the daily automation can
+skip regeneration and publish the approved MP4 directly:
+
+```bash
+node scripts/ai-video-pipeline/run.mjs \
+  --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
+  --date YYYY-MM-DD \
+  --reuse-video var/ai-video-pipeline/runs/<approved-run>/video.mp4 \
+  --platform all \
+  --skip-missing-platforms \
+  --post \
+  --visibility private \
+  --youtube-visibility public \
+  --tiktok-method DIRECT_POST \
+  --tiktok-privacy PUBLIC_TO_EVERYONE \
+  --facebook-reel-state PUBLISHED \
+  --media-mode serve \
+  --wait
+```
 
 ## Current platform notes
 
 - YouTube requires a valid connected channel token. If Postiz returns
   `Token expired or invalid`, reconnect the YouTube channel in the dashboard and
   rerun the same command.
-- TikTok Direct Post may be rejected for unaudited public accounts. In the
-  current local account/app, TikTok returns
-  `unaudited_client_can_only_post_to_private_accounts` while the account is
-  public, even with `SELF_ONLY`. Direct Post did succeed after temporarily
-  switching the TikTok account to private and posting with
-  `--tiktok-method DIRECT_POST --visibility private`.
-- If the TikTok account must remain public and the app is still unaudited, use
-  `--tiktok-method UPLOAD --visibility private` to send the generated video to
-  TikTok inbox first, then finish publishing in TikTok.
+- TikTok Direct Post now defaults to public for Tiny Agent. If TikTok returns an
+  app, account, token, or policy error, report that error and do not treat
+  `UPLOAD` inbox delivery as a public publish.
+- `--tiktok-method UPLOAD --visibility private` remains available only as a
+  manual inbox/draft recovery path.
+- If TikTok token refresh fails with `invalid_grant`, the refresh token has been
+  revoked or expired. Reconnect TikTok in Postiz before retrying; Direct Post and
+  Upload both require a valid access token.
 - `--media-mode serve` is only for immediate local publishing while this process
   is alive. For scheduled future posts, use a deployed/public media URL or a
   working Postiz upload host.
 - Facebook Reels are published through a connected Facebook Page. Meta's Reels
   API is Page-scoped, not personal-profile scoped. The provider uses the
   official `video_reels` flow when `post_type` is `reel`.
+- When `AI_VIDEO_FACEBOOK_REEL_STATE` is `DRAFT`, Meta creates a draft Reel and
+  may still return a Reel ID. The runner reports this as `DRAFT_CREATED`; it is
+  not visible as a public Reel until it is finished/published in Meta or rerun
+  with `PUBLISHED`.

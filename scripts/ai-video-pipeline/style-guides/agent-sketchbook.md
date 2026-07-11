@@ -19,8 +19,14 @@
   - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/previews-final-style-a-whiteboard/13s.jpg`
   - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/previews-final-style-a-whiteboard/20s.jpg`
   - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/previews-final-style-a-whiteboard/contact.jpg`
+- 第一条成片角色锚点：`/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/video.mp4`
+- 第一条成片关键帧：
+  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/keyframes/keyframe-01.png`
+  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/keyframes/keyframe-02.png`
+  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/keyframes/keyframe-03.png`
+  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/keyframes/keyframe-04.png`
 
-后续视频以这条样片和这些预览图作为构图、人物比例、字幕框、留白、线条粗细、颜色克制度和节奏的基准。
+后续视频以这条样片、第一条成片和这些预览图作为构图、人物比例、字幕框、留白、线条粗细、颜色克制度和节奏的基准。
 
 ## 固定原则
 
@@ -33,6 +39,49 @@
 - 视觉比喻必须让非工程背景用户一眼理解。
 - 不做手账纸张底色、PPT 课件风、复杂 UI 截图、写实真人、3D 机器人或大面积彩色漫画。
 
+## 角色与跨平台构图锚点
+
+7 月 6 日第一条成片继续作为人物外形参考；从 2026-07-11 起，YouTube Shorts、TikTok 和 Facebook Reels 共用 `cross-platform-balanced` 构图。当前验收样片是 `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-11-cross-platform-balanced-preview-v2/video.mp4`。
+
+- 画布固定为 `1080x1920`，所有固定层以 `x=540` 为中心，左右视觉边距一致。
+- 主画面区域固定为 `y=300-1110`，生成图先去除白边，再等比适配到最大 `820x780`；程序员、Tiny Agent 和关键道具合计 bbox 宽度不得低于画布的 `68%`，推荐约 `75%`。
+- 顶部标题 `Tiny Agent` 固定为 `x=540, y=240`，字号 `68px`。
+- 底部字幕框固定为 `x=80-1000, y=1130-1430`，左右各留 `80px`；字幕以 `x=540` 居中，字号 `50px`、行距 `62px`，最多两行。
+- `y>1430` 不放字幕、人物脸、关键道具或结论文字，留给平台账号、描述、进度条和操作控件；可以保留白底或不影响理解的非关键背景。
+- 留白方式：标题、主画面和字幕框连续排布，不能为追求保守安全区把整套内容缩到画布左上或留下明显不平衡的右侧空白。
+- 程序员位置：通常在左半区，完整或近完整全身，头部、头发、眼镜和手势清楚可辨。
+- Tiny Agent 位置：通常在右半区，头部和脸屏要大而清楚，工具腰包、天线和耳罩必须可辨。
+- 道具位置：工具卡、日志、剪贴板、警告符号等放在两者之间或周围，用来承载概念，不要把角色挤到角落。
+- 禁止恢复旧版 `x=450` 左偏构图，或把主画面压缩到画布宽度的约 `50%-57%`。
+
+## 强制生成流程
+
+Tiny Agent 系列的主画面必须由图片生成模型生成关键帧，再由合成脚本配音、加时长、加转场并输出视频。
+
+- 每条视频先生成 `3-4` 张图片关键帧，并以上面的样片和预览图作为 reference；关键帧通过风格检查后，才能合成视频。
+- Codex 日更自动化默认优先使用 Codex image generation 生成关键帧，保存到 `var/ai-video-pipeline/provided-keyframes/<date>-<slug>/`，再通过 `--keyframes-dir` 交给合成脚本；这一路径比直接让本地 runner 调图片 API 更容易在生成后人工/自动检查人物和机器人比例。
+- 禁止使用 Canvas、SVG、HTML、纯代码绘图或程序化线框来“自己画”中国程序员、Tiny Agent、聊天气泡、工具动作、白板主画面或最终关键帧。
+- Canvas / ffmpeg / 脚本只允许用于后处理：缩放、裁切、拼接、轻微 pan/zoom、音频合成、字幕时间轴、格式转码和发布投递。
+- 如果图片生成模型、参考图读取、授权或关键帧生成不可用，必须停止并报告阻塞原因；不能降级为 Canvas 自绘、占位图或普通图表风。
+- 每次合成前必须先抽帧检查：人物应接近参考图的完整手绘角色，而不是简单火柴线；机器人应有白色圆头、黑脸屏、蓝眼睛、耳罩、天线和工具腰包；底部字幕框应接近参考图的厚描边手绘质感。
+- 任何一帧看起来像代码画出来的矢量图、PPT 图表、通用流程图、线框占位图，都判定为失败，必须重新用图片生成模型出图。
+
+### 图层和运镜强制规则
+
+最终视频必须按样片流程分层合成：
+
+- 图片生成模型只负责主画面关键帧，也就是人物、Tiny Agent、工具、日志、图标和视觉比喻。
+- 顶部 `Tiny Agent` 标题和底部字幕框属于后期固定叠加层，不允许烘焙进参与运镜的主画面层。
+- 慢放大运镜只作用于主画面层；标题、底部字幕框和字幕文字必须全程固定位置、固定大小，不能跟着放大、漂移或裁切。
+- 每个关键帧段独立从 `1.000x` 开始，线性或平滑放大到 `1.035x-1.045x`；切到下一张关键帧时重新从 `1.000x` 开始。
+- 主画面层进入 zoom 前必须先裁掉生成图外围白边，再等比适配到 `820x780` 主画面框；每段做 `1.035x-1.045x` 的轻微放大，段尾仍须落在 `y=300-1110` 主画面区域内。
+- 默认每段持续 `5-7s`，`30fps`；放大必须足够轻，只提供“镜头慢慢靠近”的感觉，不能产生推脸、裁掉人物、裁掉机器人天线、裁掉工具腰包或裁掉画面信息的问题。
+- 每个关键帧段必须先确定一个固定光学中心或中心轴，通常取主画面有效内容 bbox 的中心；同一段内所有帧都复用这个锚点，不能逐帧重算中心。
+- 运镜实现优先使用逐帧固定锚点的仿射缩放或等价方案：每段从 `1.000x` 到 `1.035x-1.045x`，围绕同一个 `(anchorX, anchorY)` 放大，再叠加标题和字幕层。
+- 场景切换时允许使用极短的主画面层白底淡出/淡入来遮住段尾放大到段首复位的突变；只处理人物、机器人和道具层，不混合标题、字幕框和字幕文字。
+- 如果使用 ffmpeg `zoompan`、裁切表达式或其它滤镜后出现横向/纵向微抖、中心漂移或取整跳动，判定为不合格；必须改为预渲染帧或固定锚点仿射变换后再编码。
+- 禁止对整张已包含标题/字幕的最终画面做整体 zoom；这会导致标题和字幕框一起变大，是不合格成片。
+
 ## 固定人物
 
 ### 中国程序员火柴人
@@ -42,13 +91,16 @@
 - 中国男性程序员，年龄感约 25-35 岁。
 - 火柴人 / 简笔画比例，圆头或略圆脸。
 - 黑色短发，发型可以有轻微凌乱的程序员感。
-- 黑色圆形或矩形眼镜。
-- 简单白色 T 恤或黑色 hoodie；不要复杂服装。
+- 头发参考第一条成片：较厚、尖刺状、手绘 marker 黑发，能看到几组乱翘发束和黑色笔触层次。
+- 黑色圆形或圆角矩形眼镜，镜片较大，眼睛是简化椭圆点，不要无眼镜或换成墨镜。
+- 脸部参考第一条成片：圆脸或略圆脸、小耳朵、小鼻子、轻微微笑，整体友好。
+- 简单白色 T 恤或黑色 hoodie；第一优先是白色短袖 T 恤、黑色鞋子，不要复杂服装。
 - 线条以粗黑 marker 为主，身体结构极简。
 - 表情友好、聪明、轻松，有一点幽默感。
 - 通常在画面左侧，负责指向概念、对比对象、日志、工具或 Tiny Agent。
 - 手部必须简化，优先使用指向手、点赞手、圆形手套，不画复杂手指。
 - 可以半身或全身，但必须自然裁切，不能像缺腿、缺胳膊。
+- 默认保持第一条成片的“全身大角色”比例，不要变成只到腰部的小讲师，也不要缩成远景小人。
 
 禁止把这个人物变成写实真人、日漫角色、西方办公室员工、无脸讲师、复杂漫画人物或每天变化的新 presenter。
 
@@ -56,15 +108,17 @@
 
 `Tiny Agent` 是固定 AI 形象，也是这个系列的核心记忆点。
 
-- 小型友好机器人，始终比程序员更像“执行者/工具人”。
-- 白色圆头或圆角头盔，黑色脸屏。
-- 蓝色眼睛或蓝色小高光，脸屏上有简单微笑。
-- 头顶一根小天线，顶部可以有蓝色圆点。
-- 两侧有圆形耳罩 / 耳机式结构。
-- 身体圆润、小巧，线条粗黑，白色主体。
-- 可携带工具腰包、扳手、笔、放大镜、剪贴板、文件卡片。
+- 友好 AI 机器人，始终比程序员更像“执行者/工具人”。
+- 白色圆头或圆角头盔，头部要大，占机器人视觉体量的大部分。
+- 黑色圆角矩形脸屏，脸屏必须明显，不要变成白脸或普通眼睛。
+- 两个蓝色椭圆眼睛，脸屏上有简单蓝色微笑。
+- 头顶一根小天线，顶部有蓝色圆点。
+- 两侧有圆形耳罩 / 耳机式结构，通常是白色外壳、黑色描边，可有蓝色细节。
+- 身体圆润、小巧，线条粗黑，白色主体，白色手脚简化成圆形或手套形。
+- 默认佩戴棕色工具腰包，腰包里有红色扳手、蓝色笔或工具；可手持放大镜、剪贴板、文件卡片。
 - 语义上代表行动、工具调用、检查结果、写草稿、反馈循环。
 - 表情可以可爱，但不要幼稚；它是可靠搭档，不是玩具吉祥物。
+- 默认保持第一条成片的大头、黑脸屏、蓝眼、天线、耳罩、棕色工具腰包组合；动作可变，外形不要每天重设计。
 
 禁止做成金属质感 3D 机器人、复杂机甲、动物形象、恐怖机器人、赛博朋克机器人或每天更换外形的新 mascot。
 
@@ -78,6 +132,7 @@
 - 色彩极少，只保留蓝色高光和少量红色提示。
 - 顶部固定或半固定出现 `Tiny Agent`，字体粗、黑、干净。
 - 中上部留出大量白底空间，主体画面集中在中部。
+- 主体角色不能缩成小图标；主画面 bbox 宽度低于画布的 `68%` 或高度低于主画面区域的 `52%` 时视为主体过小，推荐宽度约 `75%`。
 - 底部使用大号圆角字幕框，黑色描边，白底，粗体英文字幕。
 - 画面要像白板上快速画出的清楚图解，轻松、易懂、低干扰。
 
@@ -109,15 +164,20 @@
 ```text
 Vertical 9:16 whiteboard stick figure explainer, clean white background,
 thick black marker line art, simple hand-drawn shapes, fixed title text
-"Tiny Agent" at the top, one recurring Chinese software engineer stick
-figure on the left with short black hair and black glasses, one recurring
-friendly AI robot named Tiny Agent on the right with a white rounded head,
-black face screen, blue eyes, tiny antenna, round ear covers, and small tool
-props, sparse blue highlights and tiny red warning marks only, large empty
-space, clear visual metaphor, bottom rounded subtitle box with bold English
-caption space, simple and funny but not childish, no Chinese text, no
-photorealism, no anime, no 3D, no clutter, no dense UI, no distorted hands,
-no missing limbs.
+"Tiny Agent" at the top, use the canonical first-video character proportions:
+the engineer, Tiny Agent, and core props fill about 75-90% of the main art
+width, never miniature icon scale. One recurring Chinese software engineer
+stick figure on the left: large full-body whiteboard character, spiky short
+black marker hair, black round glasses, oval eyes, small nose and smile, simple
+white T-shirt, black shoes, friendly pointing or thumbs-up pose. One recurring
+friendly AI robot named Tiny Agent on the right: large white rounded head and
+body, black rounded face screen, two blue oval eyes, small blue smile, single
+antenna with blue dot, round ear covers, white limbs, brown tool belt with red
+and blue tools, small tool props or clipboard. Sparse blue highlights and tiny
+red warning marks only, clear visual metaphor, top and bottom safe areas mostly
+blank for overlays, simple and funny but not childish, no Chinese text, no
+photorealism, no anime, no 3D, no clutter, no dense UI, no distorted hands, no
+missing limbs, no tiny characters.
 ```
 
 如果图片模型支持 negative prompt，使用下面这段：
@@ -127,7 +187,8 @@ Chinese characters, dense text, notebook paper, warm paper texture, PPT slide,
 photorealistic person, anime style, glossy 3D robot, cinematic lighting,
 complex UI screenshot, crowded background, gradient background, colorful comic
 rendering, distorted hands, extra fingers, missing limbs, cropped head,
-unreadable labels, overlapping subtitles, random logos, watermark.
+unreadable labels, overlapping subtitles, random logos, watermark, tiny
+characters, miniature engineer, miniature robot, excessive empty space.
 ```
 
 ## 脚本风格
@@ -139,6 +200,7 @@ unreadable labels, overlapping subtitles, random logos, watermark.
 - 英文旁白：约 `45-75` 个英文词。
 - 字幕块：`3-5` 组，每组最多两行。
 - 屏幕上除顶部 `Tiny Agent` 和底部字幕外，尽量少放文字。
+- 每个关键帧段必须有对应英文 `Subtitle blocks`，不能把同一个公式或 on-screen text 重复用于所有段落。
 
 ### 叙事结构
 
@@ -226,9 +288,21 @@ video_codec=h264
 audio_codec=aac
 audio_channels=mono
 motion=soft pan/zoom only
+motion_scope=main art layer only; static title and subtitle overlay
+motion_zoom_per_segment=1.000x -> 1.035x-1.045x
 keyframes=3-4
+keyframe_source=image-generation-only
 subtitle_style=bottom large rounded white box, black outline, bold English text
 title_style=top centered "Tiny Agent"
+layout_center_x=540
+layout_side_margin=80
+title_baseline_y=240
+main_art_region=80,300,1000,1110
+main_art_max_size=820x780
+subtitle_box=80,1130,1000,1430
+subtitle_font_size=50
+subtitle_line_height=62
+critical_content_bottom=1430
 ```
 
 默认流水线命令模板：
@@ -259,6 +333,23 @@ node scripts/ai-video-pipeline/run.mjs \
 接受一条生成视频前，必须检查：
 
 - 风格是 A 白板火柴人，不是 C 手账涂鸦。
+- 主画面关键帧来自图片生成模型，不是 Canvas / SVG / HTML / 纯代码自绘。
+- 已使用样片和预览图作为视觉 reference，并抽帧确认人物与机器人接近参考图。
+- 已使用 7 月 6 日第一条成片关键帧作为人物外形 reference，并使用 2026-07-11 `cross-platform-balanced-preview-v2` 作为构图 reference。
+- 最终画布为 `1080x1920`；标题、主画面和字幕均以 `x=540` 居中，左右边距对称，不允许恢复右侧过度留白的左偏布局。
+- 程序员、Tiny Agent 和关键道具合计主画面 bbox 宽度不低于画布的 `68%`、高度不低于主画面区域的 `52%`；推荐宽度约 `75%`。
+- 标题基线为 `y=240`；主画面内容在 `y=300-1110`；字幕框边界为 `x=80-1000, y=1130-1430`。字幕框、字幕文字和关键内容越界时不得发布。
+- `y>1430` 不得出现字幕、人物脸、关键道具或结论文字。
+- 主画面层、顶部标题层、底部字幕层已分离；标题和字幕没有被烘焙进参与运镜的图层。
+- 每个关键帧段都有独立、连续、轻微的慢放大：段首约 `1.000x`，段尾约 `1.035x-1.045x`。
+- 每个关键帧段使用固定光学中心或中心轴；连续播放时只应有稳定靠近感，不能出现左右/上下抖动、中心来回跳或画面漂移。
+- 抽查同一段的连续帧：主画面 bbox 中心变化必须平滑，不能交替反向跳动；如肉眼能看到抖动，直接判定失败并重渲染。
+- 最终成片必须通过脚本准出检查：`1080x1920`、`30fps`、`20-30s`、有音频流、视频时长不能比音频长出静音尾巴、标题/字幕层首尾 bbox 固定、主画面连续帧中心步长不超过阈值。
+- 如果准出检查失败，不能继续投递 Postiz；必须先修正字幕、音频时长或运镜实现并重新生成。
+- art layer 在段首有安全边距；段尾放大后人物、机器人和关键道具仍完整可见。
+- 顶部标题和底部字幕框在同一段的首帧、中帧、尾帧保持固定位置和固定大小，不参与 zoom。
+- 抽查每段首帧和尾帧：人物、Tiny Agent 天线、工具腰包、字幕框边缘、关键图标都没有被裁掉。
+- 抽查每段首帧和尾帧：人物和机器人不能缩成小图标，脸、眼镜、蓝眼睛、黑脸屏、耳罩、天线和工具腰包必须可辨。
 - 顶部展示名是 `Tiny Agent`。
 - 中国程序员在外形上稳定：短黑发、黑眼镜、火柴人/简笔画比例。
 - Tiny Agent 稳定：白色圆头、黑脸屏、蓝眼睛、小天线、耳罩结构。
@@ -275,6 +366,10 @@ node scripts/ai-video-pipeline/run.mjs \
 
 | 做 | 不做 |
 | --- | --- |
+| 用图片生成模型生成关键帧后再合成视频 | 用 Canvas / SVG / HTML / 纯代码自己画主画面 |
+| 只让主画面层做轻微慢放大 | 对带标题和字幕的整张最终画面做整体 zoom |
+| 标题和字幕作为固定后期层 | 让标题或字幕框跟随镜头变大、漂移 |
+| 按第一条成片保持角色和主体占比 | 为了避开字幕区把主角整体缩小成小图标 |
 | 固定 A 白板火柴人风 | 回到 C 手账涂鸦风 |
 | 保持 `Tiny Agent` 顶部标题 | 每条视频换系列名 |
 | 左侧中国程序员 + 右侧 Tiny Agent | 每天重设计人物和机器人 |

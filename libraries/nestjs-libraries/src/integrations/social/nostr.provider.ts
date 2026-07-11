@@ -16,13 +16,35 @@ import { Integration } from '@prisma/client';
 // @ts-ignore
 global.WebSocket = WebSocket;
 
-const list = [
+const defaultRelays = [
+  'wss://relay.nostr.info',
+  'wss://purplerelay.com',
   'wss://nos.lol',
   'wss://relay.damus.io',
   'wss://relay.snort.social',
   'wss://temp.iris.to',
   'wss://vault.iris.to',
 ];
+
+const getRelayList = () => {
+  const configuredRelays = (process.env.NOSTR_RELAYS || '')
+    .split(',')
+    .map((relay) => relay.trim())
+    .filter(Boolean);
+  const relays = configuredRelays.length ? configuredRelays : defaultRelays;
+  return relays.filter((relay, index) => relays.indexOf(relay) === index);
+};
+
+const privateKeyFromHex = (privateKey: string) => {
+  const normalized = privateKey.trim();
+  if (!/^[0-9a-fA-F]{64}$/.test(normalized)) {
+    throw new Error('Invalid Nostr private key');
+  }
+
+  return Uint8Array.from(
+    normalized.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))
+  );
+};
 
 const pool = new SimplePool();
 
@@ -33,7 +55,8 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
   isBetweenSteps = false;
   scopes = [] as string[];
   editor = 'normal' as const;
-  toolTip = 'Make sure you private a HEX key of your Nostr private key, you can get it from websites like iris.to'
+  toolTip =
+    'Make sure you private a HEX key of your Nostr private key, you can get it from websites like iris.to';
 
   maxLength() {
     return 100000;
@@ -74,7 +97,7 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
   private async findRelayInformation(pubkey: string) {
     // This queries ALL relays in parallel and resolves with
     // the first matching event from ANY relay.
-    const evt = await pool.get(list, {
+    const evt = await pool.get(getRelayList(), {
       kinds: [0],
       authors: [pubkey],
       limit: 1,
@@ -96,11 +119,20 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
     return {};
   }
 
+  private connectRelay(relay: string) {
+    return Promise.race([
+      Relay.connect(relay),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Relay connection timed out')), 7000)
+      ),
+    ]);
+  }
+
   private async publish(pubkey: string, event: any) {
     let id = '';
-    for (const relay of list) {
+    for (const relay of getRelayList()) {
       try {
-        const relayInstance = await Relay.connect(relay);
+        const relayInstance = await this.connectRelay(relay);
         const value = new Promise<any>((resolve) => {
           relayInstance.subscribe([{ kinds: [1], authors: [pubkey] }], {
             eoseTimeout: 6000,
@@ -126,7 +158,7 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
       }
     }
 
-    return id;
+    return id || event?.id || '';
   }
 
   async authenticate(params: {
@@ -137,11 +169,7 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
     try {
       const body = JSON.parse(Buffer.from(params.code, 'base64').toString());
 
-      const pubkey = getPublicKey(
-        Uint8Array.from(
-          body.password.match(/.{1,2}/g).map((byte: any) => parseInt(byte, 16))
-        )
-      );
+      const pubkey = getPublicKey(privateKeyFromHex(body.password));
 
       const user = await this.findRelayInformation(pubkey);
 
@@ -173,6 +201,7 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
     postDetails: PostDetails[]
   ): Promise<PostResponse[]> {
     const { password } = AuthService.verifyJWT(accessToken) as any;
+    const privateKey = privateKeyFromHex(password);
     const [firstPost] = postDetails;
 
     const textEvent = finalizeEvent(
@@ -182,7 +211,7 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
         tags: [],
         created_at: Math.floor(Date.now() / 1000),
       },
-      password
+      privateKey
     );
 
     const eventId = await this.publish(id, textEvent);
@@ -206,6 +235,7 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
     integration: Integration
   ): Promise<PostResponse[]> {
     const { password } = AuthService.verifyJWT(accessToken) as any;
+    const privateKey = privateKeyFromHex(password);
     const [commentPost] = postDetails;
     const replyToId = lastCommentId || postId;
 
@@ -219,7 +249,7 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
         ],
         created_at: Math.floor(Date.now() / 1000),
       },
-      password
+      privateKey
     );
 
     const eventId = await this.publish(id, textEvent);
