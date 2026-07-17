@@ -1,0 +1,13 @@
+# Generation Prompts
+
+## Human Sprite Sheet
+
+Use the existing Tiny Agent episode illustrations as strict identity and style references. Create one production sprite sheet with exactly three equal columns and two equal rows. Each cell contains the same full-body Chinese software engineer doodle character at the same scale and orientation. Cell order: neutral idle; pointing right; thinking with one hand at chin; approving with a thumbs-up; operating with both hands extended toward an imaginary interface but holding no object; surprised with raised hands. Use thick black marker outlines, white fills, and the same hair, glasses, face, T-shirt, trousers, and shoes. Put the isolated character in every cell on a perfectly flat solid `#00ff00` chroma-key background. No labels, text, grid lines, props, floor, shadow, scenery, watermark, or green inside the character.
+
+## Tiny Agent Sprite Sheet
+
+Use the existing Tiny Agent episode illustrations as strict identity and style references. Create one production sprite sheet with exactly four equal columns and two equal rows. Each cell contains the same full-body Tiny Agent robot at the same scale and orientation. Cell order: neutral idle; searching while leaning forward; receiving a tool with one open hand; executing with one hand pressing an imaginary control; storing memory with both hands moving toward the tool belt; recalling memory with one open hand lifting away from the belt; success with a thumbs-up; failure with a slumped posture. Preserve the white rounded robot body, black face screen, two blue eyes, blue antenna tip, brown tool belt, short legs, thick black marker outlines, white fills, and sparse blue/red accents. No external props in any pose. Put every isolated robot on a perfectly flat solid `#00ff00` chroma-key background. No labels, text, grid lines, floor, shadow, scenery, watermark, or green inside the robot.
+
+## Props Sprite Sheet
+
+Create one production sprite sheet with exactly five equal columns and three equal rows. Each cell contains one isolated whiteboard-style prop at a consistent scale. Cell order: single document; document stack; magnifying glass for search; browser window; API plug; database cylinder; memory drawer; result card with a blue check and no text; branching flow diagram; loop arrows; warning triangle; blue success badge; red error badge; wrench tool; timeout clock. Use thick black marker outlines, white fills, sparse Tiny Agent blue and warning red accents, generous padding, and no cast shadows. Put all isolated props on a perfectly flat solid `#00ff00` chroma-key background. No labels, captions, grid lines, extra objects, scenery, watermark, or green inside any prop.

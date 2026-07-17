@@ -1,0 +1,2915 @@
+{
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-16-building-effective-agents-longform-en-US/SCRIPT.en-US.md",
+  "timingSource": "edge-tts-vtt",
+  "chapters": [
+    {
+      "label": "Preface",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Many teams begin by choosing a framework, drawing a multi-agent diagram, and asking several models to debate.",
+          "start": 0,
+          "end": 6.538
+        },
+        {
+          "number": 2,
+          "text": "Anthropic found that successful production systems often use simpler, composable patterns. Quality depends less on the number of agents than on clear task boundaries, evaluation criteria, and environmental feedback.",
+          "start": 6.538,
+          "end": 19.413
+        },
+        {
+          "number": 3,
+          "text": "A complex architecture may not improve completion, but it will increase model calls, latency, cost, and debugging. Every extra handoff adds another chance to lose context or pass a mistake forward.",
+          "start": 19.413,
+          "end": 31.442
+        },
+        {
+          "number": 4,
+          "text": "In this video, we will answer three questions that are easy to get wrong: when one model call is enough, which of five common workflow patterns fits the task, and when an autonomous agent is actually worth the risk.",
+          "start": 31.442,
+          "end": 42.711
+        },
+        {
+          "number": 5,
+          "text": "By the end, you will have an Agent Architecture Decision Ladder that you can use on a real project, instead of paying for complexity just to make the system look more agentic.",
+          "start": 42.711,
+          "end": 51.6
+        }
+      ]
+    },
+    {
+      "label": "Architecture Choice",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Start with the distinction that controls every later decision.",
+          "start": 51.6,
+          "end": 55.196
+        },
+        {
+          "number": 2,
+          "text": "In a workflow, code defines the execution path in advance. A model may perform one step, but the program still controls the sequence.",
+          "start": 55.196,
+          "end": 63.734
+        },
+        {
+          "number": 3,
+          "text": "In an agent, the model uses the current result to choose what to do next, which tool to call, and when the task should stop.",
+          "start": 63.734,
+          "end": 70.696
+        },
+        {
+          "number": 4,
+          "text": "An expense report that always moves through extraction, policy checks, and approval has a path you can draw before execution. That is a strong workflow task.",
+          "start": 70.696,
+          "end": 80.282
+        },
+        {
+          "number": 5,
+          "text": "An incident investigation is different. You may read logs first, then inspect metrics, and only then decide whether to investigate the database, the network, or the code. The path emerges from evidence, so an agent can add real value.",
+          "start": 80.282,
+          "end": 94.869
+        },
+        {
+          "number": 6,
+          "text": "Neither one is more advanced. Workflows optimize for consistency and predictability. Agents optimize for flexibility and model-directed decisions.",
+          "start": 94.869,
+          "end": 104.648
+        },
+        {
+          "number": 7,
+          "text": "The most important principle is to find the simplest viable solution and increase complexity only when the result is measurably inadequate. Inadequate does not mean the diagram looks unsophisticated. It means completion rate, accuracy, latency, cost, or human intervention misses a defined target. If a new orchestration layer does not help the same evaluation set finish more reliably, it is not an upgrade. It is overhead.",
+          "start": 104.648,
+          "end": 129.83
+        },
+        {
+          "number": 8,
+          "text": "Chapter recap.",
+          "start": 129.83,
+          "end": 131.369
+        },
+        {
+          "number": 9,
+          "text": "First, use a workflow when the path is fixed.",
+          "start": 131.369,
+          "end": 134.628
+        },
+        {
+          "number": 10,
+          "text": "Second, use an agent only when the path must be dynamic.",
+          "start": 134.628,
+          "end": 138.484
+        },
+        {
+          "number": 11,
+          "text": "Third, every added layer must earn its place with a measurable result.",
+          "start": 138.484,
+          "end": 142.68
+        }
+      ]
+    },
+    {
+      "label": "Core Building Block",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Before workflows and agents, there is a more useful default: the augmented language model.",
+          "start": 142.68,
+          "end": 148.237
+        },
+        {
+          "number": 2,
+          "text": "It is not a team of agents. It is one model connected to retrieval, tools, and memory.",
+          "start": 148.237,
+          "end": 154.362
+        },
+        {
+          "number": 3,
+          "text": "Retrieval supplies current external facts instead of relying only on training data. Tools let the model query an order, read a database, call an API, or perform a real action. Memory preserves useful state across steps. These capabilities answer three different questions: what does the system know, what can it do, and what has it already done?",
+          "start": 154.362,
+          "end": 175.199
+        },
+        {
+          "number": 4,
+          "text": "Imagine a support assistant. It retrieves the refund policy, looks up the order, calls the refund API, and remembers what the customer confirmed. If order lookup fails, the tool must return the error instead of inviting the model to invent an order status. If a refund already ran, stored state and API idempotency must prevent a duplicate payment.",
+          "start": 175.199,
+          "end": 196.23700000000002
+        },
+        {
+          "number": 5,
+          "text": "That single augmented model can already complete many real tasks. Multiple agents are not automatically necessary.",
+          "start": 196.23700000000002,
+          "end": 203.574
+        },
+        {
+          "number": 6,
+          "text": "The key is not to connect as many capabilities as possible. Each capability must fit the task, expose a clear interface, and be used at the right time. Running one augmented model on a controlled task usually reveals whether the real gap is knowledge, action, or decision-making before you split the system into roles.",
+          "start": 203.574,
+          "end": 221.603
+        },
+        {
+          "number": 7,
+          "text": "Chapter recap.",
+          "start": 221.603,
+          "end": 223.14100000000002
+        },
+        {
+          "number": 8,
+          "text": "First, retrieval provides external facts.",
+          "start": 223.14100000000002,
+          "end": 226.324
+        },
+        {
+          "number": 9,
+          "text": "Second, tools perform real actions.",
+          "start": 226.324,
+          "end": 229.21800000000002
+        },
+        {
+          "number": 10,
+          "text": "Third, memory preserves task state.",
+          "start": 229.21800000000002,
+          "end": 232.032
+        }
+      ]
+    },
+    {
+      "label": "Workflow Patterns",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "When one model call is not enough but the overall path is still controllable, choose the workflow pattern that matches the uncertainty.",
+          "start": 232.032,
+          "end": 239.07000000000002
+        },
+        {
+          "number": 2,
+          "text": "The first pattern is prompt chaining: split one difficult task into a sequence of smaller steps.",
+          "start": 239.07000000000002,
+          "end": 244.82000000000002
+        },
+        {
+          "number": 3,
+          "text": "For example, generate an outline, check it against explicit requirements, and only then draft the document. Each step solves one clear problem, and a programmatic gate can stop the chain when the output is not ready.",
+          "start": 244.82000000000002,
+          "end": 257.387
+        },
+        {
+          "number": 4,
+          "text": "Prompt chaining works when the task decomposes cleanly. It costs more calls and time, but each call becomes easier to evaluate. The useful part is the gate: if the outline has no audience, rewrite it; if fact checking fails, do not continue to publication. Do not let a weak intermediate result travel all the way to the end.",
+          "start": 257.387,
+          "end": 277.022
+        },
+        {
+          "number": 5,
+          "text": "The second pattern is routing.",
+          "start": 277.022,
+          "end": 279.15700000000004
+        },
+        {
+          "number": 6,
+          "text": "A router classifies the input and sends it to the right prompt, model, or tool. Customer requests might branch into product questions, refund requests, and technical incidents. Common cases can use a smaller model, while unusual cases use a stronger one.",
+          "start": 279.15700000000004,
+          "end": 294.81
+        },
+        {
+          "number": 7,
+          "text": "Routing works when categories need clearly different treatment and classification is reliable. It also needs a low-confidence path. An uncertain input should go to a general process or a human, not be forced into the wrong branch.",
+          "start": 294.81,
+          "end": 308.339
+        },
+        {
+          "number": 8,
+          "text": "The third pattern is parallelization, and it has two distinct forms.",
+          "start": 308.339,
+          "end": 312.58000000000004
+        },
+        {
+          "number": 9,
+          "text": "Sectioning runs independent subtasks at the same time and combines the results. To evaluate an AI answer, separate reviewers can check facts, safety, clarity, and format in parallel.",
+          "start": 312.58000000000004,
+          "end": 324.387
+        },
+        {
+          "number": 10,
+          "text": "Voting asks several independent attempts to judge the same question, then aggregates their conclusions. A security review might use different prompts to inspect the same code from different risk perspectives.",
+          "start": 324.387,
+          "end": 335.714
+        },
+        {
+          "number": 11,
+          "text": "Parallelization helps when subtasks are independent or when one judgment is not reliable enough. Independence matters. Copying the same prompt three times often creates three versions of the same bias, not three useful perspectives.",
+          "start": 335.714,
+          "end": 349.89700000000005
+        },
+        {
+          "number": 12,
+          "text": "The fourth pattern is orchestrator-workers.",
+          "start": 349.89700000000005,
+          "end": 352.62800000000004
+        },
+        {
+          "number": 13,
+          "text": "A central model understands the goal, discovers the required subtasks, delegates them to workers, and combines their results.",
+          "start": 352.62800000000004,
+          "end": 359.964
+        },
+        {
+          "number": 14,
+          "text": "The difference from ordinary parallel work is that the subtasks are not known in advance. The orchestrator decides them from the current input.",
+          "start": 359.964,
+          "end": 367.83000000000004
+        },
+        {
+          "number": 15,
+          "text": "Consider changing a large codebase. Before investigation, you do not know how many files must change or which modules matter. The orchestrator must first inspect the problem, then choose where to search and what work to assign.",
+          "start": 367.83000000000004,
+          "end": 381.012
+        },
+        {
+          "number": 16,
+          "text": "This pattern fits complex tasks that can be divided but cannot be fully planned ahead. Each worker still needs only the relevant context and a consistent return format. Otherwise, the final synthesis spends most of its budget reinterpreting scattered output.",
+          "start": 381.012,
+          "end": 395.78200000000004
+        },
+        {
+          "number": 17,
+          "text": "The fifth pattern is evaluator-optimizer.",
+          "start": 395.78200000000004,
+          "end": 398.71400000000006
+        },
+        {
+          "number": 18,
+          "text": "One model generates a result, another evaluates it, and the first model revises from concrete feedback. In literary translation, the evaluator can check meaning, tone, and terminology before proposing specific corrections.",
+          "start": 398.71400000000006,
+          "end": 412.25300000000004
+        },
+        {
+          "number": 19,
+          "text": "The loop works only when feedback can demonstrably improve the result and the evaluator can identify useful changes. It also needs a stopping condition: reach a score, stop after no improvement, or stop when the budget is exhausted.",
+          "start": 412.25300000000004,
+          "end": 425.55100000000004
+        },
+        {
+          "number": 20,
+          "text": "Without a clear evaluation standard, the loop only increases cost. It does not guarantee quality.",
+          "start": 425.55100000000004,
+          "end": 432.07000000000005
+        },
+        {
+          "number": 21,
+          "text": "The reusable rule is to locate the uncertainty. Use chaining for fixed steps, routing for different input classes, parallelization for independent work, orchestrator-workers for runtime task discovery, and evaluator-optimizer for outputs that can be explicitly judged and improved. Patterns can combine, but every addition must solve a named problem, and every step must remain observable.",
+          "start": 432.07000000000005,
+          "end": 454.483
+        },
+        {
+          "number": 22,
+          "text": "Chapter recap.",
+          "start": 454.483,
+          "end": 456.02200000000005
+        },
+        {
+          "number": 23,
+          "text": "First, locate where uncertainty enters the task.",
+          "start": 456.02200000000005,
+          "end": 459.37800000000004
+        },
+        {
+          "number": 24,
+          "text": "Second, choose the workflow that controls that uncertainty.",
+          "start": 459.37800000000004,
+          "end": 463.012
+        },
+        {
+          "number": 25,
+          "text": "Third, add a pattern only when it solves a specific problem.",
+          "start": 463.012,
+          "end": 466.8
+        }
+      ]
+    },
+    {
+      "label": "Autonomous Agents",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "You enter true agent territory when the execution path cannot be predicted and the model must keep adapting its plan from environmental results.",
+          "start": 466.8,
+          "end": 474.559
+        },
+        {
+          "number": 2,
+          "text": "The core of an agent is not mysterious. It is a continuing decision loop.",
+          "start": 474.559,
+          "end": 479.54
+        },
+        {
+          "number": 3,
+          "text": "The model interprets the goal, chooses an action, calls a tool, reads the real result, and updates its plan. The loop continues until the task completes, reaches a blocker, or hits a stopping condition.",
+          "start": 479.54,
+          "end": 491.732
+        },
+        {
+          "number": 4,
+          "text": "The critical question is not how long the model reasons. It is whether each action produces reliable ground truth.",
+          "start": 491.732,
+          "end": 498.684
+        },
+        {
+          "number": 5,
+          "text": "After a coding agent changes a file, it can run tests. After a support agent issues a refund, it can read the API response. After a browser agent clicks a button, it can verify that the page changed as expected.",
+          "start": 498.684,
+          "end": 512.203
+        },
+        {
+          "number": 6,
+          "text": "That feedback is how an agent knows whether it is making progress.",
+          "start": 512.203,
+          "end": 516.107
+        },
+        {
+          "number": 7,
+          "text": "Customer support and coding are strong agent tasks because they combine conversation with action and offer relatively clear success criteria.",
+          "start": 516.107,
+          "end": 523.742
+        },
+        {
+          "number": 8,
+          "text": "Autonomy also raises cost and compounds error. If every step were ninety percent reliable, ten correct steps in a row would have a theoretical probability of only about thirty-five percent. Real systems use checks and retries, but the arithmetic makes the boundary obvious: a longer path cannot rely on confidence alone.",
+          "start": 523.742,
+          "end": 542.223
+        },
+        {
+          "number": 9,
+          "text": "Production agents therefore need sandboxes, permission limits, maximum iterations, explicit stopping rules, and human confirmation at critical actions. They also need a record of tool calls and environment responses so a failure can be diagnosed, replayed, and recovered.",
+          "start": 542.223,
+          "end": 558.694
+        },
+        {
+          "number": 10,
+          "text": "An agent is not the absence of control. It gives dynamic decisions to the model and rebuilds control through feedback and boundaries. Reversible actions, such as reading information or drafting text, can receive wider autonomy. Payments, deletion, and external messages should receive narrow permissions and pre-action approval. A practical risk ladder is: automate low-risk actions, inspect medium-risk actions after execution, and approve high-risk actions before execution.",
+          "start": 558.694,
+          "end": 587.309
+        },
+        {
+          "number": 11,
+          "text": "Chapter recap.",
+          "start": 587.309,
+          "end": 588.848
+        },
+        {
+          "number": 12,
+          "text": "First, every action must read real environmental feedback.",
+          "start": 588.848,
+          "end": 592.694
+        },
+        {
+          "number": 13,
+          "text": "Second, failure risk compounds across a long execution path.",
+          "start": 592.694,
+          "end": 596.848
+        },
+        {
+          "number": 14,
+          "text": "Third, autonomy requires permissions and stopping conditions.",
+          "start": 596.848,
+          "end": 600.792
+        }
+      ]
+    },
+    {
+      "label": "Tool Design",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Even a capable model will fail repeatedly when its tools are difficult to understand.",
+          "start": 600.792,
+          "end": 605.628
+        },
+        {
+          "number": 2,
+          "text": "Humans need a well-designed interface to use software. Models need a clear agent-computer interface to use tools.",
+          "start": 605.628,
+          "end": 612.743
+        },
+        {
+          "number": 3,
+          "text": "Tool names must be specific, parameters must be unambiguous, and the contract should show input formats, boundaries, examples, and edge cases. Similar tools need obvious differences. Errors should state what failed, which input was invalid, and whether a retry is safe.",
+          "start": 612.743,
+          "end": 630.022
+        },
+        {
+          "number": 4,
+          "text": "Do not make the return format harder than the task. Forcing a model to place large blocks of code inside heavily escaped JSON creates avoidable errors. Return only the information needed for the next decision; dumping an entire log into context increases cost and hides the useful signal.",
+          "start": 630.022,
+          "end": 646.984
+        },
+        {
+          "number": 5,
+          "text": "Anthropic found that its coding agent often made mistakes with relative paths. Changing the tool to require absolute paths made those mistakes much harder to produce.",
+          "start": 646.984,
+          "end": 656.522
+        },
+        {
+          "number": 6,
+          "text": "So do not optimize only the prompt. Observe how the model misuses the interface, then change the interface itself. Before release, test missing parameters, invalid paths, repeated calls, timeouts, and recovery behavior, not just ideal examples.",
+          "start": 656.522,
+          "end": 672.513
+        },
+        {
+          "number": 7,
+          "text": "Chapter recap.",
+          "start": 672.513,
+          "end": 674.051
+        },
+        {
+          "number": 8,
+          "text": "First, names, parameters, and boundaries must be clear.",
+          "start": 674.051,
+          "end": 678.311
+        },
+        {
+          "number": 9,
+          "text": "Second, return formats should not create extra difficulty.",
+          "start": 678.311,
+          "end": 682.205
+        },
+        {
+          "number": 10,
+          "text": "Third, design the interface so common errors are harder to make.",
+          "start": 682.205,
+          "end": 686.2560000000001
+        }
+      ]
+    },
+    {
+      "label": "Decision Method",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "For a new task, walk through the architecture ladder in order.",
+          "start": 686.2560000000001,
+          "end": 690.0440000000001
+        },
+        {
+          "number": 2,
+          "text": "First, can one model call, enhanced with retrieval and examples, complete the task?",
+          "start": 690.0440000000001,
+          "end": 695.6110000000001
+        },
+        {
+          "number": 3,
+          "text": "Second, if one call is not enough, can you define the steps in advance? If yes, prefer chaining, routing, or parallelization.",
+          "start": 695.6110000000001,
+          "end": 704.1110000000001
+        },
+        {
+          "number": 4,
+          "text": "Third, if the task can be divided but the required subtasks appear only during investigation, use orchestrator-workers.",
+          "start": 704.1110000000001,
+          "end": 711.0060000000001
+        },
+        {
+          "number": 5,
+          "text": "Fourth, use an autonomous agent only when the whole path depends on environmental feedback and the model must keep making its own decisions.",
+          "start": 711.0060000000001,
+          "end": 718.4770000000001
+        },
+        {
+          "number": 6,
+          "text": "Frameworks can quickly connect model calls, tools, and workflow steps, but extra abstraction can hide the real prompt, model output, and failure. A framework is fine only when you still understand what happens underneath it.",
+          "start": 718.4770000000001,
+          "end": 731.9000000000001
+        },
+        {
+          "number": 7,
+          "text": "Before upgrading, save a baseline for the simplest system. Compare task completion, average cost, latency, and human interventions on common, difficult, and boundary cases. Break metrics down by task type so averages cannot hide a critical regression. If the complex system does not produce a stable improvement, return to the simpler one. Architecture is a measurable iteration, not a one-time declaration.",
+          "start": 731.9000000000001,
+          "end": 757.0340000000001
+        },
+        {
+          "number": 8,
+          "text": "Chapter recap.",
+          "start": 757.0340000000001,
+          "end": 758.5730000000001
+        },
+        {
+          "number": 9,
+          "text": "First, test whether one augmented model call can finish the task.",
+          "start": 758.5730000000001,
+          "end": 762.8900000000001
+        },
+        {
+          "number": 10,
+          "text": "Second, prefer a workflow while the path remains controllable.",
+          "start": 762.8900000000001,
+          "end": 766.8520000000001
+        },
+        {
+          "number": 11,
+          "text": "Third, let measurable results decide whether to upgrade to an agent.",
+          "start": 766.8520000000001,
+          "end": 771.0480000000001
+        }
+      ]
+    },
+    {
+      "label": "Summary",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Remember the complete method in three lines.",
+          "start": 771.0480000000001,
+          "end": 774.0090000000001
+        },
+        {
+          "number": 2,
+          "text": "If one augmented model call can solve the task, do not build a workflow first.",
+          "start": 774.0090000000001,
+          "end": 779.0380000000001
+        },
+        {
+          "number": 3,
+          "text": "If you can draw the execution path in advance, do not build an autonomous agent first.",
+          "start": 779.0380000000001,
+          "end": 784.1820000000001
+        },
+        {
+          "number": 4,
+          "text": "When you truly need an agent, protect it with environmental feedback, stopping conditions, permissions, and reliable tool interfaces.",
+          "start": 784.1820000000001,
+          "end": 792.2400000000001
+        },
+        {
+          "number": 5,
+          "text": "The Agent Architecture Decision Ladder is simple: one augmented call, then a controlled workflow, then runtime orchestration, and only then full autonomy. Keep each upgrade only when completion rate, cost, latency, or human effort measurably improves. Mature agent systems do not maximize freedom. They make every layer of freedom earn its place.",
+          "start": 792.2400000000001,
+          "end": 813.4800000000001
+        },
+        {
+          "number": 6,
+          "text": "Follow Tiny Agent to keep turning fast-moving AI and agent ideas into practical ways to choose tasks, delegate work, verify results, and control risk.",
+          "start": 813.4800000000001,
+          "end": 822.84
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "c01-s01",
+      "chapter": "Preface",
+      "paragraphs": [
+        1,
+        1
+      ],
+      "start": 0,
+      "end": 6.538,
+      "transition": {
+        "primeAt": 0,
+        "contentRevealAt": 0,
+        "contentAt": 0.16,
+        "humanAt": 0.16,
+        "agentAt": 0.2
+      },
+      "propBeatTimes": [
+        0.22,
+        0.22
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Many teams begin by choosing a",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 473.0078125,
+        "gap": 201.60781250000002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 446.47944594471085,
+        "offsetX": 0,
+        "offsetY": -23.520554055289153,
+        "rawOffsetX": -107.94436214274117,
+        "rawOffsetY": -68.52055405528915,
+        "appliedShiftX": 107.94436214274117,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c01-s02",
+      "chapter": "Preface",
+      "paragraphs": [
+        2,
+        3
+      ],
+      "start": 6.538,
+      "end": 31.442,
+      "transition": {
+        "primeAt": 6.518000000000001,
+        "contentRevealAt": 6.538,
+        "contentAt": 6.578,
+        "humanAt": 6.578,
+        "agentAt": 6.618
+      },
+      "propBeatTimes": [
+        6.758,
+        6.758,
+        6.758,
+        6.758
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Anthropic found that successful production systems",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 6.538,
+          "time": 6.758,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1011.8156140318436,
+        "y": 459.742494091209,
+        "offsetX": 51.81561403184355,
+        "offsetY": -10.257505908791018,
+        "rawOffsetX": 51.81561403184355,
+        "rawOffsetY": -62.25750590879102,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c01-s03",
+      "chapter": "Preface",
+      "paragraphs": [
+        4,
+        5
+      ],
+      "start": 31.442,
+      "end": 51.6,
+      "transition": {
+        "primeAt": 31.422,
+        "contentRevealAt": 31.442,
+        "contentAt": 31.482,
+        "humanAt": 31.482,
+        "agentAt": 31.522
+      },
+      "propBeatTimes": [
+        31.662,
+        31.662,
+        31.662
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "In this video, we will answer",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 31.442,
+          "time": 31.662,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 226.2,
+        "gap": 24
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -105.8900471192361,
+        "rawOffsetY": -43.962885806151576,
+        "appliedShiftX": 105.8900471192361,
+        "appliedShiftY": 43.962885806151576
+      }
+    },
+    {
+      "id": "c02-s01",
+      "chapter": "Architecture Choice",
+      "paragraphs": [
+        1,
+        3
+      ],
+      "start": 51.6,
+      "end": 70.696,
+      "transition": {
+        "primeAt": 53.76,
+        "contentRevealAt": 53.78,
+        "contentAt": 53.94,
+        "humanAt": 53.94,
+        "agentAt": 53.98
+      },
+      "propBeatTimes": [
+        54.46,
+        54.46,
+        54.46
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Start with the distinction that controls",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 51.7,
+          "time": 54.46,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1000.2650602077398,
+        "y": 470,
+        "offsetX": 40.26506020773979,
+        "offsetY": 0,
+        "rawOffsetX": 40.26506020773979,
+        "rawOffsetY": -48.30054982894046,
+        "appliedShiftX": 0,
+        "appliedShiftY": 48.30054982894046
+      }
+    },
+    {
+      "id": "c02-s02",
+      "chapter": "Architecture Choice",
+      "paragraphs": [
+        4,
+        4
+      ],
+      "start": 70.696,
+      "end": 80.282,
+      "transition": {
+        "primeAt": 70.676,
+        "contentRevealAt": 70.696,
+        "contentAt": 70.736,
+        "humanAt": 70.736,
+        "agentAt": 70.77600000000001
+      },
+      "propBeatTimes": [
+        70.916,
+        70.916,
+        70.916
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "An expense report that always moves",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 70.696,
+          "time": 70.916,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.65625,
+        "gap": 212.45625
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 972.2782416804819,
+        "y": 470,
+        "offsetX": 12.27824168048187,
+        "offsetY": 0,
+        "rawOffsetX": 12.27824168048187,
+        "rawOffsetY": -24.657358159499324,
+        "appliedShiftX": 0,
+        "appliedShiftY": 24.657358159499324
+      }
+    },
+    {
+      "id": "c02-s03",
+      "chapter": "Architecture Choice",
+      "paragraphs": [
+        5,
+        5
+      ],
+      "start": 80.282,
+      "end": 94.869,
+      "transition": {
+        "primeAt": 80.262,
+        "contentRevealAt": 80.282,
+        "contentAt": 80.322,
+        "humanAt": 80.322,
+        "agentAt": 80.36200000000001
+      },
+      "propBeatTimes": [
+        80.502,
+        80.502,
+        80.502,
+        80.502
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "An incident investigation is different. You",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 80.282,
+          "time": 80.502,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 304.8125,
+        "gap": 102.61250000000001
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": 115.69082888910634,
+        "rawOffsetY": -0.36055669050688266,
+        "appliedShiftX": -115.69082888910634,
+        "appliedShiftY": 0.36055669050688266
+      }
+    },
+    {
+      "id": "c02-s04",
+      "chapter": "Architecture Choice",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 94.869,
+      "end": 104.648,
+      "transition": {
+        "primeAt": 94.849,
+        "contentRevealAt": 94.869,
+        "contentAt": 94.909,
+        "humanAt": 94.909,
+        "agentAt": 94.94900000000001
+      },
+      "propBeatTimes": [
+        95.089,
+        95.089
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Neither one is more advanced. Workflows",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 94.869,
+          "time": 95.089,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 982.1946026846365,
+        "y": 470,
+        "offsetX": 22.194602684636493,
+        "offsetY": 0,
+        "rawOffsetX": 22.194602684636493,
+        "rawOffsetY": -31.112060160229248,
+        "appliedShiftX": 0,
+        "appliedShiftY": 31.112060160229248
+      }
+    },
+    {
+      "id": "c02-s05",
+      "chapter": "Architecture Choice",
+      "paragraphs": [
+        7,
+        7
+      ],
+      "start": 104.648,
+      "end": 129.83,
+      "transition": {
+        "primeAt": 104.628,
+        "contentRevealAt": 104.648,
+        "contentAt": 104.688,
+        "humanAt": 104.688,
+        "agentAt": 104.72800000000001
+      },
+      "propBeatTimes": [
+        104.868,
+        104.868
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The most important principle is to",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 104.648,
+          "time": 104.868,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 412.20703125,
+        "gap": 178.40703125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 441.63231690339825,
+        "offsetX": 0,
+        "offsetY": -28.367683096601752,
+        "rawOffsetX": -136.7781947550252,
+        "rawOffsetY": -53.36768309660175,
+        "appliedShiftX": 136.7781947550252,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c02-s06",
+      "chapter": "Architecture Choice",
+      "paragraphs": [
+        8,
+        11
+      ],
+      "start": 129.83,
+      "end": 142.68,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        131.369,
+        134.628,
+        138.484
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c03-s01",
+      "chapter": "Core Building Block",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 142.68,
+      "end": 154.362,
+      "transition": {
+        "primeAt": 144.84,
+        "contentRevealAt": 144.86,
+        "contentAt": 145.02,
+        "humanAt": 145.02,
+        "agentAt": 145.06
+      },
+      "propBeatTimes": [
+        145.54000000000002,
+        145.54000000000002,
+        145.54000000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Before workflows and agents, there is",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 142.78,
+          "time": 145.54000000000002,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 328.8004727425774,
+        "gap": 57.40047274257745
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 447.8553732492,
+        "offsetX": 0,
+        "offsetY": -22.1446267508,
+        "rawOffsetX": 63.846494794539694,
+        "rawOffsetY": -60.79486312208866,
+        "appliedShiftX": -63.846494794539694,
+        "appliedShiftY": 38.650236371288656
+      }
+    },
+    {
+      "id": "c03-s02",
+      "chapter": "Core Building Block",
+      "paragraphs": [
+        3,
+        3
+      ],
+      "start": 154.362,
+      "end": 175.199,
+      "transition": {
+        "primeAt": 154.34199999999998,
+        "contentRevealAt": 154.362,
+        "contentAt": 154.402,
+        "humanAt": 154.402,
+        "agentAt": 154.44199999999998
+      },
+      "propBeatTimes": [
+        154.582,
+        154.582,
+        154.582,
+        154.582
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Retrieval supplies current external facts instead",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 154.362,
+          "time": 154.582,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 406.328125,
+        "gap": 204.128125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 978.1809814651718,
+        "y": 470,
+        "offsetX": 18.18098146517184,
+        "offsetY": 0,
+        "rawOffsetX": 18.18098146517184,
+        "rawOffsetY": -29.24369515462911,
+        "appliedShiftX": 0,
+        "appliedShiftY": 29.24369515462911
+      }
+    },
+    {
+      "id": "c03-s03",
+      "chapter": "Core Building Block",
+      "paragraphs": [
+        4,
+        4
+      ],
+      "start": 175.199,
+      "end": 196.23700000000002,
+      "transition": {
+        "primeAt": 175.179,
+        "contentRevealAt": 175.199,
+        "contentAt": 175.239,
+        "humanAt": 175.239,
+        "agentAt": 175.279
+      },
+      "propBeatTimes": [
+        175.419,
+        175.419,
+        175.419,
+        175.419,
+        175.419
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Imagine a support assistant. It retrieves",
+          "props": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "rawTime": 175.199,
+          "time": 175.419,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.44,
+        "gap": 214.24
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 976.9819101078172,
+        "y": 470,
+        "offsetX": 16.981910107817157,
+        "offsetY": 0,
+        "rawOffsetX": 16.981910107817157,
+        "rawOffsetY": -29.817558463823104,
+        "appliedShiftX": 0,
+        "appliedShiftY": 29.817558463823104
+      }
+    },
+    {
+      "id": "c03-s04",
+      "chapter": "Core Building Block",
+      "paragraphs": [
+        5,
+        5
+      ],
+      "start": 196.23700000000002,
+      "end": 203.574,
+      "transition": {
+        "primeAt": 196.217,
+        "contentRevealAt": 196.23700000000002,
+        "contentAt": 196.27700000000002,
+        "humanAt": 196.27700000000002,
+        "agentAt": 196.317
+      },
+      "propBeatTimes": [
+        196.45700000000002,
+        196.45700000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "That single augmented model can already",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 196.23700000000002,
+          "time": 196.45700000000002,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 419.55078125,
+        "gap": 185.75078125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 405.42229374955565,
+        "offsetX": 0,
+        "offsetY": -64.57770625044435,
+        "rawOffsetX": -131.3443806130216,
+        "rawOffsetY": -89.57770625044435,
+        "appliedShiftX": 131.3443806130216,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c03-s05",
+      "chapter": "Core Building Block",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 203.574,
+      "end": 221.603,
+      "transition": {
+        "primeAt": 203.554,
+        "contentRevealAt": 203.574,
+        "contentAt": 203.614,
+        "humanAt": 203.614,
+        "agentAt": 203.654
+      },
+      "propBeatTimes": [
+        203.794,
+        203.794,
+        203.794
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The key is not to connect",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 203.574,
+          "time": 203.794,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1039.8225740614685,
+        "y": 470,
+        "offsetX": 79.82257406146846,
+        "offsetY": 0,
+        "rawOffsetX": 79.82257406146846,
+        "rawOffsetY": -45.49329861460541,
+        "appliedShiftX": 0,
+        "appliedShiftY": 45.49329861460541
+      }
+    },
+    {
+      "id": "c03-s06",
+      "chapter": "Core Building Block",
+      "paragraphs": [
+        7,
+        10
+      ],
+      "start": 221.603,
+      "end": 232.032,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        223.14100000000002,
+        226.324,
+        229.21800000000002
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c04-s01",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        1,
+        1
+      ],
+      "start": 232.032,
+      "end": 239.07000000000002,
+      "transition": {
+        "primeAt": 234.192,
+        "contentRevealAt": 234.21200000000002,
+        "contentAt": 234.372,
+        "humanAt": 234.372,
+        "agentAt": 234.412
+      },
+      "propBeatTimes": [
+        234.89200000000002,
+        234.89200000000002,
+        234.89200000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "When one model call is not",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 232.132,
+          "time": 234.89200000000002,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 317.8160977425774,
+        "gap": 46.41609774257745
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 457.4378557813099,
+        "offsetX": 0,
+        "offsetY": -12.562144218690094,
+        "rawOffsetX": -64.28965432772532,
+        "rawOffsetY": -51.21238058997875,
+        "appliedShiftX": 64.28965432772532,
+        "appliedShiftY": 38.650236371288656
+      }
+    },
+    {
+      "id": "c04-s02",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        2,
+        4
+      ],
+      "start": 239.07000000000002,
+      "end": 277.022,
+      "transition": {
+        "primeAt": 239.05,
+        "contentRevealAt": 239.07000000000002,
+        "contentAt": 239.11,
+        "humanAt": 239.11,
+        "agentAt": 239.15
+      },
+      "propBeatTimes": [
+        239.29000000000002,
+        239.29000000000002,
+        239.29000000000002,
+        239.29000000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The first pattern is prompt chaining",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 239.07000000000002,
+          "time": 239.29000000000002,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 406.328125,
+        "gap": 204.128125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 978.8003036296566,
+        "y": 470,
+        "offsetX": 18.800303629656582,
+        "offsetY": 0,
+        "rawOffsetX": 18.800303629656582,
+        "rawOffsetY": -44.46676725453955,
+        "appliedShiftX": 0,
+        "appliedShiftY": 44.46676725453955
+      }
+    },
+    {
+      "id": "c04-s03",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        5,
+        7
+      ],
+      "start": 277.022,
+      "end": 308.339,
+      "transition": {
+        "primeAt": 277.002,
+        "contentRevealAt": 277.022,
+        "contentAt": 277.062,
+        "humanAt": 277.062,
+        "agentAt": 277.10200000000003
+      },
+      "propBeatTimes": [
+        277.242,
+        277.242,
+        277.242,
+        277.242
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The second pattern is routing",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 277.022,
+          "time": 277.242,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 305.875,
+        "gap": 103.67500000000001
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 490.1677961095968,
+        "offsetX": 0,
+        "offsetY": 20.167796109596793,
+        "rawOffsetX": -108.53855605355614,
+        "rawOffsetY": 32.16779610959679,
+        "appliedShiftX": 108.53855605355614,
+        "appliedShiftY": -12
+      }
+    },
+    {
+      "id": "c04-s04",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        8,
+        9
+      ],
+      "start": 308.339,
+      "end": 324.387,
+      "transition": {
+        "primeAt": 308.319,
+        "contentRevealAt": 308.339,
+        "contentAt": 308.379,
+        "humanAt": 308.379,
+        "agentAt": 308.41900000000004
+      },
+      "propBeatTimes": [
+        308.559,
+        308.559,
+        308.559,
+        308.559
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The third pattern is parallelization, and",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 308.339,
+          "time": 308.559,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 288.875,
+        "gap": 86.67500000000001
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 969.9642379650277,
+        "y": 470,
+        "offsetX": 9.964237965027678,
+        "offsetY": 0,
+        "rawOffsetX": 9.964237965027678,
+        "rawOffsetY": -25.99925000801136,
+        "appliedShiftX": 0,
+        "appliedShiftY": 25.99925000801136
+      }
+    },
+    {
+      "id": "c04-s05",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        10,
+        11
+      ],
+      "start": 324.387,
+      "end": 349.89700000000005,
+      "transition": {
+        "primeAt": 324.367,
+        "contentRevealAt": 324.387,
+        "contentAt": 324.427,
+        "humanAt": 324.427,
+        "agentAt": 324.46700000000004
+      },
+      "propBeatTimes": [
+        324.607,
+        324.607,
+        324.607,
+        324.607
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Voting asks several independent attempts to",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 324.387,
+          "time": 324.607,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 318.625,
+        "gap": 116.42500000000001
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": 83.05881804590899,
+        "rawOffsetY": -35.27460335145315,
+        "appliedShiftX": -83.05881804590899,
+        "appliedShiftY": 35.27460335145315
+      }
+    },
+    {
+      "id": "c04-s06",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        12,
+        14
+      ],
+      "start": 349.89700000000005,
+      "end": 367.83000000000004,
+      "transition": {
+        "primeAt": 349.87700000000007,
+        "contentRevealAt": 349.89700000000005,
+        "contentAt": 349.93700000000007,
+        "humanAt": 349.93700000000007,
+        "agentAt": 349.9770000000001
+      },
+      "propBeatTimes": [
+        350.1170000000001,
+        350.1170000000001,
+        350.1170000000001,
+        350.1170000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The fourth pattern is orchestrator-workers",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 349.89700000000005,
+          "time": 350.1170000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 288.875,
+        "gap": 86.67500000000001
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 982.6161470433096,
+        "y": 470,
+        "offsetX": 22.61614704330964,
+        "offsetY": 0,
+        "rawOffsetX": 22.61614704330964,
+        "rawOffsetY": -47.80609661713896,
+        "appliedShiftX": 0,
+        "appliedShiftY": 47.80609661713896
+      }
+    },
+    {
+      "id": "c04-s07",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        15,
+        16
+      ],
+      "start": 367.83000000000004,
+      "end": 395.78200000000004,
+      "transition": {
+        "primeAt": 367.81000000000006,
+        "contentRevealAt": 367.83000000000004,
+        "contentAt": 367.87000000000006,
+        "humanAt": 367.87000000000006,
+        "agentAt": 367.9100000000001
+      },
+      "propBeatTimes": [
+        368.05000000000007,
+        368.05000000000007,
+        368.05000000000007,
+        368.05000000000007
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Consider changing a large codebase. Before",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 367.83000000000004,
+          "time": 368.05000000000007,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 428.046875,
+        "gap": 225.846875
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 953.363732434353,
+        "y": 470,
+        "offsetX": -6.636267565647017,
+        "offsetY": 0,
+        "rawOffsetX": -186.63626756564702,
+        "rawOffsetY": -60.10743755712173,
+        "appliedShiftX": 180,
+        "appliedShiftY": 60.10743755712173
+      }
+    },
+    {
+      "id": "c04-s08",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        17,
+        18
+      ],
+      "start": 395.78200000000004,
+      "end": 412.25300000000004,
+      "transition": {
+        "primeAt": 395.76200000000006,
+        "contentRevealAt": 395.78200000000004,
+        "contentAt": 395.82200000000006,
+        "humanAt": 395.82200000000006,
+        "agentAt": 395.8620000000001
+      },
+      "propBeatTimes": [
+        396.00200000000007,
+        396.00200000000007,
+        396.00200000000007,
+        396.00200000000007
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The fifth pattern is evaluator-optimizer",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 395.78200000000004,
+          "time": 396.00200000000007,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 269.4125,
+        "gap": 67.21250000000003
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 958.9727071942915,
+        "y": 433.52119028761376,
+        "offsetX": -1.0272928057084982,
+        "offsetY": -36.47880971238624,
+        "rawOffsetX": -1.0272928057084982,
+        "rawOffsetY": -79.07880971238626,
+        "appliedShiftX": 0,
+        "appliedShiftY": 42.60000000000002
+      }
+    },
+    {
+      "id": "c04-s09",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        19,
+        19
+      ],
+      "start": 412.25300000000004,
+      "end": 425.55100000000004,
+      "transition": {
+        "primeAt": 412.23300000000006,
+        "contentRevealAt": 412.25300000000004,
+        "contentAt": 412.29300000000006,
+        "humanAt": 412.29300000000006,
+        "agentAt": 412.3330000000001
+      },
+      "propBeatTimes": [
+        412.47300000000007,
+        412.47300000000007,
+        412.47300000000007
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The loop works only when feedback",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 412.25300000000004,
+          "time": 412.47300000000007,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.65625,
+        "gap": 212.45625
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 969.4113134421284,
+        "y": 470,
+        "offsetX": 9.411313442128403,
+        "offsetY": 0,
+        "rawOffsetX": 9.411313442128403,
+        "rawOffsetY": -31.992824320162242,
+        "appliedShiftX": 0,
+        "appliedShiftY": 31.992824320162242
+      }
+    },
+    {
+      "id": "c04-s10",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        20,
+        20
+      ],
+      "start": 425.55100000000004,
+      "end": 432.07000000000005,
+      "transition": {
+        "primeAt": 425.53100000000006,
+        "contentRevealAt": 425.55100000000004,
+        "contentAt": 425.59100000000007,
+        "humanAt": 425.59100000000007,
+        "agentAt": 425.6310000000001
+      },
+      "propBeatTimes": [
+        425.7710000000001,
+        425.7710000000001,
+        425.7710000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Without a clear evaluation standard, the",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 425.55100000000004,
+          "time": 425.7710000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 286.434375,
+        "gap": 52.63437499999998
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 389.29629670272243,
+        "offsetX": 0,
+        "offsetY": -80.70370329727757,
+        "rawOffsetX": -62.264836620592405,
+        "rawOffsetY": -105.70370329727757,
+        "appliedShiftX": 62.264836620592405,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c04-s11",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        21,
+        21
+      ],
+      "start": 432.07000000000005,
+      "end": 454.483,
+      "transition": {
+        "primeAt": 432.05000000000007,
+        "contentRevealAt": 432.07000000000005,
+        "contentAt": 432.11000000000007,
+        "humanAt": 432.11000000000007,
+        "agentAt": 432.1500000000001
+      },
+      "propBeatTimes": [
+        432.2900000000001,
+        432.2900000000001,
+        432.2900000000001,
+        432.2900000000001,
+        432.2900000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The reusable rule is to locate",
+          "props": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "rawTime": 432.07000000000005,
+          "time": 432.2900000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 353.890625,
+        "gap": 151.690625
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 453.7447148975982,
+        "offsetX": 0,
+        "offsetY": -16.255285102401785,
+        "rawOffsetX": 110.90777967869053,
+        "rawOffsetY": -66.75528510240179,
+        "appliedShiftX": -110.90777967869053,
+        "appliedShiftY": 50.5
+      }
+    },
+    {
+      "id": "c04-s12",
+      "chapter": "Workflow Patterns",
+      "paragraphs": [
+        22,
+        25
+      ],
+      "start": 454.483,
+      "end": 466.8,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        456.02200000000005,
+        459.37800000000004,
+        463.012
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c05-s01",
+      "chapter": "Autonomous Agents",
+      "paragraphs": [
+        1,
+        3
+      ],
+      "start": 466.8,
+      "end": 491.732,
+      "transition": {
+        "primeAt": 468.96000000000004,
+        "contentRevealAt": 468.98,
+        "contentAt": 469.14000000000004,
+        "humanAt": 469.14000000000004,
+        "agentAt": 469.18000000000006
+      },
+      "propBeatTimes": [
+        469.66,
+        469.66,
+        469.66,
+        469.66
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "You enter true agent territory when",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 466.90000000000003,
+          "time": 469.66,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 269.4125,
+        "gap": 67.21250000000003
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 969.7011485016284,
+        "y": 464.29442393052295,
+        "offsetX": 9.701148501628381,
+        "offsetY": -5.705576069477047,
+        "rawOffsetX": 9.701148501628381,
+        "rawOffsetY": -48.30557606947707,
+        "appliedShiftX": 0,
+        "appliedShiftY": 42.60000000000002
+      }
+    },
+    {
+      "id": "c05-s02",
+      "chapter": "Autonomous Agents",
+      "paragraphs": [
+        4,
+        6
+      ],
+      "start": 491.732,
+      "end": 516.107,
+      "transition": {
+        "primeAt": 491.71200000000005,
+        "contentRevealAt": 491.732,
+        "contentAt": 491.77200000000005,
+        "humanAt": 491.77200000000005,
+        "agentAt": 491.81200000000007
+      },
+      "propBeatTimes": [
+        491.95200000000006,
+        491.95200000000006,
+        491.95200000000006,
+        491.95200000000006,
+        491.95200000000006
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The critical question is not how",
+          "props": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "rawTime": 491.732,
+          "time": 491.95200000000006,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 359.78125,
+        "gap": 157.58125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 466.41323332776625,
+        "offsetX": 0,
+        "offsetY": -3.5867666722337503,
+        "rawOffsetX": -118.53025100664422,
+        "rawOffsetY": -54.08676667223375,
+        "appliedShiftX": 118.53025100664422,
+        "appliedShiftY": 50.5
+      }
+    },
+    {
+      "id": "c05-s03",
+      "chapter": "Autonomous Agents",
+      "paragraphs": [
+        7,
+        7
+      ],
+      "start": 516.107,
+      "end": 523.742,
+      "transition": {
+        "primeAt": 516.087,
+        "contentRevealAt": 516.107,
+        "contentAt": 516.1469999999999,
+        "humanAt": 516.1469999999999,
+        "agentAt": 516.1869999999999
+      },
+      "propBeatTimes": [
+        516.327,
+        516.327,
+        516.327
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Customer support and coding are strong",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 516.107,
+          "time": 516.327,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 226.2,
+        "gap": 24
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 465.12260508612445,
+        "offsetX": 0,
+        "offsetY": -4.877394913875548,
+        "rawOffsetX": 94.18802372746609,
+        "rawOffsetY": -63.80182929535289,
+        "appliedShiftX": -94.18802372746609,
+        "appliedShiftY": 58.92443438147734
+      }
+    },
+    {
+      "id": "c05-s04",
+      "chapter": "Autonomous Agents",
+      "paragraphs": [
+        8,
+        8
+      ],
+      "start": 523.742,
+      "end": 542.223,
+      "transition": {
+        "primeAt": 523.722,
+        "contentRevealAt": 523.742,
+        "contentAt": 523.7819999999999,
+        "humanAt": 523.7819999999999,
+        "agentAt": 523.8219999999999
+      },
+      "propBeatTimes": [
+        523.962,
+        523.962,
+        523.962
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Autonomy also raises cost and compounds",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 523.742,
+          "time": 523.962,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 289.903125,
+        "gap": 56.10312499999998
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 421.0449790504313,
+        "offsetX": 0,
+        "offsetY": -48.95502094956868,
+        "rawOffsetX": -99.8366784315266,
+        "rawOffsetY": -73.95502094956868,
+        "appliedShiftX": 99.8366784315266,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c05-s05",
+      "chapter": "Autonomous Agents",
+      "paragraphs": [
+        9,
+        9
+      ],
+      "start": 542.223,
+      "end": 558.694,
+      "transition": {
+        "primeAt": 542.203,
+        "contentRevealAt": 542.223,
+        "contentAt": 542.2629999999999,
+        "humanAt": 542.2629999999999,
+        "agentAt": 542.3029999999999
+      },
+      "propBeatTimes": [
+        542.443,
+        542.443,
+        542.443
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Production agents therefore need sandboxes, permission",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 542.223,
+          "time": 542.443,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 227.19233125431822,
+        "gap": 24.99233125431823
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -116.4169055860259,
+        "rawOffsetY": -38.01378692423748,
+        "appliedShiftX": 116.4169055860259,
+        "appliedShiftY": 38.01378692423748
+      }
+    },
+    {
+      "id": "c05-s06",
+      "chapter": "Autonomous Agents",
+      "paragraphs": [
+        10,
+        10
+      ],
+      "start": 558.694,
+      "end": 587.309,
+      "transition": {
+        "primeAt": 558.674,
+        "contentRevealAt": 558.694,
+        "contentAt": 558.7339999999999,
+        "humanAt": 558.7339999999999,
+        "agentAt": 558.7739999999999
+      },
+      "propBeatTimes": [
+        558.914,
+        558.914,
+        558.914
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "An agent is not the absence",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 558.694,
+          "time": 558.914,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 372.8,
+        "contentTop": 474.765625,
+        "gap": 101.96562499999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 400.47329049754444,
+        "offsetX": 0,
+        "offsetY": -69.52670950245556,
+        "rawOffsetX": 45.322663501124225,
+        "rawOffsetY": -114.52670950245556,
+        "appliedShiftX": -45.322663501124225,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c05-s07",
+      "chapter": "Autonomous Agents",
+      "paragraphs": [
+        11,
+        14
+      ],
+      "start": 587.309,
+      "end": 600.792,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        588.848,
+        592.694,
+        596.848
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c06-s01",
+      "chapter": "Tool Design",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 600.792,
+      "end": 612.743,
+      "transition": {
+        "primeAt": 602.952,
+        "contentRevealAt": 602.972,
+        "contentAt": 603.132,
+        "humanAt": 603.132,
+        "agentAt": 603.1719999999999
+      },
+      "propBeatTimes": [
+        603.652,
+        603.652,
+        603.652
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Even a capable model will fail",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 600.892,
+          "time": 603.652,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 473.0078125,
+        "gap": 201.60781250000002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 432.65442848297243,
+        "offsetX": 0,
+        "offsetY": -37.345571517027565,
+        "rawOffsetX": -67.32416531290812,
+        "rawOffsetY": -82.34557151702757,
+        "appliedShiftX": 67.32416531290812,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c06-s02",
+      "chapter": "Tool Design",
+      "paragraphs": [
+        3,
+        3
+      ],
+      "start": 612.743,
+      "end": 630.022,
+      "transition": {
+        "primeAt": 612.7230000000001,
+        "contentRevealAt": 612.743,
+        "contentAt": 612.783,
+        "humanAt": 612.783,
+        "agentAt": 612.823
+      },
+      "propBeatTimes": [
+        612.9630000000001,
+        612.9630000000001,
+        612.9630000000001,
+        612.9630000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Tool names must be specific, parameters",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 612.743,
+          "time": 612.9630000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.2125,
+        "gap": 112.01249999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": 116.56948912254143,
+        "rawOffsetY": -12.452455669058509,
+        "appliedShiftX": -116.56948912254143,
+        "appliedShiftY": 12.452455669058509
+      }
+    },
+    {
+      "id": "c06-s03",
+      "chapter": "Tool Design",
+      "paragraphs": [
+        4,
+        4
+      ],
+      "start": 630.022,
+      "end": 646.984,
+      "transition": {
+        "primeAt": 630.0020000000001,
+        "contentRevealAt": 630.022,
+        "contentAt": 630.062,
+        "humanAt": 630.062,
+        "agentAt": 630.102
+      },
+      "propBeatTimes": [
+        630.2420000000001,
+        630.2420000000001,
+        630.2420000000001,
+        630.2420000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Do not make the return format",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 630.022,
+          "time": 630.2420000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 954.7426945345406,
+        "y": 468.0952893415829,
+        "offsetX": -5.257305465459353,
+        "offsetY": -1.904710658417116,
+        "rawOffsetX": -5.257305465459353,
+        "rawOffsetY": -53.904710658417116,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c06-s04",
+      "chapter": "Tool Design",
+      "paragraphs": [
+        5,
+        5
+      ],
+      "start": 646.984,
+      "end": 656.522,
+      "transition": {
+        "primeAt": 646.964,
+        "contentRevealAt": 646.984,
+        "contentAt": 647.024,
+        "humanAt": 647.024,
+        "agentAt": 647.064
+      },
+      "propBeatTimes": [
+        647.2040000000001,
+        647.2040000000001,
+        647.2040000000001,
+        647.2040000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Anthropic found that its coding agent",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 646.984,
+          "time": 647.2040000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1009.1251415035528,
+        "y": 457.729289813622,
+        "offsetX": 49.125141503552754,
+        "offsetY": -12.270710186377983,
+        "rawOffsetX": 49.125141503552754,
+        "rawOffsetY": -64.27071018637798,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c06-s05",
+      "chapter": "Tool Design",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 656.522,
+      "end": 672.513,
+      "transition": {
+        "primeAt": 656.5020000000001,
+        "contentRevealAt": 656.522,
+        "contentAt": 656.562,
+        "humanAt": 656.562,
+        "agentAt": 656.602
+      },
+      "propBeatTimes": [
+        656.7420000000001,
+        656.7420000000001,
+        656.7420000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "So do not optimize only the",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 656.522,
+          "time": 656.7420000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 419.55078125,
+        "gap": 185.75078125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 393.4142683655513,
+        "offsetX": 0,
+        "offsetY": -76.58573163444868,
+        "rawOffsetX": -115.62971587486652,
+        "rawOffsetY": -101.58573163444868,
+        "appliedShiftX": 115.62971587486652,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c06-s06",
+      "chapter": "Tool Design",
+      "paragraphs": [
+        7,
+        10
+      ],
+      "start": 672.513,
+      "end": 686.2560000000001,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        674.051,
+        678.311,
+        682.205
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c07-s01",
+      "chapter": "Decision Method",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 686.2560000000001,
+      "end": 695.6110000000001,
+      "transition": {
+        "primeAt": 688.416,
+        "contentRevealAt": 688.436,
+        "contentAt": 688.596,
+        "humanAt": 688.596,
+        "agentAt": 688.636
+      },
+      "propBeatTimes": [
+        689.1160000000001,
+        689.1160000000001,
+        689.1160000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "For a new task, walk through",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 686.3560000000001,
+          "time": 689.1160000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 475.869140625,
+        "gap": 204.46914062500002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 428.5563907599503,
+        "offsetX": 0,
+        "offsetY": -41.44360924004968,
+        "rawOffsetX": 41.89986131026353,
+        "rawOffsetY": -86.44360924004968,
+        "appliedShiftX": -41.89986131026353,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c07-s02",
+      "chapter": "Decision Method",
+      "paragraphs": [
+        3,
+        3
+      ],
+      "start": 695.6110000000001,
+      "end": 704.1110000000001,
+      "transition": {
+        "primeAt": 695.5910000000001,
+        "contentRevealAt": 695.6110000000001,
+        "contentAt": 695.6510000000001,
+        "humanAt": 695.6510000000001,
+        "agentAt": 695.691
+      },
+      "propBeatTimes": [
+        695.8310000000001,
+        695.8310000000001,
+        695.8310000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Second, if one call is not",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 695.6110000000001,
+          "time": 695.8310000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 226.2,
+        "gap": 24
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -124.94164692912398,
+        "rawOffsetY": -29.863604975342184,
+        "appliedShiftX": 124.94164692912398,
+        "appliedShiftY": 29.863604975342184
+      }
+    },
+    {
+      "id": "c07-s03",
+      "chapter": "Decision Method",
+      "paragraphs": [
+        4,
+        4
+      ],
+      "start": 704.1110000000001,
+      "end": 711.0060000000001,
+      "transition": {
+        "primeAt": 704.0910000000001,
+        "contentRevealAt": 704.1110000000001,
+        "contentAt": 704.1510000000001,
+        "humanAt": 704.1510000000001,
+        "agentAt": 704.191
+      },
+      "propBeatTimes": [
+        704.3310000000001,
+        704.3310000000001,
+        704.3310000000001,
+        704.3310000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Third, if the task can be",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 704.1110000000001,
+          "time": 704.3310000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 288.875,
+        "gap": 86.67500000000001
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 984.4143713373916,
+        "y": 470,
+        "offsetX": 24.41437133739157,
+        "offsetY": 0,
+        "rawOffsetX": 24.41437133739157,
+        "rawOffsetY": -27.523417456236075,
+        "appliedShiftX": 0,
+        "appliedShiftY": 27.523417456236075
+      }
+    },
+    {
+      "id": "c07-s04",
+      "chapter": "Decision Method",
+      "paragraphs": [
+        5,
+        5
+      ],
+      "start": 711.0060000000001,
+      "end": 718.4770000000001,
+      "transition": {
+        "primeAt": 710.9860000000001,
+        "contentRevealAt": 711.0060000000001,
+        "contentAt": 711.046,
+        "humanAt": 711.046,
+        "agentAt": 711.086
+      },
+      "propBeatTimes": [
+        711.2260000000001,
+        711.2260000000001,
+        711.2260000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Fourth, use an autonomous agent only",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 711.0060000000001,
+          "time": 711.2260000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 269.834375,
+        "gap": 67.63437500000003
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 966.940625924081,
+        "y": 470,
+        "offsetX": 6.940625924081019,
+        "offsetY": 0,
+        "rawOffsetX": 6.940625924081019,
+        "rawOffsetY": -79.74321966549974,
+        "appliedShiftX": 0,
+        "appliedShiftY": 79.74321966549974
+      }
+    },
+    {
+      "id": "c07-s05",
+      "chapter": "Decision Method",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 718.4770000000001,
+      "end": 731.9000000000001,
+      "transition": {
+        "primeAt": 718.4570000000001,
+        "contentRevealAt": 718.4770000000001,
+        "contentAt": 718.517,
+        "humanAt": 718.517,
+        "agentAt": 718.557
+      },
+      "propBeatTimes": [
+        718.6970000000001,
+        718.6970000000001,
+        718.6970000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Frameworks can quickly connect model calls",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 718.4770000000001,
+          "time": 718.6970000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1039.3924252132124,
+        "y": 453.11692957675695,
+        "offsetX": 79.39242521321239,
+        "offsetY": -16.883070423243055,
+        "rawOffsetX": 79.39242521321239,
+        "rawOffsetY": -68.88307042324305,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c07-s06",
+      "chapter": "Decision Method",
+      "paragraphs": [
+        7,
+        7
+      ],
+      "start": 731.9000000000001,
+      "end": 757.0340000000001,
+      "transition": {
+        "primeAt": 731.8800000000001,
+        "contentRevealAt": 731.9000000000001,
+        "contentAt": 731.94,
+        "humanAt": 731.94,
+        "agentAt": 731.98
+      },
+      "propBeatTimes": [
+        732.1200000000001,
+        732.1200000000001,
+        732.1200000000001,
+        732.1200000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Before upgrading, save a baseline for",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 731.9000000000001,
+          "time": 732.1200000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.2125,
+        "gap": 112.01249999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 450.107026457022,
+        "offsetX": 0,
+        "offsetY": -19.892973542977984,
+        "rawOffsetX": 88.92096193732709,
+        "rawOffsetY": -67.29297354297796,
+        "appliedShiftX": -88.92096193732709,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "id": "c07-s07",
+      "chapter": "Decision Method",
+      "paragraphs": [
+        8,
+        11
+      ],
+      "start": 757.0340000000001,
+      "end": 771.0480000000001,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        758.5730000000001,
+        762.8900000000001,
+        766.8520000000001
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c08-s01",
+      "chapter": "Summary",
+      "paragraphs": [
+        1,
+        6
+      ],
+      "start": 771.0480000000001,
+      "end": 822.84,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        774.0090000000001,
+        779.0380000000001,
+        784.1820000000001
+      ],
+      "ctaAt": 813.4800000000001,
+      "visualBalance": null
+    }
+  ]
+}

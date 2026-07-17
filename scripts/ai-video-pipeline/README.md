@@ -13,9 +13,9 @@ Postiz Public API
 
 ## Chosen series style
 
-The current direction is `Tiny Agent`: short AI Agent explainers for an
-overseas TikTok and YouTube Shorts audience. Each video should explain one tiny
-technical idea in 20-30 seconds with a fixed, low-distraction whiteboard
+The current direction is `Tiny Agent`: source-led AI Agent explainers for an
+overseas TikTok and YouTube Shorts audience. Each video explains one focused
+technical idea in 50-60 seconds with a fixed, low-distraction whiteboard
 stick-figure look.
 
 Style rules:
@@ -40,12 +40,15 @@ Style rules:
   pan/zoom, timing, audio, and FFmpeg composition.
 - Use per-scene `Subtitle blocks` for the bottom caption box. Do not repeat the
   same formula or on-screen text across every scene.
+- End every published episode with the user-value CTA: `Follow Tiny Agent.
+  Learn one AI agent idea every day.` Do not use sourcing, citations, production
+  process, or a next-episode teaser as the follow reason.
 
 Recommended production flow:
 
 ```text
-topic/news -> script -> narration audio -> 2-3 keyframes for review ->
-full keyframes -> subtitle/overlay layer -> FFmpeg MP4 -> manual preview ->
+source material -> script -> narration audio -> 8-10 semantic keyframes ->
+subtitle/overlay layer -> FFmpeg MP4 -> manual preview ->
 Postiz publish
 ```
 
@@ -62,7 +65,7 @@ instead of falling back to Canvas placeholders.
 
 The runner also fails before publishing if any required QA gate fails:
 
-- MP4 must be `1080x1920`, `30fps`, and `20-30s`.
+- MP4 must be `1080x1920`, `30fps`, and `45-65s`; target `50-60s`.
 - Tiny Agent uses the shared YouTube Shorts/TikTok/Facebook Reels balanced
   layout: all fixed layers are centered at `x=540`, the main art occupies
   `y=300-1110` with an `820x780` maximum, and its content bbox must cover at
@@ -133,7 +136,7 @@ pnpm ai-video:run -- \
   --no-llm \
   --topic "An AI agent is not just a chatbot" \
   --tts edge-tts \
-  --voice en-US-BrianNeural \
+  --voice en-US-AnaNeural \
   --rate '+8%' \
   --dry-run
 ```
@@ -145,7 +148,7 @@ node scripts/ai-video-pipeline/run.mjs \
   --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
   --date 2026-07-06 \
   --tts edge-tts \
-  --voice en-US-BrianNeural \
+  --voice en-US-AnaNeural \
   --rate '+8%' \
   --dry-run
 ```
@@ -156,7 +159,7 @@ Generate and publish through connected YouTube/TikTok/Facebook channels:
 node scripts/ai-video-pipeline/run.mjs \
   --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
   --tts edge-tts \
-  --voice en-US-BrianNeural \
+  --voice en-US-AnaNeural \
   --rate '+8%' \
   --platform all \
   --skip-missing-platforms \
@@ -208,6 +211,8 @@ Useful publishing switches:
   with `ffprobe`, and keeps the original QA metadata in the new summary.
 - `--reuse-summary`: optional summary JSON path for `--reuse-video`; defaults
   to `summary.json` beside the MP4.
+- Tiny Agent `summary.json` files include the final `youtubeDescription` and
+  fixed `youtubeTrackingUrl` used for YouTube publishing.
 - `--skip-missing-platforms`: publish to connected channels and skip channels
   that are not connected yet.
 - `--skip-token-refresh`: skip local YouTube/TikTok access-token refresh.
@@ -256,6 +261,7 @@ variables:
   macOS; `edge-tts` uses `uvx edge-tts` by default and is the recommended
   prototype voice for `Tiny Agent`.
 - `AI_VIDEO_TTS_VOICE`: voice name for the selected TTS provider.
+- Archived Chinese and English `edge-tts` samples and selection instructions live in `scripts/ai-video-pipeline/voice-catalogs/edge-tts/`.
 - `AI_VIDEO_TTS_RATE`: speech rate. For `edge-tts`, use values like `+8%`; for
   macOS `say`, use numeric words per minute like `188`.
 - `AI_VIDEO_EDGE_TTS_COMMAND`: command used to run `edge-tts`, default `uvx`.
@@ -291,7 +297,9 @@ Reels.
 Current rollout:
 
 1. YouTube Tiny Agent uploads publish as `public` after the local MP4 QA gates
-   pass, and are added to the `Tiny Agent` playlist.
+   pass, are added to the `Tiny Agent` playlist, and include the fixed tracking
+   URL `https://indieseek.co/?utm_source=youtube&utm_campaign=tiny_agent` in the
+   description. TikTok and Facebook captions do not include this URL.
 2. Facebook Tiny Agent Reels publish as Page Reels with `video_state=PUBLISHED`.
 3. TikTok Tiny Agent videos use Direct Post with `PUBLIC_TO_EVERYONE`. Public
    Direct Post failures are reported as failures and do not fall back to the
@@ -303,17 +311,20 @@ baseline is `var/ai-video-pipeline/runs/2026-07-11-cross-platform-balanced-previ
 Do not restore the older left-shifted safe-zone experiment or the old subtitle
 box at `y=1530-1800`.
 
-The automation command should use the plan file and the current Asia/Shanghai
-date. Codex automation should first generate and inspect the day's 3-4
-keyframes with Codex image generation, save them as provided keyframes, then
-run Postiz publishing with that directory:
+The automation should use the current Asia/Shanghai date and the matching entry
+from `content-plans/2026-07-source-led-video-material.zh-CN.md`. It compiles that
+review material into an English daily runner plan, preserving the verified
+claim while using the fixed user-value CTA. Codex automation then generates and
+inspects the day's 8-10 semantic keyframes, saves them as provided keyframes,
+and runs Postiz publishing with that directory:
 
 ```bash
 node scripts/ai-video-pipeline/run.mjs \
-  --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
+  --plan-file var/ai-video-pipeline/publish-plans/<YYYY-MM-DD>-source-led.en.md \
+  --date <YYYY-MM-DD> \
   --keyframes-dir var/ai-video-pipeline/provided-keyframes/<YYYY-MM-DD-slug> \
   --tts edge-tts \
-  --voice en-US-BrianNeural \
+  --voice en-US-AnaNeural \
   --rate '+8%' \
   --platform all \
   --skip-missing-platforms \
@@ -336,7 +347,7 @@ skip regeneration and publish the approved MP4 directly:
 
 ```bash
 node scripts/ai-video-pipeline/run.mjs \
-  --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
+  --plan-file var/ai-video-pipeline/publish-plans/YYYY-MM-DD-source-led.en.md \
   --date YYYY-MM-DD \
   --reuse-video var/ai-video-pipeline/runs/<approved-run>/video.mp4 \
   --platform all \

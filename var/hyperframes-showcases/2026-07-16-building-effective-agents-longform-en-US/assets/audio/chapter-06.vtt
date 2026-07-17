@@ -1,0 +1,71 @@
+1
+00:00:00,100 --> 00:00:04,886
+Even a capable model will fail repeatedly when its tools are difficult to understand.
+
+2
+00:00:04,836 --> 00:00:08,214
+Humans need a well-designed interface to use software.
+
+3
+00:00:08,214 --> 00:00:11,951
+Models need a clear agent-computer interface to use tools.
+
+4
+00:00:11,951 --> 00:00:21,173
+Tool names must be specific, parameters must be unambiguous, and the contract should show input formats, boundaries, examples, and edge cases.
+
+5
+00:00:21,173 --> 00:00:23,961
+Similar tools need obvious differences.
+
+6
+00:00:23,961 --> 00:00:29,230
+Errors should state what failed, which input was invalid, and whether a retry is safe.
+
+7
+00:00:29,230 --> 00:00:32,355
+Do not make the return format harder than the task.
+
+8
+00:00:32,355 --> 00:00:38,500
+Forcing a model to place large blocks of code inside heavily escaped JSON creates avoidable errors.
+
+9
+00:00:38,500 --> 00:00:46,192
+Return only the information needed for the next decision; dumping an entire log into context increases cost and hides the useful signal.
+
+10
+00:00:46,192 --> 00:00:50,721
+Anthropic found that its coding agent often made mistakes with relative paths.
+
+11
+00:00:50,721 --> 00:00:55,730
+Changing the tool to require absolute paths made those mistakes much harder to produce.
+
+12
+00:00:55,730 --> 00:00:58,326
+So do not optimize only the prompt.
+
+13
+00:00:58,326 --> 00:01:03,048
+Observe how the model misuses the interface, then change the interface itself.
+
+14
+00:01:03,048 --> 00:01:11,721
+Before release, test missing parameters, invalid paths, repeated calls, timeouts, and recovery behavior, not just ideal examples.
+
+15
+00:01:11,721 --> 00:01:13,259
+Chapter recap.
+
+16
+00:01:13,259 --> 00:01:17,519
+First, names, parameters, and boundaries must be clear.
+
+17
+00:01:17,519 --> 00:01:21,413
+Second, return formats should not create extra difficulty.
+
+18
+00:01:21,413 --> 00:01:25,442
+Third, design the interface so common errors are harder to make.

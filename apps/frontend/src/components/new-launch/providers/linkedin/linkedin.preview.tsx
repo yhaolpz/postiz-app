@@ -5,6 +5,15 @@ import { stripHtmlValidation } from '@gitroom/helpers/utils/strip.html.validatio
 import { textSlicer } from '@gitroom/helpers/utils/count.length';
 import { FC } from 'react';
 import { VideoOrImage } from '@gitroom/react/helpers/video.or.image';
+import { useWatch } from 'react-hook-form';
+
+const articleHost = (url?: string) => {
+  try {
+    return new URL(url || '').hostname.replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+};
 
 const Icons = () => {
   return (
@@ -250,6 +259,10 @@ export const LinkedinPreview: FC<{
   const { value: topValue, integration } = useIntegration();
   const current = useLaunchStore((state) => state.current);
   const mediaDir = useMediaDirectory();
+  const postType = useWatch({ name: 'post_type' }) || 'post';
+  const articleUrl = useWatch({ name: 'article_url' });
+  const articleTitle = useWatch({ name: 'article_title' });
+  const articleDescription = useWatch({ name: 'article_description' });
 
   const renderContent = topValue.map((p) => {
     const newContent = stripHtmlValidation(
@@ -323,7 +336,37 @@ export const LinkedinPreview: FC<{
           __html: renderContent?.[0]?.text,
         }}
       />
-      {!!renderContent?.[0]?.images?.length && (
+      {postType === 'article' && articleTitle && articleUrl && (
+        <a
+          href={articleUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="-mx-[15px] overflow-hidden border-y border-borderLinkedin bg-newBgColorInner"
+        >
+          {!!renderContent?.[0]?.images?.[0] && (
+            <div className="h-[220px] overflow-hidden">
+              <VideoOrImage
+                autoplay={false}
+                src={mediaDir.set(renderContent[0].images[0].path)}
+              />
+            </div>
+          )}
+          <div className="flex flex-col gap-[5px] px-[15px] py-[12px]">
+            <div className="break-words text-[14px] font-[600]">
+              {articleTitle}
+            </div>
+            {!!articleDescription && (
+              <div className="break-words text-[12px] text-textLinkedin">
+                {articleDescription}
+              </div>
+            )}
+            <div className="break-words text-[11px] text-textLinkedin">
+              {articleHost(articleUrl)}
+            </div>
+          </div>
+        </a>
+      )}
+      {postType !== 'article' && !!renderContent?.[0]?.images?.length && (
         <div className="h-[280px] -mx-[15px] overflow-hidden flex">
           {renderContent?.[0]?.images.map((image, index) => (
             <a

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "topicDate": "2026-07-16",
+  "source": {
+    "publisher": "Anthropic",
+    "title": "Building effective agents",
+    "publishedDate": "2024-12-19",
+    "canonicalUrl": "https://www.anthropic.com/engineering/building-effective-agents"
+  },
+  "audienceProblem": "How do I choose the simplest AI-agent architecture that can reliably complete the task?",
+  "centralThesis": "Start with the simplest system that can solve the task, and add workflow or agent complexity only when measured results improve.",
+  "reusableArtifact": {
+    "name": "Agent Architecture Decision Ladder",
+    "steps": [
+      "Test one augmented model call first",
+      "Use a workflow when the path can be predefined",
+      "Use orchestrator-workers when subtasks are discoverable only at runtime",
+      "Use an autonomous agent only when the whole path depends on environmental feedback",
+      "Keep the added layer only if completion rate, cost, latency, or human intervention measurably improves"
+    ]
+  },
+  "priorities": {
+    "P0": [
+      "The difference between workflows and agents",
+      "The augmented LLM as the default starting point",
+      "The measurable architecture decision ladder"
+    ],
+    "P1": [
+      "Five workflow patterns and the uncertainty each resolves",
+      "When autonomy is justified and how environmental feedback controls it",
+      "Why tool-interface design determines reliability"
+    ],
+    "P2": [
+      "Representative support, coding, refund, translation, and incident-response examples",
+      "Framework abstraction, observability, stopping conditions, permissions, and reversibility boundaries"
+    ],
+    "P3": [
+      "Framework catalog details",
+      "Repeated background arguments",
+      "Appendix implementation details that do not change the decision ladder"
+    ]
+  },
+  "chapters": [
+    {"id": 1, "en": "Preface", "zh": "前言", "promise": "Expose why complex agent architecture is often the wrong starting point"},
+    {"id": 2, "en": "Architecture Choice", "zh": "架构判断", "promise": "Separate workflows from agents and tie complexity to measurable need"},
+    {"id": 3, "en": "Core Building Block", "zh": "基础单元", "promise": "Start with one model plus retrieval, tools, and memory"},
+    {"id": 4, "en": "Workflow Patterns", "zh": "工作流模式", "promise": "Match five controlled patterns to five kinds of uncertainty"},
+    {"id": 5, "en": "Autonomous Agents", "zh": "自主 Agent", "promise": "Use autonomy only with real feedback, boundaries, and stopping conditions"},
+    {"id": 6, "en": "Tool Design", "zh": "工具设计", "promise": "Make correct tool use easier and common mistakes harder"},
+    {"id": 7, "en": "Decision Method", "zh": "选择方法", "promise": "Apply a reusable architecture decision ladder"},
+    {"id": 8, "en": "Summary", "zh": "总结", "promise": "Remember the ladder and the measurable upgrade rule"}
+  ],
+  "roles": {
+    "engineer": "Frames the task, chooses boundaries, checks evidence, and approves risky actions",
+    "tinyAgent": "Retrieves facts, uses tools, acts, reads environmental feedback, stores state, and returns results"
+  },
+  "sharedVisualSemantics": [
+    "Simple system before complex system",
+    "Fixed path versus dynamic path",
+    "Retrieval, tools, and memory around one model",
+    "Workflow patterns mapped to uncertainty",
+    "Action-feedback loop with guardrails",
+    "Clear tool interface versus avoidable format friction",
+    "Architecture ladder validated by measurable outcomes"
+  ],
+  "languagePolicy": "English and Chinese share thesis, priorities, chapter order, fact boundaries, character tasks, and the reusable artifact. Wording and timing are authored independently."
+}

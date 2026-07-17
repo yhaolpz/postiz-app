@@ -1,0 +1,67 @@
+1
+00:00:00,100 --> 00:00:03,838
+For a new task, walk through the architecture ladder in order.
+
+2
+00:00:03,788 --> 00:00:09,355
+First, can one model call, enhanced with retrieval and examples, complete the task?
+
+3
+00:00:09,355 --> 00:00:13,836
+Second, if one call is not enough, can you define the steps in advance?
+
+4
+00:00:13,836 --> 00:00:17,855
+If yes, prefer chaining, routing, or parallelization.
+
+5
+00:00:17,855 --> 00:00:24,750
+Third, if the task can be divided but the required subtasks appear only during investigation, use orchestrator-workers.
+
+6
+00:00:24,750 --> 00:00:32,221
+Fourth, use an autonomous agent only when the whole path depends on environmental feedback and the model must keep making its own decisions.
+
+7
+00:00:32,221 --> 00:00:41,346
+Frameworks can quickly connect model calls, tools, and workflow steps, but extra abstraction can hide the real prompt, model output, and failure.
+
+8
+00:00:41,346 --> 00:00:45,644
+A framework is fine only when you still understand what happens underneath it.
+
+9
+00:00:45,644 --> 00:00:49,442
+Before upgrading, save a baseline for the simplest system.
+
+10
+00:00:49,442 --> 00:00:57,028
+Compare task completion, average cost, latency, and human interventions on common, difficult, and boundary cases.
+
+11
+00:00:57,028 --> 00:01:01,721
+Break metrics down by task type so averages cannot hide a critical regression.
+
+12
+00:01:01,721 --> 00:01:06,605
+If the complex system does not produce a stable improvement, return to the simpler one.
+
+13
+00:01:06,605 --> 00:01:10,778
+Architecture is a measurable iteration, not a one-time declaration.
+
+14
+00:01:10,778 --> 00:01:12,317
+Chapter recap.
+
+15
+00:01:12,317 --> 00:01:16,634
+First, test whether one augmented model call can finish the task.
+
+16
+00:01:16,634 --> 00:01:20,596
+Second, prefer a workflow while the path remains controllable.
+
+17
+00:01:20,596 --> 00:01:24,762
+Third, let measurable results decide whether to upgrade to an agent.

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tiny Agent 中文声音试听</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f6f7;
+        --surface: #ffffff;
+        --border: #d9dde2;
+        --ink: #16181b;
+        --muted: #606871;
+        --blue: #117abd;
+        --blue-soft: #e8f3fa;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        letter-spacing: 0;
+      }
+
+      main {
+        width: min(960px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 42px 0 64px;
+      }
+
+      header { margin-bottom: 24px; }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(26px, 4vw, 36px);
+        line-height: 1.25;
+      }
+
+      .intro,
+      .sample {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .sample {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-left: 3px solid var(--blue);
+        background: var(--surface);
+      }
+
+      .voice-list {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+      }
+
+      .voice {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) minmax(300px, 1.55fr);
+        gap: 24px;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .voice:last-child { border-bottom: 0; }
+      .voice.current { background: var(--blue-soft); }
+
+      .voice-heading {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.3;
+      }
+
+      .badge {
+        padding: 3px 7px;
+        border-radius: 4px;
+        background: var(--blue);
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .voice-id {
+        margin: 7px 0 6px;
+        overflow-wrap: anywhere;
+        color: var(--muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+      }
+
+      .voice-meta {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      audio { width: 100%; }
+
+      @media (max-width: 680px) {
+        main { width: min(100% - 20px, 960px); padding-top: 24px; }
+        .voice { grid-template-columns: 1fr; gap: 12px; padding: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Tiny Agent 中文声音试听</h1>
+        <p class="intro">全部使用相同文本和 +0% 语速。当前视频使用“云希”。</p>
+        <p class="sample">很多团队做 Agent 的第一步，就是先搭一个复杂系统。但真正有效的方案，往往从最简单、最容易验证的结构开始。欢迎来到 Tiny Agent。</p>
+      </header>
+
+      <section class="voice-list" aria-label="普通话声音列表">
+        <article class="voice">
+          <div>
+            <div class="voice-heading"><h2>晓晓</h2></div>
+            <p class="voice-id">zh-CN-XiaoxiaoNeural</p>
+            <p class="voice-meta">女声 · 温暖自然 · 知识讲解、叙事</p>
+          </div>
+          <audio controls preload="metadata" src="audio/xiaoxiao.mp3"></audio>
+        </article>
+
+        <article class="voice">
+          <div>
+            <div class="voice-heading"><h2>晓伊</h2></div>
+            <p class="voice-id">zh-CN-XiaoyiNeural</p>
+            <p class="voice-meta">女声 · 活泼轻快 · 轻松科普、年轻化内容</p>
+          </div>
+          <audio controls preload="metadata" src="audio/xiaoyi.mp3"></audio>
+        </article>
+
+        <article class="voice">
+          <div>
+            <div class="voice-heading"><h2>云健</h2></div>
+            <p class="voice-id">zh-CN-YunjianNeural</p>
+            <p class="voice-meta">男声 · 有力量、热情 · 强节奏讲解</p>
+          </div>
+          <audio controls preload="metadata" src="audio/yunjian.mp3"></audio>
+        </article>
+
+        <article class="voice current">
+          <div>
+            <div class="voice-heading"><h2>云希</h2><span class="badge">当前使用</span></div>
+            <p class="voice-id">zh-CN-YunxiNeural</p>
+            <p class="voice-meta">男声 · 阳光自然 · 通用知识讲解</p>
+          </div>
+          <audio controls preload="metadata" src="audio/yunxi.mp3"></audio>
+        </article>
+
+        <article class="voice">
+          <div>
+            <div class="voice-heading"><h2>云夏</h2></div>
+            <p class="voice-id">zh-CN-YunxiaNeural</p>
+            <p class="voice-meta">男声 · 年轻可爱 · 轻松动画、角色内容</p>
+          </div>
+          <audio controls preload="metadata" src="audio/yunxia.mp3"></audio>
+        </article>
+
+        <article class="voice">
+          <div>
+            <div class="voice-heading"><h2>云扬</h2></div>
+            <p class="voice-id">zh-CN-YunyangNeural</p>
+            <p class="voice-meta">男声 · 专业可靠 · 技术解读、教程</p>
+          </div>
+          <audio controls preload="metadata" src="audio/yunyang.mp3"></audio>
+        </article>
+
+        <article class="voice">
+          <div>
+            <div class="voice-heading"><h2>晓北</h2></div>
+            <p class="voice-id">zh-CN-liaoning-XiaobeiNeural</p>
+            <p class="voice-meta">女声 · 辽宁口音、幽默 · 轻松内容</p>
+          </div>
+          <audio controls preload="metadata" src="audio/xiaobei-liaoning.mp3"></audio>
+        </article>
+
+        <article class="voice">
+          <div>
+            <div class="voice-heading"><h2>晓妮</h2></div>
+            <p class="voice-id">zh-CN-shaanxi-XiaoniNeural</p>
+            <p class="voice-meta">女声 · 陕西口音、明亮 · 地域化叙述</p>
+          </div>
+          <audio controls preload="metadata" src="audio/xiaoni-shaanxi.mp3"></audio>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

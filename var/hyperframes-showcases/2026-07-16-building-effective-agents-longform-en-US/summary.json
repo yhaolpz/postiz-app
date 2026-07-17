@@ -1,0 +1,193 @@
+{
+  "title": "Stop Building Multi-Agent Systems First",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-16-building-effective-agents-longform-en-US/SCRIPT.en-US.md",
+  "language": "en-US",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "en-US-AnaNeural",
+    "rate": "+30%",
+    "integratedLoudnessTarget": "-17 LUFS"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 822.84,
+    "chapters": [
+      {
+        "label": "Preface",
+        "start": 0,
+        "end": 51.6,
+        "duration": 51.6
+      },
+      {
+        "label": "Architecture Choice",
+        "start": 51.6,
+        "end": 142.68,
+        "duration": 91.08
+      },
+      {
+        "label": "Core Building Block",
+        "start": 142.68,
+        "end": 232.032,
+        "duration": 89.352
+      },
+      {
+        "label": "Workflow Patterns",
+        "start": 232.032,
+        "end": 466.8,
+        "duration": 234.768
+      },
+      {
+        "label": "Autonomous Agents",
+        "start": 466.8,
+        "end": 600.792,
+        "duration": 133.992
+      },
+      {
+        "label": "Tool Design",
+        "start": 600.792,
+        "end": 686.2560000000001,
+        "duration": 85.464
+      },
+      {
+        "label": "Decision Method",
+        "start": 686.2560000000001,
+        "end": 771.0480000000001,
+        "duration": 84.792
+      },
+      {
+        "label": "Summary",
+        "start": 771.0480000000001,
+        "end": 822.84,
+        "duration": 51.791999999999916
+      }
+    ],
+    "visualStates": 48,
+    "captions": 266
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "sampledScenes": 41,
+      "passedScenes": 41,
+      "failedScenes": 0,
+      "report": "qa/visual-balance-report.json",
+      "status": "passed"
+    },
+    "titleContentSeparation": {
+      "method": "measured title lane plus visible content bounds",
+      "minimumGap": 24,
+      "sampledScenes": 41,
+      "passedScenes": 41,
+      "failedScenes": 0,
+      "report": "qa/title-content-report.json",
+      "status": "passed"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "scenes": 41,
+      "props": 141,
+      "beats": 41,
+      "fallbackBeats": 0,
+      "status": "passed"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "scenes": 41,
+      "actors": 82,
+      "delayedActorFromTo": 0,
+      "failedActors": 0,
+      "status": "passed"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "runtimeErrors": 0,
+      "layoutIssues": 0,
+      "motionErrors": 0,
+      "contrastChecksPassed": 53,
+      "contrastChecksTotal": 53,
+      "nonBlockingLintWarnings": 17,
+      "status": "passed"
+    },
+    "finalMp4TransitionReview": {
+      "method": "ffmpeg frame extraction from rendered MP4",
+      "timesSeconds": [
+        468.92,
+        468.96,
+        469,
+        469.04,
+        469.08,
+        469.16,
+        469.28,
+        469.36,
+        469.44,
+        469.52,
+        469.6,
+        469.68,
+        469.76
+      ],
+      "directory": "renders/final-character-transition-review",
+      "status": "passed"
+    },
+    "finalMp4VisualReview": {
+      "method": "opening, chapter, transition, recap, and ending frame inspection",
+      "directory": "renders/final-review",
+      "status": "passed"
+    },
+    "audioReview": {
+      "integratedLoudnessLufs": -17.28,
+      "truePeakDb": -4.53,
+      "silenceSegmentsAtLeast1Point5Seconds": 0,
+      "status": "passed"
+    },
+    "thumbnail": {
+      "file": "thumbnails/thumbnail.en-US.png",
+      "width": 1280,
+      "height": 720,
+      "colorSpace": "sRGB",
+      "smallPreview": "thumbnails/thumbnail.en-US.20pct.png",
+      "status": "passed"
+    }
+  },
+  "output": {
+    "file": "renders/video.mp4",
+    "durationSeconds": 822.869333,
+    "sizeBytes": 66228997,
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "audioSampleRate": 48000,
+    "audioChannels": 2,
+    "sha256": "b8085ba0a81644abaf873f6e1a0deb1c5870a16774b2d58bfda4c45c5c3dd3ed",
+    "status": "ready"
+  }
+}

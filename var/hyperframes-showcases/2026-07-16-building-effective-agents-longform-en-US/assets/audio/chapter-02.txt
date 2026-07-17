@@ -1,0 +1,21 @@
+Start with the distinction that controls every later decision.
+
+In a workflow, code defines the execution path in advance. A model may perform one step, but the program still controls the sequence.
+
+In an agent, the model uses the current result to choose what to do next, which tool to call, and when the task should stop.
+
+An expense report that always moves through extraction, policy checks, and approval has a path you can draw before execution. That is a strong workflow task.
+
+An incident investigation is different. You may read logs first, then inspect metrics, and only then decide whether to investigate the database, the network, or the code. The path emerges from evidence, so an agent can add real value.
+
+Neither one is more advanced. Workflows optimize for consistency and predictability. Agents optimize for flexibility and model-directed decisions.
+
+The most important principle is to find the simplest viable solution and increase complexity only when the result is measurably inadequate. Inadequate does not mean the diagram looks unsophisticated. It means completion rate, accuracy, latency, cost, or human intervention misses a defined target. If a new orchestration layer does not help the same evaluation set finish more reliably, it is not an upgrade. It is overhead.
+
+Chapter recap.
+
+First, use a workflow when the path is fixed.
+
+Second, use an agent only when the path must be dynamic.
+
+Third, every added layer must earn its place with a measurable result.

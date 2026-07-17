@@ -1,0 +1,203 @@
+{
+  "title": "别急着做多 Agent：如何选择真正有效的 Agent 架构",
+  "source": "SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-17 LUFS"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 673.728,
+    "chapters": [
+      {
+        "label": "前言",
+        "start": 0,
+        "end": 45.936,
+        "duration": 45.936
+      },
+      {
+        "label": "架构判断",
+        "start": 45.936,
+        "end": 116.88,
+        "duration": 70.944
+      },
+      {
+        "label": "基础单元",
+        "start": 116.88,
+        "end": 187.176,
+        "duration": 70.296
+      },
+      {
+        "label": "工作流模式",
+        "start": 187.176,
+        "end": 388.82399999999996,
+        "duration": 201.648
+      },
+      {
+        "label": "自主 Agent",
+        "start": 388.82399999999996,
+        "end": 496.67999999999995,
+        "duration": 107.856
+      },
+      {
+        "label": "工具设计",
+        "start": 496.67999999999995,
+        "end": 570.5759999999999,
+        "duration": 73.896
+      },
+      {
+        "label": "选择方法",
+        "start": 570.5759999999999,
+        "end": 639.2159999999999,
+        "duration": 68.64
+      },
+      {
+        "label": "总结",
+        "start": 639.2159999999999,
+        "end": 673.728,
+        "duration": 34.51200000000006
+      }
+    ],
+    "visualStates": 48,
+    "captions": 214
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "sampledScenes": 41,
+      "passedScenes": 41,
+      "failedScenes": 0,
+      "report": "qa/visual-balance-report.json",
+      "status": "passed"
+    },
+    "titleContentSeparation": {
+      "method": "measured title lane plus visible content bounds",
+      "minimumGap": 24,
+      "sampledScenes": 41,
+      "passedScenes": 41,
+      "failedScenes": 0,
+      "report": "qa/title-content-report.json",
+      "status": "passed"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "scenes": 41,
+      "props": 141,
+      "beats": 103,
+      "fallbackBeats": 0,
+      "status": "passed"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "scenes": 41,
+      "actors": 82,
+      "delayedActorFromTo": 0,
+      "failedActors": 0,
+      "status": "passed"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "runtimeErrors": 0,
+      "layoutIssues": 0,
+      "motionErrors": 0,
+      "contrastChecksPassed": 51,
+      "contrastChecksTotal": 51,
+      "nonBlockingLintWarnings": 16,
+      "status": "passed"
+    },
+    "finalMp4TransitionReview": {
+      "method": "ffmpeg frame extraction from rendered MP4",
+      "timesSeconds": [
+        408.72,
+        408.76,
+        408.8,
+        408.84,
+        408.88,
+        408.96,
+        409.08
+      ],
+      "directory": "renders/final-character-transition-review",
+      "status": "passed"
+    },
+    "finalMp4VisualReview": {
+      "method": "opening, chapter, transition, recap, and ending frame inspection",
+      "directory": "renders/final-review",
+      "status": "passed"
+    },
+    "audioReview": {
+      "integratedLoudnessLufs": -17.65,
+      "truePeakDb": -4.75,
+      "silenceSegmentsAtLeast1Point5Seconds": 0,
+      "status": "passed"
+    },
+    "thumbnail": {
+      "file": "thumbnails/thumbnail.zh-CN.png",
+      "width": 1280,
+      "height": 720,
+      "colorSpace": "sRGB",
+      "smallPreview": "thumbnails/thumbnail.zh-CN.20pct.png",
+      "status": "passed"
+    },
+    "thumbnail4x3": {
+      "file": "thumbnails/thumbnail.zh-CN.4x3.png",
+      "width": 1200,
+      "height": 900,
+      "colorSpace": "sRGB",
+      "smallPreview": "thumbnails/thumbnail.zh-CN.4x3.20pct.png",
+      "status": "passed"
+    },
+    "thumbnail3x4": {
+      "file": "thumbnails/thumbnail.zh-CN.3x4.png",
+      "width": 900,
+      "height": 1200,
+      "colorSpace": "sRGB",
+      "smallPreview": "thumbnails/thumbnail.zh-CN.3x4.20pct.png",
+      "status": "passed"
+    }
+  },
+  "output": {
+    "file": "renders/video.mp4",
+    "durationSeconds": 673.749333,
+    "sizeBytes": 56412432,
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "audioSampleRate": 48000,
+    "audioChannels": 2,
+    "sha256": "68436aea54e1c30e971fa88e71c5400559f6cebfd39738366a26cdd54409421d",
+    "status": "ready"
+  }
+}

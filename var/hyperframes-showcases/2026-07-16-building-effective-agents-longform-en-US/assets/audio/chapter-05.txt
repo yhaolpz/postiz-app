@@ -1,0 +1,27 @@
+You enter true agent territory when the execution path cannot be predicted and the model must keep adapting its plan from environmental results.
+
+The core of an agent is not mysterious. It is a continuing decision loop.
+
+The model interprets the goal, chooses an action, calls a tool, reads the real result, and updates its plan. The loop continues until the task completes, reaches a blocker, or hits a stopping condition.
+
+The critical question is not how long the model reasons. It is whether each action produces reliable ground truth.
+
+After a coding agent changes a file, it can run tests. After a support agent issues a refund, it can read the API response. After a browser agent clicks a button, it can verify that the page changed as expected.
+
+That feedback is how an agent knows whether it is making progress.
+
+Customer support and coding are strong agent tasks because they combine conversation with action and offer relatively clear success criteria.
+
+Autonomy also raises cost and compounds error. If every step were ninety percent reliable, ten correct steps in a row would have a theoretical probability of only about thirty-five percent. Real systems use checks and retries, but the arithmetic makes the boundary obvious: a longer path cannot rely on confidence alone.
+
+Production agents therefore need sandboxes, permission limits, maximum iterations, explicit stopping rules, and human confirmation at critical actions. They also need a record of tool calls and environment responses so a failure can be diagnosed, replayed, and recovered.
+
+An agent is not the absence of control. It gives dynamic decisions to the model and rebuilds control through feedback and boundaries. Reversible actions, such as reading information or drafting text, can receive wider autonomy. Payments, deletion, and external messages should receive narrow permissions and pre-action approval. A practical risk ladder is: automate low-risk actions, inspect medium-risk actions after execution, and approve high-risk actions before execution.
+
+Chapter recap.
+
+First, every action must read real environmental feedback.
+
+Second, failure risk compounds across a long execution path.
+
+Third, autonomy requires permissions and stopping conditions.

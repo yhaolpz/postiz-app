@@ -1,0 +1,103 @@
+1
+00:00:00,100 --> 00:00:07,809
+You enter true agent territory when the execution path cannot be predicted and the model must keep adapting its plan from environmental results.
+
+2
+00:00:07,759 --> 00:00:10,519
+The core of an agent is not mysterious.
+
+3
+00:00:10,519 --> 00:00:12,740
+It is a continuing decision loop.
+
+4
+00:00:12,740 --> 00:00:19,442
+The model interprets the goal, chooses an action, calls a tool, reads the real result, and updates its plan.
+
+5
+00:00:19,442 --> 00:00:24,932
+The loop continues until the task completes, reaches a blocker, or hits a stopping condition.
+
+6
+00:00:24,932 --> 00:00:28,346
+The critical question is not how long the model reasons.
+
+7
+00:00:28,346 --> 00:00:31,884
+It is whether each action produces reliable ground truth.
+
+8
+00:00:31,884 --> 00:00:35,711
+After a coding agent changes a file, it can run tests.
+
+9
+00:00:35,711 --> 00:00:40,211
+After a support agent issues a refund, it can read the API response.
+
+10
+00:00:40,211 --> 00:00:45,403
+After a browser agent clicks a button, it can verify that the page changed as expected.
+
+11
+00:00:45,403 --> 00:00:49,307
+That feedback is how an agent knows whether it is making progress.
+
+12
+00:00:49,307 --> 00:00:56,942
+Customer support and coding are strong agent tasks because they combine conversation with action and offer relatively clear success criteria.
+
+13
+00:00:56,942 --> 00:01:00,288
+Autonomy also raises cost and compounds error.
+
+14
+00:01:00,288 --> 00:01:07,798
+If every step were ninety percent reliable, ten correct steps in a row would have a theoretical probability of only about thirty-five percent.
+
+15
+00:01:07,798 --> 00:01:15,423
+Real systems use checks and retries, but the arithmetic makes the boundary obvious: a longer path cannot rely on confidence alone.
+
+16
+00:01:15,423 --> 00:01:24,951
+Production agents therefore need sandboxes, permission limits, maximum iterations, explicit stopping rules, and human confirmation at critical actions.
+
+17
+00:01:24,951 --> 00:01:31,894
+They also need a record of tool calls and environment responses so a failure can be diagnosed, replayed, and recovered.
+
+18
+00:01:31,894 --> 00:01:34,586
+An agent is not the absence of control.
+
+19
+00:01:34,586 --> 00:01:39,778
+It gives dynamic decisions to the model and rebuilds control through feedback and boundaries.
+
+20
+00:01:39,778 --> 00:01:45,634
+Reversible actions, such as reading information or drafting text, can receive wider autonomy.
+
+21
+00:01:45,634 --> 00:01:51,423
+Payments, deletion, and external messages should receive narrow permissions and pre-action approval.
+
+22
+00:01:51,423 --> 00:02:00,509
+A practical risk ladder is: automate low-risk actions, inspect medium-risk actions after execution, and approve high-risk actions before execution.
+
+23
+00:02:00,509 --> 00:02:02,048
+Chapter recap.
+
+24
+00:02:02,048 --> 00:02:05,894
+First, every action must read real environmental feedback.
+
+25
+00:02:05,894 --> 00:02:10,048
+Second, failure risk compounds across a long execution path.
+
+26
+00:02:10,048 --> 00:02:13,974
+Third, autonomy requires permissions and stopping conditions.

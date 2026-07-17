@@ -1,0 +1,1375 @@
+{
+  "policy": {
+    "timingSource": "final-edge-tts-vtt",
+    "grouping": "All props in a scene share one explicit narration trigger unless the spoken text requires sequential steps",
+    "minimumReadableHoldSeconds": 1,
+    "proportionalFallbackAllowed": false
+  },
+  "scenes": 41,
+  "props": 141,
+  "beats": 41,
+  "fallbackBeats": 0,
+  "sceneResults": [
+    {
+      "id": "c01-s01",
+      "narration": "Many teams begin by choosing a framework, drawing a multi-agent diagram, and asking several models to debate.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Many teams begin by choosing a",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c01-s02",
+      "narration": "Anthropic found that successful production systems often use simpler, composable patterns. Quality depends less on the number of agents than on clear task boundaries, evaluation criteria, and environmental feedback. A complex architecture may not improve completion, but it will increase model calls, latency, cost, and debugging. Every extra handoff adds another chance to lose context or pass a mistake forward.",
+      "props": [
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "timeout",
+          "label": "Stop"
+        },
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Anthropic found that successful production systems",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 6.538,
+          "time": 6.758,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c01-s03",
+      "narration": "In this video, we will answer three questions that are easy to get wrong: when one model call is enough, which of five common workflow patterns fits the task, and when an autonomous agent is actually worth the risk. By the end, you will have an Agent Architecture Decision Ladder that you can use on a real project, instead of paying for complexity just to make the system look more agentic.",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "In this video, we will answer",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 31.442,
+          "time": 31.662,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c02-s01",
+      "narration": "Start with the distinction that controls every later decision. In a workflow, code defines the execution path in advance. A model may perform one step, but the program still controls the sequence. In an agent, the model uses the current result to choose what to do next, which tool to call, and when the task should stop.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Start with the distinction that controls",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 51.7,
+          "time": 54.46,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c02-s02",
+      "narration": "An expense report that always moves through extraction, policy checks, and approval has a path you can draw before execution. That is a strong workflow task.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "An expense report that always moves",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 70.696,
+          "time": 70.916,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c02-s03",
+      "narration": "An incident investigation is different. You may read logs first, then inspect metrics, and only then decide whether to investigate the database, the network, or the code. The path emerges from evidence, so an agent can add real value.",
+      "props": [
+        {
+          "id": "error",
+          "label": "Error"
+        },
+        {
+          "id": "search",
+          "label": "Search"
+        },
+        {
+          "id": "database",
+          "label": "Database"
+        },
+        {
+          "id": "browser",
+          "label": "Browser"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "An incident investigation is different. You",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 80.282,
+          "time": 80.502,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c02-s04",
+      "narration": "Neither one is more advanced. Workflows optimize for consistency and predictability. Agents optimize for flexibility and model-directed decisions.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Neither one is more advanced. Workflows",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 94.869,
+          "time": 95.089,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c02-s05",
+      "narration": "The most important principle is to find the simplest viable solution and increase complexity only when the result is measurably inadequate. Inadequate does not mean the diagram looks unsophisticated. It means completion rate, accuracy, latency, cost, or human intervention misses a defined target. If a new orchestration layer does not help the same evaluation set finish more reliably, it is not an upgrade. It is overhead.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The most important principle is to",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 104.648,
+          "time": 104.868,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c03-s01",
+      "narration": "Before workflows and agents, there is a more useful default: the augmented language model. It is not a team of agents. It is one model connected to retrieval, tools, and memory.",
+      "props": [
+        {
+          "id": "search",
+          "label": "Search"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "memory",
+          "label": "Memory"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Before workflows and agents, there is",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 142.78,
+          "time": 145.54000000000002,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c03-s02",
+      "narration": "Retrieval supplies current external facts instead of relying only on training data. Tools let the model query an order, read a database, call an API, or perform a real action. Memory preserves useful state across steps. These capabilities answer three different questions: what does the system know, what can it do, and what has it already done?",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "database",
+          "label": "Database"
+        },
+        {
+          "id": "memory",
+          "label": "Memory"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Retrieval supplies current external facts instead",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 154.362,
+          "time": 154.582,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c03-s03",
+      "narration": "Imagine a support assistant. It retrieves the refund policy, looks up the order, calls the refund API, and remembers what the customer confirmed. If order lookup fails, the tool must return the error instead of inviting the model to invent an order status. If a refund already ran, stored state and API idempotency must prevent a duplicate payment.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "search",
+          "label": "Search"
+        },
+        {
+          "id": "api-plug",
+          "label": "API"
+        },
+        {
+          "id": "memory",
+          "label": "Memory"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Imagine a support assistant. It retrieves",
+          "props": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "rawTime": 175.199,
+          "time": 175.419,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c03-s04",
+      "narration": "That single augmented model can already complete many real tasks. Multiple agents are not automatically necessary.",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "That single augmented model can already",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 196.23700000000002,
+          "time": 196.45700000000002,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c03-s05",
+      "narration": "The key is not to connect as many capabilities as possible. Each capability must fit the task, expose a clear interface, and be used at the right time. Running one augmented model on a controlled task usually reveals whether the real gap is knowledge, action, or decision-making before you split the system into roles.",
+      "props": [
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The key is not to connect",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 203.574,
+          "time": 203.794,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s01",
+      "narration": "When one model call is not enough but the overall path is still controllable, choose the workflow pattern that matches the uncertainty.",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "When one model call is not",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 232.132,
+          "time": 234.89200000000002,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s02",
+      "narration": "The first pattern is prompt chaining: split one difficult task into a sequence of smaller steps. For example, generate an outline, check it against explicit requirements, and only then draft the document. Each step solves one clear problem, and a programmatic gate can stop the chain when the output is not ready. Prompt chaining works when the task decomposes cleanly. It costs more calls and time, but each call becomes easier to evaluate. The useful part is the gate: if the outline has no audience, rewrite it; if fact checking fails, do not continue to publication. Do not let a weak intermediate result travel all the way to the end.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The first pattern is prompt chaining",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 239.07000000000002,
+          "time": 239.29000000000002,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s03",
+      "narration": "The second pattern is routing. A router classifies the input and sends it to the right prompt, model, or tool. Customer requests might branch into product questions, refund requests, and technical incidents. Common cases can use a smaller model, while unusual cases use a stronger one. Routing works when categories need clearly different treatment and classification is reliable. It also needs a low-confidence path. An uncertain input should go to a general process or a human, not be forced into the wrong branch.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "api-plug",
+          "label": "API"
+        },
+        {
+          "id": "error",
+          "label": "Error"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The second pattern is routing",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 277.022,
+          "time": 277.242,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s04",
+      "narration": "The third pattern is parallelization, and it has two distinct forms. Sectioning runs independent subtasks at the same time and combines the results. To evaluate an AI answer, separate reviewers can check facts, safety, clarity, and format in parallel.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The third pattern is parallelization, and",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 308.339,
+          "time": 308.559,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s05",
+      "narration": "Voting asks several independent attempts to judge the same question, then aggregates their conclusions. A security review might use different prompts to inspect the same code from different risk perspectives. Parallelization helps when subtasks are independent or when one judgment is not reliable enough. Independence matters. Copying the same prompt three times often creates three versions of the same bias, not three useful perspectives.",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Voting asks several independent attempts to",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 324.387,
+          "time": 324.607,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s06",
+      "narration": "The fourth pattern is orchestrator-workers. A central model understands the goal, discovers the required subtasks, delegates them to workers, and combines their results. The difference from ordinary parallel work is that the subtasks are not known in advance. The orchestrator decides them from the current input.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The fourth pattern is orchestrator-workers",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 349.89700000000005,
+          "time": 350.1170000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s07",
+      "narration": "Consider changing a large codebase. Before investigation, you do not know how many files must change or which modules matter. The orchestrator must first inspect the problem, then choose where to search and what work to assign. This pattern fits complex tasks that can be divided but cannot be fully planned ahead. Each worker still needs only the relevant context and a consistent return format. Otherwise, the final synthesis spends most of its budget reinterpreting scattered output.",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "search",
+          "label": "Search"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Consider changing a large codebase. Before",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 367.83000000000004,
+          "time": 368.05000000000007,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s08",
+      "narration": "The fifth pattern is evaluator-optimizer. One model generates a result, another evaluates it, and the first model revises from concrete feedback. In literary translation, the evaluator can check meaning, tone, and terminology before proposing specific corrections.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The fifth pattern is evaluator-optimizer",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 395.78200000000004,
+          "time": 396.00200000000007,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s09",
+      "narration": "The loop works only when feedback can demonstrably improve the result and the evaluator can identify useful changes. It also needs a stopping condition: reach a score, stop after no improvement, or stop when the budget is exhausted.",
+      "props": [
+        {
+          "id": "success",
+          "label": "Passed"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "timeout",
+          "label": "Stop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The loop works only when feedback",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 412.25300000000004,
+          "time": 412.47300000000007,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s10",
+      "narration": "Without a clear evaluation standard, the loop only increases cost. It does not guarantee quality.",
+      "props": [
+        {
+          "id": "loop",
+          "label": "Loop"
+        },
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "error",
+          "label": "Error"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Without a clear evaluation standard, the",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 425.55100000000004,
+          "time": 425.7710000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s11",
+      "narration": "The reusable rule is to locate the uncertainty. Use chaining for fixed steps, routing for different input classes, parallelization for independent work, orchestrator-workers for runtime task discovery, and evaluator-optimizer for outputs that can be explicitly judged and improved. Patterns can combine, but every addition must solve a named problem, and every step must remain observable.",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The reusable rule is to locate",
+          "props": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "rawTime": 432.07000000000005,
+          "time": 432.2900000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s01",
+      "narration": "You enter true agent territory when the execution path cannot be predicted and the model must keep adapting its plan from environmental results. The core of an agent is not mysterious. It is a continuing decision loop. The model interprets the goal, chooses an action, calls a tool, reads the real result, and updates its plan. The loop continues until the task completes, reaches a blocker, or hits a stopping condition.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "You enter true agent territory when",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 466.90000000000003,
+          "time": 469.66,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s02",
+      "narration": "The critical question is not how long the model reasons. It is whether each action produces reliable ground truth. After a coding agent changes a file, it can run tests. After a support agent issues a refund, it can read the API response. After a browser agent clicks a button, it can verify that the page changed as expected. That feedback is how an agent knows whether it is making progress.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "browser",
+          "label": "Browser"
+        },
+        {
+          "id": "api-plug",
+          "label": "API"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The critical question is not how",
+          "props": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "rawTime": 491.732,
+          "time": 491.95200000000006,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s03",
+      "narration": "Customer support and coding are strong agent tasks because they combine conversation with action and offer relatively clear success criteria.",
+      "props": [
+        {
+          "id": "browser",
+          "label": "Browser"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Customer support and coding are strong",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 516.107,
+          "time": 516.327,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s04",
+      "narration": "Autonomy also raises cost and compounds error. If every step were ninety percent reliable, ten correct steps in a row would have a theoretical probability of only about thirty-five percent. Real systems use checks and retries, but the arithmetic makes the boundary obvious: a longer path cannot rely on confidence alone.",
+      "props": [
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "error",
+          "label": "Error"
+        },
+        {
+          "id": "loop",
+          "label": "Loop"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Autonomy also raises cost and compounds",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 523.742,
+          "time": 523.962,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s05",
+      "narration": "Production agents therefore need sandboxes, permission limits, maximum iterations, explicit stopping rules, and human confirmation at critical actions. They also need a record of tool calls and environment responses so a failure can be diagnosed, replayed, and recovered.",
+      "props": [
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "timeout",
+          "label": "Stop"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Production agents therefore need sandboxes, permission",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 542.223,
+          "time": 542.443,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s06",
+      "narration": "An agent is not the absence of control. It gives dynamic decisions to the model and rebuilds control through feedback and boundaries. Reversible actions, such as reading information or drafting text, can receive wider autonomy. Payments, deletion, and external messages should receive narrow permissions and pre-action approval. A practical risk ladder is: automate low-risk actions, inspect medium-risk actions after execution, and approve high-risk actions before execution.",
+      "props": [
+        {
+          "id": "loop",
+          "label": "Loop"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "An agent is not the absence",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 558.694,
+          "time": 558.914,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s01",
+      "narration": "Even a capable model will fail repeatedly when its tools are difficult to understand. Humans need a well-designed interface to use software. Models need a clear agent-computer interface to use tools.",
+      "props": [
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "api-plug",
+          "label": "API"
+        },
+        {
+          "id": "error",
+          "label": "Error"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Even a capable model will fail",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 600.892,
+          "time": 603.652,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s02",
+      "narration": "Tool names must be specific, parameters must be unambiguous, and the contract should show input formats, boundaries, examples, and edge cases. Similar tools need obvious differences. Errors should state what failed, which input was invalid, and whether a retry is safe.",
+      "props": [
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Tool names must be specific, parameters",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 612.743,
+          "time": 612.9630000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s03",
+      "narration": "Do not make the return format harder than the task. Forcing a model to place large blocks of code inside heavily escaped JSON creates avoidable errors. Return only the information needed for the next decision; dumping an entire log into context increases cost and hides the useful signal.",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "error",
+          "label": "Error"
+        },
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Do not make the return format",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 630.022,
+          "time": 630.2420000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s04",
+      "narration": "Anthropic found that its coding agent often made mistakes with relative paths. Changing the tool to require absolute paths made those mistakes much harder to produce.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "search",
+          "label": "Search"
+        },
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Anthropic found that its coding agent",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 646.984,
+          "time": 647.2040000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s05",
+      "narration": "So do not optimize only the prompt. Observe how the model misuses the interface, then change the interface itself. Before release, test missing parameters, invalid paths, repeated calls, timeouts, and recovery behavior, not just ideal examples.",
+      "props": [
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "So do not optimize only the",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 656.522,
+          "time": 656.7420000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c07-s01",
+      "narration": "For a new task, walk through the architecture ladder in order. First, can one model call, enhanced with retrieval and examples, complete the task?",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "search",
+          "label": "Search"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "For a new task, walk through",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 686.3560000000001,
+          "time": 689.1160000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c07-s02",
+      "narration": "Second, if one call is not enough, can you define the steps in advance? If yes, prefer chaining, routing, or parallelization.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Second, if one call is not",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 695.6110000000001,
+          "time": 695.8310000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c07-s03",
+      "narration": "Third, if the task can be divided but the required subtasks appear only during investigation, use orchestrator-workers.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Branch"
+        },
+        {
+          "id": "document-stack",
+          "label": "Steps"
+        },
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Third, if the task can be",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 704.1110000000001,
+          "time": 704.3310000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c07-s04",
+      "narration": "Fourth, use an autonomous agent only when the whole path depends on environmental feedback and the model must keep making its own decisions.",
+      "props": [
+        {
+          "id": "loop",
+          "label": "Loop"
+        },
+        {
+          "id": "browser",
+          "label": "Browser"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Fourth, use an autonomous agent only",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 711.0060000000001,
+          "time": 711.2260000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c07-s05",
+      "narration": "Frameworks can quickly connect model calls, tools, and workflow steps, but extra abstraction can hide the real prompt, model output, and failure. A framework is fine only when you still understand what happens underneath it.",
+      "props": [
+        {
+          "id": "tool",
+          "label": "Tool"
+        },
+        {
+          "id": "warning",
+          "label": "Risk"
+        },
+        {
+          "id": "document",
+          "label": "Document"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Frameworks can quickly connect model calls",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 718.4770000000001,
+          "time": 718.6970000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c07-s06",
+      "narration": "Before upgrading, save a baseline for the simplest system. Compare task completion, average cost, latency, and human interventions on common, difficult, and boundary cases. Break metrics down by task type so averages cannot hide a critical regression. If the complex system does not produce a stable improvement, return to the simpler one. Architecture is a measurable iteration, not a one-time declaration.",
+      "props": [
+        {
+          "id": "document",
+          "label": "Document"
+        },
+        {
+          "id": "result-card",
+          "label": "Result"
+        },
+        {
+          "id": "database",
+          "label": "Database"
+        },
+        {
+          "id": "success",
+          "label": "Passed"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Before upgrading, save a baseline for",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 731.9000000000001,
+          "time": 732.1200000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    }
+  ]
+}

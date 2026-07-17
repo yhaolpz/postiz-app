@@ -1,0 +1,21 @@
+For a new task, walk through the architecture ladder in order.
+
+First, can one model call, enhanced with retrieval and examples, complete the task?
+
+Second, if one call is not enough, can you define the steps in advance? If yes, prefer chaining, routing, or parallelization.
+
+Third, if the task can be divided but the required subtasks appear only during investigation, use orchestrator-workers.
+
+Fourth, use an autonomous agent only when the whole path depends on environmental feedback and the model must keep making its own decisions.
+
+Frameworks can quickly connect model calls, tools, and workflow steps, but extra abstraction can hide the real prompt, model output, and failure. A framework is fine only when you still understand what happens underneath it.
+
+Before upgrading, save a baseline for the simplest system. Compare task completion, average cost, latency, and human interventions on common, difficult, and boundary cases. Break metrics down by task type so averages cannot hide a critical regression. If the complex system does not produce a stable improvement, return to the simpler one. Architecture is a measurable iteration, not a one-time declaration.
+
+Chapter recap.
+
+First, test whether one augmented model call can finish the task.
+
+Second, prefer a workflow while the path remains controllable.
+
+Third, let measurable results decide whether to upgrade to an agent.

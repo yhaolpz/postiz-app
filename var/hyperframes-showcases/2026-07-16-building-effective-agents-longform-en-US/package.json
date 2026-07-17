@@ -1,0 +1,17 @@
+{
+  "name": "2026-07-16-building-effective-agents-longform-en-us",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "node build.mjs --prepare",
+    "tts": "node build.mjs --tts",
+    "compile": "node build.mjs --compile",
+    "check": "pnpm dlx hyperframes@0.7.57 check . --snapshots --frame-check=severity=error",
+    "check:balance": "node qa/check-visual-balance.mjs",
+    "check:semantics": "node qa/check-semantic-beats.mjs",
+    "check:transitions": "node qa/check-transition-continuity.mjs",
+    "check:full": "pnpm dlx hyperframes@0.7.57 check . --at-transitions --timeout 30000 --snapshots --frame-check=severity=error",
+    "preview": "pnpm dlx hyperframes@0.7.57 preview . --port 3023 --no-open",
+    "render": "pnpm dlx hyperframes@0.7.57 render . --quality high --strict --output renders/video.mp4"
+  }
+}

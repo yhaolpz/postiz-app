@@ -1,0 +1,79 @@
+1
+00:00:00,100 --> 00:00:05,607
+Before workflows and agents, there is a more useful default: the augmented language model.
+
+2
+00:00:05,557 --> 00:00:07,692
+It is not a team of agents.
+
+3
+00:00:07,692 --> 00:00:11,682
+It is one model connected to retrieval, tools, and memory.
+
+4
+00:00:11,682 --> 00:00:16,596
+Retrieval supplies current external facts instead of relying only on training data.
+
+5
+00:00:16,596 --> 00:00:22,807
+Tools let the model query an order, read a database, call an API, or perform a real action.
+
+6
+00:00:22,807 --> 00:00:25,798
+Memory preserves useful state across steps.
+
+7
+00:00:25,798 --> 00:00:32,519
+These capabilities answer three different questions: what does the system know, what can it do, and what has it already done?
+
+8
+00:00:32,519 --> 00:00:34,663
+Imagine a support assistant.
+
+9
+00:00:34,663 --> 00:00:41,548
+It retrieves the refund policy, looks up the order, calls the refund API, and remembers what the customer confirmed.
+
+10
+00:00:41,548 --> 00:00:47,826
+If order lookup fails, the tool must return the error instead of inviting the model to invent an order status.
+
+11
+00:00:47,826 --> 00:00:53,557
+If a refund already ran, stored state and API idempotency must prevent a duplicate payment.
+
+12
+00:00:53,557 --> 00:00:57,778
+That single augmented model can already complete many real tasks.
+
+13
+00:00:57,778 --> 00:01:00,894
+Multiple agents are not automatically necessary.
+
+14
+00:01:00,894 --> 00:01:04,500
+The key is not to connect as many capabilities as possible.
+
+15
+00:01:04,500 --> 00:01:10,156
+Each capability must fit the task, expose a clear interface, and be used at the right time.
+
+16
+00:01:10,156 --> 00:01:18,923
+Running one augmented model on a controlled task usually reveals whether the real gap is knowledge, action, or decision-making before you split the system into roles.
+
+17
+00:01:18,923 --> 00:01:20,461
+Chapter recap.
+
+18
+00:01:20,461 --> 00:01:23,644
+First, retrieval provides external facts.
+
+19
+00:01:23,644 --> 00:01:26,538
+Second, tools perform real actions.
+
+20
+00:01:26,538 --> 00:01:29,307
+Third, memory preserves task state.

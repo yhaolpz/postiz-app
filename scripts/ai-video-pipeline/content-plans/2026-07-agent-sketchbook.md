@@ -1,5 +1,10 @@
 # Tiny Agent July 2026 content plan
 
+> Legacy micro-format plan. Entries from 2026-07-12 onward are superseded by
+> `2026-07-source-led-video-material.zh-CN.md` and the compiled English plans in
+> `var/ai-video-pipeline/publish-plans/`. Daily publishing must not use this
+> file for dates on or after 2026-07-12.
+
 ## Scope
 
 This plan prepares the first daily batch for `Tiny Agent` from
@@ -564,7 +569,7 @@ missing limbs, no tiny characters.
 - For each video, generate narration before final keyframes so the visual beats
   match actual timing.
 - Keep each planned narration around 65-75 spoken words for the current
-  `edge-tts` voice and `+8%` rate; shorter drafts risk failing the 20-30s QA
+  `en-US-AnaNeural` `edge-tts` voice and `+8%` rate; shorter drafts risk failing the 20-30s QA
   gate.
 - Avoid dense diagrams. One idea, one metaphor, three visual beats.
 - Save generated raw keyframes under

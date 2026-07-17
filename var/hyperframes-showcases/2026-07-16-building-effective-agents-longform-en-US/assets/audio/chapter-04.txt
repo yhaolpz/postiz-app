@@ -1,0 +1,49 @@
+When one model call is not enough but the overall path is still controllable, choose the workflow pattern that matches the uncertainty.
+
+The first pattern is prompt chaining: split one difficult task into a sequence of smaller steps.
+
+For example, generate an outline, check it against explicit requirements, and only then draft the document. Each step solves one clear problem, and a programmatic gate can stop the chain when the output is not ready.
+
+Prompt chaining works when the task decomposes cleanly. It costs more calls and time, but each call becomes easier to evaluate. The useful part is the gate: if the outline has no audience, rewrite it; if fact checking fails, do not continue to publication. Do not let a weak intermediate result travel all the way to the end.
+
+The second pattern is routing.
+
+A router classifies the input and sends it to the right prompt, model, or tool. Customer requests might branch into product questions, refund requests, and technical incidents. Common cases can use a smaller model, while unusual cases use a stronger one.
+
+Routing works when categories need clearly different treatment and classification is reliable. It also needs a low-confidence path. An uncertain input should go to a general process or a human, not be forced into the wrong branch.
+
+The third pattern is parallelization, and it has two distinct forms.
+
+Sectioning runs independent subtasks at the same time and combines the results. To evaluate an AI answer, separate reviewers can check facts, safety, clarity, and format in parallel.
+
+Voting asks several independent attempts to judge the same question, then aggregates their conclusions. A security review might use different prompts to inspect the same code from different risk perspectives.
+
+Parallelization helps when subtasks are independent or when one judgment is not reliable enough. Independence matters. Copying the same prompt three times often creates three versions of the same bias, not three useful perspectives.
+
+The fourth pattern is orchestrator-workers.
+
+A central model understands the goal, discovers the required subtasks, delegates them to workers, and combines their results.
+
+The difference from ordinary parallel work is that the subtasks are not known in advance. The orchestrator decides them from the current input.
+
+Consider changing a large codebase. Before investigation, you do not know how many files must change or which modules matter. The orchestrator must first inspect the problem, then choose where to search and what work to assign.
+
+This pattern fits complex tasks that can be divided but cannot be fully planned ahead. Each worker still needs only the relevant context and a consistent return format. Otherwise, the final synthesis spends most of its budget reinterpreting scattered output.
+
+The fifth pattern is evaluator-optimizer.
+
+One model generates a result, another evaluates it, and the first model revises from concrete feedback. In literary translation, the evaluator can check meaning, tone, and terminology before proposing specific corrections.
+
+The loop works only when feedback can demonstrably improve the result and the evaluator can identify useful changes. It also needs a stopping condition: reach a score, stop after no improvement, or stop when the budget is exhausted.
+
+Without a clear evaluation standard, the loop only increases cost. It does not guarantee quality.
+
+The reusable rule is to locate the uncertainty. Use chaining for fixed steps, routing for different input classes, parallelization for independent work, orchestrator-workers for runtime task discovery, and evaluator-optimizer for outputs that can be explicitly judged and improved. Patterns can combine, but every addition must solve a named problem, and every step must remain observable.
+
+Chapter recap.
+
+First, locate where uncertainty enters the task.
+
+Second, choose the workflow that controls that uncertainty.
+
+Third, add a pattern only when it solves a specific problem.

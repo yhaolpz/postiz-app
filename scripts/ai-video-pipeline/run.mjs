@@ -124,6 +124,8 @@ const VIDEO_WIDTH = 1080;
 const VIDEO_HEIGHT = 1920;
 const VIDEO_FPS = 30;
 const TINY_AGENT_LAYOUT_STANDARD = 'cross-platform-balanced-v1';
+const TINY_AGENT_YOUTUBE_TRACKING_URL =
+  'https://indieseek.co/?utm_source=youtube&utm_campaign=tiny_agent';
 const LAYOUT_LEFT = 80;
 const LAYOUT_RIGHT = 1000;
 const LAYOUT_CENTER_X = 540;
@@ -191,7 +193,13 @@ function wrapPlainText(value, maxChars = 26, maxLines = 2) {
 }
 
 function buildOverlaySvg(scene, content) {
-  const title = xmlEscape(content.seriesTitle || 'Tiny Agent');
+  const seriesTitle = xmlEscape(content.seriesTitle || 'Tiny Agent');
+  const episodeTitle = xmlEscape(content.title || '');
+  const usesExpandedFormat = content.scenes?.length >= 5;
+  const titleMarkup = usesExpandedFormat
+    ? `<text class="series-title" x="${LAYOUT_CENTER_X}" y="102" text-anchor="middle">${seriesTitle}</text>
+  <text class="episode-title" x="${LAYOUT_CENTER_X}" y="238" text-anchor="middle">${episodeTitle}</text>`
+    : `<text class="title" x="${LAYOUT_CENTER_X}" y="240" text-anchor="middle">${seriesTitle}</text>`;
   const caption = scene.footer || scene.subhead || scene.headline || content.title;
   const explicitCaptionLines = String(caption)
     .split(/\n+/)
@@ -211,9 +219,11 @@ function buildOverlaySvg(scene, content) {
 <svg width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" viewBox="0 0 ${VIDEO_WIDTH} ${VIDEO_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
   <style>
     .title { font-family: Arial, Helvetica, sans-serif; font-size: 68px; font-weight: 900; fill: #111827; }
+    .series-title { font-family: Arial, Helvetica, sans-serif; font-size: 40px; font-weight: 800; fill: #2563eb; }
+    .episode-title { font-family: Arial, Helvetica, sans-serif; font-size: 56px; font-weight: 900; fill: #111827; }
     .caption { font-family: Arial, Helvetica, sans-serif; font-size: 50px; font-weight: 900; fill: #111827; }
   </style>
-  <text class="title" x="${LAYOUT_CENTER_X}" y="240" text-anchor="middle">${title}</text>
+  ${titleMarkup}
   <path d="M115 1130 H965 Q1000 1130 1000 1165 V1395 Q1000 1430 965 1430 H115 Q80 1430 80 1395 V1165 Q80 1130 115 1130 Z" fill="#fff" stroke="#111827" stroke-width="7"/>
   <text class="caption" text-anchor="middle">${captionTspans}</text>
 </svg>`);
@@ -646,7 +656,7 @@ async function contentFromPlan(args) {
     throw new Error(`Content plan entry for ${planDate} is missing narration or keyframes.`);
   }
 
-  const sceneCount = Math.min(keyframes.length, 4);
+  const sceneCount = Math.min(keyframes.length, 9);
   const sentences =
     narration.match(/[^.!?]+[.!?]+/g)?.map((sentence) => sentence.trim()) || [];
   const viewerBeats = [
@@ -664,7 +674,14 @@ async function contentFromPlan(args) {
         count: sceneCount,
       });
 
-  const defaultDurations = keyframes.length >= 4 ? [5, 6, 6, 7] : [6, 7, 7];
+  const defaultDurations =
+    keyframes.length >= 8
+      ? [4, 6, 6, 6, 6, 6, 6, 6, 5]
+      : keyframes.length >= 5
+        ? [4, 8, 10, 10, 9, 6]
+        : keyframes.length >= 4
+          ? [5, 6, 6, 7]
+          : [6, 7, 7];
   const scenes = keyframes.slice(0, sceneCount).map((keyframe, index) => ({
     duration: defaultDurations[index] || 6,
     visual: 'whiteboard',
@@ -679,6 +696,7 @@ async function contentFromPlan(args) {
     seriesTitle: 'Tiny Agent',
     planDate,
     sourcePlanFile: planFile,
+    topic: tinyPoint || episodeTitle,
     title: youtubeTitle,
     description: caption || episodeTitle,
     hashtags: hashtags.length ? hashtags : ['AI', 'AIAgents', 'TechExplained', 'TinyAgent'],
@@ -978,16 +996,44 @@ Do not mention sources unless they were provided. Make the explanation evergreen
   }
 }
 
-async function generateSpeech(content, outputDir, args) {
-  const provider = args.tts || process.env.AI_VIDEO_TTS_PROVIDER || 'say';
+function resolveSpeechConfig(args) {
+  const requestedProvider = args.tts || process.env.AI_VIDEO_TTS_PROVIDER || 'say';
+
+  if (requestedProvider === 'openai' && process.env.OPENAI_API_KEY) {
+    return {
+      provider: 'openai',
+      model: process.env.AI_VIDEO_OPENAI_TTS_MODEL || 'tts-1',
+      voice: process.env.AI_VIDEO_OPENAI_TTS_VOICE || 'alloy',
+      rate: null,
+    };
+  }
+
+  if (requestedProvider === 'edge-tts') {
+    return {
+      provider: 'edge-tts',
+      model: null,
+      voice: args.voice || process.env.AI_VIDEO_TTS_VOICE || 'en-US-AnaNeural',
+      rate: String(args.rate || process.env.AI_VIDEO_TTS_RATE || '+8%'),
+    };
+  }
+
+  return {
+    provider: 'say',
+    model: null,
+    voice: args.voice || process.env.AI_VIDEO_TTS_VOICE || 'Samantha',
+    rate: String(args.rate || process.env.AI_VIDEO_TTS_RATE || '188'),
+  };
+}
+
+async function generateSpeech(content, outputDir, speechConfig) {
   const narrationPath = path.join(outputDir, 'narration.txt');
   await fs.writeFile(narrationPath, content.narration, 'utf8');
 
-  if (provider === 'openai' && process.env.OPENAI_API_KEY) {
+  if (speechConfig.provider === 'openai') {
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const speech = await client.audio.speech.create({
-      model: process.env.AI_VIDEO_OPENAI_TTS_MODEL || 'tts-1',
-      voice: process.env.AI_VIDEO_OPENAI_TTS_VOICE || 'alloy',
+      model: speechConfig.model,
+      voice: speechConfig.voice,
       input: content.narration,
       response_format: 'mp3',
     });
@@ -996,11 +1042,9 @@ async function generateSpeech(content, outputDir, args) {
     return audioPath;
   }
 
-  if (provider === 'edge-tts') {
+  if (speechConfig.provider === 'edge-tts') {
     const audioPath = path.join(outputDir, 'narration.mp3');
     const subtitlesPath = path.join(outputDir, 'narration.vtt');
-    const voice = args.voice || process.env.AI_VIDEO_TTS_VOICE || 'en-US-BrianNeural';
-    const rate = String(args.rate || process.env.AI_VIDEO_TTS_RATE || '+8%');
     await execFile(
       process.env.AI_VIDEO_EDGE_TTS_COMMAND || 'uvx',
       [
@@ -1008,9 +1052,9 @@ async function generateSpeech(content, outputDir, args) {
         '-f',
         narrationPath,
         '-v',
-        voice,
+        speechConfig.voice,
         '--rate',
-        rate,
+        speechConfig.rate,
         '--write-media',
         audioPath,
         '--write-subtitles',
@@ -1022,9 +1066,7 @@ async function generateSpeech(content, outputDir, args) {
   }
 
   const audioPath = path.join(outputDir, 'narration.aiff');
-  const voice = args.voice || process.env.AI_VIDEO_TTS_VOICE || 'Samantha';
-  const rate = String(args.rate || process.env.AI_VIDEO_TTS_RATE || '188');
-  await execFile('say', ['-v', voice, '-r', rate, '-f', narrationPath, '-o', audioPath], {
+  await execFile('say', ['-v', speechConfig.voice, '-r', speechConfig.rate, '-f', narrationPath, '-o', audioPath], {
     cwd: rootDir,
   });
   return audioPath;
@@ -1237,7 +1279,11 @@ async function checkStableZoom(videoPath, frames, videoDuration) {
   return checks;
 }
 
-async function verifyRenderedVideo(videoPath, audioPath, frames, outputDir) {
+function expectedDurationRange(content) {
+  return content?.scenes?.length >= 5 ? { min: 35, max: 65 } : { min: 20, max: 30 };
+}
+
+async function verifyRenderedVideo(videoPath, audioPath, frames, outputDir, content) {
   const probe = await probeMedia(videoPath);
   const videoStream = probe.streams.find((stream) => stream.codec_type === 'video');
   const audioStream = probe.streams.find((stream) => stream.codec_type === 'audio');
@@ -1259,9 +1305,10 @@ async function verifyRenderedVideo(videoPath, audioPath, frames, outputDir) {
     );
   }
 
-  if (videoDuration < 20 || videoDuration > 30) {
+  const durationRange = expectedDurationRange(content);
+  if (videoDuration < durationRange.min || videoDuration > durationRange.max) {
     throw new Error(
-      `Duration QA failed: video duration must be 20-30s, got ${videoDuration.toFixed(3)}s. Lengthen or tighten the narration instead of padding silence.`
+      `Duration QA failed: video duration must be ${durationRange.min}-${durationRange.max}s, got ${videoDuration.toFixed(3)}s. Lengthen or tighten the narration instead of padding silence.`
     );
   }
 
@@ -1303,7 +1350,7 @@ async function readJsonIfExists(filePath) {
   return JSON.parse(await fs.readFile(filePath, 'utf8'));
 }
 
-function assertReusableVideoSpec({ videoStream, audioStream, videoDuration, audioDuration }) {
+function assertReusableVideoSpec({ videoStream, audioStream, videoDuration, audioDuration, content }) {
   if (!videoStream || !audioStream) {
     throw new Error('Reusable video must contain both video and audio streams.');
   }
@@ -1318,9 +1365,10 @@ function assertReusableVideoSpec({ videoStream, audioStream, videoDuration, audi
     );
   }
 
-  if (videoDuration < 20 || videoDuration > 30) {
+  const durationRange = expectedDurationRange(content);
+  if (videoDuration < durationRange.min || videoDuration > durationRange.max) {
     throw new Error(
-      `Reusable video duration must be 20-30s, got ${videoDuration.toFixed(3)}s.`
+      `Reusable video duration must be ${durationRange.min}-${durationRange.max}s, got ${videoDuration.toFixed(3)}s.`
     );
   }
 
@@ -1343,6 +1391,7 @@ async function verifyReusableVideo(videoPath, args = {}, content = null) {
     audioStream,
     videoDuration,
     audioDuration,
+    content,
   });
 
   const summaryPath =
@@ -1840,13 +1889,34 @@ async function uploadMedia(apiKey, videoPath) {
   });
 }
 
-function makeCaption(content) {
-  const tags = (content.hashtags || ['AI', 'AIAgents', 'TechExplained'])
-    .map((tag) => `#${String(tag).replace(/^#/, '').replace(/[^a-zA-Z0-9_]/g, '')}`)
+function makeHashtags(content) {
+  return (content.hashtags || ['AI', 'AIAgents', 'TechExplained'])
+    .map(
+      (tag) =>
+        `#${String(tag)
+          .replace(/^#/, '')
+          .replace(/[^a-zA-Z0-9_]/g, '')}`
+    )
     .filter((tag) => tag.length > 1)
     .slice(0, 6)
     .join(' ');
+}
+
+function makeCaption(content) {
+  const tags = makeHashtags(content);
   return cleanForCaption(`${content.description}\n\n${tags}`, 1200);
+}
+
+function makeYoutubeDescription(content) {
+  if (content.seriesTitle !== 'Tiny Agent') return makeCaption(content);
+
+  const tags = makeHashtags(content);
+  const suffix = `${TINY_AGENT_YOUTUBE_TRACKING_URL}\n\n${tags}`;
+  const description = cleanForCaption(
+    content.description,
+    1200 - suffix.length - 2
+  );
+  return `${description}\n\n${suffix}`;
 }
 
 function normalizeVisibility(value, fallback = 'private') {
@@ -1899,6 +1969,7 @@ async function createPost({ apiKey, youtubeId, tiktokId, facebookId, media, cont
     getFacebookReelState(args, content);
 
   const caption = makeCaption(content);
+  const youtubeDescription = makeYoutubeDescription(content);
   const nowIso = new Date(Date.now() + 15_000).toISOString();
   const mediaDto = { id: media.id || `generated-${makeId()}`, path: media.path };
   const postType = args['post-type'] || process.env.AI_VIDEO_POST_TYPE || 'now';
@@ -1923,7 +1994,7 @@ async function createPost({ apiKey, youtubeId, tiktokId, facebookId, media, cont
         },
         value: [
           {
-            content: caption,
+            content: youtubeDescription,
             image: [mediaDto],
           },
         ],
@@ -2330,32 +2401,42 @@ async function main() {
   let videoPath;
   let verification;
   let reuseMetadata = null;
+  let speech = null;
 
   if (reuseVideo) {
     videoPath = path.resolve(reuseVideo);
     reuseMetadata = await verifyReusableVideo(videoPath, args, content);
     verification = reuseMetadata.verification;
+    speech = reuseMetadata.sourceSummary?.speech || null;
   } else {
     frames = await renderFrames(content, outputDir, args);
-    const audioPath = await generateSpeech(content, outputDir, args);
+    speech = resolveSpeechConfig(args);
+    const audioPath = await generateSpeech(content, outputDir, speech);
     videoPath = await renderVideo(frames, audioPath, outputDir);
     verification = await verifyRenderedVideo(
       videoPath,
       audioPath,
       frames,
-      outputDir
+      outputDir,
+      content
     );
   }
 
   const sourceSummary = reuseMetadata?.sourceSummary;
 
   const summary = {
-    topic,
+    topic: content.topic || topic,
     title: content.title,
+    youtubeTrackingUrl:
+      content.seriesTitle === 'Tiny Agent'
+        ? TINY_AGENT_YOUTUBE_TRACKING_URL
+        : null,
+    youtubeDescription: makeYoutubeDescription(content),
     layoutStandard: usesTinyAgentLayout(content) ? TINY_AGENT_LAYOUT_STANDARD : null,
     layoutSpec: usesTinyAgentLayout(content) ? tinyAgentLayoutSpec() : null,
     outputDir,
     videoPath,
+    speech,
     verification,
     reusedVideo: Boolean(reuseVideo),
     reuseSummaryPath: reuseMetadata?.summaryPath || null,

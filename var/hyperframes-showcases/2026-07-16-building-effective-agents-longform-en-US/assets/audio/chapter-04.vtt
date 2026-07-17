@@ -1,0 +1,187 @@
+1
+00:00:00,100 --> 00:00:07,088
+When one model call is not enough but the overall path is still controllable, choose the workflow pattern that matches the uncertainty.
+
+2
+00:00:07,038 --> 00:00:12,788
+The first pattern is prompt chaining: split one difficult task into a sequence of smaller steps.
+
+3
+00:00:12,788 --> 00:00:19,365
+For example, generate an outline, check it against explicit requirements, and only then draft the document.
+
+4
+00:00:19,365 --> 00:00:25,355
+Each step solves one clear problem, and a programmatic gate can stop the chain when the output is not ready.
+
+5
+00:00:25,355 --> 00:00:28,778
+Prompt chaining works when the task decomposes cleanly.
+
+6
+00:00:28,778 --> 00:00:33,375
+It costs more calls and time, but each call becomes easier to evaluate.
+
+7
+00:00:33,375 --> 00:00:41,144
+The useful part is the gate: if the outline has no audience, rewrite it; if fact checking fails, do not continue to publication.
+
+8
+00:00:41,144 --> 00:00:44,990
+Do not let a weak intermediate result travel all the way to the end.
+
+9
+00:00:44,990 --> 00:00:47,125
+The second pattern is routing.
+
+10
+00:00:47,125 --> 00:00:52,038
+A router classifies the input and sends it to the right prompt, model, or tool.
+
+11
+00:00:52,038 --> 00:00:57,913
+Customer requests might branch into product questions, refund requests, and technical incidents.
+
+12
+00:00:57,913 --> 00:01:02,778
+Common cases can use a smaller model, while unusual cases use a stronger one.
+
+13
+00:01:02,778 --> 00:01:08,076
+Routing works when categories need clearly different treatment and classification is reliable.
+
+14
+00:01:08,076 --> 00:01:10,576
+It also needs a low-confidence path.
+
+15
+00:01:10,576 --> 00:01:16,307
+An uncertain input should go to a general process or a human, not be forced into the wrong branch.
+
+16
+00:01:16,307 --> 00:01:20,548
+The third pattern is parallelization, and it has two distinct forms.
+
+17
+00:01:20,548 --> 00:01:25,288
+Sectioning runs independent subtasks at the same time and combines the results.
+
+18
+00:01:25,288 --> 00:01:32,355
+To evaluate an AI answer, separate reviewers can check facts, safety, clarity, and format in parallel.
+
+19
+00:01:32,355 --> 00:01:38,125
+Voting asks several independent attempts to judge the same question, then aggregates their conclusions.
+
+20
+00:01:38,125 --> 00:01:43,682
+A security review might use different prompts to inspect the same code from different risk perspectives.
+
+21
+00:01:43,682 --> 00:01:49,355
+Parallelization helps when subtasks are independent or when one judgment is not reliable enough.
+
+22
+00:01:49,355 --> 00:01:51,221
+Independence matters.
+
+23
+00:01:51,221 --> 00:01:57,865
+Copying the same prompt three times often creates three versions of the same bias, not three useful perspectives.
+
+24
+00:01:57,865 --> 00:02:00,596
+The fourth pattern is orchestrator-workers.
+
+25
+00:02:00,596 --> 00:02:07,932
+A central model understands the goal, discovers the required subtasks, delegates them to workers, and combines their results.
+
+26
+00:02:07,932 --> 00:02:12,750
+The difference from ordinary parallel work is that the subtasks are not known in advance.
+
+27
+00:02:12,750 --> 00:02:15,798
+The orchestrator decides them from the current input.
+
+28
+00:02:15,798 --> 00:02:18,336
+Consider changing a large codebase.
+
+29
+00:02:18,336 --> 00:02:23,548
+Before investigation, you do not know how many files must change or which modules matter.
+
+30
+00:02:23,548 --> 00:02:28,980
+The orchestrator must first inspect the problem, then choose where to search and what work to assign.
+
+31
+00:02:28,980 --> 00:02:33,836
+This pattern fits complex tasks that can be divided but cannot be fully planned ahead.
+
+32
+00:02:33,836 --> 00:02:38,625
+Each worker still needs only the relevant context and a consistent return format.
+
+33
+00:02:38,625 --> 00:02:43,750
+Otherwise, the final synthesis spends most of its budget reinterpreting scattered output.
+
+34
+00:02:43,750 --> 00:02:46,682
+The fifth pattern is evaluator-optimizer.
+
+35
+00:02:46,682 --> 00:02:52,932
+One model generates a result, another evaluates it, and the first model revises from concrete feedback.
+
+36
+00:02:52,932 --> 00:03:00,221
+In literary translation, the evaluator can check meaning, tone, and terminology before proposing specific corrections.
+
+37
+00:03:00,221 --> 00:03:06,673
+The loop works only when feedback can demonstrably improve the result and the evaluator can identify useful changes.
+
+38
+00:03:06,673 --> 00:03:13,519
+It also needs a stopping condition: reach a score, stop after no improvement, or stop when the budget is exhausted.
+
+39
+00:03:13,519 --> 00:03:17,865
+Without a clear evaluation standard, the loop only increases cost.
+
+40
+00:03:17,865 --> 00:03:20,038
+It does not guarantee quality.
+
+41
+00:03:20,038 --> 00:03:23,134
+The reusable rule is to locate the uncertainty.
+
+42
+00:03:23,134 --> 00:03:36,259
+Use chaining for fixed steps, routing for different input classes, parallelization for independent work, orchestrator-workers for runtime task discovery, and evaluator-optimizer for outputs that can be explicitly judged and improved.
+
+43
+00:03:36,259 --> 00:03:42,451
+Patterns can combine, but every addition must solve a named problem, and every step must remain observable.
+
+44
+00:03:42,451 --> 00:03:43,990
+Chapter recap.
+
+45
+00:03:43,990 --> 00:03:47,346
+First, locate where uncertainty enters the task.
+
+46
+00:03:47,346 --> 00:03:50,980
+Second, choose the workflow that controls that uncertainty.
+
+47
+00:03:50,980 --> 00:03:54,788
+Third, add a pattern only when it solves a specific problem.

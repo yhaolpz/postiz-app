@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tiny Agent 声音目录</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f6f7;
+        --surface: #ffffff;
+        --border: #d9dde2;
+        --ink: #16181b;
+        --muted: #606871;
+        --blue: #117abd;
+        --blue-soft: #e8f3fa;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        letter-spacing: 0;
+      }
+
+      button,
+      input,
+      select { font: inherit; }
+
+      main {
+        width: min(1080px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0 64px;
+      }
+
+      header { margin-bottom: 22px; }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(28px, 4vw, 38px);
+        line-height: 1.2;
+      }
+
+      .intro,
+      .result-count {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      .samples {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 18px 0;
+      }
+
+      .sample {
+        margin: 0;
+        padding: 12px 14px;
+        border-left: 3px solid var(--blue);
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: auto minmax(220px, 1fr) 180px 140px;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .segments {
+        display: flex;
+        padding: 3px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--surface);
+      }
+
+      .segment {
+        min-height: 36px;
+        padding: 6px 11px;
+        border: 0;
+        border-radius: 4px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .segment.active {
+        background: var(--ink);
+        color: #ffffff;
+      }
+
+      .field {
+        width: 100%;
+        min-height: 44px;
+        padding: 9px 11px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        outline: none;
+        background: var(--surface);
+        color: var(--ink);
+      }
+
+      .field:focus { border-color: var(--blue); }
+
+      .result-count { margin: 0 0 10px; }
+
+      .voice-list {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+      }
+
+      .voice {
+        display: grid;
+        grid-template-columns: minmax(310px, 1.1fr) minmax(320px, 1fr);
+        gap: 24px;
+        align-items: center;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .voice:last-child { border-bottom: 0; }
+      .voice.current { background: var(--blue-soft); }
+
+      .voice-heading,
+      .voice-id-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 19px;
+        line-height: 1.3;
+      }
+
+      .locale {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .badge {
+        padding: 3px 7px;
+        border-radius: 4px;
+        background: var(--blue);
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .badge.english-default {
+        background: #ffdf70;
+        color: var(--ink);
+      }
+
+      .voice-id {
+        margin: 7px 0 5px;
+        overflow-wrap: anywhere;
+        color: var(--muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+      }
+
+      .copy-button {
+        padding: 3px 7px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--surface);
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .voice-meta {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      audio { width: 100%; }
+
+      .empty {
+        padding: 48px 20px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 880px) {
+        .toolbar { grid-template-columns: 1fr 1fr; }
+        .segments { grid-column: 1 / -1; }
+        .voice { grid-template-columns: 1fr; gap: 12px; }
+      }
+
+      @media (max-width: 600px) {
+        main { width: min(100% - 20px, 1080px); padding-top: 24px; }
+        .samples,
+        .toolbar { grid-template-columns: 1fr; }
+        .segments { overflow-x: auto; }
+        .voice { padding: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Tiny Agent 声音目录</h1>
+        <p class="intro" id="catalog-summary">正在载入声音目录…</p>
+      </header>
+
+      <section class="samples" aria-label="试听文本">
+        <p class="sample" id="sample-zh"></p>
+        <p class="sample" id="sample-en"></p>
+      </section>
+
+      <section class="toolbar" aria-label="声音筛选">
+        <div class="segments" role="group" aria-label="语言">
+          <button class="segment active" type="button" data-language="all">全部</button>
+          <button class="segment" type="button" data-language="zh">中文</button>
+          <button class="segment" type="button" data-language="en">English</button>
+        </div>
+        <input class="field" id="search" type="search" placeholder="搜索名称、Voice ID 或风格" aria-label="搜索声音">
+        <select class="field" id="locale" aria-label="地区"><option value="all">全部地区</option></select>
+        <select class="field" id="gender" aria-label="性别">
+          <option value="all">全部性别</option>
+          <option value="Female">女声</option>
+          <option value="Male">男声</option>
+        </select>
+      </section>
+
+      <p class="result-count" id="result-count"></p>
+      <section class="voice-list" id="voice-list" aria-live="polite"></section>
+    </main>
+
+    <script>
+      const state = { language: 'all', locale: 'all', gender: 'all', query: '' };
+      const list = document.querySelector('#voice-list');
+      const count = document.querySelector('#result-count');
+      let catalog;
+
+      const genderLabel = (gender) => gender === 'Female' ? '女声' : '男声';
+
+      const render = () => {
+        const query = state.query.trim().toLowerCase();
+        const voices = catalog.voices.filter((voice) => {
+          const matchesLanguage = state.language === 'all' || voice.language === state.language;
+          const matchesLocale = state.locale === 'all' || voice.locale === state.locale;
+          const matchesGender = state.gender === 'all' || voice.gender === state.gender;
+          const haystack = `${voice.displayName} ${voice.id} ${voice.localeLabel} ${voice.styleZh}`.toLowerCase();
+          return matchesLanguage && matchesLocale && matchesGender && (!query || haystack.includes(query));
+        });
+
+        count.textContent = `显示 ${voices.length} 个声音`;
+        list.replaceChildren();
+
+        if (!voices.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = '没有匹配的声音';
+          list.append(empty);
+          return;
+        }
+
+        voices.forEach((voice) => {
+          const defaultVoice = catalog.defaults.find((item) => item.voice === voice.id);
+          const article = document.createElement('article');
+          article.className = `voice${defaultVoice ? ' current' : ''}`;
+
+          const details = document.createElement('div');
+          const heading = document.createElement('div');
+          heading.className = 'voice-heading';
+
+          const title = document.createElement('h2');
+          title.textContent = voice.displayName;
+          heading.append(title);
+
+          const locale = document.createElement('span');
+          locale.className = 'locale';
+          locale.textContent = voice.localeLabel;
+          heading.append(locale);
+
+          if (defaultVoice) {
+            const badge = document.createElement('span');
+            badge.className = `badge${voice.language === 'en' ? ' english-default' : ''}`;
+            badge.textContent = defaultVoice.label;
+            badge.title = defaultVoice.appliesTo;
+            heading.append(badge);
+          }
+
+          const idRow = document.createElement('div');
+          idRow.className = 'voice-id-row';
+          const id = document.createElement('p');
+          id.className = 'voice-id';
+          id.textContent = voice.id;
+
+          const copy = document.createElement('button');
+          copy.className = 'copy-button';
+          copy.type = 'button';
+          copy.textContent = '复制 ID';
+          copy.addEventListener('click', async () => {
+            await navigator.clipboard.writeText(voice.id);
+            copy.textContent = '已复制';
+            window.setTimeout(() => { copy.textContent = '复制 ID'; }, 1200);
+          });
+
+          idRow.append(id, copy);
+
+          const meta = document.createElement('p');
+          meta.className = 'voice-meta';
+          meta.textContent = `${genderLabel(voice.gender)} · ${voice.styleZh}`;
+          details.append(heading, idRow, meta);
+
+          const audio = document.createElement('audio');
+          audio.controls = true;
+          audio.preload = 'metadata';
+          audio.src = voice.audio;
+          article.append(details, audio);
+          list.append(article);
+        });
+      };
+
+      fetch('voices.json')
+        .then((response) => response.json())
+        .then((data) => {
+          catalog = data;
+          const chineseDefault = data.defaults.find((item) => item.voice.startsWith('zh-'))?.voice || '未设置';
+          const englishDefault = data.defaults.find((item) => item.voice.startsWith('en-'))?.voice || '未设置';
+          document.querySelector('#catalog-summary').textContent = `共 ${data.counts.total} 个声音：中文 ${data.counts.chinese} 个，英文 ${data.counts.english} 个。试听均使用 +0% 语速；中文默认 ${chineseDefault}，英文默认 ${englishDefault}。`;
+          document.querySelector('#sample-zh').textContent = data.samples['zh-CN'];
+          document.querySelector('#sample-en').textContent = data.samples['en-US'];
+
+          const localeSelect = document.querySelector('#locale');
+          const locales = [...new Map(data.voices.map((voice) => [voice.locale, voice.localeLabel])).entries()];
+          locales.forEach(([value, label]) => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = `${label} (${value})`;
+            localeSelect.append(option);
+          });
+          render();
+        });
+
+      document.querySelectorAll('[data-language]').forEach((button) => {
+        button.addEventListener('click', () => {
+          state.language = button.dataset.language;
+          document.querySelectorAll('[data-language]').forEach((item) => item.classList.toggle('active', item === button));
+          render();
+        });
+      });
+
+      document.querySelector('#search').addEventListener('input', (event) => {
+        state.query = event.target.value;
+        render();
+      });
+
+      document.querySelector('#locale').addEventListener('change', (event) => {
+        state.locale = event.target.value;
+        render();
+      });
+
+      document.querySelector('#gender').addEventListener('change', (event) => {
+        state.gender = event.target.value;
+        render();
+      });
+    </script>
+  </body>
+</html>

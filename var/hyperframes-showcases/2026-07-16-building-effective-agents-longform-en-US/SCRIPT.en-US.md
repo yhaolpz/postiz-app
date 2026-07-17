@@ -1,0 +1,210 @@
+# Stop Building Multi-Agent Systems First
+
+## Metadata
+
+- Source: Anthropic, Building effective agents
+- Audience: builders and operators choosing an AI-agent architecture
+- Structure: hook, decision principles, patterns, reusable ladder, summary
+- Core thesis: start with the simplest system that works and add complexity only when measured outcomes improve
+
+## Full Narration Script
+
+### Auto-timed | Preface
+
+Many teams begin by choosing a framework, drawing a multi-agent diagram, and asking several models to debate.
+
+Anthropic found that successful production systems often use simpler, composable patterns. Quality depends less on the number of agents than on clear task boundaries, evaluation criteria, and environmental feedback.
+
+A complex architecture may not improve completion, but it will increase model calls, latency, cost, and debugging. Every extra handoff adds another chance to lose context or pass a mistake forward.
+
+In this video, we will answer three questions that are easy to get wrong: when one model call is enough, which of five common workflow patterns fits the task, and when an autonomous agent is actually worth the risk.
+
+By the end, you will have an Agent Architecture Decision Ladder that you can use on a real project, instead of paying for complexity just to make the system look more agentic.
+
+### Auto-timed | Architecture Choice
+
+Start with the distinction that controls every later decision.
+
+In a workflow, code defines the execution path in advance. A model may perform one step, but the program still controls the sequence.
+
+In an agent, the model uses the current result to choose what to do next, which tool to call, and when the task should stop.
+
+An expense report that always moves through extraction, policy checks, and approval has a path you can draw before execution. That is a strong workflow task.
+
+An incident investigation is different. You may read logs first, then inspect metrics, and only then decide whether to investigate the database, the network, or the code. The path emerges from evidence, so an agent can add real value.
+
+Neither one is more advanced. Workflows optimize for consistency and predictability. Agents optimize for flexibility and model-directed decisions.
+
+The most important principle is to find the simplest viable solution and increase complexity only when the result is measurably inadequate. Inadequate does not mean the diagram looks unsophisticated. It means completion rate, accuracy, latency, cost, or human intervention misses a defined target. If a new orchestration layer does not help the same evaluation set finish more reliably, it is not an upgrade. It is overhead.
+
+Chapter recap.
+
+First, use a workflow when the path is fixed.
+
+Second, use an agent only when the path must be dynamic.
+
+Third, every added layer must earn its place with a measurable result.
+
+### Auto-timed | Core Building Block
+
+Before workflows and agents, there is a more useful default: the augmented language model.
+
+It is not a team of agents. It is one model connected to retrieval, tools, and memory.
+
+Retrieval supplies current external facts instead of relying only on training data. Tools let the model query an order, read a database, call an API, or perform a real action. Memory preserves useful state across steps. These capabilities answer three different questions: what does the system know, what can it do, and what has it already done?
+
+Imagine a support assistant. It retrieves the refund policy, looks up the order, calls the refund API, and remembers what the customer confirmed. If order lookup fails, the tool must return the error instead of inviting the model to invent an order status. If a refund already ran, stored state and API idempotency must prevent a duplicate payment.
+
+That single augmented model can already complete many real tasks. Multiple agents are not automatically necessary.
+
+The key is not to connect as many capabilities as possible. Each capability must fit the task, expose a clear interface, and be used at the right time. Running one augmented model on a controlled task usually reveals whether the real gap is knowledge, action, or decision-making before you split the system into roles.
+
+Chapter recap.
+
+First, retrieval provides external facts.
+
+Second, tools perform real actions.
+
+Third, memory preserves task state.
+
+### Auto-timed | Workflow Patterns
+
+When one model call is not enough but the overall path is still controllable, choose the workflow pattern that matches the uncertainty.
+
+The first pattern is prompt chaining: split one difficult task into a sequence of smaller steps.
+
+For example, generate an outline, check it against explicit requirements, and only then draft the document. Each step solves one clear problem, and a programmatic gate can stop the chain when the output is not ready.
+
+Prompt chaining works when the task decomposes cleanly. It costs more calls and time, but each call becomes easier to evaluate. The useful part is the gate: if the outline has no audience, rewrite it; if fact checking fails, do not continue to publication. Do not let a weak intermediate result travel all the way to the end.
+
+The second pattern is routing.
+
+A router classifies the input and sends it to the right prompt, model, or tool. Customer requests might branch into product questions, refund requests, and technical incidents. Common cases can use a smaller model, while unusual cases use a stronger one.
+
+Routing works when categories need clearly different treatment and classification is reliable. It also needs a low-confidence path. An uncertain input should go to a general process or a human, not be forced into the wrong branch.
+
+The third pattern is parallelization, and it has two distinct forms.
+
+Sectioning runs independent subtasks at the same time and combines the results. To evaluate an AI answer, separate reviewers can check facts, safety, clarity, and format in parallel.
+
+Voting asks several independent attempts to judge the same question, then aggregates their conclusions. A security review might use different prompts to inspect the same code from different risk perspectives.
+
+Parallelization helps when subtasks are independent or when one judgment is not reliable enough. Independence matters. Copying the same prompt three times often creates three versions of the same bias, not three useful perspectives.
+
+The fourth pattern is orchestrator-workers.
+
+A central model understands the goal, discovers the required subtasks, delegates them to workers, and combines their results.
+
+The difference from ordinary parallel work is that the subtasks are not known in advance. The orchestrator decides them from the current input.
+
+Consider changing a large codebase. Before investigation, you do not know how many files must change or which modules matter. The orchestrator must first inspect the problem, then choose where to search and what work to assign.
+
+This pattern fits complex tasks that can be divided but cannot be fully planned ahead. Each worker still needs only the relevant context and a consistent return format. Otherwise, the final synthesis spends most of its budget reinterpreting scattered output.
+
+The fifth pattern is evaluator-optimizer.
+
+One model generates a result, another evaluates it, and the first model revises from concrete feedback. In literary translation, the evaluator can check meaning, tone, and terminology before proposing specific corrections.
+
+The loop works only when feedback can demonstrably improve the result and the evaluator can identify useful changes. It also needs a stopping condition: reach a score, stop after no improvement, or stop when the budget is exhausted.
+
+Without a clear evaluation standard, the loop only increases cost. It does not guarantee quality.
+
+The reusable rule is to locate the uncertainty. Use chaining for fixed steps, routing for different input classes, parallelization for independent work, orchestrator-workers for runtime task discovery, and evaluator-optimizer for outputs that can be explicitly judged and improved. Patterns can combine, but every addition must solve a named problem, and every step must remain observable.
+
+Chapter recap.
+
+First, locate where uncertainty enters the task.
+
+Second, choose the workflow that controls that uncertainty.
+
+Third, add a pattern only when it solves a specific problem.
+
+### Auto-timed | Autonomous Agents
+
+You enter true agent territory when the execution path cannot be predicted and the model must keep adapting its plan from environmental results.
+
+The core of an agent is not mysterious. It is a continuing decision loop.
+
+The model interprets the goal, chooses an action, calls a tool, reads the real result, and updates its plan. The loop continues until the task completes, reaches a blocker, or hits a stopping condition.
+
+The critical question is not how long the model reasons. It is whether each action produces reliable ground truth.
+
+After a coding agent changes a file, it can run tests. After a support agent issues a refund, it can read the API response. After a browser agent clicks a button, it can verify that the page changed as expected.
+
+That feedback is how an agent knows whether it is making progress.
+
+Customer support and coding are strong agent tasks because they combine conversation with action and offer relatively clear success criteria.
+
+Autonomy also raises cost and compounds error. If every step were ninety percent reliable, ten correct steps in a row would have a theoretical probability of only about thirty-five percent. Real systems use checks and retries, but the arithmetic makes the boundary obvious: a longer path cannot rely on confidence alone.
+
+Production agents therefore need sandboxes, permission limits, maximum iterations, explicit stopping rules, and human confirmation at critical actions. They also need a record of tool calls and environment responses so a failure can be diagnosed, replayed, and recovered.
+
+An agent is not the absence of control. It gives dynamic decisions to the model and rebuilds control through feedback and boundaries. Reversible actions, such as reading information or drafting text, can receive wider autonomy. Payments, deletion, and external messages should receive narrow permissions and pre-action approval. A practical risk ladder is: automate low-risk actions, inspect medium-risk actions after execution, and approve high-risk actions before execution.
+
+Chapter recap.
+
+First, every action must read real environmental feedback.
+
+Second, failure risk compounds across a long execution path.
+
+Third, autonomy requires permissions and stopping conditions.
+
+### Auto-timed | Tool Design
+
+Even a capable model will fail repeatedly when its tools are difficult to understand.
+
+Humans need a well-designed interface to use software. Models need a clear agent-computer interface to use tools.
+
+Tool names must be specific, parameters must be unambiguous, and the contract should show input formats, boundaries, examples, and edge cases. Similar tools need obvious differences. Errors should state what failed, which input was invalid, and whether a retry is safe.
+
+Do not make the return format harder than the task. Forcing a model to place large blocks of code inside heavily escaped JSON creates avoidable errors. Return only the information needed for the next decision; dumping an entire log into context increases cost and hides the useful signal.
+
+Anthropic found that its coding agent often made mistakes with relative paths. Changing the tool to require absolute paths made those mistakes much harder to produce.
+
+So do not optimize only the prompt. Observe how the model misuses the interface, then change the interface itself. Before release, test missing parameters, invalid paths, repeated calls, timeouts, and recovery behavior, not just ideal examples.
+
+Chapter recap.
+
+First, names, parameters, and boundaries must be clear.
+
+Second, return formats should not create extra difficulty.
+
+Third, design the interface so common errors are harder to make.
+
+### Auto-timed | Decision Method
+
+For a new task, walk through the architecture ladder in order.
+
+First, can one model call, enhanced with retrieval and examples, complete the task?
+
+Second, if one call is not enough, can you define the steps in advance? If yes, prefer chaining, routing, or parallelization.
+
+Third, if the task can be divided but the required subtasks appear only during investigation, use orchestrator-workers.
+
+Fourth, use an autonomous agent only when the whole path depends on environmental feedback and the model must keep making its own decisions.
+
+Frameworks can quickly connect model calls, tools, and workflow steps, but extra abstraction can hide the real prompt, model output, and failure. A framework is fine only when you still understand what happens underneath it.
+
+Before upgrading, save a baseline for the simplest system. Compare task completion, average cost, latency, and human interventions on common, difficult, and boundary cases. Break metrics down by task type so averages cannot hide a critical regression. If the complex system does not produce a stable improvement, return to the simpler one. Architecture is a measurable iteration, not a one-time declaration.
+
+Chapter recap.
+
+First, test whether one augmented model call can finish the task.
+
+Second, prefer a workflow while the path remains controllable.
+
+Third, let measurable results decide whether to upgrade to an agent.
+
+### Auto-timed | Summary
+
+Remember the complete method in three lines.
+
+If one augmented model call can solve the task, do not build a workflow first.
+
+If you can draw the execution path in advance, do not build an autonomous agent first.
+
+When you truly need an agent, protect it with environmental feedback, stopping conditions, permissions, and reliable tool interfaces.
+
+The Agent Architecture Decision Ladder is simple: one augmented call, then a controlled workflow, then runtime orchestration, and only then full autonomy. Keep each upgrade only when completion rate, cost, latency, or human effort measurably improves. Mature agent systems do not maximize freedom. They make every layer of freedom earn its place.
+
+Follow Tiny Agent to keep turning fast-moving AI and agent ideas into practical ways to choose tasks, delegate work, verify results, and control risk.

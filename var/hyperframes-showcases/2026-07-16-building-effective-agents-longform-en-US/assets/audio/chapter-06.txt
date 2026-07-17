@@ -1,0 +1,19 @@
+Even a capable model will fail repeatedly when its tools are difficult to understand.
+
+Humans need a well-designed interface to use software. Models need a clear agent-computer interface to use tools.
+
+Tool names must be specific, parameters must be unambiguous, and the contract should show input formats, boundaries, examples, and edge cases. Similar tools need obvious differences. Errors should state what failed, which input was invalid, and whether a retry is safe.
+
+Do not make the return format harder than the task. Forcing a model to place large blocks of code inside heavily escaped JSON creates avoidable errors. Return only the information needed for the next decision; dumping an entire log into context increases cost and hides the useful signal.
+
+Anthropic found that its coding agent often made mistakes with relative paths. Changing the tool to require absolute paths made those mistakes much harder to produce.
+
+So do not optimize only the prompt. Observe how the model misuses the interface, then change the interface itself. Before release, test missing parameters, invalid paths, repeated calls, timeouts, and recovery behavior, not just ideal examples.
+
+Chapter recap.
+
+First, names, parameters, and boundaries must be clear.
+
+Second, return formats should not create extra difficulty.
+
+Third, design the interface so common errors are harder to make.

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "duration": 24.849,
+  "audio": "assets/audio/narration.mp3",
+  "scenes": [
+    {
+      "id": "augmented-llm",
+      "start": 0,
+      "end": 7.315,
+      "template": "augment",
+      "title": "AUGMENT ONE MODEL",
+      "caption": "One model + retrieval, tools, memory",
+      "actors": { "human": "point-right", "agent": "idle" },
+      "actions": [
+        { "id": "human-thinks", "type": "pose", "at": 1.7, "duration": 0.36, "actor": "human", "from": "point-right", "to": "think" },
+        { "id": "agent-tools", "type": "pose", "at": 1.7, "duration": 0.36, "actor": "agent", "from": "idle", "to": "tool-ready" },
+        { "id": "retrieval-plug", "type": "plug", "at": 2.8, "duration": 0.85, "label": "RETRIEVAL", "from": [405, 135], "to": [360, 245] },
+        { "id": "tools-plug", "type": "plug", "at": 4.05, "duration": 0.85, "label": "TOOLS", "from": [735, 165], "to": [390, 360] },
+        { "id": "memory-plug", "type": "plug", "at": 5.3, "duration": 0.85, "label": "MEMORY", "from": [735, 620], "to": [390, 475] }
+      ]
+    },
+    {
+      "id": "retrieval",
+      "start": 7.315,
+      "end": 12.87,
+      "template": "retrieve",
+      "title": "RETRIEVAL",
+      "caption": "Find the outside facts needed now",
+      "actors": { "human": "point-right", "agent": "search" },
+      "actions": [
+        { "id": "doc-a", "type": "fly", "at": 0.7, "duration": 0.95, "label": "DOC", "from": [350, 650], "via": [390, 365], "to": [405, 265], "accent": "ink" },
+        { "id": "doc-b", "type": "fly", "at": 1.55, "duration": 0.95, "label": "NOTE", "from": [425, 680], "via": [455, 320], "to": [445, 385], "accent": "red" },
+        { "id": "doc-fact", "type": "fly", "at": 2.55, "duration": 1.05, "label": "FACT", "from": [505, 660], "via": [530, 245], "to": [500, 500], "accent": "blue" }
+      ]
+    },
+    {
+      "id": "tools",
+      "start": 12.87,
+      "end": 18.599,
+      "template": "tools",
+      "title": "TOOLS",
+      "caption": "Turn judgment into real actions",
+      "actors": { "human": "think", "agent": "tool-ready" },
+      "actions": [
+        { "id": "search-tool", "type": "plug", "at": 0.8, "duration": 0.95, "label": "SEARCH", "from": [405, 145], "to": [430, 270] },
+        { "id": "refund-tool", "type": "plug", "at": 2.2, "duration": 1.05, "label": "REFUND API", "from": [720, 620], "to": [445, 430], "result": "ACTION DONE" }
+      ]
+    },
+    {
+      "id": "memory",
+      "start": 18.599,
+      "end": 24.849,
+      "template": "memory",
+      "title": "MEMORY",
+      "caption": "Carry the right state across steps",
+      "actors": { "human": "approve", "agent": "memory-sort" },
+      "actions": [
+        { "id": "store-order", "type": "store", "at": 0.7, "duration": 0.9, "label": "ORDER", "from": [325, 620], "to": [455, 430] },
+        { "id": "store-user", "type": "store", "at": 1.7, "duration": 0.9, "label": "USER", "from": [395, 675], "to": [455, 430] },
+        { "id": "store-confirmed", "type": "store", "at": 2.7, "duration": 0.95, "label": "CONFIRMED", "from": [465, 635], "to": [455, 430], "result": "STATE KEPT" },
+        { "id": "context-return", "type": "fly", "at": 4.2, "duration": 1.0, "label": "CONTEXT", "from": [455, 430], "via": [540, 275], "to": [600, 505], "accent": "blue" }
+      ]
+    }
+  ]
+}

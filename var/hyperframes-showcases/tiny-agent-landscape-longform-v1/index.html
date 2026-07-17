@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --board: #fcfdfc;
+        --ink: #111413;
+        --blue: #1597ea;
+        --yellow: #ffd84d;
+        --muted: #66706c;
+        --line: #d9e1de;
+      }
+
+      @font-face {
+        font-family: "PingFang SC";
+        src: local("PingFang SC");
+        font-style: normal;
+        font-weight: 100 900;
+      }
+
+      @font-face {
+        font-family: "Inter";
+        src: local("Inter");
+        font-style: normal;
+        font-weight: 100 900;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; }
+      body { color: var(--ink); background: var(--board); font-family: "PingFang SC", sans-serif; }
+      img { display: block; user-select: none; }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      .board-fill {
+        position: absolute;
+        inset: 0;
+        background-color: var(--board);
+        background-image:
+          linear-gradient(rgba(17, 20, 19, 0.018) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(17, 20, 19, 0.018) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      .masthead {
+        position: absolute;
+        top: 46px;
+        right: 72px;
+        left: 72px;
+        z-index: 80;
+        display: flex;
+        height: 76px;
+        align-items: center;
+        opacity: 0;
+      }
+
+      .brand {
+        color: var(--blue);
+        font-family: "Inter", sans-serif;
+        font-size: 27px;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .title {
+        margin-left: 52px;
+        font-size: 44px;
+        font-weight: 900;
+        line-height: 1.3;
+        letter-spacing: 0;
+      }
+
+      .stage {
+        position: absolute;
+        top: 130px;
+        right: 64px;
+        left: 64px;
+        z-index: 20;
+        height: 720px;
+        overflow: hidden;
+      }
+
+      .ground-line {
+        position: absolute;
+        right: 54px;
+        bottom: 30px;
+        left: 54px;
+        height: 3px;
+        background: rgba(17, 20, 19, 0.12);
+      }
+
+      .actor {
+        position: absolute;
+        z-index: 40;
+        opacity: 0;
+      }
+
+      .human {
+        bottom: 34px;
+        left: 24px;
+        width: 500px;
+        height: 560px;
+      }
+
+      .agent {
+        bottom: 36px;
+        left: 540px;
+        width: 430px;
+        height: 580px;
+      }
+
+      .pose {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+      }
+
+      .pose.is-active { opacity: 1; }
+
+      .handoff-line {
+        position: absolute;
+        top: 354px;
+        left: 424px;
+        z-index: 32;
+        width: 238px;
+        height: 5px;
+        border-radius: 3px;
+        background: var(--ink);
+        opacity: 0;
+        transform: rotate(-8deg) scaleX(0);
+        transform-origin: left center;
+      }
+
+      .handoff-line::after {
+        position: absolute;
+        top: -8px;
+        right: -2px;
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-left: 17px solid var(--blue);
+        content: "";
+      }
+
+      .capability {
+        position: absolute;
+        z-index: 30;
+        opacity: 0;
+        transform-origin: center;
+      }
+
+      .capability img {
+        position: absolute;
+        object-fit: contain;
+      }
+
+      .retrieval {
+        top: 54px;
+        left: 1020px;
+        width: 390px;
+        height: 270px;
+      }
+
+      .retrieval .primary {
+        top: 48px;
+        left: 12px;
+        width: 190px;
+        height: 190px;
+      }
+
+      .retrieval .secondary {
+        top: 0;
+        right: 0;
+        width: 154px;
+        height: 154px;
+      }
+
+      .tools {
+        top: 276px;
+        left: 1300px;
+        width: 400px;
+        height: 260px;
+      }
+
+      .tools .primary {
+        top: 12px;
+        left: 0;
+        width: 194px;
+        height: 194px;
+      }
+
+      .tools .secondary {
+        right: 0;
+        bottom: 0;
+        width: 156px;
+        height: 156px;
+      }
+
+      .memory {
+        top: 462px;
+        left: 1006px;
+        width: 410px;
+        height: 240px;
+      }
+
+      .memory .primary {
+        bottom: 0;
+        left: 4px;
+        width: 188px;
+        height: 188px;
+      }
+
+      .memory .secondary {
+        top: 0;
+        right: 0;
+        width: 158px;
+        height: 158px;
+      }
+
+      .focus-stroke {
+        position: absolute;
+        inset: 10px;
+        z-index: -1;
+        border: 6px solid var(--blue);
+        border-radius: 48% 52% 46% 54%;
+        opacity: 0;
+        transform: rotate(-4deg) scale(0.94);
+      }
+
+      .tools .focus-stroke {
+        inset: 8px 4px 16px 2px;
+        border-color: var(--yellow);
+        transform: rotate(3deg) scale(0.94);
+      }
+
+      .memory .focus-stroke {
+        inset: 0 8px 6px 0;
+        transform: rotate(2deg) scale(0.94);
+      }
+
+      .result {
+        position: absolute;
+        right: 52px;
+        bottom: 44px;
+        z-index: 42;
+        width: 228px;
+        height: 228px;
+        object-fit: contain;
+        opacity: 0;
+        transform-origin: center;
+      }
+
+      .caption-band {
+        position: absolute;
+        right: 154px;
+        bottom: 100px;
+        left: 154px;
+        z-index: 90;
+        height: 148px;
+        background: rgba(252, 253, 252, 0.98);
+      }
+
+      .caption {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 58px 4px;
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.36;
+        text-align: center;
+        letter-spacing: 0;
+        opacity: 0;
+      }
+
+      .caption.is-active { opacity: 1; }
+
+      .chapter-progress {
+        position: absolute;
+        right: 0;
+        bottom: 18px;
+        left: 0;
+        z-index: 96;
+        display: flex;
+        height: 66px;
+        align-items: flex-end;
+        gap: 4px;
+      }
+
+      .progress-segment {
+        flex: var(--chapter-weight) 1 0;
+        min-width: 0;
+      }
+
+      .progress-label {
+        height: 40px;
+        overflow: hidden;
+        color: var(--muted);
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1.45;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .progress-label.is-current {
+        color: var(--ink);
+      }
+
+      .progress-track {
+        position: relative;
+        width: 100%;
+        height: 6px;
+        overflow: hidden;
+        border-radius: 3px;
+        background: #dfe7e4;
+      }
+
+      .progress-fill {
+        position: absolute;
+        inset: 0;
+        border-radius: 3px;
+        background: var(--blue);
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-landscape-root-v3" id="root" data-composition-id="main" data-start="0" data-duration="27.168" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-board-v3" class="board-fill"></div>
+
+      <header data-hf-id="hf-masthead-v3" class="masthead">
+        <div data-hf-id="hf-brand-v3" class="brand">Tiny Agent</div>
+        <h1 data-hf-id="hf-title-v3" class="title">增强型大模型</h1>
+      </header>
+
+      <main data-hf-id="hf-stage-v3" class="stage">
+        <div data-hf-id="hf-ground-line-v3" class="ground-line"></div>
+        <div data-hf-id="hf-handoff-line-v3" id="handoff-line" class="handoff-line"></div>
+
+        <div data-hf-id="hf-human-v3" id="human" class="actor human">
+          <img data-hf-id="hf-human-point-v3" id="human-point" class="pose is-active" src="assets/character-story/human-point.png" alt="工程师把任务交给 Tiny Agent">
+          <img data-hf-id="hf-human-operate-v3" id="human-operate" class="pose" src="assets/character-story/human-operate.png" alt="工程师和 Tiny Agent 一起操作">
+          <img data-hf-id="hf-human-approve-v3" id="human-approve" class="pose" src="assets/character-story/human-approve.png" alt="工程师认可任务结果">
+        </div>
+
+        <div data-hf-id="hf-agent-v3" id="agent" class="actor agent">
+          <img data-hf-id="hf-agent-receive-v3" id="agent-receive" class="pose is-active" src="assets/character-story/agent-receive.png" alt="Tiny Agent 接收任务">
+          <img data-hf-id="hf-agent-search-v3" id="agent-search" class="pose" src="assets/character-story/agent-search.png" alt="Tiny Agent 检索事实">
+          <img data-hf-id="hf-agent-execute-v3" id="agent-execute" class="pose" src="assets/character-story/agent-execute.png" alt="Tiny Agent 调用工具执行任务">
+          <img data-hf-id="hf-agent-store-v3" id="agent-store" class="pose" src="assets/character-story/agent-store.png" alt="Tiny Agent 保存记忆">
+          <img data-hf-id="hf-agent-success-v3" id="agent-success" class="pose" src="assets/character-story/agent-success.png" alt="Tiny Agent 完成任务">
+        </div>
+
+        <div data-hf-id="hf-retrieval-v3" id="retrieval" class="capability retrieval">
+          <div data-hf-id="hf-retrieval-focus-v3" id="retrieval-focus" class="focus-stroke"></div>
+          <img data-hf-id="hf-documents-v3" id="task-documents" class="primary" data-layout-allow-overflow src="assets/character-story/documents.png" alt="外部文档">
+          <img data-hf-id="hf-search-v3" class="secondary" src="assets/character-story/search.png" alt="检索">
+        </div>
+
+        <div data-hf-id="hf-tools-v3" id="tools" class="capability tools">
+          <div data-hf-id="hf-tools-focus-v3" id="tools-focus" class="focus-stroke"></div>
+          <img data-hf-id="hf-browser-v3" class="primary" src="assets/character-story/browser.png" alt="外部系统">
+          <img data-hf-id="hf-tool-v3" class="secondary" src="assets/character-story/tool.png" alt="执行工具">
+        </div>
+
+        <div data-hf-id="hf-memory-v3" id="memory" class="capability memory">
+          <div data-hf-id="hf-memory-focus-v3" id="memory-focus" class="focus-stroke"></div>
+          <img data-hf-id="hf-database-v3" class="primary" src="assets/character-story/database.png" alt="系统状态">
+          <img data-hf-id="hf-memory-prop-v3" class="secondary" src="assets/character-story/memory.png" alt="长期记忆">
+        </div>
+
+        <img data-hf-id="hf-result-v3" id="result" class="result" src="assets/character-story/result.png" alt="完成的任务结果">
+      </main>
+
+      <div data-hf-id="hf-caption-band-v3" class="caption-band">
+        <div data-hf-id="hf-caption-1-v3" id="caption-1" class="caption is-active">Anthropic 认为，智能体最基础的组成单元，是一个增强型大模型：在同一个模型上接入检索、工具和记忆。</div>
+        <div data-hf-id="hf-caption-2-v3" id="caption-2" class="caption">检索负责找到当前需要的外部事实，让模型不再只凭训练时记住的内容回答。</div>
+        <div data-hf-id="hf-caption-3-v3" id="caption-3" class="caption">工具让模型能够查询系统或执行操作，把文字里的判断真正变成行动。</div>
+        <div data-hf-id="hf-caption-4-v3" id="caption-4" class="caption">记忆则保存跨步骤真正有用的状态，让系统不必每次都从零开始。</div>
+      </div>
+
+      <nav data-hf-id="hf-chapter-progress-v4" class="chapter-progress" aria-label="视频章节进度">
+        <div data-hf-id="hf-progress-segment-1-v4" class="progress-segment" style="--chapter-weight: 9.202">
+          <div data-hf-id="hf-progress-label-1-v4" id="progress-label-1" class="progress-label is-current">基础单元</div>
+          <div data-hf-id="hf-progress-track-1-v4" class="progress-track"><div data-hf-id="hf-progress-fill-1-v4" id="progress-fill-1" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-2-v4" class="progress-segment" style="--chapter-weight: 6.19">
+          <div data-hf-id="hf-progress-label-2-v4" id="progress-label-2" class="progress-label">检索</div>
+          <div data-hf-id="hf-progress-track-2-v4" class="progress-track"><div data-hf-id="hf-progress-fill-2-v4" id="progress-fill-2" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-3-v4" class="progress-segment" style="--chapter-weight: 6.072">
+          <div data-hf-id="hf-progress-label-3-v4" id="progress-label-3" class="progress-label">工具</div>
+          <div data-hf-id="hf-progress-track-3-v4" class="progress-track"><div data-hf-id="hf-progress-fill-3-v4" id="progress-fill-3" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-4-v4" class="progress-segment" style="--chapter-weight: 5.704">
+          <div data-hf-id="hf-progress-label-4-v4" id="progress-label-4" class="progress-label">记忆</div>
+          <div data-hf-id="hf-progress-track-4-v4" class="progress-track"><div data-hf-id="hf-progress-fill-4-v4" id="progress-fill-4" class="progress-fill"></div></div>
+        </div>
+      </nav>
+
+      <audio data-hf-id="hf-narration-v3" id="narration" class="clip" data-start="0" data-duration="27.168" data-track-index="10" data-media-start="0" data-volume="1" src="assets/audio/narration.zh.normalized.mp3"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const swapPose = (fromPose, toPose, at) => {
+        tl.to(fromPose, { opacity: 0, duration: 0.24, ease: "power2.in" }, at);
+        tl.fromTo(toPose, { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "power2.out", immediateRender: false }, at + 0.08);
+      };
+
+      const swapCaption = (fromCaption, toCaption, at) => {
+        tl.to(fromCaption, { y: -10, opacity: 0, duration: 0.2, ease: "power2.in" }, at - 0.12);
+        tl.fromTo(toCaption, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28, ease: "power2.out", immediateRender: false }, at + 0.04);
+      };
+
+      const focusCapability = (fromGroup, fromStroke, toGroup, toStroke, at) => {
+        tl.to(fromGroup, { opacity: 0.28, duration: 0.42, ease: "power2.out" }, at);
+        tl.to(fromStroke, { opacity: 0, scale: 0.94, duration: 0.26, ease: "power2.out" }, at);
+        tl.to(toGroup, { opacity: 1, duration: 0.42, ease: "power2.out" }, at);
+        tl.fromTo(toStroke, { opacity: 0, scale: 0.94 }, { opacity: 0.9, scale: 1, duration: 0.42, ease: "power2.out", immediateRender: false }, at + 0.06);
+      };
+
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.48, ease: "power3.out" }, 0.05);
+      tl.fromTo("#human", { x: -34, opacity: 0 }, { x: 0, opacity: 1, duration: 0.56, ease: "power3.out" }, 0.18);
+      tl.fromTo("#agent", { x: 34, opacity: 0 }, { x: 0, opacity: 1, duration: 0.56, ease: "power3.out" }, 0.32);
+      tl.fromTo("#handoff-line", { scaleX: 0, rotation: -8, opacity: 0 }, { scaleX: 1, rotation: -8, opacity: 0.72, duration: 0.52, ease: "power2.out" }, 0.78);
+
+      tl.fromTo("#retrieval, #tools, #memory", { y: 18, scale: 0.94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.68, ease: "power3.out", stagger: 0.08, immediateRender: false }, 1.24);
+      tl.fromTo("#task-documents", { x: -590, y: 164, rotation: -10 }, { x: 0, y: 0, rotation: 0, duration: 1.08, ease: "power3.inOut", immediateRender: false }, 1.18);
+      tl.to("#handoff-line", { opacity: 0, duration: 0.28, ease: "power2.out" }, 2.46);
+
+      tl.to("#progress-fill-1", { scaleX: 1, duration: 9.202, ease: "none" }, 0);
+      tl.to("#progress-fill-2", { scaleX: 1, duration: 6.19, ease: "none" }, 9.202);
+      tl.to("#progress-fill-3", { scaleX: 1, duration: 6.072, ease: "none" }, 15.392);
+      tl.to("#progress-fill-4", { scaleX: 1, duration: 5.704, ease: "none" }, 21.464);
+
+      swapCaption("#caption-1", "#caption-2", 9.202);
+      swapPose("#agent-receive", "#agent-search", 9.202);
+      tl.to("#progress-label-1", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 9.202);
+      tl.to("#progress-label-2", { color: "#111413", duration: 0.2, ease: "power2.out" }, 9.202);
+      tl.to("#tools, #memory", { opacity: 0.28, duration: 0.42, ease: "power2.out" }, 9.202);
+      tl.fromTo("#retrieval-focus", { opacity: 0, scale: 0.94 }, { opacity: 0.9, scale: 1, duration: 0.42, ease: "power2.out", immediateRender: false }, 9.28);
+
+      swapCaption("#caption-2", "#caption-3", 15.392);
+      swapPose("#agent-search", "#agent-execute", 15.392);
+      swapPose("#human-point", "#human-operate", 15.392);
+      tl.to("#progress-label-2", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 15.392);
+      tl.to("#progress-label-3", { color: "#111413", duration: 0.2, ease: "power2.out" }, 15.392);
+      focusCapability("#retrieval", "#retrieval-focus", "#tools", "#tools-focus", 15.392);
+
+      swapCaption("#caption-3", "#caption-4", 21.464);
+      swapPose("#agent-execute", "#agent-store", 21.464);
+      swapPose("#human-operate", "#human-approve", 21.464);
+      tl.to("#progress-label-3", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 21.464);
+      tl.to("#progress-label-4", { color: "#111413", duration: 0.2, ease: "power2.out" }, 21.464);
+      focusCapability("#tools", "#tools-focus", "#memory", "#memory-focus", 21.464);
+
+      swapPose("#agent-store", "#agent-success", 25.18);
+      tl.fromTo("#result", { x: 28, scale: 0.82, rotation: 5, opacity: 0 }, { x: 0, scale: 1, rotation: 0, opacity: 1, duration: 0.5, ease: "back.out(1.25)", immediateRender: false }, 25.22);
+
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

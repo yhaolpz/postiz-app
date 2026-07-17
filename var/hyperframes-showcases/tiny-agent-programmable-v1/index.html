@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root { --board:#fcfdfc; --ink:#111413; --blue:#1597ea; --red:#f04438; --line:#d9e1de; }
+      * { box-sizing:border-box; margin:0; padding:0; }
+      html, body { width:1080px; height:1920px; overflow:hidden; }
+      body { color:var(--ink); font-family:"Montserrat", Arial, sans-serif; }
+      #root { position:relative; width:1080px; height:1920px; overflow:hidden; }
+      .board-fill { position:absolute; inset:0; background:var(--board); }
+      .brand { position:absolute; top:58px; left:80px; z-index:40; color:var(--blue); font-size:34px; font-weight:900; letter-spacing:0; }
+      .episode-title { position:absolute; top:118px; right:80px; left:80px; z-index:40; padding-bottom:22px; border-bottom:4px solid var(--ink); font-size:64px; font-weight:900; line-height:1.02; letter-spacing:0; }
+      .episode-title::after { position:absolute; bottom:-10px; left:0; width:168px; height:16px; content:""; background:var(--blue); opacity:.28; }
+      .scene { position:absolute; inset:0; z-index:10; width:1080px; height:1920px; opacity:0; }
+      .scene.is-first { opacity:1; }
+      .stage { position:absolute; top:300px; left:80px; width:920px; height:810px; overflow:hidden; border-bottom:4px solid var(--line); background:var(--board); }
+      .scene-title { position:absolute; top:14px; left:18px; z-index:24; font-family:"IBM Plex Mono", monospace; font-size:42px; font-weight:700; letter-spacing:0; }
+      .scene-title span { display:inline-block; width:54px; height:10px; margin:0 18px 7px 0; background:var(--blue); transform-origin:left center; }
+      .actor-slot { position:absolute; z-index:10; transform-origin:center bottom; }
+      .pose-state { position:absolute; inset:0; overflow:visible; }
+      .pose-crop { position:absolute; overflow:hidden; background-size:1080px 1920px; background-repeat:no-repeat; mix-blend-mode:multiply; transform-origin:top left; }
+      .caption-box { position:absolute; top:1130px; left:80px; z-index:28; display:flex; width:920px; height:300px; align-items:center; justify-content:center; border:7px solid var(--ink); border-radius:8px; background:var(--board); }
+      .caption { max-width:800px; text-align:center; font-family:"IBM Plex Mono", monospace; font-size:50px; font-weight:700; line-height:1.24; letter-spacing:0; }
+      .action-prop { position:absolute; z-index:18; opacity:0; transform-origin:center; }
+      .doc-card { display:flex; width:136px; height:104px; flex-direction:column; gap:8px; border:5px solid var(--ink); border-radius:5px; padding:12px 14px; background:var(--board); box-shadow:9px 9px 0 rgba(17,20,19,.08); }
+      .doc-card span { font-family:"IBM Plex Mono", monospace; font-size:22px; font-weight:700; }
+      .doc-card i { display:block; width:100%; height:6px; background:var(--line); }
+      .doc-card i:last-child { width:66%; }
+      .doc-card.accent-blue { border-color:var(--blue); }
+      .doc-card.accent-red { border-color:var(--red); }
+      .tool-chip { display:flex; min-width:162px; height:66px; align-items:center; gap:12px; border:5px solid var(--ink); border-radius:7px; padding:0 18px; background:var(--board); font-family:"IBM Plex Mono", monospace; font-size:23px; font-weight:700; white-space:nowrap; }
+      .tool-chip b { width:17px; height:17px; border-radius:50%; background:var(--blue); }
+      .tool-chip i { position:absolute; right:-19px; width:20px; height:28px; border-top:5px solid var(--ink); border-right:5px solid var(--ink); border-bottom:5px solid var(--ink); border-radius:0 4px 4px 0; }
+      .connector { position:absolute; z-index:7; height:5px; border-radius:3px; background:var(--ink); transform-origin:left center; opacity:.72; }
+      .connector::after { position:absolute; top:-5px; right:-7px; width:12px; height:12px; border:4px solid var(--blue); border-radius:50%; content:""; background:var(--board); }
+      .result-chip { position:absolute; z-index:25; min-width:170px; border:5px solid var(--blue); border-radius:7px; padding:15px 18px; color:var(--ink); background:var(--board); font-family:"IBM Plex Mono", monospace; font-size:22px; font-weight:700; opacity:0; text-align:center; }
+      .state-result { top:220px; left:380px; border-color:var(--blue); }
+      .memory-card { display:grid; width:150px; height:82px; place-items:center; border:5px solid var(--ink); border-radius:5px; background:var(--board); box-shadow:7px 7px 0 rgba(17,20,19,.08); font-family:"IBM Plex Mono", monospace; font-size:20px; font-weight:700; }
+      .memory-bank { position:absolute; top:355px; left:370px; z-index:8; width:225px; height:205px; border:6px solid var(--ink); border-radius:7px; background:var(--board); transform-origin:center; }
+      .memory-bank::before { position:absolute; top:55px; right:-18px; left:-18px; height:88px; border:6px solid var(--ink); border-radius:6px; content:""; background:var(--board); }
+      .memory-slots { position:absolute; top:76px; left:30px; z-index:3; display:flex; gap:13px; }
+      .memory-slots i { width:43px; height:48px; border:4px solid var(--blue); border-radius:3px; background:var(--board); }
+      .port-dot { position:absolute; z-index:15; width:27px; height:27px; border:5px solid var(--ink); border-radius:50%; background:var(--blue); }
+      .paper-stack { position:absolute; top:635px; left:355px; z-index:5; width:180px; height:105px; }
+      .paper-stack i { position:absolute; inset:0; border:5px solid var(--ink); border-radius:5px; background:var(--board); }
+      .paper-stack i:nth-child(1) { transform:rotate(-8deg); }
+      .paper-stack i:nth-child(2) { transform:rotate(6deg); }
+      .paper-stack i:nth-child(3) { transform:translateY(-12px); }
+      .target-ring { position:absolute; z-index:6; width:165px; height:165px; border:8px dashed var(--blue); border-radius:50%; opacity:.28; }
+      .tool-port { position:absolute; z-index:8; width:58px; height:58px; border:6px solid var(--ink); border-radius:50%; background:var(--board); }
+      .tool-port i { position:absolute; inset:12px; border-radius:50%; background:var(--blue); }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-5ubt" id="root" data-composition-id="main" data-start="0" data-duration="24.849" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-ahaq" class="board-fill"></div>
+      <div data-hf-id="hf-5994" class="brand">Tiny Agent</div>
+      <h1 data-hf-id="hf-m393" class="episode-title">Augmented LLM First</h1>
+
+      <section data-hf-id="hf-zxqm" id="scene-augmented-llm" class="scene is-first" data-scene-id="augmented-llm">
+        <div data-hf-id="hf-tan6" class="stage">
+          <div data-hf-id="hf-qv5d" class="scene-title"><span data-hf-id="hf-uckh"></span>AUGMENT ONE MODEL</div>
+          <div data-hf-id="hf-bxk6" class="port-dot" style="left:590px;top:338px"></div>
+
+          <div data-hf-id="hf-pi6q" id="augmented-llm-human-slot" class="actor-slot actor-human" style="left:18px;top:118px;width:372px;height:630px">
+
+            <div data-hf-id="hf-c3bl" id="augmented-llm-pose-human-point-right" class="pose-state" data-actor="human" data-pose="point-right" style="opacity:1">
+              <div data-hf-id="hf-0b9w" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="human point-right pose" style="left:30.92px;top:0.00px;width:320px;height:650px;transform:scale(0.96923);background-image:url('assets/source/art-02.png');background-position:-130px -465px"></div>
+            </div>
+            <div data-hf-id="hf-4fd8" id="augmented-llm-pose-human-think" class="pose-state" data-actor="human" data-pose="think" style="opacity:0">
+              <div data-hf-id="hf-xibt" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="human think pose" style="left:26.08px;top:0.00px;width:330px;height:650px;transform:scale(0.96923);background-image:url('assets/source/art-04.png');background-position:-118px -475px"></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-bikf" id="augmented-llm-agent-slot" class="actor-slot actor-agent" style="left:510px;top:118px;width:390px;height:630px">
+
+            <div data-hf-id="hf-d9b3" id="augmented-llm-pose-agent-idle" class="pose-state" data-actor="agent" data-pose="idle" style="opacity:1">
+              <div data-hf-id="hf-q3g8" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="agent idle pose" style="left:16.70px;top:0.00px;width:300px;height:530px;transform:scale(1.18868);background-image:url('assets/source/art-02.png');background-position:-440px -585px"></div>
+            </div>
+            <div data-hf-id="hf-tvte" id="augmented-llm-pose-agent-tool-ready" class="pose-state" data-actor="agent" data-pose="tool-ready" style="opacity:0">
+              <div data-hf-id="hf-zjhv" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="agent tool-ready pose" style="left:0.00px;top:67.79px;width:385px;height:555px;transform:scale(1.01299);background-image:url('assets/source/art-04.png');background-position:-370px -600px"></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-z53u" id="augmented-llm-retrieval-plug-wire" class="connector" style="left:427px;top:163px;width:118.84864324004714px;transform:rotate(112.249deg) scaleX(0)"></div>
+          <div data-hf-id="hf-wcje" id="augmented-llm-retrieval-plug" class="action-prop tool-chip" style="left:405px;top:135px">
+            <b data-hf-id="hf-xujp"></b><span data-hf-id="hf-4cjb">RETRIEVAL</span><i data-hf-id="hf-wt6k"></i>
+          </div>
+
+          <div data-hf-id="hf-9u61" id="augmented-llm-tools-plug-wire" class="connector" style="left:757px;top:193px;width:396.2953444086872px;transform:rotate(150.524deg) scaleX(0)"></div>
+          <div data-hf-id="hf-a5qa" id="augmented-llm-tools-plug" class="action-prop tool-chip" style="left:735px;top:165px">
+            <b data-hf-id="hf-ey49"></b><span data-hf-id="hf-9ac0">TOOLS</span><i data-hf-id="hf-zeb8"></i>
+          </div>
+
+          <div data-hf-id="hf-ivz3" id="augmented-llm-memory-plug-wire" class="connector" style="left:757px;top:648px;width:374.23254802328455px;transform:rotate(-157.203deg) scaleX(0)"></div>
+          <div data-hf-id="hf-5rmo" id="augmented-llm-memory-plug" class="action-prop tool-chip" style="left:735px;top:620px">
+            <b data-hf-id="hf-g51c"></b><span data-hf-id="hf-pj22">MEMORY</span><i data-hf-id="hf-y7e5"></i>
+          </div>
+
+        </div>
+        <div data-hf-id="hf-8jr2" class="caption-box"><div data-hf-id="hf-th8u" class="caption">One model + retrieval, tools, memory</div></div>
+      </section>
+
+      <section data-hf-id="hf-tzjl" id="scene-retrieval" class="scene" data-scene-id="retrieval">
+        <div data-hf-id="hf-xa86" class="stage">
+          <div data-hf-id="hf-1o6j" class="scene-title"><span data-hf-id="hf-l73p"></span>RETRIEVAL</div>
+
+          <div data-hf-id="hf-kdd9" class="paper-stack"><i data-hf-id="hf-ylp6"></i><i data-hf-id="hf-0l8b"></i><i data-hf-id="hf-0zjc"></i></div>
+          <div data-hf-id="hf-uhfw" class="target-ring" style="left:465px;top:330px"></div>
+
+          <div data-hf-id="hf-rbjy" id="retrieval-human-slot" class="actor-slot actor-human" style="left:18px;top:118px;width:372px;height:630px">
+
+            <div data-hf-id="hf-y4x5" id="retrieval-pose-human-point-right" class="pose-state" data-actor="human" data-pose="point-right" style="opacity:1">
+              <div data-hf-id="hf-qdkc" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="human point-right pose" style="left:30.92px;top:0.00px;width:320px;height:650px;transform:scale(0.96923);background-image:url('assets/source/art-02.png');background-position:-130px -465px"></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-aykb" id="retrieval-agent-slot" class="actor-slot actor-agent" style="left:510px;top:118px;width:390px;height:630px">
+
+            <div data-hf-id="hf-zj9n" id="retrieval-pose-agent-search" class="pose-state" data-actor="agent" data-pose="search" style="opacity:1">
+              <div data-hf-id="hf-2yuj" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="agent search pose" style="left:-0.00px;top:58.73px;width:355px;height:520px;transform:scale(1.09859);background-image:url('assets/source/art-03.png');background-position:-580px -392px"></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-3y67" id="retrieval-doc-a" class="action-prop doc-card accent-ink" style="left:350px;top:650px">
+            <span data-hf-id="hf-57l5">DOC</span><i data-hf-id="hf-zsm9"></i><i data-hf-id="hf-06xa"></i><i data-hf-id="hf-26gf"></i>
+          </div>
+          <div data-hf-id="hf-gswv" id="retrieval-doc-b" class="action-prop doc-card accent-red" style="left:425px;top:680px">
+            <span data-hf-id="hf-vhbt">NOTE</span><i data-hf-id="hf-2krg"></i><i data-hf-id="hf-oz7w"></i><i data-hf-id="hf-okwv"></i>
+          </div>
+          <div data-hf-id="hf-y8kv" id="retrieval-doc-fact" class="action-prop doc-card accent-blue" style="left:505px;top:660px">
+            <span data-hf-id="hf-1nnv">FACT</span><i data-hf-id="hf-o6lu"></i><i data-hf-id="hf-jqbp"></i><i data-hf-id="hf-qkg0"></i>
+          </div>
+        </div>
+        <div data-hf-id="hf-dl9e" class="caption-box"><div data-hf-id="hf-k7ib" class="caption">Find the outside facts needed now</div></div>
+      </section>
+
+      <section data-hf-id="hf-oqi7" id="scene-tools" class="scene" data-scene-id="tools">
+        <div data-hf-id="hf-xoj7" class="stage">
+          <div data-hf-id="hf-jhzg" class="scene-title"><span data-hf-id="hf-me0s"></span>TOOLS</div>
+          <div data-hf-id="hf-ngk9" class="tool-port" style="left:575px;top:405px"><i data-hf-id="hf-q64z"></i></div>
+
+          <div data-hf-id="hf-ue17" id="tools-human-slot" class="actor-slot actor-human" style="left:18px;top:118px;width:372px;height:630px">
+
+            <div data-hf-id="hf-82ra" id="tools-pose-human-think" class="pose-state" data-actor="human" data-pose="think" style="opacity:1">
+              <div data-hf-id="hf-oh6l" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="human think pose" style="left:26.08px;top:0.00px;width:330px;height:650px;transform:scale(0.96923);background-image:url('assets/source/art-04.png');background-position:-118px -475px"></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-psag" id="tools-agent-slot" class="actor-slot actor-agent" style="left:510px;top:118px;width:390px;height:630px">
+
+            <div data-hf-id="hf-4d3m" id="tools-pose-agent-tool-ready" class="pose-state" data-actor="agent" data-pose="tool-ready" style="opacity:1">
+              <div data-hf-id="hf-krf7" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="agent tool-ready pose" style="left:0.00px;top:67.79px;width:385px;height:555px;transform:scale(1.01299);background-image:url('assets/source/art-04.png');background-position:-370px -600px"></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-pdpt" id="tools-search-tool-wire" class="connector" style="left:427px;top:173px;width:127.47548783981964px;transform:rotate(78.690deg) scaleX(0)"></div>
+          <div data-hf-id="hf-urxy" id="tools-search-tool" class="action-prop tool-chip" style="left:405px;top:145px">
+            <b data-hf-id="hf-fqqb"></b><span data-hf-id="hf-ajtp">SEARCH</span><i data-hf-id="hf-prty"></i>
+          </div>
+
+          <div data-hf-id="hf-553a" id="tools-refund-tool-wire" class="connector" style="left:742px;top:648px;width:334.2528982671654px;transform:rotate(-145.359deg) scaleX(0)"></div>
+          <div data-hf-id="hf-d7og" id="tools-refund-tool" class="action-prop tool-chip" style="left:720px;top:620px">
+            <b data-hf-id="hf-dr76"></b><span data-hf-id="hf-pyar">REFUND API</span><i data-hf-id="hf-pdix"></i>
+          </div>
+          <div data-hf-id="hf-ov1v" id="tools-refund-tool-result" class="result-chip" style="left:405px;top:336px">ACTION DONE</div>
+        </div>
+        <div data-hf-id="hf-dzkf" class="caption-box"><div data-hf-id="hf-mw5y" class="caption">Turn judgment into real actions</div></div>
+      </section>
+
+      <section data-hf-id="hf-cdzz" id="scene-memory" class="scene" data-scene-id="memory">
+        <div data-hf-id="hf-y2u8" class="stage">
+          <div data-hf-id="hf-1gwu" class="scene-title"><span data-hf-id="hf-lzpr"></span>MEMORY</div>
+
+          <div data-hf-id="hf-uofs" id="memory-memory-bank" class="memory-bank">
+            <div data-hf-id="hf-6xxp" class="memory-slots"><i data-hf-id="hf-hqsk"></i><i data-hf-id="hf-hchj"></i><i data-hf-id="hf-8d0n"></i></div>
+          </div>
+
+          <div data-hf-id="hf-qm5t" id="memory-human-slot" class="actor-slot actor-human" style="left:18px;top:118px;width:372px;height:630px">
+
+            <div data-hf-id="hf-erxo" id="memory-pose-human-approve" class="pose-state" data-actor="human" data-pose="approve" style="opacity:1">
+              <div data-hf-id="hf-3k18" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="human approve pose" style="left:6.00px;top:0.00px;width:320px;height:560px;transform:scale(1.12500);background-image:url('assets/source/art-05.png');background-position:-140px -315px"></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-fieu" id="memory-agent-slot" class="actor-slot actor-agent" style="left:510px;top:118px;width:390px;height:630px">
+
+            <div data-hf-id="hf-6ikm" id="memory-pose-agent-memory-sort" class="pose-state" data-actor="agent" data-pose="memory-sort" style="opacity:1">
+              <div data-hf-id="hf-wbbf" class="pose-crop" data-layout-allow-overflow="" data-layout-allow-occlusion="" aria-label="agent memory-sort pose" style="left:0.00px;top:41.90px;width:315px;height:475px;transform:scale(1.23810);background-image:url('assets/source/art-05.png');background-position:-545px -355px"></div>
+            </div>
+          </div>
+
+          <div data-hf-id="hf-98gp" id="memory-store-order" class="action-prop memory-card" data-layout-allow-overlap="" style="left:325px;top:620px">
+            <span data-hf-id="hf-cwnn">ORDER</span>
+          </div>
+
+          <div data-hf-id="hf-hsz9" id="memory-store-user" class="action-prop memory-card" data-layout-allow-overlap="" style="left:395px;top:675px">
+            <span data-hf-id="hf-d8tq">USER</span>
+          </div>
+
+          <div data-hf-id="hf-u5t9" id="memory-store-confirmed" class="action-prop memory-card" data-layout-allow-overlap="" style="left:465px;top:635px">
+            <span data-hf-id="hf-i7zm">CONFIRMED</span>
+          </div>
+          <div data-hf-id="hf-od5b" id="memory-store-confirmed-result" class="result-chip state-result">STATE KEPT</div>
+          <div data-hf-id="hf-tbse" id="memory-context-return" class="action-prop doc-card accent-blue" style="left:455px;top:430px">
+            <span data-hf-id="hf-ut54">CONTEXT</span><i data-hf-id="hf-8rbo"></i><i data-hf-id="hf-7kel"></i><i data-hf-id="hf-7ypm"></i>
+          </div>
+        </div>
+        <div data-hf-id="hf-edvg" class="caption-box"><div data-hf-id="hf-rrfd" class="caption">Carry the right state across steps</div></div>
+      </section>
+      <audio data-hf-id="hf-h4dx" id="narration" class="clip" data-start="0" data-duration="24.849" data-track-index="10" data-media-start="0" data-volume="1" src="assets/audio/narration.mp3"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.from(".brand", { y: -18, opacity: 0, duration: 0.42, ease: "power3.out" }, 0);
+      tl.from(".episode-title", { y: -16, opacity: 0, duration: 0.48, ease: "power3.out" }, 0.08);
+      tl.from("#scene-augmented-llm .scene-title", { x: -34, opacity: 0, duration: 0.42, ease: "power3.out", immediateRender: false }, 0.080);
+      tl.from("#scene-augmented-llm .scene-title span", { scaleX: 0, duration: 0.38, ease: "power2.out", immediateRender: false }, 0.340);
+      tl.from("#scene-augmented-llm .actor-human", { x: -24, opacity: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 0.080);
+      tl.from("#scene-augmented-llm .actor-agent", { x: 24, opacity: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 0.140);
+      tl.from("#scene-augmented-llm .caption-box", { y: 18, opacity: 0, duration: 0.34, ease: "power3.out", immediateRender: false }, 0.100);
+
+      tl.to("#augmented-llm-pose-human-point-right", { opacity: 0, x: -16, duration: 0.173, ease: "power2.in" }, 1.700);
+      tl.fromTo("#augmented-llm-pose-human-think", { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: 0.216, ease: "power3.out", immediateRender: false }, 1.801);
+
+      tl.to("#augmented-llm-pose-agent-idle", { opacity: 0, x: -16, duration: 0.173, ease: "power2.in" }, 1.700);
+      tl.fromTo("#augmented-llm-pose-agent-tool-ready", { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: 0.216, ease: "power3.out", immediateRender: false }, 1.801);
+
+      tl.fromTo("#augmented-llm-retrieval-plug", { opacity: 0, scale: 0.68 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(1.5)", immediateRender: false }, 2.800);
+      tl.to("#augmented-llm-retrieval-plug", { x: -45.00, y: 110.00, duration: 0.670, ease: "power3.inOut" }, 2.980);
+      tl.fromTo("#augmented-llm-retrieval-plug-wire", { scaleX: 0 }, { scaleX: 1, duration: 0.442, ease: "power2.out", immediateRender: false }, 3.225);
+      tl.to("#augmented-llm-agent-slot", { scale: 1.045, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 3.650);
+
+      tl.fromTo("#augmented-llm-tools-plug", { opacity: 0, scale: 0.68 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(1.5)", immediateRender: false }, 4.050);
+      tl.to("#augmented-llm-tools-plug", { x: -345.00, y: 195.00, duration: 0.670, ease: "power3.inOut" }, 4.230);
+      tl.fromTo("#augmented-llm-tools-plug-wire", { scaleX: 0 }, { scaleX: 1, duration: 0.442, ease: "power2.out", immediateRender: false }, 4.475);
+      tl.to("#augmented-llm-agent-slot", { scale: 1.045, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 4.900);
+
+      tl.fromTo("#augmented-llm-memory-plug", { opacity: 0, scale: 0.68 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(1.5)", immediateRender: false }, 5.300);
+      tl.to("#augmented-llm-memory-plug", { x: -345.00, y: -145.00, duration: 0.670, ease: "power3.inOut" }, 5.480);
+      tl.fromTo("#augmented-llm-memory-plug-wire", { scaleX: 0 }, { scaleX: 1, duration: 0.442, ease: "power2.out", immediateRender: false }, 5.725);
+      tl.to("#augmented-llm-agent-slot", { scale: 1.045, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 6.150);
+      tl.to("#scene-augmented-llm", { opacity: 0, duration: 0.24, ease: "power2.in" }, 7.155);
+      tl.fromTo("#scene-retrieval", { opacity: 0 }, { opacity: 1, duration: 0.34, ease: "power2.out", immediateRender: false }, 7.315);
+      tl.from("#scene-retrieval .scene-title", { x: -34, opacity: 0, duration: 0.42, ease: "power3.out", immediateRender: false }, 7.395);
+      tl.from("#scene-retrieval .scene-title span", { scaleX: 0, duration: 0.38, ease: "power2.out", immediateRender: false }, 7.655);
+      tl.from("#scene-retrieval .actor-human", { x: -24, opacity: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 7.395);
+      tl.from("#scene-retrieval .actor-agent", { x: 24, opacity: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 7.455);
+      tl.from("#scene-retrieval .caption-box", { y: 18, opacity: 0, duration: 0.34, ease: "power3.out", immediateRender: false }, 7.415);
+
+      tl.fromTo("#retrieval-doc-a", { opacity: 0, scale: 0.72, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.16, ease: "back.out(1.5)", immediateRender: false }, 8.015);
+      tl.to("#retrieval-doc-a", { keyframes: [
+        { x: 40.00, y: -285.00, rotation: 5, duration: 0.395, ease: "power2.out" },
+        { x: 55.00, y: -385.00, rotation: 0, scale: 0.82, duration: 0.395, ease: "power3.inOut" }
+      ], ease: "none" }, 8.175);
+      tl.to("#retrieval-agent-slot", { scale: 1.035, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 8.915);
+
+      tl.fromTo("#retrieval-doc-b", { opacity: 0, scale: 0.72, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.16, ease: "back.out(1.5)", immediateRender: false }, 8.865);
+      tl.to("#retrieval-doc-b", { keyframes: [
+        { x: 30.00, y: -360.00, rotation: 5, duration: 0.395, ease: "power2.out" },
+        { x: 20.00, y: -295.00, rotation: 0, scale: 0.82, duration: 0.395, ease: "power3.inOut" }
+      ], ease: "none" }, 9.025);
+      tl.to("#retrieval-agent-slot", { scale: 1.035, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 9.765);
+
+      tl.fromTo("#retrieval-doc-fact", { opacity: 0, scale: 0.72, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.16, ease: "back.out(1.5)", immediateRender: false }, 9.865);
+      tl.to("#retrieval-doc-fact", { keyframes: [
+        { x: 25.00, y: -415.00, rotation: 5, duration: 0.445, ease: "power2.out" },
+        { x: -5.00, y: -160.00, rotation: 0, scale: 0.82, duration: 0.445, ease: "power3.inOut" }
+      ], ease: "none" }, 10.025);
+      tl.to("#retrieval-agent-slot", { scale: 1.035, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 10.865);
+      tl.to("#scene-retrieval", { opacity: 0, duration: 0.24, ease: "power2.in" }, 12.710);
+      tl.fromTo("#scene-tools", { opacity: 0 }, { opacity: 1, duration: 0.34, ease: "power2.out", immediateRender: false }, 12.870);
+      tl.from("#scene-tools .scene-title", { x: -34, opacity: 0, duration: 0.42, ease: "power3.out", immediateRender: false }, 12.950);
+      tl.from("#scene-tools .scene-title span", { scaleX: 0, duration: 0.38, ease: "power2.out", immediateRender: false }, 13.210);
+      tl.from("#scene-tools .actor-human", { x: -24, opacity: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 12.950);
+      tl.from("#scene-tools .actor-agent", { x: 24, opacity: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 13.010);
+      tl.from("#scene-tools .caption-box", { y: 18, opacity: 0, duration: 0.34, ease: "power3.out", immediateRender: false }, 12.970);
+
+      tl.fromTo("#tools-search-tool", { opacity: 0, scale: 0.68 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(1.5)", immediateRender: false }, 13.670);
+      tl.to("#tools-search-tool", { x: 25.00, y: 125.00, duration: 0.770, ease: "power3.inOut" }, 13.850);
+      tl.fromTo("#tools-search-tool-wire", { scaleX: 0 }, { scaleX: 1, duration: 0.494, ease: "power2.out", immediateRender: false }, 14.145);
+      tl.to("#tools-agent-slot", { scale: 1.045, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 14.620);
+
+      tl.fromTo("#tools-refund-tool", { opacity: 0, scale: 0.68 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(1.5)", immediateRender: false }, 15.070);
+      tl.to("#tools-refund-tool", { x: -275.00, y: -190.00, duration: 0.870, ease: "power3.inOut" }, 15.250);
+      tl.fromTo("#tools-refund-tool-wire", { scaleX: 0 }, { scaleX: 1, duration: 0.546, ease: "power2.out", immediateRender: false }, 15.595);
+      tl.to("#tools-agent-slot", { scale: 1.045, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 16.120);
+      tl.fromTo("#tools-refund-tool-result", { opacity: 0, scale: 0.72, y: 12 }, { opacity: 1, scale: 1, y: 0, duration: 0.28, ease: "back.out(1.5)", immediateRender: false }, 16.240);
+      tl.to("#scene-tools", { opacity: 0, duration: 0.24, ease: "power2.in" }, 18.439);
+      tl.fromTo("#scene-memory", { opacity: 0 }, { opacity: 1, duration: 0.34, ease: "power2.out", immediateRender: false }, 18.599);
+      tl.from("#scene-memory .scene-title", { x: -34, opacity: 0, duration: 0.42, ease: "power3.out", immediateRender: false }, 18.679);
+      tl.from("#scene-memory .scene-title span", { scaleX: 0, duration: 0.38, ease: "power2.out", immediateRender: false }, 18.939);
+      tl.from("#scene-memory .actor-human", { x: -24, opacity: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 18.679);
+      tl.from("#scene-memory .actor-agent", { x: 24, opacity: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, 18.739);
+      tl.from("#scene-memory .caption-box", { y: 18, opacity: 0, duration: 0.34, ease: "power3.out", immediateRender: false }, 18.699);
+
+      tl.fromTo("#memory-store-order", { opacity: 0, scale: 0.8, rotation: -5 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "back.out(1.4)", immediateRender: false }, 19.299);
+      tl.to("#memory-store-order", { x: 130.00, y: -190.00, scale: 0.62, rotation: 2, duration: 0.740, ease: "power3.inOut" }, 19.459);
+      tl.to("#memory-store-order", { opacity: 0.22, duration: 0.14, ease: "power2.out" }, 20.199);
+      tl.to("#memory-memory-bank", { scale: 1.035, duration: 0.13, repeat: 1, yoyo: true, ease: "power2.inOut" }, 20.159);
+
+      tl.fromTo("#memory-store-user", { opacity: 0, scale: 0.8, rotation: -5 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "back.out(1.4)", immediateRender: false }, 20.299);
+      tl.to("#memory-store-user", { x: 60.00, y: -245.00, scale: 0.62, rotation: 2, duration: 0.740, ease: "power3.inOut" }, 20.459);
+      tl.to("#memory-store-user", { opacity: 0.22, duration: 0.14, ease: "power2.out" }, 21.199);
+      tl.to("#memory-memory-bank", { scale: 1.035, duration: 0.13, repeat: 1, yoyo: true, ease: "power2.inOut" }, 21.159);
+
+      tl.fromTo("#memory-store-confirmed", { opacity: 0, scale: 0.8, rotation: -5 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "back.out(1.4)", immediateRender: false }, 21.299);
+      tl.to("#memory-store-confirmed", { x: -10.00, y: -205.00, scale: 0.62, rotation: 2, duration: 0.790, ease: "power3.inOut" }, 21.459);
+      tl.to("#memory-store-confirmed", { opacity: 0.22, duration: 0.14, ease: "power2.out" }, 22.249);
+      tl.to("#memory-memory-bank", { scale: 1.035, duration: 0.13, repeat: 1, yoyo: true, ease: "power2.inOut" }, 22.209);
+      tl.fromTo("#memory-store-confirmed-result", { opacity: 0, scale: 0.72, y: 14 }, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "back.out(1.5)", immediateRender: false }, 22.389);
+
+      tl.fromTo("#memory-context-return", { opacity: 0, scale: 0.72, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.16, ease: "back.out(1.5)", immediateRender: false }, 22.799);
+      tl.to("#memory-context-return", { keyframes: [
+        { x: 85.00, y: -155.00, rotation: 5, duration: 0.420, ease: "power2.out" },
+        { x: 145.00, y: 75.00, rotation: 0, scale: 0.82, duration: 0.420, ease: "power3.inOut" }
+      ], ease: "none" }, 22.959);
+      tl.to("#memory-agent-slot", { scale: 1.035, duration: 0.12, repeat: 1, yoyo: true, ease: "power2.inOut" }, 23.749);
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

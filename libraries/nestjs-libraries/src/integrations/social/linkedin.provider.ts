@@ -37,6 +37,7 @@ export class LinkedinProvider extends SocialAbstract implements SocialProvider {
   identifier = 'linkedin';
   name = 'LinkedIn';
   oneTimeToken = true;
+  dto = LinkedinDto;
 
   isBetweenSteps = false;
   scopes = parseLinkedinScopes('LINKEDIN_SCOPES', [
@@ -60,6 +61,25 @@ export class LinkedinProvider extends SocialAbstract implements SocialProvider {
     vals: any
   ): Promise<string | true> {
     const [firstPost, ...restPosts] = posts ?? [];
+    const isArticle = vals?.post_type === 'article';
+
+    if (isArticle && this.assetBoolean(vals?.post_as_images_carousel)) {
+      return 'Article link cards cannot also be posted as an images carousel.';
+    }
+
+    if (isArticle && (firstPost?.length ?? 0) > 1) {
+      return 'Article link cards can have at most one thumbnail image.';
+    }
+
+    if (
+      isArticle &&
+      firstPost?.some((media) => {
+        const mime = lookup(media?.path || '');
+        return mime === 'application/pdf' || String(mime).startsWith('video/');
+      })
+    ) {
+      return 'Article link card thumbnails must be images, not videos or PDFs.';
+    }
 
     if (
       this.assetBoolean(vals?.post_as_images_carousel) &&
@@ -666,10 +686,42 @@ export class LinkedinProvider extends SocialAbstract implements SocialProvider {
   }
 
   private buildPostContent(
+    settings: LinkedinDto | undefined,
     isPdf: boolean,
     mediaIds: string[],
     pdfTitle?: string
   ) {
+    if (settings?.post_type === 'article') {
+      const source = settings.article_url?.trim();
+      const title = settings.article_title?.trim();
+      const description = settings.article_description?.trim();
+
+      if (!source || !title) {
+        throw new BadBody(
+          this.identifier,
+          '{}',
+          JSON.stringify(settings),
+          'LinkedIn article link cards require an article URL and title.'
+        );
+      }
+
+      return {
+        content: {
+          article: {
+            source,
+            title,
+            ...(description ? { description } : {}),
+            ...(mediaIds[0]
+              ? {
+                  thumbnail: mediaIds[0],
+                  thumbnailAltText: title,
+                }
+              : {}),
+          },
+        },
+      };
+    }
+
     if (mediaIds.length === 0) {
       return {};
     }
@@ -698,6 +750,7 @@ export class LinkedinProvider extends SocialAbstract implements SocialProvider {
     id: string,
     type: 'company' | 'personal',
     message: string,
+    settings: LinkedinDto | undefined,
     mediaIds: string[],
     isPdf: boolean,
     pdfTitle?: string
@@ -714,7 +767,7 @@ export class LinkedinProvider extends SocialAbstract implements SocialProvider {
         targetEntities: [] as string[],
         thirdPartyDistributionChannels: [] as string[],
       },
-      ...this.buildPostContent(isPdf, mediaIds, pdfTitle),
+      ...this.buildPostContent(settings, isPdf, mediaIds, pdfTitle),
       lifecycleState: 'PUBLISHED',
       isReshareDisabledByAuthor: false,
     };
@@ -736,6 +789,7 @@ export class LinkedinProvider extends SocialAbstract implements SocialProvider {
       id,
       type,
       firstPost.message,
+      firstPost.settings,
       mediaIds,
       isPdf,
       pdfTitle
@@ -826,9 +880,13 @@ export class LinkedinProvider extends SocialAbstract implements SocialProvider {
   ): Promise<PostResponse[]> {
     let processedPostDetails = postDetails;
     const [firstPost] = postDetails;
+    const isArticle = firstPost.settings?.post_type === 'article';
 
     // Check if we should convert images to PDF carousel
-    if (this.assetBoolean(firstPost.settings?.post_as_images_carousel)) {
+    if (
+      !isArticle &&
+      this.assetBoolean(firstPost.settings?.post_as_images_carousel)
+    ) {
       processedPostDetails = await this.convertImagesToPdfCarousel(
         postDetails,
         firstPost
@@ -857,7 +915,8 @@ export class LinkedinProvider extends SocialAbstract implements SocialProvider {
       processedFirstPost,
       mainPostMediaIds,
       type,
-      this.assetBoolean(firstPost.settings?.post_as_images_carousel)
+      !isArticle &&
+        this.assetBoolean(firstPost.settings?.post_as_images_carousel)
     );
 
     // Return response for main post only

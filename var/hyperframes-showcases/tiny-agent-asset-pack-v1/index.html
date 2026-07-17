@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --board: #fcfdfc;
+        --ink: #111413;
+        --blue: #1597ea;
+        --red: #f04438;
+        --line: #d9e1de;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; }
+      body { color: var(--ink); background: var(--board); font-family: "Inter", sans-serif; }
+      img { display: block; user-select: none; }
+
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+      }
+
+      .board-fill {
+        position: absolute;
+        inset: 0;
+        background-color: var(--board);
+        background-image:
+          linear-gradient(rgba(17, 20, 19, 0.024) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(17, 20, 19, 0.024) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+
+      .brand {
+        position: absolute;
+        top: 54px;
+        left: 80px;
+        z-index: 50;
+        color: var(--blue);
+        font-size: 34px;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .episode-title {
+        position: absolute;
+        top: 112px;
+        right: 80px;
+        left: 80px;
+        z-index: 50;
+        padding-bottom: 22px;
+        border-bottom: 4px solid var(--ink);
+        font-size: 64px;
+        font-weight: 900;
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      .episode-title::after {
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 174px;
+        height: 16px;
+        content: "";
+        background: var(--blue);
+        opacity: 0.26;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        width: 1080px;
+        height: 1920px;
+        opacity: 0;
+      }
+
+      .scene.is-first { opacity: 1; }
+
+      .stage {
+        position: absolute;
+        top: 280px;
+        left: 80px;
+        width: 920px;
+        height: 830px;
+        overflow: hidden;
+        border-bottom: 4px solid var(--line);
+      }
+
+      .scene-title {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 35;
+        display: flex;
+        align-items: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 42px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .scene-title i {
+        display: block;
+        width: 54px;
+        height: 10px;
+        margin-right: 18px;
+        background: var(--blue);
+        transform-origin: left center;
+      }
+
+      .caption-box {
+        position: absolute;
+        top: 1130px;
+        left: 80px;
+        z-index: 40;
+        display: flex;
+        width: 920px;
+        height: 300px;
+        align-items: center;
+        justify-content: center;
+        border: 7px solid var(--ink);
+        border-radius: 8px;
+        background: var(--board);
+      }
+
+      .caption {
+        max-width: 800px;
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 50px;
+        font-weight: 750;
+        line-height: 1.24;
+        letter-spacing: 0;
+      }
+
+      .actor {
+        position: absolute;
+        z-index: 20;
+        transform-origin: center bottom;
+      }
+
+      .actor-human { width: 430px; height: 430px; }
+      .actor-agent { width: 330px; height: 440px; }
+
+      .pose {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+      }
+
+      .pose.is-visible { opacity: 1; }
+
+      .prop {
+        position: absolute;
+        z-index: 18;
+        object-fit: contain;
+        opacity: 0;
+        transform-origin: center;
+      }
+
+      .prop-label {
+        position: absolute;
+        z-index: 30;
+        color: var(--ink);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: 0;
+        opacity: 0;
+      }
+
+      .prop-label::after {
+        display: block;
+        width: 100%;
+        height: 5px;
+        margin-top: 7px;
+        content: "";
+        background: var(--blue);
+        opacity: 0.55;
+      }
+
+      .wire {
+        position: absolute;
+        z-index: 8;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--ink);
+        opacity: 0.6;
+        transform-origin: left center;
+        transform: scaleX(0);
+      }
+
+      .wire::after {
+        position: absolute;
+        top: -6px;
+        right: -7px;
+        width: 14px;
+        height: 14px;
+        border: 4px solid var(--blue);
+        border-radius: 50%;
+        content: "";
+        background: var(--board);
+      }
+
+      .result-stamp {
+        position: absolute;
+        z-index: 32;
+        min-width: 210px;
+        padding: 14px 18px;
+        border: 5px solid var(--blue);
+        color: var(--ink);
+        background: var(--board);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 23px;
+        font-weight: 850;
+        text-align: center;
+        opacity: 0;
+        transform-origin: center;
+      }
+
+      .pulse-ring {
+        position: absolute;
+        z-index: 7;
+        width: 190px;
+        height: 190px;
+        border: 8px dashed var(--blue);
+        border-radius: 50%;
+        opacity: 0;
+        transform-origin: center;
+      }
+
+      /* Scene 1 */
+      #s1-human { left: 0; top: 252px; }
+      #s1-agent { left: 500px; top: 232px; }
+      #s1-search { left: 388px; top: 118px; width: 150px; height: 150px; }
+      #s1-tool { left: 772px; top: 118px; width: 126px; height: 126px; }
+      #s1-memory { left: 744px; top: 514px; width: 154px; height: 154px; }
+      #s1-search-label { left: 404px; top: 264px; }
+      #s1-tool-label { left: 790px; top: 246px; }
+      #s1-memory-label { left: 764px; top: 675px; }
+      #s1-wire-search { left: 492px; top: 242px; width: 164px; transform: rotate(57deg) scaleX(0); }
+      #s1-wire-tool { left: 690px; top: 310px; width: 142px; transform: rotate(-49deg) scaleX(0); }
+      #s1-wire-memory { left: 690px; top: 440px; width: 155px; transform: rotate(42deg) scaleX(0); }
+
+      /* Scene 2 */
+      #s2-human { left: 0; top: 260px; }
+      #s2-agent { left: 566px; top: 246px; }
+      #s2-docs { left: 286px; top: 488px; width: 150px; height: 150px; }
+      #s2-doc { left: 422px; top: 522px; width: 130px; height: 130px; }
+      #s2-search { left: 408px; top: 128px; width: 176px; height: 176px; }
+      #s2-ring { left: 401px; top: 121px; }
+      #s2-result { left: 474px; top: 348px; width: 160px; height: 160px; }
+      #s2-result-label { left: 478px; top: 510px; }
+
+      /* Scene 3 */
+      #s3-human { left: 0; top: 264px; }
+      #s3-agent { left: 555px; top: 246px; }
+      #s3-browser { left: 292px; top: 118px; width: 204px; height: 204px; }
+      #s3-api { left: 286px; top: 474px; width: 170px; height: 170px; }
+      #s3-tool { left: 772px; top: 104px; width: 126px; height: 126px; }
+      #s3-result { left: 692px; top: 520px; width: 166px; height: 166px; }
+      #s3-browser-label { left: 326px; top: 300px; }
+      #s3-api-label { left: 334px; top: 638px; }
+      #s3-tool-label { left: 790px; top: 238px; }
+      #s3-wire-api { left: 430px; top: 552px; width: 190px; transform: rotate(-28deg) scaleX(0); }
+      #s3-wire-browser { left: 475px; top: 250px; width: 183px; transform: rotate(39deg) scaleX(0); }
+      #s3-stamp { left: 622px; top: 688px; }
+
+      /* Scene 4 */
+      #s4-human { left: 0; top: 268px; }
+      #s4-agent { left: 570px; top: 252px; }
+      #s4-memory { left: 354px; top: 132px; width: 198px; height: 198px; }
+      #s4-doc { left: 276px; top: 526px; width: 130px; height: 130px; }
+      #s4-db { left: 420px; top: 508px; width: 150px; height: 150px; }
+      #s4-result { left: 490px; top: 340px; width: 160px; height: 160px; }
+      #s4-memory-label { left: 399px; top: 326px; }
+      #s4-stamp { left: 630px; top: 686px; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-5ubt" id="root" data-composition-id="main" data-start="0" data-duration="24.849" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-ahaq" class="board-fill"></div>
+      <div data-hf-id="hf-5994" class="brand">Tiny Agent</div>
+      <h1 data-hf-id="hf-m393" class="episode-title">Augmented LLM First</h1>
+
+      <section data-hf-id="hf-4877" id="scene-1" class="scene is-first">
+        <div data-hf-id="hf-tan6" class="stage">
+          <h2 data-hf-id="hf-yp0s" class="scene-title"><i data-hf-id="hf-wt6k"></i><span data-hf-id="hf-if79">AUGMENT ONE MODEL</span></h2>
+          <div data-hf-id="hf-2plq" id="s1-human" class="actor actor-human">
+            <img data-hf-id="hf-bkn6" id="s1-human-point" class="pose is-visible" src="assets/scene-1/human/point-right.png" alt="Engineer pointing">
+            <img data-hf-id="hf-5tw6" id="s1-human-think" class="pose" src="assets/scene-1/human/think.png" alt="Engineer thinking">
+          </div>
+          <div data-hf-id="hf-odre" id="s1-agent" class="actor actor-agent">
+            <img data-hf-id="hf-qzp5" id="s1-agent-idle" class="pose is-visible" src="assets/scene-1/agent/idle.png" alt="Tiny Agent idle">
+            <img data-hf-id="hf-66n2" id="s1-agent-receive" class="pose" src="assets/scene-1/agent/receive-tool.png" alt="Tiny Agent receiving a tool">
+          </div>
+          <div data-hf-id="hf-j5de" id="s1-wire-search" class="wire"></div>
+          <div data-hf-id="hf-5veo" id="s1-wire-tool" class="wire"></div>
+          <div data-hf-id="hf-yysz" id="s1-wire-memory" class="wire"></div>
+          <img data-hf-id="hf-zmv4" id="s1-search" class="prop" src="assets/scene-1/props/search.png" alt="Retrieval">
+          <img data-hf-id="hf-2wwk" id="s1-tool" class="prop" src="assets/scene-1/props/tool.png" alt="Tool">
+          <img data-hf-id="hf-chmz" id="s1-memory" class="prop" src="assets/scene-1/props/memory.png" alt="Memory">
+          <div data-hf-id="hf-q5fw" id="s1-search-label" class="prop-label">RETRIEVAL</div>
+          <div data-hf-id="hf-tcnx" id="s1-tool-label" class="prop-label">TOOLS</div>
+          <div data-hf-id="hf-30ii" id="s1-memory-label" class="prop-label">MEMORY</div>
+        </div>
+        <div data-hf-id="hf-8jr2" class="caption-box"><div data-hf-id="hf-th8u" class="caption">One model + retrieval, tools, memory</div></div>
+      </section>
+
+      <section data-hf-id="hf-v1or" id="scene-2" class="scene">
+        <div data-hf-id="hf-xa86" class="stage">
+          <h2 data-hf-id="hf-nhdw" class="scene-title"><i data-hf-id="hf-zeb8"></i><span data-hf-id="hf-4cjb">RETRIEVAL</span></h2>
+          <div data-hf-id="hf-erwl" id="s2-human" class="actor actor-human">
+            <img data-hf-id="hf-fq1k" class="pose is-visible" src="assets/scene-2/human/point-right.png" alt="Engineer pointing">
+          </div>
+          <div data-hf-id="hf-m041" id="s2-agent" class="actor actor-agent">
+            <img data-hf-id="hf-e9tr" id="s2-agent-search" class="pose is-visible" src="assets/scene-2/agent/search.png" alt="Tiny Agent searching">
+            <img data-hf-id="hf-rvrx" id="s2-agent-success" class="pose" src="assets/scene-2/agent/success.png" alt="Tiny Agent success">
+          </div>
+          <div data-hf-id="hf-7eo2" id="s2-ring" class="pulse-ring"></div>
+          <img data-hf-id="hf-zxhq" id="s2-search" class="prop" src="assets/scene-2/props/search.png" alt="Search">
+          <img data-hf-id="hf-wsmo" id="s2-docs" class="prop" src="assets/scene-2/props/document-stack.png" alt="Document stack">
+          <img data-hf-id="hf-kgmo" id="s2-doc" class="prop" src="assets/scene-2/props/document.png" alt="Document">
+          <img data-hf-id="hf-psmu" id="s2-result" class="prop" src="assets/scene-2/props/result-card.png" alt="Retrieved result">
+          <div data-hf-id="hf-spt4" id="s2-result-label" class="prop-label">FACT FOUND</div>
+        </div>
+        <div data-hf-id="hf-dl9e" class="caption-box"><div data-hf-id="hf-k7ib" class="caption">Find the outside facts needed now</div></div>
+      </section>
+
+      <section data-hf-id="hf-r3kq" id="scene-3" class="scene">
+        <div data-hf-id="hf-xoj7" class="stage">
+          <h2 data-hf-id="hf-magt" class="scene-title"><i data-hf-id="hf-y7e5"></i><span data-hf-id="hf-9ac0">TOOLS</span></h2>
+          <div data-hf-id="hf-9psg" id="s3-human" class="actor actor-human">
+            <img data-hf-id="hf-s5u2" id="s3-human-operate" class="pose is-visible" src="assets/scene-3/human/operate.png" alt="Engineer operating">
+            <img data-hf-id="hf-e2de" id="s3-human-approve" class="pose" src="assets/scene-3/human/approve.png" alt="Engineer approving">
+          </div>
+          <div data-hf-id="hf-sx9k" id="s3-agent" class="actor actor-agent">
+            <img data-hf-id="hf-rr4d" id="s3-agent-receive" class="pose is-visible" src="assets/scene-3/agent/receive-tool.png" alt="Tiny Agent receiving a tool">
+            <img data-hf-id="hf-sxy6" id="s3-agent-execute" class="pose" src="assets/scene-3/agent/execute.png" alt="Tiny Agent executing">
+            <img data-hf-id="hf-mjfz" id="s3-agent-success" class="pose" src="assets/scene-3/agent/success.png" alt="Tiny Agent success">
+          </div>
+          <div data-hf-id="hf-ofbw" id="s3-wire-api" class="wire"></div>
+          <div data-hf-id="hf-39ck" id="s3-wire-browser" class="wire"></div>
+          <img data-hf-id="hf-2a82" id="s3-browser" class="prop" src="assets/scene-3/props/browser.png" alt="Browser">
+          <img data-hf-id="hf-ksr9" id="s3-api" class="prop" src="assets/scene-3/props/api-plug.png" alt="API">
+          <img data-hf-id="hf-bd4w" id="s3-tool" class="prop" src="assets/scene-3/props/tool.png" alt="Tool">
+          <img data-hf-id="hf-14cm" id="s3-result" class="prop" src="assets/scene-3/props/result-card.png" alt="Action result">
+          <div data-hf-id="hf-yu00" id="s3-browser-label" class="prop-label">QUERY</div>
+          <div data-hf-id="hf-fggs" id="s3-api-label" class="prop-label">API</div>
+          <div data-hf-id="hf-889q" id="s3-tool-label" class="prop-label">ACTION</div>
+          <div data-hf-id="hf-46pv" id="s3-stamp" class="result-stamp">ACTION DONE</div>
+        </div>
+        <div data-hf-id="hf-dzkf" class="caption-box"><div data-hf-id="hf-mw5y" class="caption">Turn judgment into real actions</div></div>
+      </section>
+
+      <section data-hf-id="hf-8bv1" id="scene-4" class="scene">
+        <div data-hf-id="hf-y2u8" class="stage">
+          <h2 data-hf-id="hf-moru" class="scene-title"><i data-hf-id="hf-ylp6"></i><span data-hf-id="hf-pj22">MEMORY</span></h2>
+          <div data-hf-id="hf-clp3" id="s4-human" class="actor actor-human">
+            <img data-hf-id="hf-jx4e" class="pose is-visible" src="assets/scene-4/human/approve.png" alt="Engineer approving">
+          </div>
+          <div data-hf-id="hf-cwo7" id="s4-agent" class="actor actor-agent">
+            <img data-hf-id="hf-psgc" id="s4-agent-store" class="pose is-visible" src="assets/scene-4/agent/store-memory.png" alt="Tiny Agent storing memory">
+            <img data-hf-id="hf-47wg" id="s4-agent-recall" class="pose" src="assets/scene-4/agent/recall-memory.png" alt="Tiny Agent recalling memory">
+            <img data-hf-id="hf-8rit" id="s4-agent-success" class="pose" src="assets/scene-4/agent/success.png" alt="Tiny Agent success">
+          </div>
+          <img data-hf-id="hf-ctkr" id="s4-memory" class="prop" src="assets/scene-4/props/memory.png" alt="Memory">
+          <img data-hf-id="hf-bcgn" id="s4-doc" class="prop" src="assets/scene-4/props/document.png" alt="Conversation state">
+          <img data-hf-id="hf-whai" id="s4-db" class="prop" src="assets/scene-4/props/database.png" alt="Order state">
+          <img data-hf-id="hf-wrsa" id="s4-result" class="prop" src="assets/scene-4/props/result-card.png" alt="Remembered context">
+          <div data-hf-id="hf-s0x5" id="s4-memory-label" class="prop-label">STATE KEPT</div>
+          <div data-hf-id="hf-u834" id="s4-stamp" class="result-stamp">CONTEXT READY</div>
+        </div>
+        <div data-hf-id="hf-edvg" class="caption-box"><div data-hf-id="hf-rrfd" class="caption">Carry the right state across steps</div></div>
+      </section>
+
+      <audio data-hf-id="hf-h4dx" id="narration" class="clip" data-start="0" data-duration="24.849" data-track-index="10" data-media-start="0" data-volume="1" src="assets/audio/narration.mp3"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const enterScene = (selector, start) => {
+        tl.fromTo(`${selector} .scene-title`, { x: -34, opacity: 0 }, { x: 0, opacity: 1, duration: 0.42, ease: "power3.out", immediateRender: false }, start + 0.08);
+        tl.fromTo(`${selector} .scene-title i`, { scaleX: 0 }, { scaleX: 1, duration: 0.38, ease: "power2.out", immediateRender: false }, start + 0.26);
+        tl.fromTo(`${selector} .actor-human`, { x: -28, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, start + 0.1);
+        tl.fromTo(`${selector} .actor-agent`, { x: 28, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, start + 0.16);
+        tl.fromTo(`${selector} .caption-box`, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.38, ease: "power3.out", immediateRender: false }, start + 0.1);
+      };
+
+      const swapPose = (from, to, at) => {
+        tl.to(from, { opacity: 0, x: -10, duration: 0.18, ease: "power2.in" }, at);
+        tl.fromTo(to, { opacity: 0, x: 10 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out", immediateRender: false }, at + 0.11);
+      };
+
+      const pop = (selector, at, fromX = 0, fromY = 0) => {
+        tl.fromTo(selector, { opacity: 0, scale: 0.62, x: fromX, y: fromY, rotation: -7 }, { opacity: 1, scale: 1, x: 0, y: 0, rotation: 0, duration: 0.42, ease: "back.out(1.45)", immediateRender: false }, at);
+      };
+
+      tl.fromTo(".brand", { y: -18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: "power3.out" }, 0);
+      tl.fromTo(".episode-title", { y: -16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.48, ease: "power3.out" }, 0.08);
+
+      enterScene("#scene-1", 0);
+      swapPose("#s1-human-point", "#s1-human-think", 1.45);
+      swapPose("#s1-agent-idle", "#s1-agent-receive", 1.58);
+      pop("#s1-search", 2.15, -90, 28);
+      tl.fromTo("#s1-search-label", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", immediateRender: false }, 2.46);
+      tl.fromTo("#s1-wire-search", { scaleX: 0, rotation: 57 }, { scaleX: 1, rotation: 57, duration: 0.42, ease: "power2.out", immediateRender: false }, 2.58);
+      pop("#s1-tool", 3.42, 78, -20);
+      tl.fromTo("#s1-tool-label", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", immediateRender: false }, 3.73);
+      tl.fromTo("#s1-wire-tool", { scaleX: 0, rotation: -49 }, { scaleX: 1, rotation: -49, duration: 0.42, ease: "power2.out", immediateRender: false }, 3.86);
+      pop("#s1-memory", 4.72, 82, 48);
+      tl.fromTo("#s1-memory-label", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out", immediateRender: false }, 5.03);
+      tl.fromTo("#s1-wire-memory", { scaleX: 0, rotation: 42 }, { scaleX: 1, rotation: 42, duration: 0.42, ease: "power2.out", immediateRender: false }, 5.16);
+      tl.to("#s1-agent", { scale: 1.045, duration: 0.14, repeat: 1, yoyo: true, ease: "power2.inOut" }, 5.62);
+
+      tl.to("#scene-1", { opacity: 0, duration: 0.24, ease: "power2.in" }, 7.12);
+      tl.fromTo("#scene-2", { opacity: 0 }, { opacity: 1, duration: 0.34, ease: "power2.out", immediateRender: false }, 7.315);
+      enterScene("#scene-2", 7.315);
+      pop("#s2-search", 7.95, 0, -35);
+      tl.fromTo("#s2-ring", { opacity: 0, scale: 0.65 }, { opacity: 0.3, scale: 1, duration: 0.5, ease: "power2.out", immediateRender: false }, 8.1);
+      pop("#s2-docs", 8.42, -240, 90);
+      pop("#s2-doc", 9.02, -250, 42);
+      tl.to("#s2-docs", { x: 104, y: -270, scale: 0.62, opacity: 0.28, duration: 0.78, ease: "power3.inOut" }, 9.34);
+      tl.to("#s2-doc", { x: 32, y: -298, scale: 0.58, opacity: 0.22, duration: 0.78, ease: "power3.inOut" }, 9.58);
+      tl.to("#s2-ring", { scale: 1.12, opacity: 0.12, duration: 0.3, repeat: 1, yoyo: true, ease: "power2.inOut" }, 10.0);
+      tl.fromTo("#s2-result", { opacity: 0, scale: 0.56, x: -54, y: -126 }, { opacity: 1, scale: 1, x: 0, y: 0, duration: 0.62, ease: "back.out(1.35)", immediateRender: false }, 10.42);
+      tl.fromTo("#s2-result-label", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out", immediateRender: false }, 10.9);
+      swapPose("#s2-agent-search", "#s2-agent-success", 11.05);
+
+      tl.to("#scene-2", { opacity: 0, duration: 0.24, ease: "power2.in" }, 12.67);
+      tl.fromTo("#scene-3", { opacity: 0 }, { opacity: 1, duration: 0.34, ease: "power2.out", immediateRender: false }, 12.87);
+      enterScene("#scene-3", 12.87);
+      pop("#s3-browser", 13.48, -80, -42);
+      tl.fromTo("#s3-browser-label", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.24, ease: "power2.out", immediateRender: false }, 13.84);
+      tl.fromTo("#s3-wire-browser", { scaleX: 0, rotation: 39 }, { scaleX: 1, rotation: 39, duration: 0.44, ease: "power2.out", immediateRender: false }, 14.02);
+      pop("#s3-api", 14.28, -140, 40);
+      tl.fromTo("#s3-api-label", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.24, ease: "power2.out", immediateRender: false }, 14.66);
+      tl.fromTo("#s3-wire-api", { scaleX: 0, rotation: -28 }, { scaleX: 1, rotation: -28, duration: 0.44, ease: "power2.out", immediateRender: false }, 14.82);
+      pop("#s3-tool", 15.05, 90, -24);
+      tl.fromTo("#s3-tool-label", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.24, ease: "power2.out", immediateRender: false }, 15.4);
+      swapPose("#s3-agent-receive", "#s3-agent-execute", 15.62);
+      tl.to("#s3-browser", { scale: 1.06, duration: 0.14, repeat: 1, yoyo: true, ease: "power2.inOut" }, 16.16);
+      pop("#s3-result", 16.58, 42, 54);
+      tl.fromTo("#s3-stamp", { opacity: 0, scale: 0.7, y: 12 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.45)", immediateRender: false }, 17.02);
+      swapPose("#s3-agent-execute", "#s3-agent-success", 17.34);
+      swapPose("#s3-human-operate", "#s3-human-approve", 17.42);
+
+      tl.to("#scene-3", { opacity: 0, duration: 0.24, ease: "power2.in" }, 18.4);
+      tl.fromTo("#scene-4", { opacity: 0 }, { opacity: 1, duration: 0.34, ease: "power2.out", immediateRender: false }, 18.599);
+      enterScene("#scene-4", 18.599);
+      pop("#s4-memory", 19.12, 0, -44);
+      tl.fromTo("#s4-memory-label", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out", immediateRender: false }, 19.48);
+      pop("#s4-doc", 19.72, -180, 40);
+      pop("#s4-db", 20.08, -80, 86);
+      tl.to("#s4-doc", { x: 116, y: -286, scale: 0.5, opacity: 0.18, duration: 0.78, ease: "power3.inOut" }, 20.44);
+      tl.to("#s4-db", { x: 30, y: -270, scale: 0.48, opacity: 0.18, duration: 0.78, ease: "power3.inOut" }, 20.68);
+      tl.to("#s4-memory", { scale: 1.07, duration: 0.14, repeat: 1, yoyo: true, ease: "power2.inOut" }, 21.1);
+      swapPose("#s4-agent-store", "#s4-agent-recall", 21.32);
+      tl.fromTo("#s4-result", { opacity: 0, scale: 0.52, x: -76, y: -154 }, { opacity: 1, scale: 1, x: 0, y: 0, duration: 0.64, ease: "back.out(1.35)", immediateRender: false }, 21.82);
+      tl.to("#s4-result", { x: 118, y: 126, scale: 0.84, duration: 0.68, ease: "power3.inOut" }, 22.52);
+      tl.fromTo("#s4-stamp", { opacity: 0, scale: 0.7, y: 12 }, { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "back.out(1.45)", immediateRender: false }, 23.2);
+      swapPose("#s4-agent-recall", "#s4-agent-success", 23.38);
+      tl.to("#s4-agent", { scale: 1.045, duration: 0.14, repeat: 1, yoyo: true, ease: "power2.inOut" }, 23.86);
+
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

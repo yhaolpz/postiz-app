@@ -1,0 +1,1332 @@
+[
+  {
+    "start": 0.1,
+    "end": 4.425333333333333,
+    "text": "Many teams begin by choosing a framework, drawing a multi-agent diagram,"
+  },
+  {
+    "start": 4.425333333333333,
+    "end": 6.588,
+    "text": "and asking several models to debate."
+  },
+  {
+    "start": 6.538,
+    "end": 10.816775280898877,
+    "text": "Anthropic found that successful production systems often use simpler,"
+  },
+  {
+    "start": 10.816775280898877,
+    "end": 12.057,
+    "text": "composable patterns."
+  },
+  {
+    "start": 12.057,
+    "end": 15.824707317073171,
+    "text": "Quality depends less on the number of agents than on clear task"
+  },
+  {
+    "start": 15.824707317073171,
+    "end": 19.413,
+    "text": "boundaries, evaluation criteria, and environmental feedback."
+  },
+  {
+    "start": 19.413,
+    "end": 23.85332743362832,
+    "text": "A complex architecture may not improve completion, but it will increase"
+  },
+  {
+    "start": 23.85332743362832,
+    "end": 26.48,
+    "text": "model calls, latency, cost, and debugging."
+  },
+  {
+    "start": 26.48,
+    "end": 30.46185185185185,
+    "text": "Every extra handoff adds another chance to lose context or pass a"
+  },
+  {
+    "start": 30.46185185185185,
+    "end": 31.442,
+    "text": "mistake forward."
+  },
+  {
+    "start": 31.442,
+    "end": 34.95027358490566,
+    "text": "In this video, we will answer three questions that are easy to get"
+  },
+  {
+    "start": 34.95027358490566,
+    "end": 38.51170283018868,
+    "text": "wrong: when one model call is enough, which of five common workflow"
+  },
+  {
+    "start": 38.51170283018868,
+    "end": 42.232599056603775,
+    "text": "patterns fits the task, and when an autonomous agent is actually worth"
+  },
+  {
+    "start": 42.232599056603775,
+    "end": 42.711,
+    "text": "the risk."
+  },
+  {
+    "start": 42.711,
+    "end": 46.39257225433526,
+    "text": "By the end, you will have an Agent Architecture Decision Ladder that you"
+  },
+  {
+    "start": 46.39257225433526,
+    "end": 50.07414450867052,
+    "text": "can use on a real project, instead of paying for complexity just to make"
+  },
+  {
+    "start": 50.07414450867052,
+    "end": 51.557,
+    "text": "the system look more agentic."
+  },
+  {
+    "start": 51.7,
+    "end": 55.246,
+    "text": "Start with the distinction that controls every later decision."
+  },
+  {
+    "start": 55.196,
+    "end": 59.138000000000005,
+    "text": "In a workflow, code defines the execution path in advance."
+  },
+  {
+    "start": 59.138000000000005,
+    "end": 63.167369863013704,
+    "text": "A model may perform one step, but the program still controls the"
+  },
+  {
+    "start": 63.167369863013704,
+    "end": 63.734,
+    "text": "sequence."
+  },
+  {
+    "start": 63.734,
+    "end": 67.52630894308943,
+    "text": "In an agent, the model uses the current result to choose what to do"
+  },
+  {
+    "start": 67.52630894308943,
+    "end": 70.696,
+    "text": "next, which tool to call, and when the task should stop."
+  },
+  {
+    "start": 70.696,
+    "end": 74.77237096774194,
+    "text": "An expense report that always moves through extraction, policy checks,"
+  },
+  {
+    "start": 74.77237096774194,
+    "end": 77.917,
+    "text": "and approval has a path you can draw before execution."
+  },
+  {
+    "start": 77.917,
+    "end": 80.282,
+    "text": "That is a strong workflow task."
+  },
+  {
+    "start": 80.282,
+    "end": 82.926,
+    "text": "An incident investigation is different."
+  },
+  {
+    "start": 82.926,
+    "end": 86.99637984496124,
+    "text": "You may read logs first, then inspect metrics, and only then decide"
+  },
+  {
+    "start": 86.99637984496124,
+    "end": 90.763,
+    "text": "whether to investigate the database, the network, or the code."
+  },
+  {
+    "start": 90.763,
+    "end": 94.869,
+    "text": "The path emerges from evidence, so an agent can add real value."
+  },
+  {
+    "start": 94.869,
+    "end": 97.1,
+    "text": "Neither one is more advanced."
+  },
+  {
+    "start": 97.1,
+    "end": 100.65700000000001,
+    "text": "Workflows optimize for consistency and predictability."
+  },
+  {
+    "start": 100.65700000000001,
+    "end": 104.648,
+    "text": "Agents optimize for flexibility and model-directed decisions."
+  },
+  {
+    "start": 104.648,
+    "end": 108.45565217391304,
+    "text": "The most important principle is to find the simplest viable solution and"
+  },
+  {
+    "start": 108.45565217391304,
+    "end": 111.946,
+    "text": "increase complexity only when the result is measurably inadequate."
+  },
+  {
+    "start": 111.946,
+    "end": 115.561,
+    "text": "Inadequate does not mean the diagram looks unsophisticated."
+  },
+  {
+    "start": 115.561,
+    "end": 120.42849999999999,
+    "text": "It means completion rate, accuracy, latency, cost, or human intervention"
+  },
+  {
+    "start": 120.42849999999999,
+    "end": 122.05099999999999,
+    "text": "misses a defined target."
+  },
+  {
+    "start": 122.05099999999999,
+    "end": 125.84145871559633,
+    "text": "If a new orchestration layer does not help the same evaluation set"
+  },
+  {
+    "start": 125.84145871559633,
+    "end": 128.311,
+    "text": "finish more reliably, it is not an upgrade."
+  },
+  {
+    "start": 128.311,
+    "end": 129.83,
+    "text": "It is overhead."
+  },
+  {
+    "start": 129.83,
+    "end": 131.369,
+    "text": "Chapter recap."
+  },
+  {
+    "start": 131.369,
+    "end": 134.628,
+    "text": "First, use a workflow when the path is fixed."
+  },
+  {
+    "start": 134.628,
+    "end": 138.484,
+    "text": "Second, use an agent only when the path must be dynamic."
+  },
+  {
+    "start": 138.484,
+    "end": 142.638,
+    "text": "Third, every added layer must earn its place with a measurable result."
+  },
+  {
+    "start": 142.78,
+    "end": 146.74008988764047,
+    "text": "Before workflows and agents, there is a more useful default: the"
+  },
+  {
+    "start": 146.74008988764047,
+    "end": 148.287,
+    "text": "augmented language model."
+  },
+  {
+    "start": 148.237,
+    "end": 150.372,
+    "text": "It is not a team of agents."
+  },
+  {
+    "start": 150.372,
+    "end": 154.362,
+    "text": "It is one model connected to retrieval, tools, and memory."
+  },
+  {
+    "start": 154.362,
+    "end": 158.43702439024392,
+    "text": "Retrieval supplies current external facts instead of relying only on"
+  },
+  {
+    "start": 158.43702439024392,
+    "end": 159.276,
+    "text": "training data."
+  },
+  {
+    "start": 159.276,
+    "end": 163.96875555555556,
+    "text": "Tools let the model query an order, read a database, call an API, or"
+  },
+  {
+    "start": 163.96875555555556,
+    "end": 165.487,
+    "text": "perform a real action."
+  },
+  {
+    "start": 165.487,
+    "end": 168.478,
+    "text": "Memory preserves useful state across steps."
+  },
+  {
+    "start": 168.478,
+    "end": 172.05530645161292,
+    "text": "These capabilities answer three different questions: what does the"
+  },
+  {
+    "start": 172.05530645161292,
+    "end": 175.199,
+    "text": "system know, what can it do, and what has it already done?"
+  },
+  {
+    "start": 175.199,
+    "end": 177.34300000000002,
+    "text": "Imagine a support assistant."
+  },
+  {
+    "start": 177.34300000000002,
+    "end": 181.41413043478263,
+    "text": "It retrieves the refund policy, looks up the order, calls the refund"
+  },
+  {
+    "start": 181.41413043478263,
+    "end": 184.228,
+    "text": "API, and remembers what the customer confirmed."
+  },
+  {
+    "start": 184.228,
+    "end": 187.91416513761467,
+    "text": "If order lookup fails, the tool must return the error instead of"
+  },
+  {
+    "start": 187.91416513761467,
+    "end": 190.506,
+    "text": "inviting the model to invent an order status."
+  },
+  {
+    "start": 190.506,
+    "end": 195.09080000000003,
+    "text": "If a refund already ran, stored state and API idempotency must prevent a"
+  },
+  {
+    "start": 195.09080000000003,
+    "end": 196.23700000000002,
+    "text": "duplicate payment."
+  },
+  {
+    "start": 196.23700000000002,
+    "end": 200.458,
+    "text": "That single augmented model can already complete many real tasks."
+  },
+  {
+    "start": 200.458,
+    "end": 203.574,
+    "text": "Multiple agents are not automatically necessary."
+  },
+  {
+    "start": 203.574,
+    "end": 207.18,
+    "text": "The key is not to connect as many capabilities as possible."
+  },
+  {
+    "start": 207.18,
+    "end": 211.7048,
+    "text": "Each capability must fit the task, expose a clear interface, and be used"
+  },
+  {
+    "start": 211.7048,
+    "end": 212.836,
+    "text": "at the right time."
+  },
+  {
+    "start": 212.836,
+    "end": 216.6849268292683,
+    "text": "Running one augmented model on a controlled task usually reveals whether"
+  },
+  {
+    "start": 216.6849268292683,
+    "end": 220.42693902439026,
+    "text": "the real gap is knowledge, action, or decision-making before you split"
+  },
+  {
+    "start": 220.42693902439026,
+    "end": 221.603,
+    "text": "the system into roles."
+  },
+  {
+    "start": 221.603,
+    "end": 223.14100000000002,
+    "text": "Chapter recap."
+  },
+  {
+    "start": 223.14100000000002,
+    "end": 226.324,
+    "text": "First, retrieval provides external facts."
+  },
+  {
+    "start": 226.324,
+    "end": 229.21800000000002,
+    "text": "Second, tools perform real actions."
+  },
+  {
+    "start": 229.21800000000002,
+    "end": 231.98700000000002,
+    "text": "Third, memory preserves task state."
+  },
+  {
+    "start": 232.132,
+    "end": 235.41740298507463,
+    "text": "When one model call is not enough but the overall path is still"
+  },
+  {
+    "start": 235.41740298507463,
+    "end": 239.12,
+    "text": "controllable, choose the workflow pattern that matches the uncertainty."
+  },
+  {
+    "start": 239.07000000000002,
+    "end": 243.2463157894737,
+    "text": "The first pattern is prompt chaining: split one difficult task into a"
+  },
+  {
+    "start": 243.2463157894737,
+    "end": 244.82000000000002,
+    "text": "sequence of smaller steps."
+  },
+  {
+    "start": 244.82000000000002,
+    "end": 248.48078301886795,
+    "text": "For example, generate an outline, check it against explicit"
+  },
+  {
+    "start": 248.48078301886795,
+    "end": 251.39700000000002,
+    "text": "requirements, and only then draft the document."
+  },
+  {
+    "start": 251.39700000000002,
+    "end": 255.4276542056075,
+    "text": "Each step solves one clear problem, and a programmatic gate can stop the"
+  },
+  {
+    "start": 255.4276542056075,
+    "end": 257.387,
+    "text": "chain when the output is not ready."
+  },
+  {
+    "start": 257.387,
+    "end": 260.81,
+    "text": "Prompt chaining works when the task decomposes cleanly."
+  },
+  {
+    "start": 260.81,
+    "end": 265.40700000000004,
+    "text": "It costs more calls and time, but each call becomes easier to evaluate."
+  },
+  {
+    "start": 265.40700000000004,
+    "end": 269.8114724409449,
+    "text": "The useful part is the gate: if the outline has no audience, rewrite it;"
+  },
+  {
+    "start": 269.8114724409449,
+    "end": 273.176,
+    "text": "if fact checking fails, do not continue to publication."
+  },
+  {
+    "start": 273.176,
+    "end": 277.022,
+    "text": "Do not let a weak intermediate result travel all the way to the end."
+  },
+  {
+    "start": 277.022,
+    "end": 279.15700000000004,
+    "text": "The second pattern is routing."
+  },
+  {
+    "start": 279.15700000000004,
+    "end": 283.56610256410255,
+    "text": "A router classifies the input and sends it to the right prompt, model,"
+  },
+  {
+    "start": 283.56610256410255,
+    "end": 284.07,
+    "text": "or tool."
+  },
+  {
+    "start": 284.07,
+    "end": 288.4607894736842,
+    "text": "Customer requests might branch into product questions, refund requests,"
+  },
+  {
+    "start": 288.4607894736842,
+    "end": 289.945,
+    "text": "and technical incidents."
+  },
+  {
+    "start": 289.945,
+    "end": 294.55394736842106,
+    "text": "Common cases can use a smaller model, while unusual cases use a stronger"
+  },
+  {
+    "start": 294.55394736842106,
+    "end": 294.81,
+    "text": "one."
+  },
+  {
+    "start": 294.81,
+    "end": 298.56987096774196,
+    "text": "Routing works when categories need clearly different treatment and"
+  },
+  {
+    "start": 298.56987096774196,
+    "end": 300.108,
+    "text": "classification is reliable."
+  },
+  {
+    "start": 300.108,
+    "end": 302.608,
+    "text": "It also needs a low-confidence path."
+  },
+  {
+    "start": 302.608,
+    "end": 306.6256082474227,
+    "text": "An uncertain input should go to a general process or a human, not be"
+  },
+  {
+    "start": 306.6256082474227,
+    "end": 308.339,
+    "text": "forced into the wrong branch."
+  },
+  {
+    "start": 308.339,
+    "end": 312.58000000000004,
+    "text": "The third pattern is parallelization, and it has two distinct forms."
+  },
+  {
+    "start": 312.58000000000004,
+    "end": 316.83384615384614,
+    "text": "Sectioning runs independent subtasks at the same time and combines the"
+  },
+  {
+    "start": 316.83384615384614,
+    "end": 317.32,
+    "text": "results."
+  },
+  {
+    "start": 317.32,
+    "end": 322.1479504950495,
+    "text": "To evaluate an AI answer, separate reviewers can check facts, safety,"
+  },
+  {
+    "start": 322.1479504950495,
+    "end": 324.387,
+    "text": "clarity, and format in parallel."
+  },
+  {
+    "start": 324.387,
+    "end": 328.2336666666667,
+    "text": "Voting asks several independent attempts to judge the same question,"
+  },
+  {
+    "start": 328.2336666666667,
+    "end": 330.15700000000004,
+    "text": "then aggregates their conclusions."
+  },
+  {
+    "start": 330.15700000000004,
+    "end": 333.9336019417476,
+    "text": "A security review might use different prompts to inspect the same code"
+  },
+  {
+    "start": 333.9336019417476,
+    "end": 335.714,
+    "text": "from different risk perspectives."
+  },
+  {
+    "start": 335.714,
+    "end": 340.0135368421053,
+    "text": "Parallelization helps when subtasks are independent or when one judgment"
+  },
+  {
+    "start": 340.0135368421053,
+    "end": 341.387,
+    "text": "is not reliable enough."
+  },
+  {
+    "start": 341.387,
+    "end": 343.25300000000004,
+    "text": "Independence matters."
+  },
+  {
+    "start": 343.25300000000004,
+    "end": 347.4648214285715,
+    "text": "Copying the same prompt three times often creates three versions of the"
+  },
+  {
+    "start": 347.4648214285715,
+    "end": 349.89700000000005,
+    "text": "same bias, not three useful perspectives."
+  },
+  {
+    "start": 349.89700000000005,
+    "end": 352.62800000000004,
+    "text": "The fourth pattern is orchestrator-workers."
+  },
+  {
+    "start": 352.62800000000004,
+    "end": 356.7692903225807,
+    "text": "A central model understands the goal, discovers the required subtasks,"
+  },
+  {
+    "start": 356.7692903225807,
+    "end": 359.964,
+    "text": "delegates them to workers, and combines their results."
+  },
+  {
+    "start": 359.964,
+    "end": 363.85125000000005,
+    "text": "The difference from ordinary parallel work is that the subtasks are not"
+  },
+  {
+    "start": 363.85125000000005,
+    "end": 364.78200000000004,
+    "text": "known in advance."
+  },
+  {
+    "start": 364.78200000000004,
+    "end": 367.83000000000004,
+    "text": "The orchestrator decides them from the current input."
+  },
+  {
+    "start": 367.83000000000004,
+    "end": 370.36800000000005,
+    "text": "Consider changing a large codebase."
+  },
+  {
+    "start": 370.36800000000005,
+    "end": 374.33622727272734,
+    "text": "Before investigation, you do not know how many files must change or"
+  },
+  {
+    "start": 374.33622727272734,
+    "end": 375.58000000000004,
+    "text": "which modules matter."
+  },
+  {
+    "start": 375.58000000000004,
+    "end": 379.32808,
+    "text": "The orchestrator must first inspect the problem, then choose where to"
+  },
+  {
+    "start": 379.32808,
+    "end": 381.012,
+    "text": "search and what work to assign."
+  },
+  {
+    "start": 381.012,
+    "end": 385.06818823529414,
+    "text": "This pattern fits complex tasks that can be divided but cannot be fully"
+  },
+  {
+    "start": 385.06818823529414,
+    "end": 385.86800000000005,
+    "text": "planned ahead."
+  },
+  {
+    "start": 385.86800000000005,
+    "end": 389.81892500000004,
+    "text": "Each worker still needs only the relevant context and a consistent"
+  },
+  {
+    "start": 389.81892500000004,
+    "end": 390.65700000000004,
+    "text": "return format."
+  },
+  {
+    "start": 390.65700000000004,
+    "end": 394.7919431818182,
+    "text": "Otherwise, the final synthesis spends most of its budget reinterpreting"
+  },
+  {
+    "start": 394.7919431818182,
+    "end": 395.78200000000004,
+    "text": "scattered output."
+  },
+  {
+    "start": 395.78200000000004,
+    "end": 398.71400000000006,
+    "text": "The fifth pattern is evaluator-optimizer."
+  },
+  {
+    "start": 398.71400000000006,
+    "end": 403.0644901960785,
+    "text": "One model generates a result, another evaluates it, and the first model"
+  },
+  {
+    "start": 403.0644901960785,
+    "end": 404.96400000000006,
+    "text": "revises from concrete feedback."
+  },
+  {
+    "start": 404.96400000000006,
+    "end": 409.1380427350428,
+    "text": "In literary translation, the evaluator can check meaning, tone, and"
+  },
+  {
+    "start": 409.1380427350428,
+    "end": 412.25300000000004,
+    "text": "terminology before proposing specific corrections."
+  },
+  {
+    "start": 412.25300000000004,
+    "end": 416.12420000000003,
+    "text": "The loop works only when feedback can demonstrably improve the result"
+  },
+  {
+    "start": 416.12420000000003,
+    "end": 418.70500000000004,
+    "text": "and the evaluator can identify useful changes."
+  },
+  {
+    "start": 418.70500000000004,
+    "end": 422.54836842105266,
+    "text": "It also needs a stopping condition: reach a score, stop after no"
+  },
+  {
+    "start": 422.54836842105266,
+    "end": 425.55100000000004,
+    "text": "improvement, or stop when the budget is exhausted."
+  },
+  {
+    "start": 425.55100000000004,
+    "end": 429.89700000000005,
+    "text": "Without a clear evaluation standard, the loop only increases cost."
+  },
+  {
+    "start": 429.89700000000005,
+    "end": 432.07000000000005,
+    "text": "It does not guarantee quality."
+  },
+  {
+    "start": 432.07000000000005,
+    "end": 435.16600000000005,
+    "text": "The reusable rule is to locate the uncertainty."
+  },
+  {
+    "start": 435.16600000000005,
+    "end": 438.9323043478261,
+    "text": "Use chaining for fixed steps, routing for different input classes,"
+  },
+  {
+    "start": 438.9323043478261,
+    "end": 442.92686956521743,
+    "text": "parallelization for independent work, orchestrator-workers for runtime"
+  },
+  {
+    "start": 442.92686956521743,
+    "end": 446.5219782608696,
+    "text": "task discovery, and evaluator-optimizer for outputs that can be"
+  },
+  {
+    "start": 446.5219782608696,
+    "end": 448.29100000000005,
+    "text": "explicitly judged and improved."
+  },
+  {
+    "start": 448.29100000000005,
+    "end": 452.49688679245287,
+    "text": "Patterns can combine, but every addition must solve a named problem, and"
+  },
+  {
+    "start": 452.49688679245287,
+    "end": 454.483,
+    "text": "every step must remain observable."
+  },
+  {
+    "start": 454.483,
+    "end": 456.02200000000005,
+    "text": "Chapter recap."
+  },
+  {
+    "start": 456.02200000000005,
+    "end": 459.37800000000004,
+    "text": "First, locate where uncertainty enters the task."
+  },
+  {
+    "start": 459.37800000000004,
+    "end": 463.012,
+    "text": "Second, choose the workflow that controls that uncertainty."
+  },
+  {
+    "start": 463.012,
+    "end": 466.82000000000005,
+    "text": "Third, add a pattern only when it solves a specific problem."
+  },
+  {
+    "start": 466.90000000000003,
+    "end": 470.37447887323947,
+    "text": "You enter true agent territory when the execution path cannot be"
+  },
+  {
+    "start": 470.37447887323947,
+    "end": 474.1746901408451,
+    "text": "predicted and the model must keep adapting its plan from environmental"
+  },
+  {
+    "start": 474.1746901408451,
+    "end": 474.60900000000004,
+    "text": "results."
+  },
+  {
+    "start": 474.559,
+    "end": 477.319,
+    "text": "The core of an agent is not mysterious."
+  },
+  {
+    "start": 477.319,
+    "end": 479.54,
+    "text": "It is a continuing decision loop."
+  },
+  {
+    "start": 479.54,
+    "end": 483.86185046728974,
+    "text": "The model interprets the goal, chooses an action, calls a tool, reads"
+  },
+  {
+    "start": 483.86185046728974,
+    "end": 486.242,
+    "text": "the real result, and updates its plan."
+  },
+  {
+    "start": 486.242,
+    "end": 490.47884782608696,
+    "text": "The loop continues until the task completes, reaches a blocker, or hits"
+  },
+  {
+    "start": 490.47884782608696,
+    "end": 491.732,
+    "text": "a stopping condition."
+  },
+  {
+    "start": 491.732,
+    "end": 495.146,
+    "text": "The critical question is not how long the model reasons."
+  },
+  {
+    "start": 495.146,
+    "end": 498.684,
+    "text": "It is whether each action produces reliable ground truth."
+  },
+  {
+    "start": 498.684,
+    "end": 502.511,
+    "text": "After a coding agent changes a file, it can run tests."
+  },
+  {
+    "start": 502.511,
+    "end": 507.011,
+    "text": "After a support agent issues a refund, it can read the API response."
+  },
+  {
+    "start": 507.011,
+    "end": 510.99555813953486,
+    "text": "After a browser agent clicks a button, it can verify that the page"
+  },
+  {
+    "start": 510.99555813953486,
+    "end": 512.203,
+    "text": "changed as expected."
+  },
+  {
+    "start": 512.203,
+    "end": 516.107,
+    "text": "That feedback is how an agent knows whether it is making progress."
+  },
+  {
+    "start": 516.107,
+    "end": 519.9790357142857,
+    "text": "Customer support and coding are strong agent tasks because they combine"
+  },
+  {
+    "start": 519.9790357142857,
+    "end": 523.742,
+    "text": "conversation with action and offer relatively clear success criteria."
+  },
+  {
+    "start": 523.742,
+    "end": 527.088,
+    "text": "Autonomy also raises cost and compounds error."
+  },
+  {
+    "start": 527.088,
+    "end": 530.8163687943262,
+    "text": "If every step were ninety percent reliable, ten correct steps in a row"
+  },
+  {
+    "start": 530.8163687943262,
+    "end": 534.598,
+    "text": "would have a theoretical probability of only about thirty-five percent."
+  },
+  {
+    "start": 534.598,
+    "end": 538.4400542635658,
+    "text": "Real systems use checks and retries, but the arithmetic makes the"
+  },
+  {
+    "start": 538.4400542635658,
+    "end": 542.223,
+    "text": "boundary obvious: a longer path cannot rely on confidence alone."
+  },
+  {
+    "start": 542.223,
+    "end": 546.6992416107382,
+    "text": "Production agents therefore need sandboxes, permission limits, maximum"
+  },
+  {
+    "start": 546.6992416107382,
+    "end": 551.2394295302013,
+    "text": "iterations, explicit stopping rules, and human confirmation at critical"
+  },
+  {
+    "start": 551.2394295302013,
+    "end": 551.751,
+    "text": "actions."
+  },
+  {
+    "start": 551.751,
+    "end": 555.7520508474576,
+    "text": "They also need a record of tool calls and environment responses so a"
+  },
+  {
+    "start": 555.7520508474576,
+    "end": 558.694,
+    "text": "failure can be diagnosed, replayed, and recovered."
+  },
+  {
+    "start": 558.694,
+    "end": 561.386,
+    "text": "An agent is not the absence of control."
+  },
+  {
+    "start": 561.386,
+    "end": 565.2235652173913,
+    "text": "It gives dynamic decisions to the model and rebuilds control through"
+  },
+  {
+    "start": 565.2235652173913,
+    "end": 566.578,
+    "text": "feedback and boundaries."
+  },
+  {
+    "start": 566.578,
+    "end": 570.97,
+    "text": "Reversible actions, such as reading information or drafting text, can"
+  },
+  {
+    "start": 570.97,
+    "end": 572.434,
+    "text": "receive wider autonomy."
+  },
+  {
+    "start": 572.434,
+    "end": 576.117909090909,
+    "text": "Payments, deletion, and external messages should receive narrow"
+  },
+  {
+    "start": 576.117909090909,
+    "end": 578.223,
+    "text": "permissions and pre-action approval."
+  },
+  {
+    "start": 578.223,
+    "end": 582.1080482758621,
+    "text": "A practical risk ladder is: automate low-risk actions, inspect"
+  },
+  {
+    "start": 582.1080482758621,
+    "end": 586.2437448275862,
+    "text": "medium-risk actions after execution, and approve high-risk actions"
+  },
+  {
+    "start": 586.2437448275862,
+    "end": 587.309,
+    "text": "before execution."
+  },
+  {
+    "start": 587.309,
+    "end": 588.848,
+    "text": "Chapter recap."
+  },
+  {
+    "start": 588.848,
+    "end": 592.694,
+    "text": "First, every action must read real environmental feedback."
+  },
+  {
+    "start": 592.694,
+    "end": 596.848,
+    "text": "Second, failure risk compounds across a long execution path."
+  },
+  {
+    "start": 596.848,
+    "end": 600.774,
+    "text": "Third, autonomy requires permissions and stopping conditions."
+  },
+  {
+    "start": 600.892,
+    "end": 604.8803333333333,
+    "text": "Even a capable model will fail repeatedly when its tools are difficult"
+  },
+  {
+    "start": 604.8803333333333,
+    "end": 605.678,
+    "text": "to understand."
+  },
+  {
+    "start": 605.628,
+    "end": 609.0060000000001,
+    "text": "Humans need a well-designed interface to use software."
+  },
+  {
+    "start": 609.0060000000001,
+    "end": 612.743,
+    "text": "Models need a clear agent-computer interface to use tools."
+  },
+  {
+    "start": 612.743,
+    "end": 617.2222571428572,
+    "text": "Tool names must be specific, parameters must be unambiguous, and the"
+  },
+  {
+    "start": 617.2222571428572,
+    "end": 621.5697714285715,
+    "text": "contract should show input formats, boundaries, examples, and edge"
+  },
+  {
+    "start": 621.5697714285715,
+    "end": 621.965,
+    "text": "cases."
+  },
+  {
+    "start": 621.965,
+    "end": 624.753,
+    "text": "Similar tools need obvious differences."
+  },
+  {
+    "start": 624.753,
+    "end": 629.1541647058824,
+    "text": "Errors should state what failed, which input was invalid, and whether a"
+  },
+  {
+    "start": 629.1541647058824,
+    "end": 630.022,
+    "text": "retry is safe."
+  },
+  {
+    "start": 630.022,
+    "end": 633.147,
+    "text": "Do not make the return format harder than the task."
+  },
+  {
+    "start": 633.147,
+    "end": 637.4108775510205,
+    "text": "Forcing a model to place large blocks of code inside heavily escaped"
+  },
+  {
+    "start": 637.4108775510205,
+    "end": 639.292,
+    "text": "JSON creates avoidable errors."
+  },
+  {
+    "start": 639.292,
+    "end": 643.1664888888889,
+    "text": "Return only the information needed for the next decision; dumping an"
+  },
+  {
+    "start": 643.1664888888889,
+    "end": 646.984,
+    "text": "entire log into context increases cost and hides the useful signal."
+  },
+  {
+    "start": 646.984,
+    "end": 651.160090909091,
+    "text": "Anthropic found that its coding agent often made mistakes with relative"
+  },
+  {
+    "start": 651.160090909091,
+    "end": 651.513,
+    "text": "paths."
+  },
+  {
+    "start": 651.513,
+    "end": 655.4736046511629,
+    "text": "Changing the tool to require absolute paths made those mistakes much"
+  },
+  {
+    "start": 655.4736046511629,
+    "end": 656.522,
+    "text": "harder to produce."
+  },
+  {
+    "start": 656.522,
+    "end": 659.118,
+    "text": "So do not optimize only the prompt."
+  },
+  {
+    "start": 659.118,
+    "end": 663.4107272727273,
+    "text": "Observe how the model misuses the interface, then change the interface"
+  },
+  {
+    "start": 663.4107272727273,
+    "end": 663.84,
+    "text": "itself."
+  },
+  {
+    "start": 663.84,
+    "end": 668.6508046875,
+    "text": "Before release, test missing parameters, invalid paths, repeated calls,"
+  },
+  {
+    "start": 668.6508046875,
+    "end": 672.513,
+    "text": "timeouts, and recovery behavior, not just ideal examples."
+  },
+  {
+    "start": 672.513,
+    "end": 674.051,
+    "text": "Chapter recap."
+  },
+  {
+    "start": 674.051,
+    "end": 678.311,
+    "text": "First, names, parameters, and boundaries must be clear."
+  },
+  {
+    "start": 678.311,
+    "end": 682.205,
+    "text": "Second, return formats should not create extra difficulty."
+  },
+  {
+    "start": 682.205,
+    "end": 686.234,
+    "text": "Third, design the interface so common errors are harder to make."
+  },
+  {
+    "start": 686.3560000000001,
+    "end": 690.094,
+    "text": "For a new task, walk through the architecture ladder in order."
+  },
+  {
+    "start": 690.0440000000001,
+    "end": 694.3889756097562,
+    "text": "First, can one model call, enhanced with retrieval and examples,"
+  },
+  {
+    "start": 694.3889756097562,
+    "end": 695.6110000000001,
+    "text": "complete the task?"
+  },
+  {
+    "start": 695.6110000000001,
+    "end": 700.0920000000001,
+    "text": "Second, if one call is not enough, can you define the steps in advance?"
+  },
+  {
+    "start": 700.0920000000001,
+    "end": 704.1110000000001,
+    "text": "If yes, prefer chaining, routing, or parallelization."
+  },
+  {
+    "start": 704.1110000000001,
+    "end": 708.259686440678,
+    "text": "Third, if the task can be divided but the required subtasks appear only"
+  },
+  {
+    "start": 708.259686440678,
+    "end": 711.0060000000001,
+    "text": "during investigation, use orchestrator-workers."
+  },
+  {
+    "start": 711.0060000000001,
+    "end": 714.607129496403,
+    "text": "Fourth, use an autonomous agent only when the whole path depends on"
+  },
+  {
+    "start": 714.607129496403,
+    "end": 718.4770000000001,
+    "text": "environmental feedback and the model must keep making its own decisions."
+  },
+  {
+    "start": 718.4770000000001,
+    "end": 722.9437832167833,
+    "text": "Frameworks can quickly connect model calls, tools, and workflow steps,"
+  },
+  {
+    "start": 722.9437832167833,
+    "end": 727.0915104895106,
+    "text": "but extra abstraction can hide the real prompt, model output, and"
+  },
+  {
+    "start": 727.0915104895106,
+    "end": 727.6020000000001,
+    "text": "failure."
+  },
+  {
+    "start": 727.6020000000001,
+    "end": 731.1185454545456,
+    "text": "A framework is fine only when you still understand what happens"
+  },
+  {
+    "start": 731.1185454545456,
+    "end": 731.9000000000001,
+    "text": "underneath it."
+  },
+  {
+    "start": 731.9000000000001,
+    "end": 735.6980000000001,
+    "text": "Before upgrading, save a baseline for the simplest system."
+  },
+  {
+    "start": 735.6980000000001,
+    "end": 740.5069821428573,
+    "text": "Compare task completion, average cost, latency, and human interventions"
+  },
+  {
+    "start": 740.5069821428573,
+    "end": 743.2840000000001,
+    "text": "on common, difficult, and boundary cases."
+  },
+  {
+    "start": 743.2840000000001,
+    "end": 747.3065714285715,
+    "text": "Break metrics down by task type so averages cannot hide a critical"
+  },
+  {
+    "start": 747.3065714285715,
+    "end": 747.9770000000001,
+    "text": "regression."
+  },
+  {
+    "start": 747.9770000000001,
+    "end": 751.9523488372095,
+    "text": "If the complex system does not produce a stable improvement, return to"
+  },
+  {
+    "start": 751.9523488372095,
+    "end": 752.8610000000001,
+    "text": "the simpler one."
+  },
+  {
+    "start": 752.8610000000001,
+    "end": 757.0340000000001,
+    "text": "Architecture is a measurable iteration, not a one-time declaration."
+  },
+  {
+    "start": 757.0340000000001,
+    "end": 758.5730000000001,
+    "text": "Chapter recap."
+  },
+  {
+    "start": 758.5730000000001,
+    "end": 762.8900000000001,
+    "text": "First, test whether one augmented model call can finish the task."
+  },
+  {
+    "start": 762.8900000000001,
+    "end": 766.8520000000001,
+    "text": "Second, prefer a workflow while the path remains controllable."
+  },
+  {
+    "start": 766.8520000000001,
+    "end": 771.018,
+    "text": "Third, let measurable results decide whether to upgrade to an agent."
+  },
+  {
+    "start": 771.1480000000001,
+    "end": 774.0590000000001,
+    "text": "Remember the complete method in three lines."
+  },
+  {
+    "start": 774.0090000000001,
+    "end": 778.64612987013,
+    "text": "If one augmented model call can solve the task, do not build a workflow"
+  },
+  {
+    "start": 778.64612987013,
+    "end": 779.0380000000001,
+    "text": "first."
+  },
+  {
+    "start": 779.0380000000001,
+    "end": 782.7900941176472,
+    "text": "If you can draw the execution path in advance, do not build an"
+  },
+  {
+    "start": 782.7900941176472,
+    "end": 784.1820000000001,
+    "text": "autonomous agent first."
+  },
+  {
+    "start": 784.1820000000001,
+    "end": 788.3941363636364,
+    "text": "When you truly need an agent, protect it with environmental feedback,"
+  },
+  {
+    "start": 788.3941363636364,
+    "end": 792.2400000000001,
+    "text": "stopping conditions, permissions, and reliable tool interfaces."
+  },
+  {
+    "start": 792.2400000000001,
+    "end": 796.2556184210528,
+    "text": "The Agent Architecture Decision Ladder is simple: one augmented call,"
+  },
+  {
+    "start": 796.2556184210528,
+    "end": 800.2712368421054,
+    "text": "then a controlled workflow, then runtime orchestration, and only then"
+  },
+  {
+    "start": 800.2712368421054,
+    "end": 801.0860000000001,
+    "text": "full autonomy."
+  },
+  {
+    "start": 801.0860000000001,
+    "end": 805.5117263157896,
+    "text": "Keep each upgrade only when completion rate, cost, latency, or human"
+  },
+  {
+    "start": 805.5117263157896,
+    "end": 807.2690000000001,
+    "text": "effort measurably improves."
+  },
+  {
+    "start": 807.2690000000001,
+    "end": 810.4610000000001,
+    "text": "Mature agent systems do not maximize freedom."
+  },
+  {
+    "start": 810.4610000000001,
+    "end": 813.4800000000001,
+    "text": "They make every layer of freedom earn its place."
+  },
+  {
+    "start": 813.4800000000001,
+    "end": 817.8242027027028,
+    "text": "Follow Tiny Agent to keep turning fast-moving AI and agent ideas into"
+  },
+  {
+    "start": 817.8242027027028,
+    "end": 821.9795270270272,
+    "text": "practical ways to choose tasks, delegate work, verify results, and"
+  },
+  {
+    "start": 821.9795270270272,
+    "end": 822.7980000000001,
+    "text": "control risk."
+  }
+]

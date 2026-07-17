@@ -1,0 +1,1395 @@
+{
+  "chapters": [
+    {
+      "label": "Preface",
+      "showIntro": false,
+      "intro": "See why complex agent architecture is often the wrong starting point",
+      "summary": [
+        "Complexity is not effectiveness",
+        "Answer three architecture questions",
+        "Leave with a reusable decision ladder"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            1
+          ],
+          "layout": "hero",
+          "human": "surprised",
+          "agent": "idle",
+          "props": [
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Complexity First?",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            2,
+            3
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Complex system",
+            "Simple system"
+          ],
+          "human": "think",
+          "agent": "idle",
+          "props": [
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "timeout",
+              "label": "Stop"
+            },
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Complex Is Not Better",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            4,
+            5
+          ],
+          "layout": "grid",
+          "human": "point-right",
+          "agent": "receive-tool",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Three Questions",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Architecture Choice",
+      "intro": "Separate fixed workflows from dynamic agents before adding complexity",
+      "summary": [
+        "Use a workflow when the path is fixed",
+        "Use an agent only when the path must be dynamic",
+        "Every added layer must earn its place with a measurable result"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            3
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Workflow",
+            "Agent"
+          ],
+          "human": "point-right",
+          "agent": "idle",
+          "props": [
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Who Picks the Path?",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            4,
+            4
+          ],
+          "layout": "process",
+          "human": "operate",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Fixed Path",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            5,
+            5
+          ],
+          "layout": "grid",
+          "human": "surprised",
+          "agent": "search",
+          "props": [
+            {
+              "id": "error",
+              "label": "Error"
+            },
+            {
+              "id": "search",
+              "label": "Search"
+            },
+            {
+              "id": "database",
+              "label": "Database"
+            },
+            {
+              "id": "browser",
+              "label": "Browser"
+            }
+          ],
+          "flow": "branch",
+          "callout": "Dynamic Path",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            6,
+            6
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Workflow",
+            "Agent"
+          ],
+          "human": "approve",
+          "agent": "success",
+          "props": [
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Different Goals",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            7,
+            7
+          ],
+          "layout": "focus",
+          "human": "point-right",
+          "agent": "idle",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Start Simple",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            8,
+            11
+          ],
+          "summaryPointParagraphs": [
+            9,
+            10,
+            11
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Chapter Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Core Building Block",
+      "intro": "Start with one model connected to retrieval, tools, and memory",
+      "summary": [
+        "Retrieval provides external facts",
+        "Tools perform real actions",
+        "Memory preserves task state"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "hero",
+          "human": "point-right",
+          "agent": "idle",
+          "props": [
+            {
+              "id": "search",
+              "label": "Search"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "memory",
+              "label": "Memory"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "One Model + Three",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            3
+          ],
+          "layout": "process",
+          "human": "operate",
+          "agent": "receive-tool",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "database",
+              "label": "Database"
+            },
+            {
+              "id": "memory",
+              "label": "Memory"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Augment First",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            4,
+            4
+          ],
+          "layout": "process",
+          "human": "operate",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "search",
+              "label": "Search"
+            },
+            {
+              "id": "api-plug",
+              "label": "API"
+            },
+            {
+              "id": "memory",
+              "label": "Memory"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Support Task",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            5
+          ],
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "One Model Can Work",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            6,
+            6
+          ],
+          "layout": "comparison",
+          "labels": [
+            "More capabilities",
+            "Better fit"
+          ],
+          "human": "think",
+          "agent": "receive-tool",
+          "props": [
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Fit Over Quantity",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            7,
+            10
+          ],
+          "summaryPointParagraphs": [
+            8,
+            9,
+            10
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Chapter Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Workflow Patterns",
+      "intro": "Match five controlled patterns to five kinds of uncertainty",
+      "summary": [
+        "Locate where uncertainty enters the task",
+        "Choose the workflow that controls that uncertainty",
+        "Add a pattern only when it solves a specific problem"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            1
+          ],
+          "layout": "hero",
+          "human": "point-right",
+          "agent": "idle",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Controlled Path",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            2,
+            4
+          ],
+          "layout": "process",
+          "human": "operate",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Prompt Chaining",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            5,
+            7
+          ],
+          "layout": "grid",
+          "human": "point-right",
+          "agent": "search",
+          "props": [
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "api-plug",
+              "label": "API"
+            },
+            {
+              "id": "error",
+              "label": "Error"
+            }
+          ],
+          "flow": "branch",
+          "callout": "Routing",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            8,
+            9
+          ],
+          "layout": "process",
+          "human": "point-right",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            }
+          ],
+          "flow": "branch",
+          "callout": "Parallel Work",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            10,
+            11
+          ],
+          "layout": "grid",
+          "human": "think",
+          "agent": "search",
+          "props": [
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "branch",
+          "callout": "Independent Votes",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            12,
+            14
+          ],
+          "layout": "process",
+          "human": "point-right",
+          "agent": "receive-tool",
+          "props": [
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            }
+          ],
+          "flow": "branch",
+          "callout": "Orchestrator-Workers",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            15,
+            16
+          ],
+          "layout": "grid",
+          "human": "operate",
+          "agent": "search",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "search",
+              "label": "Search"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Runtime Subtasks",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            17,
+            18
+          ],
+          "layout": "process",
+          "human": "operate",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            }
+          ],
+          "flow": "loop",
+          "callout": "Evaluate and Improve",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            19,
+            19
+          ],
+          "layout": "process",
+          "human": "point-right",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "success",
+              "label": "Passed"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "timeout",
+              "label": "Stop"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Useful Loop",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            20,
+            20
+          ],
+          "layout": "focus",
+          "human": "think",
+          "agent": "failure",
+          "props": [
+            {
+              "id": "loop",
+              "label": "Loop"
+            },
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "error",
+              "label": "Error"
+            }
+          ],
+          "flow": "loop",
+          "callout": "No Standard, No Gain",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            21,
+            21
+          ],
+          "layout": "grid",
+          "human": "point-right",
+          "agent": "search",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Find the Uncertainty",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            22,
+            25
+          ],
+          "summaryPointParagraphs": [
+            23,
+            24,
+            25
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Chapter Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Autonomous Agents",
+      "intro": "Use real feedback and explicit boundaries to control autonomy",
+      "summary": [
+        "Every action must read real environmental feedback",
+        "Failure risk compounds across a long execution path",
+        "Autonomy requires permissions and stopping conditions"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            3
+          ],
+          "layout": "process",
+          "human": "point-right",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            }
+          ],
+          "flow": "loop",
+          "callout": "Decision Loop",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            4,
+            6
+          ],
+          "layout": "grid",
+          "human": "operate",
+          "agent": "search",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "browser",
+              "label": "Browser"
+            },
+            {
+              "id": "api-plug",
+              "label": "API"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Read Ground Truth",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            7,
+            7
+          ],
+          "layout": "grid",
+          "human": "approve",
+          "agent": "success",
+          "props": [
+            {
+              "id": "browser",
+              "label": "Browser"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Strong Agent Tasks",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            8,
+            8
+          ],
+          "layout": "focus",
+          "human": "surprised",
+          "agent": "failure",
+          "props": [
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "error",
+              "label": "Error"
+            },
+            {
+              "id": "loop",
+              "label": "Loop"
+            }
+          ],
+          "flow": "loop",
+          "callout": "Compounding Risk",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            9,
+            9
+          ],
+          "layout": "grid",
+          "human": "point-right",
+          "agent": "receive-tool",
+          "props": [
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "timeout",
+              "label": "Stop"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Set Boundaries",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            10,
+            10
+          ],
+          "layout": "hero",
+          "human": "approve",
+          "agent": "success",
+          "props": [
+            {
+              "id": "loop",
+              "label": "Loop"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Control Through Feedback",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            11,
+            14
+          ],
+          "summaryPointParagraphs": [
+            12,
+            13,
+            14
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Chapter Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Tool Design",
+      "intro": "Make correct tool use easier and common mistakes harder",
+      "summary": [
+        "Names, parameters, and boundaries must be clear",
+        "Return formats should not create extra difficulty",
+        "Design the interface so common errors are harder to make"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "hero",
+          "human": "surprised",
+          "agent": "failure",
+          "props": [
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "api-plug",
+              "label": "API"
+            },
+            {
+              "id": "error",
+              "label": "Error"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Smart Model, Bad Tool",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            3,
+            3
+          ],
+          "layout": "grid",
+          "human": "point-right",
+          "agent": "receive-tool",
+          "props": [
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Clear ACI",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            4,
+            4
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Escaped JSON",
+            "Direct result"
+          ],
+          "human": "operate",
+          "agent": "failure",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "error",
+              "label": "Error"
+            },
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Avoid Format Friction",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            5
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Relative path",
+            "Absolute path"
+          ],
+          "human": "operate",
+          "agent": "search",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "search",
+              "label": "Search"
+            },
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Constraints Prevent Errors",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            6,
+            6
+          ],
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Improve the Interface",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            7,
+            10
+          ],
+          "summaryPointParagraphs": [
+            8,
+            9,
+            10
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Chapter Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Decision Method",
+      "intro": "Choose the simplest architecture with a reusable decision ladder",
+      "summary": [
+        "Test whether one augmented model call can finish the task",
+        "Prefer a workflow while the path remains controllable",
+        "Let measurable results decide whether to upgrade to an agent"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "hero",
+          "human": "think",
+          "agent": "idle",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "search",
+              "label": "Search"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Is One Call Enough?",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            3
+          ],
+          "layout": "grid",
+          "human": "point-right",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Fixed Steps",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            4,
+            4
+          ],
+          "layout": "process",
+          "human": "point-right",
+          "agent": "receive-tool",
+          "props": [
+            {
+              "id": "branch",
+              "label": "Branch"
+            },
+            {
+              "id": "document-stack",
+              "label": "Steps"
+            },
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            }
+          ],
+          "flow": "branch",
+          "callout": "Unknown Subtasks",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            5
+          ],
+          "layout": "process",
+          "human": "operate",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "loop",
+              "label": "Loop"
+            },
+            {
+              "id": "browser",
+              "label": "Browser"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            }
+          ],
+          "flow": "loop",
+          "callout": "Continuous Feedback",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            6,
+            6
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Framework layer",
+            "Real process"
+          ],
+          "human": "think",
+          "agent": "search",
+          "props": [
+            {
+              "id": "tool",
+              "label": "Tool"
+            },
+            {
+              "id": "warning",
+              "label": "Risk"
+            },
+            {
+              "id": "document",
+              "label": "Document"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "See Below the Framework",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            7,
+            7
+          ],
+          "layout": "grid",
+          "human": "operate",
+          "agent": "execute",
+          "props": [
+            {
+              "id": "document",
+              "label": "Document"
+            },
+            {
+              "id": "result-card",
+              "label": "Result"
+            },
+            {
+              "id": "database",
+              "label": "Database"
+            },
+            {
+              "id": "success",
+              "label": "Passed"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Measure the Upgrade",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            8,
+            11
+          ],
+          "summaryPointParagraphs": [
+            9,
+            10,
+            11
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Chapter Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Summary",
+      "showIntro": false,
+      "intro": "Start simple and let measured outcomes decide",
+      "summary": [
+        "If one augmented model call can solve the task, do not build a workflow first",
+        "If you can draw the execution path in advance, do not build an autonomous agent first",
+        "When you truly need an agent, protect it with environmental feedback, stopping conditions, permissions, and reliable tool interfaces"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            6
+          ],
+          "summaryPointParagraphs": [
+            2,
+            3,
+            4
+          ],
+          "ctaParagraph": 6,
+          "recap": true,
+          "finalSummary": true,
+          "layout": "focus",
+          "human": "approve",
+          "agent": "success",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Start Simple. Measure.",
+          "accent": "blue"
+        }
+      ]
+    }
+  ]
+}

@@ -58,7 +58,7 @@
 
 Tiny Agent 系列的主画面必须由图片生成模型生成关键帧，再由合成脚本配音、加时长、加转场并输出视频。
 
-- 每条视频先生成 `3-4` 张图片关键帧，并以上面的样片和预览图作为 reference；关键帧通过风格检查后，才能合成视频。
+- 每条默认生成 `8-10` 张图片关键帧，通常为 `9` 张，并以上面的样片和预览图作为 reference；每个语义镜头一张，关键帧通过风格检查后，才能合成视频。
 - Codex 日更自动化默认优先使用 Codex image generation 生成关键帧，保存到 `var/ai-video-pipeline/provided-keyframes/<date>-<slug>/`，再通过 `--keyframes-dir` 交给合成脚本；这一路径比直接让本地 runner 调图片 API 更容易在生成后人工/自动检查人物和机器人比例。
 - 禁止使用 Canvas、SVG、HTML、纯代码绘图或程序化线框来“自己画”中国程序员、Tiny Agent、聊天气泡、工具动作、白板主画面或最终关键帧。
 - Canvas / ffmpeg / 脚本只允许用于后处理：缩放、裁切、拼接、轻微 pan/zoom、音频合成、字幕时间轴、格式转码和发布投递。
@@ -195,23 +195,29 @@ characters, miniature engineer, miniature robot, excessive empty space.
 
 ### 时长和节奏
 
-- 目标时长：`20-30s`。
-- 默认建议：`20-24s`。
-- 英文旁白：约 `45-75` 个英文词。
-- 字幕块：`3-5` 组，每组最多两行。
+- 来源驱动长版为默认发布格式：目标 `50-60s`，准出范围 `45-65s`。
+- 英文旁白：约 `115-145` 个英文词；中文旁白按当前语速建议约 `190-240` 个汉字，最终以 TTS 实际时长为准。
+- 每集使用 `8-10` 个语义镜头，默认 `9` 个；每个镜头都必须有唯一字幕块，每组最多两行。
+- 旧 `20-30s / 3-4` 镜头格式只作为历史微短版兼容，不再作为新内容默认值。
 - 屏幕上除顶部 `Tiny Agent` 和底部字幕外，尽量少放文字。
-- 每个关键帧段必须有对应英文 `Subtitle blocks`，不能把同一个公式或 on-screen text 重复用于所有段落。
+- 每个关键帧段必须有对应 `Subtitle blocks`，不能把同一个公式或 on-screen text 重复用于所有段落。
+- 切镜跟随旁白语义：出现新对象、新动作、新对比、例子、边界或结论时换图；图片和字幕必须只解释当前正在说的内容。
 
 ### 叙事结构
 
-固定使用这个结构：
+来源驱动长版固定使用这个结构：
 
-1. Hook：前 1-2 秒给一个强对比。
-2. Mechanism：Tiny Agent 做一个动作，展示“Agent 能执行”。
-3. Example：用一个普通人能理解的小例子。
-4. Formula：底部字幕给一句公式或判断标准。
+1. Hook：前 3-4 秒提出具体问题或反常识判断。
+2. Source claim：说明权威来源给出的原始判断。
+3. Mechanism：用 2-3 个镜头解释为什么。
+4. Example：用一个明确标注为示例的普通场景落地。
+5. Boundary：说明什么时候不适用，避免过度概括。
+6. Tiny Rule：给一个可以复述的判断公式。
+7. CTA：固定使用用户收益表达。中文为“关注 Tiny Agent，每天掌握一个 AI Agent 知识点。”；英文为“Follow Tiny Agent. Learn one AI agent idea every day.”
 
-避免教程腔、复杂定义、框架清单、连续多层技术解释。
+CTA 不讲内容来源、原始出处、制作方法或下一集预告。权威来源继续用于选题、事实核验和视频描述，但不作为结尾关注理由。
+
+避免教程腔、脱离来源的复杂定义、框架清单和没有边界的绝对结论。
 
 ### 样片脚本
 
@@ -262,10 +268,12 @@ Agent = model
 当前可复刻基线：
 
 - TTS：`edge-tts`
-- Voice：`en-US-BrianNeural`
+- Voice：`en-US-AnaNeural`
 - Rate：`+8%`
 - Language：English
 - 口吻：清楚、轻松、像短视频讲解，不要企业培训感
+
+中文版本默认使用 `zh-CN-YunxiaNeural`；语速根据脚本密度调整，不沿用英文的固定 `+8%`。
 
 语音验收：
 
@@ -282,15 +290,15 @@ Agent = model
 aspect_ratio=9:16
 resolution=1080x1920
 fps=30
-duration=20-30s
-target_duration=20-24s
+duration=45-65s
+target_duration=50-60s
 video_codec=h264
 audio_codec=aac
 audio_channels=mono
 motion=soft pan/zoom only
 motion_scope=main art layer only; static title and subtitle overlay
 motion_zoom_per_segment=1.000x -> 1.035x-1.045x
-keyframes=3-4
+keyframes=8-10
 keyframe_source=image-generation-only
 subtitle_style=bottom large rounded white box, black outline, bold English text
 title_style=top centered "Tiny Agent"
@@ -309,10 +317,10 @@ critical_content_bottom=1430
 
 ```bash
 node scripts/ai-video-pipeline/run.mjs \
-  --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
+  --plan-file var/ai-video-pipeline/publish-plans/YYYY-MM-DD-source-led.en.md \
   --date YYYY-MM-DD \
   --tts edge-tts \
-  --voice en-US-BrianNeural \
+  --voice en-US-AnaNeural \
   --rate '+8%' \
   --platform all \
   --skip-missing-platforms \
@@ -344,7 +352,7 @@ node scripts/ai-video-pipeline/run.mjs \
 - 每个关键帧段都有独立、连续、轻微的慢放大：段首约 `1.000x`，段尾约 `1.035x-1.045x`。
 - 每个关键帧段使用固定光学中心或中心轴；连续播放时只应有稳定靠近感，不能出现左右/上下抖动、中心来回跳或画面漂移。
 - 抽查同一段的连续帧：主画面 bbox 中心变化必须平滑，不能交替反向跳动；如肉眼能看到抖动，直接判定失败并重渲染。
-- 最终成片必须通过脚本准出检查：`1080x1920`、`30fps`、`20-30s`、有音频流、视频时长不能比音频长出静音尾巴、标题/字幕层首尾 bbox 固定、主画面连续帧中心步长不超过阈值。
+- 最终成片必须通过脚本准出检查：`1080x1920`、`30fps`、`45-65s`、有音频流、视频时长不能比音频长出静音尾巴、标题/字幕层首尾 bbox 固定、主画面连续帧中心步长不超过阈值。
 - 如果准出检查失败，不能继续投递 Postiz；必须先修正字幕、音频时长或运镜实现并重新生成。
 - art layer 在段首有安全边距；段尾放大后人物、机器人和关键道具仍完整可见。
 - 顶部标题和底部字幕框在同一段的首帧、中帧、尾帧保持固定位置和固定大小，不参与 zoom。
@@ -360,7 +368,7 @@ node scripts/ai-video-pipeline/run.mjs \
 - 静音观看也能大概看懂这个知识点。
 - 音频清楚、不破、不明显机械，和字幕节奏一致。
 - 只讲一个小点，不展开成一整堂课。
-- 最终视频是 `9:16`、`1080x1920`、`20-30s`。
+- 最终视频是 `9:16`、`1080x1920`、`45-65s`，默认目标 `50-60s`。
 
 ## 做 / 不做
 

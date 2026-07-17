@@ -1,0 +1,1065 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:04.425
+Many teams begin by choosing a framework, drawing a multi-agent diagram,
+
+2
+00:00:04.425 --> 00:00:06.588
+and asking several models to debate.
+
+3
+00:00:06.538 --> 00:00:10.817
+Anthropic found that successful production systems often use simpler,
+
+4
+00:00:10.817 --> 00:00:12.057
+composable patterns.
+
+5
+00:00:12.057 --> 00:00:15.825
+Quality depends less on the number of agents than on clear task
+
+6
+00:00:15.825 --> 00:00:19.413
+boundaries, evaluation criteria, and environmental feedback.
+
+7
+00:00:19.413 --> 00:00:23.853
+A complex architecture may not improve completion, but it will increase
+
+8
+00:00:23.853 --> 00:00:26.480
+model calls, latency, cost, and debugging.
+
+9
+00:00:26.480 --> 00:00:30.462
+Every extra handoff adds another chance to lose context or pass a
+
+10
+00:00:30.462 --> 00:00:31.442
+mistake forward.
+
+11
+00:00:31.442 --> 00:00:34.950
+In this video, we will answer three questions that are easy to get
+
+12
+00:00:34.950 --> 00:00:38.512
+wrong: when one model call is enough, which of five common workflow
+
+13
+00:00:38.512 --> 00:00:42.233
+patterns fits the task, and when an autonomous agent is actually worth
+
+14
+00:00:42.233 --> 00:00:42.711
+the risk.
+
+15
+00:00:42.711 --> 00:00:46.393
+By the end, you will have an Agent Architecture Decision Ladder that you
+
+16
+00:00:46.393 --> 00:00:50.074
+can use on a real project, instead of paying for complexity just to make
+
+17
+00:00:50.074 --> 00:00:51.557
+the system look more agentic.
+
+18
+00:00:51.700 --> 00:00:55.246
+Start with the distinction that controls every later decision.
+
+19
+00:00:55.196 --> 00:00:59.138
+In a workflow, code defines the execution path in advance.
+
+20
+00:00:59.138 --> 00:01:03.167
+A model may perform one step, but the program still controls the
+
+21
+00:01:03.167 --> 00:01:03.734
+sequence.
+
+22
+00:01:03.734 --> 00:01:07.526
+In an agent, the model uses the current result to choose what to do
+
+23
+00:01:07.526 --> 00:01:10.696
+next, which tool to call, and when the task should stop.
+
+24
+00:01:10.696 --> 00:01:14.772
+An expense report that always moves through extraction, policy checks,
+
+25
+00:01:14.772 --> 00:01:17.917
+and approval has a path you can draw before execution.
+
+26
+00:01:17.917 --> 00:01:20.282
+That is a strong workflow task.
+
+27
+00:01:20.282 --> 00:01:22.926
+An incident investigation is different.
+
+28
+00:01:22.926 --> 00:01:26.996
+You may read logs first, then inspect metrics, and only then decide
+
+29
+00:01:26.996 --> 00:01:30.763
+whether to investigate the database, the network, or the code.
+
+30
+00:01:30.763 --> 00:01:34.869
+The path emerges from evidence, so an agent can add real value.
+
+31
+00:01:34.869 --> 00:01:37.100
+Neither one is more advanced.
+
+32
+00:01:37.100 --> 00:01:40.657
+Workflows optimize for consistency and predictability.
+
+33
+00:01:40.657 --> 00:01:44.648
+Agents optimize for flexibility and model-directed decisions.
+
+34
+00:01:44.648 --> 00:01:48.456
+The most important principle is to find the simplest viable solution and
+
+35
+00:01:48.456 --> 00:01:51.946
+increase complexity only when the result is measurably inadequate.
+
+36
+00:01:51.946 --> 00:01:55.561
+Inadequate does not mean the diagram looks unsophisticated.
+
+37
+00:01:55.561 --> 00:02:00.428
+It means completion rate, accuracy, latency, cost, or human intervention
+
+38
+00:02:00.428 --> 00:02:02.051
+misses a defined target.
+
+39
+00:02:02.051 --> 00:02:05.841
+If a new orchestration layer does not help the same evaluation set
+
+40
+00:02:05.841 --> 00:02:08.311
+finish more reliably, it is not an upgrade.
+
+41
+00:02:08.311 --> 00:02:09.830
+It is overhead.
+
+42
+00:02:09.830 --> 00:02:11.369
+Chapter recap.
+
+43
+00:02:11.369 --> 00:02:14.628
+First, use a workflow when the path is fixed.
+
+44
+00:02:14.628 --> 00:02:18.484
+Second, use an agent only when the path must be dynamic.
+
+45
+00:02:18.484 --> 00:02:22.638
+Third, every added layer must earn its place with a measurable result.
+
+46
+00:02:22.780 --> 00:02:26.740
+Before workflows and agents, there is a more useful default: the
+
+47
+00:02:26.740 --> 00:02:28.287
+augmented language model.
+
+48
+00:02:28.237 --> 00:02:30.372
+It is not a team of agents.
+
+49
+00:02:30.372 --> 00:02:34.362
+It is one model connected to retrieval, tools, and memory.
+
+50
+00:02:34.362 --> 00:02:38.437
+Retrieval supplies current external facts instead of relying only on
+
+51
+00:02:38.437 --> 00:02:39.276
+training data.
+
+52
+00:02:39.276 --> 00:02:43.969
+Tools let the model query an order, read a database, call an API, or
+
+53
+00:02:43.969 --> 00:02:45.487
+perform a real action.
+
+54
+00:02:45.487 --> 00:02:48.478
+Memory preserves useful state across steps.
+
+55
+00:02:48.478 --> 00:02:52.055
+These capabilities answer three different questions: what does the
+
+56
+00:02:52.055 --> 00:02:55.199
+system know, what can it do, and what has it already done?
+
+57
+00:02:55.199 --> 00:02:57.343
+Imagine a support assistant.
+
+58
+00:02:57.343 --> 00:03:01.414
+It retrieves the refund policy, looks up the order, calls the refund
+
+59
+00:03:01.414 --> 00:03:04.228
+API, and remembers what the customer confirmed.
+
+60
+00:03:04.228 --> 00:03:07.914
+If order lookup fails, the tool must return the error instead of
+
+61
+00:03:07.914 --> 00:03:10.506
+inviting the model to invent an order status.
+
+62
+00:03:10.506 --> 00:03:15.091
+If a refund already ran, stored state and API idempotency must prevent a
+
+63
+00:03:15.091 --> 00:03:16.237
+duplicate payment.
+
+64
+00:03:16.237 --> 00:03:20.458
+That single augmented model can already complete many real tasks.
+
+65
+00:03:20.458 --> 00:03:23.574
+Multiple agents are not automatically necessary.
+
+66
+00:03:23.574 --> 00:03:27.180
+The key is not to connect as many capabilities as possible.
+
+67
+00:03:27.180 --> 00:03:31.705
+Each capability must fit the task, expose a clear interface, and be used
+
+68
+00:03:31.705 --> 00:03:32.836
+at the right time.
+
+69
+00:03:32.836 --> 00:03:36.685
+Running one augmented model on a controlled task usually reveals whether
+
+70
+00:03:36.685 --> 00:03:40.427
+the real gap is knowledge, action, or decision-making before you split
+
+71
+00:03:40.427 --> 00:03:41.603
+the system into roles.
+
+72
+00:03:41.603 --> 00:03:43.141
+Chapter recap.
+
+73
+00:03:43.141 --> 00:03:46.324
+First, retrieval provides external facts.
+
+74
+00:03:46.324 --> 00:03:49.218
+Second, tools perform real actions.
+
+75
+00:03:49.218 --> 00:03:51.987
+Third, memory preserves task state.
+
+76
+00:03:52.132 --> 00:03:55.417
+When one model call is not enough but the overall path is still
+
+77
+00:03:55.417 --> 00:03:59.120
+controllable, choose the workflow pattern that matches the uncertainty.
+
+78
+00:03:59.070 --> 00:04:03.246
+The first pattern is prompt chaining: split one difficult task into a
+
+79
+00:04:03.246 --> 00:04:04.820
+sequence of smaller steps.
+
+80
+00:04:04.820 --> 00:04:08.481
+For example, generate an outline, check it against explicit
+
+81
+00:04:08.481 --> 00:04:11.397
+requirements, and only then draft the document.
+
+82
+00:04:11.397 --> 00:04:15.428
+Each step solves one clear problem, and a programmatic gate can stop the
+
+83
+00:04:15.428 --> 00:04:17.387
+chain when the output is not ready.
+
+84
+00:04:17.387 --> 00:04:20.810
+Prompt chaining works when the task decomposes cleanly.
+
+85
+00:04:20.810 --> 00:04:25.407
+It costs more calls and time, but each call becomes easier to evaluate.
+
+86
+00:04:25.407 --> 00:04:29.811
+The useful part is the gate: if the outline has no audience, rewrite it;
+
+87
+00:04:29.811 --> 00:04:33.176
+if fact checking fails, do not continue to publication.
+
+88
+00:04:33.176 --> 00:04:37.022
+Do not let a weak intermediate result travel all the way to the end.
+
+89
+00:04:37.022 --> 00:04:39.157
+The second pattern is routing.
+
+90
+00:04:39.157 --> 00:04:43.566
+A router classifies the input and sends it to the right prompt, model,
+
+91
+00:04:43.566 --> 00:04:44.070
+or tool.
+
+92
+00:04:44.070 --> 00:04:48.461
+Customer requests might branch into product questions, refund requests,
+
+93
+00:04:48.461 --> 00:04:49.945
+and technical incidents.
+
+94
+00:04:49.945 --> 00:04:54.554
+Common cases can use a smaller model, while unusual cases use a stronger
+
+95
+00:04:54.554 --> 00:04:54.810
+one.
+
+96
+00:04:54.810 --> 00:04:58.570
+Routing works when categories need clearly different treatment and
+
+97
+00:04:58.570 --> 00:05:00.108
+classification is reliable.
+
+98
+00:05:00.108 --> 00:05:02.608
+It also needs a low-confidence path.
+
+99
+00:05:02.608 --> 00:05:06.626
+An uncertain input should go to a general process or a human, not be
+
+100
+00:05:06.626 --> 00:05:08.339
+forced into the wrong branch.
+
+101
+00:05:08.339 --> 00:05:12.580
+The third pattern is parallelization, and it has two distinct forms.
+
+102
+00:05:12.580 --> 00:05:16.834
+Sectioning runs independent subtasks at the same time and combines the
+
+103
+00:05:16.834 --> 00:05:17.320
+results.
+
+104
+00:05:17.320 --> 00:05:22.148
+To evaluate an AI answer, separate reviewers can check facts, safety,
+
+105
+00:05:22.148 --> 00:05:24.387
+clarity, and format in parallel.
+
+106
+00:05:24.387 --> 00:05:28.234
+Voting asks several independent attempts to judge the same question,
+
+107
+00:05:28.234 --> 00:05:30.157
+then aggregates their conclusions.
+
+108
+00:05:30.157 --> 00:05:33.934
+A security review might use different prompts to inspect the same code
+
+109
+00:05:33.934 --> 00:05:35.714
+from different risk perspectives.
+
+110
+00:05:35.714 --> 00:05:40.014
+Parallelization helps when subtasks are independent or when one judgment
+
+111
+00:05:40.014 --> 00:05:41.387
+is not reliable enough.
+
+112
+00:05:41.387 --> 00:05:43.253
+Independence matters.
+
+113
+00:05:43.253 --> 00:05:47.465
+Copying the same prompt three times often creates three versions of the
+
+114
+00:05:47.465 --> 00:05:49.897
+same bias, not three useful perspectives.
+
+115
+00:05:49.897 --> 00:05:52.628
+The fourth pattern is orchestrator-workers.
+
+116
+00:05:52.628 --> 00:05:56.769
+A central model understands the goal, discovers the required subtasks,
+
+117
+00:05:56.769 --> 00:05:59.964
+delegates them to workers, and combines their results.
+
+118
+00:05:59.964 --> 00:06:03.851
+The difference from ordinary parallel work is that the subtasks are not
+
+119
+00:06:03.851 --> 00:06:04.782
+known in advance.
+
+120
+00:06:04.782 --> 00:06:07.830
+The orchestrator decides them from the current input.
+
+121
+00:06:07.830 --> 00:06:10.368
+Consider changing a large codebase.
+
+122
+00:06:10.368 --> 00:06:14.336
+Before investigation, you do not know how many files must change or
+
+123
+00:06:14.336 --> 00:06:15.580
+which modules matter.
+
+124
+00:06:15.580 --> 00:06:19.328
+The orchestrator must first inspect the problem, then choose where to
+
+125
+00:06:19.328 --> 00:06:21.012
+search and what work to assign.
+
+126
+00:06:21.012 --> 00:06:25.068
+This pattern fits complex tasks that can be divided but cannot be fully
+
+127
+00:06:25.068 --> 00:06:25.868
+planned ahead.
+
+128
+00:06:25.868 --> 00:06:29.819
+Each worker still needs only the relevant context and a consistent
+
+129
+00:06:29.819 --> 00:06:30.657
+return format.
+
+130
+00:06:30.657 --> 00:06:34.792
+Otherwise, the final synthesis spends most of its budget reinterpreting
+
+131
+00:06:34.792 --> 00:06:35.782
+scattered output.
+
+132
+00:06:35.782 --> 00:06:38.714
+The fifth pattern is evaluator-optimizer.
+
+133
+00:06:38.714 --> 00:06:43.064
+One model generates a result, another evaluates it, and the first model
+
+134
+00:06:43.064 --> 00:06:44.964
+revises from concrete feedback.
+
+135
+00:06:44.964 --> 00:06:49.138
+In literary translation, the evaluator can check meaning, tone, and
+
+136
+00:06:49.138 --> 00:06:52.253
+terminology before proposing specific corrections.
+
+137
+00:06:52.253 --> 00:06:56.124
+The loop works only when feedback can demonstrably improve the result
+
+138
+00:06:56.124 --> 00:06:58.705
+and the evaluator can identify useful changes.
+
+139
+00:06:58.705 --> 00:07:02.548
+It also needs a stopping condition: reach a score, stop after no
+
+140
+00:07:02.548 --> 00:07:05.551
+improvement, or stop when the budget is exhausted.
+
+141
+00:07:05.551 --> 00:07:09.897
+Without a clear evaluation standard, the loop only increases cost.
+
+142
+00:07:09.897 --> 00:07:12.070
+It does not guarantee quality.
+
+143
+00:07:12.070 --> 00:07:15.166
+The reusable rule is to locate the uncertainty.
+
+144
+00:07:15.166 --> 00:07:18.932
+Use chaining for fixed steps, routing for different input classes,
+
+145
+00:07:18.932 --> 00:07:22.927
+parallelization for independent work, orchestrator-workers for runtime
+
+146
+00:07:22.927 --> 00:07:26.522
+task discovery, and evaluator-optimizer for outputs that can be
+
+147
+00:07:26.522 --> 00:07:28.291
+explicitly judged and improved.
+
+148
+00:07:28.291 --> 00:07:32.497
+Patterns can combine, but every addition must solve a named problem, and
+
+149
+00:07:32.497 --> 00:07:34.483
+every step must remain observable.
+
+150
+00:07:34.483 --> 00:07:36.022
+Chapter recap.
+
+151
+00:07:36.022 --> 00:07:39.378
+First, locate where uncertainty enters the task.
+
+152
+00:07:39.378 --> 00:07:43.012
+Second, choose the workflow that controls that uncertainty.
+
+153
+00:07:43.012 --> 00:07:46.820
+Third, add a pattern only when it solves a specific problem.
+
+154
+00:07:46.900 --> 00:07:50.374
+You enter true agent territory when the execution path cannot be
+
+155
+00:07:50.374 --> 00:07:54.175
+predicted and the model must keep adapting its plan from environmental
+
+156
+00:07:54.175 --> 00:07:54.609
+results.
+
+157
+00:07:54.559 --> 00:07:57.319
+The core of an agent is not mysterious.
+
+158
+00:07:57.319 --> 00:07:59.540
+It is a continuing decision loop.
+
+159
+00:07:59.540 --> 00:08:03.862
+The model interprets the goal, chooses an action, calls a tool, reads
+
+160
+00:08:03.862 --> 00:08:06.242
+the real result, and updates its plan.
+
+161
+00:08:06.242 --> 00:08:10.479
+The loop continues until the task completes, reaches a blocker, or hits
+
+162
+00:08:10.479 --> 00:08:11.732
+a stopping condition.
+
+163
+00:08:11.732 --> 00:08:15.146
+The critical question is not how long the model reasons.
+
+164
+00:08:15.146 --> 00:08:18.684
+It is whether each action produces reliable ground truth.
+
+165
+00:08:18.684 --> 00:08:22.511
+After a coding agent changes a file, it can run tests.
+
+166
+00:08:22.511 --> 00:08:27.011
+After a support agent issues a refund, it can read the API response.
+
+167
+00:08:27.011 --> 00:08:30.996
+After a browser agent clicks a button, it can verify that the page
+
+168
+00:08:30.996 --> 00:08:32.203
+changed as expected.
+
+169
+00:08:32.203 --> 00:08:36.107
+That feedback is how an agent knows whether it is making progress.
+
+170
+00:08:36.107 --> 00:08:39.979
+Customer support and coding are strong agent tasks because they combine
+
+171
+00:08:39.979 --> 00:08:43.742
+conversation with action and offer relatively clear success criteria.
+
+172
+00:08:43.742 --> 00:08:47.088
+Autonomy also raises cost and compounds error.
+
+173
+00:08:47.088 --> 00:08:50.816
+If every step were ninety percent reliable, ten correct steps in a row
+
+174
+00:08:50.816 --> 00:08:54.598
+would have a theoretical probability of only about thirty-five percent.
+
+175
+00:08:54.598 --> 00:08:58.440
+Real systems use checks and retries, but the arithmetic makes the
+
+176
+00:08:58.440 --> 00:09:02.223
+boundary obvious: a longer path cannot rely on confidence alone.
+
+177
+00:09:02.223 --> 00:09:06.699
+Production agents therefore need sandboxes, permission limits, maximum
+
+178
+00:09:06.699 --> 00:09:11.239
+iterations, explicit stopping rules, and human confirmation at critical
+
+179
+00:09:11.239 --> 00:09:11.751
+actions.
+
+180
+00:09:11.751 --> 00:09:15.752
+They also need a record of tool calls and environment responses so a
+
+181
+00:09:15.752 --> 00:09:18.694
+failure can be diagnosed, replayed, and recovered.
+
+182
+00:09:18.694 --> 00:09:21.386
+An agent is not the absence of control.
+
+183
+00:09:21.386 --> 00:09:25.224
+It gives dynamic decisions to the model and rebuilds control through
+
+184
+00:09:25.224 --> 00:09:26.578
+feedback and boundaries.
+
+185
+00:09:26.578 --> 00:09:30.970
+Reversible actions, such as reading information or drafting text, can
+
+186
+00:09:30.970 --> 00:09:32.434
+receive wider autonomy.
+
+187
+00:09:32.434 --> 00:09:36.118
+Payments, deletion, and external messages should receive narrow
+
+188
+00:09:36.118 --> 00:09:38.223
+permissions and pre-action approval.
+
+189
+00:09:38.223 --> 00:09:42.108
+A practical risk ladder is: automate low-risk actions, inspect
+
+190
+00:09:42.108 --> 00:09:46.244
+medium-risk actions after execution, and approve high-risk actions
+
+191
+00:09:46.244 --> 00:09:47.309
+before execution.
+
+192
+00:09:47.309 --> 00:09:48.848
+Chapter recap.
+
+193
+00:09:48.848 --> 00:09:52.694
+First, every action must read real environmental feedback.
+
+194
+00:09:52.694 --> 00:09:56.848
+Second, failure risk compounds across a long execution path.
+
+195
+00:09:56.848 --> 00:10:00.774
+Third, autonomy requires permissions and stopping conditions.
+
+196
+00:10:00.892 --> 00:10:04.880
+Even a capable model will fail repeatedly when its tools are difficult
+
+197
+00:10:04.880 --> 00:10:05.678
+to understand.
+
+198
+00:10:05.628 --> 00:10:09.006
+Humans need a well-designed interface to use software.
+
+199
+00:10:09.006 --> 00:10:12.743
+Models need a clear agent-computer interface to use tools.
+
+200
+00:10:12.743 --> 00:10:17.222
+Tool names must be specific, parameters must be unambiguous, and the
+
+201
+00:10:17.222 --> 00:10:21.570
+contract should show input formats, boundaries, examples, and edge
+
+202
+00:10:21.570 --> 00:10:21.965
+cases.
+
+203
+00:10:21.965 --> 00:10:24.753
+Similar tools need obvious differences.
+
+204
+00:10:24.753 --> 00:10:29.154
+Errors should state what failed, which input was invalid, and whether a
+
+205
+00:10:29.154 --> 00:10:30.022
+retry is safe.
+
+206
+00:10:30.022 --> 00:10:33.147
+Do not make the return format harder than the task.
+
+207
+00:10:33.147 --> 00:10:37.411
+Forcing a model to place large blocks of code inside heavily escaped
+
+208
+00:10:37.411 --> 00:10:39.292
+JSON creates avoidable errors.
+
+209
+00:10:39.292 --> 00:10:43.166
+Return only the information needed for the next decision; dumping an
+
+210
+00:10:43.166 --> 00:10:46.984
+entire log into context increases cost and hides the useful signal.
+
+211
+00:10:46.984 --> 00:10:51.160
+Anthropic found that its coding agent often made mistakes with relative
+
+212
+00:10:51.160 --> 00:10:51.513
+paths.
+
+213
+00:10:51.513 --> 00:10:55.474
+Changing the tool to require absolute paths made those mistakes much
+
+214
+00:10:55.474 --> 00:10:56.522
+harder to produce.
+
+215
+00:10:56.522 --> 00:10:59.118
+So do not optimize only the prompt.
+
+216
+00:10:59.118 --> 00:11:03.411
+Observe how the model misuses the interface, then change the interface
+
+217
+00:11:03.411 --> 00:11:03.840
+itself.
+
+218
+00:11:03.840 --> 00:11:08.651
+Before release, test missing parameters, invalid paths, repeated calls,
+
+219
+00:11:08.651 --> 00:11:12.513
+timeouts, and recovery behavior, not just ideal examples.
+
+220
+00:11:12.513 --> 00:11:14.051
+Chapter recap.
+
+221
+00:11:14.051 --> 00:11:18.311
+First, names, parameters, and boundaries must be clear.
+
+222
+00:11:18.311 --> 00:11:22.205
+Second, return formats should not create extra difficulty.
+
+223
+00:11:22.205 --> 00:11:26.234
+Third, design the interface so common errors are harder to make.
+
+224
+00:11:26.356 --> 00:11:30.094
+For a new task, walk through the architecture ladder in order.
+
+225
+00:11:30.044 --> 00:11:34.389
+First, can one model call, enhanced with retrieval and examples,
+
+226
+00:11:34.389 --> 00:11:35.611
+complete the task?
+
+227
+00:11:35.611 --> 00:11:40.092
+Second, if one call is not enough, can you define the steps in advance?
+
+228
+00:11:40.092 --> 00:11:44.111
+If yes, prefer chaining, routing, or parallelization.
+
+229
+00:11:44.111 --> 00:11:48.260
+Third, if the task can be divided but the required subtasks appear only
+
+230
+00:11:48.260 --> 00:11:51.006
+during investigation, use orchestrator-workers.
+
+231
+00:11:51.006 --> 00:11:54.607
+Fourth, use an autonomous agent only when the whole path depends on
+
+232
+00:11:54.607 --> 00:11:58.477
+environmental feedback and the model must keep making its own decisions.
+
+233
+00:11:58.477 --> 00:12:02.944
+Frameworks can quickly connect model calls, tools, and workflow steps,
+
+234
+00:12:02.944 --> 00:12:07.092
+but extra abstraction can hide the real prompt, model output, and
+
+235
+00:12:07.092 --> 00:12:07.602
+failure.
+
+236
+00:12:07.602 --> 00:12:11.119
+A framework is fine only when you still understand what happens
+
+237
+00:12:11.119 --> 00:12:11.900
+underneath it.
+
+238
+00:12:11.900 --> 00:12:15.698
+Before upgrading, save a baseline for the simplest system.
+
+239
+00:12:15.698 --> 00:12:20.507
+Compare task completion, average cost, latency, and human interventions
+
+240
+00:12:20.507 --> 00:12:23.284
+on common, difficult, and boundary cases.
+
+241
+00:12:23.284 --> 00:12:27.307
+Break metrics down by task type so averages cannot hide a critical
+
+242
+00:12:27.307 --> 00:12:27.977
+regression.
+
+243
+00:12:27.977 --> 00:12:31.952
+If the complex system does not produce a stable improvement, return to
+
+244
+00:12:31.952 --> 00:12:32.861
+the simpler one.
+
+245
+00:12:32.861 --> 00:12:37.034
+Architecture is a measurable iteration, not a one-time declaration.
+
+246
+00:12:37.034 --> 00:12:38.573
+Chapter recap.
+
+247
+00:12:38.573 --> 00:12:42.890
+First, test whether one augmented model call can finish the task.
+
+248
+00:12:42.890 --> 00:12:46.852
+Second, prefer a workflow while the path remains controllable.
+
+249
+00:12:46.852 --> 00:12:51.018
+Third, let measurable results decide whether to upgrade to an agent.
+
+250
+00:12:51.148 --> 00:12:54.059
+Remember the complete method in three lines.
+
+251
+00:12:54.009 --> 00:12:58.646
+If one augmented model call can solve the task, do not build a workflow
+
+252
+00:12:58.646 --> 00:12:59.038
+first.
+
+253
+00:12:59.038 --> 00:13:02.790
+If you can draw the execution path in advance, do not build an
+
+254
+00:13:02.790 --> 00:13:04.182
+autonomous agent first.
+
+255
+00:13:04.182 --> 00:13:08.394
+When you truly need an agent, protect it with environmental feedback,
+
+256
+00:13:08.394 --> 00:13:12.240
+stopping conditions, permissions, and reliable tool interfaces.
+
+257
+00:13:12.240 --> 00:13:16.256
+The Agent Architecture Decision Ladder is simple: one augmented call,
+
+258
+00:13:16.256 --> 00:13:20.271
+then a controlled workflow, then runtime orchestration, and only then
+
+259
+00:13:20.271 --> 00:13:21.086
+full autonomy.
+
+260
+00:13:21.086 --> 00:13:25.512
+Keep each upgrade only when completion rate, cost, latency, or human
+
+261
+00:13:25.512 --> 00:13:27.269
+effort measurably improves.
+
+262
+00:13:27.269 --> 00:13:30.461
+Mature agent systems do not maximize freedom.
+
+263
+00:13:30.461 --> 00:13:33.480
+They make every layer of freedom earn its place.
+
+264
+00:13:33.480 --> 00:13:37.824
+Follow Tiny Agent to keep turning fast-moving AI and agent ideas into
+
+265
+00:13:37.824 --> 00:13:41.980
+practical ways to choose tasks, delegate work, verify results, and
+
+266
+00:13:41.980 --> 00:13:42.798
+control risk.

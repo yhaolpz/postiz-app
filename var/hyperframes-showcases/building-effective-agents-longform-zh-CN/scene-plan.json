@@ -1,0 +1,110 @@
+{
+  "chapters": [
+    {
+      "label": "前言",
+      "showIntro": false,
+      "intro": "先看清复杂 Agent 架构最容易踩中的误区",
+      "summary": ["复杂不等于有效", "先看三个架构问题", "最终得到可落地的判断顺序"],
+      "scenes": [
+        { "paragraphs": [1, 1], "layout": "hero", "human": "surprised", "agent": "idle", "props": ["branch", "loop"], "flow": "cluster", "callout": "先做复杂架构？", "accent": "red" },
+        { "paragraphs": [2, 3], "layout": "comparison", "labels": ["复杂架构", "简单组合"], "human": "think", "agent": "idle", "props": ["warning", "timeout", "document", "tool"], "flow": "cluster", "callout": "复杂 ≠ 更有效", "accent": "yellow" },
+        { "paragraphs": [4, 5], "layout": "grid", "human": "point-right", "agent": "receive-tool", "props": [{"id":"document-stack","label":"单次调用"},{"id":"branch","label":"工作流"},{"id":"loop","label":"Agent"}], "flow": "cluster", "callout": "先回答三个问题", "accent": "blue" }
+      ]
+    },
+    {
+      "label": "架构判断",
+      "intro": "先分清 Workflow 与 Agent，再决定复杂度",
+      "summary": ["固定路径优先使用 Workflow", "只有动态路径才真正需要 Agent", "新增复杂度必须换来可测量的结果"],
+      "scenes": [
+        { "paragraphs": [1, 3], "layout": "comparison", "labels": ["Workflow", "Agent"], "human": "point-right", "agent": "idle", "props": [{"id":"branch","label":"固定路径"},{"id":"loop","label":"动态决策"},{"id":"tool","label":"自主下一步"}], "flow": "cluster", "callout": "路径由谁决定？", "accent": "blue" },
+        { "paragraphs": [4, 4], "layout": "process", "human": "operate", "agent": "execute", "props": [{"id":"document","label":"提取"},{"id":"branch","label":"检查"},{"id":"success","label":"审批"}], "flow": "chain", "callout": "路径可以预先画出", "accent": "blue" },
+        { "paragraphs": [5, 5], "layout": "grid", "human": "surprised", "agent": "search", "props": ["error", "search", "database", "browser"], "flow": "branch", "callout": "路径无法预知", "accent": "red" },
+        { "paragraphs": [6, 6], "layout": "comparison", "labels": ["Workflow", "Agent"], "human": "approve", "agent": "success", "props": [{"id":"branch","label":"稳定可控"},{"id":"loop","label":"灵活动态"}], "flow": "cluster", "callout": "没有谁更高级", "accent": "yellow" },
+        { "paragraphs": [7, 7], "layout": "focus", "human": "point-right", "agent": "idle", "props": [{"id":"document","label":"最简单方案"},{"id":"success","label":"可测结果"}], "flow": "chain", "callout": "从简单开始", "accent": "blue" },
+        { "paragraphs": [8, 11], "summaryPointParagraphs": [9, 10, 11], "recap": true, "layout": "focus", "human": "approve", "agent": "success", "props": [], "flow": "cluster", "callout": "小结", "accent": "blue" }
+      ]
+    },
+    {
+      "label": "基础单元",
+      "intro": "先把一个模型接上检索、工具和记忆",
+      "summary": ["检索负责补充外部事实", "工具负责执行真实行动", "记忆负责保留任务状态"],
+      "scenes": [
+        { "paragraphs": [1, 2], "layout": "hero", "human": "point-right", "agent": "idle", "props": [{"id":"search","label":"检索"},{"id":"tool","label":"工具"},{"id":"memory","label":"记忆"}], "flow": "cluster", "callout": "一个模型 + 三种能力", "accent": "blue" },
+        { "paragraphs": [3, 3], "layout": "process", "human": "operate", "agent": "receive-tool", "props": [{"id":"document-stack","label":"检索"},{"id":"tool","label":"工具"},{"id":"database","label":"状态"},{"id":"memory","label":"记忆"}], "flow": "chain", "callout": "先增强，不急着拆分", "accent": "blue" },
+        { "paragraphs": [4, 4], "layout": "process", "human": "operate", "agent": "execute", "props": [{"id":"document","label":"规则"},{"id":"search","label":"订单"},{"id":"api-plug","label":"退款"},{"id":"memory","label":"确认"},{"id":"success","label":"阻止重复"}], "flow": "chain", "callout": "一个售后任务如何完成", "accent": "yellow" },
+        { "paragraphs": [5, 5], "layout": "focus", "human": "approve", "agent": "success", "props": [{"id":"result-card","label":"任务完成"},{"id":"success","label":"已经足够"}], "flow": "cluster", "callout": "大量任务无需多 Agent", "accent": "blue" },
+        { "paragraphs": [6, 6], "layout": "comparison", "labels": ["能力数量", "任务匹配"], "human": "think", "agent": "receive-tool", "props": [{"id":"tool","label":"接得更多"},{"id":"warning","label":"误用风险"},{"id":"result-card","label":"正确理解"}], "flow": "cluster", "callout": "关键不是越多越好", "accent": "yellow" },
+        { "paragraphs": [7, 10], "summaryPointParagraphs": [8, 9, 10], "recap": true, "layout": "focus", "human": "approve", "agent": "success", "props": [], "flow": "cluster", "callout": "小结", "accent": "blue" }
+      ]
+    },
+    {
+      "label": "工作流模式",
+      "intro": "五种可控模式，对应五类不确定性",
+      "summary": ["先定位任务中的不确定性", "用对应的 Workflow 处理这种不确定性", "每增加一种模式都要解决一个明确问题"],
+      "scenes": [
+        { "paragraphs": [1, 1], "layout": "hero", "human": "point-right", "agent": "idle", "props": [{"id":"document-stack","label":"提示链"},{"id":"branch","label":"路由并行"},{"id":"loop","label":"评估循环"}], "flow": "cluster", "callout": "路径仍然可控", "accent": "blue" },
+        { "paragraphs": [2, 4], "layout": "process", "human": "operate", "agent": "execute", "props": [{"id":"document","label":"大纲"},{"id":"warning","label":"检查"},{"id":"document-stack","label":"正文"},{"id":"success","label":"通过"}], "flow": "chain", "callout": "提示链：一步只解决一个问题", "accent": "blue" },
+        { "paragraphs": [5, 7], "layout": "grid", "human": "point-right", "agent": "search", "props": [{"id":"branch","label":"分类"},{"id":"document","label":"咨询"},{"id":"api-plug","label":"退款"},{"id":"error","label":"故障"}], "flow": "branch", "callout": "路由：输入不同，处理不同", "accent": "yellow" },
+        { "paragraphs": [8, 9], "layout": "process", "human": "point-right", "agent": "execute", "props": [{"id":"branch","label":"分块"},{"id":"result-card","label":"事实"},{"id":"result-card","label":"安全"},{"id":"result-card","label":"表达"}], "flow": "branch", "callout": "并行：子任务彼此独立", "accent": "blue" },
+        { "paragraphs": [10, 11], "layout": "grid", "human": "think", "agent": "search", "props": [{"id":"result-card","label":"视角 A"},{"id":"result-card","label":"视角 B"},{"id":"result-card","label":"视角 C"},{"id":"success","label":"聚合"}], "flow": "branch", "callout": "投票：多个独立视角", "accent": "yellow" },
+        { "paragraphs": [12, 14], "layout": "process", "human": "point-right", "agent": "receive-tool", "props": [{"id":"branch","label":"编排者"},{"id":"document-stack","label":"子任务"},{"id":"tool","label":"执行者"},{"id":"result-card","label":"汇总"}], "flow": "branch", "callout": "编排者：动态拆分任务", "accent": "blue" },
+        { "paragraphs": [15, 16], "layout": "grid", "human": "operate", "agent": "search", "props": [{"id":"document-stack","label":"文件"},{"id":"search","label":"搜索"},{"id":"tool","label":"修改"},{"id":"result-card","label":"汇总"}], "flow": "chain", "callout": "大型代码仓库无法预先拆完", "accent": "blue" },
+        { "paragraphs": [17, 18], "layout": "process", "human": "operate", "agent": "execute", "props": [{"id":"document","label":"生成"},{"id":"result-card","label":"评价"},{"id":"tool","label":"修改"},{"id":"loop","label":"再评估"}], "flow": "loop", "callout": "评估与优化：反馈驱动循环", "accent": "yellow" },
+        { "paragraphs": [19, 19], "layout": "process", "human": "point-right", "agent": "execute", "props": [{"id":"success","label":"反馈改善"},{"id":"result-card","label":"有效反馈"},{"id":"timeout","label":"停止条件"}], "flow": "chain", "callout": "评估优化成立的三个条件", "accent": "yellow" },
+        { "paragraphs": [20, 20], "layout": "focus", "human": "think", "agent": "failure", "props": [{"id":"loop","label":"继续循环"},{"id":"warning","label":"没有标准"},{"id":"error","label":"只增成本"}], "flow": "loop", "callout": "没有评价标准，循环无效", "accent": "red" },
+        { "paragraphs": [21, 21], "layout": "grid", "human": "point-right", "agent": "search", "props": [{"id":"document-stack","label":"提示链"},{"id":"branch","label":"路由"},{"id":"result-card","label":"并行"},{"id":"tool","label":"编排"},{"id":"loop","label":"评估优化"}], "flow": "cluster", "callout": "先找不确定性出现在哪里", "accent": "blue" },
+        { "paragraphs": [22, 25], "summaryPointParagraphs": [23, 24, 25], "recap": true, "layout": "focus", "human": "approve", "agent": "success", "props": [], "flow": "cluster", "callout": "小结", "accent": "blue" }
+      ]
+    },
+    {
+      "label": "自主 Agent",
+      "intro": "真正的 Agent，会根据环境反馈持续决策",
+      "summary": ["行动之后必须读取真实反馈", "失败风险会随着执行步骤累积", "自治必须配合权限和停止条件"],
+      "scenes": [
+        { "paragraphs": [1, 3], "layout": "process", "human": "point-right", "agent": "execute", "props": [{"id":"document","label":"目标"},{"id":"tool","label":"行动"},{"id":"result-card","label":"反馈"},{"id":"loop","label":"更新"}], "flow": "loop", "callout": "持续决策循环", "accent": "blue" },
+        { "paragraphs": [4, 6], "layout": "grid", "human": "operate", "agent": "search", "props": [{"id":"document","label":"修改"},{"id":"tool","label":"测试"},{"id":"browser","label":"页面"},{"id":"api-plug","label":"接口"},{"id":"result-card","label":"反馈"}], "flow": "cluster", "callout": "每一步都要有真实反馈", "accent": "yellow" },
+        { "paragraphs": [7, 7], "layout": "grid", "human": "approve", "agent": "success", "props": [{"id":"browser","label":"对话与行动"},{"id":"tool","label":"执行与测试"},{"id":"success","label":"成功标准"}], "flow": "cluster", "callout": "为什么这两类任务适合 Agent", "accent": "blue" },
+        { "paragraphs": [8, 8], "layout": "focus", "human": "surprised", "agent": "failure", "props": [{"id":"warning","label":"90% / 步"},{"id":"error","label":"连续累积"},{"id":"loop","label":"整体下降"}], "flow": "loop", "callout": "可靠性会逐步相乘", "accent": "red" },
+        { "paragraphs": [9, 9], "layout": "grid", "human": "point-right", "agent": "receive-tool", "props": [{"id":"warning","label":"权限"},{"id":"timeout","label":"次数"},{"id":"success","label":"确认"}], "flow": "cluster", "callout": "把边界写进系统", "accent": "yellow" },
+        { "paragraphs": [10, 10], "layout": "hero", "human": "approve", "agent": "success", "props": [{"id":"loop","label":"反馈"},{"id":"result-card","label":"边界"},{"id":"success","label":"控制"}], "flow": "chain", "callout": "Agent 不是放弃控制", "accent": "blue" },
+        { "paragraphs": [11, 14], "summaryPointParagraphs": [12, 13, 14], "recap": true, "layout": "focus", "human": "approve", "agent": "success", "props": [], "flow": "cluster", "callout": "小结", "accent": "blue" }
+      ]
+    },
+    {
+      "label": "工具设计",
+      "intro": "工具接口决定 Agent 的可靠上限",
+      "summary": ["名称、参数和边界必须清楚", "返回格式不要制造额外难度", "要从接口层让常见错误更难发生"],
+      "scenes": [
+        { "paragraphs": [1, 2], "layout": "hero", "human": "surprised", "agent": "failure", "props": [{"id":"tool","label":"工具"},{"id":"api-plug","label":"接口"},{"id":"error","label":"失败"}], "flow": "chain", "callout": "模型聪明，不等于工具好用", "accent": "red" },
+        { "paragraphs": [3, 3], "layout": "grid", "human": "point-right", "agent": "receive-tool", "props": [{"id":"tool","label":"名称"},{"id":"document","label":"参数"},{"id":"warning","label":"边界"},{"id":"success","label":"示例"}], "flow": "cluster", "callout": "清晰的 Agent-computer interface", "accent": "blue" },
+        { "paragraphs": [4, 4], "layout": "comparison", "labels": ["复杂 JSON", "直接结果"], "human": "operate", "agent": "failure", "props": [{"id":"document-stack","label":"反复转义"},{"id":"error","label":"容易出错"},{"id":"document","label":"直接代码"},{"id":"success","label":"短而明确"}], "flow": "cluster", "callout": "不要平白增加难度", "accent": "yellow" },
+        { "paragraphs": [5, 5], "layout": "comparison", "labels": ["相对路径", "绝对路径"], "human": "operate", "agent": "search", "props": [{"id":"document","label":"./src"},{"id":"search","label":"定位失败"},{"id":"document-stack","label":"/repo/src"},{"id":"success","label":"明确"}], "flow": "cluster", "callout": "接口约束能直接减少错误", "accent": "blue" },
+        { "paragraphs": [6, 6], "layout": "focus", "human": "approve", "agent": "success", "props": [{"id":"tool","label":"观察误用"},{"id":"warning","label":"修改接口"},{"id":"success","label":"错误更难"}], "flow": "chain", "callout": "不要只优化提示词", "accent": "blue" },
+        { "paragraphs": [7, 10], "summaryPointParagraphs": [8, 9, 10], "recap": true, "layout": "focus", "human": "approve", "agent": "success", "props": [], "flow": "cluster", "callout": "小结", "accent": "blue" }
+      ]
+    },
+    {
+      "label": "选择方法",
+      "intro": "用四个问题选出最简单的有效架构",
+      "summary": ["先验证单次模型调用能否完成任务", "路径可控时优先选择合适的 Workflow", "用可测量的结果决定是否升级为 Agent"],
+      "scenes": [
+        { "paragraphs": [1, 2], "layout": "hero", "human": "think", "agent": "idle", "props": [{"id":"document","label":"任务"},{"id":"search","label":"检索"},{"id":"success","label":"单次完成"}], "flow": "chain", "callout": "第一问：单次调用够吗？", "accent": "blue" },
+        { "paragraphs": [3, 3], "layout": "grid", "human": "point-right", "agent": "execute", "props": [{"id":"document","label":"提示链"},{"id":"branch","label":"路由"},{"id":"result-card","label":"并行"}], "flow": "cluster", "callout": "固定步骤优先 Workflow", "accent": "blue" },
+        { "paragraphs": [4, 4], "layout": "process", "human": "point-right", "agent": "receive-tool", "props": [{"id":"branch","label":"分析"},{"id":"document-stack","label":"临时子任务"},{"id":"tool","label":"执行"},{"id":"result-card","label":"汇总"}], "flow": "branch", "callout": "子任务无法预知，再用编排者", "accent": "yellow" },
+        { "paragraphs": [5, 5], "layout": "process", "human": "operate", "agent": "execute", "props": [{"id":"loop","label":"决策"},{"id":"browser","label":"环境"},{"id":"result-card","label":"反馈"}], "flow": "loop", "callout": "全程依赖反馈，才升级 Agent", "accent": "red" },
+        { "paragraphs": [6, 6], "layout": "comparison", "labels": ["框架抽象", "真实过程"], "human": "think", "agent": "search", "props": [{"id":"tool","label":"快速连接"},{"id":"warning","label":"隐藏细节"},{"id":"document","label":"提示与输出"}], "flow": "cluster", "callout": "必须看懂框架下面发生了什么", "accent": "yellow" },
+        { "paragraphs": [7, 7], "layout": "grid", "human": "operate", "agent": "execute", "props": [{"id":"document","label":"基线"},{"id":"result-card","label":"完成率"},{"id":"database","label":"成本"},{"id":"success","label":"稳定提升"}], "flow": "cluster", "callout": "先测量，再增加复杂度", "accent": "blue" },
+        { "paragraphs": [8, 11], "summaryPointParagraphs": [9, 10, 11], "recap": true, "layout": "focus", "human": "approve", "agent": "success", "props": [], "flow": "cluster", "callout": "小结", "accent": "blue" }
+      ]
+    },
+    {
+      "label": "总结",
+      "showIntro": false,
+      "intro": "从简单开始，用结果决定是否增加复杂度",
+      "summary": ["能用一次模型调用解决，就不要先做 Workflow", "能提前画出执行路径，就不要先做 Agent", "真正使用 Agent 时，要重点保证环境反馈、停止条件和工具接口可靠"],
+      "scenes": [
+        { "paragraphs": [1, 6], "summaryPointParagraphs": [2, 3, 4], "ctaParagraph": 6, "recap": true, "finalSummary": true, "layout": "focus", "human": "approve", "agent": "success", "props": [], "flow": "cluster", "callout": "从简单开始，用结果决定", "accent": "blue" }
+      ]
+    }
+  ]
+}

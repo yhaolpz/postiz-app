@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root { --board:#fcfdfc; --ink:#111413; --muted:#6f7976; --blue:#117abd; --line:#dfe7e4; }
+      * { box-sizing:border-box; }
+      html, body { width:1920px; height:1080px; margin:0; overflow:hidden; }
+      @font-face { font-family:"Tiny Agent CJK"; src:url("assets/fonts/HiraginoSansGB.ttc"); font-style:normal; font-weight:100 900; }
+      body { color:var(--ink); font-family:"Tiny Agent CJK",sans-serif; letter-spacing:0; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; }
+      .board-fill { position:absolute; inset:0; background-color:var(--board); background-image:linear-gradient(rgba(17,20,19,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(17,20,19,.035) 1px,transparent 1px); background-size:48px 48px; }
+      .masthead { position:absolute; top:42px; right:72px; left:72px; z-index:80; display:flex; height:76px; align-items:center; opacity:0; }
+      .brand { color:var(--blue); font-family:"Inter",sans-serif; font-size:27px; font-weight:900; }
+      .title { margin:0 0 0 52px; font-size:44px; font-weight:900; line-height:1.3; }
+      .story-slot { position:absolute; inset:0; z-index:10; width:1920px; height:1080px; }
+      .caption-band { position:absolute; right:154px; bottom:100px; left:154px; z-index:90; height:142px; background:rgba(252,253,252,.985); }
+      .narration-caption { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:10px 54px 4px; font-size:35px; font-weight:700; line-height:1.38; text-align:center; opacity:0; }
+      .narration-caption.is-first { opacity:1; }
+      .chapter-progress { position:absolute; right:0; bottom:18px; left:0; z-index:96; display:flex; height:66px; align-items:flex-end; gap:2px; }
+      .progress-segment { flex:var(--chapter-weight) 1 0; min-width:0; }
+      .progress-label { height:40px; overflow:hidden; color:var(--muted); font-size:19px; font-weight:800; line-height:1.55; text-align:center; text-overflow:ellipsis; white-space:nowrap; }
+      .progress-label.is-current { color:var(--ink); }
+      .progress-track { position:relative; width:100%; height:6px; overflow:hidden; border-radius:3px; background:var(--line); }
+      .progress-fill { position:absolute; inset:0; border-radius:3px; background:var(--blue); transform:scaleX(0); transform-origin:left center; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-main-root" id="root" data-composition-id="main" data-start="0" data-duration="822.840" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-board" class="board-fill"></div>
+      <div data-hf-id="hf-story-slot" id="story-slot" class="story-slot" data-composition-id="story" data-composition-src="compositions/story.html" data-start="0" data-duration="822.840" data-track-index="1" data-layout-allow-overlap data-layout-allow-overflow></div>
+      <header data-hf-id="hf-masthead" class="masthead"><div class="brand">Tiny Agent</div><h1 class="title">Stop Building Multi-Agent Systems First</h1></header>
+      <div data-hf-id="hf-caption-band" class="caption-band">
+        <div data-hf-id="hf-caption-1" id="caption-1" class="narration-caption is-first">Many teams begin by choosing a framework, drawing a multi-agent diagram,</div>
+        <div data-hf-id="hf-caption-2" id="caption-2" class="narration-caption">and asking several models to debate.</div>
+        <div data-hf-id="hf-caption-3" id="caption-3" class="narration-caption">Anthropic found that successful production systems often use simpler,</div>
+        <div data-hf-id="hf-caption-4" id="caption-4" class="narration-caption">composable patterns.</div>
+        <div data-hf-id="hf-caption-5" id="caption-5" class="narration-caption">Quality depends less on the number of agents than on clear task</div>
+        <div data-hf-id="hf-caption-6" id="caption-6" class="narration-caption">boundaries, evaluation criteria, and environmental feedback.</div>
+        <div data-hf-id="hf-caption-7" id="caption-7" class="narration-caption">A complex architecture may not improve completion, but it will increase</div>
+        <div data-hf-id="hf-caption-8" id="caption-8" class="narration-caption">model calls, latency, cost, and debugging.</div>
+        <div data-hf-id="hf-caption-9" id="caption-9" class="narration-caption">Every extra handoff adds another chance to lose context or pass a</div>
+        <div data-hf-id="hf-caption-10" id="caption-10" class="narration-caption">mistake forward.</div>
+        <div data-hf-id="hf-caption-11" id="caption-11" class="narration-caption">In this video, we will answer three questions that are easy to get</div>
+        <div data-hf-id="hf-caption-12" id="caption-12" class="narration-caption">wrong: when one model call is enough, which of five common workflow</div>
+        <div data-hf-id="hf-caption-13" id="caption-13" class="narration-caption">patterns fits the task, and when an autonomous agent is actually worth</div>
+        <div data-hf-id="hf-caption-14" id="caption-14" class="narration-caption">the risk.</div>
+        <div data-hf-id="hf-caption-15" id="caption-15" class="narration-caption">By the end, you will have an Agent Architecture Decision Ladder that you</div>
+        <div data-hf-id="hf-caption-16" id="caption-16" class="narration-caption">can use on a real project, instead of paying for complexity just to make</div>
+        <div data-hf-id="hf-caption-17" id="caption-17" class="narration-caption">the system look more agentic.</div>
+        <div data-hf-id="hf-caption-18" id="caption-18" class="narration-caption">Start with the distinction that controls every later decision.</div>
+        <div data-hf-id="hf-caption-19" id="caption-19" class="narration-caption">In a workflow, code defines the execution path in advance.</div>
+        <div data-hf-id="hf-caption-20" id="caption-20" class="narration-caption">A model may perform one step, but the program still controls the</div>
+        <div data-hf-id="hf-caption-21" id="caption-21" class="narration-caption">sequence.</div>
+        <div data-hf-id="hf-caption-22" id="caption-22" class="narration-caption">In an agent, the model uses the current result to choose what to do</div>
+        <div data-hf-id="hf-caption-23" id="caption-23" class="narration-caption">next, which tool to call, and when the task should stop.</div>
+        <div data-hf-id="hf-caption-24" id="caption-24" class="narration-caption">An expense report that always moves through extraction, policy checks,</div>
+        <div data-hf-id="hf-caption-25" id="caption-25" class="narration-caption">and approval has a path you can draw before execution.</div>
+        <div data-hf-id="hf-caption-26" id="caption-26" class="narration-caption">That is a strong workflow task.</div>
+        <div data-hf-id="hf-caption-27" id="caption-27" class="narration-caption">An incident investigation is different.</div>
+        <div data-hf-id="hf-caption-28" id="caption-28" class="narration-caption">You may read logs first, then inspect metrics, and only then decide</div>
+        <div data-hf-id="hf-caption-29" id="caption-29" class="narration-caption">whether to investigate the database, the network, or the code.</div>
+        <div data-hf-id="hf-caption-30" id="caption-30" class="narration-caption">The path emerges from evidence, so an agent can add real value.</div>
+        <div data-hf-id="hf-caption-31" id="caption-31" class="narration-caption">Neither one is more advanced.</div>
+        <div data-hf-id="hf-caption-32" id="caption-32" class="narration-caption">Workflows optimize for consistency and predictability.</div>
+        <div data-hf-id="hf-caption-33" id="caption-33" class="narration-caption">Agents optimize for flexibility and model-directed decisions.</div>
+        <div data-hf-id="hf-caption-34" id="caption-34" class="narration-caption">The most important principle is to find the simplest viable solution and</div>
+        <div data-hf-id="hf-caption-35" id="caption-35" class="narration-caption">increase complexity only when the result is measurably inadequate.</div>
+        <div data-hf-id="hf-caption-36" id="caption-36" class="narration-caption">Inadequate does not mean the diagram looks unsophisticated.</div>
+        <div data-hf-id="hf-caption-37" id="caption-37" class="narration-caption">It means completion rate, accuracy, latency, cost, or human intervention</div>
+        <div data-hf-id="hf-caption-38" id="caption-38" class="narration-caption">misses a defined target.</div>
+        <div data-hf-id="hf-caption-39" id="caption-39" class="narration-caption">If a new orchestration layer does not help the same evaluation set</div>
+        <div data-hf-id="hf-caption-40" id="caption-40" class="narration-caption">finish more reliably, it is not an upgrade.</div>
+        <div data-hf-id="hf-caption-41" id="caption-41" class="narration-caption">It is overhead.</div>
+        <div data-hf-id="hf-caption-42" id="caption-42" class="narration-caption">Chapter recap.</div>
+        <div data-hf-id="hf-caption-43" id="caption-43" class="narration-caption">First, use a workflow when the path is fixed.</div>
+        <div data-hf-id="hf-caption-44" id="caption-44" class="narration-caption">Second, use an agent only when the path must be dynamic.</div>
+        <div data-hf-id="hf-caption-45" id="caption-45" class="narration-caption">Third, every added layer must earn its place with a measurable result.</div>
+        <div data-hf-id="hf-caption-46" id="caption-46" class="narration-caption">Before workflows and agents, there is a more useful default: the</div>
+        <div data-hf-id="hf-caption-47" id="caption-47" class="narration-caption">augmented language model.</div>
+        <div data-hf-id="hf-caption-48" id="caption-48" class="narration-caption">It is not a team of agents.</div>
+        <div data-hf-id="hf-caption-49" id="caption-49" class="narration-caption">It is one model connected to retrieval, tools, and memory.</div>
+        <div data-hf-id="hf-caption-50" id="caption-50" class="narration-caption">Retrieval supplies current external facts instead of relying only on</div>
+        <div data-hf-id="hf-caption-51" id="caption-51" class="narration-caption">training data.</div>
+        <div data-hf-id="hf-caption-52" id="caption-52" class="narration-caption">Tools let the model query an order, read a database, call an API, or</div>
+        <div data-hf-id="hf-caption-53" id="caption-53" class="narration-caption">perform a real action.</div>
+        <div data-hf-id="hf-caption-54" id="caption-54" class="narration-caption">Memory preserves useful state across steps.</div>
+        <div data-hf-id="hf-caption-55" id="caption-55" class="narration-caption">These capabilities answer three different questions: what does the</div>
+        <div data-hf-id="hf-caption-56" id="caption-56" class="narration-caption">system know, what can it do, and what has it already done?</div>
+        <div data-hf-id="hf-caption-57" id="caption-57" class="narration-caption">Imagine a support assistant.</div>
+        <div data-hf-id="hf-caption-58" id="caption-58" class="narration-caption">It retrieves the refund policy, looks up the order, calls the refund</div>
+        <div data-hf-id="hf-caption-59" id="caption-59" class="narration-caption">API, and remembers what the customer confirmed.</div>
+        <div data-hf-id="hf-caption-60" id="caption-60" class="narration-caption">If order lookup fails, the tool must return the error instead of</div>
+        <div data-hf-id="hf-caption-61" id="caption-61" class="narration-caption">inviting the model to invent an order status.</div>
+        <div data-hf-id="hf-caption-62" id="caption-62" class="narration-caption">If a refund already ran, stored state and API idempotency must prevent a</div>
+        <div data-hf-id="hf-caption-63" id="caption-63" class="narration-caption">duplicate payment.</div>
+        <div data-hf-id="hf-caption-64" id="caption-64" class="narration-caption">That single augmented model can already complete many real tasks.</div>
+        <div data-hf-id="hf-caption-65" id="caption-65" class="narration-caption">Multiple agents are not automatically necessary.</div>
+        <div data-hf-id="hf-caption-66" id="caption-66" class="narration-caption">The key is not to connect as many capabilities as possible.</div>
+        <div data-hf-id="hf-caption-67" id="caption-67" class="narration-caption">Each capability must fit the task, expose a clear interface, and be used</div>
+        <div data-hf-id="hf-caption-68" id="caption-68" class="narration-caption">at the right time.</div>
+        <div data-hf-id="hf-caption-69" id="caption-69" class="narration-caption">Running one augmented model on a controlled task usually reveals whether</div>
+        <div data-hf-id="hf-caption-70" id="caption-70" class="narration-caption">the real gap is knowledge, action, or decision-making before you split</div>
+        <div data-hf-id="hf-caption-71" id="caption-71" class="narration-caption">the system into roles.</div>
+        <div data-hf-id="hf-caption-72" id="caption-72" class="narration-caption">Chapter recap.</div>
+        <div data-hf-id="hf-caption-73" id="caption-73" class="narration-caption">First, retrieval provides external facts.</div>
+        <div data-hf-id="hf-caption-74" id="caption-74" class="narration-caption">Second, tools perform real actions.</div>
+        <div data-hf-id="hf-caption-75" id="caption-75" class="narration-caption">Third, memory preserves task state.</div>
+        <div data-hf-id="hf-caption-76" id="caption-76" class="narration-caption">When one model call is not enough but the overall path is still</div>
+        <div data-hf-id="hf-caption-77" id="caption-77" class="narration-caption">controllable, choose the workflow pattern that matches the uncertainty.</div>
+        <div data-hf-id="hf-caption-78" id="caption-78" class="narration-caption">The first pattern is prompt chaining: split one difficult task into a</div>
+        <div data-hf-id="hf-caption-79" id="caption-79" class="narration-caption">sequence of smaller steps.</div>
+        <div data-hf-id="hf-caption-80" id="caption-80" class="narration-caption">For example, generate an outline, check it against explicit</div>
+        <div data-hf-id="hf-caption-81" id="caption-81" class="narration-caption">requirements, and only then draft the document.</div>
+        <div data-hf-id="hf-caption-82" id="caption-82" class="narration-caption">Each step solves one clear problem, and a programmatic gate can stop the</div>
+        <div data-hf-id="hf-caption-83" id="caption-83" class="narration-caption">chain when the output is not ready.</div>
+        <div data-hf-id="hf-caption-84" id="caption-84" class="narration-caption">Prompt chaining works when the task decomposes cleanly.</div>
+        <div data-hf-id="hf-caption-85" id="caption-85" class="narration-caption">It costs more calls and time, but each call becomes easier to evaluate.</div>
+        <div data-hf-id="hf-caption-86" id="caption-86" class="narration-caption">The useful part is the gate: if the outline has no audience, rewrite it;</div>
+        <div data-hf-id="hf-caption-87" id="caption-87" class="narration-caption">if fact checking fails, do not continue to publication.</div>
+        <div data-hf-id="hf-caption-88" id="caption-88" class="narration-caption">Do not let a weak intermediate result travel all the way to the end.</div>
+        <div data-hf-id="hf-caption-89" id="caption-89" class="narration-caption">The second pattern is routing.</div>
+        <div data-hf-id="hf-caption-90" id="caption-90" class="narration-caption">A router classifies the input and sends it to the right prompt, model,</div>
+        <div data-hf-id="hf-caption-91" id="caption-91" class="narration-caption">or tool.</div>
+        <div data-hf-id="hf-caption-92" id="caption-92" class="narration-caption">Customer requests might branch into product questions, refund requests,</div>
+        <div data-hf-id="hf-caption-93" id="caption-93" class="narration-caption">and technical incidents.</div>
+        <div data-hf-id="hf-caption-94" id="caption-94" class="narration-caption">Common cases can use a smaller model, while unusual cases use a stronger</div>
+        <div data-hf-id="hf-caption-95" id="caption-95" class="narration-caption">one.</div>
+        <div data-hf-id="hf-caption-96" id="caption-96" class="narration-caption">Routing works when categories need clearly different treatment and</div>
+        <div data-hf-id="hf-caption-97" id="caption-97" class="narration-caption">classification is reliable.</div>
+        <div data-hf-id="hf-caption-98" id="caption-98" class="narration-caption">It also needs a low-confidence path.</div>
+        <div data-hf-id="hf-caption-99" id="caption-99" class="narration-caption">An uncertain input should go to a general process or a human, not be</div>
+        <div data-hf-id="hf-caption-100" id="caption-100" class="narration-caption">forced into the wrong branch.</div>
+        <div data-hf-id="hf-caption-101" id="caption-101" class="narration-caption">The third pattern is parallelization, and it has two distinct forms.</div>
+        <div data-hf-id="hf-caption-102" id="caption-102" class="narration-caption">Sectioning runs independent subtasks at the same time and combines the</div>
+        <div data-hf-id="hf-caption-103" id="caption-103" class="narration-caption">results.</div>
+        <div data-hf-id="hf-caption-104" id="caption-104" class="narration-caption">To evaluate an AI answer, separate reviewers can check facts, safety,</div>
+        <div data-hf-id="hf-caption-105" id="caption-105" class="narration-caption">clarity, and format in parallel.</div>
+        <div data-hf-id="hf-caption-106" id="caption-106" class="narration-caption">Voting asks several independent attempts to judge the same question,</div>
+        <div data-hf-id="hf-caption-107" id="caption-107" class="narration-caption">then aggregates their conclusions.</div>
+        <div data-hf-id="hf-caption-108" id="caption-108" class="narration-caption">A security review might use different prompts to inspect the same code</div>
+        <div data-hf-id="hf-caption-109" id="caption-109" class="narration-caption">from different risk perspectives.</div>
+        <div data-hf-id="hf-caption-110" id="caption-110" class="narration-caption">Parallelization helps when subtasks are independent or when one judgment</div>
+        <div data-hf-id="hf-caption-111" id="caption-111" class="narration-caption">is not reliable enough.</div>
+        <div data-hf-id="hf-caption-112" id="caption-112" class="narration-caption">Independence matters.</div>
+        <div data-hf-id="hf-caption-113" id="caption-113" class="narration-caption">Copying the same prompt three times often creates three versions of the</div>
+        <div data-hf-id="hf-caption-114" id="caption-114" class="narration-caption">same bias, not three useful perspectives.</div>
+        <div data-hf-id="hf-caption-115" id="caption-115" class="narration-caption">The fourth pattern is orchestrator-workers.</div>
+        <div data-hf-id="hf-caption-116" id="caption-116" class="narration-caption">A central model understands the goal, discovers the required subtasks,</div>
+        <div data-hf-id="hf-caption-117" id="caption-117" class="narration-caption">delegates them to workers, and combines their results.</div>
+        <div data-hf-id="hf-caption-118" id="caption-118" class="narration-caption">The difference from ordinary parallel work is that the subtasks are not</div>
+        <div data-hf-id="hf-caption-119" id="caption-119" class="narration-caption">known in advance.</div>
+        <div data-hf-id="hf-caption-120" id="caption-120" class="narration-caption">The orchestrator decides them from the current input.</div>
+        <div data-hf-id="hf-caption-121" id="caption-121" class="narration-caption">Consider changing a large codebase.</div>
+        <div data-hf-id="hf-caption-122" id="caption-122" class="narration-caption">Before investigation, you do not know how many files must change or</div>
+        <div data-hf-id="hf-caption-123" id="caption-123" class="narration-caption">which modules matter.</div>
+        <div data-hf-id="hf-caption-124" id="caption-124" class="narration-caption">The orchestrator must first inspect the problem, then choose where to</div>
+        <div data-hf-id="hf-caption-125" id="caption-125" class="narration-caption">search and what work to assign.</div>
+        <div data-hf-id="hf-caption-126" id="caption-126" class="narration-caption">This pattern fits complex tasks that can be divided but cannot be fully</div>
+        <div data-hf-id="hf-caption-127" id="caption-127" class="narration-caption">planned ahead.</div>
+        <div data-hf-id="hf-caption-128" id="caption-128" class="narration-caption">Each worker still needs only the relevant context and a consistent</div>
+        <div data-hf-id="hf-caption-129" id="caption-129" class="narration-caption">return format.</div>
+        <div data-hf-id="hf-caption-130" id="caption-130" class="narration-caption">Otherwise, the final synthesis spends most of its budget reinterpreting</div>
+        <div data-hf-id="hf-caption-131" id="caption-131" class="narration-caption">scattered output.</div>
+        <div data-hf-id="hf-caption-132" id="caption-132" class="narration-caption">The fifth pattern is evaluator-optimizer.</div>
+        <div data-hf-id="hf-caption-133" id="caption-133" class="narration-caption">One model generates a result, another evaluates it, and the first model</div>
+        <div data-hf-id="hf-caption-134" id="caption-134" class="narration-caption">revises from concrete feedback.</div>
+        <div data-hf-id="hf-caption-135" id="caption-135" class="narration-caption">In literary translation, the evaluator can check meaning, tone, and</div>
+        <div data-hf-id="hf-caption-136" id="caption-136" class="narration-caption">terminology before proposing specific corrections.</div>
+        <div data-hf-id="hf-caption-137" id="caption-137" class="narration-caption">The loop works only when feedback can demonstrably improve the result</div>
+        <div data-hf-id="hf-caption-138" id="caption-138" class="narration-caption">and the evaluator can identify useful changes.</div>
+        <div data-hf-id="hf-caption-139" id="caption-139" class="narration-caption">It also needs a stopping condition: reach a score, stop after no</div>
+        <div data-hf-id="hf-caption-140" id="caption-140" class="narration-caption">improvement, or stop when the budget is exhausted.</div>
+        <div data-hf-id="hf-caption-141" id="caption-141" class="narration-caption">Without a clear evaluation standard, the loop only increases cost.</div>
+        <div data-hf-id="hf-caption-142" id="caption-142" class="narration-caption">It does not guarantee quality.</div>
+        <div data-hf-id="hf-caption-143" id="caption-143" class="narration-caption">The reusable rule is to locate the uncertainty.</div>
+        <div data-hf-id="hf-caption-144" id="caption-144" class="narration-caption">Use chaining for fixed steps, routing for different input classes,</div>
+        <div data-hf-id="hf-caption-145" id="caption-145" class="narration-caption">parallelization for independent work, orchestrator-workers for runtime</div>
+        <div data-hf-id="hf-caption-146" id="caption-146" class="narration-caption">task discovery, and evaluator-optimizer for outputs that can be</div>
+        <div data-hf-id="hf-caption-147" id="caption-147" class="narration-caption">explicitly judged and improved.</div>
+        <div data-hf-id="hf-caption-148" id="caption-148" class="narration-caption">Patterns can combine, but every addition must solve a named problem, and</div>
+        <div data-hf-id="hf-caption-149" id="caption-149" class="narration-caption">every step must remain observable.</div>
+        <div data-hf-id="hf-caption-150" id="caption-150" class="narration-caption">Chapter recap.</div>
+        <div data-hf-id="hf-caption-151" id="caption-151" class="narration-caption">First, locate where uncertainty enters the task.</div>
+        <div data-hf-id="hf-caption-152" id="caption-152" class="narration-caption">Second, choose the workflow that controls that uncertainty.</div>
+        <div data-hf-id="hf-caption-153" id="caption-153" class="narration-caption">Third, add a pattern only when it solves a specific problem.</div>
+        <div data-hf-id="hf-caption-154" id="caption-154" class="narration-caption">You enter true agent territory when the execution path cannot be</div>
+        <div data-hf-id="hf-caption-155" id="caption-155" class="narration-caption">predicted and the model must keep adapting its plan from environmental</div>
+        <div data-hf-id="hf-caption-156" id="caption-156" class="narration-caption">results.</div>
+        <div data-hf-id="hf-caption-157" id="caption-157" class="narration-caption">The core of an agent is not mysterious.</div>
+        <div data-hf-id="hf-caption-158" id="caption-158" class="narration-caption">It is a continuing decision loop.</div>
+        <div data-hf-id="hf-caption-159" id="caption-159" class="narration-caption">The model interprets the goal, chooses an action, calls a tool, reads</div>
+        <div data-hf-id="hf-caption-160" id="caption-160" class="narration-caption">the real result, and updates its plan.</div>
+        <div data-hf-id="hf-caption-161" id="caption-161" class="narration-caption">The loop continues until the task completes, reaches a blocker, or hits</div>
+        <div data-hf-id="hf-caption-162" id="caption-162" class="narration-caption">a stopping condition.</div>
+        <div data-hf-id="hf-caption-163" id="caption-163" class="narration-caption">The critical question is not how long the model reasons.</div>
+        <div data-hf-id="hf-caption-164" id="caption-164" class="narration-caption">It is whether each action produces reliable ground truth.</div>
+        <div data-hf-id="hf-caption-165" id="caption-165" class="narration-caption">After a coding agent changes a file, it can run tests.</div>
+        <div data-hf-id="hf-caption-166" id="caption-166" class="narration-caption">After a support agent issues a refund, it can read the API response.</div>
+        <div data-hf-id="hf-caption-167" id="caption-167" class="narration-caption">After a browser agent clicks a button, it can verify that the page</div>
+        <div data-hf-id="hf-caption-168" id="caption-168" class="narration-caption">changed as expected.</div>
+        <div data-hf-id="hf-caption-169" id="caption-169" class="narration-caption">That feedback is how an agent knows whether it is making progress.</div>
+        <div data-hf-id="hf-caption-170" id="caption-170" class="narration-caption">Customer support and coding are strong agent tasks because they combine</div>
+        <div data-hf-id="hf-caption-171" id="caption-171" class="narration-caption">conversation with action and offer relatively clear success criteria.</div>
+        <div data-hf-id="hf-caption-172" id="caption-172" class="narration-caption">Autonomy also raises cost and compounds error.</div>
+        <div data-hf-id="hf-caption-173" id="caption-173" class="narration-caption">If every step were ninety percent reliable, ten correct steps in a row</div>
+        <div data-hf-id="hf-caption-174" id="caption-174" class="narration-caption">would have a theoretical probability of only about thirty-five percent.</div>
+        <div data-hf-id="hf-caption-175" id="caption-175" class="narration-caption">Real systems use checks and retries, but the arithmetic makes the</div>
+        <div data-hf-id="hf-caption-176" id="caption-176" class="narration-caption">boundary obvious: a longer path cannot rely on confidence alone.</div>
+        <div data-hf-id="hf-caption-177" id="caption-177" class="narration-caption">Production agents therefore need sandboxes, permission limits, maximum</div>
+        <div data-hf-id="hf-caption-178" id="caption-178" class="narration-caption">iterations, explicit stopping rules, and human confirmation at critical</div>
+        <div data-hf-id="hf-caption-179" id="caption-179" class="narration-caption">actions.</div>
+        <div data-hf-id="hf-caption-180" id="caption-180" class="narration-caption">They also need a record of tool calls and environment responses so a</div>
+        <div data-hf-id="hf-caption-181" id="caption-181" class="narration-caption">failure can be diagnosed, replayed, and recovered.</div>
+        <div data-hf-id="hf-caption-182" id="caption-182" class="narration-caption">An agent is not the absence of control.</div>
+        <div data-hf-id="hf-caption-183" id="caption-183" class="narration-caption">It gives dynamic decisions to the model and rebuilds control through</div>
+        <div data-hf-id="hf-caption-184" id="caption-184" class="narration-caption">feedback and boundaries.</div>
+        <div data-hf-id="hf-caption-185" id="caption-185" class="narration-caption">Reversible actions, such as reading information or drafting text, can</div>
+        <div data-hf-id="hf-caption-186" id="caption-186" class="narration-caption">receive wider autonomy.</div>
+        <div data-hf-id="hf-caption-187" id="caption-187" class="narration-caption">Payments, deletion, and external messages should receive narrow</div>
+        <div data-hf-id="hf-caption-188" id="caption-188" class="narration-caption">permissions and pre-action approval.</div>
+        <div data-hf-id="hf-caption-189" id="caption-189" class="narration-caption">A practical risk ladder is: automate low-risk actions, inspect</div>
+        <div data-hf-id="hf-caption-190" id="caption-190" class="narration-caption">medium-risk actions after execution, and approve high-risk actions</div>
+        <div data-hf-id="hf-caption-191" id="caption-191" class="narration-caption">before execution.</div>
+        <div data-hf-id="hf-caption-192" id="caption-192" class="narration-caption">Chapter recap.</div>
+        <div data-hf-id="hf-caption-193" id="caption-193" class="narration-caption">First, every action must read real environmental feedback.</div>
+        <div data-hf-id="hf-caption-194" id="caption-194" class="narration-caption">Second, failure risk compounds across a long execution path.</div>
+        <div data-hf-id="hf-caption-195" id="caption-195" class="narration-caption">Third, autonomy requires permissions and stopping conditions.</div>
+        <div data-hf-id="hf-caption-196" id="caption-196" class="narration-caption">Even a capable model will fail repeatedly when its tools are difficult</div>
+        <div data-hf-id="hf-caption-197" id="caption-197" class="narration-caption">to understand.</div>
+        <div data-hf-id="hf-caption-198" id="caption-198" class="narration-caption">Humans need a well-designed interface to use software.</div>
+        <div data-hf-id="hf-caption-199" id="caption-199" class="narration-caption">Models need a clear agent-computer interface to use tools.</div>
+        <div data-hf-id="hf-caption-200" id="caption-200" class="narration-caption">Tool names must be specific, parameters must be unambiguous, and the</div>
+        <div data-hf-id="hf-caption-201" id="caption-201" class="narration-caption">contract should show input formats, boundaries, examples, and edge</div>
+        <div data-hf-id="hf-caption-202" id="caption-202" class="narration-caption">cases.</div>
+        <div data-hf-id="hf-caption-203" id="caption-203" class="narration-caption">Similar tools need obvious differences.</div>
+        <div data-hf-id="hf-caption-204" id="caption-204" class="narration-caption">Errors should state what failed, which input was invalid, and whether a</div>
+        <div data-hf-id="hf-caption-205" id="caption-205" class="narration-caption">retry is safe.</div>
+        <div data-hf-id="hf-caption-206" id="caption-206" class="narration-caption">Do not make the return format harder than the task.</div>
+        <div data-hf-id="hf-caption-207" id="caption-207" class="narration-caption">Forcing a model to place large blocks of code inside heavily escaped</div>
+        <div data-hf-id="hf-caption-208" id="caption-208" class="narration-caption">JSON creates avoidable errors.</div>
+        <div data-hf-id="hf-caption-209" id="caption-209" class="narration-caption">Return only the information needed for the next decision; dumping an</div>
+        <div data-hf-id="hf-caption-210" id="caption-210" class="narration-caption">entire log into context increases cost and hides the useful signal.</div>
+        <div data-hf-id="hf-caption-211" id="caption-211" class="narration-caption">Anthropic found that its coding agent often made mistakes with relative</div>
+        <div data-hf-id="hf-caption-212" id="caption-212" class="narration-caption">paths.</div>
+        <div data-hf-id="hf-caption-213" id="caption-213" class="narration-caption">Changing the tool to require absolute paths made those mistakes much</div>
+        <div data-hf-id="hf-caption-214" id="caption-214" class="narration-caption">harder to produce.</div>
+        <div data-hf-id="hf-caption-215" id="caption-215" class="narration-caption">So do not optimize only the prompt.</div>
+        <div data-hf-id="hf-caption-216" id="caption-216" class="narration-caption">Observe how the model misuses the interface, then change the interface</div>
+        <div data-hf-id="hf-caption-217" id="caption-217" class="narration-caption">itself.</div>
+        <div data-hf-id="hf-caption-218" id="caption-218" class="narration-caption">Before release, test missing parameters, invalid paths, repeated calls,</div>
+        <div data-hf-id="hf-caption-219" id="caption-219" class="narration-caption">timeouts, and recovery behavior, not just ideal examples.</div>
+        <div data-hf-id="hf-caption-220" id="caption-220" class="narration-caption">Chapter recap.</div>
+        <div data-hf-id="hf-caption-221" id="caption-221" class="narration-caption">First, names, parameters, and boundaries must be clear.</div>
+        <div data-hf-id="hf-caption-222" id="caption-222" class="narration-caption">Second, return formats should not create extra difficulty.</div>
+        <div data-hf-id="hf-caption-223" id="caption-223" class="narration-caption">Third, design the interface so common errors are harder to make.</div>
+        <div data-hf-id="hf-caption-224" id="caption-224" class="narration-caption">For a new task, walk through the architecture ladder in order.</div>
+        <div data-hf-id="hf-caption-225" id="caption-225" class="narration-caption">First, can one model call, enhanced with retrieval and examples,</div>
+        <div data-hf-id="hf-caption-226" id="caption-226" class="narration-caption">complete the task?</div>
+        <div data-hf-id="hf-caption-227" id="caption-227" class="narration-caption">Second, if one call is not enough, can you define the steps in advance?</div>
+        <div data-hf-id="hf-caption-228" id="caption-228" class="narration-caption">If yes, prefer chaining, routing, or parallelization.</div>
+        <div data-hf-id="hf-caption-229" id="caption-229" class="narration-caption">Third, if the task can be divided but the required subtasks appear only</div>
+        <div data-hf-id="hf-caption-230" id="caption-230" class="narration-caption">during investigation, use orchestrator-workers.</div>
+        <div data-hf-id="hf-caption-231" id="caption-231" class="narration-caption">Fourth, use an autonomous agent only when the whole path depends on</div>
+        <div data-hf-id="hf-caption-232" id="caption-232" class="narration-caption">environmental feedback and the model must keep making its own decisions.</div>
+        <div data-hf-id="hf-caption-233" id="caption-233" class="narration-caption">Frameworks can quickly connect model calls, tools, and workflow steps,</div>
+        <div data-hf-id="hf-caption-234" id="caption-234" class="narration-caption">but extra abstraction can hide the real prompt, model output, and</div>
+        <div data-hf-id="hf-caption-235" id="caption-235" class="narration-caption">failure.</div>
+        <div data-hf-id="hf-caption-236" id="caption-236" class="narration-caption">A framework is fine only when you still understand what happens</div>
+        <div data-hf-id="hf-caption-237" id="caption-237" class="narration-caption">underneath it.</div>
+        <div data-hf-id="hf-caption-238" id="caption-238" class="narration-caption">Before upgrading, save a baseline for the simplest system.</div>
+        <div data-hf-id="hf-caption-239" id="caption-239" class="narration-caption">Compare task completion, average cost, latency, and human interventions</div>
+        <div data-hf-id="hf-caption-240" id="caption-240" class="narration-caption">on common, difficult, and boundary cases.</div>
+        <div data-hf-id="hf-caption-241" id="caption-241" class="narration-caption">Break metrics down by task type so averages cannot hide a critical</div>
+        <div data-hf-id="hf-caption-242" id="caption-242" class="narration-caption">regression.</div>
+        <div data-hf-id="hf-caption-243" id="caption-243" class="narration-caption">If the complex system does not produce a stable improvement, return to</div>
+        <div data-hf-id="hf-caption-244" id="caption-244" class="narration-caption">the simpler one.</div>
+        <div data-hf-id="hf-caption-245" id="caption-245" class="narration-caption">Architecture is a measurable iteration, not a one-time declaration.</div>
+        <div data-hf-id="hf-caption-246" id="caption-246" class="narration-caption">Chapter recap.</div>
+        <div data-hf-id="hf-caption-247" id="caption-247" class="narration-caption">First, test whether one augmented model call can finish the task.</div>
+        <div data-hf-id="hf-caption-248" id="caption-248" class="narration-caption">Second, prefer a workflow while the path remains controllable.</div>
+        <div data-hf-id="hf-caption-249" id="caption-249" class="narration-caption">Third, let measurable results decide whether to upgrade to an agent.</div>
+        <div data-hf-id="hf-caption-250" id="caption-250" class="narration-caption">Remember the complete method in three lines.</div>
+        <div data-hf-id="hf-caption-251" id="caption-251" class="narration-caption">If one augmented model call can solve the task, do not build a workflow</div>
+        <div data-hf-id="hf-caption-252" id="caption-252" class="narration-caption">first.</div>
+        <div data-hf-id="hf-caption-253" id="caption-253" class="narration-caption">If you can draw the execution path in advance, do not build an</div>
+        <div data-hf-id="hf-caption-254" id="caption-254" class="narration-caption">autonomous agent first.</div>
+        <div data-hf-id="hf-caption-255" id="caption-255" class="narration-caption">When you truly need an agent, protect it with environmental feedback,</div>
+        <div data-hf-id="hf-caption-256" id="caption-256" class="narration-caption">stopping conditions, permissions, and reliable tool interfaces.</div>
+        <div data-hf-id="hf-caption-257" id="caption-257" class="narration-caption">The Agent Architecture Decision Ladder is simple: one augmented call,</div>
+        <div data-hf-id="hf-caption-258" id="caption-258" class="narration-caption">then a controlled workflow, then runtime orchestration, and only then</div>
+        <div data-hf-id="hf-caption-259" id="caption-259" class="narration-caption">full autonomy.</div>
+        <div data-hf-id="hf-caption-260" id="caption-260" class="narration-caption">Keep each upgrade only when completion rate, cost, latency, or human</div>
+        <div data-hf-id="hf-caption-261" id="caption-261" class="narration-caption">effort measurably improves.</div>
+        <div data-hf-id="hf-caption-262" id="caption-262" class="narration-caption">Mature agent systems do not maximize freedom.</div>
+        <div data-hf-id="hf-caption-263" id="caption-263" class="narration-caption">They make every layer of freedom earn its place.</div>
+        <div data-hf-id="hf-caption-264" id="caption-264" class="narration-caption">Follow Tiny Agent to keep turning fast-moving AI and agent ideas into</div>
+        <div data-hf-id="hf-caption-265" id="caption-265" class="narration-caption">practical ways to choose tasks, delegate work, verify results, and</div>
+        <div data-hf-id="hf-caption-266" id="caption-266" class="narration-caption">control risk.</div>
+      </div>
+      <nav data-hf-id="hf-chapter-progress" class="chapter-progress" aria-label="Video chapter progress">
+        <div data-hf-id="hf-progress-segment-1" class="progress-segment" style="--chapter-weight:51.600">
+          <div data-hf-id="hf-progress-label-1" id="progress-label-1" class="progress-label is-current">1. Preface</div>
+          <div data-hf-id="hf-progress-track-1" class="progress-track"><div data-hf-id="hf-progress-fill-1" id="progress-fill-1" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-2" class="progress-segment" style="--chapter-weight:91.080">
+          <div data-hf-id="hf-progress-label-2" id="progress-label-2" class="progress-label">2. Architecture Choice</div>
+          <div data-hf-id="hf-progress-track-2" class="progress-track"><div data-hf-id="hf-progress-fill-2" id="progress-fill-2" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-3" class="progress-segment" style="--chapter-weight:89.352">
+          <div data-hf-id="hf-progress-label-3" id="progress-label-3" class="progress-label">3. Core Building Block</div>
+          <div data-hf-id="hf-progress-track-3" class="progress-track"><div data-hf-id="hf-progress-fill-3" id="progress-fill-3" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-4" class="progress-segment" style="--chapter-weight:234.768">
+          <div data-hf-id="hf-progress-label-4" id="progress-label-4" class="progress-label">4. Workflow Patterns</div>
+          <div data-hf-id="hf-progress-track-4" class="progress-track"><div data-hf-id="hf-progress-fill-4" id="progress-fill-4" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-5" class="progress-segment" style="--chapter-weight:133.992">
+          <div data-hf-id="hf-progress-label-5" id="progress-label-5" class="progress-label">5. Autonomous Agents</div>
+          <div data-hf-id="hf-progress-track-5" class="progress-track"><div data-hf-id="hf-progress-fill-5" id="progress-fill-5" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-6" class="progress-segment" style="--chapter-weight:85.464">
+          <div data-hf-id="hf-progress-label-6" id="progress-label-6" class="progress-label">6. Tool Design</div>
+          <div data-hf-id="hf-progress-track-6" class="progress-track"><div data-hf-id="hf-progress-fill-6" id="progress-fill-6" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-7" class="progress-segment" style="--chapter-weight:84.792">
+          <div data-hf-id="hf-progress-label-7" id="progress-label-7" class="progress-label">7. Decision Method</div>
+          <div data-hf-id="hf-progress-track-7" class="progress-track"><div data-hf-id="hf-progress-fill-7" id="progress-fill-7" class="progress-fill"></div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-8" class="progress-segment" style="--chapter-weight:51.792">
+          <div data-hf-id="hf-progress-label-8" id="progress-label-8" class="progress-label">8. Summary</div>
+          <div data-hf-id="hf-progress-track-8" class="progress-track"><div data-hf-id="hf-progress-fill-8" id="progress-fill-8" class="progress-fill"></div></div>
+        </div>
+      </nav>
+      <audio data-hf-id="hf-narration" id="narration" class="clip" data-start="0" data-duration="822.840" data-track-index="10" data-media-start="0" data-volume="1" src="assets/audio/narration.en.normalized.mp3"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.to("#caption-1", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 4.325);
+      tl.fromTo("#caption-2", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 4.425);
+      tl.to("#caption-2", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 6.438);
+      tl.fromTo("#caption-3", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 6.538);
+      tl.to("#caption-3", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 10.717);
+      tl.fromTo("#caption-4", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 10.817);
+      tl.to("#caption-4", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 11.957);
+      tl.fromTo("#caption-5", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 12.057);
+      tl.to("#caption-5", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 15.725);
+      tl.fromTo("#caption-6", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 15.825);
+      tl.to("#caption-6", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 19.313);
+      tl.fromTo("#caption-7", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 19.413);
+      tl.to("#caption-7", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 23.753);
+      tl.fromTo("#caption-8", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 23.853);
+      tl.to("#caption-8", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 26.380);
+      tl.fromTo("#caption-9", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 26.480);
+      tl.to("#caption-9", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 30.362);
+      tl.fromTo("#caption-10", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 30.462);
+      tl.to("#caption-10", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 31.342);
+      tl.fromTo("#caption-11", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 31.442);
+      tl.to("#caption-11", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 34.850);
+      tl.fromTo("#caption-12", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 34.950);
+      tl.to("#caption-12", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 38.412);
+      tl.fromTo("#caption-13", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 38.512);
+      tl.to("#caption-13", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 42.133);
+      tl.fromTo("#caption-14", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 42.233);
+      tl.to("#caption-14", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 42.611);
+      tl.fromTo("#caption-15", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 42.711);
+      tl.to("#caption-15", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 46.293);
+      tl.fromTo("#caption-16", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 46.393);
+      tl.to("#caption-16", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 49.974);
+      tl.fromTo("#caption-17", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 50.074);
+      tl.to("#caption-17", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 51.600);
+      tl.fromTo("#caption-18", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 51.700);
+      tl.to("#caption-18", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 55.096);
+      tl.fromTo("#caption-19", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 55.196);
+      tl.to("#caption-19", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 59.038);
+      tl.fromTo("#caption-20", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 59.138);
+      tl.to("#caption-20", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 63.067);
+      tl.fromTo("#caption-21", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 63.167);
+      tl.to("#caption-21", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 63.634);
+      tl.fromTo("#caption-22", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 63.734);
+      tl.to("#caption-22", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 67.426);
+      tl.fromTo("#caption-23", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 67.526);
+      tl.to("#caption-23", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 70.596);
+      tl.fromTo("#caption-24", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 70.696);
+      tl.to("#caption-24", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 74.672);
+      tl.fromTo("#caption-25", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 74.772);
+      tl.to("#caption-25", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 77.817);
+      tl.fromTo("#caption-26", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 77.917);
+      tl.to("#caption-26", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 80.182);
+      tl.fromTo("#caption-27", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 80.282);
+      tl.to("#caption-27", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 82.826);
+      tl.fromTo("#caption-28", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 82.926);
+      tl.to("#caption-28", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 86.896);
+      tl.fromTo("#caption-29", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 86.996);
+      tl.to("#caption-29", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 90.663);
+      tl.fromTo("#caption-30", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 90.763);
+      tl.to("#caption-30", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 94.769);
+      tl.fromTo("#caption-31", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 94.869);
+      tl.to("#caption-31", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 97.000);
+      tl.fromTo("#caption-32", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 97.100);
+      tl.to("#caption-32", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 100.557);
+      tl.fromTo("#caption-33", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 100.657);
+      tl.to("#caption-33", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 104.548);
+      tl.fromTo("#caption-34", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 104.648);
+      tl.to("#caption-34", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 108.356);
+      tl.fromTo("#caption-35", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 108.456);
+      tl.to("#caption-35", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 111.846);
+      tl.fromTo("#caption-36", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 111.946);
+      tl.to("#caption-36", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 115.461);
+      tl.fromTo("#caption-37", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 115.561);
+      tl.to("#caption-37", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 120.328);
+      tl.fromTo("#caption-38", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 120.428);
+      tl.to("#caption-38", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 121.951);
+      tl.fromTo("#caption-39", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 122.051);
+      tl.to("#caption-39", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 125.741);
+      tl.fromTo("#caption-40", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 125.841);
+      tl.to("#caption-40", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 128.211);
+      tl.fromTo("#caption-41", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 128.311);
+      tl.to("#caption-41", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 129.730);
+      tl.fromTo("#caption-42", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 129.830);
+      tl.to("#caption-42", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 131.269);
+      tl.fromTo("#caption-43", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 131.369);
+      tl.to("#caption-43", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 134.528);
+      tl.fromTo("#caption-44", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 134.628);
+      tl.to("#caption-44", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 138.384);
+      tl.fromTo("#caption-45", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 138.484);
+      tl.to("#caption-45", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 142.680);
+      tl.fromTo("#caption-46", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 142.780);
+      tl.to("#caption-46", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 146.640);
+      tl.fromTo("#caption-47", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 146.740);
+      tl.to("#caption-47", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 148.137);
+      tl.fromTo("#caption-48", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 148.237);
+      tl.to("#caption-48", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 150.272);
+      tl.fromTo("#caption-49", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 150.372);
+      tl.to("#caption-49", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 154.262);
+      tl.fromTo("#caption-50", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 154.362);
+      tl.to("#caption-50", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 158.337);
+      tl.fromTo("#caption-51", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 158.437);
+      tl.to("#caption-51", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 159.176);
+      tl.fromTo("#caption-52", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 159.276);
+      tl.to("#caption-52", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 163.869);
+      tl.fromTo("#caption-53", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 163.969);
+      tl.to("#caption-53", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 165.387);
+      tl.fromTo("#caption-54", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 165.487);
+      tl.to("#caption-54", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 168.378);
+      tl.fromTo("#caption-55", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 168.478);
+      tl.to("#caption-55", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 171.955);
+      tl.fromTo("#caption-56", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 172.055);
+      tl.to("#caption-56", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 175.099);
+      tl.fromTo("#caption-57", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 175.199);
+      tl.to("#caption-57", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 177.243);
+      tl.fromTo("#caption-58", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 177.343);
+      tl.to("#caption-58", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 181.314);
+      tl.fromTo("#caption-59", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 181.414);
+      tl.to("#caption-59", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 184.128);
+      tl.fromTo("#caption-60", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 184.228);
+      tl.to("#caption-60", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 187.814);
+      tl.fromTo("#caption-61", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 187.914);
+      tl.to("#caption-61", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 190.406);
+      tl.fromTo("#caption-62", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 190.506);
+      tl.to("#caption-62", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 194.991);
+      tl.fromTo("#caption-63", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 195.091);
+      tl.to("#caption-63", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 196.137);
+      tl.fromTo("#caption-64", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 196.237);
+      tl.to("#caption-64", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 200.358);
+      tl.fromTo("#caption-65", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 200.458);
+      tl.to("#caption-65", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 203.474);
+      tl.fromTo("#caption-66", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 203.574);
+      tl.to("#caption-66", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 207.080);
+      tl.fromTo("#caption-67", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 207.180);
+      tl.to("#caption-67", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 211.605);
+      tl.fromTo("#caption-68", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 211.705);
+      tl.to("#caption-68", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 212.736);
+      tl.fromTo("#caption-69", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 212.836);
+      tl.to("#caption-69", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 216.585);
+      tl.fromTo("#caption-70", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 216.685);
+      tl.to("#caption-70", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 220.327);
+      tl.fromTo("#caption-71", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 220.427);
+      tl.to("#caption-71", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 221.503);
+      tl.fromTo("#caption-72", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 221.603);
+      tl.to("#caption-72", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 223.041);
+      tl.fromTo("#caption-73", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 223.141);
+      tl.to("#caption-73", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 226.224);
+      tl.fromTo("#caption-74", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 226.324);
+      tl.to("#caption-74", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 229.118);
+      tl.fromTo("#caption-75", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 229.218);
+      tl.to("#caption-75", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 232.032);
+      tl.fromTo("#caption-76", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 232.132);
+      tl.to("#caption-76", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 235.317);
+      tl.fromTo("#caption-77", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 235.417);
+      tl.to("#caption-77", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 238.970);
+      tl.fromTo("#caption-78", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 239.070);
+      tl.to("#caption-78", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 243.146);
+      tl.fromTo("#caption-79", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 243.246);
+      tl.to("#caption-79", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 244.720);
+      tl.fromTo("#caption-80", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 244.820);
+      tl.to("#caption-80", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 248.381);
+      tl.fromTo("#caption-81", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 248.481);
+      tl.to("#caption-81", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 251.297);
+      tl.fromTo("#caption-82", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 251.397);
+      tl.to("#caption-82", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 255.328);
+      tl.fromTo("#caption-83", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 255.428);
+      tl.to("#caption-83", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 257.287);
+      tl.fromTo("#caption-84", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 257.387);
+      tl.to("#caption-84", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 260.710);
+      tl.fromTo("#caption-85", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 260.810);
+      tl.to("#caption-85", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 265.307);
+      tl.fromTo("#caption-86", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 265.407);
+      tl.to("#caption-86", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 269.711);
+      tl.fromTo("#caption-87", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 269.811);
+      tl.to("#caption-87", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 273.076);
+      tl.fromTo("#caption-88", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 273.176);
+      tl.to("#caption-88", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 276.922);
+      tl.fromTo("#caption-89", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 277.022);
+      tl.to("#caption-89", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 279.057);
+      tl.fromTo("#caption-90", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 279.157);
+      tl.to("#caption-90", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 283.466);
+      tl.fromTo("#caption-91", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 283.566);
+      tl.to("#caption-91", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 283.970);
+      tl.fromTo("#caption-92", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 284.070);
+      tl.to("#caption-92", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 288.361);
+      tl.fromTo("#caption-93", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 288.461);
+      tl.to("#caption-93", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 289.845);
+      tl.fromTo("#caption-94", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 289.945);
+      tl.to("#caption-94", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 294.454);
+      tl.fromTo("#caption-95", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 294.554);
+      tl.to("#caption-95", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 294.710);
+      tl.fromTo("#caption-96", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 294.810);
+      tl.to("#caption-96", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 298.470);
+      tl.fromTo("#caption-97", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 298.570);
+      tl.to("#caption-97", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 300.008);
+      tl.fromTo("#caption-98", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 300.108);
+      tl.to("#caption-98", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 302.508);
+      tl.fromTo("#caption-99", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 302.608);
+      tl.to("#caption-99", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 306.526);
+      tl.fromTo("#caption-100", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 306.626);
+      tl.to("#caption-100", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 308.239);
+      tl.fromTo("#caption-101", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 308.339);
+      tl.to("#caption-101", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 312.480);
+      tl.fromTo("#caption-102", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 312.580);
+      tl.to("#caption-102", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 316.734);
+      tl.fromTo("#caption-103", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 316.834);
+      tl.to("#caption-103", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 317.220);
+      tl.fromTo("#caption-104", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 317.320);
+      tl.to("#caption-104", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 322.048);
+      tl.fromTo("#caption-105", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 322.148);
+      tl.to("#caption-105", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 324.287);
+      tl.fromTo("#caption-106", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 324.387);
+      tl.to("#caption-106", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 328.134);
+      tl.fromTo("#caption-107", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 328.234);
+      tl.to("#caption-107", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 330.057);
+      tl.fromTo("#caption-108", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 330.157);
+      tl.to("#caption-108", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 333.834);
+      tl.fromTo("#caption-109", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 333.934);
+      tl.to("#caption-109", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 335.614);
+      tl.fromTo("#caption-110", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 335.714);
+      tl.to("#caption-110", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 339.914);
+      tl.fromTo("#caption-111", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 340.014);
+      tl.to("#caption-111", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 341.287);
+      tl.fromTo("#caption-112", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 341.387);
+      tl.to("#caption-112", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 343.153);
+      tl.fromTo("#caption-113", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 343.253);
+      tl.to("#caption-113", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 347.365);
+      tl.fromTo("#caption-114", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 347.465);
+      tl.to("#caption-114", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 349.797);
+      tl.fromTo("#caption-115", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 349.897);
+      tl.to("#caption-115", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 352.528);
+      tl.fromTo("#caption-116", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 352.628);
+      tl.to("#caption-116", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 356.669);
+      tl.fromTo("#caption-117", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 356.769);
+      tl.to("#caption-117", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 359.864);
+      tl.fromTo("#caption-118", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 359.964);
+      tl.to("#caption-118", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 363.751);
+      tl.fromTo("#caption-119", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 363.851);
+      tl.to("#caption-119", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 364.682);
+      tl.fromTo("#caption-120", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 364.782);
+      tl.to("#caption-120", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 367.730);
+      tl.fromTo("#caption-121", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 367.830);
+      tl.to("#caption-121", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 370.268);
+      tl.fromTo("#caption-122", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 370.368);
+      tl.to("#caption-122", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 374.236);
+      tl.fromTo("#caption-123", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 374.336);
+      tl.to("#caption-123", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 375.480);
+      tl.fromTo("#caption-124", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 375.580);
+      tl.to("#caption-124", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 379.228);
+      tl.fromTo("#caption-125", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 379.328);
+      tl.to("#caption-125", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 380.912);
+      tl.fromTo("#caption-126", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 381.012);
+      tl.to("#caption-126", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 384.968);
+      tl.fromTo("#caption-127", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 385.068);
+      tl.to("#caption-127", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 385.768);
+      tl.fromTo("#caption-128", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 385.868);
+      tl.to("#caption-128", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 389.719);
+      tl.fromTo("#caption-129", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 389.819);
+      tl.to("#caption-129", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 390.557);
+      tl.fromTo("#caption-130", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 390.657);
+      tl.to("#caption-130", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 394.692);
+      tl.fromTo("#caption-131", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 394.792);
+      tl.to("#caption-131", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 395.682);
+      tl.fromTo("#caption-132", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 395.782);
+      tl.to("#caption-132", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 398.614);
+      tl.fromTo("#caption-133", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 398.714);
+      tl.to("#caption-133", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 402.964);
+      tl.fromTo("#caption-134", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 403.064);
+      tl.to("#caption-134", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 404.864);
+      tl.fromTo("#caption-135", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 404.964);
+      tl.to("#caption-135", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 409.038);
+      tl.fromTo("#caption-136", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 409.138);
+      tl.to("#caption-136", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 412.153);
+      tl.fromTo("#caption-137", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 412.253);
+      tl.to("#caption-137", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 416.024);
+      tl.fromTo("#caption-138", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 416.124);
+      tl.to("#caption-138", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 418.605);
+      tl.fromTo("#caption-139", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 418.705);
+      tl.to("#caption-139", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 422.448);
+      tl.fromTo("#caption-140", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 422.548);
+      tl.to("#caption-140", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 425.451);
+      tl.fromTo("#caption-141", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 425.551);
+      tl.to("#caption-141", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 429.797);
+      tl.fromTo("#caption-142", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 429.897);
+      tl.to("#caption-142", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 431.970);
+      tl.fromTo("#caption-143", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 432.070);
+      tl.to("#caption-143", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 435.066);
+      tl.fromTo("#caption-144", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 435.166);
+      tl.to("#caption-144", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 438.832);
+      tl.fromTo("#caption-145", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 438.932);
+      tl.to("#caption-145", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 442.827);
+      tl.fromTo("#caption-146", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 442.927);
+      tl.to("#caption-146", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 446.422);
+      tl.fromTo("#caption-147", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 446.522);
+      tl.to("#caption-147", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 448.191);
+      tl.fromTo("#caption-148", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 448.291);
+      tl.to("#caption-148", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 452.397);
+      tl.fromTo("#caption-149", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 452.497);
+      tl.to("#caption-149", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 454.383);
+      tl.fromTo("#caption-150", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 454.483);
+      tl.to("#caption-150", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 455.922);
+      tl.fromTo("#caption-151", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 456.022);
+      tl.to("#caption-151", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 459.278);
+      tl.fromTo("#caption-152", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 459.378);
+      tl.to("#caption-152", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 462.912);
+      tl.fromTo("#caption-153", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 463.012);
+      tl.to("#caption-153", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 466.800);
+      tl.fromTo("#caption-154", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 466.900);
+      tl.to("#caption-154", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 470.274);
+      tl.fromTo("#caption-155", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 470.374);
+      tl.to("#caption-155", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 474.075);
+      tl.fromTo("#caption-156", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 474.175);
+      tl.to("#caption-156", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 474.459);
+      tl.fromTo("#caption-157", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 474.559);
+      tl.to("#caption-157", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 477.219);
+      tl.fromTo("#caption-158", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 477.319);
+      tl.to("#caption-158", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 479.440);
+      tl.fromTo("#caption-159", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 479.540);
+      tl.to("#caption-159", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 483.762);
+      tl.fromTo("#caption-160", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 483.862);
+      tl.to("#caption-160", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 486.142);
+      tl.fromTo("#caption-161", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 486.242);
+      tl.to("#caption-161", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 490.379);
+      tl.fromTo("#caption-162", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 490.479);
+      tl.to("#caption-162", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 491.632);
+      tl.fromTo("#caption-163", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 491.732);
+      tl.to("#caption-163", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 495.046);
+      tl.fromTo("#caption-164", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 495.146);
+      tl.to("#caption-164", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 498.584);
+      tl.fromTo("#caption-165", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 498.684);
+      tl.to("#caption-165", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 502.411);
+      tl.fromTo("#caption-166", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 502.511);
+      tl.to("#caption-166", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 506.911);
+      tl.fromTo("#caption-167", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 507.011);
+      tl.to("#caption-167", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 510.896);
+      tl.fromTo("#caption-168", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 510.996);
+      tl.to("#caption-168", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 512.103);
+      tl.fromTo("#caption-169", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 512.203);
+      tl.to("#caption-169", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 516.007);
+      tl.fromTo("#caption-170", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 516.107);
+      tl.to("#caption-170", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 519.879);
+      tl.fromTo("#caption-171", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 519.979);
+      tl.to("#caption-171", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 523.642);
+      tl.fromTo("#caption-172", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 523.742);
+      tl.to("#caption-172", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 526.988);
+      tl.fromTo("#caption-173", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 527.088);
+      tl.to("#caption-173", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 530.716);
+      tl.fromTo("#caption-174", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 530.816);
+      tl.to("#caption-174", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 534.498);
+      tl.fromTo("#caption-175", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 534.598);
+      tl.to("#caption-175", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 538.340);
+      tl.fromTo("#caption-176", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 538.440);
+      tl.to("#caption-176", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 542.123);
+      tl.fromTo("#caption-177", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 542.223);
+      tl.to("#caption-177", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 546.599);
+      tl.fromTo("#caption-178", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 546.699);
+      tl.to("#caption-178", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 551.139);
+      tl.fromTo("#caption-179", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 551.239);
+      tl.to("#caption-179", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 551.651);
+      tl.fromTo("#caption-180", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 551.751);
+      tl.to("#caption-180", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 555.652);
+      tl.fromTo("#caption-181", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 555.752);
+      tl.to("#caption-181", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 558.594);
+      tl.fromTo("#caption-182", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 558.694);
+      tl.to("#caption-182", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 561.286);
+      tl.fromTo("#caption-183", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 561.386);
+      tl.to("#caption-183", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 565.124);
+      tl.fromTo("#caption-184", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 565.224);
+      tl.to("#caption-184", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 566.478);
+      tl.fromTo("#caption-185", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 566.578);
+      tl.to("#caption-185", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 570.870);
+      tl.fromTo("#caption-186", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 570.970);
+      tl.to("#caption-186", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 572.334);
+      tl.fromTo("#caption-187", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 572.434);
+      tl.to("#caption-187", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 576.018);
+      tl.fromTo("#caption-188", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 576.118);
+      tl.to("#caption-188", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 578.123);
+      tl.fromTo("#caption-189", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 578.223);
+      tl.to("#caption-189", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 582.008);
+      tl.fromTo("#caption-190", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 582.108);
+      tl.to("#caption-190", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 586.144);
+      tl.fromTo("#caption-191", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 586.244);
+      tl.to("#caption-191", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 587.209);
+      tl.fromTo("#caption-192", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 587.309);
+      tl.to("#caption-192", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 588.748);
+      tl.fromTo("#caption-193", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 588.848);
+      tl.to("#caption-193", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 592.594);
+      tl.fromTo("#caption-194", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 592.694);
+      tl.to("#caption-194", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 596.748);
+      tl.fromTo("#caption-195", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 596.848);
+      tl.to("#caption-195", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 600.792);
+      tl.fromTo("#caption-196", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 600.892);
+      tl.to("#caption-196", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 604.780);
+      tl.fromTo("#caption-197", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 604.880);
+      tl.to("#caption-197", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 605.528);
+      tl.fromTo("#caption-198", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 605.628);
+      tl.to("#caption-198", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 608.906);
+      tl.fromTo("#caption-199", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 609.006);
+      tl.to("#caption-199", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 612.643);
+      tl.fromTo("#caption-200", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 612.743);
+      tl.to("#caption-200", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 617.122);
+      tl.fromTo("#caption-201", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 617.222);
+      tl.to("#caption-201", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 621.470);
+      tl.fromTo("#caption-202", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 621.570);
+      tl.to("#caption-202", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 621.865);
+      tl.fromTo("#caption-203", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 621.965);
+      tl.to("#caption-203", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 624.653);
+      tl.fromTo("#caption-204", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 624.753);
+      tl.to("#caption-204", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 629.054);
+      tl.fromTo("#caption-205", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 629.154);
+      tl.to("#caption-205", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 629.922);
+      tl.fromTo("#caption-206", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 630.022);
+      tl.to("#caption-206", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 633.047);
+      tl.fromTo("#caption-207", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 633.147);
+      tl.to("#caption-207", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 637.311);
+      tl.fromTo("#caption-208", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 637.411);
+      tl.to("#caption-208", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 639.192);
+      tl.fromTo("#caption-209", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 639.292);
+      tl.to("#caption-209", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 643.066);
+      tl.fromTo("#caption-210", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 643.166);
+      tl.to("#caption-210", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 646.884);
+      tl.fromTo("#caption-211", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 646.984);
+      tl.to("#caption-211", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 651.060);
+      tl.fromTo("#caption-212", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 651.160);
+      tl.to("#caption-212", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 651.413);
+      tl.fromTo("#caption-213", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 651.513);
+      tl.to("#caption-213", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 655.374);
+      tl.fromTo("#caption-214", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 655.474);
+      tl.to("#caption-214", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 656.422);
+      tl.fromTo("#caption-215", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 656.522);
+      tl.to("#caption-215", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 659.018);
+      tl.fromTo("#caption-216", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 659.118);
+      tl.to("#caption-216", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 663.311);
+      tl.fromTo("#caption-217", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 663.411);
+      tl.to("#caption-217", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 663.740);
+      tl.fromTo("#caption-218", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 663.840);
+      tl.to("#caption-218", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 668.551);
+      tl.fromTo("#caption-219", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 668.651);
+      tl.to("#caption-219", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 672.413);
+      tl.fromTo("#caption-220", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 672.513);
+      tl.to("#caption-220", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 673.951);
+      tl.fromTo("#caption-221", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 674.051);
+      tl.to("#caption-221", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 678.211);
+      tl.fromTo("#caption-222", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 678.311);
+      tl.to("#caption-222", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 682.105);
+      tl.fromTo("#caption-223", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 682.205);
+      tl.to("#caption-223", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 686.256);
+      tl.fromTo("#caption-224", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 686.356);
+      tl.to("#caption-224", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 689.944);
+      tl.fromTo("#caption-225", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 690.044);
+      tl.to("#caption-225", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 694.289);
+      tl.fromTo("#caption-226", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 694.389);
+      tl.to("#caption-226", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 695.511);
+      tl.fromTo("#caption-227", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 695.611);
+      tl.to("#caption-227", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 699.992);
+      tl.fromTo("#caption-228", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 700.092);
+      tl.to("#caption-228", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 704.011);
+      tl.fromTo("#caption-229", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 704.111);
+      tl.to("#caption-229", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 708.160);
+      tl.fromTo("#caption-230", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 708.260);
+      tl.to("#caption-230", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 710.906);
+      tl.fromTo("#caption-231", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 711.006);
+      tl.to("#caption-231", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 714.507);
+      tl.fromTo("#caption-232", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 714.607);
+      tl.to("#caption-232", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 718.377);
+      tl.fromTo("#caption-233", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 718.477);
+      tl.to("#caption-233", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 722.844);
+      tl.fromTo("#caption-234", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 722.944);
+      tl.to("#caption-234", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 726.992);
+      tl.fromTo("#caption-235", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 727.092);
+      tl.to("#caption-235", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 727.502);
+      tl.fromTo("#caption-236", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 727.602);
+      tl.to("#caption-236", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 731.019);
+      tl.fromTo("#caption-237", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 731.119);
+      tl.to("#caption-237", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 731.800);
+      tl.fromTo("#caption-238", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 731.900);
+      tl.to("#caption-238", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 735.598);
+      tl.fromTo("#caption-239", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 735.698);
+      tl.to("#caption-239", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 740.407);
+      tl.fromTo("#caption-240", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 740.507);
+      tl.to("#caption-240", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 743.184);
+      tl.fromTo("#caption-241", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 743.284);
+      tl.to("#caption-241", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 747.207);
+      tl.fromTo("#caption-242", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 747.307);
+      tl.to("#caption-242", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 747.877);
+      tl.fromTo("#caption-243", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 747.977);
+      tl.to("#caption-243", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 751.852);
+      tl.fromTo("#caption-244", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 751.952);
+      tl.to("#caption-244", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 752.761);
+      tl.fromTo("#caption-245", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 752.861);
+      tl.to("#caption-245", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 756.934);
+      tl.fromTo("#caption-246", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 757.034);
+      tl.to("#caption-246", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 758.473);
+      tl.fromTo("#caption-247", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 758.573);
+      tl.to("#caption-247", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 762.790);
+      tl.fromTo("#caption-248", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 762.890);
+      tl.to("#caption-248", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 766.752);
+      tl.fromTo("#caption-249", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 766.852);
+      tl.to("#caption-249", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 771.048);
+      tl.fromTo("#caption-250", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 771.148);
+      tl.to("#caption-250", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 773.909);
+      tl.fromTo("#caption-251", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 774.009);
+      tl.to("#caption-251", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 778.546);
+      tl.fromTo("#caption-252", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 778.646);
+      tl.to("#caption-252", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 778.938);
+      tl.fromTo("#caption-253", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 779.038);
+      tl.to("#caption-253", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 782.690);
+      tl.fromTo("#caption-254", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 782.790);
+      tl.to("#caption-254", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 784.082);
+      tl.fromTo("#caption-255", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 784.182);
+      tl.to("#caption-255", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 788.294);
+      tl.fromTo("#caption-256", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 788.394);
+      tl.to("#caption-256", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 792.140);
+      tl.fromTo("#caption-257", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 792.240);
+      tl.to("#caption-257", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 796.156);
+      tl.fromTo("#caption-258", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 796.256);
+      tl.to("#caption-258", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 800.171);
+      tl.fromTo("#caption-259", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 800.271);
+      tl.to("#caption-259", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 800.986);
+      tl.fromTo("#caption-260", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 801.086);
+      tl.to("#caption-260", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 805.412);
+      tl.fromTo("#caption-261", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 805.512);
+      tl.to("#caption-261", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 807.169);
+      tl.fromTo("#caption-262", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 807.269);
+      tl.to("#caption-262", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 810.361);
+      tl.fromTo("#caption-263", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 810.461);
+      tl.to("#caption-263", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 813.380);
+      tl.fromTo("#caption-264", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 813.480);
+      tl.to("#caption-264", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 817.724);
+      tl.fromTo("#caption-265", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 817.824);
+      tl.to("#caption-265", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 821.880);
+      tl.fromTo("#caption-266", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 821.980);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 0.400);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 51.300);
+      tl.to("#progress-fill-1", { scaleX: 1, duration: 51.600, ease: "none" }, 0.000);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 54.680);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 129.530);
+      tl.to("#progress-fill-2", { scaleX: 1, duration: 91.080, ease: "none" }, 51.600);
+      tl.to("#progress-label-1", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 51.600);
+      tl.to("#progress-label-2", { color: "#111413", duration: 0.2, ease: "power2.out" }, 51.600);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 145.760);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 221.303);
+      tl.to("#progress-fill-3", { scaleX: 1, duration: 89.352, ease: "none" }, 142.680);
+      tl.to("#progress-label-2", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 142.680);
+      tl.to("#progress-label-3", { color: "#111413", duration: 0.2, ease: "power2.out" }, 142.680);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 235.112);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 454.183);
+      tl.to("#progress-fill-4", { scaleX: 1, duration: 234.768, ease: "none" }, 232.032);
+      tl.to("#progress-label-3", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 232.032);
+      tl.to("#progress-label-4", { color: "#111413", duration: 0.2, ease: "power2.out" }, 232.032);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 469.880);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 587.009);
+      tl.to("#progress-fill-5", { scaleX: 1, duration: 133.992, ease: "none" }, 466.800);
+      tl.to("#progress-label-4", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 466.800);
+      tl.to("#progress-label-5", { color: "#111413", duration: 0.2, ease: "power2.out" }, 466.800);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 603.872);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 672.213);
+      tl.to("#progress-fill-6", { scaleX: 1, duration: 85.464, ease: "none" }, 600.792);
+      tl.to("#progress-label-5", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 600.792);
+      tl.to("#progress-label-6", { color: "#111413", duration: 0.2, ease: "power2.out" }, 600.792);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 689.336);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 756.734);
+      tl.to("#progress-fill-7", { scaleX: 1, duration: 84.792, ease: "none" }, 686.256);
+      tl.to("#progress-label-6", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 686.256);
+      tl.to("#progress-label-7", { color: "#111413", duration: 0.2, ease: "power2.out" }, 686.256);
+      tl.to("#progress-fill-8", { scaleX: 1, duration: 51.792, ease: "none" }, 771.048);
+      tl.to("#progress-label-7", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 771.048);
+      tl.to("#progress-label-8", { color: "#111413", duration: 0.2, ease: "power2.out" }, 771.048);
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
