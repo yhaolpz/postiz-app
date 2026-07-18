@@ -2,7 +2,7 @@
 
 ## 目标
 
-每天从高质量原始文章中提炼一个面向 AI/Agent 使用者的真实工作问题，同时制作英文和中文两条横屏长视频。英文版通过 Postiz 发布到 YouTube；中文版完成相同级别的内容、音视频和画面准出后保留本地成片，并通过浏览器把视频、文案和封面准备到哔哩哔哩与抖音上传页，最终发布必须由用户手动点击。
+每天从高质量原始文章中提炼一个面向 AI/Agent 使用者的真实工作问题，同时制作英文和中文两条横屏长视频。英文版通过 Postiz 发布到 YouTube；中文版完成相同级别的内容、音视频和画面准出后保留本地成片，并通过电脑操控使用用户的外部浏览器，把视频、文案和封面准备到哔哩哔哩、抖音与小红书上传页，最终发布必须由用户手动点击。
 
 内容定位为“Agent 工作方法”：帮助知识工作者、创作者、产品、运营、分析师、创业者和开发者更好地选择任务、委托工作、提供上下文、验收结果、控制风险和复用经验。
 
@@ -12,18 +12,23 @@
 
 | 项目 | 规则 |
 | --- | --- |
-| 执行时间 | 每天 `17:00`，Asia/Shanghai；比原定时间再晚 `4` 小时 |
+| 执行时间 | 每天 `15:00`，Asia/Shanghai |
 | 每日交付 | 同一主题的英文版和中文版各 `1` 条，使用相同内容地图与章节结构 |
-| 发布平台 | 仅英文版自动发布到 YouTube，`public`；中文版只准备哔哩哔哩与抖音上传表单，不自动发布 |
-| 中文上传页 | 哔哩哔哩：`https://member.bilibili.com/platform/upload/video/frame?page_from=creative_home_top_upload`；抖音：`https://creator.douyin.com/creator-micro/content/upload` |
+| 发布平台 | 仅英文版自动发布到 YouTube，`public`；中文版只准备哔哩哔哩、抖音与小红书上传表单，不自动发布 |
+| 中文上传页 | 哔哩哔哩：`https://member.bilibili.com/platform/upload/video/frame?page_from=creative_home_top_upload`；抖音：`https://creator.douyin.com/creator-micro/content/upload`；小红书：`https://creator.xiaohongshu.com/publish/publish?from=menu&target=video` |
 | 播放列表 | `AI Agents: From Chat to Done`，ID `PLJffvaWRvGC8` |
 | 英文声音 | `edge-tts` 的 `en-US-AnaNeural`，固定语速 `+30%` |
 | 中文声音 | `edge-tts` 的 `zh-CN-YunxiaNeural`，固定 `+50%` |
 | 视频规格 | `1920x1080`、`16:9`、`30fps`、H.264/AAC |
-| 双语封面 | 英文 `1280x720` 1 张；中文 `1280x720`、`1200x900`、`900x1200` 各 1 张。统一为 sRGB PNG 和大字号标题；英文随 Postiz 提交，哔哩哔哩默认使用中文 `4:3`，抖音默认使用中文 `3:4` |
-| 中文发布文案 | 每期汇总最终中文标题、完整简介、真实章节和 `#话题`，写入中文项目并填入两个中文平台的上传表单 |
+| 双语封面 | 英文 `1280x720` 1 张；中文 `1280x720`、`1200x900`、`900x1200` 各 1 张。统一为 sRGB PNG 和大字号标题；英文随 Postiz 提交；哔哩哔哩使用中文 `4:3` 作为投稿封面，并单独使用中文 `16:9` 作为“个人空间封面”；小红书使用中文 `4:3`；抖音必须分别把中文 `4:3` 上传到“横封面 4:3”、中文 `3:4` 上传到“竖封面 3:4”。所有平台封面都要逐槽位确认预览正确 |
+| 中文发布文案 | 每期汇总通用中文标题、小红书标题、完整简介和 `#话题`，写入中文项目并按平台规则填入上传表单。三个中文平台的简介均禁止加入章节标题、时间点或 `00:00` 一类时间戳；哔哩哔哩完成原生话题和标签绑定后，还必须删除简介里的整行 `#话题` 文本。小红书标题按页面计数口径不得超过 `20` 个字，通用标题超限时必须单独改写，不得截断半句 |
+| 话题绑定 | 简介中存在 `#文字` 不等于话题已生效。哔哩哔哩通过“搜索更多话题”选择一个最核心且真实匹配的“参与话题”，其余关键词逐个写入投稿页“标签”，随后删除平台默认或无关标签，尤其是 `记录`、`剪辑`、`生活记录`；抖音通过“#添加话题”逐个选择；小红书把光标依次放到每个 `#话题` 文本末尾，从弹出的候选中逐个点选。每个平台操作后都要重新读取页面，只有生成原生话题实体或标签胶囊才算生效 |
+| 小红书发布设置 | 每期都加入合集 `AI Agent 知识`，并选中原创声明；标题、简介、话题、封面、合集和原创声明全部确认后，停在最终发布按钮前 |
+| 浏览器执行原则 | 不为文案、标题改写、普通必填项或可安全推断的页面选项询问用户；通过电脑操控使用外部浏览器尽量完整准备三个平台，统一停在最终发布按钮前 |
 | 目标时长 | 优先 `9-13` 分钟，允许随内容在 `6-18` 分钟内浮动 |
 | 生产基线 | `scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md` |
+| 动画素材 | 活跃包由 `scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-active.json` 指向 `tiny-agent-v2`；新项目用 `prepare-tiny-agent-assets.mjs` 写入 `assets/pack`，编排时从 manifest 读取素材并在生成 HTML 前校验全部 id |
+| 中文平台发布手册 | `scripts/ai-video-pipeline/runbooks/tiny-agent-chinese-platform-publishing.md`，浏览器操作前必须读取并按平台完成证据复核 |
 | 实现参考 | `var/hyperframes-showcases/building-effective-agents-longform-zh-CN/` |
 | 选题归档 | `scripts/ai-video-pipeline/content-plans/tiny-agent-longform-archive.md` |
 | 本地视频保留 | 英文成功公开发布且进入目标播放列表后，中英文 MP4 保留 `48` 小时 |
@@ -35,7 +40,7 @@
 | 日期 | 来源与发布日期 | 视频方向 | 必须交付 | 状态 |
 | --- | --- | --- | --- | --- |
 | 2026-07-16 | Anthropic：[Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)，2024-12-19 | 别急着做多 Agent：怎样选择真正有效的 Agent 架构？ | Agent 架构选择顺序 | 英文已发布 |
-| 2026-07-17 | OpenAI：[How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)，2026-06-25 | 从聊天到干活：什么任务值得交给 Agent？ | 任务升级判断表 | 待执行 |
+| 2026-07-17 | OpenAI：[How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)，2026-06-25 | 从聊天到干活：什么任务值得交给 Agent？ | 任务升级判断表 | 英文已发布 |
 | 2026-07-18 | Microsoft：[2026 Work Trend Index](https://www.microsoft.com/en-us/worklab/work-trend-index/agents-human-agency-and-the-opportunity-for-every-organization)，2026-05-05 | 应该问 AI、和 AI 协作，还是把任务交给它？ | AI 四种工作模式图 | 待执行 |
 | 2026-07-19 | Anthropic：[A new way to reflect on how you use Claude](https://www.anthropic.com/news/reflect-with-claude)，2026-07-09 | 真正会用 AI 的人，强在哪四个能力？ | 4D AI 能力自查卡 | 待执行 |
 | 2026-07-20 | OpenAI：[How to use ChatGPT Work for everyday tasks](https://openai.com/academy/how-to-use-chatgpt-work-for-everyday-tasks/)，2026-04-23 | 把任务交给 Agent 前，需要写清哪些信息？ | Agent 任务委托单 | 待执行 |
@@ -61,14 +66,18 @@
 → 建立共享内容地图、章节结构和可复用产物
 → 分别生成自然英文脚本和中文脚本
 → 分别生成最终 TTS、VTT 和真实时间轴
+→ 把活跃素材包准备到两个新项目，并从 manifest 选择角色、方向和道具
 → 按各自旁白时间轴编排相同视觉语义
+→ 编译前校验 scene-plan 的全部素材 id 与观看者视角方向
 → 分别完成英文版和中文版全部准出检查
 → 生成英文发布标题、简介、章节、关键词和话题
 → 仅将英文版通过 Postiz 发布至 YouTube 指定播放列表
 → 验证英文公开视频和播放列表归属
-→ 打开哔哩哔哩与抖音上传页，上传中文 MP4，填写标题、简介、话题和对应比例封面
-→ 停在最终发布按钮之前，把两个页面交给用户确认并手动发布
-→ 在任务报告中提供中文版 MP4 路径和两个中文平台的表单准备状态
+→ 打开哔哩哔哩、抖音与小红书上传页，上传中文 MP4，填写标题、简介和对应比例封面；B 站同时设置投稿 4:3 与个人空间 16:9 两个封面槽位
+→ 通过各平台原生标签/话题控件绑定关键词，重新读取页面并确认不是普通文本
+→ 单独校验小红书标题按页面计数口径不超过 20 个字
+→ 停在最终发布按钮之前，把三个页面交给用户确认并手动发布
+→ 在任务报告中提供中文版 MP4 路径和三个中文平台的表单准备状态
 → 更新计划状态并写入归档
 ```
 
@@ -133,6 +142,8 @@ node scripts/ai-video-pipeline/cleanup-published-longform.mjs --apply
 - 同一篇文章允许在未来从不同问题切入，但只有核心结论、目标用户和可复用产物均明显不同才可重新使用，并在归档中互相引用。
 - 双语版本必须共享核心主旨、内容优先级、章节顺序和可复用产物，但脚本必须分别按英文和中文的自然表达编写，不做机械逐句翻译。
 - 英文版与中文版必须分别生成 TTS、VTT、`timing-map.json` 和 `animation-plan.json`。不得把一种语言的时间戳直接套用到另一种语言。
+- 新项目固定从 `tiny-agent-active.json` 读取活跃素材包，不维护角色或道具硬编码白名单。角色的 `left`、`right`、`front` 均以观看者视角为准；有方向动作必须在 `scene-plan.json` 同时写入 `humanDirection` 或 `agentDirection`，并通过 `assertTinyAgentScenePlanAssets(..., { requireDirectionMetadata: true })` 后才能编译。
+- 视频只引用 manifest 中的单张 PNG 路径和锚点，不依赖 sprite sheet 的行列位置，不对角色 PNG 运行时镜像。`tiny-agent-v1` 仅在 v2 缺失或 QA 失败时作为兼容回退，并在当次报告中明确记录。
 - 已生成但英文发布失败的选题仍进入归档，后续优先补投原英文视频，不重新制作同题视频；中文版路径继续保留。
 - 发布后记录英文最终标题、YouTube URL、播放列表、原文 URL、核心结论、可复用产物、英文产物路径和中文产物路径。
 - 计划和归档是选题事实源。不得只依赖 YouTube 标题判断是否重复。

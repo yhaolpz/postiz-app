@@ -1,0 +1,2425 @@
+{
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-17-agent-task-upgrade-longform-zh-CN/SCRIPT.zh-CN.md",
+  "timingSource": "edge-tts-vtt",
+  "chapters": [
+    {
+      "label": "前言",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "很多人现在使用 AI，仍然像在使用一个更会写作的搜索框。问一个问题，得到一段答案，真正的工作还是自己完成。",
+          "start": 0,
+          "end": 7.475
+        },
+        {
+          "number": 2,
+          "text": "Agent 改变的是工作的基本单位。你不再只问一个答案，而是把一段更长的任务交出去，让它读取文件、调用工具、修改产物、检查结果，再持续推进到明确终点。",
+          "start": 7.475,
+          "end": 17.65
+        },
+        {
+          "number": 3,
+          "text": "OpenAI 在二零二六年发布的 Codex 研究说明，这种变化正在加速。五月份，超过七成的抽样个人用户，至少提交过一次估计相当于人类一小时以上工作量的请求；四分之一提交过估计超过八小时的请求。非开发者使用也增长很快。但任务更长，不等于更适合委托。",
+          "start": 17.65,
+          "end": 34.941
+        },
+        {
+          "number": 4,
+          "text": "这期视频会说明怎样区分真正适合 Agent 的工作，怎样为任务准备上下文和验收方式，以及什么时候该用聊天、AI 副驾、受监督 Agent，或者可复用的委托流程。",
+          "start": 34.941,
+          "end": 44.85
+        },
+        {
+          "number": 5,
+          "text": "最后你会得到一张任务升级判断表，可以在交出研究、文档、表格、发布、运营或开发任务之前快速使用。",
+          "start": 44.85,
+          "end": 52.248
+        }
+      ]
+    },
+    {
+      "label": "工作转变",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "第一步，是不要再用消息数量衡量 AI 做了多少工作，而要看它最终产出了什么成品，或者让真实系统发生了什么变化。",
+          "start": 52.248,
+          "end": 59.531
+        },
+        {
+          "number": 2,
+          "text": "研究区分了咨询和委托生产。咨询是提供信息或建议；委托生产则要求系统生成文档、转换数据、修改系统、验证变更，或者完成一整段流程。",
+          "start": 59.531,
+          "end": 69.239
+        },
+        {
+          "number": 3,
+          "text": "它可以出现在很多任务中：根据资料起草备忘录，清理表格并核对总数，排查一个失败的应用，准备一场活动，或者生成带引用的结构化研究报告。",
+          "start": 69.239,
+          "end": 78.073
+        },
+        {
+          "number": 4,
+          "text": "任务时长的变化，说明用户开始相信 Agent 能接住更大的工作单元。到二零二六年五月，百分之八十点六的抽样个人用户提交过一次估计超过三十分钟人类工作量的请求；百分之七十点二超过一小时；百分之二十五点六超过八小时。",
+          "start": 78.073,
+          "end": 92.464
+        },
+        {
+          "number": 5,
+          "text": "而且一段对话里最宽、最复杂的要求，通常出现在第一轮。后面的内容更多是纠偏和收窄。所以高质量委托应该从一个完整的任务包开始，而不是只写一句模糊要求，再用二十轮对话补齐漏掉的信息。",
+          "start": 92.464,
+          "end": 105.66399999999999
+        },
+        {
+          "number": 6,
+          "text": "高频用户组织工作的方式也不同。他们运行更长的任务，复用 Skill，有时还会并行协调几个相互独立的 Agent。人的角色从亲手输入每一步，转向定义任务、观察进度、检查证据和决定何时介入。",
+          "start": 105.66399999999999,
+          "end": 118.30599999999998
+        },
+        {
+          "number": 7,
+          "text": "这些数字需要保留边界。人类完成时长是模型估计，只能作为方向性证据。OpenAI 内部还具备更低的使用摩擦、更广的工具访问和更强的知识共享，因此不能把内部采用速度直接当成每个团队都会发生的结果。",
+          "start": 118.30599999999998,
+          "end": 131.964
+        },
+        {
+          "number": 8,
+          "text": "小结。",
+          "start": 131.964,
+          "end": 132.80599999999998
+        },
+        {
+          "number": 9,
+          "text": "第一，看产出的成品或变化，不看消息数量。",
+          "start": 132.80599999999998,
+          "end": 135.948
+        },
+        {
+          "number": 10,
+          "text": "第二，委托完整任务包，不要每轮纠偏才补一块关键上下文。",
+          "start": 135.948,
+          "end": 140.048
+        },
+        {
+          "number": 11,
+          "text": "第三，把任务时长数据看成工作转变的证据，不把所有长任务都自动交给 Agent。",
+          "start": 140.048,
+          "end": 145.512
+        }
+      ]
+    },
+    {
+      "label": "任务适配",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "一个任务很长，不代表它就是好 Agent 任务。真正的问题，是这项工作有没有足够清楚的结构，让 Agent 可以持续推进，而不是自己编造现实。",
+          "start": 145.512,
+          "end": 154.278
+        },
+        {
+          "number": 2,
+          "text": "第一个条件是明确产物。要求应该落到一个完成后的文件或可观察变化，例如清理好的数据、通过测试的补丁、核对完成的报告，或者等待人工确认的发布草稿。",
+          "start": 154.278,
+          "end": 164.287
+        },
+        {
+          "number": 3,
+          "text": "如果只说帮我做营销，范围虽然很大，但完成标准完全看不见。更好的任务会写清目标人群、资料来源、输出格式、限制条件，以及这个结果最终要支持哪个决策。",
+          "start": 164.287,
+          "end": 174.937
+        },
+        {
+          "number": 4,
+          "text": "第二个条件是可访问的上下文和工具。Agent 必须拿到任务真正需要的文件、系统、参考资料和权限。如果关键背景只存在于某个人脑中，或者藏在它无法访问的应用里，这项工作就还不适合独立执行。",
+          "start": 174.937,
+          "end": 188.112
+        },
+        {
+          "number": 5,
+          "text": "第三个条件是可信反馈。代码任务可以跑测试，数据任务可以核对总数和结构，浏览器任务可以确认页面是否发生预期变化，研究任务可以附上引用并标出无法支持的结论。没有反馈，Agent 可能一直前进，却离正确越来越远。",
+          "start": 188.112,
+          "end": 202.72
+        },
+        {
+          "number": 6,
+          "text": "第四个条件是风险可控。读取、起草和准备通常容易撤销；发送消息、花钱、删除数据、修改生产环境和公开发布，出错后很难恢复。这些动作需要更窄的权限和明确的人工确认点。",
+          "start": 202.72,
+          "end": 215.64499999999998
+        },
+        {
+          "number": 7,
+          "text": "当任务同时具备明确产物、可访问上下文、可信反馈和可控风险时，委托才从一次冒险，变成可以设计和管理的工作方式。",
+          "start": 215.64499999999998,
+          "end": 223.637
+        },
+        {
+          "number": 8,
+          "text": "小结。",
+          "start": 223.637,
+          "end": 224.478
+        },
+        {
+          "number": 9,
+          "text": "第一，定义明确的成品或可观察变化。",
+          "start": 224.478,
+          "end": 227.337
+        },
+        {
+          "number": 10,
+          "text": "第二，提供判断进展需要的上下文、工具和反馈。",
+          "start": 227.337,
+          "end": 230.787
+        },
+        {
+          "number": 11,
+          "text": "第三，增加自治之前先把风险边界写清楚。",
+          "start": 230.787,
+          "end": 234.216
+        }
+      ]
+    },
+    {
+      "label": "升级判断",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "任务升级判断表，会把刚才四个条件变成四道实际门槛。",
+          "start": 234.216,
+          "end": 238.007
+        },
+        {
+          "number": 2,
+          "text": "第一道门槛，产物是否明确。如果只是想得到解释、比较或灵感，就保留在聊天里；如果需要一个完成后的成品，再继续向下判断。",
+          "start": 238.007,
+          "end": 246.399
+        },
+        {
+          "number": 3,
+          "text": "第二道门槛，工作是否形成连续行动链。Agent 要能从资料走到行动，再走到结果，中间不需要反复等待隐藏信息。如果链路被不可访问的系统或没有记录的决策打断，就先把 AI 当成副驾，由人完成缺失步骤。",
+          "start": 246.399,
+          "end": 259.616
+        },
+        {
+          "number": 4,
+          "text": "第三道门槛，推进过程是否产生证据。每个重要步骤都应该返回会改变计划的信号，例如测试结果、结构校验、来源引用、预览画面、核对总数或平台返回。如果有证据但仍需要复杂判断，就使用受监督 Agent，并设置检查点。",
+          "start": 259.616,
+          "end": 274.591
+        },
+        {
+          "number": 5,
+          "text": "第四道门槛，权限和后果是否可控。容易撤销的工作可以自动继续；不可逆的工作必须在动作前停下，请求人来确认。Agent 很有用，并不意味着它需要无限权限。",
+          "start": 274.591,
+          "end": 285.449
+        },
+        {
+          "number": 6,
+          "text": "这张表是根据研究证据整理出的实践工具，不是从 OpenAI 原文复制出来的表格。它的作用，是把从对话转向委托这件事，变成今天就能使用的判断。",
+          "start": 285.449,
+          "end": 294.599
+        },
+        {
+          "number": 7,
+          "text": "先看表格清理。产物是修正后的工作簿，输入已经提供，公式和总数可以作为反馈，原文件也能保留，所以它通常可以升级到受监督或自动委托。",
+          "start": 294.599,
+          "end": 304.024
+        },
+        {
+          "number": 8,
+          "text": "再看邮件发布。资料整理、起草、排版、链接检查和预览都可以委托，但最终外发影响更大，所以即使所有准备步骤通过，流程也应该停在发送按钮之前。",
+          "start": 304.024,
+          "end": 314.266
+        },
+        {
+          "number": 9,
+          "text": "研究任务只有在资料可访问、观点能对应证据、不确定性能够暴露，并且交付物有验收标准时才适合委托。让 Agent 根据残缺来源直接决定高风险政策，不会因为任务很长就自动变得安全。",
+          "start": 314.266,
+          "end": 326.649
+        },
+        {
+          "number": 10,
+          "text": "因此四种工作模式很清楚。需要答案，用聊天；行动链仍由人掌握，用 AI 副驾；链路已经成立但需要检查点或专业判断，用受监督 Agent；四道门槛都成立，而且流程足够稳定时，再使用可复用的委托工作流。",
+          "start": 326.649,
+          "end": 340.56600000000003
+        },
+        {
+          "number": 11,
+          "text": "小结。",
+          "start": 340.56600000000003,
+          "end": 341.40700000000004
+        },
+        {
+          "number": 12,
+          "text": "第一，一次只把工作模式升级一道门槛。",
+          "start": 341.40700000000004,
+          "end": 344.199
+        },
+        {
+          "number": 13,
+          "text": "第二，不可逆动作必须保留明确的人工确认。",
+          "start": 344.199,
+          "end": 347.199
+        },
+        {
+          "number": 14,
+          "text": "第三，选择能够稳定产出结果的最低自治模式。",
+          "start": 347.199,
+          "end": 350.544
+        }
+      ]
+    },
+    {
+      "label": "上下文与反馈",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "任务通过判断表以后，下一步是给 Agent 足够的真实依据。",
+          "start": 350.544,
+          "end": 353.977
+        },
+        {
+          "number": 2,
+          "text": "一个有效的上下文包包含五项：目标、当前状态、相关文件或系统、限制条件，以及完成标准。上下文不是越多越好，最有价值的是能让 Agent 不靠猜测就行动的最小完整集合。",
+          "start": 353.977,
+          "end": 365.702
+        },
+        {
+          "number": 3,
+          "text": "工具访问也要和任务匹配。文档任务可能需要资料目录和输出路径；数据任务需要工作簿和校验规则；发布任务需要有登录状态的页面、最终文案、封面，以及停在发布按钮之前的明确边界。",
+          "start": 365.702,
+          "end": 378.144
+        },
+        {
+          "number": 4,
+          "text": "然后设计反馈循环。Agent 执行动作，读取真实结果，对照验收标准，再决定继续、修复还是停止。",
+          "start": 378.144,
+          "end": 385.00199999999995
+        },
+        {
+          "number": 5,
+          "text": "这才是 Agent 路径真正动态的原因。计划可以因为证据而改变，不能因为模型自己感觉良好而改变。测试失败、来源缺失、文件无效或平台拒绝，都应该成为新的决策，而不是被隐藏的细节。",
+          "start": 385.00199999999995,
+          "end": 397.435
+        },
+        {
+          "number": 6,
+          "text": "长任务还要有可见检查点。保存中间产物，记录工具返回，保留失败原因，让当前状态可以恢复。人应该能看清改了什么、还剩什么，以及 Agent 为什么认为任务已经完成。",
+          "start": 397.435,
+          "end": 409.01
+        },
+        {
+          "number": 7,
+          "text": "这套方法不只适用于代码。招聘流程可以检查必填信息并在外联前停止；财务流程可以核对总数并暴露异常；内容流程可以先检查尺寸、章节和链接，再请求最终发布确认。",
+          "start": 409.01,
+          "end": 420.935
+        },
+        {
+          "number": 8,
+          "text": "小结。",
+          "start": 420.935,
+          "end": 421.777
+        },
+        {
+          "number": 9,
+          "text": "第一，准备包含目标、状态、上下文、限制和完成标准的最小完整任务包。",
+          "start": 421.777,
+          "end": 426.894
+        },
+        {
+          "number": 10,
+          "text": "第二，让每个重要动作都返回能够改变计划的证据。",
+          "start": 426.894,
+          "end": 430.26
+        },
+        {
+          "number": 11,
+          "text": "第三，保留检查点，让任务可以验收、继续和恢复。",
+          "start": 430.26,
+          "end": 433.99199999999996
+        }
+      ]
+    },
+    {
+      "label": "风险与验收",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "委托不会消除人的判断，而是改变人的判断应该放在哪里。",
+          "start": 433.99199999999996,
+          "end": 437.64199999999994
+        },
+        {
+          "number": 2,
+          "text": "读取、搜索、起草和准备这类低风险动作，通常可以给予更大的自治空间；发送、付款、删除、修改生产环境和公开声明，则需要更窄的权限。",
+          "start": 437.64199999999994,
+          "end": 447.51699999999994
+        },
+        {
+          "number": 3,
+          "text": "人工确认应该放在不可逆动作发生之前，并且让 Agent 先准备好判断所需的证据。不要让每一次无害读取都等待批准，也不要在破坏已经发生后才开始验收。",
+          "start": 447.51699999999994,
+          "end": 457.35799999999995
+        },
+        {
+          "number": 4,
+          "text": "验收能力本身也是瓶颈。如果 Agent 产出十倍内容，但结果仍然很难检查，总体效率未必提升。",
+          "start": 457.35799999999995,
+          "end": 463.82499999999993
+        },
+        {
+          "number": 5,
+          "text": "因此要在执行前设计验收标准。可以要求差异报告、检查清单、核对结果、来源引用、测试记录或预览画面。最好的验收产物，会让重要问题直接暴露，而不要求人重新拼出整个过程。",
+          "start": 463.82499999999993,
+          "end": 476.17499999999995
+        },
+        {
+          "number": 6,
+          "text": "还可以在风险变化的地方拆分流程。研究和起草可以自动进行，对外发送单独进入确认阶段；数据转换可以自动完成，但删除源记录继续明确禁止。",
+          "start": 476.17499999999995,
+          "end": 486.09999999999997
+        },
+        {
+          "number": 7,
+          "text": "为上下文缺失、连续失败、预算上限和结果含糊设置停止条件。知道什么时候该停的 Agent，比任何时候都声称完成的 Agent 更可靠。",
+          "start": 486.09999999999997,
+          "end": 494.808
+        },
+        {
+          "number": 8,
+          "text": "小结。",
+          "start": 494.808,
+          "end": 495.65
+        },
+        {
+          "number": 9,
+          "text": "第一，可撤销的准备工作可以扩大自治，不可逆行动必须缩小权限。",
+          "start": 495.65,
+          "end": 500.10799999999995
+        },
+        {
+          "number": 10,
+          "text": "第二，执行前定义验收证据，让检查成本保持可控。",
+          "start": 500.10799999999995,
+          "end": 503.69999999999993
+        },
+        {
+          "number": 11,
+          "text": "第三，上下文缺失、连续失败或完成状态含糊时必须停止。",
+          "start": 503.69999999999993,
+          "end": 508.29599999999994
+        }
+      ]
+    },
+    {
+      "label": "流程复用",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "最成熟的 Agent 使用者，不只是把更大的任务交出去，还会把重复工作变成可复用流程。",
+          "start": 508.29599999999994,
+          "end": 513.679
+        },
+        {
+          "number": 2,
+          "text": "OpenAI 的研究发现，越来越多用户通过 Skill 和插件保存指令、工具访问和操作上下文。到二零二六年六月，大约四分之一的活跃个人用户，以及接近三分之一的活跃组织用户，至少调用过一个 Skill。",
+          "start": 513.679,
+          "end": 525.6039999999999
+        },
+        {
+          "number": 3,
+          "text": "可以先找出那些目标、输入、限制和验收标准长期相似的重复任务。",
+          "start": 525.6039999999999,
+          "end": 530.396
+        },
+        {
+          "number": 4,
+          "text": "然后把操作方法写进流程：上下文在哪里，应该使用哪些工具，什么顺序不能改变，哪些检查必须通过，哪些动作明确禁止，以及在哪里需要人工确认。",
+          "start": 530.396,
+          "end": 540.054
+        },
+        {
+          "number": 5,
+          "text": "流程还要保留版本和证据。发生失败以后，应该修改操作规则或工具接口，而不是指望下一次 Agent 还能记得某一轮对话。",
+          "start": 540.054,
+          "end": 547.771
+        },
+        {
+          "number": 6,
+          "text": "只有任务彼此独立，而且验收负担仍然可控时，并行才有价值。三个 Agent 可以分别研究不同市场，或者检查不同模块；但没有协同和归属规则时，不应该同时修改同一个产物。",
+          "start": 547.771,
+          "end": 558.9209999999999
+        },
+        {
+          "number": 7,
+          "text": "人的角色会更像流程设计者和任务组合管理者：选择工作、分配上下文、观察阻塞、验收高影响产物，再从真实失败中改进可复用系统。",
+          "start": 558.9209999999999,
+          "end": 568.121
+        },
+        {
+          "number": 8,
+          "text": "小结。",
+          "start": 568.121,
+          "end": 568.962
+        },
+        {
+          "number": 9,
+          "text": "第一，把输入、限制和检查方式稳定重复的任务标准化。",
+          "start": 568.962,
+          "end": 572.8119999999999
+        },
+        {
+          "number": 10,
+          "text": "第二，复用能够保存上下文、工具、权限和证据的操作流程。",
+          "start": 572.8119999999999,
+          "end": 577.0459999999999
+        },
+        {
+          "number": 11,
+          "text": "第三，只有归属和验收清楚时，才并行执行相互独立的工作。",
+          "start": 577.0459999999999,
+          "end": 581.328
+        }
+      ]
+    },
+    {
+      "label": "总结",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "最后，把完整方法记成三句话。",
+          "start": 581.328,
+          "end": 583.636
+        },
+        {
+          "number": 2,
+          "text": "第一，委托有明确产物的工作，不委托模糊主题。",
+          "start": 583.636,
+          "end": 586.861
+        },
+        {
+          "number": 3,
+          "text": "第二，Agent 独立行动前，必须具备可访问上下文和可信反馈。",
+          "start": 586.861,
+          "end": 591.153
+        },
+        {
+          "number": 4,
+          "text": "第三，限制权限，把人工确认放在不可逆动作之前。",
+          "start": 591.153,
+          "end": 594.978
+        },
+        {
+          "number": 5,
+          "text": "任务升级判断表只会在条件成立时，把工作从聊天升级为 AI 副驾、受监督 Agent，再升级为委托工作流。目标不是获得最大自治，而是在减少人工操作的同时，稳定产出并保留控制。",
+          "start": 594.978,
+          "end": 606.986
+        },
+        {
+          "number": 6,
+          "text": "关注 Tiny Agent，持续获得可以直接使用的 AI 和 Agent 工作方法：选择任务、准备上下文、验收结果、控制风险，再把一次成功委托变成可重复的流程。",
+          "start": 606.986,
+          "end": 616.944
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "c01-s01",
+      "chapter": "前言",
+      "paragraphs": [
+        1,
+        1
+      ],
+      "start": 0,
+      "end": 7.475,
+      "transition": {
+        "primeAt": 0,
+        "contentRevealAt": 0,
+        "contentAt": 0.16,
+        "humanAt": 0.16,
+        "agentAt": 0.2
+      },
+      "propBeatTimes": [
+        1.4396296296296294,
+        1.4396296296296294
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "仍然像在使用一个更会写作的搜索框",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 1.5196296296296294,
+          "time": 1.4396296296296294,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 475.869140625,
+        "gap": 204.46914062500002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 415.14126189887315,
+        "offsetX": 0,
+        "offsetY": -54.858738101126846,
+        "rawOffsetX": -59.32708349972722,
+        "rawOffsetY": -99.85873810112685,
+        "appliedShiftX": 59.32708349972722,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c01-s02",
+      "chapter": "前言",
+      "paragraphs": [
+        2,
+        3
+      ],
+      "start": 7.475,
+      "end": 34.941,
+      "transition": {
+        "primeAt": 7.455,
+        "contentRevealAt": 7.475,
+        "contentAt": 7.515,
+        "humanAt": 7.515,
+        "agentAt": 7.555
+      },
+      "propBeatTimes": [
+        8.034705882352942,
+        8.034705882352942,
+        8.034705882352942,
+        8.034705882352942
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "改变的是工作的基本单位",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 8.114705882352942,
+          "time": 8.034705882352942,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 981.4186607796494,
+        "y": 470,
+        "offsetX": 21.41866077964937,
+        "offsetY": 0,
+        "rawOffsetX": 21.41866077964937,
+        "rawOffsetY": -25.169579292252763,
+        "appliedShiftX": 0,
+        "appliedShiftY": 25.169579292252763
+      }
+    },
+    {
+      "id": "c01-s03",
+      "chapter": "前言",
+      "paragraphs": [
+        4,
+        5
+      ],
+      "start": 34.941,
+      "end": 52.248,
+      "transition": {
+        "primeAt": 34.921,
+        "contentRevealAt": 34.941,
+        "contentAt": 34.981,
+        "humanAt": 34.981,
+        "agentAt": 35.021
+      },
+      "propBeatTimes": [
+        46.01817021276596,
+        46.01817021276596,
+        46.01817021276596
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "任务升级判断表",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 46.09817021276596,
+          "time": 46.01817021276596,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 226.2,
+        "gap": 24
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 469.1055638158321,
+        "offsetX": 0,
+        "offsetY": -0.894436184167887,
+        "rawOffsetX": -131.7316573556035,
+        "rawOffsetY": -45.94387056564523,
+        "appliedShiftX": 131.7316573556035,
+        "appliedShiftY": 45.04943438147734
+      }
+    },
+    {
+      "id": "c02-s01",
+      "chapter": "工作转变",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 52.248,
+      "end": 69.239,
+      "transition": {
+        "primeAt": 54.407999999999994,
+        "contentRevealAt": 54.428,
+        "contentAt": 54.587999999999994,
+        "humanAt": 54.587999999999994,
+        "agentAt": 54.62799999999999
+      },
+      "propBeatTimes": [
+        59.75746153846154,
+        59.75746153846154,
+        59.75746153846154
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "区分了咨询和委托生产",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 59.83746153846154,
+          "time": 59.75746153846154,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 996.8590320599068,
+        "y": 470,
+        "offsetX": 36.85903205990678,
+        "offsetY": 0,
+        "rawOffsetX": 36.85903205990678,
+        "rawOffsetY": -47.037927449399376,
+        "appliedShiftX": 0,
+        "appliedShiftY": 47.037927449399376
+      }
+    },
+    {
+      "id": "c02-s02",
+      "chapter": "工作转变",
+      "paragraphs": [
+        3,
+        3
+      ],
+      "start": 69.239,
+      "end": 78.073,
+      "transition": {
+        "primeAt": 69.21900000000001,
+        "contentRevealAt": 69.239,
+        "contentAt": 69.27900000000001,
+        "humanAt": 69.27900000000001,
+        "agentAt": 69.31900000000002
+      },
+      "propBeatTimes": [
+        69.56672307692308,
+        69.56672307692308,
+        69.56672307692308,
+        69.56672307692308
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "出现在很多任务中",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 69.64672307692308,
+          "time": 69.56672307692308,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 307.30625,
+        "gap": 105.10624999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 468.051088929649,
+        "offsetX": 0,
+        "offsetY": -1.9489110703510164,
+        "rawOffsetX": 98.86744172275598,
+        "rawOffsetY": -49.348911070350994,
+        "appliedShiftX": -98.86744172275598,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "id": "c02-s03",
+      "chapter": "工作转变",
+      "paragraphs": [
+        4,
+        5
+      ],
+      "start": 78.073,
+      "end": 105.66399999999999,
+      "transition": {
+        "primeAt": 78.053,
+        "contentRevealAt": 78.073,
+        "contentAt": 78.113,
+        "humanAt": 78.113,
+        "agentAt": 78.153
+      },
+      "propBeatTimes": [
+        78.29299999999999,
+        78.29299999999999,
+        78.29299999999999,
+        78.29299999999999
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "任务时长的变化",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 78.073,
+          "time": 78.29299999999999,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 406.328125,
+        "gap": 204.128125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 949.1230574030883,
+        "y": 470,
+        "offsetX": -10.876942596911704,
+        "offsetY": 0,
+        "rawOffsetX": -10.876942596911704,
+        "rawOffsetY": -38.57673938708922,
+        "appliedShiftX": 0,
+        "appliedShiftY": 38.57673938708922
+      }
+    },
+    {
+      "id": "c02-s04",
+      "chapter": "工作转变",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 105.66399999999999,
+      "end": 118.30599999999998,
+      "transition": {
+        "primeAt": 105.64399999999999,
+        "contentRevealAt": 105.66399999999999,
+        "contentAt": 105.704,
+        "humanAt": 105.704,
+        "agentAt": 105.744
+      },
+      "propBeatTimes": [
+        106.14399999999999,
+        106.14399999999999,
+        106.14399999999999,
+        106.14399999999999
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "组织工作的方式也不同",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 106.22399999999999,
+          "time": 106.14399999999999,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 315.275,
+        "gap": 113.07499999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 458.66252959212574,
+        "offsetX": 0,
+        "offsetY": -11.337470407874264,
+        "rawOffsetX": -101.10268452845571,
+        "rawOffsetY": -58.73747040787424,
+        "appliedShiftX": 101.10268452845571,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "id": "c02-s05",
+      "chapter": "工作转变",
+      "paragraphs": [
+        7,
+        7
+      ],
+      "start": 118.30599999999998,
+      "end": 131.964,
+      "transition": {
+        "primeAt": 118.28599999999999,
+        "contentRevealAt": 118.30599999999998,
+        "contentAt": 118.34599999999999,
+        "humanAt": 118.34599999999999,
+        "agentAt": 118.386
+      },
+      "propBeatTimes": [
+        118.52599999999998,
+        118.52599999999998
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "这些数字需要保留边界",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 118.30599999999998,
+          "time": 118.52599999999998,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 430.859375,
+        "gap": 228.659375
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": 100.53245466197654,
+        "rawOffsetY": -65.16202386467342,
+        "appliedShiftX": -100.53245466197654,
+        "appliedShiftY": 65.16202386467342
+      }
+    },
+    {
+      "id": "c02-s06",
+      "chapter": "工作转变",
+      "paragraphs": [
+        8,
+        11
+      ],
+      "start": 131.964,
+      "end": 145.512,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        132.80599999999998,
+        135.948,
+        140.048
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c03-s01",
+      "chapter": "任务适配",
+      "paragraphs": [
+        1,
+        3
+      ],
+      "start": 145.512,
+      "end": 174.937,
+      "transition": {
+        "primeAt": 147.672,
+        "contentRevealAt": 147.692,
+        "contentAt": 147.852,
+        "humanAt": 147.852,
+        "agentAt": 147.892
+      },
+      "propBeatTimes": [
+        154.19799999999998,
+        154.19799999999998,
+        154.19799999999998,
+        154.19799999999998
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第一个条件是明确产物",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 154.278,
+          "time": 154.19799999999998,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1012.8420997106609,
+        "y": 470,
+        "offsetX": 52.84209971066093,
+        "offsetY": 0,
+        "rawOffsetX": 52.84209971066093,
+        "rawOffsetY": -28.015464868713707,
+        "appliedShiftX": 0,
+        "appliedShiftY": 28.015464868713707
+      }
+    },
+    {
+      "id": "c03-s02",
+      "chapter": "任务适配",
+      "paragraphs": [
+        4,
+        4
+      ],
+      "start": 174.937,
+      "end": 188.112,
+      "transition": {
+        "primeAt": 174.917,
+        "contentRevealAt": 174.937,
+        "contentAt": 174.977,
+        "humanAt": 174.977,
+        "agentAt": 175.017
+      },
+      "propBeatTimes": [
+        175.76582352941176,
+        175.76582352941176,
+        175.76582352941176
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "可访问的上下文和工具",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 175.84582352941177,
+          "time": 175.76582352941176,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 406.328125,
+        "gap": 204.128125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 984.2794598924476,
+        "y": 470,
+        "offsetX": 24.279459892447562,
+        "offsetY": 0,
+        "rawOffsetX": 24.279459892447562,
+        "rawOffsetY": -46.7224393228899,
+        "appliedShiftX": 0,
+        "appliedShiftY": 46.7224393228899
+      }
+    },
+    {
+      "id": "c03-s03",
+      "chapter": "任务适配",
+      "paragraphs": [
+        5,
+        5
+      ],
+      "start": 188.112,
+      "end": 202.72,
+      "transition": {
+        "primeAt": 188.09199999999998,
+        "contentRevealAt": 188.112,
+        "contentAt": 188.152,
+        "humanAt": 188.152,
+        "agentAt": 188.19199999999998
+      },
+      "propBeatTimes": [
+        188.332,
+        188.332,
+        188.332,
+        188.332
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第三个条件是可信反馈",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 188.112,
+          "time": 188.332,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 312.61875,
+        "gap": 110.41874999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 464.0864320575989,
+        "offsetX": 0,
+        "offsetY": -5.913567942401073,
+        "rawOffsetX": -85.91555811233957,
+        "rawOffsetY": -53.31356794240105,
+        "appliedShiftX": 85.91555811233957,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "id": "c03-s04",
+      "chapter": "任务适配",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 202.72,
+      "end": 215.64499999999998,
+      "transition": {
+        "primeAt": 202.7,
+        "contentRevealAt": 202.72,
+        "contentAt": 202.76,
+        "humanAt": 202.76,
+        "agentAt": 202.79999999999998
+      },
+      "propBeatTimes": [
+        202.94,
+        202.94,
+        202.94,
+        202.94
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第四个条件是风险可控",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 202.72,
+          "time": 202.94,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 966.5987759115455,
+        "y": 470,
+        "offsetX": 6.598775911545545,
+        "offsetY": 0,
+        "rawOffsetX": 6.598775911545545,
+        "rawOffsetY": 7.184885318194802,
+        "appliedShiftX": 0,
+        "appliedShiftY": -7.184885318194802
+      }
+    },
+    {
+      "id": "c03-s05",
+      "chapter": "任务适配",
+      "paragraphs": [
+        7,
+        7
+      ],
+      "start": 215.64499999999998,
+      "end": 223.637,
+      "transition": {
+        "primeAt": 215.62499999999997,
+        "contentRevealAt": 215.64499999999998,
+        "contentAt": 215.68499999999997,
+        "humanAt": 215.68499999999997,
+        "agentAt": 215.72499999999997
+      },
+      "propBeatTimes": [
+        216.60099999999997,
+        216.60099999999997,
+        216.60099999999997,
+        216.60099999999997
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "明确产物、可访问上下文、可信反馈和可控风险",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 216.68099999999998,
+          "time": 216.60099999999997,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 390.90625,
+        "gap": 119.50625000000002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 447.826459895667,
+        "offsetX": 0,
+        "offsetY": -22.17354010433297,
+        "rawOffsetX": 68.4980259718252,
+        "rawOffsetY": -53.17354010433297,
+        "appliedShiftX": -68.4980259718252,
+        "appliedShiftY": 31
+      }
+    },
+    {
+      "id": "c03-s06",
+      "chapter": "任务适配",
+      "paragraphs": [
+        8,
+        11
+      ],
+      "start": 223.637,
+      "end": 234.216,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        224.478,
+        227.337,
+        230.787
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c04-s01",
+      "chapter": "升级判断",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 234.216,
+      "end": 246.399,
+      "transition": {
+        "primeAt": 236.376,
+        "contentRevealAt": 236.39600000000002,
+        "contentAt": 236.556,
+        "humanAt": 236.556,
+        "agentAt": 236.596
+      },
+      "propBeatTimes": [
+        237.927,
+        237.927
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第一道门槛，产物是否明确",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 238.007,
+          "time": 237.927,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 475.869140625,
+        "gap": 204.46914062500002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 438.98041115287526,
+        "offsetX": 0,
+        "offsetY": -31.019588847124737,
+        "rawOffsetX": -103.84503517165376,
+        "rawOffsetY": -76.01958884712474,
+        "appliedShiftX": 103.84503517165376,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c04-s02",
+      "chapter": "升级判断",
+      "paragraphs": [
+        3,
+        3
+      ],
+      "start": 246.399,
+      "end": 259.616,
+      "transition": {
+        "primeAt": 246.379,
+        "contentRevealAt": 246.399,
+        "contentAt": 246.439,
+        "humanAt": 246.439,
+        "agentAt": 246.47899999999998
+      },
+      "propBeatTimes": [
+        246.619,
+        246.619,
+        246.619,
+        246.619
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第二道门槛，工作是否形成连续行动链",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 246.399,
+          "time": 246.619,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 406.328125,
+        "gap": 204.128125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 942.7841041396873,
+        "y": 470,
+        "offsetX": -17.215895860312685,
+        "offsetY": 0,
+        "rawOffsetX": -17.215895860312685,
+        "rawOffsetY": -62.33662931062156,
+        "appliedShiftX": 0,
+        "appliedShiftY": 62.33662931062156
+      }
+    },
+    {
+      "id": "c04-s03",
+      "chapter": "升级判断",
+      "paragraphs": [
+        4,
+        4
+      ],
+      "start": 259.616,
+      "end": 274.591,
+      "transition": {
+        "primeAt": 259.596,
+        "contentRevealAt": 259.616,
+        "contentAt": 259.656,
+        "humanAt": 259.656,
+        "agentAt": 259.696
+      },
+      "propBeatTimes": [
+        259.836,
+        259.836,
+        259.836
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第三道门槛，推进过程是否产生证据",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 259.616,
+          "time": 259.836,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 265.209375,
+        "gap": 63.009375000000034
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 995.1485421580094,
+        "y": 468.68491059847184,
+        "offsetX": 35.14854215800938,
+        "offsetY": -1.3150894015281551,
+        "rawOffsetX": 35.14854215800938,
+        "rawOffsetY": -81.31508940152816,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "id": "c04-s04",
+      "chapter": "升级判断",
+      "paragraphs": [
+        5,
+        5
+      ],
+      "start": 274.591,
+      "end": 285.449,
+      "transition": {
+        "primeAt": 274.571,
+        "contentRevealAt": 274.591,
+        "contentAt": 274.63100000000003,
+        "humanAt": 274.63100000000003,
+        "agentAt": 274.67100000000005
+      },
+      "propBeatTimes": [
+        274.81100000000004,
+        274.81100000000004,
+        274.81100000000004
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第四道门槛，权限和后果是否可控",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 274.591,
+          "time": 274.81100000000004,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 974.69337196727,
+        "y": 470,
+        "offsetX": 14.693371967269968,
+        "offsetY": 0,
+        "rawOffsetX": 14.693371967269968,
+        "rawOffsetY": -41.017986867298646,
+        "appliedShiftX": 0,
+        "appliedShiftY": 41.017986867298646
+      }
+    },
+    {
+      "id": "c04-s05",
+      "chapter": "升级判断",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 285.449,
+      "end": 294.599,
+      "transition": {
+        "primeAt": 285.42900000000003,
+        "contentRevealAt": 285.449,
+        "contentAt": 285.48900000000003,
+        "humanAt": 285.48900000000003,
+        "agentAt": 285.52900000000005
+      },
+      "propBeatTimes": [
+        285.8607,
+        285.8607
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "根据研究证据整理出的实践工具",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 285.9407,
+          "time": 285.8607,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 412.20703125,
+        "gap": 178.40703125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 374.7285950918552,
+        "offsetX": 0,
+        "offsetY": -95.2714049081448,
+        "rawOffsetX": -98.05834115343441,
+        "rawOffsetY": -120.2714049081448,
+        "appliedShiftX": 98.05834115343441,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c04-s06",
+      "chapter": "升级判断",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 294.599,
+      "end": 326.649,
+      "transition": {
+        "primeAt": 294.579,
+        "contentRevealAt": 294.599,
+        "contentAt": 294.639,
+        "humanAt": 294.639,
+        "agentAt": 294.67900000000003
+      },
+      "propBeatTimes": [
+        294.819,
+        294.819,
+        294.819,
+        294.819
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "先看表格清理",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 294.599,
+          "time": 294.819,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 312.61875,
+        "gap": 110.41874999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 468.10879631236253,
+        "offsetX": 0,
+        "offsetY": -1.8912036876374714,
+        "rawOffsetX": 106.09992621620836,
+        "rawOffsetY": -49.29120368763745,
+        "appliedShiftX": -106.09992621620836,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "id": "c04-s07",
+      "chapter": "升级判断",
+      "paragraphs": [
+        10,
+        10
+      ],
+      "start": 326.649,
+      "end": 340.56600000000003,
+      "transition": {
+        "primeAt": 326.629,
+        "contentRevealAt": 326.649,
+        "contentAt": 326.689,
+        "humanAt": 326.689,
+        "agentAt": 326.72900000000004
+      },
+      "propBeatTimes": [
+        326.9065,
+        326.9065,
+        326.9065,
+        326.9065
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "四种工作模式很清楚",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 326.9865,
+          "time": 326.9065,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.65625,
+        "gap": 212.45625
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 975.9895455424155,
+        "y": 470,
+        "offsetX": 15.989545542415499,
+        "offsetY": 0,
+        "rawOffsetX": 15.989545542415499,
+        "rawOffsetY": -21.39397938364135,
+        "appliedShiftX": 0,
+        "appliedShiftY": 21.39397938364135
+      }
+    },
+    {
+      "id": "c04-s08",
+      "chapter": "升级判断",
+      "paragraphs": [
+        11,
+        14
+      ],
+      "start": 340.56600000000003,
+      "end": 350.544,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        341.40700000000004,
+        344.199,
+        347.199
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c05-s01",
+      "chapter": "上下文与反馈",
+      "paragraphs": [
+        1,
+        3
+      ],
+      "start": 350.544,
+      "end": 378.144,
+      "transition": {
+        "primeAt": 352.704,
+        "contentRevealAt": 352.724,
+        "contentAt": 352.884,
+        "humanAt": 352.884,
+        "agentAt": 352.92400000000004
+      },
+      "propBeatTimes": [
+        354.6817619047619,
+        354.6817619047619,
+        354.6817619047619,
+        354.6817619047619,
+        354.6817619047619
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "上下文包包含五项",
+          "props": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "rawTime": 354.7617619047619,
+          "time": 354.6817619047619,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.7375,
+        "gap": 212.53750000000002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 988.7150394204599,
+        "y": 470,
+        "offsetX": 28.715039420459902,
+        "offsetY": 0,
+        "rawOffsetX": 28.715039420459902,
+        "rawOffsetY": -33.85148212163239,
+        "appliedShiftX": 0,
+        "appliedShiftY": 33.85148212163239
+      }
+    },
+    {
+      "id": "c05-s02",
+      "chapter": "上下文与反馈",
+      "paragraphs": [
+        4,
+        5
+      ],
+      "start": 378.144,
+      "end": 397.435,
+      "transition": {
+        "primeAt": 378.124,
+        "contentRevealAt": 378.144,
+        "contentAt": 378.184,
+        "humanAt": 378.184,
+        "agentAt": 378.22400000000005
+      },
+      "propBeatTimes": [
+        378.42133333333334,
+        378.42133333333334,
+        378.42133333333334
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "设计反馈循环",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 378.5013333333333,
+          "time": 378.42133333333334,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 265.209375,
+        "gap": 63.009375000000034
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 966.4923797630461,
+        "y": 470,
+        "offsetX": 6.492379763046074,
+        "offsetY": 0,
+        "rawOffsetX": 6.492379763046074,
+        "rawOffsetY": -46.14636004213793,
+        "appliedShiftX": 0,
+        "appliedShiftY": 46.14636004213793
+      }
+    },
+    {
+      "id": "c05-s03",
+      "chapter": "上下文与反馈",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 397.435,
+      "end": 409.01,
+      "transition": {
+        "primeAt": 397.415,
+        "contentRevealAt": 397.435,
+        "contentAt": 397.475,
+        "humanAt": 397.475,
+        "agentAt": 397.51500000000004
+      },
+      "propBeatTimes": [
+        398.0216666666667,
+        398.0216666666667,
+        398.0216666666667,
+        398.0216666666667
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "要有可见检查点",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 398.1016666666667,
+          "time": 398.0216666666667,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 307.30625,
+        "gap": 105.10624999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -53.268688553760626,
+        "rawOffsetY": -16.78513124616876,
+        "appliedShiftX": 53.268688553760626,
+        "appliedShiftY": 16.78513124616876
+      }
+    },
+    {
+      "id": "c05-s04",
+      "chapter": "上下文与反馈",
+      "paragraphs": [
+        7,
+        7
+      ],
+      "start": 409.01,
+      "end": 420.935,
+      "transition": {
+        "primeAt": 408.99,
+        "contentRevealAt": 409.01,
+        "contentAt": 409.05,
+        "humanAt": 409.05,
+        "agentAt": 409.09000000000003
+      },
+      "propBeatTimes": [
+        409.58833333333337,
+        409.58833333333337,
+        409.58833333333337,
+        409.58833333333337
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "不只适用于代码",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 409.66833333333335,
+          "time": 409.58833333333337,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 312.61875,
+        "gap": 110.41874999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 460.9207990368034,
+        "offsetX": 0,
+        "offsetY": -9.079200963196627,
+        "rawOffsetX": 99.82090964270083,
+        "rawOffsetY": -56.479200963196604,
+        "appliedShiftX": -99.82090964270083,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "id": "c05-s05",
+      "chapter": "上下文与反馈",
+      "paragraphs": [
+        8,
+        11
+      ],
+      "start": 420.935,
+      "end": 433.99199999999996,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        421.777,
+        426.894,
+        430.26
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c06-s01",
+      "chapter": "风险与验收",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 433.99199999999996,
+      "end": 447.51699999999994,
+      "transition": {
+        "primeAt": 436.152,
+        "contentRevealAt": 436.17199999999997,
+        "contentAt": 436.332,
+        "humanAt": 436.332,
+        "agentAt": 436.372
+      },
+      "propBeatTimes": [
+        439.5996984126984,
+        439.5996984126984,
+        439.5996984126984,
+        439.5996984126984
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "低风险动作",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 439.6796984126984,
+          "time": 439.5996984126984,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 986.3804090693636,
+        "y": 470,
+        "offsetX": 26.380409069363623,
+        "offsetY": 0,
+        "rawOffsetX": 26.380409069363623,
+        "rawOffsetY": -5.206300329493899,
+        "appliedShiftX": 0,
+        "appliedShiftY": 5.206300329493899
+      }
+    },
+    {
+      "id": "c06-s02",
+      "chapter": "风险与验收",
+      "paragraphs": [
+        3,
+        3
+      ],
+      "start": 447.51699999999994,
+      "end": 457.35799999999995,
+      "transition": {
+        "primeAt": 447.49699999999996,
+        "contentRevealAt": 447.51699999999994,
+        "contentAt": 447.55699999999996,
+        "humanAt": 447.55699999999996,
+        "agentAt": 447.597
+      },
+      "propBeatTimes": [
+        447.73699999999997,
+        447.73699999999997,
+        447.73699999999997
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "人工确认应该放在不可逆动作发生之前",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 447.51699999999994,
+          "time": 447.73699999999997,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 414.9609375,
+        "gap": 181.1609375
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 436.1069054477832,
+        "offsetX": 0,
+        "offsetY": -33.89309455221678,
+        "rawOffsetX": 153.84376640544633,
+        "rawOffsetY": -58.89309455221678,
+        "appliedShiftX": -153.84376640544633,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c06-s03",
+      "chapter": "风险与验收",
+      "paragraphs": [
+        4,
+        5
+      ],
+      "start": 457.35799999999995,
+      "end": 476.17499999999995,
+      "transition": {
+        "primeAt": 457.33799999999997,
+        "contentRevealAt": 457.35799999999995,
+        "contentAt": 457.39799999999997,
+        "humanAt": 457.39799999999997,
+        "agentAt": 457.438
+      },
+      "propBeatTimes": [
+        464.4521428571428,
+        464.4521428571428,
+        464.4521428571428,
+        464.4521428571428
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "执行前设计验收标准",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 464.5321428571428,
+          "time": 464.4521428571428,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 307.30625,
+        "gap": 105.10624999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -67.52368591152617,
+        "rawOffsetY": -34.28962561296868,
+        "appliedShiftX": 67.52368591152617,
+        "appliedShiftY": 34.28962561296868
+      }
+    },
+    {
+      "id": "c06-s04",
+      "chapter": "风险与验收",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 476.17499999999995,
+      "end": 486.09999999999997,
+      "transition": {
+        "primeAt": 476.155,
+        "contentRevealAt": 476.17499999999995,
+        "contentAt": 476.215,
+        "humanAt": 476.215,
+        "agentAt": 476.255
+      },
+      "propBeatTimes": [
+        476.5699375,
+        476.5699375,
+        476.5699375,
+        476.5699375
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "在风险变化的地方拆分流程",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 476.64993749999996,
+          "time": 476.5699375,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.65625,
+        "gap": 212.45625
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 970.1108048478594,
+        "y": 470,
+        "offsetX": 10.110804847859413,
+        "offsetY": 0,
+        "rawOffsetX": 10.110804847859413,
+        "rawOffsetY": -48.01545493913318,
+        "appliedShiftX": 0,
+        "appliedShiftY": 48.01545493913318
+      }
+    },
+    {
+      "id": "c06-s05",
+      "chapter": "风险与验收",
+      "paragraphs": [
+        7,
+        7
+      ],
+      "start": 486.09999999999997,
+      "end": 494.808,
+      "transition": {
+        "primeAt": 486.08,
+        "contentRevealAt": 486.09999999999997,
+        "contentAt": 486.14,
+        "humanAt": 486.14,
+        "agentAt": 486.18
+      },
+      "propBeatTimes": [
+        489.395,
+        489.395,
+        489.395
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "设置停止条件",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 489.47499999999997,
+          "time": 489.395,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 257.8,
+        "gap": 24
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 387.9891411632661,
+        "offsetX": 0,
+        "offsetY": -82.01085883673392,
+        "rawOffsetX": -80.34378851123631,
+        "rawOffsetY": -107.01085883673392,
+        "appliedShiftX": 80.34378851123631,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c06-s06",
+      "chapter": "风险与验收",
+      "paragraphs": [
+        8,
+        11
+      ],
+      "start": 494.808,
+      "end": 508.29599999999994,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        495.65,
+        500.10799999999995,
+        503.69999999999993
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c07-s01",
+      "chapter": "流程复用",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 508.29599999999994,
+      "end": 525.6039999999999,
+      "transition": {
+        "primeAt": 510.45599999999996,
+        "contentRevealAt": 510.47599999999994,
+        "contentAt": 510.63599999999997,
+        "humanAt": 510.63599999999997,
+        "agentAt": 510.676
+      },
+      "propBeatTimes": [
+        512.0366976744185,
+        512.0366976744185,
+        512.0366976744185
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "把重复工作变成可复用流程",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 512.1166976744186,
+          "time": 512.0366976744185,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 330.5348477425774,
+        "gap": 59.13484774257745
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 428.0676875393306,
+        "offsetX": 0,
+        "offsetY": -41.93231246066938,
+        "rawOffsetX": 52.79493956305657,
+        "rawOffsetY": -80.58254883195804,
+        "appliedShiftX": -52.79493956305657,
+        "appliedShiftY": 38.650236371288656
+      }
+    },
+    {
+      "id": "c07-s02",
+      "chapter": "流程复用",
+      "paragraphs": [
+        3,
+        5
+      ],
+      "start": 525.6039999999999,
+      "end": 547.771,
+      "transition": {
+        "primeAt": 525.584,
+        "contentRevealAt": 525.6039999999999,
+        "contentAt": 525.6439999999999,
+        "humanAt": 525.6439999999999,
+        "agentAt": 525.6839999999999
+      },
+      "propBeatTimes": [
+        530.6042985074627,
+        530.6042985074627,
+        530.6042985074627,
+        530.6042985074627,
+        530.6042985074627
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "把操作方法写进流程",
+          "props": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "rawTime": 530.6842985074627,
+          "time": 530.6042985074627,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.7375,
+        "gap": 212.53750000000002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 986.9482058538625,
+        "y": 470,
+        "offsetX": 26.948205853862532,
+        "offsetY": 0,
+        "rawOffsetX": 26.948205853862532,
+        "rawOffsetY": -42.98950795860185,
+        "appliedShiftX": 0,
+        "appliedShiftY": 42.98950795860185
+      }
+    },
+    {
+      "id": "c07-s03",
+      "chapter": "流程复用",
+      "paragraphs": [
+        6,
+        6
+      ],
+      "start": 547.771,
+      "end": 558.9209999999999,
+      "transition": {
+        "primeAt": 547.751,
+        "contentRevealAt": 547.771,
+        "contentAt": 547.8109999999999,
+        "humanAt": 547.8109999999999,
+        "agentAt": 547.8509999999999
+      },
+      "propBeatTimes": [
+        547.991,
+        547.991,
+        547.991,
+        547.991
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "只有任务彼此独立",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 547.771,
+          "time": 547.991,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 305.875,
+        "gap": 103.67500000000001
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": 94.95962515568658,
+        "rawOffsetY": -13.93890049624332,
+        "appliedShiftX": -94.95962515568658,
+        "appliedShiftY": 13.93890049624332
+      }
+    },
+    {
+      "id": "c07-s04",
+      "chapter": "流程复用",
+      "paragraphs": [
+        7,
+        7
+      ],
+      "start": 558.9209999999999,
+      "end": 568.121,
+      "transition": {
+        "primeAt": 558.901,
+        "contentRevealAt": 558.9209999999999,
+        "contentAt": 558.9609999999999,
+        "humanAt": 558.9609999999999,
+        "agentAt": 559.0009999999999
+      },
+      "propBeatTimes": [
+        559.141,
+        559.141,
+        559.141
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "人的角色会更像流程设计者和任务组合管理者",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 558.9209999999999,
+          "time": 559.141,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 474.765625,
+        "gap": 203.36562500000002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 469.5967144669147,
+        "offsetX": 0,
+        "offsetY": -0.40328553308529536,
+        "rawOffsetX": -95.50551498352513,
+        "rawOffsetY": -45.403285533085295,
+        "appliedShiftX": 95.50551498352513,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c07-s05",
+      "chapter": "流程复用",
+      "paragraphs": [
+        8,
+        11
+      ],
+      "start": 568.121,
+      "end": 581.328,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        568.962,
+        572.8119999999999,
+        577.0459999999999
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c08-s01",
+      "chapter": "总结",
+      "paragraphs": [
+        1,
+        6
+      ],
+      "start": 581.328,
+      "end": 616.944,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        583.636,
+        586.861,
+        591.153
+      ],
+      "ctaAt": 606.986,
+      "visualBalance": null
+    }
+  ]
+}

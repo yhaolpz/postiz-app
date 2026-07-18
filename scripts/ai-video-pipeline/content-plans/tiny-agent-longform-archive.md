@@ -17,6 +17,7 @@
 | 进入制作日期 | 来源 | 用户问题与核心结论 | 可复用产物 | 英文视频 | 中文视频 | 状态 | 差异说明 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-07-16 | Anthropic：[Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)，2024-12-19 | 不要从多 Agent 架构开始；先使用最简单的可行方案，只有结果可测量地改善时才增加 Workflow 或 Agent 复杂度 | Agent Architecture Decision Ladder（Agent 架构选择顺序） | [YouTube](https://www.youtube.com/watch?v=m678C-XvUFE)；`var/hyperframes-showcases/2026-07-16-building-effective-agents-longform-en-US/renders/video.mp4` | `var/hyperframes-showcases/2026-07-16-building-effective-agents-longform-zh-CN/renders/video.mp4` | 英文已发布 | 双语以共享内容地图保持结论与章节承诺一致，并按各自旁白独立编译时间轴；该架构选择问题不再重复制作 |
+| 2026-07-17 | OpenAI：[How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)，2026-06-25 | 哪些任务值得从聊天升级为 Agent；只有产物明确、上下文与工具可访问、反馈可观察、风险与权限有边界时，才适合升级为可委派流程 | Task Upgrade Scorecard（任务升级判断表） | [YouTube](https://www.youtube.com/watch?v=SJ0g9yxI3_o)；`var/hyperframes-showcases/2026-07-17-agent-task-upgrade-longform-en-US/renders/video.mp4` | `var/hyperframes-showcases/2026-07-17-agent-task-upgrade-longform-zh-CN/renders/video.mp4` | 英文已发布 | 聚焦任务是否适合升级为 Agent，而非选择 Agent 架构；三个中文平台简介均已删除章节标题和时间戳。外部 Chrome 中哔哩哔哩已选择 `AIAgent` 原生主话题，仅保留 `Agent工作流`、`人机协作`、`TinyAgent`、`AIAutomation` 等相关标签，已删除 `记录`、`剪辑`、`生活记录` 及简介里的整行 `#话题` 文本，停在立即投稿前；抖音已绑定 5 个原生话题，并分别应用正确的中文 `4:3` 横封面和 `3:4` 竖封面，公开可见并停在发布前；小红书已逐个绑定 5 个原生话题，用户已确认加入合集 `AI Agent 知识` 并选中原创声明，停在发布前；三个平台均未点击最终发布 |
 
 ## 追加格式
 
@@ -42,3 +43,4 @@
 | 选题日期 | publishedAt | 清理清单 | eligibleAt | 状态 | deletedAt |
 | --- | --- | --- | --- | --- | --- |
 | 2026-07-16 | 2026-07-16T11:09:05Z | `var/ai-video-pipeline/longform/published/2026-07-16-building-effective-agents.json` | 2026-07-18T11:09:05Z | 待清理 |  |
+| 2026-07-17 | 2026-07-17T10:21:27Z | `var/ai-video-pipeline/longform/published/2026-07-17-agent-task-upgrade.json` | 2026-07-19T10:21:27Z | 待清理 |  |

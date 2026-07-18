@@ -1,0 +1,82 @@
+{
+  "chapters": [
+    {
+      "label":"前言","showIntro":false,"intro":"判断哪些工作值得交给 Agent","summary":["Agent 改变了工作的基本单位","长任务不一定适合 Agent","委托前先用任务升级判断表"],
+      "scenes":[
+        {"paragraphs":[1,1],"layout":"hero","human":"think","agent":"idle","props":[{"id":"search","label":"问题"},{"id":"document","label":"答案"}],"flow":"chain","callout":"还在把 AI 当搜索框？","accent":"yellow"},
+        {"paragraphs":[2,3],"layout":"comparison","labels":["聊天","委托工作"],"human":"point-right","agent":"execute","props":[{"id":"document","label":"一次回答"},{"id":"tool","label":"调用工具"},{"id":"result-card","label":"完成工作"},{"id":"loop","label":"长任务"}],"flow":"cluster","callout":"工作单位已经改变","accent":"blue"},
+        {"paragraphs":[4,5],"layout":"grid","human":"approve","agent":"receive-tool","props":[{"id":"document-stack","label":"任务适配"},{"id":"warning","label":"风险"},{"id":"result-card","label":"判断表"}],"flow":"cluster","callout":"一张可复用判断表","accent":"blue"}
+      ]
+    },
+    {
+      "label":"工作转变","intro":"衡量完成的工作，不衡量对话数量","summary":["看产出的成品或变化，不看消息数量","委托完整任务包，不要每轮纠偏才补一块关键上下文","把任务时长数据看成工作转变的证据，不把所有长任务都自动交给 Agent"],
+      "scenes":[
+        {"paragraphs":[1,2],"layout":"comparison","labels":["咨询","生产"],"human":"point-right","agent":"execute","props":[{"id":"document","label":"建议"},{"id":"tool","label":"行动"},{"id":"result-card","label":"成品"}],"flow":"cluster","callout":"回答，还是完成工作？","accent":"blue"},
+        {"paragraphs":[3,3],"layout":"grid","human":"operate","agent":"search","props":[{"id":"document-stack","label":"备忘录"},{"id":"database","label":"数据"},{"id":"error","label":"排障"},{"id":"browser","label":"活动"}],"flow":"cluster","callout":"委托正在跨越岗位边界","accent":"yellow"},
+        {"paragraphs":[4,5],"layout":"process","human":"surprised","agent":"execute","props":[{"id":"document","label":"30 分钟"},{"id":"document-stack","label":"1 小时"},{"id":"loop","label":"8 小时"},{"id":"result-card","label":"任务包"}],"flow":"chain","callout":"任务时长正在增加","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"grid","human":"point-right","agent":"receive-tool","props":[{"id":"loop","label":"重复"},{"id":"branch","label":"并行"},{"id":"tool","label":"Skill"},{"id":"result-card","label":"验收"}],"flow":"cluster","callout":"高频用户在重组工作流","accent":"blue"},
+        {"paragraphs":[7,7],"layout":"grid","human":"think","agent":"failure","props":[{"id":"warning","label":"方向性"},{"id":"error","label":"不代表全部"}],"flow":"cluster","callout":"证据需要保留边界","accent":"red"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"本章小结","accent":"blue"}
+      ]
+    },
+    {
+      "label":"任务适配","intro":"用产物、上下文、反馈和风险判断任务","summary":["定义明确的成品或可观察变化","提供判断进展需要的上下文、工具和反馈","增加自治之前先把风险边界写清楚"],
+      "scenes":[
+        {"paragraphs":[1,3],"layout":"comparison","labels":["模糊主题","明确产物"],"human":"point-right","agent":"receive-tool","props":[{"id":"warning","label":"做营销"},{"id":"document","label":"目标人群"},{"id":"result-card","label":"交付物"},{"id":"success","label":"决策"}],"flow":"cluster","callout":"能看见完成状态吗？","accent":"yellow"},
+        {"paragraphs":[4,4],"layout":"process","human":"operate","agent":"search","props":[{"id":"document-stack","label":"文件"},{"id":"database","label":"系统"},{"id":"tool","label":"权限"}],"flow":"chain","callout":"可访问上下文和工具","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"grid","human":"point-right","agent":"execute","props":[{"id":"success","label":"测试"},{"id":"database","label":"总数"},{"id":"browser","label":"页面状态"},{"id":"document","label":"引用"}],"flow":"cluster","callout":"反馈让工作保持真实","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"comparison","labels":["可撤销","不可逆"],"human":"surprised","agent":"failure","props":[{"id":"document","label":"草稿"},{"id":"success","label":"准备"},{"id":"warning","label":"发布"},{"id":"error","label":"删除"}],"flow":"cluster","callout":"先控制后果","accent":"red"},
+        {"paragraphs":[7,7],"layout":"hero","human":"approve","agent":"success","props":[{"id":"document-stack","label":"产物"},{"id":"tool","label":"上下文"},{"id":"result-card","label":"反馈"},{"id":"warning","label":"风险"}],"flow":"cluster","callout":"四个条件让委托成立","accent":"blue"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"本章小结","accent":"blue"}
+      ]
+    },
+    {
+      "label":"升级判断","intro":"一次只把工作模式升级一道门槛","summary":["一次只把工作模式升级一道门槛","不可逆动作必须保留明确的人工确认","选择能够稳定产出结果的最低自治模式"],
+      "scenes":[
+        {"paragraphs":[1,2],"layout":"hero","human":"point-right","agent":"idle","props":[{"id":"document","label":"门槛一"},{"id":"result-card","label":"明确产物"}],"flow":"chain","callout":"门槛一：产物明确吗？","accent":"blue"},
+        {"paragraphs":[3,3],"layout":"process","human":"operate","agent":"execute","props":[{"id":"document-stack","label":"资料"},{"id":"tool","label":"行动"},{"id":"result-card","label":"结果"},{"id":"warning","label":"隐藏缺口"}],"flow":"chain","callout":"门槛二：行动链完整吗？","accent":"yellow"},
+        {"paragraphs":[4,4],"layout":"process","human":"point-right","agent":"search","props":[{"id":"tool","label":"行动"},{"id":"result-card","label":"证据"},{"id":"loop","label":"更新计划"}],"flow":"loop","callout":"门槛三：进展产生证据吗？","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"comparison","labels":["自动继续","先确认"],"human":"surprised","agent":"failure","props":[{"id":"success","label":"可撤销"},{"id":"warning","label":"高影响"},{"id":"timeout","label":"停止"}],"flow":"cluster","callout":"门槛四：后果可控吗？","accent":"red"},
+        {"paragraphs":[6,6],"layout":"focus","human":"think","agent":"idle","props":[{"id":"document","label":"研究证据"},{"id":"result-card","label":"实践工具"}],"flow":"chain","callout":"整理成工具，不冒充原文表格","accent":"yellow"},
+        {"paragraphs":[7,9],"layout":"grid","human":"operate","agent":"receive-tool","props":[{"id":"database","label":"表格"},{"id":"browser","label":"邮件"},{"id":"search","label":"研究"},{"id":"warning","label":"确认"}],"flow":"cluster","callout":"把门槛用于真实任务","accent":"blue"},
+        {"paragraphs":[10,10],"layout":"process","human":"point-right","agent":"success","props":[{"id":"document","label":"聊天"},{"id":"tool","label":"副驾"},{"id":"loop","label":"受监督"},{"id":"result-card","label":"委托"}],"flow":"chain","callout":"四种工作模式","accent":"blue"},
+        {"paragraphs":[11,14],"summaryPointParagraphs":[12,13,14],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"本章小结","accent":"blue"}
+      ]
+    },
+    {
+      "label":"上下文与反馈","intro":"给 Agent 足够的真实依据","summary":["准备包含目标、状态、上下文、限制和完成标准的最小完整任务包","让每个重要动作都返回能够改变计划的证据","保留检查点，让任务可以验收、继续和恢复"],
+      "scenes":[
+        {"paragraphs":[1,3],"layout":"process","human":"operate","agent":"receive-tool","props":[{"id":"document","label":"目标"},{"id":"memory","label":"当前状态"},{"id":"document-stack","label":"上下文"},{"id":"warning","label":"限制"},{"id":"success","label":"完成"}],"flow":"chain","callout":"最小完整上下文包","accent":"blue"},
+        {"paragraphs":[4,5],"layout":"process","human":"point-right","agent":"execute","props":[{"id":"tool","label":"行动"},{"id":"result-card","label":"读取结果"},{"id":"loop","label":"修复或继续"}],"flow":"loop","callout":"证据决定下一步","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"grid","human":"think","agent":"store-memory","props":[{"id":"document-stack","label":"中间产物"},{"id":"result-card","label":"工具返回"},{"id":"error","label":"失败原因"},{"id":"memory","label":"可恢复状态"}],"flow":"cluster","callout":"可见检查点","accent":"yellow"},
+        {"paragraphs":[7,7],"layout":"grid","human":"approve","agent":"success","props":[{"id":"document","label":"招聘"},{"id":"database","label":"财务"},{"id":"browser","label":"内容"},{"id":"warning","label":"发送前停下"}],"flow":"cluster","callout":"真实反馈不只属于代码","accent":"blue"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"本章小结","accent":"blue"}
+      ]
+    },
+    {
+      "label":"风险与验收","intro":"把人的判断放在错误代价最高的位置","summary":["可撤销的准备工作可以扩大自治，不可逆行动必须缩小权限","执行前定义验收证据，让检查成本保持可控","上下文缺失、连续失败或完成状态含糊时必须停止"],
+      "scenes":[
+        {"paragraphs":[1,2],"layout":"comparison","labels":["扩大自治","缩小权限"],"human":"point-right","agent":"execute","props":[{"id":"search","label":"读取"},{"id":"document","label":"起草"},{"id":"warning","label":"发送"},{"id":"error","label":"删除"}],"flow":"cluster","callout":"风险改变权限","accent":"yellow"},
+        {"paragraphs":[3,3],"layout":"focus","human":"approve","agent":"receive-tool","props":[{"id":"result-card","label":"证据"},{"id":"warning","label":"不可逆"},{"id":"success","label":"确认"}],"flow":"chain","callout":"在后果发生前确认","accent":"red"},
+        {"paragraphs":[4,5],"layout":"grid","human":"think","agent":"search","props":[{"id":"document-stack","label":"差异"},{"id":"success","label":"清单"},{"id":"database","label":"核对"},{"id":"browser","label":"预览"}],"flow":"cluster","callout":"让验收保持可控","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"process","human":"operate","agent":"execute","props":[{"id":"search","label":"研究"},{"id":"document","label":"起草"},{"id":"warning","label":"确认"},{"id":"browser","label":"发送"}],"flow":"chain","callout":"在风险变化处拆流程","accent":"blue"},
+        {"paragraphs":[7,7],"layout":"focus","human":"surprised","agent":"failure","props":[{"id":"warning","label":"缺上下文"},{"id":"error","label":"连续失败"},{"id":"timeout","label":"停止"}],"flow":"cluster","callout":"可靠 Agent 知道何时停","accent":"red"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"本章小结","accent":"blue"}
+      ]
+    },
+    {
+      "label":"流程复用","intro":"把重复委托变成可靠系统","summary":["把输入、限制和检查方式稳定重复的任务标准化","复用能够保存上下文、工具、权限和证据的操作流程","只有归属和验收清楚时，才并行执行相互独立的工作"],
+      "scenes":[
+        {"paragraphs":[1,2],"layout":"hero","human":"point-right","agent":"store-memory","props":[{"id":"loop","label":"重复"},{"id":"tool","label":"Skill"},{"id":"memory","label":"流程"}],"flow":"cluster","callout":"大任务最终变成可复用系统","accent":"blue"},
+        {"paragraphs":[3,5],"layout":"process","human":"operate","agent":"receive-tool","props":[{"id":"document","label":"输入"},{"id":"document-stack","label":"流程"},{"id":"warning","label":"权限"},{"id":"result-card","label":"证据"},{"id":"memory","label":"版本"}],"flow":"chain","callout":"把操作方法编码下来","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"grid","human":"point-right","agent":"execute","props":[{"id":"branch","label":"独立任务"},{"id":"document","label":"市场 A"},{"id":"document","label":"市场 B"},{"id":"warning","label":"归属"}],"flow":"branch","callout":"归属清楚才并行","accent":"yellow"},
+        {"paragraphs":[7,7],"layout":"hero","human":"approve","agent":"success","props":[{"id":"document-stack","label":"选择任务"},{"id":"result-card","label":"验收结果"},{"id":"loop","label":"改进系统"}],"flow":"chain","callout":"人成为流程设计者","accent":"blue"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"本章小结","accent":"blue"}
+      ]
+    },
+    {
+      "label":"总结","showIntro":false,"intro":"只有任务满足条件时才升级委托","summary":["委托有明确产物的工作，不委托模糊主题","Agent 独立行动前，必须具备可访问上下文和可信反馈","限制权限，把人工确认放在不可逆动作之前"],
+      "scenes":[{"paragraphs":[1,6],"summaryPointParagraphs":[2,3,4],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"可靠委托，不追求最大自治","accent":"blue"}]
+    }
+  ]
+}

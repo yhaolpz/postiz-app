@@ -1,0 +1,95 @@
+1
+00:00:00,100 --> 00:00:05,011
+Once a task passes the scorecard, the next job is to give the agent ground truth.
+
+2
+00:00:04,961 --> 00:00:14,019
+A useful context package contains five things: the goal, the current state, the relevant files or systems, the constraints, and the definition of done.
+
+3
+00:00:14,019 --> 00:00:16,807
+More context is not automatically better.
+
+4
+00:00:16,807 --> 00:00:21,384
+The useful context is the smallest set that lets the agent act without guessing.
+
+5
+00:00:21,384 --> 00:00:23,798
+Tool access should match the task.
+
+6
+00:00:23,798 --> 00:00:27,625
+A document task may need a source folder and an output path.
+
+7
+00:00:27,625 --> 00:00:31,240
+A data task may need a workbook plus validation rules.
+
+8
+00:00:31,240 --> 00:00:38,875
+A publishing task may need an authenticated page, final copy, a thumbnail, and a clear instruction to stop before the publish button.
+
+9
+00:00:38,875 --> 00:00:41,028
+Then design the feedback loop.
+
+10
+00:00:41,028 --> 00:00:48,663
+The agent acts, reads the real result, compares it with the acceptance criteria, and either continues, repairs, or stops.
+
+11
+00:00:48,663 --> 00:00:51,923
+This loop is what makes the path genuinely agentic.
+
+12
+00:00:51,923 --> 00:00:56,894
+The plan can change from evidence, but it must not change from unsupported confidence.
+
+13
+00:00:56,894 --> 00:01:04,086
+A test failure, missing source, invalid file, or provider rejection should become a new decision, not a detail to hide.
+
+14
+00:01:04,086 --> 00:01:07,000
+Long work also needs visible checkpoints.
+
+15
+00:01:07,000 --> 00:01:13,442
+Save intermediate artifacts, record tool results, preserve errors, and make the current state recoverable.
+
+16
+00:01:13,442 --> 00:01:19,413
+A human should be able to see what changed, what remains, and why the agent believes the task is complete.
+
+17
+00:01:19,413 --> 00:01:21,644
+This applies beyond software.
+
+18
+00:01:21,644 --> 00:01:26,259
+A recruiting workflow can verify required fields and stop before outreach.
+
+19
+00:01:26,259 --> 00:01:30,480
+A finance workflow can reconcile totals and surface exceptions.
+
+20
+00:01:30,480 --> 00:01:37,192
+A content workflow can validate dimensions, chapters, and links before it asks for final publication approval.
+
+21
+00:01:37,192 --> 00:01:38,730
+Chapter recap.
+
+22
+00:01:38,730 --> 00:01:45,759
+First, package the smallest complete set of goal, state, context, constraints, and completion criteria.
+
+23
+00:01:45,759 --> 00:01:50,355
+Second, make every important action return evidence that can change the plan.
+
+24
+00:01:50,355 --> 00:01:55,278
+Third, preserve checkpoints so the work can be reviewed, resumed, and recovered.

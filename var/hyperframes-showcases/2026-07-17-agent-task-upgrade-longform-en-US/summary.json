@@ -1,0 +1,121 @@
+{
+  "title": "Which Tasks Deserve an AI Agent?",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-17-agent-task-upgrade-longform-en-US/SCRIPT.en-US.md",
+  "language": "en-US",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "en-US-AnaNeural",
+    "rate": "+30%",
+    "integratedLoudnessTarget": "-17 LUFS"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 799.8,
+    "chapters": [
+      {
+        "label": "Preface",
+        "start": 0,
+        "end": 55.44,
+        "duration": 55.44
+      },
+      {
+        "label": "The Work Shift",
+        "start": 55.44,
+        "end": 175.344,
+        "duration": 119.904
+      },
+      {
+        "label": "Task Fit",
+        "start": 175.344,
+        "end": 289.824,
+        "duration": 114.48
+      },
+      {
+        "label": "Upgrade Scorecard",
+        "start": 289.824,
+        "end": 445.848,
+        "duration": 156.024
+      },
+      {
+        "label": "Context and Feedback",
+        "start": 445.848,
+        "end": 561.144,
+        "duration": 115.296
+      },
+      {
+        "label": "Risk and Review",
+        "start": 561.144,
+        "end": 664.4639999999999,
+        "duration": 103.32
+      },
+      {
+        "label": "Reusable Workflows",
+        "start": 664.4639999999999,
+        "end": 757.4159999999999,
+        "duration": 92.952
+      },
+      {
+        "label": "Summary",
+        "start": 757.4159999999999,
+        "end": 799.8,
+        "duration": 42.384000000000015
+      }
+    ],
+    "visualStates": 40,
+    "captions": 259
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "passed"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "passed"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "passed"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "passed"
+    }
+  },
+  "output": {
+    "file": "renders/video.mp4",
+    "status": "pending"
+  }
+}

@@ -2,6 +2,11 @@ import { execFileSync } from 'node:child_process';
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  assertTinyAgentScenePlanAssets,
+  loadTinyAgentAssetPack,
+  tinyAgentAssetSrc,
+} from '../../../scripts/ai-video-pipeline/hyperframes/tiny-agent-assets.mjs';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(projectRoot, '../../..');
@@ -14,14 +19,9 @@ const planPath = path.join(projectRoot, 'scene-plan.json');
 const animationPlanPath = path.join(projectRoot, 'animation-plan.json');
 const voice = 'zh-CN-YunxiaNeural';
 const rate = '+50%';
+const projectAssetPack = loadTinyAgentAssetPack({ packRoot: path.join(projectRoot, 'assets/pack') });
 
-const humanPoses = new Set(['idle', 'point-right', 'think', 'approve', 'operate', 'surprised']);
-const agentPoses = new Set(['idle', 'search', 'receive-tool', 'execute', 'store-memory', 'recall-memory', 'success', 'failure']);
 const layoutTypes = new Set(['hero', 'stage', 'process', 'comparison', 'grid', 'focus']);
-const propIds = new Set([
-  'document', 'document-stack', 'search', 'browser', 'api-plug', 'tool', 'database', 'memory',
-  'result-card', 'success', 'branch', 'loop', 'warning', 'error', 'timeout',
-]);
 let propBoundsById = new Map();
 let humanBoundsById = new Map();
 let agentBoundsById = new Map();
@@ -35,6 +35,8 @@ const escapeHtml = (value) => String(value)
   .replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;')
   .replaceAll('"', '&quot;');
+
+const assetSrc = (kind, id) => escapeHtml(tinyAgentAssetSrc(projectAssetPack, kind, id));
 
 const safeId = (value) => String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
@@ -291,6 +293,7 @@ function splitCue(cue) {
 }
 
 function validatePlan(chapters, plan) {
+  assertTinyAgentScenePlanAssets(plan, projectAssetPack);
   if (plan.chapters.length !== chapters.length) throw new Error('Scene plan chapter count mismatch');
   plan.chapters.forEach((plannedChapter, chapterIndex) => {
     const chapter = chapters[chapterIndex];
@@ -312,8 +315,6 @@ function validatePlan(chapters, plan) {
       if (scene.layout === 'comparison' && (scene.props.length < 2 || scene.props.length > 5)) {
         throw new Error(`Comparison layout requires 2-5 props in ${chapter.label} scene ${sceneIndex + 1}`);
       }
-      if (!humanPoses.has(scene.human)) throw new Error(`Unknown human pose ${scene.human}`);
-      if (!agentPoses.has(scene.agent)) throw new Error(`Unknown agent pose ${scene.agent}`);
       if (!Array.isArray(scene.props)) throw new Error(`Missing props in ${chapter.label} scene ${sceneIndex + 1}`);
       if (scene.recap) {
         if (!Array.isArray(scene.summaryPointParagraphs) || scene.summaryPointParagraphs.length !== 3) {
@@ -324,10 +325,6 @@ function validatePlan(chapters, plan) {
             throw new Error(`Recap anchor outside scene range in ${chapter.label}`);
           }
         }
-      }
-      for (const prop of scene.props) {
-        const id = typeof prop === 'string' ? prop : prop.id;
-        if (!propIds.has(id)) throw new Error(`Unknown prop ${id}`);
       }
     });
     if (expectedParagraph !== chapter.paragraphs.length + 1) {
@@ -526,7 +523,7 @@ function renderPhaseLegacy(scene, index) {
     const position = layout[propIndex];
     return `
         <div data-hf-id="hf-${scene.id}-prop-${propIndex + 1}" class="prop-item${propIndex === 0 ? ' focus-prop' : ''}" style="left:${position.x}px;top:${position.y}px">
-          <img src="assets/pack/sprites/props/${escapeHtml(prop.id)}.png" alt="${escapeHtml(prop.label || prop.id)}">
+          <img src="${assetSrc('props', prop.id)}" alt="${escapeHtml(prop.label || prop.id)}">
           ${prop.label ? `<span>${escapeHtml(prop.label)}</span>` : ''}
         </div>`;
   }).join('');
@@ -543,8 +540,8 @@ function renderPhaseLegacy(scene, index) {
   return `
       <section data-hf-id="hf-phase-${scene.id}" id="phase-${scene.id}" class="phase${index === 0 ? ' is-first' : ''}" data-chapter="${escapeHtml(scene.chapter)}">
         <div class="ground-line"></div>
-        <img data-hf-id="hf-${scene.id}-human" class="actor human-actor" src="assets/pack/sprites/human/${escapeHtml(scene.human)}.png" alt="工程师 ${escapeHtml(scene.human)}">
-        <img data-hf-id="hf-${scene.id}-agent" class="actor agent-actor" src="assets/pack/sprites/agent/${escapeHtml(scene.agent)}.png" alt="Tiny Agent ${escapeHtml(scene.agent)}">
+        <img data-hf-id="hf-${scene.id}-human" class="actor human-actor" src="${assetSrc('human', scene.human)}" alt="工程师 ${escapeHtml(scene.human)}">
+        <img data-hf-id="hf-${scene.id}-agent" class="actor agent-actor" src="${assetSrc('agent', scene.agent)}" alt="Tiny Agent ${escapeHtml(scene.agent)}">
         <div data-hf-id="hf-${scene.id}-callout" class="callout accent-${escapeHtml(scene.accent || 'blue')}">${escapeHtml(scene.callout)}</div>
         <div class="prop-zone">${lines}${items}</div>
       </section>`;
@@ -1103,7 +1100,7 @@ function renderPhaseV2(scene, index) {
     const position = positions[propIndex];
     return `
           <div data-hf-id="hf-v2-${scene.id}-prop-${propIndex + 1}" class="prop-item prop-${propIndex + 1}${propIndex === 0 ? ' focus-prop' : ''}" style="left:${position.x}px;top:${position.y}px;--prop-size:${position.size}px">
-            <img src="assets/pack/sprites/props/${escapeHtml(prop.id)}.png" alt="${escapeHtml(prop.label || prop.id)}">
+            <img src="${assetSrc('props', prop.id)}" alt="${escapeHtml(prop.label || prop.id)}">
             ${prop.label ? `<span>${escapeHtml(prop.label)}</span>` : ''}
           </div>`;
   }).join('');
@@ -1137,8 +1134,8 @@ function renderPhaseV2(scene, index) {
           <div class="balance-layer" style="transform:translate(${scene.balanceShift?.x || 0}px,${scene.balanceShift?.y || 0}px)">
             <div class="ground-line"></div>
             ${comparison}
-            <img data-hf-id="hf-v2-${scene.id}-human" class="actor human-actor" style="${frameStyle(geometry.human)}" src="assets/pack/sprites/human/${escapeHtml(scene.human)}.png" alt="工程师 ${escapeHtml(scene.human)}">
-            <img data-hf-id="hf-v2-${scene.id}-agent" class="actor agent-actor" style="${frameStyle(geometry.agent)}" src="assets/pack/sprites/agent/${escapeHtml(scene.agent)}.png" alt="Tiny Agent ${escapeHtml(scene.agent)}">
+            <img data-hf-id="hf-v2-${scene.id}-human" class="actor human-actor" style="${frameStyle(geometry.human)}" src="${assetSrc('human', scene.human)}" alt="工程师 ${escapeHtml(scene.human)}">
+            <img data-hf-id="hf-v2-${scene.id}-agent" class="actor agent-actor" style="${frameStyle(geometry.agent)}" src="${assetSrc('agent', scene.agent)}" alt="Tiny Agent ${escapeHtml(scene.agent)}">
             <div data-hf-id="hf-v2-${scene.id}-callout" class="callout${[...scene.callout].length > 22 ? ' callout-long' : ''} accent-${escapeHtml(scene.accent || 'blue')}" style="${calloutStyle(geometry.callout)}">${escapeHtml(scene.callout)}</div>
             <div class="prop-zone">${lines}${items}</div>
           </div>
@@ -1470,9 +1467,9 @@ async function compile() {
   const chapters = parseSource(await readFile(sourcePath, 'utf8'));
   const plan = JSON.parse(await readFile(planPath, 'utf8'));
   const animationPlan = JSON.parse(await readFile(animationPlanPath, 'utf8'));
-  const propsManifest = JSON.parse(await readFile(path.join(projectRoot, 'assets/pack/manifests/props.json'), 'utf8'));
-  const humanManifest = JSON.parse(await readFile(path.join(projectRoot, 'assets/pack/manifests/human.json'), 'utf8'));
-  const agentManifest = JSON.parse(await readFile(path.join(projectRoot, 'assets/pack/manifests/agent.json'), 'utf8'));
+  const propsManifest = projectAssetPack.manifests.props;
+  const humanManifest = projectAssetPack.manifests.human;
+  const agentManifest = projectAssetPack.manifests.agent;
   propBoundsById = new Map(propsManifest.assets.map((asset) => [asset.id, asset.bounds]));
   humanBoundsById = new Map(humanManifest.assets.map((asset) => [asset.id, asset.bounds]));
   agentBoundsById = new Map(agentManifest.assets.map((asset) => [asset.id, asset.bounds]));

@@ -134,18 +134,21 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
       try {
         const relayInstance = await this.connectRelay(relay);
         const value = new Promise<any>((resolve) => {
-          relayInstance.subscribe([{ kinds: [1], authors: [pubkey] }], {
-            eoseTimeout: 6000,
-            onevent: (event) => {
-              resolve(event);
-            },
-            oneose: () => {
-              resolve({});
-            },
-            onclose: () => {
-              resolve({});
-            },
-          });
+          relayInstance.subscribe(
+            [{ ids: [event.id], kinds: [1], authors: [pubkey] }],
+            {
+              eoseTimeout: 6000,
+              onevent: (event) => {
+                resolve(event);
+              },
+              oneose: () => {
+                resolve({});
+              },
+              onclose: () => {
+                resolve({});
+              },
+            }
+          );
         });
 
         await relayInstance.publish(event);
@@ -190,9 +193,7 @@ export class NostrProvider extends SocialAbstract implements SocialProvider {
 
   private buildContent(post: PostDetails): string {
     const mediaContent = post.media?.map((m) => m.path).join('\n\n') || '';
-    return mediaContent
-      ? `${post.message}\n\n${mediaContent}`
-      : post.message;
+    return mediaContent ? `${post.message}\n\n${mediaContent}` : post.message;
   }
 
   async post(

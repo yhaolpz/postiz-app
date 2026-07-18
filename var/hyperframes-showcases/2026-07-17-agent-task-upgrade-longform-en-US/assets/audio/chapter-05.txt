@@ -1,0 +1,21 @@
+Once a task passes the scorecard, the next job is to give the agent ground truth.
+
+A useful context package contains five things: the goal, the current state, the relevant files or systems, the constraints, and the definition of done. More context is not automatically better. The useful context is the smallest set that lets the agent act without guessing.
+
+Tool access should match the task. A document task may need a source folder and an output path. A data task may need a workbook plus validation rules. A publishing task may need an authenticated page, final copy, a thumbnail, and a clear instruction to stop before the publish button.
+
+Then design the feedback loop. The agent acts, reads the real result, compares it with the acceptance criteria, and either continues, repairs, or stops.
+
+This loop is what makes the path genuinely agentic. The plan can change from evidence, but it must not change from unsupported confidence. A test failure, missing source, invalid file, or provider rejection should become a new decision, not a detail to hide.
+
+Long work also needs visible checkpoints. Save intermediate artifacts, record tool results, preserve errors, and make the current state recoverable. A human should be able to see what changed, what remains, and why the agent believes the task is complete.
+
+This applies beyond software. A recruiting workflow can verify required fields and stop before outreach. A finance workflow can reconcile totals and surface exceptions. A content workflow can validate dimensions, chapters, and links before it asks for final publication approval.
+
+Chapter recap.
+
+First, package the smallest complete set of goal, state, context, constraints, and completion criteria.
+
+Second, make every important action return evidence that can change the plan.
+
+Third, preserve checkpoints so the work can be reviewed, resumed, and recovered.

@@ -1,0 +1,121 @@
+{
+  "title": "从聊天到干活：什么任务值得交给 Agent？",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-17-agent-task-upgrade-longform-zh-CN/SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-17 LUFS"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 616.944,
+    "chapters": [
+      {
+        "label": "前言",
+        "start": 0,
+        "end": 52.248,
+        "duration": 52.248
+      },
+      {
+        "label": "工作转变",
+        "start": 52.248,
+        "end": 145.512,
+        "duration": 93.264
+      },
+      {
+        "label": "任务适配",
+        "start": 145.512,
+        "end": 234.216,
+        "duration": 88.704
+      },
+      {
+        "label": "升级判断",
+        "start": 234.216,
+        "end": 350.544,
+        "duration": 116.328
+      },
+      {
+        "label": "上下文与反馈",
+        "start": 350.544,
+        "end": 433.99199999999996,
+        "duration": 83.448
+      },
+      {
+        "label": "风险与验收",
+        "start": 433.99199999999996,
+        "end": 508.29599999999994,
+        "duration": 74.304
+      },
+      {
+        "label": "流程复用",
+        "start": 508.29599999999994,
+        "end": 581.328,
+        "duration": 73.032
+      },
+      {
+        "label": "总结",
+        "start": 581.328,
+        "end": 616.944,
+        "duration": 35.615999999999985
+      }
+    ],
+    "visualStates": 40,
+    "captions": 200
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "passed"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "passed"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "passed"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "passed"
+    }
+  },
+  "output": {
+    "file": "renders/video.mp4",
+    "status": "pending"
+  }
+}

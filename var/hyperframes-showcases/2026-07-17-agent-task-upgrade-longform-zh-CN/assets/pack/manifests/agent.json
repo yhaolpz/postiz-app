@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "id": "agent",
+  "label": "Tiny Agent",
+  "canvas": {
+    "width": 384,
+    "height": 512
+  },
+  "registration": {
+    "kind": "feet",
+    "x": 192,
+    "y": 456
+  },
+  "sheet": {
+    "path": "sprites/agent-sprite.png",
+    "width": 1536,
+    "height": 1024,
+    "columns": 4,
+    "rows": 2,
+    "cellWidth": 384,
+    "cellHeight": 512
+  },
+  "assets": [
+    {
+      "id": "idle",
+      "zhName": "待机",
+      "description": "Neutral ready state.",
+      "path": "sprites/agent/idle.png",
+      "cell": {
+        "index": 0,
+        "row": 0,
+        "column": 0,
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 94,
+        "y": 95,
+        "width": 195,
+        "height": 361,
+        "right": 95,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "search",
+      "zhName": "搜索",
+      "description": "Leans forward and scans for information.",
+      "path": "sprites/agent/search.png",
+      "cell": {
+        "index": 1,
+        "row": 0,
+        "column": 1,
+        "x": 384,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 69,
+        "y": 111,
+        "width": 246,
+        "height": 345,
+        "right": 69,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "receive-tool",
+      "zhName": "接工具",
+      "description": "Open hand ready to receive a tool.",
+      "path": "sprites/agent/receive-tool.png",
+      "cell": {
+        "index": 2,
+        "row": 0,
+        "column": 2,
+        "x": 768,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 78,
+        "y": 98,
+        "width": 227,
+        "height": 358,
+        "right": 79,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "execute",
+      "zhName": "执行",
+      "description": "Presses an imaginary control to execute.",
+      "path": "sprites/agent/execute.png",
+      "cell": {
+        "index": 3,
+        "row": 0,
+        "column": 3,
+        "x": 1152,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 101,
+        "y": 101,
+        "width": 182,
+        "height": 355,
+        "right": 101,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "store-memory",
+      "zhName": "存记忆",
+      "description": "Moves information toward the tool-belt memory.",
+      "path": "sprites/agent/store-memory.png",
+      "cell": {
+        "index": 4,
+        "row": 1,
+        "column": 0,
+        "x": 0,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 101,
+        "y": 100,
+        "width": 181,
+        "height": 356,
+        "right": 102,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "recall-memory",
+      "zhName": "取记忆",
+      "description": "Retrieves information from the tool belt.",
+      "path": "sprites/agent/recall-memory.png",
+      "cell": {
+        "index": 5,
+        "row": 1,
+        "column": 1,
+        "x": 384,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 76,
+        "y": 101,
+        "width": 231,
+        "height": 355,
+        "right": 77,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "success",
+      "zhName": "成功",
+      "description": "Confident thumbs-up success state.",
+      "path": "sprites/agent/success.png",
+      "cell": {
+        "index": 6,
+        "row": 1,
+        "column": 2,
+        "x": 768,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 90,
+        "y": 103,
+        "width": 204,
+        "height": 353,
+        "right": 90,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "failure",
+      "zhName": "失败",
+      "description": "Slumped failure state with a sad face.",
+      "path": "sprites/agent/failure.png",
+      "cell": {
+        "index": 7,
+        "row": 1,
+        "column": 3,
+        "x": 1152,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 102,
+        "y": 115,
+        "width": 179,
+        "height": 341,
+        "right": 103,
+        "bottom": 56
+      }
+    }
+  ]
+}

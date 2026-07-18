@@ -1,0 +1,102 @@
+{
+  "chapters": [
+    {
+      "label": "Preface",
+      "showIntro": false,
+      "intro": "Decide which work deserves agent delegation",
+      "summary": ["An agent changes the unit of work", "Longer tasks are not automatically better agent tasks", "Use a Task Upgrade Scorecard before delegating"],
+      "scenes": [
+        {"paragraphs":[1,1],"layout":"hero","human":"think","agent":"idle","props":[{"id":"search","label":"Question"},{"id":"document","label":"Answer"}],"flow":"chain","callout":"Still using AI like search?","accent":"yellow"},
+        {"paragraphs":[2,3],"layout":"comparison","labels":["Chat","Delegated work"],"human":"point-right","agent":"execute","props":[{"id":"document","label":"One answer"},{"id":"tool","label":"Use tools"},{"id":"result-card","label":"Finished work"},{"id":"loop","label":"Long horizon"}],"flow":"cluster","callout":"The unit of work changed","accent":"blue"},
+        {"paragraphs":[4,5],"layout":"grid","human":"approve","agent":"receive-tool","props":[{"id":"document-stack","label":"Task fit"},{"id":"warning","label":"Risk"},{"id":"result-card","label":"Scorecard"}],"flow":"cluster","callout":"One reusable decision","accent":"blue"}
+      ]
+    },
+    {
+      "label": "The Work Shift",
+      "intro": "Measure finished work, not chat volume",
+      "summary": ["Measure the artifact or change produced, not the number of messages", "Delegate a complete work packet rather than revealing essential context one correction at a time", "Treat task-horizon data as evidence of a shift, not as proof that every long task belongs to an agent"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Consultation","Production"],"human":"point-right","agent":"execute","props":[{"id":"document","label":"Advice"},{"id":"tool","label":"Action"},{"id":"result-card","label":"Artifact"}],"flow":"cluster","callout":"Answer or finished work?","accent":"blue"},
+        {"paragraphs":[3,3],"layout":"grid","human":"operate","agent":"search","props":[{"id":"document-stack","label":"Memo"},{"id":"database","label":"Data"},{"id":"error","label":"Debug"},{"id":"browser","label":"Campaign"}],"flow":"cluster","callout":"Delegation crosses job boundaries","accent":"yellow"},
+        {"paragraphs":[4,5],"layout":"process","human":"surprised","agent":"execute","props":[{"id":"document","label":"30 min"},{"id":"document-stack","label":"1 hour"},{"id":"loop","label":"8 hours"},{"id":"result-card","label":"Work packet"}],"flow":"chain","callout":"Longer task horizons","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"grid","human":"point-right","agent":"receive-tool","props":[{"id":"loop","label":"Repeat"},{"id":"branch","label":"Parallel"},{"id":"tool","label":"Skills"},{"id":"result-card","label":"Review"}],"flow":"cluster","callout":"Heavy users redesign the workflow","accent":"blue"},
+        {"paragraphs":[7,7],"layout":"grid","human":"think","agent":"failure","props":[{"id":"warning","label":"Directional"},{"id":"error","label":"Not universal"}],"flow":"cluster","callout":"Evidence needs boundaries","accent":"red"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"Chapter recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Task Fit",
+      "intro": "Judge the task by output, context, feedback, and risk",
+      "summary": ["Define a concrete artifact or observable change", "Provide the context, tools, and feedback needed to judge progress", "Bound the risk before you increase autonomy"],
+      "scenes": [
+        {"paragraphs":[1,3],"layout":"comparison","labels":["Vague topic","Concrete outcome"],"human":"surprised","agent":"execute","props":[{"id":"warning","label":"Help with marketing"},{"id":"document","label":"Audience"},{"id":"result-card","label":"Deliverable"},{"id":"success","label":"Decision"}],"flow":"cluster","callout":"Can success be seen?","accent":"yellow"},
+        {"paragraphs":[4,4],"layout":"process","human":"operate","agent":"search","props":[{"id":"document-stack","label":"Files"},{"id":"database","label":"Systems"},{"id":"tool","label":"Permissions"}],"flow":"chain","callout":"Accessible context and tools","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"grid","human":"point-right","agent":"execute","props":[{"id":"success","label":"Tests"},{"id":"database","label":"Totals"},{"id":"browser","label":"Page state"},{"id":"document","label":"Citations"}],"flow":"cluster","callout":"Feedback keeps work grounded","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"comparison","labels":["Reversible","Irreversible"],"human":"surprised","agent":"failure","props":[{"id":"document","label":"Draft"},{"id":"success","label":"Prepare"},{"id":"warning","label":"Publish"},{"id":"error","label":"Delete"}],"flow":"cluster","callout":"Bound the consequences","accent":"red"},
+        {"paragraphs":[7,7],"layout":"hero","human":"approve","agent":"success","props":[{"id":"document-stack","label":"Outcome"},{"id":"tool","label":"Context"},{"id":"result-card","label":"Feedback"},{"id":"warning","label":"Risk"}],"flow":"cluster","callout":"Four properties make delegation real","accent":"blue"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"Chapter recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Upgrade Scorecard",
+      "intro": "Move from chat to delegation one gate at a time",
+      "summary": ["Upgrade the work mode one gate at a time", "Keep irreversible actions behind explicit approval", "Choose the least autonomous mode that can reliably produce the required outcome"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"point-right","agent":"idle","props":[{"id":"document","label":"Gate 1"},{"id":"result-card","label":"Concrete output"}],"flow":"chain","callout":"Gate 1: Is the output concrete?","accent":"blue"},
+        {"paragraphs":[3,3],"layout":"process","human":"operate","agent":"execute","props":[{"id":"document-stack","label":"Source"},{"id":"tool","label":"Action"},{"id":"result-card","label":"Result"},{"id":"warning","label":"Hidden gap"}],"flow":"chain","callout":"Gate 2: Is the action chain complete?","accent":"yellow"},
+        {"paragraphs":[4,4],"layout":"process","human":"point-right","agent":"search","props":[{"id":"tool","label":"Action"},{"id":"result-card","label":"Evidence"},{"id":"loop","label":"Update plan"}],"flow":"loop","callout":"Gate 3: Does progress produce evidence?","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"comparison","labels":["Auto","Approve first"],"human":"surprised","agent":"failure","props":[{"id":"success","label":"Reversible"},{"id":"warning","label":"High impact"},{"id":"timeout","label":"Stop"}],"flow":"cluster","callout":"Gate 4: Are consequences bounded?","accent":"red"},
+        {"paragraphs":[6,6],"layout":"grid","human":"think","agent":"idle","props":[{"id":"document","label":"Research evidence"},{"id":"result-card","label":"Practical synthesis"}],"flow":"chain","callout":"A usable synthesis, not a copied table","accent":"yellow"},
+        {"paragraphs":[7,9],"layout":"grid","human":"operate","agent":"receive-tool","props":[{"id":"database","label":"Spreadsheet"},{"id":"browser","label":"Newsletter"},{"id":"search","label":"Research"},{"id":"warning","label":"Approval"}],"flow":"cluster","callout":"Apply the gates to real tasks","accent":"blue"},
+        {"paragraphs":[10,10],"layout":"process","human":"point-right","agent":"success","props":[{"id":"document","label":"Chat"},{"id":"tool","label":"Copilot"},{"id":"loop","label":"Supervised"},{"id":"result-card","label":"Delegated"}],"flow":"chain","callout":"Four work modes","accent":"blue"},
+        {"paragraphs":[11,14],"summaryPointParagraphs":[12,13,14],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"Chapter recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Context and Feedback",
+      "intro": "Give the agent enough ground truth to make progress",
+      "summary": ["Package the smallest complete set of goal, state, context, constraints, and completion criteria", "Make every important action return evidence that can change the plan", "Preserve checkpoints so the work can be reviewed, resumed, and recovered"],
+      "scenes": [
+        {"paragraphs":[1,3],"layout":"process","human":"operate","agent":"receive-tool","props":[{"id":"document","label":"Goal"},{"id":"memory","label":"Current state"},{"id":"document-stack","label":"Context"},{"id":"warning","label":"Constraints"},{"id":"success","label":"Done"}],"flow":"chain","callout":"The smallest complete context package","accent":"blue"},
+        {"paragraphs":[4,5],"layout":"process","human":"point-right","agent":"execute","props":[{"id":"tool","label":"Act"},{"id":"result-card","label":"Read result"},{"id":"loop","label":"Repair or continue"}],"flow":"loop","callout":"Evidence drives the next step","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"grid","human":"think","agent":"store-memory","props":[{"id":"document-stack","label":"Artifacts"},{"id":"result-card","label":"Tool results"},{"id":"error","label":"Errors"},{"id":"memory","label":"Recoverable state"}],"flow":"cluster","callout":"Visible checkpoints","accent":"yellow"},
+        {"paragraphs":[7,7],"layout":"grid","human":"approve","agent":"success","props":[{"id":"document","label":"Recruiting"},{"id":"database","label":"Finance"},{"id":"browser","label":"Content"},{"id":"warning","label":"Stop before send"}],"flow":"cluster","callout":"Ground truth works beyond code","accent":"blue"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"Chapter recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Risk and Review",
+      "intro": "Put human judgment where mistakes become expensive",
+      "summary": ["Give wider autonomy to reversible preparation and narrower authority to irreversible action", "Define acceptance evidence before execution so review stays tractable", "Stop on missing context, repeated failure, or ambiguous completion"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Wider autonomy","Narrow authority"],"human":"point-right","agent":"execute","props":[{"id":"search","label":"Read"},{"id":"document","label":"Draft"},{"id":"warning","label":"Send"},{"id":"error","label":"Delete"}],"flow":"cluster","callout":"Risk changes the permission","accent":"yellow"},
+        {"paragraphs":[3,3],"layout":"focus","human":"approve","agent":"receive-tool","props":[{"id":"result-card","label":"Evidence"},{"id":"warning","label":"Irreversible"},{"id":"success","label":"Approve"}],"flow":"chain","callout":"Approval at the point of consequence","accent":"red"},
+        {"paragraphs":[4,5],"layout":"grid","human":"think","agent":"search","props":[{"id":"document-stack","label":"Diff"},{"id":"success","label":"Checklist"},{"id":"database","label":"Reconcile"},{"id":"browser","label":"Preview"}],"flow":"cluster","callout":"Make review tractable","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"process","human":"operate","agent":"execute","props":[{"id":"search","label":"Research"},{"id":"document","label":"Draft"},{"id":"warning","label":"Approve"},{"id":"browser","label":"Send"}],"flow":"chain","callout":"Split work where risk changes","accent":"blue"},
+        {"paragraphs":[7,7],"layout":"grid","human":"surprised","agent":"failure","props":[{"id":"warning","label":"Missing context"},{"id":"error","label":"Repeated failure"},{"id":"timeout","label":"Stop"}],"flow":"cluster","callout":"A useful agent knows when to stop","accent":"red"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"Chapter recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Reusable Workflows",
+      "intro": "Turn repeated delegation into a dependable system",
+      "summary": ["Standardize tasks that repeat with the same inputs, constraints, and checks", "Reuse procedures that preserve context, tools, permissions, and evidence", "Parallelize independent work only when ownership and review remain clear"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"point-right","agent":"store-memory","props":[{"id":"loop","label":"Repeat"},{"id":"tool","label":"Skill"},{"id":"memory","label":"Procedure"}],"flow":"cluster","callout":"Big tasks become reusable systems","accent":"blue"},
+        {"paragraphs":[3,5],"layout":"process","human":"operate","agent":"receive-tool","props":[{"id":"document","label":"Inputs"},{"id":"document-stack","label":"Procedure"},{"id":"warning","label":"Permissions"},{"id":"result-card","label":"Evidence"},{"id":"memory","label":"Version"}],"flow":"chain","callout":"Encode the operating method","accent":"blue"},
+        {"paragraphs":[6,6],"layout":"grid","human":"point-right","agent":"execute","props":[{"id":"branch","label":"Independent work"},{"id":"document","label":"Market A"},{"id":"document","label":"Market B"},{"id":"warning","label":"Ownership"}],"flow":"branch","callout":"Parallel only with clear ownership","accent":"yellow"},
+        {"paragraphs":[7,7],"layout":"grid","human":"approve","agent":"success","props":[{"id":"document-stack","label":"Choose tasks"},{"id":"result-card","label":"Review outputs"},{"id":"loop","label":"Improve system"}],"flow":"chain","callout":"The human becomes a workflow designer","accent":"blue"},
+        {"paragraphs":[8,11],"summaryPointParagraphs":[9,10,11],"recap":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"Chapter recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Summary",
+      "showIntro": false,
+      "intro": "Upgrade only when the task has earned delegation",
+      "summary": ["Delegate work with a concrete output, not a vague topic", "Require accessible context and trustworthy feedback before the agent acts independently", "Bound permissions and put approval before irreversible actions"],
+      "scenes": [
+        {"paragraphs":[1,6],"summaryPointParagraphs":[2,3,4],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"approve","agent":"success","props":[],"flow":"cluster","callout":"Reliable delegation, not maximum autonomy","accent":"blue"}
+      ]
+    }
+  ]
+}
