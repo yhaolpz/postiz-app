@@ -1,0 +1,90 @@
+{
+  "chapters": [
+    {
+      "label": "Preface",
+      "showIntro": false,
+      "intro": "Replace prompt performance with four observable human decisions",
+      "summary": ["Measure decisions, not usage volume", "Use the four human skills as one loop", "Move from intent to evidence without losing judgment"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Visible activity","Real fluency"],"human":"compare-front","agent":"present-right","agentDirection":"right","props":[{"id":"prompt-injection","label":"Prompt tricks"},{"id":"timer","label":"Usage time"},{"id":"human-gate","label":"Judgment"},{"id":"evidence","label":"Evidence"}],"flow":"cluster","callout":"Activity is not the same as judgment","accent":"red"},
+        {"paragraphs":[3,3],"layout":"grid","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"handoff","label":"Delegation"},{"id":"document","label":"Description"},{"id":"compare","label":"Discernment"},{"id":"shield","label":"Diligence"}],"flow":"cluster","callout":"Four human skills form AI fluency","accent":"blue"},
+        {"paragraphs":[4,5],"layout":"process","human":"present-left","humanDirection":"left","agent":"present-left","agentDirection":"left","props":[{"id":"target","label":"Intent"},{"id":"workflow","label":"4D loop"},{"id":"evidence","label":"Evidence"}],"flow":"chain","callout":"Move from intent to evidence","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "Delegation",
+      "intro": "Choose whether, where, and how AI should participate before writing the prompt",
+      "summary": ["decide whether AI belongs in the task before writing the prompt", "delegate a bounded outcome, not a vague responsibility", "keep human authority where consequence and judgment live"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"decide-front","agent":"ask-front","props":[{"id":"target","label":"Job"},{"id":"question","label":"AI role"}],"flow":"chain","callout":"The first decision comes before the prompt","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"human-gate","label":"Human"},{"id":"team","label":"Collaborate"},{"id":"handoff","label":"Delegate"},{"id":"stop","label":"Boundary"}],"flow":"chain","callout":"Route work by judgment and evidence","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["Ready to hand off","Keep human judgment"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"email","label":"Routine work"},{"id":"success","label":"Checkable"},{"id":"uncertainty","label":"Unstable goal"},{"id":"warning","label":"High consequence"}],"flow":"cluster","callout":"Speed does not make a task ready","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Description",
+      "intro": "Turn private intent into a brief another session can execute without guessing",
+      "summary": ["translate intent into an outcome, context, constraints, and evidence", "describe the tradeoff the AI must preserve", "prefer a small high-signal brief over a long noisy prompt"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"write-front","agent":"read-front","props":[{"id":"target","label":"Outcome"},{"id":"folder","label":"Context"},{"id":"checklist","label":"Constraints"},{"id":"evidence","label":"Test"}],"flow":"cluster","callout":"Make the hidden standard visible","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["Vague adjective","Actionable tradeoff"],"human":"present-left","humanDirection":"left","agent":"look-left","agentDirection":"left","props":[{"id":"chat","label":"Professional"},{"id":"uncertainty","label":"Many meanings"},{"id":"ruler","label":"Narrow claim"},{"id":"target","label":"Real metric"}],"flow":"cluster","callout":"Describe decisions, not decoration","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"document","label":"Shared brief"},{"id":"summary","label":"High signal"},{"id":"archive","label":"Resume state"}],"flow":"chain","callout":"Remove context that cannot change the decision","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Discernment",
+      "intro": "Evaluate task fit, evidence, and consequence instead of trusting fluent language",
+      "summary": ["judge task fit before judging presentation quality", "separate evidence, inference, and unresolved uncertainty", "add friction where an error would change a real decision"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Looks complete","Actually reliable"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"result-card","label":"Fluent output"},{"id":"warning","label":"Hidden error"},{"id":"target","label":"Task fit"},{"id":"approval","label":"Situation fit"}],"flow":"cluster","callout":"Fluency is not proof","accent":"red","visualVariant":"mirror"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"question","label":"Assumption"},{"id":"citation","label":"Source"},{"id":"compare","label":"Contrast"},{"id":"experiment","label":"Failure test"}],"flow":"chain","callout":"Create evidence you can discriminate between","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"grid","human":"caution-front","agent":"verify-front","props":[{"id":"citation","label":"Primary"},{"id":"calendar","label":"Current"},{"id":"evidence","label":"Supports claim"},{"id":"stop","label":"Review gate"}],"flow":"cluster","callout":"Do not stop at the first smooth answer","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Diligence",
+      "intro": "Keep responsibility, permissions, and real-world verification attached to the action",
+      "summary": ["keep a record of permissions, checks, and the final decision", "match AI authority to reversibility and consequence", "verify the outcome after the tool reports success"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"stage","human":"review-front","agent":"write-front","props":[{"id":"clipboard","label":"Audit trail"},{"id":"permission-key","label":"Permission"},{"id":"approval","label":"Decision"}],"flow":"cluster","callout":"The user owns the decision to rely on AI","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"stop-front","agent":"blocked-front","props":[{"id":"book","label":"Read"},{"id":"document","label":"Draft"},{"id":"human-gate","label":"Gate"},{"id":"stop","label":"Stop"}],"flow":"chain","callout":"Authority rises only with evidence","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["Tool success","Outcome success"],"human":"present-right","humanDirection":"right","agent":"monitor-right","agentDirection":"right","props":[{"id":"cloud","label":"Uploaded"},{"id":"success","label":"Request OK"},{"id":"video","label":"Public video"},{"id":"checklist","label":"Verified state"}],"flow":"cluster","callout":"Check the world after the call returns","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "The 4D Loop",
+      "intro": "Run the four dimensions as a chain and return to the real source of failure",
+      "summary": ["treat Delegation, Description, Discernment, and Diligence as one chain", "return to the dimension that caused the failure", "preserve state and evidence so the loop can resume"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"handoff","label":"Delegate"},{"id":"document","label":"Describe"},{"id":"compare","label":"Discern"},{"id":"shield","label":"Diligence"}],"flow":"loop","callout":"Each decision creates the next test","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"disagree-front","agent":"retry-front","props":[{"id":"target","label":"Wrong goal"},{"id":"uncertainty","label":"Missing constraint"},{"id":"error","label":"Weak evidence"},{"id":"permission-key","label":"Exceeded authority"}],"flow":"cluster","callout":"Repair the weakest dimension","accent":"red"},
+        {"paragraphs":[5,6],"layout":"stage","human":"handoff-left","humanDirection":"left","agent":"receive-left","agentDirection":"left","props":[{"id":"archive","label":"State"},{"id":"question","label":"Open issue"},{"id":"evidence","label":"Acceptance test"}],"flow":"chain","callout":"Resume from evidence, not conversation history","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Scorecard",
+      "intro": "Score the current task and repair every zero before expanding AI authority",
+      "summary": ["score the task from zero to two on each of the four dimensions", "treat any zero as a reason to stop and repair the workflow", "expand AI authority only after all four dimensions are testable"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"review-front","agent":"evaluate-front","props":[{"id":"scorecard","label":"4D card"},{"id":"ruler","label":"0 to 2"}],"flow":"chain","callout":"Score the task, not your identity","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["Delegation","Description"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"handoff","label":"Bounded role"},{"id":"human-gate","label":"Human owner"},{"id":"document","label":"High-signal brief"},{"id":"target","label":"Acceptance test"}],"flow":"cluster","callout":"Can another session act?","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["Discernment","Diligence"],"human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"evidence","label":"Checked claim"},{"id":"experiment","label":"Failure case"},{"id":"permission-key","label":"Authorized"},{"id":"approval","label":"Verified"}],"flow":"cluster","callout":"A good average cannot hide a zero","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Summary",
+      "showIntro": false,
+      "intro": "Use the 4D card before the next consequential AI task",
+      "summary": ["Delegation decides whether, where, and how AI should participate", "Description makes the goal, context, constraints, and evidence explicit", "Discernment tests the output, while Diligence controls and verifies its use"],
+      "scenes": [
+        {"paragraphs":[1,7],"summaryPointParagraphs":[2,3,4],"ctaParagraph":7,"recap":true,"finalSummary":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Repair every zero before expanding authority","accent":"blue"}
+      ]
+    }
+  ]
+}

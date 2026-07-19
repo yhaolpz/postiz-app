@@ -6,7 +6,7 @@ Postiz Public API for YouTube, TikTok, and Facebook Reels publishing.
 The default path no longer has a Canvas renderer fallback:
 
 ```text
-topic -> script JSON -> generated image keyframes -> fixed title/subtitle overlays ->
+topic -> script JSON -> generated image keyframes -> fixed title/subtitle box overlays + VTT captions ->
 PIL fixed-anchor affine zoom + short main-art white dissolves -> local TTS -> FFmpeg MP4 -> QA gates ->
 Postiz Public API
 ```
@@ -20,7 +20,7 @@ stick-figure look.
 
 Style rules:
 
-- Use the selected `A - whiteboard stick figure` style: clean white background,
+- Use the selected `A - whiteboard stick figure` style: neutral paper-gray background,
   thick black marker linework, sparse blue/red highlights, and simple
   whiteboard diagrams.
 - Keep a stable IP: a Chinese software engineer stick figure plus a friendly
@@ -28,8 +28,12 @@ Style rules:
 - Match the first published Tiny Agent character scale: the engineer, Tiny
   Agent, and core props should fill most of the main art area, not shrink into
   small icons.
-- Keep the top title as `Tiny Agent` and use a large rounded subtitle box
-  at the bottom.
+- Prefer concise episode titles around 28 English characters. Wrap longer
+  titles to at most two lines and keep their rendered bbox inside the 80px
+  side margins; a title that touches or crosses the edges fails QA.
+- The final CTA uses a dedicated screen: remove the episode title, show
+  `Follow Tiny Agent`, use one large smiling Tiny Agent image, and show the
+  fixed CTA sentence in full.
 - Keep on-screen text in English. Avoid Chinese text except for a tiny signature
   or intentional cultural detail.
 - Do not use the previous notebook sketchbook style or the polished colorful
@@ -38,11 +42,13 @@ Style rules:
   Canvas/SVG/HTML/code. Use generated keyframes or explicitly provided image
   keyframes, then let code handle subtitles, overlays, fixed-anchor light
   pan/zoom, timing, audio, and FFmpeg composition.
-- Use per-scene `Subtitle blocks` for the bottom caption box. Do not repeat the
-  same formula or on-screen text across every scene.
-- End every published episode with the user-value CTA: `Follow Tiny Agent.
-  Learn one AI agent idea every day.` Do not use sourcing, citations, production
-  process, or a next-episode teaser as the follow reason.
+- Keep per-scene `Subtitle blocks` as semantic review beats, then render the
+  bottom caption text as short phrases synchronized to the `edge-tts` VTT.
+  The caption box stays fixed while only the current spoken phrase changes.
+- End every published episode with exactly: `Follow Tiny Agent. Tiny Agent
+  helps you get better at using AI.` Both sentences must be spoken. Do not add
+  sourcing, citations, production process, update
+  frequency, or a next-episode teaser to the final sentence.
 
 Recommended production flow:
 
@@ -70,20 +76,31 @@ The runner also fails before publishing if any required QA gate fails:
   layout: all fixed layers are centered at `x=540`, the main art occupies
   `y=300-1110` with an `820x780` maximum, and its content bbox must cover at
   least `68%` of the full canvas width.
-- The title baseline is `y=240`. The rounded subtitle box is
+- The title area is `x=80-1000, y=0-300`. The rounded subtitle box is
   `x=80-1000, y=1130-1430`, with centered `50px` text, `62px` line height, and
   at most two lines. Critical text, faces, and props must not extend below
   `y=1430`.
-- Tiny Agent summaries must record `layoutStandard: cross-platform-balanced-v1`.
-  `--reuse-video` rejects Tiny Agent videos whose summary is missing this
-  release-layout marker, even if their codec and duration otherwise pass.
+- Normal episode titles must stay inside `x=80-1000, y=0-300` and use at most
+  two lines. The CTA screen intentionally replaces the episode title with
+  `Follow Tiny Agent`.
+- Tiny Agent summaries must record `layoutStandard: cross-platform-balanced-v1`,
+  `speech.rate: +30%`, `captions.mode: realtime-vtt`, the fixed CTA, and
+  `theme.background: #ECECEA`. `--reuse-video` rejects Tiny Agent videos that
+  do not meet this current release baseline.
 - MP4 must contain an audio stream, and the video must not run past the audio
   into a silent tail.
-- Title and bottom subtitle overlays must stay fixed between segment start and
-  end frames.
+- Title and bottom subtitle box overlays must stay fixed between segment start
+  and end frames; caption text changes only at VTT cue boundaries.
+- The final CTA scene must hard-cut on the first frame of the `Follow Tiny Agent`
+  VTT cue,
+  hide the episode title, and pass the dedicated CTA-scene QA check.
 - Main art zoom must pass the fixed-center stability check on sampled
   consecutive frames.
-- Multi-scene videos must use varied bottom subtitle blocks.
+- Tiny Agent VTT captions must fit the two-line box, remain visible for at least
+  `0.55s`, and cover the narration through the final CTA.
+- Tiny Agent canvas, neutral art fills, transition background, and subtitle box
+  must use the long-video theme background `#ECECEA`; sampled empty corners
+  must pass the theme-background QA gate.
 - Main art must pass the character-scale check, so the recurring engineer and
   robot remain close to the first-video proportions.
 
@@ -97,9 +114,10 @@ swallowed a Temporal start error.
 
 The renderer requires `python3` with Pillow available. It uses
 `scripts/ai-video-pipeline/render-fixed-zoom.py` for subpixel fixed-anchor zoom;
-this avoids the visible jitter caused by integer crop/zoom filters. Scene
-changes use a short main-art-only fade through the whiteboard background, while
-title and subtitle overlays stay fixed and unblended.
+this avoids the visible jitter caused by integer crop/zoom filters. Content
+scene changes use a short main-art-only fade through the paper-gray whiteboard
+background, while title and subtitle overlays stay fixed and unblended. The
+final CTA is a VTT-aligned hard cut.
 
 Publishing is attempted per platform. A TikTok token or workflow failure should
 not prevent YouTube or Facebook from being queued. If TikTok Direct Post fails
@@ -137,7 +155,8 @@ pnpm ai-video:run -- \
   --topic "An AI agent is not just a chatbot" \
   --tts edge-tts \
   --voice en-US-AnaNeural \
-  --rate '+8%' \
+  --rate '+30%' \
+  --caption-mode realtime \
   --dry-run
 ```
 
@@ -149,7 +168,8 @@ node scripts/ai-video-pipeline/run.mjs \
   --date 2026-07-06 \
   --tts edge-tts \
   --voice en-US-AnaNeural \
-  --rate '+8%' \
+  --rate '+30%' \
+  --caption-mode realtime \
   --dry-run
 ```
 
@@ -160,7 +180,8 @@ node scripts/ai-video-pipeline/run.mjs \
   --plan-file scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md \
   --tts edge-tts \
   --voice en-US-AnaNeural \
-  --rate '+8%' \
+  --rate '+30%' \
+  --caption-mode realtime \
   --platform all \
   --skip-missing-platforms \
   --post \
@@ -262,8 +283,10 @@ variables:
   prototype voice for `Tiny Agent`.
 - `AI_VIDEO_TTS_VOICE`: voice name for the selected TTS provider.
 - Archived Chinese and English `edge-tts` samples and selection instructions live in `scripts/ai-video-pipeline/voice-catalogs/edge-tts/`.
-- `AI_VIDEO_TTS_RATE`: speech rate. For `edge-tts`, use values like `+8%`; for
+- `AI_VIDEO_TTS_RATE`: speech rate. Tiny Agent English defaults to `+30%`; for
   macOS `say`, use numeric words per minute like `188`.
+- `AI_VIDEO_CAPTION_MODE`: `realtime` or `scene`. Tiny Agent defaults to
+  `realtime`, which requires the VTT generated by `edge-tts`.
 - `AI_VIDEO_EDGE_TTS_COMMAND`: command used to run `edge-tts`, default `uvx`.
 - `AI_VIDEO_MEDIA_MODE`: `serve` or `upload`. Use `serve` for local immediate
   publishing when the frontend upload host is not running. Use `upload` for a
@@ -325,7 +348,8 @@ node scripts/ai-video-pipeline/run.mjs \
   --keyframes-dir var/ai-video-pipeline/provided-keyframes/<YYYY-MM-DD-slug> \
   --tts edge-tts \
   --voice en-US-AnaNeural \
-  --rate '+8%' \
+  --rate '+30%' \
+  --caption-mode realtime \
   --platform all \
   --skip-missing-platforms \
   --post \

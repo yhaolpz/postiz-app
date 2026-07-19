@@ -138,8 +138,15 @@ function validateInputs(videoPath, metadata) {
   assert(metadata.youtube?.playlistPrivacyStatus === 'public', 'Playlist privacy must be public.');
   assert(Array.isArray(metadata.titleCandidates) && metadata.titleCandidates.length === 3, 'Exactly three title candidates are required.');
   assert(metadata.title.length <= 100, 'YouTube title exceeds 100 characters.');
-  assert(metadata.description.includes('https://indieseek.co/?utm_source=youtube&utm_campaign=tiny_agent'), 'Tracking URL is missing.');
-  assert(metadata.description.includes(metadata.source.url), 'Direct source URL is missing from the description.');
+  assert(!/https?:\/\//i.test(metadata.description), 'YouTube description must not contain external URLs.');
+  assert(
+    !metadata.source?.publisher || !metadata.description.toLowerCase().includes(metadata.source.publisher.toLowerCase()),
+    'YouTube description must not contain the source publisher.',
+  );
+  assert(
+    !metadata.source?.title || !metadata.description.toLowerCase().includes(metadata.source.title.toLowerCase()),
+    'YouTube description must not contain the source title.',
+  );
 
   const probe = probeVideo(videoPath);
   assert(probe.width === 1920 && probe.height === 1080, `Expected 1920x1080, got ${probe.width}x${probe.height}.`);
@@ -411,9 +418,16 @@ async function main() {
   const result = {
     publishedVia: 'local-postiz',
     createdAt: new Date().toISOString(),
-    postiz: { postId, state: post.state, integrationId: integration.id, integrationName: integration.name },
+    postiz: {
+      postId,
+      state: post.state,
+      integrationId: integration.id,
+      integrationName: integration.name,
+      mediaId: media.id,
+      thumbnailMediaId: thumbnail.id,
+    },
     video: { path: videoPath, ...probe },
-    thumbnail: thumbnailProbe,
+    thumbnail: { ...thumbnailProbe, submittedWithPostizVideo: true },
     youtube,
   };
   const resultPath = path.join(path.dirname(metadataPath), 'youtube-publish-result.json');

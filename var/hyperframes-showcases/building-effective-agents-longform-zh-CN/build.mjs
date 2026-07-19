@@ -1386,8 +1386,7 @@ function renderIndex({ duration, chapters, captions, scenes }) {
         <div data-hf-id="hf-caption-${index + 1}" id="caption-${index + 1}" class="caption${index === 0 ? ' is-first' : ''}">${escapeHtml(caption.text)}</div>`).join('');
   const progressMarkup = chapters.map((chapter, index) => `
         <div data-hf-id="hf-progress-segment-${index + 1}" class="progress-segment" style="--chapter-weight:${chapter.duration.toFixed(3)}">
-          <div data-hf-id="hf-progress-label-${index + 1}" id="progress-label-${index + 1}" class="progress-label${index === 0 ? ' is-current' : ''}">${index + 1}. ${escapeHtml(chapter.label)}</div>
-          <div data-hf-id="hf-progress-track-${index + 1}" class="progress-track"><div data-hf-id="hf-progress-fill-${index + 1}" id="progress-fill-${index + 1}" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-${index + 1}" class="progress-track"><div data-hf-id="hf-progress-fill-${index + 1}" id="progress-fill-${index + 1}" class="progress-fill"></div><div data-hf-id="hf-progress-label-${index + 1}" id="progress-label-${index + 1}" class="progress-label${index === 0 ? ' is-current' : ''}">${escapeHtml(chapter.label)}</div></div>
         </div>`).join('');
 
   const timeline = [];
@@ -1407,8 +1406,8 @@ function renderIndex({ duration, chapters, captions, scenes }) {
     }
     timeline.push(`      tl.to("#progress-fill-${index + 1}", { scaleX: 1, duration: ${chapter.duration.toFixed(3)}, ease: "none" }, ${chapter.start.toFixed(3)});`);
     if (index > 0) {
-      timeline.push(`      tl.to("#progress-label-${index}", { color: "#117abd", duration: 0.2, ease: "power2.out" }, ${chapter.start.toFixed(3)});`);
-      timeline.push(`      tl.to("#progress-label-${index + 1}", { color: "#111413", duration: 0.2, ease: "power2.out" }, ${chapter.start.toFixed(3)});`);
+      timeline.push(`      tl.to("#progress-label-${index}", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, ${chapter.start.toFixed(3)});`);
+      timeline.push(`      tl.to("#progress-label-${index + 1}", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, ${chapter.start.toFixed(3)});`);
     }
   });
 
@@ -1419,7 +1418,7 @@ function renderIndex({ duration, chapters, captions, scenes }) {
     <meta name="viewport" content="width=1920, height=1080">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
-      :root { --board:#fcfdfc; --ink:#111413; --muted:#6f7976; --blue:#117abd; --line:#dfe7e4; }
+      :root { --board:#fcfdfc; --ink:#111413; --muted:#6f7976; --blue:#117abd; --line:#dfe7e4; --progress-played:#c9cbc5; --progress-rest:#dde0da; }
       * { box-sizing:border-box; }
       html, body { width:1920px; height:1080px; margin:0; overflow:hidden; }
       @font-face { font-family:"Tiny Agent CJK"; src:url("assets/fonts/HiraginoSansGB.ttc"); font-style:normal; font-weight:100 900; }
@@ -1433,12 +1432,12 @@ function renderIndex({ duration, chapters, captions, scenes }) {
       .caption-band { position:absolute; right:154px; bottom:100px; left:154px; z-index:90; height:142px; background:rgba(252,253,252,.985); }
       .caption { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:10px 54px 4px; font-size:35px; font-weight:700; line-height:1.38; text-align:center; opacity:0; }
       .caption.is-first { opacity:1; }
-      .chapter-progress { position:absolute; right:0; bottom:18px; left:0; z-index:96; display:flex; height:66px; align-items:flex-end; gap:2px; }
+      .chapter-progress { position:absolute; right:0; bottom:0; left:0; z-index:96; display:flex; height:52px; align-items:flex-start; gap:4px; }
       .progress-segment { flex:var(--chapter-weight) 1 0; min-width:0; }
-      .progress-label { height:40px; overflow:hidden; color:var(--muted); font-size:19px; font-weight:800; line-height:1.55; text-align:center; text-overflow:ellipsis; white-space:nowrap; }
-      .progress-label.is-current { color:var(--ink); }
-      .progress-track { position:relative; width:100%; height:6px; overflow:hidden; border-radius:3px; background:var(--line); }
-      .progress-fill { position:absolute; inset:0; border-radius:3px; background:var(--blue); transform:scaleX(0); transform-origin:left center; }
+      .progress-label { position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:0 8px; color:var(--ink); font-size:20px; font-weight:760; line-height:1; text-align:center; text-overflow:ellipsis; white-space:nowrap; }
+      .progress-label.is-current { font-weight:900; }
+      .progress-track { position:relative; width:100%; height:52px; overflow:hidden; background:var(--progress-rest); }
+      .progress-fill { position:absolute; inset:0; background:var(--progress-played); transform:scaleX(0); transform-origin:left center; }
     </style>
   </head>
   <body>

@@ -156,9 +156,21 @@ export abstract class SocialAbstract {
     try {
       value = await func();
     } catch (err) {
-      const handle = this.handleErrors(safeStringify(err), 200);
+      const upstreamStatus = (err as any)?.response?.status || 200;
+      const upstreamBody = safeStringify(
+        (err as any)?.response?.data || {
+          message: (err as any)?.message || 'Unknown Error',
+          code: (err as any)?.code,
+        }
+      );
+      const handle = this.handleErrors(upstreamBody, upstreamStatus);
       value = { err: true, value: 'Unknown Error', ...(handle || {}) };
-      globalErr = err;
+      globalErr = {
+        message: (err as any)?.message || 'Unknown Error',
+        code: (err as any)?.code,
+        status: upstreamStatus,
+        response: upstreamBody,
+      };
     }
 
     if (value && value?.err && value?.value) {

@@ -1,0 +1,90 @@
+{
+  "chapters": [
+    {
+      "label": "Preface",
+      "showIntro": false,
+      "intro": "Turn a vague AI choice into a repeatable routing decision",
+      "summary": ["Choose the relationship before the prompt", "Use four modes instead of one autonomy ladder", "Keep responsibility at the outcome boundary"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"look-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"question","label":"Ask"},{"id":"handoff","label":"Delegate"}],"flow":"cluster","callout":"The wrong mode breaks the workflow","accent":"red"},
+        {"paragraphs":[3,3],"layout":"comparison","labels":["One ladder","Four modes"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"trend-up","label":"More autonomy"},{"id":"warning","label":"Wrong goal"},{"id":"compare","label":"Task fit"},{"id":"route","label":"Right mode"}],"flow":"cluster","callout":"There is no universally advanced mode","accent":"yellow"},
+        {"paragraphs":[4,5],"layout":"grid","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"compare","label":"Map"},{"id":"human-gate","label":"Judgment"},{"id":"evidence","label":"Evidence"}],"flow":"cluster","callout":"Build a four-mode work map","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Two Axes",
+      "intro": "Separate human involvement from agent execution before choosing a mode",
+      "summary": ["Human intensity and agent intensity are independent", "Choose from task conditions, not AI ambition", "Outcome ownership stays with the human"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Human intensity","Agent intensity"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"human-gate","label":"Judgment"},{"id":"team","label":"Context"},{"id":"tool","label":"Execution"},{"id":"workflow","label":"Coordination"}],"flow":"cluster","callout":"Two independent axes","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"present-left","humanDirection":"left","agent":"present-left","agentDirection":"left","props":[{"id":"question","label":"Specific?"},{"id":"evidence","label":"Checkable?"},{"id":"warning","label":"Consequence?"},{"id":"human-gate","label":"Judgment?"}],"flow":"cluster","callout":"Route with four questions","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["AI output","Human responsibility"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"result-card","label":"AI output"},{"id":"human-gate","label":"Human gate"},{"id":"scorecard","label":"Review"},{"id":"approval","label":"Ownership"}],"flow":"cluster","callout":"Keep judgment at the outcome","accent":"blue"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Asking",
+      "intro": "Use a bounded question to remove one uncertainty without outsourcing the task",
+      "summary": ["Ask to remove one bounded uncertainty", "Keep the question tied to a decision", "Verify answers before they shape action"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"present-left","humanDirection":"left","agent":"look-left","agentDirection":"left","props":[{"id":"question","label":"Unknown"},{"id":"target","label":"Decision"}],"flow":"chain","callout":"Buy one small piece of clarity","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"stage","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"evidence","label":"Source"},{"id":"uncertainty","label":"Boundary"},{"id":"compare","label":"Options"}],"flow":"cluster","callout":"Keep the answer inspectable","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"stop-front","agent":"blocked-front","props":[{"id":"branch","label":"Question drift"},{"id":"stop","label":"Stop"},{"id":"route","label":"Switch"}],"flow":"chain","callout":"Do not let a question silently become action","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Collaboration",
+      "intro": "Keep human taste and judgment inside a fast iterative loop",
+      "summary": ["Collaborate when judgment improves every iteration", "Share a live artifact instead of abstract chat", "Keep acceptance criteria visible"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"stage","human":"present-left","humanDirection":"left","agent":"present-left","agentDirection":"left","props":[{"id":"document","label":"Shared artifact"},{"id":"team","label":"Joint work"},{"id":"compare","label":"Choices"}],"flow":"cluster","callout":"Both sides stay active","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"document","label":"Change"},{"id":"scorecard","label":"Inspect"},{"id":"loop","label":"Revise"},{"id":"success","label":"Accept"}],"flow":"loop","callout":"Work in short visible loops","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"grid","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"scorecard","label":"Criteria"},{"id":"target","label":"Done"},{"id":"handoff","label":"Next mode"}],"flow":"cluster","callout":"Make convergence observable","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Exploration",
+      "intro": "Expand and test the problem space before committing to a plan",
+      "summary": ["Explore before the destination is stable", "Generate contrasts, evidence, and better questions", "End exploration with a decision"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"uncertainty","label":"Unknown"},{"id":"experiment","label":"Hypothesis"},{"id":"route","label":"Options"}],"flow":"branch","callout":"Improve the map before producing","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"present-left","humanDirection":"left","agent":"present-left","agentDirection":"left","props":[{"id":"idea","label":"Possibility"},{"id":"citation","label":"Evidence"},{"id":"question","label":"Better question"},{"id":"compare","label":"Contrast"}],"flow":"cluster","callout":"Curiosity is guided, not outsourced","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"timer","label":"Budget"},{"id":"evidence","label":"Test"},{"id":"approval","label":"Decision"}],"flow":"chain","callout":"Exploration needs an exit","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Delegation",
+      "intro": "Hand off specified execution while keeping gates and ownership explicit",
+      "summary": ["Delegate only a specified task package", "Give tools, constraints, stop conditions, and evidence", "Review the outcome, not the agent's confidence"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"stage","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"task-list","label":"Outcome"},{"id":"folder","label":"Context"},{"id":"checklist","label":"Constraints"}],"flow":"chain","callout":"Delegate a complete task package","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"permission-key","label":"Tools"},{"id":"human-gate","label":"Gate"},{"id":"stop","label":"Stop"},{"id":"evidence","label":"Proof"}],"flow":"chain","callout":"Authority must match consequence","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["Confident story","Observable result"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"chat","label":"Claims"},{"id":"warning","label":"Confidence"},{"id":"result-card","label":"Artifact"},{"id":"evidence","label":"Checks"}],"flow":"cluster","callout":"Review the result, not the narration","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Switch Modes",
+      "intro": "Move between modes as evidence, uncertainty, and consequence change",
+      "summary": ["Start with the least autonomous mode that can work", "Switch when uncertainty or consequence changes", "Record evidence before expanding autonomy"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"question","label":"Ask"},{"id":"team","label":"Collaborate"},{"id":"experiment","label":"Explore"},{"id":"handoff","label":"Delegate"}],"flow":"chain","callout":"A task can use every mode","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"target","label":"Clarity"},{"id":"human-gate","label":"Judgment"},{"id":"evidence","label":"Contradiction"},{"id":"warning","label":"Consequence"}],"flow":"cluster","callout":"Watch four switch signals","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"hero","human":"present-left","humanDirection":"left","agent":"present-left","agentDirection":"left","props":[{"id":"note","label":"Mode log"},{"id":"route","label":"Reroute"},{"id":"approval","label":"Accountable"}],"flow":"chain","callout":"Choose, run, inspect, reroute","accent":"blue"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Summary",
+      "showIntro": false,
+      "intro": "Reuse the four-mode map on the next real task",
+      "summary": ["Separate human intensity from agent intensity", "Match the mode to uncertainty, judgment, and risk", "Switch deliberately and keep outcome ownership"],
+      "scenes": [
+        {"paragraphs":[1,7],"summaryPointParagraphs":[2,3,4],"ctaParagraph":7,"recap":true,"finalSummary":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Choose the mode, keep judgment","accent":"blue"}
+      ]
+    }
+  ]
+}

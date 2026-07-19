@@ -1,0 +1,151 @@
+# Ask, Collaborate, Explore, or Delegate?
+
+## Full Narration Script
+
+### 1 | Preface
+
+Most AI mistakes begin before the prompt: we choose the wrong relationship with the system. We ask when we need a working session, keep chatting when execution is ready, or delegate work whose destination is still unclear.
+
+The useful question is not, “How autonomous can this AI become?” Ask instead: “What human attention does this task need, and how much execution can the agent safely take?” Those are separate decisions.
+
+Microsoft's 2026 Work Trend Index describes four modes: asking, collaboration, exploration, and delegation. They are not a maturity ladder. Each fits different task conditions.
+
+We will build a practical four-mode map: when to use each mode, what to hand over, what to keep, and when to switch. You can use it before your next prompt.
+
+Keep one principle in view: execution can move to an agent, but outcome responsibility stays human. A good workflow makes that boundary clearer.
+
+### 2 | Two Axes
+
+Start with two independent axes. Human intensity measures how much continuous judgment, taste, negotiation, or context only you can provide. Agent intensity measures how much searching, transforming, coordinating, or tool use the AI can perform.
+
+These axes are not opposites. A task can require high human intensity and high agent intensity at the same time. A product launch, for example, may need constant human calls while an agent gathers evidence, updates artifacts, and checks dependencies.
+
+Now add four routing questions. Is the desired output already specific? How much human judgment must stay inside the work? Can success be checked with observable evidence? And what happens if the AI is wrong?
+
+Those questions are more useful than asking whether a model is capable. Capability is only one input. A capable model can still be a poor fit when the task is ambiguous, the evidence is weak, or a mistake has a large consequence.
+
+The Microsoft research makes the human boundary visible. Eighty-six percent of respondents treated AI output as a starting point and still saw themselves as responsible for the final result. The important move is not removing the human. It is placing human attention where it changes the outcome.
+
+So draw the map before you choose the tool. Put human intensity on one axis, agent intensity on the other, and route the current phase of the task. Do not label an entire project once and assume the mode will never change.
+
+First, Human intensity and agent intensity are independent.
+
+Second, Choose from task conditions, not AI ambition.
+
+Third, Outcome ownership stays with the human.
+
+### 3 | Asking
+
+Use asking mode when one bounded uncertainty blocks a human decision. You are not handing over the work. You are buying clarity: a definition, a comparison, a counterexample, a calculation, or a short explanation.
+
+A strong question includes the decision it will support. Instead of asking, “What are good onboarding patterns?” ask, “Which onboarding pattern best fits a mobile tool with one core action, and what failure signal would make us reject it?”
+
+The output should stay small enough to inspect. Ask for assumptions, confidence boundaries, or the evidence behind a claim. If the answer cannot be checked, it should not silently become a premise for the next step.
+
+Asking mode is also useful during live work. A developer can ask for the meaning of an error, a writer can ask for three alternative framings, and a manager can ask which constraint creates the biggest tradeoff. The human remains the operator.
+
+The common failure is question drift. A simple request expands into a plan, then into generated artifacts, then into actions nobody explicitly authorized. Stop the expansion. If execution becomes the real need, switch modes deliberately and define a new boundary.
+
+The exit condition is a decision. Once the uncertainty is removed, return to the human task or move into collaboration. Endless follow-up questions often mean the problem is no longer a single question.
+
+First, Ask to remove one bounded uncertainty.
+
+Second, Keep the question tied to a decision.
+
+Third, Verify answers before they shape action.
+
+### 4 | Collaboration
+
+Use collaboration mode when the destination matters, but the route needs repeated human judgment. Both sides stay active. The AI proposes, transforms, or checks; the human selects, redirects, and supplies context the system cannot infer.
+
+Collaboration works best around a shared artifact. Edit the actual brief, code path, model, or storyboard. A concrete artifact turns taste into visible decisions and prevents the conversation from becoming an abstract stream of suggestions.
+
+Work in short loops. Ask for one meaningful change, inspect the result, and state what improved or failed. The next instruction should update the artifact and the acceptance criteria, not restart the whole task from a blank prompt.
+
+This mode is powerful for writing, design, diagnosis, planning, and code review because quality emerges through contrast. The AI can generate options quickly, but the human decides which tradeoff belongs in the final result.
+
+The common failure is invisible convergence. The conversation feels productive, yet nobody can say what “done” means. Keep a small scorecard: audience, purpose, constraints, must-keep facts, and the test that determines whether the artifact is acceptable.
+
+Collaboration ends when the next steps become mechanical and checkable. At that point, package the remaining work for delegation. If the artifact still has competing directions, stay in collaboration or move briefly into exploration.
+
+First, Collaborate when judgment improves every iteration.
+
+Second, Share a live artifact instead of abstract chat.
+
+Third, Keep acceptance criteria visible.
+
+### 5 | Exploration
+
+Use exploration mode when the destination itself is unstable. You may not know which problem matters, which explanation is true, or which opportunity is worth pursuing. The goal is not immediate production. The goal is to improve the map.
+
+Ask the AI to widen and structure the space. Generate competing hypotheses, search for disconfirming evidence, group unknowns, compare user segments, or reveal dependencies. Good exploration produces contrasts, not just a longer list.
+
+Human intensity remains high because relevance is contextual. The agent can surface patterns, but you decide which signals matter, which sources are credible, and which question deserves the next hour. Curiosity is guided, not outsourced.
+
+Use an evidence board with four columns: what we think, what we observed, what would change our mind, and what we will test. This keeps generated possibilities separate from verified facts and makes uncertainty visible.
+
+The common failure is possibility theater. More ideas create the feeling of progress while commitment keeps moving away. Set a budget for time, sources, or experiments, and name the decision that exploration must support.
+
+Exploration should end with a narrower question, a selected direction, or a test. Then switch to asking for one missing fact, collaboration for shaping the solution, or delegation for running the test.
+
+First, Explore before the destination is stable.
+
+Second, Generate contrasts, evidence, and better questions.
+
+Third, End exploration with a decision.
+
+### 6 | Delegation
+
+Use delegation mode when the outcome is specific, the steps can be executed with available tools, and success can be checked. The human defines the task package; the agent runs the work and returns evidence.
+
+A useful delegation packet has six parts: the desired outcome, the relevant context, hard constraints, allowed tools, stop conditions, and the evidence required at handoff. Missing any one of these creates hidden interpretation work.
+
+Give the agent authority that matches the consequence. Reading files, drafting a report, or running tests may be reversible. Publishing, spending money, deleting data, or messaging people needs explicit gates. Autonomy is scoped permission, not a personality trait.
+
+Require observable evidence. A code task returns the changed files and test results. A research task returns primary sources and unresolved uncertainty. A publishing task returns the public URL, visibility state, and channel placement.
+
+The common failure is reviewing the narration instead of the result. An agent can sound confident while the artifact is incomplete. Inspect the output, the checks, and the boundary conditions. Confidence is not evidence.
+
+Delegation ends with acceptance, rejection, or a mode switch. If the agent finds an ambiguous requirement, bring the task back to collaboration. If it finds an unknown problem, move to exploration. A good stop is part of a good handoff.
+
+First, Delegate only a specified task package.
+
+Second, Give tools, constraints, stop conditions, and evidence.
+
+Third, Review the outcome, not the agent's confidence.
+
+### 7 | Switch Modes
+
+Real work rarely stays in one mode. A project may begin with exploration, use asking to remove one uncertainty, move into collaboration to shape the artifact, and finish with delegation for repeatable execution.
+
+Start with the least autonomous mode that can produce the next useful result. This is not fear of automation. It is a way to learn the task boundary before expanding execution. Evidence earns more autonomy.
+
+Use four switch signals. Switch when the desired output becomes clearer, when a judgment call appears, when evidence contradicts the plan, or when the consequence of error changes. Each signal changes the proper human-agent balance.
+
+Imagine preparing a customer launch. Explore the audience and risks. Ask for one missing comparison. Collaborate on the positioning and acceptance criteria. Delegate the asset checks and scheduled publication. Then return to human review at the release gate.
+
+Record each handoff in one line: current mode, next result, owner, evidence, and stop condition. That tiny log prevents silent expansion and makes recovery easier when a task is interrupted.
+
+The loop is simple: choose, run, inspect, and reroute. Do not reward an agent for staying autonomous. Reward the workflow for producing a correct, useful, and accountable outcome.
+
+First, Start with the least autonomous mode that can work.
+
+Second, Switch when uncertainty or consequence changes.
+
+Third, Record evidence before expanding autonomy.
+
+### 8 | Summary
+
+The four-mode map is not a taxonomy to memorize. It is a routing tool. Before the next prompt, identify the uncertainty, the judgment you must keep, the execution the agent can take, and the evidence that will prove the result.
+
+First, Separate human intensity from agent intensity.
+
+Second, Match the mode to uncertainty, judgment, and risk.
+
+Third, Switch deliberately and keep outcome ownership.
+
+Use asking for one bounded uncertainty, collaboration for iterative judgment, exploration for an unstable destination, and delegation for specified execution. If the task changes, the mode should change with it.
+
+Following practical AI and agent work methods matters because the models will keep changing, while the need to define intent, boundaries, evidence, and responsibility will remain. Those skills let you use stronger systems without giving up judgment.
+
+On your next task, draw the two axes, choose the smallest useful mode, and write the stop condition before you begin. That is how an AI workflow becomes more capable and more trustworthy at the same time.

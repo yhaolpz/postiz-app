@@ -11,7 +11,14 @@ def smoothstep(t):
     return t * t * (3.0 - 2.0 * t)
 
 
-def zoom_layer(layer, width, height, anchor_x, anchor_y, scale):
+def parse_hex_color(value):
+    text = str(value or "#FFFFFF").lstrip("#")
+    if len(text) != 6:
+        raise ValueError(f"Invalid background color: {value}")
+    return tuple(int(text[index : index + 2], 16) for index in (0, 2, 4)) + (255,)
+
+
+def zoom_layer(layer, width, height, anchor_x, anchor_y, scale, background):
     inv = 1.0 / scale
     return layer.transform(
         (width, height),
@@ -25,13 +32,15 @@ def zoom_layer(layer, width, height, anchor_x, anchor_y, scale):
             anchor_y * (1.0 - inv),
         ),
         resample=Image.Resampling.BICUBIC,
-        fillcolor=(255, 255, 255, 255),
+        fillcolor=background,
     )
 
 
-def clear_overlay_bands(frame, width, height, main_art_top, main_art_bottom):
-    frame.paste((255, 255, 255, 255), (0, 0, width, main_art_top))
-    frame.paste((255, 255, 255, 255), (0, main_art_bottom, width, height))
+def clear_overlay_bands(
+    frame, width, height, main_art_top, main_art_bottom, background
+):
+    frame.paste(background, (0, 0, width, main_art_top))
+    frame.paste(background, (0, main_art_bottom, width, height))
     return frame
 
 
@@ -49,7 +58,8 @@ def main():
     transition_frames = max(0, int(manifest.get("transitionFrames", 0)))
     main_art_top = int(manifest.get("mainArtTop", 300))
     main_art_bottom = int(manifest.get("mainArtBottom", 1320))
-    white_frame = Image.new("RGBA", (width, height), (255, 255, 255, 255))
+    background = parse_hex_color(manifest.get("backgroundColor", "#FFFFFF"))
+    background_frame = Image.new("RGBA", (width, height), background)
 
     cmd = [
         "ffmpeg",
@@ -103,23 +113,52 @@ def main():
             }
         )
 
+    caption_track = []
+    for cue in manifest.get("captionTrack", []):
+        caption_track.append(
+            {
+                **cue,
+                "overlay": Image.open(cue["overlayPath"]).convert("RGBA"),
+            }
+        )
+
     try:
+        global_frame_index = 0
+        caption_index = 0
         for scene_index, scene in enumerate(scenes):
             layer = scene["layer"]
             overlay = scene["overlay"]
             anchor_x, anchor_y = scene["anchor"]
             frame_count = int(scene["frames"])
             scene_transition_frames = min(transition_frames, max(0, frame_count // 3))
+            is_cta = bool(scene.get("isCta", False))
+            next_is_cta = (
+                scene_index < len(scenes) - 1
+                and bool(scenes[scene_index + 1].get("isCta", False))
+            )
 
             for index in range(frame_count):
                 t = 0.0 if frame_count == 1 else index / (frame_count - 1)
                 scale = 1.0 + (zoom_end - 1.0) * smoothstep(t)
-                frame = zoom_layer(layer, width, height, anchor_x, anchor_y, scale)
-                if scene_index > 0 and index < scene_transition_frames:
+                frame = zoom_layer(
+                    layer,
+                    width,
+                    height,
+                    anchor_x,
+                    anchor_y,
+                    scale,
+                    background,
+                )
+                if (
+                    scene_index > 0
+                    and not is_cta
+                    and index < scene_transition_frames
+                ):
                     fade_in = smoothstep((index + 1) / (scene_transition_frames + 1))
-                    frame = Image.blend(white_frame, frame, fade_in)
+                    frame = Image.blend(background_frame, frame, fade_in)
                 if (
                     scene_index < len(scenes) - 1
+                    and not next_is_cta
                     and scene_transition_frames
                     and index >= frame_count - scene_transition_frames
                 ):
@@ -127,7 +166,7 @@ def main():
                     fade_out = 1.0 - smoothstep(
                         (fade_index + 1) / (scene_transition_frames + 1)
                     )
-                    frame = Image.blend(white_frame, frame, fade_out)
+                    frame = Image.blend(background_frame, frame, fade_out)
 
                 # Keep generated art out of the fixed title/subtitle overlay bands
                 # after zoom. The art layer is already masked before zoom, but the
@@ -138,11 +177,34 @@ def main():
                     height,
                     main_art_top,
                     main_art_bottom,
+                    background,
                 )
-                frame.alpha_composite(overlay)
+                active_overlay = overlay
+                if caption_track:
+                    frame_time = (global_frame_index + 0.5) / fps
+                    while (
+                        caption_index < len(caption_track)
+                        and frame_time >= caption_track[caption_index]["endSeconds"]
+                    ):
+                        caption_index += 1
+                    if (
+                        caption_index < len(caption_track)
+                        and caption_track[caption_index]["startSeconds"]
+                        <= frame_time
+                        < caption_track[caption_index]["endSeconds"]
+                    ):
+                        active_overlay = caption_track[caption_index]["overlay"]
+
+                frame.alpha_composite(active_overlay)
                 proc.stdin.write(frame.convert("RGB").tobytes())
+                global_frame_index += 1
     finally:
         proc.stdin.close()
+        for scene in scenes:
+            scene["layer"].close()
+            scene["overlay"].close()
+        for cue in caption_track:
+            cue["overlay"].close()
 
     return_code = proc.wait()
     if return_code != 0:

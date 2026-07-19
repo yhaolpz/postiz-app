@@ -1,8 +1,8 @@
-# Tiny Agent 横屏长视频日更计划
+# Tiny Agent 横屏长视频每日两更计划
 
 ## 目标
 
-每天从高质量原始文章中提炼一个面向 AI/Agent 使用者的真实工作问题，同时制作英文和中文两条横屏长视频。英文版通过 Postiz 发布到 YouTube；中文版完成相同级别的内容、音视频和画面准出后保留本地成片，并通过电脑操控使用用户的外部浏览器，把视频、文案和封面准备到哔哩哔哩、抖音与小红书上传页，最终发布必须由用户手动点击。
+每天北京时间 `03:00` 与 `15:00` 各消费一个独立选题。每次围绕该选题制作英文和中文两条横屏长视频：英文版通过 Postiz 发布到 YouTube；中文版完成相同级别的内容、音视频和画面准出后保留本地成片，并通过电脑操控使用用户的外部浏览器，把视频、文案和封面准备到哔哩哔哩、抖音与小红书上传页，最终发布必须由用户手动点击。
 
 内容定位为“Agent 工作方法”：帮助知识工作者、创作者、产品、运营、分析师、创业者和开发者更好地选择任务、委托工作、提供上下文、验收结果、控制风险和复用经验。
 
@@ -10,57 +10,85 @@
 
 ## 固定配置
 
-| 项目 | 规则 |
-| --- | --- |
-| 执行时间 | 每天 `15:00`，Asia/Shanghai |
-| 每日交付 | 同一主题的英文版和中文版各 `1` 条，使用相同内容地图与章节结构 |
-| 发布平台 | 仅英文版自动发布到 YouTube，`public`；中文版只准备哔哩哔哩、抖音与小红书上传表单，不自动发布 |
-| 中文上传页 | 哔哩哔哩：`https://member.bilibili.com/platform/upload/video/frame?page_from=creative_home_top_upload`；抖音：`https://creator.douyin.com/creator-micro/content/upload`；小红书：`https://creator.xiaohongshu.com/publish/publish?from=menu&target=video` |
-| 播放列表 | `AI Agents: From Chat to Done`，ID `PLJffvaWRvGC8` |
-| 英文声音 | `edge-tts` 的 `en-US-AnaNeural`，固定语速 `+30%` |
-| 中文声音 | `edge-tts` 的 `zh-CN-YunxiaNeural`，固定 `+50%` |
-| 视频规格 | `1920x1080`、`16:9`、`30fps`、H.264/AAC |
-| 双语封面 | 英文 `1280x720` 1 张；中文 `1280x720`、`1200x900`、`900x1200` 各 1 张。统一为 sRGB PNG 和大字号标题；英文随 Postiz 提交；哔哩哔哩使用中文 `4:3` 作为投稿封面，并单独使用中文 `16:9` 作为“个人空间封面”；小红书使用中文 `4:3`；抖音必须分别把中文 `4:3` 上传到“横封面 4:3”、中文 `3:4` 上传到“竖封面 3:4”。所有平台封面都要逐槽位确认预览正确 |
-| 中文发布文案 | 每期汇总通用中文标题、小红书标题、完整简介和 `#话题`，写入中文项目并按平台规则填入上传表单。三个中文平台的简介均禁止加入章节标题、时间点或 `00:00` 一类时间戳；哔哩哔哩完成原生话题和标签绑定后，还必须删除简介里的整行 `#话题` 文本。小红书标题按页面计数口径不得超过 `20` 个字，通用标题超限时必须单独改写，不得截断半句 |
-| 话题绑定 | 简介中存在 `#文字` 不等于话题已生效。哔哩哔哩通过“搜索更多话题”选择一个最核心且真实匹配的“参与话题”，其余关键词逐个写入投稿页“标签”，随后删除平台默认或无关标签，尤其是 `记录`、`剪辑`、`生活记录`；抖音通过“#添加话题”逐个选择；小红书把光标依次放到每个 `#话题` 文本末尾，从弹出的候选中逐个点选。每个平台操作后都要重新读取页面，只有生成原生话题实体或标签胶囊才算生效 |
-| 小红书发布设置 | 每期都加入合集 `AI Agent 知识`，并选中原创声明；标题、简介、话题、封面、合集和原创声明全部确认后，停在最终发布按钮前 |
-| 浏览器执行原则 | 不为文案、标题改写、普通必填项或可安全推断的页面选项询问用户；通过电脑操控使用外部浏览器尽量完整准备三个平台，统一停在最终发布按钮前 |
-| 目标时长 | 优先 `9-13` 分钟，允许随内容在 `6-18` 分钟内浮动 |
-| 生产基线 | `scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md` |
-| 动画素材 | 活跃包由 `scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-active.json` 指向 `tiny-agent-v2`；新项目用 `prepare-tiny-agent-assets.mjs` 写入 `assets/pack`，编排时从 manifest 读取素材并在生成 HTML 前校验全部 id |
-| 中文平台发布手册 | `scripts/ai-video-pipeline/runbooks/tiny-agent-chinese-platform-publishing.md`，浏览器操作前必须读取并按平台完成证据复核 |
-| 实现参考 | `var/hyperframes-showcases/building-effective-agents-longform-zh-CN/` |
-| 选题归档 | `scripts/ai-video-pipeline/content-plans/tiny-agent-longform-archive.md` |
-| 本地视频保留 | 英文成功公开发布且进入目标播放列表后，中英文 MP4 保留 `48` 小时 |
+| 项目             | 规则                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 执行时间         | 每天 `03:00` 与 `15:00`，Asia/Shanghai；两个时段分别使用运行键 `<YYYY-MM-DD>-03`、`<YYYY-MM-DD>-15`                                                                                                                                                                                                                                                                                                                                                            |
+| 每次交付         | 每个时段消费一个独立选题，并交付该主题的英文版和中文版各 `1` 条；同一时段的双语版本使用相同内容地图与章节结构                                                                                                                                                                                                                                                                                                                                                  |
+| 发布平台         | 仅英文版自动发布到 YouTube，`public`；中文版只准备哔哩哔哩、抖音与小红书上传表单，不自动发布                                                                                                                                                                                                                                                                                                                                                                   |
+| 中文上传页       | 哔哩哔哩：`https://member.bilibili.com/platform/upload/video/frame?page_from=creative_home_top_upload`；抖音：`https://creator.douyin.com/creator-micro/content/upload`；小红书：`https://creator.xiaohongshu.com/publish/publish?from=menu&target=video`                                                                                                                                                                                                      |
+| 播放列表         | `AI Agents: From Chat to Done`，ID `PLJffvaWRvGC8`                                                                                                                                                                                                                                                                                                                                                                                                             |
+| 英文声音         | `edge-tts` 的 `en-US-AnaNeural`，固定语速 `+30%`                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 中文声音         | `edge-tts` 的 `zh-CN-YunxiaNeural`，固定 `+50%`                                                                                                                                                                                                                                                                                                                                                                                                                |
+| 双语固定结束页   | 全片总结后按对应语言 CTA 的 VTT 起点硬切。英文念出并显示 `Follow Tiny Agent. Tiny Agent helps you get better at using AI.`；中文念出并显示 `关注 Tiny Agent，成为更擅长使用 AI 的人！`。两版必须使用相同笑脸/挥手 Tiny Agent 角色图、纸灰构图、配色和动效，不显示当期标题、字幕框或章节进度条                                                                                                                                                                  |
+| 视频规格         | `1920x1080`、`16:9`、`30fps`、H.264/AAC                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| 双语封面         | 英文 `1280x720` 1 张；中文 `1280x720`、`1200x900`、`900x1200` 各 1 张。统一为 sRGB PNG 和大字号标题；英文随 Postiz 提交；哔哩哔哩使用中文 `4:3` 作为投稿封面，并单独使用中文 `16:9` 作为“个人空间封面”；小红书使用中文 `4:3`；抖音必须分别把中文 `4:3` 上传到“横封面 4:3”、中文 `3:4` 上传到“竖封面 3:4”。所有平台封面都要逐槽位确认预览正确                                                                                                                   |
+| 中文发布文案     | 每期汇总通用中文标题、小红书标题、完整简介和 `#话题`，写入中文项目并按平台规则填入上传表单。三个中文平台的简介均禁止加入章节标题、时间点、来源机构/原文标题、`来源：`段落或任何 `http://`、`https://` 外站链接；结尾固定为“关注 Tiny Agent，成为更擅长使用 AI 的人！”，不得随主题改写。哔哩哔哩完成原生话题和标签绑定后，还必须删除简介里的整行 `#话题` 文本。小红书标题按页面计数口径不得超过 `20` 个字，通用标题超限时必须单独改写，不得截断半句             |
+| 话题绑定         | 简介中存在 `#文字` 不等于话题已生效。哔哩哔哩通过“搜索更多话题”选择一个最核心且真实匹配的“参与话题”，其余关键词逐个写入投稿页“标签”，随后删除平台默认或无关标签，尤其是 `记录`、`剪辑`、`生活记录`；抖音通过“#添加话题”逐个选择；小红书固定按“输入一个、选择一个、验证一个、清理一个”逐个生成 `[话题]` 原生实体，禁止整行粘贴 hashtag 或在已有原生实体后全选重写。最终实体数量必须与计划话题数一致，且不得残留 `##`、重复/连写词或不带 `[话题]` 的普通 `#文字` |
+| 小红书发布设置   | 每期都加入合集 `AI Agent 知识`，并选中原创声明；标题、简介、话题、封面、合集和原创声明全部确认后，停在最终发布按钮前                                                                                                                                                                                                                                                                                                                                           |
+| 浏览器执行原则   | 不为文案、标题改写、普通必填项或可安全推断的页面选项询问用户；通过电脑操控使用外部浏览器尽量完整准备三个平台，统一停在最终发布按钮前。用户手动接管后立即停止自动点击和按键；恢复前重新读取当前平台、页面和弹窗。协议勾选、承诺确认、身份或法律声明弹窗必须交给用户，不沿用旧标签页、元素索引或坐标操作                                                                                                                                                         |
+| 目标时长         | 优先 `9-13` 分钟，允许随内容在 `6-18` 分钟内浮动                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 生产基线         | `scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md`                                                                                                                                                                                                                                                                                                                                                                                                |
+| 动画素材         | 活跃包由 `scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-active.json` 指向 `tiny-agent-v2`；新项目用 `prepare-tiny-agent-assets.mjs` 写入 `assets/pack`，编排时从 manifest 读取素材并在生成 HTML 前校验全部 id                                                                                                                                                                                                                                   |
+| 中文平台发布手册 | `scripts/ai-video-pipeline/runbooks/tiny-agent-chinese-platform-publishing.md`，浏览器操作前必须读取并按平台完成证据复核                                                                                                                                                                                                                                                                                                                                       |
+| 实现参考         | `var/hyperframes-showcases/building-effective-agents-longform-zh-CN/`                                                                                                                                                                                                                                                                                                                                                                                          |
+| 结束页参考       | 英文 `var/hyperframes-showcases/tiny-agent-longform-outro-sample/`；中文 `var/hyperframes-showcases/tiny-agent-longform-outro-sample-zh-CN/`                                                                                                                                                                                                                                                                                                                   |
+| 选题归档         | `scripts/ai-video-pipeline/content-plans/tiny-agent-longform-archive.md`                                                                                                                                                                                                                                                                                                                                                                                       |
+| 本地视频保留     | 英文成功公开发布且进入目标播放列表后，中英文 MP4 保留 `48` 小时                                                                                                                                                                                                                                                                                                                                                                                                |
 
-## 两周排期
+## 现有待消费选题队列
 
 表中的“视频方向”是内容问题，不是最终发布标题。最终标题、简介、关键词和话题必须在脚本与时间轴确定后，按照长视频生产基线生成。
 
-| 日期 | 来源与发布日期 | 视频方向 | 必须交付 | 状态 |
-| --- | --- | --- | --- | --- |
-| 2026-07-16 | Anthropic：[Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)，2024-12-19 | 别急着做多 Agent：怎样选择真正有效的 Agent 架构？ | Agent 架构选择顺序 | 英文已发布 |
-| 2026-07-17 | OpenAI：[How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)，2026-06-25 | 从聊天到干活：什么任务值得交给 Agent？ | 任务升级判断表 | 英文已发布 |
-| 2026-07-18 | Microsoft：[2026 Work Trend Index](https://www.microsoft.com/en-us/worklab/work-trend-index/agents-human-agency-and-the-opportunity-for-every-organization)，2026-05-05 | 应该问 AI、和 AI 协作，还是把任务交给它？ | AI 四种工作模式图 | 待执行 |
-| 2026-07-19 | Anthropic：[A new way to reflect on how you use Claude](https://www.anthropic.com/news/reflect-with-claude)，2026-07-09 | 真正会用 AI 的人，强在哪四个能力？ | 4D AI 能力自查卡 | 待执行 |
-| 2026-07-20 | OpenAI：[How to use ChatGPT Work for everyday tasks](https://openai.com/academy/how-to-use-chatgpt-work-for-everyday-tasks/)，2026-04-23 | 把任务交给 Agent 前，需要写清哪些信息？ | Agent 任务委托单 | 待执行 |
-| 2026-07-21 | OpenAI：[ChatGPT for research](https://openai.com/academy/research/)，2026-04-10 | Deep Research 怎样提问，才不会只得到一堆资料？ | 深度研究任务模板 | 待执行 |
-| 2026-07-22 | Anthropic：[The AI Fluency Index](https://www.anthropic.com/research/AI-fluency-index)，2026-02-23 | 为什么第一版答案越顺眼，越需要主动检查？ | 高质量协作回合清单 | 待执行 |
-| 2026-07-23 | Anthropic：[Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)，2025-09-29 | 提示词写得再长，为什么 Agent 还是会忘？ | 最小高信号上下文包 | 待执行 |
-| 2026-07-24 | Anthropic：[Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)，2026-01-09 | AI 说完成了，怎样确认它真的完成？ | Agent 结果验收表 | 待执行 |
-| 2026-07-25 | OpenAI：[Why language models hallucinate](https://openai.com/index/why-language-models-hallucinate/)，2025-09-05 | AI 为什么宁愿猜错，也不愿说不知道？ | 不确定性与事实核验清单 | 待执行 |
-| 2026-07-26 | OpenAI：[Designing AI agents to resist prompt injection](https://openai.com/index/designing-agents-to-resist-prompt-injection/)，2026-03-11 | 哪些操作可以自动执行，哪些必须由人批准？ | 三级行动权限矩阵 | 待执行 |
-| 2026-07-27 | Microsoft Research：[From raw interaction to reusable knowledge](https://www.microsoft.com/en-us/research/blog/from-raw-interaction-to-reusable-knowledge-rethinking-memory-for-ai-agents/)，2026-03-10 | Agent 记得越多，为什么反而可能越笨？ | 记忆保留、提炼、遗忘表 | 待执行 |
-| 2026-07-28 | Anthropic：[Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)，2025-11-26 | Agent 连续工作几小时，怎样避免跑偏？ | 长任务进度与交接模板 | 待执行 |
-| 2026-07-29 | OpenAI：[Using skills](https://openai.com/academy/skills/)，2026-04-10 | 怎样把一次成功经验变成下次还能复用的能力？ | Skill 模板 | 待执行 |
-| 2026-07-30 | Anthropic：[How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)，2025-06-13 | 一个 Agent 什么时候真的不够用？ | 单 Agent / 多 Agent 决策树 | 待执行 |
+自 `2026-07-19` 起，未执行条目的“日期”只作为既有队列顺序，不再限制必须在该自然日发布。每天 `03:00` 与 `15:00` 分别选择表中最早一条 `待执行` 记录；前一时段未完成或阻塞时，后一时段不得抢占该选题，但可以在确认两个运行键与产物路径完全隔离后继续消费下一条。现有选题保持当前顺序，不批量改写、跳过或重新生成。
+
+| 日期       | 来源与发布日期                                                                                                                                                                                          | 视频方向                                          | 必须交付                   | 状态                                               |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | -------------------------- | -------------------------------------------------- |
+| 2026-07-16 | Anthropic：[Building effective agents](https://www.anthropic.com/engineering/building-effective-agents)，2024-12-19                                                                                     | 别急着做多 Agent：怎样选择真正有效的 Agent 架构？ | Agent 架构选择顺序         | 英文已发布                                         |
+| 2026-07-17 | OpenAI：[How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)，2026-06-25                                                                                      | 从聊天到干活：什么任务值得交给 Agent？            | 任务升级判断表             | 英文已发布                                         |
+| 2026-07-18 | Microsoft：[2026 Work Trend Index](https://www.microsoft.com/en-us/worklab/work-trend-index/agents-human-agency-and-the-opportunity-for-every-organization)，2026-05-05                                 | 应该问 AI、和 AI 协作，还是把任务交给它？         | AI 四种工作模式图          | 英文已发布；中文三平台已由用户手动发布（用户确认） |
+| 2026-07-19 | Anthropic：[Introducing a way to reflect on how you use Claude](https://www.anthropic.com/news/reflect-with-claude)，2026-07-09                                                                          | 真正会用 AI 的人，强在哪四个能力？                | 4D AI 能力自查卡           | 英文已发布；中文三平台准备受锁屏阻塞（RUN_KEY `2026-07-19-03`） |
+| 2026-07-20 | OpenAI：[How to use ChatGPT Work for everyday tasks](https://openai.com/academy/how-to-use-chatgpt-work-for-everyday-tasks/)，2026-04-23                                                                | 把任务交给 Agent 前，需要写清哪些信息？           | Agent 任务委托单           | 待执行                                             |
+| 2026-07-21 | OpenAI：[ChatGPT for research](https://openai.com/academy/research/)，2026-04-10                                                                                                                        | Deep Research 怎样提问，才不会只得到一堆资料？    | 深度研究任务模板           | 待执行                                             |
+| 2026-07-22 | Anthropic：[The AI Fluency Index](https://www.anthropic.com/research/AI-fluency-index)，2026-02-23                                                                                                      | 为什么第一版答案越顺眼，越需要主动检查？          | 高质量协作回合清单         | 待执行                                             |
+| 2026-07-23 | Anthropic：[Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)，2025-09-29                                                 | 提示词写得再长，为什么 Agent 还是会忘？           | 最小高信号上下文包         | 待执行                                             |
+| 2026-07-24 | Anthropic：[Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)，2026-01-09                                                                       | AI 说完成了，怎样确认它真的完成？                 | Agent 结果验收表           | 待执行                                             |
+| 2026-07-25 | OpenAI：[Why language models hallucinate](https://openai.com/index/why-language-models-hallucinate/)，2025-09-05                                                                                        | AI 为什么宁愿猜错，也不愿说不知道？               | 不确定性与事实核验清单     | 待执行                                             |
+| 2026-07-26 | OpenAI：[Designing AI agents to resist prompt injection](https://openai.com/index/designing-agents-to-resist-prompt-injection/)，2026-03-11                                                             | 哪些操作可以自动执行，哪些必须由人批准？          | 三级行动权限矩阵           | 待执行                                             |
+| 2026-07-27 | Microsoft Research：[From raw interaction to reusable knowledge](https://www.microsoft.com/en-us/research/blog/from-raw-interaction-to-reusable-knowledge-rethinking-memory-for-ai-agents/)，2026-03-10 | Agent 记得越多，为什么反而可能越笨？              | 记忆保留、提炼、遗忘表     | 待执行                                             |
+| 2026-07-28 | Anthropic：[Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)，2025-11-26                                                 | Agent 连续工作几小时，怎样避免跑偏？              | 长任务进度与交接模板       | 待执行                                             |
+| 2026-07-29 | OpenAI：[Using skills](https://openai.com/academy/skills/)，2026-04-10                                                                                                                                  | 怎样把一次成功经验变成下次还能复用的能力？        | Skill 模板                 | 待执行                                             |
+| 2026-07-30 | Anthropic：[How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)，2025-06-13                                                                | 一个 Agent 什么时候真的不够用？                   | 单 Agent / 多 Agent 决策树 | 待执行                                             |
 
 最后一篇略早于近一年优先范围，但它对多 Agent 的适用条件、成本和协作限制仍然有效，因此作为高价值例外保留。
 
-## 每日执行流程
+### 2026-07-19 已审核补充队列
+
+用户已确认以下 `14` 个选题全部通过。选题选择顺序固定为：先按上表从上到下消费尚未完成的 `12` 个既有待执行条目，清空后再按下表从上到下消费。表中的“预计消费时段”按每天 `03:00` 与 `15:00` 均正常完成计算；如任一运行需要恢复或阻塞，后续时段随队列顺延，不跳过、不抢占，也不重新研究替换。
+
+| 预计消费时段     | 来源与发布日期                                                                                                                                                                                               | 视频方向                                                     | 必须交付                       | 状态   |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------ | ------ |
+| 2026-07-25 03:00 | Microsoft Research：[Rethinking AI in Knowledge Work: From Assistant to Tool for Thought](https://www.microsoft.com/en-us/research/articles/rethinking-ai-in-knowledge-work-from-assistant-to-tool-for-thought/)，2025-09-24 | AI 帮得越多，为什么人的判断力可能反而变弱？                 | AI 思考保留卡                  | 待执行 |
+| 2026-07-25 15:00 | Anthropic：[Agentic coding and persistent returns to expertise](https://www.anthropic.com/research/claude-code-expertise)，2026-06-16                                                                          | Agent 越强，专业知识为什么反而越值钱？                       | 人机分工责任表                 | 待执行 |
+| 2026-07-26 03:00 | OpenAI：[How to manage AI investments in the agentic era](https://openai.com/index/managing-ai-investments-in-agentic-era/)，2026-07-14                                                                        | 便宜模型真的更省钱吗？                                       | 合格结果真实成本表             | 待执行 |
+| 2026-07-26 15:00 | Anthropic：[Writing effective tools for agents — with agents](https://www.anthropic.com/engineering/writing-tools-for-agents)，2025-09-11                                                                     | 工具越多，Agent 为什么反而更容易选错？                       | Agent 工具规格检查表           | 待执行 |
+| 2026-07-27 03:00 | Microsoft Research：[Goals as First-Class Abstractions in Human-AI Collaboration](https://www.microsoft.com/en-us/research/publication/goals-as-first-class-abstractions-in-human-ai-collaboration/)，2026-04 | 把任务交给 AI 前，怎样说清目标而不只是罗列产物？             | AI 目标契约                    | 待执行 |
+| 2026-07-27 15:00 | Google Cloud：[Talking shop: 7 ways conversational AI agents open up possibilities for designers and developers](https://cloud.google.com/blog/products/ai-machine-learning/how-to-design-conversational-ai-agents)，2025-10-31 | 为什么让用户看见 Agent 正在改变什么，比多聊几句更重要？     | Agent 协作界面检查表           | 待执行 |
+| 2026-07-28 03:00 | OpenAI：[The five AI value models driving business reinvention](https://openai.com/index/the-five-ai-value-models-driving-business-reinvention/)，2026-03-05                                                  | 团队应该先普及 AI、突破专家瓶颈，还是重做整条流程？          | AI 价值路径图                  | 待执行 |
+| 2026-07-28 15:00 | Microsoft Research：[CORPGEN advances AI agents for real work](https://www.microsoft.com/en-us/research/blog/corpgen-advances-ai-agents-for-real-work/)，2026-02-26                                          | Agent 同时处理大量相互依赖的任务，为什么成功率会骤降？      | 多周期任务队列板               | 待执行 |
+| 2026-07-29 03:00 | Google DeepMind：[Securing the future of AI agents](https://deepmind.google/blog/securing-the-future-of-ai-agents/)，2026-06-18                                                                               | 不逐步审批，怎样仍能及时发现 Agent 跑偏？                    | Agent 检测—阻断—响应控制梯     | 待执行 |
+| 2026-07-29 15:00 | Google Research：[Sensible Agent: A framework for unobtrusive interaction with proactive AR agents](https://research.google/blog/sensible-agent-a-framework-for-unobtrusive-interaction-with-proactive-ar-agents/)，2025-09-18 | 主动型 Agent 什么时候应该帮忙，什么时候应该保持安静？       | 主动协助决策矩阵               | 待执行 |
+| 2026-07-30 03:00 | Anthropic：[Project Deal: our Claude-run marketplace experiment](https://www.anthropic.com/features/project-deal)，2026-04-24                                                                                 | Agent 替你谈判时，为什么“感觉公平”不等于真正拿到好结果？    | Agent 代理授权与结果审计表     | 待执行 |
+| 2026-07-30 15:00 | Microsoft Research：[Red-teaming a network of agents: Understanding what breaks when AI agents interact at scale](https://www.microsoft.com/en-us/research/blog/red-teaming-a-network-of-agents-understanding-what-breaks-when-ai-agents-interact-at-scale/)，2026-04-30 | 一个 Agent 收到恶意信息，为什么可能把风险传遍整个网络？     | Agent 网络信任边界图           | 待执行 |
+| 2026-07-31 03:00 | Google Research：[Improving the academic workflow: Introducing two AI agents for better figures and peer review](https://research.google/blog/improving-the-academic-workflow-introducing-two-ai-agents-for-better-figures-and-peer-review/)，2026-04-08 | 怎样让 Agent 生成的专业图真正准确、简洁、清晰？              | 专业图制作简报与四维验收表     | 待执行 |
+| 2026-07-31 15:00 | OpenAI：[ChatGPT Work: Reimagine Guide for Agent Activators](https://academy.openai.com/public/clubs/champions-ecqup/resources/chatgpt-work-reimagine-guide-for-team-activators-2026-07-08)，2026-07-09         | 一个 AI 工作流怎样从想法变成团队可复用的小版本？            | 最小可用工作流实验卡           | 待执行 |
+
+其中 CORPGEN、Sensible Agent、Project Deal 与 PaperVizAgent / ScholarPeer 属于研究或试验型来源。制作时必须明确实验样本、环境与指标边界，不得把结果泛化为所有 Agent 或所有真实工作场景的必然结论。
+
+## 每时段执行流程
 
 ```text
-读取当天排期与选题归档
+按 Asia/Shanghai 生成运行键 `<YYYY-MM-DD>-03` 或 `<YYYY-MM-DD>-15`
+→ 读取最早一条待执行排期与选题归档
 → 复核原文仍可访问、标题、日期和关键结论
 → 完整分析文章并建立内容地图
 → 建立共享内容地图、章节结构和可复用产物
@@ -68,6 +96,7 @@
 → 分别生成最终 TTS、VTT 和真实时间轴
 → 把活跃素材包准备到两个新项目，并从 manifest 选择角色、方向和道具
 → 按各自旁白时间轴编排相同视觉语义
+→ 按对应语言 CTA 的 VTT 起点硬切到同样式的英文/中文独立结束页
 → 编译前校验 scene-plan 的全部素材 id 与观看者视角方向
 → 分别完成英文版和中文版全部准出检查
 → 生成英文发布标题、简介、章节、关键词和话题
@@ -85,7 +114,7 @@
 
 ## 自动续排规则
 
-当天没有排期时，任务自动研究并补充一个新选题后继续制作。新文章优先满足：
+计划中已经没有任何 `待执行` 条目时，当前时段才自动研究并补充一个新选题后继续制作。新文章优先满足：
 
 1. 发布于最近 `12` 个月，来自 OpenAI、Anthropic、Google DeepMind、Microsoft Research、Google、Microsoft WorkLab 等头部机构的官方页面。
 2. 能转化为广大 AI/Agent 使用者面对的工作问题，同时包含可验证的方法、数据、机制、边界或案例。
@@ -93,11 +122,11 @@
 4. 与计划和归档中的 canonical URL、核心问题、中心结论及可复用产物均不重复。
 5. 超过 `12` 个月的文章只有在内容仍有效且价值明显高于近期候选时使用，并在计划中写明保留原因。
 
-每次只补充当天需要的一篇，不一次性生成大量未经复核的远期选题。新条目必须先写入本计划，再开始视频制作。
+每次只补充当前运行时段需要的一篇，不一次性生成大量未经复核的远期选题。新条目必须先写入本计划，再开始视频制作。
 
 ## 自动清理规则
 
-每天开始新视频制作前运行：
+每个运行时段开始新视频制作前运行：
 
 ```bash
 node scripts/ai-video-pipeline/cleanup-published-longform.mjs --apply
@@ -108,7 +137,7 @@ node scripts/ai-video-pipeline/cleanup-published-longform.mjs --apply
 1. 英文版已经由 YouTube API 再次确认是 `public`，并且仍位于播放列表 `PLJffvaWRvGC8`。
 2. 英文和中文两个 MP4 都已完成准出，中文路径已经出现在任务报告和归档中。
 3. 距离英文版实际 `publishedAt` 已满 `48` 小时。
-4. 发布成功后已经写入 `var/ai-video-pipeline/longform/published/<date>-<slug>.json` 清理清单。
+4. 发布成功后已经写入 `var/ai-video-pipeline/longform/published/<run-key>-<slug>.json` 清理清单。
 
 清理清单固定包含：
 

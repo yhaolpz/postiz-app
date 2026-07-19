@@ -1,0 +1,129 @@
+{
+  "status": "passed",
+  "title": "Ask, Collaborate, Explore, or Delegate?",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-18-ai-work-modes-longform-en-US/SCRIPT.en-US.md",
+  "language": "en-US",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "en-US-AnaNeural",
+    "rate": "+30%",
+    "integratedLoudnessTarget": "-17 LUFS"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 693.024,
+    "chapters": [
+      {
+        "label": "Preface",
+        "start": 0,
+        "end": 55.8,
+        "duration": 55.8
+      },
+      {
+        "label": "Two Axes",
+        "start": 55.8,
+        "end": 156.072,
+        "duration": 100.272
+      },
+      {
+        "label": "Asking",
+        "start": 156.072,
+        "end": 248.11200000000002,
+        "duration": 92.04
+      },
+      {
+        "label": "Collaboration",
+        "start": 248.11200000000002,
+        "end": 345.96000000000004,
+        "duration": 97.848
+      },
+      {
+        "label": "Exploration",
+        "start": 345.96000000000004,
+        "end": 438.91200000000003,
+        "duration": 92.952
+      },
+      {
+        "label": "Delegation",
+        "start": 438.91200000000003,
+        "end": 538.488,
+        "duration": 99.576
+      },
+      {
+        "label": "Switch Modes",
+        "start": 538.488,
+        "end": 629.4720000000001,
+        "duration": 90.984
+      },
+      {
+        "label": "Summary",
+        "start": 629.4720000000001,
+        "end": 693.024,
+        "duration": 63.55199999999991
+      }
+    ],
+    "visualStates": 28,
+    "captions": 221
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "passed"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "passed"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "passed"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "passed"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-18-ai-work-modes-longform.en-US.mp4",
+    "status": "passed",
+    "durationSeconds": 693.034667,
+    "sizeBytes": 51218675,
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "status": "passed",
+  "title": "应该问 AI、和 AI 协作，还是把任务交给它？",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-18-ai-work-modes-longform-zh-CN/SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-17 LUFS"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 530.448,
+    "chapters": [
+      {
+        "label": "开场",
+        "start": 0,
+        "end": 41.664,
+        "duration": 41.664
+      },
+      {
+        "label": "两条轴",
+        "start": 41.664,
+        "end": 119.47200000000001,
+        "duration": 77.808
+      },
+      {
+        "label": "提问",
+        "start": 119.47200000000001,
+        "end": 190.56,
+        "duration": 71.088
+      },
+      {
+        "label": "协作",
+        "start": 190.56,
+        "end": 264.456,
+        "duration": 73.896
+      },
+      {
+        "label": "探索",
+        "start": 264.456,
+        "end": 337.12800000000004,
+        "duration": 72.672
+      },
+      {
+        "label": "委派",
+        "start": 337.12800000000004,
+        "end": 410.71200000000005,
+        "duration": 73.584
+      },
+      {
+        "label": "切换模式",
+        "start": 410.71200000000005,
+        "end": 479.0640000000001,
+        "duration": 68.352
+      },
+      {
+        "label": "总结",
+        "start": 479.0640000000001,
+        "end": 530.448,
+        "duration": 51.3839999999999
+      }
+    ],
+    "visualStates": 28,
+    "captions": 177
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "passed"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "passed"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "passed"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "passed"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-18-ai-work-modes-longform.zh-CN.mp4",
+    "status": "passed",
+    "durationSeconds": 530.474667,
+    "sizeBytes": 40821279,
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "fps": 30,
+    "width": 1920,
+    "height": 1080
+  }
+}

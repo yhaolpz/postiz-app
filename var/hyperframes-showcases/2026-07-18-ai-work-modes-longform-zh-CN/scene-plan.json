@@ -1,0 +1,863 @@
+{
+  "chapters": [
+    {
+      "label": "开场",
+      "showIntro": false,
+      "intro": "把模糊的 AI 选择变成可重复的路由判断",
+      "summary": [
+        "先选关系，再写提示词",
+        "四种模式不是自动化阶梯",
+        "结果责任留在人工边界"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "hero",
+          "human": "look-right",
+          "humanDirection": "right",
+          "agent": "present-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "question",
+              "label": "提问"
+            },
+            {
+              "id": "handoff",
+              "label": "委派"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "选错模式，整个工作流都会变形",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            3,
+            3
+          ],
+          "layout": "comparison",
+          "labels": [
+            "单一阶梯",
+            "四种模式"
+          ],
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "trend-up",
+              "label": "更高自主"
+            },
+            {
+              "id": "warning",
+              "label": "错误目标"
+            },
+            {
+              "id": "compare",
+              "label": "任务匹配"
+            },
+            {
+              "id": "route",
+              "label": "合适模式"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "不存在普遍更高级的模式",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            4,
+            5
+          ],
+          "layout": "grid",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "present-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "compare",
+              "label": "地图"
+            },
+            {
+              "id": "human-gate",
+              "label": "判断"
+            },
+            {
+              "id": "evidence",
+              "label": "证据"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "做出一张四模式工作地图",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "两条轴",
+      "intro": "先分开人类参与和 Agent 执行，再选择模式",
+      "summary": [
+        "人类参与强度和 Agent 执行强度彼此独立",
+        "根据任务条件选择，不要根据自动化野心选择",
+        "结果责任始终留在人手里"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "comparison",
+          "labels": [
+            "人类参与",
+            "Agent 执行"
+          ],
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "human-gate",
+              "label": "判断"
+            },
+            {
+              "id": "team",
+              "label": "上下文"
+            },
+            {
+              "id": "tool",
+              "label": "执行"
+            },
+            {
+              "id": "workflow",
+              "label": "协调"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "两条彼此独立的轴",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "grid",
+          "human": "present-left",
+          "humanDirection": "left",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "question",
+              "label": "结果明确？"
+            },
+            {
+              "id": "evidence",
+              "label": "可验证？"
+            },
+            {
+              "id": "warning",
+              "label": "后果？"
+            },
+            {
+              "id": "human-gate",
+              "label": "判断？"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "用四个问题完成路由",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "comparison",
+          "labels": [
+            "AI 输出",
+            "人工责任"
+          ],
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "result-card",
+              "label": "AI 输出"
+            },
+            {
+              "id": "human-gate",
+              "label": "人工闸门"
+            },
+            {
+              "id": "scorecard",
+              "label": "审查"
+            },
+            {
+              "id": "approval",
+              "label": "责任"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "把人的注意力放在结果责任边界",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "小结",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "提问",
+      "intro": "用一个边界清楚的问题消除不确定性，不外包整个任务",
+      "summary": [
+        "用提问消除一个边界清楚的不确定点",
+        "让问题始终服务于一个具体决定",
+        "在答案影响行动之前完成验证"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "hero",
+          "human": "present-left",
+          "humanDirection": "left",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "question",
+              "label": "未知"
+            },
+            {
+              "id": "target",
+              "label": "决定"
+            }
+          ],
+          "flow": "chain",
+          "callout": "购买一小块清晰度",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "stage",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "present-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "evidence",
+              "label": "来源"
+            },
+            {
+              "id": "uncertainty",
+              "label": "边界"
+            },
+            {
+              "id": "compare",
+              "label": "选项"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "让答案保持可检查",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "process",
+          "human": "stop-front",
+          "agent": "blocked-front",
+          "props": [
+            {
+              "id": "branch",
+              "label": "问题膨胀"
+            },
+            {
+              "id": "stop",
+              "label": "停止"
+            },
+            {
+              "id": "route",
+              "label": "切换"
+            }
+          ],
+          "flow": "chain",
+          "callout": "不要让问题悄悄变成行动",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "小结",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "协作",
+      "intro": "让人的品味和判断留在快速迭代循环里",
+      "summary": [
+        "当每轮迭代都需要人类判断时使用协作",
+        "围绕真实产物协作，不要只做抽象聊天",
+        "让验收条件始终可见"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "stage",
+          "human": "present-left",
+          "humanDirection": "left",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "document",
+              "label": "真实产物"
+            },
+            {
+            "id": "team",
+              "label": "共同工作"
+            },
+            {
+              "id": "compare",
+              "label": "取舍"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "人与 AI 都保持活跃",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "process",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "document",
+              "label": "改动"
+            },
+            {
+              "id": "scorecard",
+              "label": "检查"
+            },
+            {
+            "id": "loop",
+              "label": "修改"
+            },
+            {
+              "id": "success",
+              "label": "接受"
+            }
+          ],
+          "flow": "loop",
+          "callout": "使用短而可见的循环",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "grid",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "present-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "scorecard",
+              "label": "标准"
+            },
+            {
+              "id": "target",
+              "label": "完成"
+            },
+            {
+              "id": "handoff",
+              "label": "下一模式"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "让收敛过程可以被观察",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "小结",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "探索",
+      "intro": "在承诺计划前，先扩大并验证问题空间",
+      "summary": [
+        "在目的地还不稳定时先探索",
+        "生成对比、证据和更好的问题",
+        "用一个决定结束探索"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "hero",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "present-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "uncertainty",
+              "label": "未知"
+            },
+            {
+              "id": "experiment",
+              "label": "假设"
+            },
+            {
+              "id": "route",
+              "label": "选项"
+            }
+          ],
+          "flow": "branch",
+          "callout": "先改进地图，再开始生产",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "grid",
+          "human": "present-left",
+          "humanDirection": "left",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "idea",
+              "label": "可能性"
+            },
+            {
+              "id": "citation",
+              "label": "证据"
+            },
+            {
+              "id": "question",
+              "label": "更好问题"
+            },
+            {
+              "id": "compare",
+              "label": "对比"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "好奇心可以增强，不能外包",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "process",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "timer",
+              "label": "预算"
+            },
+            {
+              "id": "evidence",
+              "label": "测试"
+            },
+            {
+              "id": "approval",
+              "label": "决定"
+            }
+          ],
+          "flow": "chain",
+          "callout": "探索必须有退出条件",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "小结",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "委派",
+      "intro": "交出明确的执行，同时保留闸门和结果责任",
+      "summary": [
+        "只委派一个已经明确的任务包",
+        "给出工具、约束、停止条件和证据要求",
+        "审查结果，不要审查 Agent 的自信"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "stage",
+          "human": "handoff-right",
+          "humanDirection": "right",
+          "agent": "receive-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "task-list",
+              "label": "结果"
+            },
+            {
+              "id": "folder",
+              "label": "上下文"
+            },
+            {
+              "id": "checklist",
+              "label": "约束"
+            }
+          ],
+          "flow": "chain",
+          "callout": "委派一个完整的任务包",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "process",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "permission-key",
+              "label": "工具"
+            },
+            {
+              "id": "human-gate",
+              "label": "闸门"
+            },
+            {
+              "id": "stop",
+              "label": "停止"
+            },
+            {
+              "id": "evidence",
+              "label": "证明"
+            }
+          ],
+          "flow": "chain",
+          "callout": "权限必须与错误后果匹配",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "comparison",
+          "labels": [
+            "自信讲述",
+            "可观察结果"
+          ],
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "chat",
+              "label": "讲述"
+            },
+            {
+              "id": "warning",
+              "label": "自信"
+            },
+            {
+              "id": "result-card",
+              "label": "产物"
+            },
+            {
+              "id": "evidence",
+              "label": "检查"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "审查结果，不要审查讲述",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "小结",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "切换模式",
+      "intro": "随着证据、不确定性和错误后果变化而切换",
+      "summary": [
+        "从能够完成任务的最低自主模式开始",
+        "当不确定性或错误后果变化时切换",
+        "在扩大自主范围之前先记录证据"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "process",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "question",
+              "label": "提问"
+            },
+            {
+            "id": "team",
+              "label": "协作"
+            },
+            {
+              "id": "experiment",
+              "label": "探索"
+            },
+            {
+              "id": "handoff",
+              "label": "委派"
+            }
+          ],
+          "flow": "chain",
+          "callout": "一个任务可以用到全部模式",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "grid",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "present-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "target",
+              "label": "清晰度"
+            },
+            {
+              "id": "human-gate",
+              "label": "判断"
+            },
+            {
+              "id": "evidence",
+              "label": "冲突"
+            },
+            {
+              "id": "warning",
+              "label": "错误后果"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "观察四个切换信号",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "hero",
+          "human": "present-left",
+          "humanDirection": "left",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "note",
+              "label": "模式日志"
+            },
+            {
+              "id": "route",
+              "label": "重新路由"
+            },
+            {
+              "id": "approval",
+              "label": "责任清楚"
+            }
+          ],
+          "flow": "chain",
+          "callout": "选择、运行、检查、重新路由",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "小结",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "总结",
+      "showIntro": false,
+      "intro": "在下一个真实任务里复用四模式地图",
+      "summary": [
+        "把人类参与强度和 Agent 执行强度分开",
+        "根据不确定性、判断密度和风险匹配模式",
+        "有意识地切换，并保留结果责任"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            7
+          ],
+          "summaryPointParagraphs": [
+            2,
+            3,
+            4
+          ],
+          "ctaParagraph": 7,
+          "recap": true,
+          "finalSummary": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "选对模式，保留判断",
+          "accent": "blue"
+        }
+      ]
+    }
+  ]
+}

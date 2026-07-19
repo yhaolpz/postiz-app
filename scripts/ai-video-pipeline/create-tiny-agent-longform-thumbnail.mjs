@@ -86,7 +86,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
     .accent { font-size: ${Number(spec.accentPointSize || 29)}px; fill: #101820; }
   </style>
   <image x="0" y="0" width="${width}" height="${height}" preserveAspectRatio="xMidYMid slice" xlink:href="${escapeXml(pathToFileURL(base).href)}" />
-  <rect x="${panelX}" y="${panelY}" width="${panelWidth}" height="${panelHeight}" rx="30" fill="#fafcfb" fill-opacity="${panelFillOpacity}" stroke="#0b8bcb" stroke-opacity="0.18" stroke-width="2" />
+  <rect x="${panelX}" y="${panelY}" width="${panelWidth}" height="${panelHeight}" rx="30" fill="#ECECEA" fill-opacity="${panelFillOpacity}" stroke="#0b8bcb" stroke-opacity="0.18" stroke-width="2" />
   <rect x="${brandX}" y="${brandY}" width="${brandWidth}" height="${brandHeight}" rx="27" fill="#0b8bcb" />
   <text x="${brandX + brandWidth / 2}" y="${brandY + 38}" text-anchor="middle" class="brand">${escapeXml(spec.eyebrow || 'TINY AGENT')}</text>
   <rect x="${ruleX}" y="${ruleY}" width="12" height="${ruleHeight}" rx="6" fill="#0b8bcb" />

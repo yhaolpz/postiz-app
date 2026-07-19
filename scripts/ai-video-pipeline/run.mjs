@@ -8,6 +8,12 @@ import { createRequire } from 'node:module';
 import { execFile as execFileCallback } from 'node:child_process';
 import { promisify } from 'node:util';
 
+import {
+  assertRealtimeCaptionTrack,
+  buildRealtimeCaptionTrack,
+  parseVttCues,
+} from './realtime-captions.mjs';
+
 const require = createRequire(import.meta.url);
 const OpenAI = require('openai');
 const sharp = require('sharp');
@@ -124,6 +130,16 @@ const VIDEO_WIDTH = 1080;
 const VIDEO_HEIGHT = 1920;
 const VIDEO_FPS = 30;
 const TINY_AGENT_LAYOUT_STANDARD = 'cross-platform-balanced-v1';
+const TINY_AGENT_DEFAULT_TTS_RATE = '+30%';
+const TINY_AGENT_DEFAULT_CAPTION_MODE = 'realtime';
+const TINY_AGENT_CTA_OPENING = 'Follow Tiny Agent.';
+const TINY_AGENT_CTA_BENEFIT = 'Tiny Agent helps you get better at using AI.';
+const TINY_AGENT_FIXED_CTA = `${TINY_AGENT_CTA_OPENING} ${TINY_AGENT_CTA_BENEFIT}`;
+const TINY_AGENT_CTA_HEADING = 'Follow Tiny Agent';
+const TINY_AGENT_THEME_BACKGROUND = '#ECECEA';
+const TINY_AGENT_THEME_BACKGROUND_RGB = [236, 236, 234];
+const TINY_AGENT_THEME_INK = '#111413';
+const TINY_AGENT_THEME_BLUE = '#117ABD';
 const TINY_AGENT_YOUTUBE_TRACKING_URL =
   'https://indieseek.co/?utm_source=youtube&utm_campaign=tiny_agent';
 const LAYOUT_LEFT = 80;
@@ -148,17 +164,73 @@ function usesTinyAgentLayout(content) {
   return ['agent-sketchbook', 'tiny-agent-whiteboard'].includes(content?.style);
 }
 
+function renderBackgroundHex(content) {
+  return usesTinyAgentLayout(content) ? TINY_AGENT_THEME_BACKGROUND : '#FFFFFF';
+}
+
+function renderBackgroundRgb(content) {
+  return usesTinyAgentLayout(content)
+    ? TINY_AGENT_THEME_BACKGROUND_RGB
+    : [255, 255, 255];
+}
+
+function colorDistance(r, g, b, backgroundRgb) {
+  return Math.max(
+    Math.abs(backgroundRgb[0] - r),
+    Math.abs(backgroundRgb[1] - g),
+    Math.abs(backgroundRgb[2] - b)
+  );
+}
+
+function assertTinyAgentCta(content) {
+  if (!usesTinyAgentLayout(content)) return;
+  const narration = String(content.narration || '').trim();
+  if (!narration.endsWith(TINY_AGENT_FIXED_CTA)) {
+    throw new Error(
+      `Tiny Agent narration must end exactly with: ${TINY_AGENT_FIXED_CTA}`
+    );
+  }
+  if (!content.scenes?.at(-1)?.isCta) {
+    throw new Error(
+      'Tiny Agent must reserve its final semantic scene for the CTA.'
+    );
+  }
+}
+
+function normalizedCueText(cue) {
+  return String(cue?.spokenText || cue?.text || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function isTinyAgentCtaStartCue(cue, content) {
+  if (!usesTinyAgentLayout(content)) return false;
+  const text = normalizedCueText(cue);
+  return text === TINY_AGENT_CTA_OPENING || text.startsWith(TINY_AGENT_FIXED_CTA);
+}
+
 function tinyAgentLayoutSpec() {
   return {
     canvas: [VIDEO_WIDTH, VIDEO_HEIGHT],
     centerX: LAYOUT_CENTER_X,
     sideMargins: [LAYOUT_LEFT, VIDEO_WIDTH - LAYOUT_RIGHT],
-    titleBaselineY: 240,
+    titleSafeArea: [LAYOUT_LEFT, 0, LAYOUT_RIGHT, MAIN_ART_TOP],
+    titleMaxLines: 2,
+    titleLayout: {
+      seriesBaselineY: 88,
+      singleLineBaselineY: 226,
+      twoLineBaselines: [188, 250],
+    },
     mainArtRegion: [LAYOUT_LEFT, MAIN_ART_TOP, LAYOUT_RIGHT, MAIN_ART_BOTTOM],
     mainArtMaxSize: [MAIN_ART_SAFE_WIDTH, MAIN_ART_SAFE_HEIGHT],
     minMainArtWidthRatio: MIN_MAIN_ART_WIDTH_RATIO,
     subtitleBox: [80, 1130, 1000, 1430],
     criticalContentBottom: 1430,
+    ctaScene: {
+      heading: TINY_AGENT_CTA_HEADING,
+      contentTitleHidden: true,
+      hardCutAtNarrationStart: true,
+    },
   };
 }
 
@@ -192,15 +264,26 @@ function wrapPlainText(value, maxChars = 26, maxLines = 2) {
   return lines.slice(0, maxLines);
 }
 
-function buildOverlaySvg(scene, content) {
+function buildOverlaySvg(scene, content, captionOverride) {
   const seriesTitle = xmlEscape(content.seriesTitle || 'Tiny Agent');
-  const episodeTitle = xmlEscape(content.title || '');
+  const episodeTitleLines = wrapPlainText(content.title || '', 28, 2);
   const usesExpandedFormat = content.scenes?.length >= 5;
+  const isCta = Boolean(scene?.isCta) && usesTinyAgentLayout(content);
+  const episodeTitleFirstY = episodeTitleLines.length === 1 ? 226 : 188;
+  const episodeTitleMarkup = episodeTitleLines
+    .map(
+      (line, index) =>
+        `<tspan x="${LAYOUT_CENTER_X}" y="${episodeTitleFirstY + index * 62}">${xmlEscape(line)}</tspan>`
+    )
+    .join('');
   const titleMarkup = usesExpandedFormat
-    ? `<text class="series-title" x="${LAYOUT_CENTER_X}" y="102" text-anchor="middle">${seriesTitle}</text>
-  <text class="episode-title" x="${LAYOUT_CENTER_X}" y="238" text-anchor="middle">${episodeTitle}</text>`
+    ? `<text class="series-title" x="${LAYOUT_CENTER_X}" y="88" text-anchor="middle">${seriesTitle}</text>
+  <text class="episode-title" text-anchor="middle">${episodeTitleMarkup}</text>`
     : `<text class="title" x="${LAYOUT_CENTER_X}" y="240" text-anchor="middle">${seriesTitle}</text>`;
-  const caption = scene.footer || scene.subhead || scene.headline || content.title;
+  const caption =
+    captionOverride === undefined
+      ? scene.footer || scene.subhead || scene.headline || content.title
+      : captionOverride;
   const explicitCaptionLines = String(caption)
     .split(/\n+/)
     .map((line) => line.trim())
@@ -214,24 +297,50 @@ function buildOverlaySvg(scene, content) {
   const captionTspans = captionLines
     .map((line, index) => `<tspan x="${LAYOUT_CENTER_X}" y="${firstY + index * lineHeight}">${xmlEscape(line)}</tspan>`)
     .join('');
+  const background = renderBackgroundHex(content);
+  const ink = usesTinyAgentLayout(content) ? TINY_AGENT_THEME_INK : '#111827';
+  const blue = usesTinyAgentLayout(content) ? TINY_AGENT_THEME_BLUE : '#2563eb';
+
+  if (isCta) {
+    const ctaCaption = TINY_AGENT_CTA_BENEFIT;
+    const ctaLines = wrapPlainText(ctaCaption, 24, 2);
+    const ctaFirstY = ctaLines.length === 1 ? 1280 : 1248;
+    const ctaTspans = ctaLines
+      .map(
+        (line, index) =>
+          `<tspan x="${LAYOUT_CENTER_X}" y="${ctaFirstY + index * 68}">${xmlEscape(line)}</tspan>`
+      )
+      .join('');
+
+    return Buffer.from(`
+<svg width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" viewBox="0 0 ${VIDEO_WIDTH} ${VIDEO_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .cta-heading { font-family: Arial, Helvetica, sans-serif; font-size: 68px; font-weight: 900; fill: ${blue}; }
+    .cta-copy { font-family: Arial, Helvetica, sans-serif; font-size: 56px; font-weight: 900; fill: ${ink}; }
+  </style>
+  <text class="cta-heading" x="${LAYOUT_CENTER_X}" y="190" text-anchor="middle">${xmlEscape(TINY_AGENT_CTA_HEADING)}</text>
+  <path d="M115 1130 H965 Q1000 1130 1000 1165 V1395 Q1000 1430 965 1430 H115 Q80 1430 80 1395 V1165 Q80 1130 115 1130 Z" fill="${background}" stroke="${ink}" stroke-width="7"/>
+  <text class="cta-copy" text-anchor="middle">${ctaTspans}</text>
+</svg>`);
+  }
 
   return Buffer.from(`
 <svg width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" viewBox="0 0 ${VIDEO_WIDTH} ${VIDEO_HEIGHT}" xmlns="http://www.w3.org/2000/svg">
   <style>
-    .title { font-family: Arial, Helvetica, sans-serif; font-size: 68px; font-weight: 900; fill: #111827; }
-    .series-title { font-family: Arial, Helvetica, sans-serif; font-size: 40px; font-weight: 800; fill: #2563eb; }
-    .episode-title { font-family: Arial, Helvetica, sans-serif; font-size: 56px; font-weight: 900; fill: #111827; }
-    .caption { font-family: Arial, Helvetica, sans-serif; font-size: 50px; font-weight: 900; fill: #111827; }
+    .title { font-family: Arial, Helvetica, sans-serif; font-size: 68px; font-weight: 900; fill: ${ink}; }
+    .series-title { font-family: Arial, Helvetica, sans-serif; font-size: 40px; font-weight: 800; fill: ${blue}; }
+    .episode-title { font-family: Arial, Helvetica, sans-serif; font-size: 52px; font-weight: 900; fill: ${ink}; }
+    .caption { font-family: Arial, Helvetica, sans-serif; font-size: 50px; font-weight: 900; fill: ${ink}; }
   </style>
   ${titleMarkup}
-  <path d="M115 1130 H965 Q1000 1130 1000 1165 V1395 Q1000 1430 965 1430 H115 Q80 1430 80 1395 V1165 Q80 1130 115 1130 Z" fill="#fff" stroke="#111827" stroke-width="7"/>
+  <path d="M115 1130 H965 Q1000 1130 1000 1165 V1395 Q1000 1430 965 1430 H115 Q80 1430 80 1395 V1165 Q80 1130 115 1130 Z" fill="${background}" stroke="${ink}" stroke-width="7"/>
   <text class="caption" text-anchor="middle">${captionTspans}</text>
 </svg>`);
 }
 
-function whiteRectSvg(width, height) {
+function solidRectSvg(width, height, color) {
   return Buffer.from(
-    `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#fff"/></svg>`
+    `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="${color}"/></svg>`
   );
 }
 
@@ -275,17 +384,54 @@ async function resolveProvidedKeyframes(args) {
 
 function buildKeyframePrompt(content, scene, index) {
   const beat = scene.keyframePrompt || scene.visual || scene.headline || content.title;
+  const tinyAgentTheme = usesTinyAgentLayout(content);
   return [
-    'Vertical 9:16 whiteboard stick figure explainer, clean white background.',
+    tinyAgentTheme
+      ? 'Vertical 9:16 whiteboard stick figure explainer, neutral paper-gray #ECECEA background and neutral fills, no pure white surfaces.'
+      : 'Vertical 9:16 whiteboard stick figure explainer, clean white background.',
     'Use thick black marker line art, simple hand-drawn shapes, sparse blue highlights and tiny red warning marks only.',
     'Use the canonical first-video character proportions: engineer plus Tiny Agent plus objects should fill about 75-90% of the main art width, never miniature icon scale.',
-    'Recurring Chinese software engineer stick figure on the left: large full-body whiteboard character, spiky short black hair with visible marker strokes, black round glasses, oval eyes, small nose and smile, simple white T-shirt, black shoes, friendly pointing or thumbs-up pose.',
-    'Recurring friendly AI robot named Tiny Agent on the right: large white rounded head/body, black rounded face screen, two blue oval eyes, small blue smile, single antenna with blue dot, round ear covers, white limbs, brown tool belt with red and blue tools, small tool props or clipboard.',
+    `Recurring Chinese software engineer stick figure on the left: large full-body whiteboard character, spiky short black hair with visible marker strokes, black round glasses, oval eyes, small nose and smile, simple ${tinyAgentTheme ? 'neutral paper-gray' : 'white'} T-shirt, black shoes, friendly pointing or thumbs-up pose.`,
+    `Recurring friendly AI robot named Tiny Agent on the right: large ${tinyAgentTheme ? 'neutral paper-gray' : 'white'} rounded head/body, black rounded face screen, two blue oval eyes, small blue smile, single antenna with blue dot, round ear covers, ${tinyAgentTheme ? 'neutral paper-gray' : 'white'} limbs, brown tool belt with red and blue tools, small tool props or clipboard.`,
     'Leave the top title area and bottom subtitle area mostly blank; do not render the final title text or final subtitle box because they are added as fixed overlays later.',
-    'Do not shrink the characters to leave excessive whitespace. Do not change the engineer hairstyle/glasses or the robot head, face screen, antenna, ear covers, blue eyes, tool belt, and white rounded body.',
+    `Do not shrink the characters to leave excessive whitespace. Do not change the engineer hairstyle/glasses or the robot head, face screen, antenna, ear covers, blue eyes, tool belt, and ${tinyAgentTheme ? 'neutral paper-gray' : 'white'} rounded body.`,
     'No Chinese text, no photorealism, no anime, no glossy 3D, no dense UI, no crowded background, no watermark, no logo, no distorted hands, no missing limbs, no tiny characters.',
     `Scene ${index + 1}: ${beat}`,
   ].join('\n');
+}
+
+async function replaceNearWhiteWithBackground(input, backgroundRgb) {
+  if (backgroundRgb.every((value) => value === 255)) return input;
+  const raw = await sharp(input)
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const data = Buffer.from(raw.data);
+
+  for (let offset = 0; offset < data.length; offset += raw.info.channels) {
+    const r = data[offset];
+    const g = data[offset + 1];
+    const b = data[offset + 2];
+    const range = Math.max(r, g, b) - Math.min(r, g, b);
+    // Image models often render a requested paper-gray background anywhere in
+    // the 220-255 range. Normalize those light neutral pixels so the supplied
+    // keyframe cannot leave a visible square against the video canvas.
+    if (Math.min(r, g, b) >= 220 && range <= 18) {
+      data[offset] = backgroundRgb[0];
+      data[offset + 1] = backgroundRgb[1];
+      data[offset + 2] = backgroundRgb[2];
+    }
+  }
+
+  return sharp(data, {
+    raw: {
+      width: raw.info.width,
+      height: raw.info.height,
+      channels: raw.info.channels,
+    },
+  })
+    .png()
+    .toBuffer();
 }
 
 async function writeImageResponse(image, destination) {
@@ -361,25 +507,28 @@ async function generateImageKeyframes(content, outputDir, args) {
   return { paths, source: `openai-images:${model}` };
 }
 
-async function prepareArtLayer(keyframePath, outputDir, index) {
+async function prepareArtLayer(keyframePath, outputDir, index, content) {
   const artDir = path.join(outputDir, 'art-layers');
   await fs.mkdir(artDir, { recursive: true });
+  const backgroundHex = renderBackgroundHex(content);
+  const backgroundRgb = renderBackgroundRgb(content);
 
   const trimmed = await sharp(keyframePath)
     .rotate()
     .flatten({ background: '#fff' })
-    .trim({ background: '#fff', threshold: 18 })
+    .trim({ background: '#fff', threshold: 30 })
     .png()
     .toBuffer();
+  const themed = await replaceNearWhiteWithBackground(trimmed, backgroundRgb);
 
-  const resized = await sharp(trimmed)
+  const resized = await sharp(themed)
     .resize({
       width: MAIN_ART_SAFE_WIDTH,
       height: MAIN_ART_SAFE_HEIGHT,
       fit: 'inside',
       withoutEnlargement: false,
     })
-    .flatten({ background: '#fff' })
+    .flatten({ background: backgroundHex })
     .png()
     .toBuffer({ resolveWithObject: true });
 
@@ -392,14 +541,27 @@ async function prepareArtLayer(keyframePath, outputDir, index) {
       width: VIDEO_WIDTH,
       height: VIDEO_HEIGHT,
       channels: 4,
-      background: { r: 255, g: 255, b: 255, alpha: 1 },
+      background: {
+        r: backgroundRgb[0],
+        g: backgroundRgb[1],
+        b: backgroundRgb[2],
+        alpha: 1,
+      },
     },
   })
     .composite([
       { input: resized.data, left, top },
-      { input: whiteRectSvg(VIDEO_WIDTH, MAIN_ART_TOP), left: 0, top: 0 },
       {
-        input: whiteRectSvg(VIDEO_WIDTH, VIDEO_HEIGHT - MAIN_ART_BOTTOM),
+        input: solidRectSvg(VIDEO_WIDTH, MAIN_ART_TOP, backgroundHex),
+        left: 0,
+        top: 0,
+      },
+      {
+        input: solidRectSvg(
+          VIDEO_WIDTH,
+          VIDEO_HEIGHT - MAIN_ART_BOTTOM,
+          backgroundHex
+        ),
         left: 0,
         top: MAIN_ART_BOTTOM,
       },
@@ -412,7 +574,7 @@ async function prepareArtLayer(keyframePath, outputDir, index) {
   return { path: artPath, buffer };
 }
 
-async function detectMainArtAnchor(artBuffer) {
+async function detectMainArtAnchor(artBuffer, backgroundRgb) {
   const raw = await sharp(artBuffer)
     .removeAlpha()
     .raw()
@@ -430,8 +592,7 @@ async function detectMainArtAnchor(artBuffer) {
       const r = data[offset];
       const g = data[offset + 1];
       const b = data[offset + 2];
-      const colorRange = Math.max(r, g, b) - Math.min(r, g, b);
-      if (Math.min(r, g, b) < 238 || (colorRange > 18 && Math.min(r, g, b) < 250)) {
+      if (colorDistance(r, g, b, backgroundRgb) > 22) {
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
         maxX = Math.max(maxX, x + 1);
@@ -476,29 +637,69 @@ function assertMainArtScale(anchor, index) {
   );
 }
 
-async function renderOverlay(scene, content, outputDir, index) {
+async function renderOverlay(scene, content, outputDir, index, captionOverride) {
   const overlaysDir = path.join(outputDir, 'overlays');
   await fs.mkdir(overlaysDir, { recursive: true });
   const overlayPath = path.join(overlaysDir, `overlay-${String(index + 1).padStart(2, '0')}.png`);
-  await sharp(buildOverlaySvg(scene, content)).png().toFile(overlayPath);
+  await sharp(buildOverlaySvg(scene, content, captionOverride)).png().toFile(overlayPath);
   return overlayPath;
+}
+
+async function renderRealtimeCaptionOverlays(content, outputDir, captionTrack) {
+  const overlaysDir = path.join(outputDir, 'overlays');
+  await fs.mkdir(overlaysDir, { recursive: true });
+  const ctaStartIndex = captionTrack.findIndex((cue) =>
+    isTinyAgentCtaStartCue(cue, content)
+  );
+
+  return Promise.all(
+    captionTrack.map(async (cue, index) => {
+      const overlayPath = path.join(
+        overlaysDir,
+        `caption-${String(index + 1).padStart(3, '0')}.png`
+      );
+      const overlayScene =
+        ctaStartIndex >= 0 && index >= ctaStartIndex
+          ? content.scenes.at(-1)
+          : content.scenes[0];
+      await sharp(buildOverlaySvg(overlayScene, content, cue.text))
+        .png()
+        .toFile(overlayPath);
+      return { ...cue, overlayPath };
+    })
+  );
 }
 
 async function renderFrames(content, outputDir, args = {}) {
   const keyframes = await generateImageKeyframes(content, outputDir, args);
   const scenes = [];
+  const captionMode = args.captionMode || 'scene';
   const footerSet = new Set(content.scenes.map((scene) => scene.footer).filter(Boolean));
-  if (content.scenes.length > 1 && footerSet.size <= 1) {
+  if (captionMode === 'scene' && content.scenes.length > 1 && footerSet.size <= 1) {
     throw new Error(
       'Subtitle QA failed: every scene has the same bottom caption. Add per-scene Subtitle blocks to the content plan.'
     );
   }
 
   for (let i = 0; i < content.scenes.length; i += 1) {
-    const artLayer = await prepareArtLayer(keyframes.paths[i], outputDir, i);
-    const anchor = await detectMainArtAnchor(artLayer.buffer);
+    const artLayer = await prepareArtLayer(
+      keyframes.paths[i],
+      outputDir,
+      i,
+      content
+    );
+    const anchor = await detectMainArtAnchor(
+      artLayer.buffer,
+      renderBackgroundRgb(content)
+    );
     assertMainArtScale(anchor, i);
-    const overlayPath = await renderOverlay(content.scenes[i], content, outputDir, i);
+    const overlayPath = await renderOverlay(
+      content.scenes[i],
+      content,
+      outputDir,
+      i,
+      captionMode === 'realtime' ? '' : undefined
+    );
     scenes.push({
       ...content.scenes[i],
       keyframePath: keyframes.paths[i],
@@ -509,6 +710,13 @@ async function renderFrames(content, outputDir, args = {}) {
       duration: Number(content.scenes[i].duration || 6),
     });
   }
+
+  scenes.captionMode = captionMode;
+  scenes.backgroundColor = renderBackgroundHex(content);
+  scenes.captionTrack =
+    captionMode === 'realtime'
+      ? await renderRealtimeCaptionOverlays(content, outputDir, args.captionTrack)
+      : [];
 
   return scenes;
 }
@@ -676,7 +884,7 @@ async function contentFromPlan(args) {
 
   const defaultDurations =
     keyframes.length >= 8
-      ? [4, 6, 6, 6, 6, 6, 6, 6, 5]
+      ? [4, 6, 6, 6, 6, 6, 6, 7, 3]
       : keyframes.length >= 5
         ? [4, 8, 10, 10, 9, 6]
         : keyframes.length >= 4
@@ -689,6 +897,7 @@ async function contentFromPlan(args) {
     subhead: viewerBeats[index] || caption || episodeTitle,
     keyframePrompt: keyframe,
     footer: subtitleBlocks[index] || onScreenText || episodeTitle,
+    isCta: index === sceneCount - 1,
   }));
 
   return {
@@ -996,7 +1205,7 @@ Do not mention sources unless they were provided. Make the explanation evergreen
   }
 }
 
-function resolveSpeechConfig(args) {
+function resolveSpeechConfig(args, content) {
   const requestedProvider = args.tts || process.env.AI_VIDEO_TTS_PROVIDER || 'say';
 
   if (requestedProvider === 'openai' && process.env.OPENAI_API_KEY) {
@@ -1013,7 +1222,11 @@ function resolveSpeechConfig(args) {
       provider: 'edge-tts',
       model: null,
       voice: args.voice || process.env.AI_VIDEO_TTS_VOICE || 'en-US-AnaNeural',
-      rate: String(args.rate || process.env.AI_VIDEO_TTS_RATE || '+8%'),
+      rate: String(
+        args.rate ||
+          process.env.AI_VIDEO_TTS_RATE ||
+          (usesTinyAgentLayout(content) ? TINY_AGENT_DEFAULT_TTS_RATE : '+8%')
+      ),
     };
   }
 
@@ -1039,7 +1252,7 @@ async function generateSpeech(content, outputDir, speechConfig) {
     });
     const audioPath = path.join(outputDir, 'narration.mp3');
     await fs.writeFile(audioPath, Buffer.from(await speech.arrayBuffer()));
-    return audioPath;
+    return { audioPath, subtitlesPath: null };
   }
 
   if (speechConfig.provider === 'edge-tts') {
@@ -1062,14 +1275,49 @@ async function generateSpeech(content, outputDir, speechConfig) {
       ],
       { cwd: rootDir }
     );
-    return audioPath;
+    return { audioPath, subtitlesPath };
   }
 
   const audioPath = path.join(outputDir, 'narration.aiff');
   await execFile('say', ['-v', speechConfig.voice, '-r', speechConfig.rate, '-f', narrationPath, '-o', audioPath], {
     cwd: rootDir,
   });
-  return audioPath;
+  return { audioPath, subtitlesPath: null };
+}
+
+function resolveCaptionMode(args, content, speechResult) {
+  const requestedMode =
+    args['caption-mode'] ||
+    process.env.AI_VIDEO_CAPTION_MODE ||
+    (usesTinyAgentLayout(content) ? TINY_AGENT_DEFAULT_CAPTION_MODE : 'scene');
+
+  if (!['realtime', 'scene'].includes(requestedMode)) {
+    throw new Error(`Unsupported caption mode: ${requestedMode}. Use realtime or scene.`);
+  }
+  if (requestedMode === 'realtime' && !speechResult.subtitlesPath) {
+    throw new Error(
+      'Realtime captions require timestamped subtitles from edge-tts; no VTT was generated.'
+    );
+  }
+  return requestedMode;
+}
+
+async function loadRealtimeCaptions(subtitlesPath, audioPath) {
+  const sourceCues = parseVttCues(await fs.readFile(subtitlesPath, 'utf8'));
+  const captionTrack = buildRealtimeCaptionTrack(sourceCues);
+  const audioDuration = await getDuration(audioPath);
+  assertRealtimeCaptionTrack(captionTrack, audioDuration);
+  return {
+    captionTrack,
+    summary: {
+      mode: 'realtime-vtt',
+      sourcePath: subtitlesPath,
+      sourceCueCount: sourceCues.length,
+      displayCueCount: captionTrack.length,
+      firstStartSeconds: captionTrack[0].startSeconds,
+      lastEndSeconds: captionTrack.at(-1).endSeconds,
+    },
+  };
 }
 
 async function getDuration(filePath) {
@@ -1100,7 +1348,13 @@ async function probeMedia(filePath) {
   return JSON.parse(stdout);
 }
 
-function bboxFromRawRgb(data, width, region, threshold = 28) {
+function bboxFromRawRgb(
+  data,
+  width,
+  region,
+  threshold = 28,
+  backgroundRgb = [255, 255, 255]
+) {
   const [left, top, right, bottom] = region;
   let minX = right;
   let minY = bottom;
@@ -1113,11 +1367,7 @@ function bboxFromRawRgb(data, width, region, threshold = 28) {
       const r = data[offset];
       const g = data[offset + 1];
       const b = data[offset + 2];
-      const diff = Math.max(
-        Math.abs(255 - r),
-        Math.abs(255 - g),
-        Math.abs(255 - b)
-      );
+      const diff = colorDistance(r, g, b, backgroundRgb);
       if (diff > threshold) {
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
@@ -1131,15 +1381,26 @@ function bboxFromRawRgb(data, width, region, threshold = 28) {
   return [minX, minY, maxX, maxY];
 }
 
-async function bboxFromImageRegion(imagePath, region) {
+async function bboxFromImageRegion(imagePath, region, backgroundRgb) {
   const image = sharp(imagePath).removeAlpha().raw();
   const { data, info } = await image.toBuffer({ resolveWithObject: true });
-  return bboxFromRawRgb(data, info.width, region);
+  return bboxFromRawRgb(data, info.width, region, 28, backgroundRgb);
 }
 
 function bboxesWithinTolerance(a, b, tolerance = 2) {
+  if (!a && !b) return true;
   if (!a || !b) return false;
   return a.every((value, index) => Math.abs(value - b[index]) <= tolerance);
+}
+
+function bboxInsideRegion(bbox, region, tolerance = 4) {
+  if (!bbox) return false;
+  return (
+    bbox[0] >= region[0] - tolerance &&
+    bbox[1] >= region[1] - tolerance &&
+    bbox[2] <= region[2] + tolerance &&
+    bbox[3] <= region[3] + tolerance
+  );
 }
 
 async function extractPreviewFrame(videoPath, time, outputPath) {
@@ -1158,32 +1419,66 @@ async function extractPreviewFrame(videoPath, time, outputPath) {
   ]);
 }
 
-async function checkStaticOverlays(videoPath, frames, videoDuration, outputDir) {
+async function checkStaticOverlays(
+  videoPath,
+  frames,
+  videoDuration,
+  outputDir,
+  content
+) {
   const previewsDir = path.join(outputDir, 'previews');
   await fs.mkdir(previewsDir, { recursive: true });
-  const baseDuration = frames.reduce((total, frame) => total + frame.duration, 0);
-  const durationScale = videoDuration / baseDuration;
-  let cursor = 0;
+  const sceneFrameCounts = allocateSceneFrames(frames, videoDuration);
+  let cursorFrames = 0;
   const checks = [];
+  const backgroundRgb = renderBackgroundRgb(content);
 
   for (let index = 0; index < frames.length; index += 1) {
-    const segmentDuration = frames[index].duration * durationScale;
+    const segmentDuration = sceneFrameCounts[index] / VIDEO_FPS;
+    const cursor = cursorFrames / VIDEO_FPS;
     const startTime = cursor + Math.min(0.2, segmentDuration / 4);
     const endTime = cursor + Math.max(0, segmentDuration - Math.min(0.2, segmentDuration / 4));
-    cursor += segmentDuration;
+    cursorFrames += sceneFrameCounts[index];
 
     const startPath = path.join(previewsDir, `scene${index + 1}-start.png`);
     const endPath = path.join(previewsDir, `scene${index + 1}-end.png`);
     await extractPreviewFrame(videoPath, startTime, startPath);
     await extractPreviewFrame(videoPath, endTime, endPath);
 
-    const titleStart = await bboxFromImageRegion(startPath, [0, 0, VIDEO_WIDTH, MAIN_ART_TOP]);
-    const titleEnd = await bboxFromImageRegion(endPath, [0, 0, VIDEO_WIDTH, MAIN_ART_TOP]);
-    const captionStart = await bboxFromImageRegion(startPath, [0, MAIN_ART_BOTTOM, VIDEO_WIDTH, VIDEO_HEIGHT]);
-    const captionEnd = await bboxFromImageRegion(endPath, [0, MAIN_ART_BOTTOM, VIDEO_WIDTH, VIDEO_HEIGHT]);
+    const titleStart = await bboxFromImageRegion(
+      startPath,
+      [0, 0, VIDEO_WIDTH, MAIN_ART_TOP],
+      backgroundRgb
+    );
+    const titleEnd = await bboxFromImageRegion(
+      endPath,
+      [0, 0, VIDEO_WIDTH, MAIN_ART_TOP],
+      backgroundRgb
+    );
+    const captionStart = await bboxFromImageRegion(
+      startPath,
+      [0, MAIN_ART_BOTTOM, VIDEO_WIDTH, VIDEO_HEIGHT],
+      backgroundRgb
+    );
+    const captionEnd = await bboxFromImageRegion(
+      endPath,
+      [0, MAIN_ART_BOTTOM, VIDEO_WIDTH, VIDEO_HEIGHT],
+      backgroundRgb
+    );
+    const titleSafe = usesTinyAgentLayout(content)
+      ? bboxInsideRegion(
+          titleStart,
+          [LAYOUT_LEFT, 0, LAYOUT_RIGHT, MAIN_ART_TOP]
+        ) &&
+        bboxInsideRegion(
+          titleEnd,
+          [LAYOUT_LEFT, 0, LAYOUT_RIGHT, MAIN_ART_TOP]
+        )
+      : true;
     const pass =
       bboxesWithinTolerance(titleStart, titleEnd) &&
-      bboxesWithinTolerance(captionStart, captionEnd);
+      bboxesWithinTolerance(captionStart, captionEnd) &&
+      titleSafe;
 
     checks.push({
       segment: index + 1,
@@ -1191,12 +1486,13 @@ async function checkStaticOverlays(videoPath, frames, videoDuration, outputDir) 
       titleEnd,
       captionStart,
       captionEnd,
+      titleSafe,
       pass,
     });
 
     if (!pass) {
       throw new Error(
-        `Static overlay QA failed for segment ${index + 1}: title/subtitle moved or resized.`
+        `Static overlay QA failed for segment ${index + 1}: title/subtitle moved, resized, or left the 80px title safe area.`
       );
     }
   }
@@ -1204,7 +1500,7 @@ async function checkStaticOverlays(videoPath, frames, videoDuration, outputDir) 
   return checks;
 }
 
-async function checkStableZoom(videoPath, frames, videoDuration) {
+async function checkStableZoom(videoPath, frames, videoDuration, content) {
   const sampleWidth = 270;
   const sampleHeight = 480;
   const sampleFps = 10;
@@ -1229,9 +1525,16 @@ async function checkStableZoom(videoPath, frames, videoDuration) {
   );
 
   const centers = [];
+  const backgroundRgb = renderBackgroundRgb(content);
   for (let offset = 0; offset + frameSize <= stdout.length; offset += frameSize) {
     const frame = stdout.subarray(offset, offset + frameSize);
-    const bbox = bboxFromRawRgb(frame, sampleWidth, [0, 75, sampleWidth, 330]);
+    const bbox = bboxFromRawRgb(
+      frame,
+      sampleWidth,
+      [0, 75, sampleWidth, 330],
+      28,
+      backgroundRgb
+    );
     centers.push(
       bbox
         ? [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2]
@@ -1239,19 +1542,19 @@ async function checkStableZoom(videoPath, frames, videoDuration) {
     );
   }
 
-  const baseDuration = frames.reduce((total, frame) => total + frame.duration, 0);
-  const durationScale = videoDuration / baseDuration;
-  let cursor = 0;
+  const sceneFrameCounts = allocateSceneFrames(frames, videoDuration);
+  let cursorFrames = 0;
   const checks = [];
 
   for (let index = 0; index < frames.length; index += 1) {
-    const segmentDuration = frames[index].duration * durationScale;
+    const segmentDuration = sceneFrameCounts[index] / VIDEO_FPS;
     const margin = Math.min(0.2, segmentDuration / 4);
+    const cursor = cursorFrames / VIDEO_FPS;
     const start = Math.ceil((cursor + margin) * sampleFps);
-    cursor += segmentDuration;
+    cursorFrames += sceneFrameCounts[index];
     const end = Math.min(
       centers.length,
-      Math.floor((cursor - margin) * sampleFps)
+      Math.floor((cursorFrames / VIDEO_FPS - margin) * sampleFps)
     );
     const segment = centers
       .slice(start, end)
@@ -1279,11 +1582,103 @@ async function checkStableZoom(videoPath, frames, videoDuration) {
   return checks;
 }
 
+async function checkThemeBackground(videoPath, outputDir, content) {
+  if (!usesTinyAgentLayout(content)) return null;
+  const previewPath = path.join(outputDir, 'previews', 'theme-background.png');
+  await extractPreviewFrame(videoPath, 0.5, previewPath);
+  const { data, info } = await sharp(previewPath)
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const points = [
+    [20, 20],
+    [VIDEO_WIDTH - 20, 20],
+    [20, 1600],
+    [VIDEO_WIDTH - 20, 1600],
+  ];
+  const samples = points.map(([x, y]) => {
+    const offset = (y * info.width + x) * info.channels;
+    const rgb = [data[offset], data[offset + 1], data[offset + 2]];
+    return {
+      x,
+      y,
+      rgb,
+      distance: colorDistance(...rgb, TINY_AGENT_THEME_BACKGROUND_RGB),
+    };
+  });
+  if (samples.some((sample) => sample.distance > 8)) {
+    throw new Error(
+      `Theme background QA failed: expected ${TINY_AGENT_THEME_BACKGROUND}, got ${JSON.stringify(samples)}.`
+    );
+  }
+  return {
+    expected: TINY_AGENT_THEME_BACKGROUND,
+    samples,
+    pass: true,
+  };
+}
+
+async function checkCtaScene(videoPath, frames, outputDir, content) {
+  if (!usesTinyAgentLayout(content)) return null;
+  const ctaCue = frames.captionTrack?.find((cue) =>
+    isTinyAgentCtaStartCue(cue, content)
+  );
+  const ctaScene = frames.at(-1);
+  const cueStartSeconds = Number(ctaCue?.startSeconds);
+  const sceneStartSeconds = Number(frames.ctaStartSeconds);
+  const startDeltaSeconds = Math.abs(sceneStartSeconds - cueStartSeconds);
+
+  if (
+    !ctaScene?.isCta ||
+    !Number.isFinite(cueStartSeconds) ||
+    !Number.isFinite(sceneStartSeconds) ||
+    startDeltaSeconds > 1 / VIDEO_FPS
+  ) {
+    throw new Error(
+      `CTA scene QA failed: cue=${cueStartSeconds}, scene=${sceneStartSeconds}, ` +
+        `isCta=${Boolean(ctaScene?.isCta)}.`
+    );
+  }
+
+  const previewsDir = path.join(outputDir, 'previews');
+  const beforePath = path.join(previewsDir, 'cta-before.png');
+  const startPath = path.join(previewsDir, 'cta-start.png');
+  await extractPreviewFrame(
+    videoPath,
+    Math.max(0, sceneStartSeconds - 0.12),
+    beforePath
+  );
+  await extractPreviewFrame(
+    videoPath,
+    sceneStartSeconds + 1 / VIDEO_FPS,
+    startPath
+  );
+
+  return {
+    cueStartSeconds,
+    sceneStartSeconds,
+    startDeltaSeconds: Number(startDeltaSeconds.toFixed(4)),
+    hardCut: true,
+    contentTitleHidden: true,
+    heading: TINY_AGENT_CTA_HEADING,
+    beforePath,
+    startPath,
+    pass: true,
+  };
+}
+
 function expectedDurationRange(content) {
   return content?.scenes?.length >= 5 ? { min: 35, max: 65 } : { min: 20, max: 30 };
 }
 
-async function verifyRenderedVideo(videoPath, audioPath, frames, outputDir, content) {
+async function verifyRenderedVideo(
+  videoPath,
+  audioPath,
+  frames,
+  outputDir,
+  content,
+  captions
+) {
   const probe = await probeMedia(videoPath);
   const videoStream = probe.streams.find((stream) => stream.codec_type === 'video');
   const audioStream = probe.streams.find((stream) => stream.codec_type === 'audio');
@@ -1322,9 +1717,26 @@ async function verifyRenderedVideo(videoPath, audioPath, frames, outputDir, cont
     videoPath,
     frames,
     videoDuration,
-    outputDir
+    outputDir,
+    content
   );
-  const stableZoomChecks = await checkStableZoom(videoPath, frames, videoDuration);
+  const stableZoomChecks = await checkStableZoom(
+    videoPath,
+    frames,
+    videoDuration,
+    content
+  );
+  const themeBackgroundCheck = await checkThemeBackground(
+    videoPath,
+    outputDir,
+    content
+  );
+  const ctaSceneCheck = await checkCtaScene(
+    videoPath,
+    frames,
+    outputDir,
+    content
+  );
 
   return {
     width: Number(videoStream.width),
@@ -1338,10 +1750,18 @@ async function verifyRenderedVideo(videoPath, audioPath, frames, outputDir, cont
     audioDurationSeconds: audioDuration,
     sourceAudioDurationSeconds: sourceAudioDuration,
     passesStaticOverlayCheck: true,
+    passesTitleSafeAreaCheck: staticOverlayChecks.every(
+      (check) => check.titleSafe !== false
+    ),
     passesStableZoomCheck: true,
     passesAudioTailCheck: true,
+    passesRealtimeCaptionCheck: captions?.mode === 'realtime-vtt' ? true : null,
+    passesThemeBackgroundCheck: themeBackgroundCheck ? true : null,
+    passesCtaSceneCheck: ctaSceneCheck ? true : null,
     staticOverlayChecks,
     stableZoomChecks,
+    themeBackgroundCheck,
+    ctaSceneCheck,
   };
 }
 
@@ -1411,6 +1831,20 @@ async function verifyReusableVideo(videoPath, args = {}, content = null) {
     );
   }
 
+  if (
+    usesTinyAgentLayout(content) &&
+    (sourceSummary?.speech?.provider !== 'edge-tts' ||
+      sourceSummary?.speech?.voice !== 'en-US-AnaNeural' ||
+      sourceSummary?.speech?.rate !== TINY_AGENT_DEFAULT_TTS_RATE ||
+      sourceSummary?.captions?.mode !== 'realtime-vtt' ||
+      sourceSummary?.cta !== TINY_AGENT_FIXED_CTA ||
+      sourceSummary?.theme?.background !== TINY_AGENT_THEME_BACKGROUND)
+  ) {
+    throw new Error(
+      'Reusable Tiny Agent video must use the fixed CTA, #ECECEA theme, en-US-AnaNeural at +30%, and realtime VTT captions.'
+    );
+  }
+
   if (sourceSummary && sourceSummary.videoPath) {
     const sourceVideoPath = path.resolve(sourceSummary.videoPath);
     if (sourceVideoPath !== videoPath) {
@@ -1420,11 +1854,20 @@ async function verifyReusableVideo(videoPath, args = {}, content = null) {
     }
   }
 
-  for (const key of [
+  const requiredVerificationKeys = [
     'passesStaticOverlayCheck',
     'passesStableZoomCheck',
     'passesAudioTailCheck',
-  ]) {
+  ];
+  if (usesTinyAgentLayout(content)) {
+    requiredVerificationKeys.push(
+      'passesRealtimeCaptionCheck',
+      'passesThemeBackgroundCheck',
+      'passesTitleSafeAreaCheck',
+      'passesCtaSceneCheck'
+    );
+  }
+  for (const key of requiredVerificationKeys) {
     if (sourceSummary && sourceVerification[key] !== true) {
       throw new Error(`Reusable video summary did not pass ${key}.`);
     }
@@ -1450,8 +1893,7 @@ async function verifyReusableVideo(videoPath, args = {}, content = null) {
   };
 }
 
-function allocateSceneFrames(frames, audioDuration) {
-  const totalFrames = Math.max(1, Math.round(audioDuration * VIDEO_FPS));
+function allocateProportionalSceneFrames(frames, totalFrames) {
   const baseDuration = frames.reduce((total, frame) => total + frame.duration, 0);
   let assignedFrames = 0;
 
@@ -1472,6 +1914,36 @@ function allocateSceneFrames(frames, audioDuration) {
     assignedFrames += boundedFrames;
     return boundedFrames;
   });
+}
+
+function allocateSceneFrames(frames, audioDuration) {
+  const totalFrames = Math.max(1, Math.round(audioDuration * VIDEO_FPS));
+  const ctaSceneIndex = frames.findIndex((frame) => frame.isCta);
+  const ctaCue = frames.captionTrack?.find((cue) =>
+    isTinyAgentCtaStartCue(cue, { style: 'tiny-agent-whiteboard' })
+  );
+
+  if (
+    ctaSceneIndex === frames.length - 1 &&
+    frames.length > 1 &&
+    Number.isFinite(ctaCue?.startSeconds)
+  ) {
+    const ctaStartFrame = Math.max(
+      frames.length - 1,
+      Math.min(totalFrames - 1, Math.round(ctaCue.startSeconds * VIDEO_FPS))
+    );
+    const preCtaCounts = allocateProportionalSceneFrames(
+      frames.slice(0, -1),
+      ctaStartFrame
+    );
+    frames.ctaCueStartSeconds = ctaCue.startSeconds;
+    frames.ctaStartSeconds = ctaStartFrame / VIDEO_FPS;
+    return [...preCtaCounts, totalFrames - ctaStartFrame];
+  }
+
+  frames.ctaCueStartSeconds = null;
+  frames.ctaStartSeconds = null;
+  return allocateProportionalSceneFrames(frames, totalFrames);
 }
 
 async function renderVideo(frames, audioPath, outputDir) {
@@ -1496,11 +1968,17 @@ async function renderVideo(frames, audioPath, outputDir) {
         mainArtBottom: MAIN_ART_BOTTOM,
         audioPath,
         videoPath,
+        backgroundColor: frames.backgroundColor || '#FFFFFF',
+        captionMode: frames.captionMode || 'scene',
+        captionTrack: frames.captionTrack || [],
+        ctaCueStartSeconds: frames.ctaCueStartSeconds,
+        ctaStartSeconds: frames.ctaStartSeconds,
         scenes: frames.map((frame, index) => ({
           artPath: frame.artPath,
           overlayPath: frame.overlayPath,
           anchor: frame.anchor.anchor,
           frames: sceneFrameCounts[index],
+          isCta: Boolean(frame.isCta),
         })),
       },
       null,
@@ -2394,6 +2872,7 @@ async function main() {
   const content = shouldUsePlan
     ? await contentFromPlan(args)
     : await generateContent(topic, args);
+  assertTinyAgentCta(content);
   await fs.writeFile(path.join(outputDir, 'content.json'), JSON.stringify(content, null, 2));
 
   const reuseVideo = args['reuse-video'] || process.env.AI_VIDEO_REUSE_VIDEO;
@@ -2402,23 +2881,43 @@ async function main() {
   let verification;
   let reuseMetadata = null;
   let speech = null;
+  let captions = null;
 
   if (reuseVideo) {
     videoPath = path.resolve(reuseVideo);
     reuseMetadata = await verifyReusableVideo(videoPath, args, content);
     verification = reuseMetadata.verification;
     speech = reuseMetadata.sourceSummary?.speech || null;
+    captions = reuseMetadata.sourceSummary?.captions || null;
   } else {
-    frames = await renderFrames(content, outputDir, args);
-    speech = resolveSpeechConfig(args);
-    const audioPath = await generateSpeech(content, outputDir, speech);
+    speech = resolveSpeechConfig(args, content);
+    const speechResult = await generateSpeech(content, outputDir, speech);
+    const captionMode = resolveCaptionMode(args, content, speechResult);
+    let captionTrack = [];
+    if (captionMode === 'realtime') {
+      const realtimeCaptions = await loadRealtimeCaptions(
+        speechResult.subtitlesPath,
+        speechResult.audioPath
+      );
+      captionTrack = realtimeCaptions.captionTrack;
+      captions = realtimeCaptions.summary;
+    } else {
+      captions = { mode: 'scene' };
+    }
+    frames = await renderFrames(content, outputDir, {
+      ...args,
+      captionMode,
+      captionTrack,
+    });
+    const audioPath = speechResult.audioPath;
     videoPath = await renderVideo(frames, audioPath, outputDir);
     verification = await verifyRenderedVideo(
       videoPath,
       audioPath,
       frames,
       outputDir,
-      content
+      content,
+      captions
     );
   }
 
@@ -2434,19 +2933,38 @@ async function main() {
     youtubeDescription: makeYoutubeDescription(content),
     layoutStandard: usesTinyAgentLayout(content) ? TINY_AGENT_LAYOUT_STANDARD : null,
     layoutSpec: usesTinyAgentLayout(content) ? tinyAgentLayoutSpec() : null,
+    cta: usesTinyAgentLayout(content) ? TINY_AGENT_FIXED_CTA : null,
+    theme: usesTinyAgentLayout(content)
+      ? {
+          background: TINY_AGENT_THEME_BACKGROUND,
+          ink: TINY_AGENT_THEME_INK,
+          blue: TINY_AGENT_THEME_BLUE,
+        }
+      : null,
+    ctaScene: usesTinyAgentLayout(content)
+      ? sourceSummary?.ctaScene || {
+          heading: TINY_AGENT_CTA_HEADING,
+          cueStartSeconds: frames.ctaCueStartSeconds,
+          sceneStartSeconds: frames.ctaStartSeconds,
+          hardCut: true,
+          contentTitleHidden: true,
+        }
+      : null,
     outputDir,
     videoPath,
     speech,
+    captions,
     verification,
     reusedVideo: Boolean(reuseVideo),
     reuseSummaryPath: reuseMetadata?.summaryPath || null,
     keyframeSource: sourceSummary?.keyframeSource || frames[0]?.keyframeSource || null,
     keyframes: sourceSummary?.keyframes || frames.map((frame) => frame.keyframePath),
     motion: sourceSummary?.motion || {
-      layering: 'main art layer zooms; title and subtitle overlay stay fixed',
+      layering:
+        'main art layer zooms; title and subtitle box stay fixed; caption text follows the narration VTT; the final CTA uses its own title-free content screen',
       implementation: 'image keyframes plus PIL fixed-anchor affine per-frame zoom',
       zoomPerSegment: '1.000x to 1.040x',
-      transition: `${MAIN_ART_TRANSITION_FRAMES}-frame main-art fade-through-white at scene boundaries; fixed overlays stay unblended`,
+      transition: `${MAIN_ART_TRANSITION_FRAMES}-frame main-art fade-through-${frames.backgroundColor || '#FFFFFF'} at content scene boundaries; the CTA scene hard-cuts at its narration cue`,
       fixedAnchorPerSegment: frames.map((frame, index) => ({
         segment: index + 1,
         bbox: frame.anchor.bbox,

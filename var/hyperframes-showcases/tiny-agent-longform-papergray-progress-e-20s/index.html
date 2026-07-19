@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="zh-CN" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --paper: #ECECEA;
+        --ink: #111413;
+        --muted: #717570;
+        --line: #C9CBC5;
+        --progress-rest: #DDE0DA;
+        --blue: #117ABD;
+        --yellow: #D8AA28;
+        --red: #C95145;
+      }
+      @font-face {
+        font-family: "Tiny Agent CJK";
+        src: url("assets/fonts/HiraginoSansGB.ttc");
+        font-style: normal;
+        font-weight: 100 900;
+      }
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+      body {
+        color: var(--ink);
+        font-family: "Tiny Agent CJK", sans-serif;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+      .paper-layer {
+        position: absolute;
+        inset: 0;
+        background-color: var(--paper);
+        background-image:
+          linear-gradient(rgba(17, 20, 19, 0.048) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(17, 20, 19, 0.048) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+      .chapter-progress {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 120;
+        display: flex;
+        align-items: flex-start;
+        gap: 4px;
+        height: 52px;
+      }
+      .progress-segment {
+        min-width: 0;
+        flex: var(--chapter-weight) 1 0;
+      }
+      .progress-label {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 0 8px;
+        color: var(--ink);
+        font-size: 20px;
+        font-weight: 760;
+        line-height: 1;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .progress-label.is-current {
+        font-weight: 900;
+      }
+      .progress-track {
+        position: relative;
+        width: 100%;
+        height: 52px;
+        overflow: hidden;
+        background: var(--progress-rest);
+      }
+      .progress-fill {
+        position: absolute;
+        inset: 0;
+        background: var(--line);
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+      .masthead {
+        position: absolute;
+        top: 42px;
+        right: 72px;
+        left: 72px;
+        z-index: 110;
+        display: flex;
+        height: 70px;
+        align-items: center;
+        border-bottom: 2px solid var(--line);
+      }
+      .brand {
+        color: var(--blue);
+        font-size: 28px;
+        font-weight: 900;
+      }
+      .topic {
+        margin-left: 48px;
+        font-size: 42px;
+        font-weight: 900;
+      }
+      .sample-note {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 20px;
+        font-weight: 700;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        transform-origin: center center;
+      }
+      #scene-b {
+        z-index: 20;
+        opacity: 0;
+      }
+      .ground-line {
+        position: absolute;
+        right: 84px;
+        bottom: 254px;
+        left: 84px;
+        height: 3px;
+        background: var(--line);
+      }
+      .actor,
+      .prop {
+        position: absolute;
+        object-fit: contain;
+        transform-origin: center bottom;
+        will-change: transform, opacity;
+      }
+      .callout {
+        position: absolute;
+        top: 212px;
+        left: 420px;
+        width: 1080px;
+        font-size: 72px;
+        font-weight: 900;
+        line-height: 1.18;
+        text-align: center;
+      }
+      .callout-risk {
+        color: var(--red);
+      }
+      .callout-judgement {
+        color: var(--ink);
+      }
+      .marker-line {
+        position: absolute;
+        top: 300px;
+        left: 742px;
+        width: 436px;
+        height: 12px;
+        border-radius: 7px;
+        background: var(--yellow);
+        opacity: 0.78;
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+      .compare-panel {
+        position: absolute;
+        top: 336px;
+        width: 690px;
+        height: 458px;
+        overflow: hidden;
+        border: 4px solid var(--line);
+        background: var(--paper);
+      }
+      .compare-panel-left {
+        left: 250px;
+        border-top-color: var(--yellow);
+      }
+      .compare-panel-right {
+        right: 250px;
+        border-top-color: var(--blue);
+      }
+      .compare-label {
+        position: absolute;
+        top: 22px;
+        right: 32px;
+        left: 32px;
+        font-size: 34px;
+        font-weight: 900;
+        text-align: center;
+      }
+      .caption-band {
+        position: absolute;
+        right: 154px;
+        bottom: 72px;
+        left: 154px;
+        z-index: 130;
+        height: 148px;
+        overflow: hidden;
+        border: 3px solid var(--ink);
+        border-radius: 22px;
+        background: var(--paper);
+      }
+      .caption {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 56px;
+        color: var(--ink);
+        font-size: 35px;
+        font-weight: 800;
+        line-height: 1.38;
+        text-align: center;
+        opacity: 0;
+      }
+      .scene-b-human {
+        left: 56px;
+        top: 510px;
+        width: 230px;
+        height: 280px;
+      }
+      .scene-b-agent {
+        right: 56px;
+        top: 490px;
+        width: 250px;
+        height: 300px;
+      }
+      .panel-prop {
+        width: 164px;
+        height: 164px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="20"
+      data-width="1920"
+      data-height="1080"
+    >
+      <audio
+        id="narration"
+        class="clip"
+        src="assets/audio/sample-narration.zh.mp3"
+        data-start="0"
+        data-duration="20"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <div class="paper-layer" aria-hidden="true"></div>
+
+      <nav id="chapter-progress" class="chapter-progress" aria-label="章节进度">
+        <div class="progress-segment" style="--chapter-weight:45.936">
+          <div class="progress-track"><span id="progress-fill-1" class="progress-fill"></span><div class="progress-label is-current">前言</div></div>
+        </div>
+        <div class="progress-segment" style="--chapter-weight:70.944">
+          <div class="progress-track"><span class="progress-fill"></span><div class="progress-label">架构判断</div></div>
+        </div>
+        <div class="progress-segment" style="--chapter-weight:70.296">
+          <div class="progress-track"><span class="progress-fill"></span><div class="progress-label">基础单元</div></div>
+        </div>
+        <div class="progress-segment" style="--chapter-weight:201.648">
+          <div class="progress-track"><span class="progress-fill"></span><div class="progress-label">工作流模式</div></div>
+        </div>
+        <div class="progress-segment" style="--chapter-weight:107.856">
+          <div class="progress-track"><span class="progress-fill"></span><div class="progress-label">自主 Agent</div></div>
+        </div>
+        <div class="progress-segment" style="--chapter-weight:73.896">
+          <div class="progress-track"><span class="progress-fill"></span><div class="progress-label">工具设计</div></div>
+        </div>
+        <div class="progress-segment" style="--chapter-weight:68.640">
+          <div class="progress-track"><span class="progress-fill"></span><div class="progress-label">选择方法</div></div>
+        </div>
+        <div class="progress-segment" style="--chapter-weight:34.512">
+          <div class="progress-track"><span class="progress-fill"></span><div class="progress-label">总结</div></div>
+        </div>
+      </nav>
+
+      <header id="masthead" class="masthead">
+        <div class="brand">Tiny Agent</div>
+        <div class="topic">构建有效 Agent</div>
+        <div class="sample-note">20 秒主题样片</div>
+      </header>
+
+      <section id="scene-a" class="scene" data-layout-allow-overlap data-layout-allow-overflow>
+        <div class="ground-line"></div>
+        <img id="scene-a-human" class="actor" style="left:200px;top:430px;width:300px;height:345px" src="assets/characters/human-surprised.png" alt="惊讶的工程师" />
+        <img id="scene-a-agent" class="actor" style="left:520px;top:410px;width:310px;height:355px" src="assets/characters/tiny-agent-idle.png" alt="Tiny Agent" />
+        <div id="scene-a-callout" class="callout callout-risk">先做复杂架构？</div>
+        <img id="scene-a-prop-1" class="prop" style="left:1120px;top:440px;width:210px;height:210px" src="assets/props/branch.png" alt="分支架构" />
+        <img id="scene-a-prop-2" class="prop" style="left:1390px;top:440px;width:210px;height:210px" src="assets/props/loop.png" alt="循环架构" />
+      </section>
+
+      <section id="scene-b" class="scene" data-layout-allow-overlap data-layout-allow-overflow>
+        <div class="callout callout-judgement">复杂 ≠ 更有效</div>
+        <div id="scene-b-marker" class="marker-line"></div>
+        <div id="scene-b-panel-left" class="compare-panel compare-panel-left">
+          <div class="compare-label">复杂架构</div>
+          <img id="scene-b-prop-1" class="prop panel-prop" style="left:116px;top:144px" src="assets/props/warning.png" alt="风险" />
+          <img id="scene-b-prop-2" class="prop panel-prop" style="right:116px;top:144px" src="assets/props/timeout.png" alt="延迟" />
+        </div>
+        <div id="scene-b-panel-right" class="compare-panel compare-panel-right">
+          <div class="compare-label">简单组合</div>
+          <img id="scene-b-prop-3" class="prop panel-prop" style="left:116px;top:144px" src="assets/props/document.png" alt="清楚任务" />
+          <img id="scene-b-prop-4" class="prop panel-prop" style="right:116px;top:144px" src="assets/props/tool.png" alt="清楚工具" />
+        </div>
+        <img id="scene-b-human" class="actor scene-b-human" src="assets/characters/human-think.png" alt="思考的工程师" />
+        <img id="scene-b-agent" class="actor scene-b-agent" src="assets/characters/tiny-agent-idle-scene-b.png" alt="Tiny Agent" />
+      </section>
+
+      <div id="caption-band" class="caption-band" aria-label="字幕">
+        <div id="caption-1" class="caption">很多团队做 Agent 的第一步，</div>
+        <div id="caption-2" class="caption">就是选框架、画多 Agent 架构，再让几个模型互相讨论。</div>
+        <div id="caption-3" class="caption">但 Anthropic 在参与大量真实项目后发现，效果最好的系统，</div>
+        <div id="caption-4" class="caption">往往使用的是更简单、更清晰、更容易组合的模式。</div>
+        <div id="caption-5" class="caption">真正决定系统质量的，通常不是 Agent 的数量，</div>
+        <div id="caption-6" class="caption">而是任务边界、评价标准和环境反馈是否清楚。</div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#chapter-progress", { y: -10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 0.16);
+      tl.to("#progress-fill-1", { scaleX: 0.435389237, duration: 20, ease: "none" }, 0);
+      tl.fromTo("#masthead", { y: -12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, 0.34);
+
+      tl.fromTo("#scene-a-human", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.56, ease: "power3.out", immediateRender: false }, 0.12);
+      tl.fromTo("#scene-a-agent", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.58, ease: "power3.out", immediateRender: false }, 0.16);
+      tl.fromTo("#scene-a-callout", { x: -42, opacity: 0 }, { x: 0, opacity: 1, duration: 0.58, ease: "power3.out", immediateRender: false }, 0.16);
+      tl.fromTo("#scene-a-prop-1", { y: 18, scale: 0.92, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 2.05);
+      tl.fromTo("#scene-a-prop-2", { y: 18, scale: 0.92, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 2.12);
+
+      tl.to("#scene-a", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 5.275);
+      tl.fromTo("#scene-b", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 5.275);
+      tl.to("#scene-a", { opacity: 0, duration: 0.01, ease: "none" }, 5.815);
+      tl.fromTo("#scene-b-human", { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.56, ease: "power3.out", immediateRender: false }, 5.32);
+      tl.fromTo("#scene-b-agent", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.58, ease: "power3.out", immediateRender: false }, 5.36);
+      tl.fromTo("#scene-b-panel-left", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut", immediateRender: false }, 5.32);
+      tl.fromTo("#scene-b-panel-right", { clipPath: "inset(0 0 0 100%)" }, { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut", immediateRender: false }, 5.32);
+      tl.fromTo("#scene-b .callout", { y: -12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, 5.36);
+      tl.to("#scene-b-marker", { scaleX: 1, duration: 0.62, ease: "power3.out" }, 5.64);
+      tl.fromTo("#scene-b-prop-3", { y: 20, scale: 0.94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 10.19);
+      tl.fromTo("#scene-b-prop-4", { y: 20, scale: 0.94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 10.26);
+      tl.fromTo("#scene-b-prop-1", { y: 20, scale: 0.94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 17.82);
+      tl.fromTo("#scene-b-prop-2", { y: 20, scale: 0.94, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 17.89);
+
+      const captions = [
+        ["#caption-1", 0.1, 2.0309782609],
+        ["#caption-2", 2.0309782609, 5.325],
+        ["#caption-3", 5.275, 9.503125],
+        ["#caption-4", 9.503125, 12.45],
+        ["#caption-5", 12.45, 15.7152173913],
+        ["#caption-6", 15.7152173913, 18.458]
+      ];
+
+      captions.forEach(([selector, start, end]) => {
+        tl.fromTo(selector, { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, start);
+        tl.to(selector, { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, end - 0.1);
+      });
+
+      tl.to("#caption-band", { opacity: 0, duration: 0.2, ease: "power2.out" }, 18.55);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=1920, height=1080">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
-      :root { --board:#fcfdfc; --ink:#111413; --muted:#6f7976; --blue:#117abd; --line:#dfe7e4; }
+      :root { --board:#fcfdfc; --ink:#111413; --muted:#6f7976; --blue:#117abd; --line:#dfe7e4; --progress-played:#c9cbc5; --progress-rest:#dde0da; }
       * { box-sizing:border-box; }
       html, body { width:1920px; height:1080px; margin:0; overflow:hidden; }
       @font-face { font-family:"Tiny Agent CJK"; src:url("assets/fonts/HiraginoSansGB.ttc"); font-style:normal; font-weight:100 900; }
@@ -19,19 +19,19 @@
       .caption-band { position:absolute; right:154px; bottom:100px; left:154px; z-index:90; height:142px; background:rgba(252,253,252,.985); }
       .caption { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:10px 54px 4px; font-size:35px; font-weight:700; line-height:1.38; text-align:center; opacity:0; }
       .caption.is-first { opacity:1; }
-      .chapter-progress { position:absolute; right:0; bottom:18px; left:0; z-index:96; display:flex; height:66px; align-items:flex-end; gap:2px; }
+      .chapter-progress { position:absolute; right:0; bottom:0; left:0; z-index:96; display:flex; height:52px; align-items:flex-start; gap:4px; }
       .progress-segment { flex:var(--chapter-weight) 1 0; min-width:0; }
-      .progress-label { height:40px; overflow:hidden; color:var(--muted); font-size:19px; font-weight:800; line-height:1.55; text-align:center; text-overflow:ellipsis; white-space:nowrap; }
-      .progress-label.is-current { color:var(--ink); }
-      .progress-track { position:relative; width:100%; height:6px; overflow:hidden; border-radius:3px; background:var(--line); }
-      .progress-fill { position:absolute; inset:0; border-radius:3px; background:var(--blue); transform:scaleX(0); transform-origin:left center; }
+      .progress-label { position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:0 8px; color:var(--ink); font-size:20px; font-weight:760; line-height:1; text-align:center; text-overflow:ellipsis; white-space:nowrap; }
+      .progress-label.is-current { font-weight:900; }
+      .progress-track { position:relative; width:100%; height:52px; overflow:hidden; background:var(--progress-rest); }
+      .progress-fill { position:absolute; inset:0; background:var(--progress-played); transform:scaleX(0); transform-origin:left center; }
     </style>
   </head>
   <body>
     <div data-hf-id="hf-main-root" id="root" data-composition-id="main" data-start="0" data-duration="673.728" data-width="1920" data-height="1080">
       <div data-hf-id="hf-board" class="board-fill"></div>
-      <div data-hf-id="hf-story-slot" id="story-slot" class="story-slot" data-composition-id="story" data-composition-src="compositions/story.html" data-start="0" data-duration="673.728" data-track-index="1" data-layout-allow-overlap="" data-layout-allow-overflow=""></div>
-      <header data-hf-id="hf-masthead" class="masthead"><div data-hf-id="hf-5994" class="brand">Tiny Agent</div><h1 data-hf-id="hf-qti5" class="title">别急着做多 Agent</h1></header>
+      <div data-hf-id="hf-story-slot" id="story-slot" class="story-slot" data-composition-id="story" data-composition-src="compositions/story.html" data-start="0" data-duration="673.728" data-track-index="1" data-layout-allow-overlap data-layout-allow-overflow></div>
+      <header data-hf-id="hf-masthead" class="masthead"><div class="brand">Tiny Agent</div><h1 class="title">别急着做多 Agent</h1></header>
       <div data-hf-id="hf-caption-band" class="caption-band">
         <div data-hf-id="hf-caption-1" id="caption-1" class="caption is-first">很多团队做 Agent 的第一步，</div>
         <div data-hf-id="hf-caption-2" id="caption-2" class="caption">就是选框架、画多 Agent 架构，再让几个模型互相讨论。</div>
@@ -250,36 +250,28 @@
       </div>
       <nav data-hf-id="hf-chapter-progress" class="chapter-progress" aria-label="视频章节进度">
         <div data-hf-id="hf-progress-segment-1" class="progress-segment" style="--chapter-weight:45.936">
-          <div data-hf-id="hf-progress-label-1" id="progress-label-1" class="progress-label is-current">1. 前言</div>
-          <div data-hf-id="hf-progress-track-1" class="progress-track"><div data-hf-id="hf-progress-fill-1" id="progress-fill-1" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-1" class="progress-track"><div data-hf-id="hf-progress-fill-1" id="progress-fill-1" class="progress-fill"></div><div data-hf-id="hf-progress-label-1" id="progress-label-1" class="progress-label is-current">前言</div></div>
         </div>
         <div data-hf-id="hf-progress-segment-2" class="progress-segment" style="--chapter-weight:70.944">
-          <div data-hf-id="hf-progress-label-2" id="progress-label-2" class="progress-label">2. 架构判断</div>
-          <div data-hf-id="hf-progress-track-2" class="progress-track"><div data-hf-id="hf-progress-fill-2" id="progress-fill-2" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-2" class="progress-track"><div data-hf-id="hf-progress-fill-2" id="progress-fill-2" class="progress-fill"></div><div data-hf-id="hf-progress-label-2" id="progress-label-2" class="progress-label">架构判断</div></div>
         </div>
         <div data-hf-id="hf-progress-segment-3" class="progress-segment" style="--chapter-weight:70.296">
-          <div data-hf-id="hf-progress-label-3" id="progress-label-3" class="progress-label">3. 基础单元</div>
-          <div data-hf-id="hf-progress-track-3" class="progress-track"><div data-hf-id="hf-progress-fill-3" id="progress-fill-3" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-3" class="progress-track"><div data-hf-id="hf-progress-fill-3" id="progress-fill-3" class="progress-fill"></div><div data-hf-id="hf-progress-label-3" id="progress-label-3" class="progress-label">基础单元</div></div>
         </div>
         <div data-hf-id="hf-progress-segment-4" class="progress-segment" style="--chapter-weight:201.648">
-          <div data-hf-id="hf-progress-label-4" id="progress-label-4" class="progress-label">4. 工作流模式</div>
-          <div data-hf-id="hf-progress-track-4" class="progress-track"><div data-hf-id="hf-progress-fill-4" id="progress-fill-4" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-4" class="progress-track"><div data-hf-id="hf-progress-fill-4" id="progress-fill-4" class="progress-fill"></div><div data-hf-id="hf-progress-label-4" id="progress-label-4" class="progress-label">工作流模式</div></div>
         </div>
         <div data-hf-id="hf-progress-segment-5" class="progress-segment" style="--chapter-weight:107.856">
-          <div data-hf-id="hf-progress-label-5" id="progress-label-5" class="progress-label">5. 自主 Agent</div>
-          <div data-hf-id="hf-progress-track-5" class="progress-track"><div data-hf-id="hf-progress-fill-5" id="progress-fill-5" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-5" class="progress-track"><div data-hf-id="hf-progress-fill-5" id="progress-fill-5" class="progress-fill"></div><div data-hf-id="hf-progress-label-5" id="progress-label-5" class="progress-label">自主 Agent</div></div>
         </div>
         <div data-hf-id="hf-progress-segment-6" class="progress-segment" style="--chapter-weight:73.896">
-          <div data-hf-id="hf-progress-label-6" id="progress-label-6" class="progress-label">6. 工具设计</div>
-          <div data-hf-id="hf-progress-track-6" class="progress-track"><div data-hf-id="hf-progress-fill-6" id="progress-fill-6" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-6" class="progress-track"><div data-hf-id="hf-progress-fill-6" id="progress-fill-6" class="progress-fill"></div><div data-hf-id="hf-progress-label-6" id="progress-label-6" class="progress-label">工具设计</div></div>
         </div>
         <div data-hf-id="hf-progress-segment-7" class="progress-segment" style="--chapter-weight:68.640">
-          <div data-hf-id="hf-progress-label-7" id="progress-label-7" class="progress-label">7. 选择方法</div>
-          <div data-hf-id="hf-progress-track-7" class="progress-track"><div data-hf-id="hf-progress-fill-7" id="progress-fill-7" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-7" class="progress-track"><div data-hf-id="hf-progress-fill-7" id="progress-fill-7" class="progress-fill"></div><div data-hf-id="hf-progress-label-7" id="progress-label-7" class="progress-label">选择方法</div></div>
         </div>
         <div data-hf-id="hf-progress-segment-8" class="progress-segment" style="--chapter-weight:34.512">
-          <div data-hf-id="hf-progress-label-8" id="progress-label-8" class="progress-label">8. 总结</div>
-          <div data-hf-id="hf-progress-track-8" class="progress-track"><div data-hf-id="hf-progress-fill-8" id="progress-fill-8" class="progress-fill"></div></div>
+          <div data-hf-id="hf-progress-track-8" class="progress-track"><div data-hf-id="hf-progress-fill-8" id="progress-fill-8" class="progress-fill"></div><div data-hf-id="hf-progress-label-8" id="progress-label-8" class="progress-label">总结</div></div>
         </div>
       </nav>
       <audio data-hf-id="hf-narration" id="narration" class="clip" data-start="0" data-duration="673.728" data-track-index="10" data-media-start="0" data-volume="1" src="assets/audio/narration.zh.normalized.mp3"></audio>
@@ -719,36 +711,36 @@
       tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 49.016);
       tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 107.227);
       tl.to("#progress-fill-2", { scaleX: 1, duration: 70.944, ease: "none" }, 45.936);
-      tl.to("#progress-label-1", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 45.936);
-      tl.to("#progress-label-2", { color: "#111413", duration: 0.2, ease: "power2.out" }, 45.936);
+      tl.to("#progress-label-1", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 45.936);
+      tl.to("#progress-label-2", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 45.936);
       tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 119.960);
       tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 179.030);
       tl.to("#progress-fill-3", { scaleX: 1, duration: 70.296, ease: "none" }, 116.880);
-      tl.to("#progress-label-2", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 116.880);
-      tl.to("#progress-label-3", { color: "#111413", duration: 0.2, ease: "power2.out" }, 116.880);
+      tl.to("#progress-label-2", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 116.880);
+      tl.to("#progress-label-3", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 116.880);
       tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 190.256);
       tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 379.192);
       tl.to("#progress-fill-4", { scaleX: 1, duration: 201.648, ease: "none" }, 187.176);
-      tl.to("#progress-label-3", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 187.176);
-      tl.to("#progress-label-4", { color: "#111413", duration: 0.2, ease: "power2.out" }, 187.176);
+      tl.to("#progress-label-3", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 187.176);
+      tl.to("#progress-label-4", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 187.176);
       tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 391.904);
       tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 487.165);
       tl.to("#progress-fill-5", { scaleX: 1, duration: 107.856, ease: "none" }, 388.824);
-      tl.to("#progress-label-4", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 388.824);
-      tl.to("#progress-label-5", { color: "#111413", duration: 0.2, ease: "power2.out" }, 388.824);
+      tl.to("#progress-label-4", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 388.824);
+      tl.to("#progress-label-5", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 388.824);
       tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 499.760);
       tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 560.838);
       tl.to("#progress-fill-6", { scaleX: 1, duration: 73.896, ease: "none" }, 496.680);
-      tl.to("#progress-label-5", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 496.680);
-      tl.to("#progress-label-6", { color: "#111413", duration: 0.2, ease: "power2.out" }, 496.680);
+      tl.to("#progress-label-5", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 496.680);
+      tl.to("#progress-label-6", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 496.680);
       tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 573.656);
       tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 628.534);
       tl.to("#progress-fill-7", { scaleX: 1, duration: 68.640, ease: "none" }, 570.576);
-      tl.to("#progress-label-6", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 570.576);
-      tl.to("#progress-label-7", { color: "#111413", duration: 0.2, ease: "power2.out" }, 570.576);
+      tl.to("#progress-label-6", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 570.576);
+      tl.to("#progress-label-7", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 570.576);
       tl.to("#progress-fill-8", { scaleX: 1, duration: 34.512, ease: "none" }, 639.216);
-      tl.to("#progress-label-7", { color: "#117abd", duration: 0.2, ease: "power2.out" }, 639.216);
-      tl.to("#progress-label-8", { color: "#111413", duration: 0.2, ease: "power2.out" }, 639.216);
+      tl.to("#progress-label-7", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 639.216);
+      tl.to("#progress-label-8", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 639.216);
       window.__timelines.main = tl;
     </script>
   </body>

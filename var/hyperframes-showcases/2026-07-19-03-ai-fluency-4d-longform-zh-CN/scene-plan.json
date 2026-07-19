@@ -1,0 +1,90 @@
+{
+  "chapters": [
+    {
+      "label": "前言",
+      "showIntro": false,
+      "intro": "不用提示词表演衡量熟练度，改看四项可验证的人类判断",
+      "summary": ["衡量决定，不看使用量", "把四项能力连成循环", "不交出判断力地走到证据"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["表面动作","真实能力"],"human":"compare-front","agent":"present-right","agentDirection":"right","props":[{"id":"prompt-injection","label":"提示词技巧"},{"id":"timer","label":"使用时长"},{"id":"human-gate","label":"判断"},{"id":"evidence","label":"证据"}],"flow":"cluster","callout":"动作熟练不等于判断可靠","accent":"red"},
+        {"paragraphs":[3,3],"layout":"grid","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"handoff","label":"委托"},{"id":"document","label":"描述"},{"id":"compare","label":"辨别"},{"id":"shield","label":"尽责"}],"flow":"cluster","callout":"四项人的能力组成 AI 熟练度","accent":"blue"},
+        {"paragraphs":[4,5],"layout":"process","human":"present-left","humanDirection":"left","agent":"present-left","agentDirection":"left","props":[{"id":"target","label":"意图"},{"id":"workflow","label":"4D 循环"},{"id":"evidence","label":"证据"}],"flow":"chain","callout":"从意图可靠地走到证据","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "委托",
+      "intro": "写提示词之前，先决定 AI 是否参与、参与哪段和参与到什么程度",
+      "summary": ["写提示词前先判断 AI 是否应该参与", "委托一个有边界的结果，不是模糊的责任", "把高后果和高判断部分留在人手里"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"decide-front","agent":"ask-front","props":[{"id":"target","label":"工作"},{"id":"question","label":"AI 角色"}],"flow":"chain","callout":"第一个决定发生在提示词之前","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"human-gate","label":"人完成"},{"id":"team","label":"协作"},{"id":"handoff","label":"委托"},{"id":"stop","label":"边界"}],"flow":"chain","callout":"按判断和证据选择工作方式","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["可以交付","保留判断"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"email","label":"例行工作"},{"id":"success","label":"可检查"},{"id":"uncertainty","label":"目标不稳"},{"id":"warning","label":"高后果"}],"flow":"cluster","callout":"速度不会自动让任务准备好","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "描述",
+      "intro": "把脑海里的意图变成另一会话无需猜测也能执行的任务说明",
+      "summary": ["把意图写成结果、上下文、约束和证据", "明确 AI 必须保留的关键取舍", "宁可使用短而高信号的任务说明，也不要长而嘈杂的提示词"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"write-front","agent":"read-front","props":[{"id":"target","label":"结果"},{"id":"folder","label":"上下文"},{"id":"checklist","label":"约束"},{"id":"evidence","label":"测试"}],"flow":"cluster","callout":"让隐藏标准变得可见","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["模糊形容词","可执行取舍"],"human":"present-left","humanDirection":"left","agent":"look-left","agentDirection":"left","props":[{"id":"chat","label":"专业"},{"id":"uncertainty","label":"多种解释"},{"id":"ruler","label":"缩小结论"},{"id":"target","label":"真实指标"}],"flow":"cluster","callout":"描述决定，不描述装饰","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"document","label":"共享说明"},{"id":"summary","label":"高信号"},{"id":"archive","label":"恢复状态"}],"flow":"chain","callout":"删除不会改变决定的上下文","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "辨别",
+      "intro": "检查任务匹配、证据和使用后果，不把流畅语言当作证明",
+      "summary": ["先判断任务是否答对，再评价表达是否好看", "分开记录证据、推断和仍未确认的内容", "在错误会改变真实决定的地方主动增加摩擦"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["看起来完整","真正可靠"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"result-card","label":"流畅输出"},{"id":"warning","label":"隐藏错误"},{"id":"target","label":"任务匹配"},{"id":"approval","label":"场景匹配"}],"flow":"cluster","callout":"流畅不等于证据","accent":"red","visualVariant":"mirror"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"question","label":"假设"},{"id":"citation","label":"来源"},{"id":"compare","label":"对比"},{"id":"experiment","label":"失败测试"}],"flow":"chain","callout":"制造可以辨别的证据差异","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"grid","human":"caution-front","agent":"verify-front","props":[{"id":"citation","label":"一手来源"},{"id":"calendar","label":"日期有效"},{"id":"evidence","label":"支撑结论"},{"id":"stop","label":"审核闸门"}],"flow":"cluster","callout":"不要停在第一版顺滑答案","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "尽责",
+      "intro": "让责任、权限和真实结果验证始终与动作绑定",
+      "summary": ["记录权限、检查和最终决定", "让 AI 权限与可撤销性和后果相匹配", "工具报告成功后继续验证真实结果"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"stage","human":"review-front","agent":"write-front","props":[{"id":"clipboard","label":"审计记录"},{"id":"permission-key","label":"权限"},{"id":"approval","label":"决定"}],"flow":"cluster","callout":"是否依赖 AI 仍由人决定","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"stop-front","agent":"blocked-front","props":[{"id":"book","label":"读取"},{"id":"document","label":"起草"},{"id":"human-gate","label":"人工闸门"},{"id":"stop","label":"停止"}],"flow":"chain","callout":"只有证据增强才扩大权限","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["工具成功","结果成功"],"human":"present-right","humanDirection":"right","agent":"monitor-right","agentDirection":"right","props":[{"id":"cloud","label":"已上传"},{"id":"success","label":"请求正常"},{"id":"video","label":"公开视频"},{"id":"checklist","label":"状态验证"}],"flow":"cluster","callout":"调用返回后继续检查真实世界","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "4D 循环",
+      "intro": "把四项能力连成工作链，失败后回到真正的根因",
+      "summary": ["把委托、描述、辨别和尽责当作一条链", "失败后回到真正出错的那一项修复", "保存状态和证据，让循环可以恢复"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"handoff","label":"委托"},{"id":"document","label":"描述"},{"id":"compare","label":"辨别"},{"id":"shield","label":"尽责"}],"flow":"loop","callout":"每个决定都会形成下一项测试","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"disagree-front","agent":"retry-front","props":[{"id":"target","label":"目标错误"},{"id":"uncertainty","label":"约束缺失"},{"id":"error","label":"证据不足"},{"id":"permission-key","label":"越过授权"}],"flow":"cluster","callout":"最弱的一项决定最终结果","accent":"red"},
+        {"paragraphs":[5,6],"layout":"stage","human":"handoff-left","humanDirection":"left","agent":"receive-left","agentDirection":"left","props":[{"id":"archive","label":"当前状态"},{"id":"question","label":"未决问题"},{"id":"evidence","label":"验收测试"}],"flow":"chain","callout":"从证据恢复，不从聊天历史恢复","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "自查卡",
+      "intro": "给当前任务打分，修复每个零分后再扩大 AI 权限",
+      "summary": ["针对当前任务给四项能力分别打零到二分", "任何零分都意味着先停止并修复工作流", "只有四项都可验证，才扩大 AI 的执行权限"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"review-front","agent":"evaluate-front","props":[{"id":"scorecard","label":"4D 自查卡"},{"id":"ruler","label":"零到二分"}],"flow":"chain","callout":"评当前任务，不给身份贴标签","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["委托","描述"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"handoff","label":"角色有边界"},{"id":"human-gate","label":"人类负责人"},{"id":"document","label":"高信号说明"},{"id":"target","label":"验收测试"}],"flow":"cluster","callout":"另一会话能否无需猜测直接执行","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["辨别","尽责"],"human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"evidence","label":"结论已核对"},{"id":"experiment","label":"失败场景"},{"id":"permission-key","label":"已经授权"},{"id":"approval","label":"结果已验证"}],"flow":"cluster","callout":"平均分不能掩盖任何零分","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "总结",
+      "showIntro": false,
+      "intro": "下一项高后果 AI 任务开始前先使用 4D 自查卡",
+      "summary": ["委托决定 AI 是否参与、参与哪一段以及参与到什么程度", "描述把目标、上下文、约束和验收证据显式写出来", "辨别负责检查输出，尽责负责控制并验证它的使用"],
+      "scenes": [
+        {"paragraphs":[1,7],"summaryPointParagraphs":[2,3,4],"ctaParagraph":7,"recap":true,"finalSummary":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"修复每个零分后再扩大权限","accent":"blue"}
+      ]
+    }
+  ]
+}
