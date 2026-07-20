@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Tiny Agent Motion Experiment C — Workflow UI</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="assets/runtime-data.js"></script>
+    <style>
+      * { box-sizing:border-box; margin:0; padding:0; }
+      :root { --paper:#ECECEA; --ink:#111413; --blue:#117ABD; --blue-text:#0B5D95; --red:#D93B3B; --quiet:#D8DAD5; }
+      html, body { width:1080px; height:1920px; overflow:hidden; background:var(--paper); }
+      body { color:var(--ink); font-family:Arial, Helvetica, sans-serif; }
+      #root { position:relative; width:1080px; height:1920px; overflow:hidden; }
+      .paper-layer { position:absolute; inset:0; background-color:var(--paper); background-image:linear-gradient(135deg, rgba(17,20,19,.025) 25%, transparent 25%, transparent 75%, rgba(17,20,19,.025) 75%); background-size:44px 44px; }
+      #main-content, #cta-scene { position:absolute; inset:0; width:1080px; height:1920px; }
+      .header { position:absolute; left:80px; top:48px; width:920px; height:232px; text-align:center; }
+      .series-name { color:var(--blue); font-size:34px; font-weight:900; letter-spacing:.13em; text-transform:uppercase; }
+      .content-title { margin-top:26px; font-size:58px; line-height:1.02; font-weight:900; letter-spacing:-.035em; }
+      .stage { position:absolute; left:80px; top:300px; width:920px; height:810px; overflow:hidden; }
+      .marker-card { border:5px solid var(--ink); border-radius:30px; background:var(--paper); box-shadow:10px 10px 0 rgba(17,20,19,.12); }
+      .asset { object-fit:contain; mix-blend-mode:multiply; }
+      #c-builder { position:absolute; left:70px; top:34px; width:780px; height:700px; overflow:hidden; }
+      #c-topbar { position:absolute; left:0; top:0; width:770px; height:82px; display:flex; align-items:center; padding:0 26px; border-bottom:5px solid var(--ink); background:var(--blue-text); color:var(--paper); }
+      #c-topbar-title { font-size:31px; font-weight:900; letter-spacing:.05em; text-transform:uppercase; }
+      #c-topbar-state { margin-left:auto; padding:10px 16px; border:3px solid var(--paper); border-radius:20px; font-size:18px; font-weight:900; letter-spacing:.08em; }
+      #c-fields { position:absolute; left:28px; top:106px; width:470px; height:560px; }
+      .field { position:absolute; left:0; width:470px; border:4px solid var(--ink); border-radius:21px; background:var(--paper); padding:16px 18px; overflow:hidden; }
+      .field-label { display:block; color:var(--blue); font-size:19px; line-height:1; font-weight:900; letter-spacing:.11em; text-transform:uppercase; }
+      .field-value { display:block; margin-top:11px; font-size:26px; line-height:1.08; font-weight:800; }
+      #c-prompt-field { top:0; height:94px; }
+      #c-artifact-field { top:112px; height:108px; }
+      #c-context-field { top:238px; height:92px; }
+      #c-constraints-field { top:348px; height:92px; }
+      #c-review-field { top:458px; height:92px; }
+      #c-prompt-text { color:var(--red); }
+      #c-artifact-caret { display:inline-block; width:5px; height:28px; margin-left:5px; background:var(--blue); vertical-align:-5px; }
+      .field-chip { display:inline-flex; align-items:center; gap:8px; margin-top:5px; padding:5px 10px; border:3px solid var(--ink); border-radius:16px; background:var(--paper); font-size:19px; line-height:1; font-weight:900; }
+      .field-chip img { width:28px; height:28px; }
+      #c-validation { position:absolute; right:24px; top:106px; width:232px; height:420px; padding:22px 18px; border:4px solid var(--ink); border-radius:24px; background:rgba(247,247,245,.96); }
+      #c-validation-title { font-size:22px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+      .validation-row { height:64px; margin-top:12px; display:flex; align-items:center; gap:11px; padding:0 11px; border:3px solid var(--quiet); border-radius:17px; font-size:18px; font-weight:900; text-transform:uppercase; }
+      .validation-dot { width:24px; height:24px; border:4px solid var(--red); border-radius:50%; flex:0 0 24px; }
+      .validation-row.ok { color:var(--blue-text); border-color:var(--blue); }
+      .validation-row.ok .validation-dot { border-color:var(--blue); background:var(--blue); box-shadow:inset 0 0 0 5px var(--paper); }
+      #c-controls { position:absolute; right:24px; top:544px; width:232px; height:118px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+      .control-cell { display:flex; flex-direction:column; align-items:center; justify-content:center; border:3px solid var(--ink); border-radius:17px; background:var(--paper); font-size:14px; line-height:1.05; font-weight:900; text-align:center; text-transform:uppercase; }
+      .control-cell img { width:38px; height:38px; margin-bottom:7px; }
+      #c-cursor { position:absolute; left:760px; top:205px; width:48px; height:67px; background:var(--ink); clip-path:polygon(0 0, 100% 70%, 61% 74%, 80% 100%, 61% 100%, 44% 77%, 18% 100%); z-index:20; transform-origin:top left; }
+      #c-click-ring { position:absolute; left:750px; top:195px; width:74px; height:74px; border:6px solid var(--blue); border-radius:50%; z-index:19; }
+      #c-rule-strip { position:absolute; left:98px; top:188px; width:724px; min-height:332px; padding:54px 36px 46px; z-index:30; text-align:center; }
+      #c-rule-title { color:var(--blue); font-size:34px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+      #c-rule-pills { margin-top:42px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+      .rule-pill { padding:24px 12px; border:4px solid var(--ink); border-radius:22px; background:var(--paper); font-size:27px; font-weight:900; text-transform:uppercase; }
+      #c-compile { position:absolute; right:24px; top:544px; width:232px; height:118px; display:flex; align-items:center; justify-content:center; border:5px solid var(--ink); border-radius:23px; background:var(--blue); color:var(--paper); font-size:27px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; z-index:25; }
+      #c-compile-progress { position:absolute; left:122px; top:584px; width:506px; height:18px; border:3px solid var(--ink); border-radius:18px; overflow:hidden; z-index:24; }
+      #c-compile-progress span { display:block; width:100%; height:100%; background:var(--blue); transform-origin:left center; }
+      #c-result-card { position:absolute; left:128px; top:158px; width:664px; height:438px; padding:54px 42px; z-index:32; text-align:center; }
+      #c-result-kicker { color:var(--blue); font-size:27px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+      #c-result-main { margin-top:48px; font-size:76px; line-height:.95; font-weight:900; letter-spacing:-.05em; text-transform:uppercase; }
+      #c-result-main span { color:var(--blue); }
+      #c-result-meta { margin-top:44px; font-size:25px; line-height:1.25; font-weight:800; }
+      #c-human { position:absolute; left:0; top:516px; width:220px; height:250px; z-index:35; }
+      #c-agent { position:absolute; right:-2px; top:516px; width:200px; height:250px; z-index:35; }
+      #c-progress-rail { position:absolute; left:72px; bottom:14px; width:776px; height:10px; border-radius:10px; background:var(--quiet); overflow:hidden; }
+      #c-progress { width:100%; height:100%; background:var(--blue); transform-origin:left center; }
+      #caption-shell { position:absolute; left:80px; top:1130px; width:920px; height:300px; border:5px solid var(--ink); border-radius:34px; background:var(--paper); box-shadow:10px 10px 0 rgba(17,20,19,.12); overflow:hidden; }
+      .realtime-caption { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:38px 54px; text-align:center; white-space:pre-line; font-size:50px; line-height:62px; font-weight:900; letter-spacing:-.02em; }
+      #cta-scene { text-align:center; }
+      #cta-heading { position:absolute; left:80px; top:120px; width:920px; color:var(--blue); font-size:78px; line-height:1; font-weight:900; letter-spacing:-.04em; }
+      #cta-plus { display:inline-flex; width:76px; height:76px; margin-right:20px; align-items:center; justify-content:center; border:8px solid var(--blue); border-radius:50%; font-size:72px; line-height:1; vertical-align:-5px; }
+      #cta-agent { position:absolute; left:275px; top:365px; width:530px; height:650px; }
+      #cta-benefit { position:absolute; left:80px; top:1130px; width:920px; height:300px; display:flex; align-items:center; justify-content:center; padding:34px 54px; border:5px solid var(--ink); border-radius:34px; background:var(--paper); box-shadow:10px 10px 0 rgba(17,20,19,.12); font-size:54px; line-height:66px; font-weight:900; }
+      #cta-rule { position:absolute; left:174px; top:1485px; width:732px; height:12px; border-radius:12px; background:var(--blue); transform-origin:left center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="tiny-agent-motion-c" data-start="0" data-duration="38.808" data-width="1080" data-height="1920">
+      <audio id="c-narration" class="clip" src="assets/audio/narration.mp3" data-start="0" data-duration="38.808" data-track-index="99" data-volume="1"></audio>
+      <div id="c-background" class="clip paper-layer" data-start="0" data-duration="38.808" data-track-index="0"></div>
+      <section id="main-content" class="clip" data-start="0" data-duration="33.468" data-track-index="1">
+        <header class="header"><div class="series-name">Tiny Agent</div><h1 id="c-title" class="content-title">Make Agent Tasks Executable</h1></header>
+        <main class="stage">
+          <section id="c-builder" class="marker-card">
+            <div id="c-topbar"><div id="c-topbar-title">Agent Task Builder</div><div id="c-topbar-state">DRAFT</div></div>
+            <div id="c-fields">
+              <div id="c-prompt-field" class="field"><span class="field-label">Request</span><span id="c-prompt-text" class="field-value">Help with the launch</span></div>
+              <div id="c-artifact-field" class="field"><span class="field-label">Outcome artifact</span><span id="c-artifact-text" class="field-value">Review-ready launch brief<span id="c-artifact-caret"></span></span></div>
+              <div id="c-context-field" class="field"><span class="field-label">Context</span><span id="c-context-chip" class="field-chip"><img class="asset" src="assets/pack/sprites/props/document-stack.png" alt="Sources" />Approved source materials</span></div>
+              <div id="c-constraints-field" class="field"><span class="field-label">Constraints</span><span id="c-constraints-chip" class="field-chip"><img class="asset" src="assets/pack/sprites/props/shield.png" alt="Constraints" />Hard limits locked</span></div>
+              <div id="c-review-field" class="field"><span class="field-label">Review bar</span><span id="c-review-chip" class="field-chip"><img class="asset" src="assets/pack/sprites/props/evidence.png" alt="Evidence" />Evidence required</span></div>
+            </div>
+            <aside id="c-validation">
+              <div id="c-validation-title">Validation</div>
+              <div id="c-valid-outcome" class="validation-row"><span class="validation-dot"></span>Outcome</div>
+              <div id="c-valid-context" class="validation-row"><span class="validation-dot"></span>Context</div>
+              <div id="c-valid-limits" class="validation-row"><span class="validation-dot"></span>Limits</div>
+              <div id="c-valid-review" class="validation-row"><span class="validation-dot"></span>Review</div>
+            </aside>
+            <div id="c-controls">
+              <div id="c-control-done" class="control-cell"><img class="asset" src="assets/pack/sprites/props/target.png" alt="Done" />Done</div>
+              <div id="c-control-use" class="control-cell"><img class="asset" src="assets/pack/sprites/props/permission-key.png" alt="May use" />May use</div>
+              <div id="c-control-stop" class="control-cell"><img class="asset" src="assets/pack/sprites/props/stop.png" alt="Stop" />Stop</div>
+            </div>
+            <div id="c-compile">Compile task</div>
+            <div id="c-compile-progress"><span></span></div>
+          </section>
+          <div id="c-cursor"></div><div id="c-click-ring"></div>
+          <section id="c-rule-strip" class="marker-card"><div id="c-rule-title">Tiny rule</div><div id="c-rule-pills"><div id="c-rule-artifact" class="rule-pill">Artifact</div><div id="c-rule-context" class="rule-pill">Context</div><div id="c-rule-constraints" class="rule-pill">Constraints</div><div id="c-rule-review" class="rule-pill">Review bar</div></div></section>
+          <section id="c-result-card" class="marker-card"><div id="c-result-kicker">Task compiled</div><div id="c-result-main"><span>Executable</span><br />task</div><div id="c-result-meta">Outcome defined · inputs bounded · review visible</div></section>
+          <img id="c-human" class="asset" src="assets/pack/sprites/human/operate-right.png" alt="Engineer operating the workflow" />
+          <img id="c-agent" class="asset" src="assets/pack/sprites/agent/write-front.png" alt="Tiny Agent writes the task" />
+          <div id="c-progress-rail"><div id="c-progress"></div></div>
+        </main>
+        <section id="caption-shell" class="clip" data-start="0" data-duration="33.468" data-track-index="80"></section>
+      </section>
+      <section id="cta-scene" class="clip" data-start="33.468" data-duration="5.34" data-track-index="1">
+        <h2 id="cta-heading"><span id="cta-plus">+</span>Follow Tiny Agent</h2>
+        <img id="cta-agent" class="asset" src="assets/pack/sprites/agent/celebrate-front.png" alt="Smiling Tiny Agent celebrating" />
+        <div id="cta-benefit">Tiny Agent helps you<br />get better at using AI.</div>
+        <div id="cta-rule"></div>
+      </section>
+    </div>
+    <script>
+      TinyAgentExperiment.mountCaptions(document.querySelector('#caption-shell'));
+      const tl = gsap.timeline({ paused: true });
+      const hidden = ['#c-artifact-text','#c-context-chip','#c-constraints-chip','#c-review-chip','#c-control-done','#c-control-use','#c-control-stop','#c-rule-strip','#c-result-card','#c-compile','#c-compile-progress','#c-click-ring'];
+      tl.set(hidden, { opacity: 0 }, 0);
+      tl.fromTo('#c-progress', { scaleX: 0 }, { scaleX: 1, duration: 33.468, ease: 'none', immediateRender: false }, 0);
+      tl.fromTo('#c-builder', { opacity: 0, y: 70, scale: .96 }, { opacity: 1, y: 0, scale: 1, duration: .72, ease: 'power3.out', immediateRender: false }, .08);
+      tl.fromTo(['#c-human','#c-agent'], { opacity: 0, y: 55 }, { opacity: 1, y: 0, duration: .66, stagger: .14, ease: 'power3.out', immediateRender: false }, .48);
+      tl.fromTo('#c-prompt-text', { opacity: 0, clipPath: 'inset(0 100% 0 0)' }, { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 1.3, ease: 'power2.out', immediateRender: false }, 1.12);
+      tl.fromTo('#c-valid-outcome', { x: 0 }, { x: 12, duration: .12, ease: 'power2.out', yoyo: true, repeat: 3, immediateRender: false }, 2.52);
+
+      tl.to('#c-cursor', { x: -415, y: 132, duration: .72, ease: 'power3.inOut' }, 3.625);
+      tl.fromTo('#c-click-ring', { opacity: 0, scale: .3, x: -415, y: 132 }, { opacity: 1, scale: 1.25, x: -415, y: 132, duration: .42, ease: 'power3.out', immediateRender: false }, 4.35);
+      tl.to('#c-click-ring', { opacity: 0, scale: 1.8, duration: .3, ease: 'power2.out' }, 4.77);
+      tl.to('#c-prompt-field', { borderColor: '#D93B3B', rotation: -1, duration: .22, ease: 'power2.out' }, 5.1);
+      tl.to('#c-prompt-field', { rotation: 0, duration: .28, ease: 'power2.out' }, 5.33);
+
+      tl.to('#c-cursor', { x: -415, y: 252, duration: .68, ease: 'power3.inOut' }, 7.333);
+      tl.fromTo('#c-click-ring', { opacity: 0, scale: .3, x: -415, y: 252 }, { opacity: 1, scale: 1.25, x: -415, y: 252, duration: .42, ease: 'power3.out', immediateRender: false }, 8.02);
+      tl.to('#c-click-ring', { opacity: 0, scale: 1.8, duration: .3, ease: 'power2.out' }, 8.44);
+      tl.fromTo('#c-artifact-text', { opacity: 0, clipPath: 'inset(0 100% 0 0)' }, { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 2.05, ease: 'power2.out', immediateRender: false }, 8.28);
+      tl.to('#c-valid-outcome', { className: 'validation-row ok', duration: .01 }, 10.42);
+      tl.to('#c-topbar-state', { textContent: 'STRUCTURED', duration: .01 }, 10.56);
+
+      tl.to('#c-cursor', { x: -415, y: 372, duration: .66, ease: 'power3.inOut' }, 12.125);
+      tl.fromTo('#c-context-chip', { opacity: 0, x: -52 }, { opacity: 1, x: 0, duration: .52, ease: 'power3.out', immediateRender: false }, 12.9);
+      tl.to('#c-valid-context', { className: 'validation-row ok', duration: .01 }, 13.54);
+      tl.to('#c-cursor', { x: -415, y: 482, duration: .66, ease: 'power3.inOut' }, 14.9);
+      tl.fromTo('#c-constraints-chip', { opacity: 0, x: -52 }, { opacity: 1, x: 0, duration: .52, ease: 'power3.out', immediateRender: false }, 15.57);
+      tl.to('#c-valid-limits', { className: 'validation-row ok', duration: .01 }, 16.2);
+      tl.to('#c-cursor', { x: -415, y: 592, duration: .66, ease: 'power3.inOut' }, 17.85);
+      tl.fromTo('#c-review-chip', { opacity: 0, x: -52 }, { opacity: 1, x: 0, duration: .52, ease: 'power3.out', immediateRender: false }, 18.52);
+      tl.to('#c-valid-review', { className: 'validation-row ok', duration: .01 }, 19.18);
+
+      tl.to('#c-cursor', { x: -90, y: 540, duration: .68, ease: 'power3.inOut' }, 19.885);
+      tl.fromTo('#c-control-done', { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: .48, ease: 'power3.out', immediateRender: false }, 20.46);
+      tl.fromTo('#c-control-use', { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: .48, ease: 'power3.out', immediateRender: false }, 22.16);
+      tl.fromTo('#c-control-stop', { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: .48, ease: 'power3.out', immediateRender: false }, 23.74);
+      tl.to('#c-topbar-state', { textContent: 'VALID', duration: .01 }, 24.44);
+
+      tl.to('#c-builder', { opacity: .28, scale: .96, duration: .48, ease: 'power3.out' }, 25.02);
+      tl.set('#c-builder', { visibility: 'hidden' }, 25.5);
+      tl.fromTo('#c-rule-strip', { opacity: 0, scale: .78 }, { opacity: 1, scale: 1, duration: .62, ease: 'power3.out', immediateRender: false }, 25.18);
+      tl.fromTo('#c-rule-artifact', { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 25.54);
+      tl.fromTo('#c-rule-context', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 26.48);
+      tl.fromTo('#c-rule-constraints', { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 27.4);
+      tl.fromTo('#c-rule-review', { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 28.34);
+
+      tl.to('#c-rule-strip', { opacity: 0, scale: .82, duration: .36, ease: 'power3.in' }, 29.874);
+      tl.set('#c-builder', { visibility: 'visible' }, 29.9);
+      tl.to('#c-builder', { opacity: 1, scale: 1, duration: .42, ease: 'power3.out' }, 29.95);
+      tl.fromTo('#c-compile', { opacity: 0, scale: .72 }, { opacity: 1, scale: 1, duration: .48, ease: 'power3.out', immediateRender: false }, 30.18);
+      tl.to('#c-cursor', { x: -115, y: 535, duration: .58, ease: 'power3.inOut' }, 30.24);
+      tl.to(['#c-compile','#c-cursor'], { scale: .9, duration: .14, ease: 'none' }, 30.84);
+      tl.to(['#c-compile','#c-cursor'], { scale: 1, duration: .24, ease: 'power3.out' }, 30.98);
+      tl.fromTo('#c-compile-progress', { opacity: 0 }, { opacity: 1, duration: .2, ease: 'none', immediateRender: false }, 31.16);
+      tl.fromTo('#c-compile-progress span', { scaleX: 0 }, { scaleX: 1, duration: .72, ease: 'power2.out', immediateRender: false }, 31.16);
+      tl.to('#c-builder', { opacity: .16, scale: .94, duration: .34, ease: 'power3.in' }, 31.7);
+      tl.set('#c-builder', { visibility: 'hidden' }, 32.04);
+      tl.fromTo('#c-result-card', { opacity: 0, y: 80, scale: .82 }, { opacity: 1, y: 0, scale: 1, duration: .66, ease: 'power3.out', immediateRender: false }, 31.86);
+      tl.to('#c-agent', { x: -258, y: -130, scale: 1.12, duration: .72, ease: 'power3.inOut' }, 32.08);
+
+      tl.set(['#cta-heading','#cta-agent','#cta-benefit'], { opacity: 1 }, 33.468);
+      tl.fromTo('#cta-heading', { y: -18 }, { y: 0, duration: .38, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-plus', { rotation: -90, scale: .72 }, { rotation: 0, scale: 1, duration: .48, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-agent', { y: 32, scale: .92 }, { y: 0, scale: 1, duration: .58, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-benefit', { y: 18 }, { y: 0, duration: .48, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-rule', { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .8, ease: 'power3.out', immediateRender: false }, 33.72);
+      tl.to('#cta-agent', { y: -10, duration: 1.3, ease: 'sine.inOut' }, 34.4);
+      tl.to('#cta-agent', { y: 0, duration: 1.3, ease: 'sine.inOut' }, 35.7);
+      tl.to('#cta-plus', { scale: 1.08, duration: .6, ease: 'sine.inOut' }, 36.5);
+      tl.to('#cta-plus', { scale: 1, duration: .6, ease: 'sine.inOut' }, 37.1);
+      tl.to('#cta-rule', { scaleX: .96, duration: .5, ease: 'sine.inOut' }, 37.7);
+      window.__timelines = window.__timelines || {};
+      window.__timelines['tiny-agent-motion-c'] = tl;
+    </script>
+  </body>
+</html>

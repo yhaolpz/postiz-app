@@ -1,0 +1,90 @@
+{
+  "chapters": [
+    {
+      "label": "Introduction",
+      "showIntro": false,
+      "intro": "Replace the blank prompt with a complete package for a review-ready artifact",
+      "summary": ["Start from real work, not a blank prompt", "Package four observable inputs", "Produce a review-ready first version"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Blank prompt","Real work"],"human":"compare-front","agent":"present-right","agentDirection":"right","props":[{"id":"chat","label":"Empty box"},{"id":"uncertainty","label":"Hidden context"},{"id":"folder","label":"Real inputs"},{"id":"result-card","label":"Usable artifact"}],"flow":"cluster","callout":"The work exists outside the prompt","accent":"red"},
+        {"paragraphs":[3,3],"layout":"stage","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"folder","label":"Sources"},{"id":"checklist","label":"Constraints"},{"id":"compare","label":"Review"},{"id":"document","label":"Format"}],"flow":"cluster","callout":"Four inputs make the handoff observable","accent":"blue"},
+        {"paragraphs":[4,5],"layout":"process","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"task-list","label":"Brief"},{"id":"workflow","label":"Execute"},{"id":"evidence","label":"Review"}],"flow":"chain","callout":"Build the smallest complete package","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "Artifact First",
+      "intro": "Define a concrete artifact and the decision it must support before assigning activity",
+      "summary": ["define a concrete artifact before describing the work", "connect that artifact to a real user and decision", "make the first version usable enough to expose what is missing"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"decide-front","agent":"ask-front","props":[{"id":"target","label":"Decision"},{"id":"result-card","label":"Artifact"}],"flow":"chain","callout":"Name the thing someone can review","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["Large goal","Usable artifact"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"trend-up","label":"Improve retention"},{"id":"uncertainty","label":"No finish line"},{"id":"spreadsheet","label":"Cohort evidence"},{"id":"task-list","label":"Prioritized action"}],"flow":"cluster","callout":"Separate the goal from the deliverable","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"handoff-left","humanDirection":"left","agent":"receive-left","agentDirection":"left","props":[{"id":"document","label":"Draft"},{"id":"approval","label":"Decision"},{"id":"success","label":"Done state"}],"flow":"chain","callout":"A named artifact creates an end state","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Source Material",
+      "intro": "Build a source map that preserves authority, freshness, and known uncertainty",
+      "summary": ["provide the materials that can change the artifact", "identify which sources are current and authoritative", "label missing facts and uncertainty instead of letting the agent guess"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"write-front","agent":"read-front","props":[{"id":"email","label":"Messages"},{"id":"document-stack","label":"Docs"},{"id":"spreadsheet","label":"Data"},{"id":"dashboard","label":"Status"}],"flow":"cluster","callout":"Real work already has context","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["Authoritative","Uncertain"],"human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"repository","label":"Primary"},{"id":"calendar","label":"Current"},{"id":"warning","label":"Stale"},{"id":"question","label":"Missing"}],"flow":"cluster","callout":"Tell the agent which source wins","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"folder","label":"Approved inputs"},{"id":"summary","label":"High signal"},{"id":"evidence","label":"Traceable output"}],"flow":"chain","callout":"Every source must change a decision","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Constraints",
+      "intro": "Turn hidden expectations into checkable limits, permissions, and stop conditions",
+      "summary": ["translate important preferences into checkable limits", "separate hard constraints from negotiable guidance", "define permissions and stop conditions before execution"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"caution-front","agent":"evaluate-front","props":[{"id":"calendar","label":"Deadline"},{"id":"ruler","label":"Scope"},{"id":"permission-key","label":"Permission"},{"id":"stop","label":"Stop"}],"flow":"cluster","callout":"Write constraints as tests","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["Hard limit","Preference"],"human":"compare-front","agent":"look-left","agentDirection":"left","props":[{"id":"shield","label":"Must pass"},{"id":"error","label":"Blocks acceptance"},{"id":"settings","label":"Guides quality"},{"id":"uncertainty","label":"Can trade off"}],"flow":"cluster","callout":"Not every instruction has equal force","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"stop-front","agent":"blocked-front","props":[{"id":"question","label":"Missing fact"},{"id":"warning","label":"Conflict"},{"id":"human-gate","label":"Decision"},{"id":"handoff","label":"Resume"}],"flow":"chain","callout":"A useful stop returns the next decision","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Review Standards",
+      "intro": "Define rejection rules and evidence before the first version is produced",
+      "summary": ["define acceptance criteria before the agent starts", "require evidence that makes important claims inspectable", "keep accountable approval attached to consequential actions"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Looks complete","Passes review"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"result-card","label":"Fluent draft"},{"id":"uncertainty","label":"Unknown quality"},{"id":"checklist","label":"Criteria"},{"id":"ruler","label":"Task fit"}],"flow":"cluster","callout":"Review needs a rejection rule","accent":"red"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"citation","label":"Source"},{"id":"evidence","label":"Proof"},{"id":"compare","label":"Expert review"},{"id":"approval","label":"Owner approval"}],"flow":"chain","callout":"Make consequential claims inspectable","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"stage","human":"review-front","agent":"verify-front","props":[{"id":"document","label":"First version"},{"id":"question","label":"Open issues"},{"id":"workflow","label":"Revise"}],"flow":"cluster","callout":"Review while change is still cheap","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Destination Format",
+      "intro": "Specify the container, structure, location, and handoff state the work must enter",
+      "summary": ["specify the destination surface and required structure", "include naming, location, and machine-readable rules when they matter", "deliver the artifact together with its verified handoff state"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"document","label":"Brief"},{"id":"spreadsheet","label":"Workbook"},{"id":"image","label":"Slides"},{"id":"repository","label":"Files"}],"flow":"cluster","callout":"The container changes the work","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"write-front","agent":"read-front","props":[{"id":"form","label":"Schema"},{"id":"package","label":"Files"},{"id":"archive","label":"Location"},{"id":"handoff","label":"State"}],"flow":"chain","callout":"Specify structure and resume state","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["Discussion","Delivery"],"human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"chat","label":"Ideas"},{"id":"uncertainty","label":"Manual rework"},{"id":"checklist","label":"Ready package"},{"id":"success","label":"Usable next"}],"flow":"cluster","callout":"Wrong shape still fails","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Task Brief",
+      "intro": "Combine six fields into a compact contract for execution and review",
+      "summary": ["package artifact, sources, constraints, review, format, and handoff", "update the brief when facts or acceptance criteria change", "remove any instruction that cannot change execution or review"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"clipboard","label":"Task brief"},{"id":"task-list","label":"Six fields"}],"flow":"chain","callout":"A compact contract for real work","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"checklist","label":"Constraints"},{"id":"evidence","label":"Review"},{"id":"form","label":"Format"},{"id":"handoff","label":"Handoff"}],"flow":"cluster","callout":"Every field changes the work","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"retry-front","props":[{"id":"document","label":"Current brief"},{"id":"question","label":"New fact"},{"id":"workflow","label":"Update"},{"id":"archive","label":"Resume"}],"flow":"chain","callout":"Keep the brief aligned with the task","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Summary",
+      "showIntro": false,
+      "intro": "Use the Agent Task Brief before expanding tools or authority",
+      "summary": ["define the artifact and provide the smallest complete source package", "make constraints, review expectations, and destination format observable", "return a review-ready first version with evidence, open questions, and a clear handoff"],
+      "scenes": [
+        {"paragraphs":[1,6],"summaryPointParagraphs":[2,3,4],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Repair the brief before expanding authority","accent":"blue"}
+      ]
+    }
+  ]
+}

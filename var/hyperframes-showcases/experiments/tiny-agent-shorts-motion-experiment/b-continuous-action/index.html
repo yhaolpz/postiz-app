@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Tiny Agent Motion Experiment B — Continuous Action</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="assets/runtime-data.js"></script>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      :root { --paper:#ECECEA; --ink:#111413; --blue:#117ABD; --blue-text:#0B5D95; --red:#D93B3B; --red-text:#C93333; --quiet:#D8DAD5; }
+      html, body { width:1080px; height:1920px; overflow:hidden; background:var(--paper); }
+      body { color:var(--ink); font-family:Arial, Helvetica, sans-serif; }
+      #root { position:relative; width:1080px; height:1920px; overflow:hidden; }
+      .paper-layer { position:absolute; inset:0; background-color:var(--paper); background-image:radial-gradient(circle at 18px 18px, rgba(17,20,19,.055) 2px, transparent 2.5px); background-size:54px 54px; }
+      #main-content, #cta-scene { position:absolute; inset:0; width:1080px; height:1920px; }
+      .header { position:absolute; left:80px; top:48px; width:920px; height:232px; text-align:center; }
+      .series-name { color:var(--blue); font-size:34px; font-weight:900; letter-spacing:.13em; text-transform:uppercase; }
+      .content-title { margin-top:26px; font-size:58px; line-height:1.02; font-weight:900; letter-spacing:-.035em; }
+      .stage { position:absolute; left:80px; top:300px; width:920px; height:810px; overflow:hidden; }
+      .marker-card { border:5px solid var(--ink); border-radius:34px; background:var(--paper); box-shadow:10px 10px 0 rgba(17,20,19,.12); }
+      .asset { object-fit:contain; mix-blend-mode:multiply; }
+      #b-stage-label { position:absolute; left:175px; top:28px; width:570px; height:78px; display:flex; align-items:center; justify-content:center; border:4px solid var(--ink); border-radius:39px; background:var(--paper); font-size:33px; font-weight:900; letter-spacing:.05em; text-transform:uppercase; z-index:9; }
+      .stage-label-state { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+      #b-floor { position:absolute; left:68px; top:650px; width:784px; height:14px; border-radius:14px; background:var(--quiet); }
+      #b-floor-fill { width:100%; height:100%; border-radius:14px; background:var(--blue); transform-origin:left center; }
+      #b-human { position:absolute; left:20px; top:290px; width:270px; height:360px; z-index:4; }
+      #b-agent { position:absolute; left:646px; top:292px; width:258px; height:358px; z-index:6; }
+      #b-package { position:absolute; left:286px; top:286px; width:350px; height:322px; padding:34px 32px; z-index:5; transform-origin:center center; }
+      #b-package-handle { position:absolute; left:112px; top:-40px; width:126px; height:42px; border:5px solid var(--ink); border-bottom:0; border-radius:20px 20px 0 0; background:var(--paper); }
+      #b-package-kicker { color:var(--blue); font-size:22px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+      .package-title { position:absolute; left:32px; top:76px; width:286px; font-size:43px; line-height:1.02; font-weight:900; letter-spacing:-.035em; text-transform:uppercase; }
+      #b-vague-title { color:var(--red); }
+      #b-package-stamp { position:absolute; left:48px; top:197px; width:254px; height:60px; display:flex; align-items:center; justify-content:center; border:4px solid var(--red); border-radius:18px; color:var(--red); font-size:24px; font-weight:900; letter-spacing:.05em; transform:rotate(-5deg); }
+      #b-package-status { position:absolute; left:30px; bottom:26px; width:290px; height:56px; display:flex; align-items:center; justify-content:center; border-radius:18px; background:var(--blue); color:var(--paper); font-size:27px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+      #b-barrier { position:absolute; left:606px; top:326px; width:18px; height:248px; border-radius:18px; background:var(--red); z-index:8; transform-origin:center bottom; }
+      #b-barrier::before, #b-barrier::after { content:""; position:absolute; left:-32px; width:82px; height:18px; border-radius:18px; background:var(--red); transform:rotate(32deg); }
+      #b-barrier::before { top:55px; } #b-barrier::after { top:145px; }
+      .dock-prop { position:absolute; width:120px; height:120px; z-index:7; }
+      #b-prop-context { left:50px; top:132px; }
+      #b-prop-constraints { right:45px; top:128px; }
+      #b-prop-review { right:64px; top:628px; }
+      #b-prop-done { left:76px; top:636px; }
+      #b-prop-use { left:400px; top:670px; }
+      #b-prop-stop { right:80px; top:650px; }
+      #b-badges { position:absolute; left:314px; top:408px; width:294px; height:146px; display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; z-index:8; }
+      .dock-badge { height:60px; padding:17px 5px; border:3px solid var(--ink); border-radius:18px; background:var(--paper); text-align:center; font-size:15px; font-weight:900; text-transform:uppercase; }
+      .dock-badge.blue { color:var(--blue-text); border-color:var(--blue); }
+      .dock-badge.red { color:var(--red-text); border-color:var(--red); }
+      #b-formula-ribbon { position:absolute; left:112px; top:134px; width:696px; height:112px; display:flex; align-items:center; justify-content:center; gap:15px; z-index:10; }
+      .formula-pill { padding:19px 18px; border:4px solid var(--ink); border-radius:24px; background:var(--paper); font-size:23px; font-weight:900; text-transform:uppercase; box-shadow:6px 6px 0 rgba(17,20,19,.11); }
+      #b-finish-arrow { position:absolute; left:114px; top:668px; width:692px; height:18px; border-radius:18px; background:var(--blue); transform-origin:left center; z-index:2; }
+      #b-finish-arrow::after { content:""; position:absolute; right:-4px; top:-19px; border-left:40px solid var(--blue); border-top:28px solid transparent; border-bottom:28px solid transparent; }
+      #b-finish-word { position:absolute; left:214px; top:690px; width:492px; text-align:center; color:var(--blue); font-size:50px; font-weight:900; letter-spacing:-.035em; text-transform:uppercase; white-space:nowrap; z-index:8; }
+      #caption-shell { position:absolute; left:80px; top:1130px; width:920px; height:300px; border:5px solid var(--ink); border-radius:34px; background:var(--paper); box-shadow:10px 10px 0 rgba(17,20,19,.12); overflow:hidden; }
+      .realtime-caption { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:38px 54px; text-align:center; white-space:pre-line; font-size:50px; line-height:62px; font-weight:900; letter-spacing:-.02em; }
+      #cta-scene { text-align:center; }
+      #cta-heading { position:absolute; left:80px; top:120px; width:920px; color:var(--blue); font-size:78px; line-height:1; font-weight:900; letter-spacing:-.04em; }
+      #cta-plus { display:inline-flex; width:76px; height:76px; margin-right:20px; align-items:center; justify-content:center; border:8px solid var(--blue); border-radius:50%; font-size:72px; line-height:1; vertical-align:-5px; }
+      #cta-agent { position:absolute; left:275px; top:365px; width:530px; height:650px; }
+      #cta-benefit { position:absolute; left:80px; top:1130px; width:920px; height:300px; display:flex; align-items:center; justify-content:center; padding:34px 54px; border:5px solid var(--ink); border-radius:34px; background:var(--paper); box-shadow:10px 10px 0 rgba(17,20,19,.12); font-size:54px; line-height:66px; font-weight:900; }
+      #cta-rule { position:absolute; left:174px; top:1485px; width:732px; height:12px; border-radius:12px; background:var(--blue); transform-origin:left center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="tiny-agent-motion-b" data-start="0" data-duration="38.808" data-width="1080" data-height="1920">
+      <audio id="b-narration" class="clip" src="assets/audio/narration.mp3" data-start="0" data-duration="38.808" data-track-index="99" data-volume="1"></audio>
+      <div id="b-background" class="clip paper-layer" data-start="0" data-duration="38.808" data-track-index="0"></div>
+      <section id="main-content" class="clip" data-start="0" data-duration="33.468" data-track-index="1">
+        <header class="header"><div class="series-name">Tiny Agent</div><h1 id="b-title" class="content-title">Make Agent Tasks Executable</h1></header>
+        <main class="stage">
+          <div id="b-stage-label">
+            <span id="b-label-hook" class="stage-label-state">Blocked before the start</span>
+            <span id="b-label-activity" class="stage-label-state">Activity is not an outcome</span>
+            <span id="b-label-artifact" class="stage-label-state">Name the artifact</span>
+            <span id="b-label-inputs" class="stage-label-state">Dock the inputs</span>
+            <span id="b-label-checks" class="stage-label-state">Make the state checkable</span>
+            <span id="b-label-rule" class="stage-label-state">Pack the tiny rule</span>
+            <span id="b-label-result" class="stage-label-state">Ready to execute</span>
+          </div>
+          <div id="b-floor"><div id="b-floor-fill"></div></div>
+          <img id="b-human" class="asset" src="assets/pack/sprites/human/handoff-right.png" alt="Engineer hands off a task" />
+          <img id="b-agent" class="asset" src="assets/pack/sprites/agent/move-left.png" alt="Tiny Agent moves toward the task" />
+          <div id="b-package" class="marker-card">
+          <div id="b-package-handle" data-layout-allow-overflow></div>
+            <div id="b-package-kicker">Task package</div>
+            <div id="b-vague-title" class="package-title">Help with<br />the launch</div>
+            <div id="b-artifact-title" class="package-title">Review-ready<br />launch brief</div>
+            <div id="b-package-stamp">NO OUTCOME</div>
+            <div id="b-package-status">Executable</div>
+          </div>
+          <div id="b-barrier"></div>
+          <img id="b-prop-context" class="dock-prop asset" src="assets/pack/sprites/props/document-stack.png" alt="Context sources" />
+          <img id="b-prop-constraints" class="dock-prop asset" src="assets/pack/sprites/props/shield.png" alt="Hard constraints" />
+          <img id="b-prop-review" class="dock-prop asset" src="assets/pack/sprites/props/evidence.png" alt="Review evidence" />
+          <img id="b-prop-done" class="dock-prop asset" src="assets/pack/sprites/props/target.png" alt="Done state" />
+          <img id="b-prop-use" class="dock-prop asset" src="assets/pack/sprites/props/permission-key.png" alt="Allowed inputs" />
+          <img id="b-prop-stop" class="dock-prop asset" src="assets/pack/sprites/props/stop.png" alt="Stop condition" />
+          <div id="b-badges">
+            <div id="b-badge-context" class="dock-badge blue">Context</div><div id="b-badge-constraints" class="dock-badge">Limits</div><div id="b-badge-review" class="dock-badge blue">Evidence</div>
+            <div id="b-badge-done" class="dock-badge">Done</div><div id="b-badge-use" class="dock-badge">May use</div><div id="b-badge-stop" class="dock-badge red">Stop</div>
+          </div>
+          <div id="b-formula-ribbon">
+            <div id="b-pill-artifact" class="formula-pill">Artifact</div><div id="b-pill-context" class="formula-pill">Context</div><div id="b-pill-constraints" class="formula-pill">Constraints</div><div id="b-pill-review" class="formula-pill">Review</div>
+          </div>
+          <div id="b-finish-arrow"></div>
+          <div id="b-finish-word">Executable task</div>
+        </main>
+        <section id="caption-shell" class="clip" data-start="0" data-duration="33.468" data-track-index="80"></section>
+      </section>
+      <section id="cta-scene" class="clip" data-start="33.468" data-duration="5.34" data-track-index="1">
+        <h2 id="cta-heading"><span id="cta-plus">+</span>Follow Tiny Agent</h2>
+        <img id="cta-agent" class="asset" src="assets/pack/sprites/agent/celebrate-front.png" alt="Smiling Tiny Agent celebrating" />
+        <div id="cta-benefit">Tiny Agent helps you<br />get better at using AI.</div>
+        <div id="cta-rule"></div>
+      </section>
+    </div>
+    <script>
+      TinyAgentExperiment.mountCaptions(document.querySelector('#caption-shell'));
+      const tl = gsap.timeline({ paused: true });
+      const labelStates = ['#b-label-hook','#b-label-activity','#b-label-artifact','#b-label-inputs','#b-label-checks','#b-label-rule','#b-label-result'];
+      const hidden = ['#b-artifact-title','#b-package-status','#b-prop-context','#b-prop-constraints','#b-prop-review','#b-prop-done','#b-prop-use','#b-prop-stop','#b-badge-context','#b-badge-constraints','#b-badge-review','#b-badge-done','#b-badge-use','#b-badge-stop','#b-formula-ribbon','#b-finish-arrow','#b-finish-word'];
+      tl.set(labelStates, { autoAlpha: 0 }, 0);
+      tl.set(hidden, { opacity: 0 }, 0);
+      tl.set('#b-label-hook', { autoAlpha: 1 }, 0);
+      tl.fromTo('#b-floor-fill', { scaleX: 0 }, { scaleX: 1, duration: 33.468, ease: 'none', immediateRender: false }, 0);
+      tl.fromTo('#b-human', { opacity: 0, x: -72 }, { opacity: 1, x: 0, duration: .68, ease: 'power3.out', immediateRender: false }, .08);
+      tl.fromTo('#b-agent', { opacity: 0, x: 82 }, { opacity: 1, x: 0, duration: .68, ease: 'power3.out', immediateRender: false }, .18);
+      tl.fromTo('#b-package', { opacity: 0, y: -52, scale: .72 }, { opacity: 1, y: 0, scale: .72, duration: .72, ease: 'power3.out', immediateRender: false }, .52);
+      tl.fromTo('#b-barrier', { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: .55, ease: 'power3.out', immediateRender: false }, 1.55);
+      tl.to('#b-package', { x: 30, duration: .25, ease: 'power2.out' }, 2.34);
+      tl.to('#b-package', { x: 0, duration: .3, ease: 'power2.out' }, 2.59);
+
+      tl.to('#b-label-hook', { opacity: 0, y: -24, duration: .24 }, 3.34);
+      tl.set('#b-label-activity', { autoAlpha: 1 }, 3.625);
+      tl.fromTo('#b-label-activity', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 3.625);
+      tl.fromTo('#b-package-stamp', { opacity: 0, scale: 1.5, rotation: -16 }, { opacity: 1, scale: 1, rotation: -5, duration: .58, ease: 'power3.out', immediateRender: false }, 4.3);
+      tl.to('#b-human', { x: 75, duration: .72, ease: 'power3.inOut' }, 4.7);
+      tl.to('#b-agent', { x: -74, duration: .72, ease: 'power3.inOut' }, 4.7);
+      tl.to('#b-barrier', { rotation: 76, y: 118, opacity: 0, duration: .7, ease: 'power3.in' }, 6.15);
+
+      tl.to('#b-label-activity', { opacity: 0, y: -24, duration: .24 }, 7.06);
+      tl.set('#b-label-artifact', { autoAlpha: 1 }, 7.333);
+      tl.fromTo('#b-label-artifact', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 7.333);
+      tl.to('#b-human', { opacity: 0, x: -82, duration: .54, ease: 'power3.in' }, 7.52);
+      tl.to('#b-package', { scale: 1, x: -8, y: -72, duration: .82, ease: 'power3.out' }, 7.56);
+      tl.to('#b-agent', { x: -155, y: 52, scale: .92, duration: .82, ease: 'power3.inOut' }, 7.56);
+      tl.to('#b-vague-title', { opacity: 0, y: -30, duration: .3, ease: 'power3.in' }, 8.15);
+      tl.to('#b-package-stamp', { opacity: 0, scale: .75, duration: .3, ease: 'power3.in' }, 8.15);
+      tl.fromTo('#b-artifact-title', { opacity: 0, y: 38 }, { opacity: 1, y: 0, duration: .62, ease: 'power3.out', immediateRender: false }, 8.44);
+      tl.to('#b-package', { rotation: -2, duration: .22, ease: 'power2.out' }, 10.4);
+      tl.to('#b-package', { rotation: 0, duration: .28, ease: 'power2.out' }, 10.63);
+
+      tl.to('#b-label-artifact', { opacity: 0, y: -24, duration: .24 }, 11.86);
+      tl.set('#b-label-inputs', { autoAlpha: 1 }, 12.125);
+      tl.fromTo('#b-label-inputs', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 12.125);
+      tl.fromTo('#b-prop-context', { opacity: 0, x: -130, y: -30, scale: .7 }, { opacity: 1, x: 310, y: 270, scale: .55, duration: .88, ease: 'power3.inOut', immediateRender: false }, 12.62);
+      tl.fromTo('#b-badge-context', { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .42, ease: 'power3.out', immediateRender: false }, 13.5);
+      tl.to('#b-artifact-title', { opacity: 0, y: -26, duration: .28, ease: 'power3.in' }, 13.5);
+      tl.to('#b-prop-context', { opacity: 0, duration: .18 }, 13.5);
+      tl.fromTo('#b-prop-constraints', { opacity: 0, x: 140, y: -20, scale: .7 }, { opacity: 1, x: -288, y: 270, scale: .55, duration: .88, ease: 'power3.inOut', immediateRender: false }, 15.02);
+      tl.fromTo('#b-badge-constraints', { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .42, ease: 'power3.out', immediateRender: false }, 15.9);
+      tl.to('#b-prop-constraints', { opacity: 0, duration: .18 }, 15.9);
+      tl.fromTo('#b-prop-review', { opacity: 0, x: 145, y: 120, scale: .7 }, { opacity: 1, x: -300, y: -214, scale: .55, duration: .88, ease: 'power3.inOut', immediateRender: false }, 18.0);
+      tl.fromTo('#b-badge-review', { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .42, ease: 'power3.out', immediateRender: false }, 18.88);
+      tl.to('#b-prop-review', { opacity: 0, duration: .18 }, 18.88);
+
+      tl.to('#b-label-inputs', { opacity: 0, y: -24, duration: .24 }, 19.63);
+      tl.set('#b-label-checks', { autoAlpha: 1 }, 19.885);
+      tl.fromTo('#b-label-checks', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 19.885);
+      tl.fromTo('#b-prop-done', { opacity: 0, y: 120, scale: .7 }, { opacity: 1, y: -190, x: 290, scale: .52, duration: .78, ease: 'power3.inOut', immediateRender: false }, 20.28);
+      tl.fromTo('#b-badge-done', { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .4, ease: 'power3.out', immediateRender: false }, 21.05);
+      tl.to('#b-prop-done', { opacity: 0, duration: .16 }, 21.07);
+      tl.fromTo('#b-prop-use', { opacity: 0, y: 120, scale: .7 }, { opacity: 1, y: -220, x: -6, scale: .52, duration: .78, ease: 'power3.inOut', immediateRender: false }, 22.0);
+      tl.fromTo('#b-badge-use', { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .4, ease: 'power3.out', immediateRender: false }, 22.77);
+      tl.to('#b-prop-use', { opacity: 0, duration: .16 }, 22.79);
+      tl.fromTo('#b-prop-stop', { opacity: 0, y: 120, scale: .7 }, { opacity: 1, y: -200, x: -294, scale: .52, duration: .78, ease: 'power3.inOut', immediateRender: false }, 23.7);
+      tl.fromTo('#b-badge-stop', { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .4, ease: 'power3.out', immediateRender: false }, 24.47);
+      tl.to('#b-prop-stop', { opacity: 0, duration: .16 }, 24.49);
+
+      tl.to('#b-label-checks', { opacity: 0, y: -24, duration: .24 }, 24.76);
+      tl.set('#b-label-rule', { autoAlpha: 1 }, 25.02);
+      tl.fromTo('#b-label-rule', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 25.02);
+      tl.fromTo('#b-formula-ribbon', { opacity: 0, scale: .88 }, { opacity: 1, scale: 1, duration: .52, ease: 'power3.out', immediateRender: false }, 25.32);
+      tl.fromTo('#b-pill-artifact', { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 25.52);
+      tl.fromTo('#b-pill-context', { opacity: 0, y: -55 }, { opacity: 1, y: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 26.48);
+      tl.fromTo('#b-pill-constraints', { opacity: 0, y: 55 }, { opacity: 1, y: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 27.37);
+      tl.fromTo('#b-pill-review', { opacity: 0, x: 70 }, { opacity: 1, x: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 28.36);
+      tl.to('#b-package', { scale: 1.04, duration: .25, ease: 'power2.out' }, 29.06);
+      tl.to('#b-package', { scale: 1, duration: .28, ease: 'power2.out' }, 29.31);
+
+      tl.to('#b-label-rule', { opacity: 0, y: -24, duration: .24 }, 29.62);
+      tl.set('#b-label-result', { autoAlpha: 1 }, 29.874);
+      tl.fromTo('#b-label-result', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .44, ease: 'power3.out', immediateRender: false }, 29.874);
+      tl.to(['#b-badge-context','#b-badge-constraints','#b-badge-review','#b-badge-done','#b-badge-use','#b-badge-stop'], { opacity: 0, duration: .3, ease: 'power3.in' }, 29.874);
+      tl.to('#b-formula-ribbon', { opacity: 0, y: -36, duration: .34, ease: 'power3.in' }, 30.0);
+      tl.fromTo('#b-package-status', { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .58, ease: 'power3.out', immediateRender: false }, 30.36);
+      tl.fromTo('#b-finish-arrow', { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .74, ease: 'power3.out', immediateRender: false }, 30.92);
+      tl.to('#b-package', { x: 120, duration: 1.0, ease: 'power3.inOut' }, 31.18);
+      tl.to('#b-agent', { x: 40, scale: .6, duration: 1.0, ease: 'power3.inOut' }, 31.18);
+      tl.fromTo('#b-finish-word', { opacity: 0, y: 48 }, { opacity: 1, y: 0, duration: .58, ease: 'power3.out', immediateRender: false }, 32.14);
+
+      tl.set(['#cta-heading','#cta-agent','#cta-benefit'], { opacity: 1 }, 33.468);
+      tl.fromTo('#cta-heading', { y: -18 }, { y: 0, duration: .38, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-plus', { rotation: -90, scale: .72 }, { rotation: 0, scale: 1, duration: .48, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-agent', { y: 32, scale: .92 }, { y: 0, scale: 1, duration: .58, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-benefit', { y: 18 }, { y: 0, duration: .48, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-rule', { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .8, ease: 'power3.out', immediateRender: false }, 33.72);
+      tl.to('#cta-agent', { y: -10, duration: 1.3, ease: 'sine.inOut' }, 34.4);
+      tl.to('#cta-agent', { y: 0, duration: 1.3, ease: 'sine.inOut' }, 35.7);
+      tl.to('#cta-plus', { scale: 1.08, duration: .6, ease: 'sine.inOut' }, 36.5);
+      tl.to('#cta-plus', { scale: 1, duration: .6, ease: 'sine.inOut' }, 37.1);
+      tl.to('#cta-rule', { scaleX: .96, duration: .5, ease: 'sine.inOut' }, 37.7);
+      window.__timelines = window.__timelines || {};
+      window.__timelines['tiny-agent-motion-b'] = tl;
+    </script>
+  </body>
+</html>

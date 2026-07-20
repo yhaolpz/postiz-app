@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Tiny Agent Motion Experiment A — Kinetic Type</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="assets/runtime-data.js"></script>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --paper: #ECECEA;
+        --ink: #111413;
+        --blue: #117ABD;
+        --red: #D93B3B;
+        --quiet: #D8DAD5;
+      }
+      html, body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+      body { color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      .paper-layer {
+        position: absolute;
+        inset: 0;
+        background-color: var(--paper);
+        background-image:
+          linear-gradient(rgba(17,20,19,.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(17,20,19,.035) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+      #main-content, #cta-scene { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+      .header { position: absolute; left: 80px; top: 48px; width: 920px; height: 232px; text-align: center; }
+      .series-name { color: var(--blue); font-size: 34px; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+      .content-title { margin-top: 26px; font-size: 58px; line-height: 1.02; font-weight: 900; letter-spacing: -.035em; }
+      .stage { position: absolute; left: 80px; top: 300px; width: 920px; height: 810px; overflow: hidden; }
+      .stage-rail { position: absolute; left: 0; bottom: 8px; width: 920px; height: 10px; border-radius: 10px; background: var(--quiet); overflow: hidden; }
+      #a-progress { width: 100%; height: 100%; background: var(--blue); transform-origin: left center; }
+      .beat { position: absolute; inset: 0; width: 920px; height: 780px; }
+      .marker-card { border: 5px solid var(--ink); border-radius: 34px; background: var(--paper); box-shadow: 10px 10px 0 rgba(17,20,19,.12); }
+      .asset { object-fit: contain; mix-blend-mode: multiply; }
+      #a-hook-word { position: absolute; left: 52px; top: 74px; width: 816px; font-family: Arial Black, Arial, sans-serif; font-size: 112px; line-height: .92; letter-spacing: -.07em; text-transform: uppercase; }
+      #a-hook-word .red { color: var(--red); }
+      #a-hook-before { position: absolute; left: 58px; top: 310px; font-size: 44px; line-height: 1.12; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
+      #a-hook-human { position: absolute; left: 65px; top: 430px; width: 236px; height: 286px; }
+      #a-hook-agent { position: absolute; right: 44px; top: 405px; width: 248px; height: 314px; }
+      .warning-slash { position: absolute; left: 380px; top: 510px; width: 170px; height: 22px; border-radius: 20px; background: var(--red); transform: rotate(-10deg); }
+      #a-activity-line { position: absolute; left: 44px; top: 82px; width: 832px; text-align: center; font-size: 66px; line-height: 1.05; font-weight: 900; letter-spacing: -.04em; }
+      #a-activity-box { position: absolute; left: 90px; top: 285px; width: 740px; height: 230px; padding: 48px 42px; text-align: center; }
+      #a-activity-token { font-size: 72px; line-height: 1; font-weight: 900; color: var(--red); }
+      #a-not-outcome { margin-top: 20px; font-size: 34px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+      #a-neq { position: absolute; left: 388px; top: 546px; font-size: 110px; line-height: 1; font-weight: 900; color: var(--blue); }
+      #a-outcome-word { position: absolute; left: 240px; top: 654px; width: 440px; text-align: center; font-size: 60px; font-weight: 900; }
+      #a-artifact-label { position: absolute; left: 0; top: 64px; width: 920px; text-align: center; color: var(--blue); font-size: 42px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+      #a-artifact-card { position: absolute; left: 120px; top: 172px; width: 680px; height: 440px; padding: 82px 58px 50px; }
+      #a-artifact-card::before { content: ""; position: absolute; left: 56px; top: 44px; width: 120px; height: 12px; border-radius: 9px; background: var(--blue); }
+      #a-artifact-main { font-size: 74px; line-height: .98; font-weight: 900; letter-spacing: -.045em; text-transform: uppercase; }
+      #a-artifact-sub { margin-top: 42px; font-size: 34px; line-height: 1.2; font-weight: 800; }
+      #a-artifact-doc { position: absolute; right: 60px; bottom: 26px; width: 190px; height: 190px; }
+      #a-inputs-title, #a-checks-title, #a-formula-title { position: absolute; left: 0; top: 36px; width: 920px; text-align: center; font-size: 46px; font-weight: 900; }
+      .input-card { position: absolute; left: 120px; width: 680px; height: 152px; padding: 28px 34px 28px 145px; }
+      .input-card img { position: absolute; left: 30px; top: 19px; width: 105px; height: 105px; }
+      .input-card strong { display: block; color: var(--blue); font-size: 39px; line-height: 1; font-weight: 900; text-transform: uppercase; }
+      .input-card span { display: block; margin-top: 13px; font-size: 27px; line-height: 1; font-weight: 800; }
+      #a-input-context { top: 132px; }
+      #a-input-constraints { top: 324px; }
+      #a-input-review { top: 516px; }
+      .check-gate { position: absolute; top: 220px; width: 256px; height: 304px; padding: 30px 20px; text-align: center; }
+      .check-gate img { width: 118px; height: 118px; }
+      .check-gate strong { display: block; margin-top: 18px; font-size: 42px; line-height: .95; font-weight: 900; text-transform: uppercase; }
+      .check-gate span { display: block; margin-top: 16px; font-size: 25px; line-height: 1.12; font-weight: 700; }
+      #a-check-done { left: 44px; }
+      #a-check-use { left: 332px; }
+      #a-check-stop { left: 620px; }
+      #a-check-arrow { position: absolute; left: 160px; top: 606px; width: 600px; height: 16px; border-radius: 16px; background: var(--blue); transform-origin: left center; }
+      #a-check-arrow::after { content: ""; position: absolute; right: -2px; top: -18px; border-left: 38px solid var(--blue); border-top: 26px solid transparent; border-bottom: 26px solid transparent; }
+      #a-formula-grid { position: absolute; left: 90px; top: 180px; width: 740px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+      .formula-chip { height: 170px; padding: 56px 20px; text-align: center; border: 5px solid var(--ink); border-radius: 30px; background: var(--paper); font-size: 36px; font-weight: 900; text-transform: uppercase; box-shadow: 8px 8px 0 rgba(17,20,19,.12); }
+      .formula-chip.blue { color: var(--blue); }
+      #a-formula-equals { position: absolute; left: 390px; top: 568px; width: 140px; text-align: center; color: var(--blue); font-size: 86px; font-weight: 900; }
+      #a-result-vague { position: absolute; left: 80px; top: 96px; width: 760px; text-align: center; font-size: 80px; font-weight: 900; color: var(--red); letter-spacing: -.04em; text-transform: uppercase; }
+      #a-result-strike { position: absolute; left: 130px; top: 166px; width: 660px; height: 18px; border-radius: 18px; background: var(--ink); transform-origin: left center; }
+      #a-result-arrow { position: absolute; left: 408px; top: 268px; color: var(--blue); font-size: 112px; font-weight: 900; }
+      #a-result-main { position: absolute; left: 54px; top: 416px; width: 812px; text-align: center; font-family: Arial Black, Arial, sans-serif; font-size: 104px; line-height: .92; letter-spacing: -.065em; text-transform: uppercase; }
+      #a-result-main span { display: block; color: var(--blue); }
+      #caption-shell { position: absolute; left: 80px; top: 1130px; width: 920px; height: 300px; border: 5px solid var(--ink); border-radius: 34px; background: var(--paper); box-shadow: 10px 10px 0 rgba(17,20,19,.12); overflow: hidden; }
+      .realtime-caption { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 38px 54px; text-align: center; white-space: pre-line; font-size: 50px; line-height: 62px; font-weight: 900; letter-spacing: -.02em; }
+      #cta-scene { text-align: center; }
+      #cta-heading { position: absolute; left: 80px; top: 120px; width: 920px; color: var(--blue); font-size: 78px; line-height: 1; font-weight: 900; letter-spacing: -.04em; }
+      #cta-plus { display: inline-flex; width: 76px; height: 76px; margin-right: 20px; align-items: center; justify-content: center; border: 8px solid var(--blue); border-radius: 50%; font-size: 72px; line-height: 1; vertical-align: -5px; }
+      #cta-agent { position: absolute; left: 275px; top: 365px; width: 530px; height: 650px; }
+      #cta-benefit { position: absolute; left: 80px; top: 1130px; width: 920px; height: 300px; display: flex; align-items: center; justify-content: center; padding: 34px 54px; border: 5px solid var(--ink); border-radius: 34px; background: var(--paper); box-shadow: 10px 10px 0 rgba(17,20,19,.12); font-size: 54px; line-height: 66px; font-weight: 900; }
+      #cta-rule { position: absolute; left: 174px; top: 1485px; width: 732px; height: 12px; border-radius: 12px; background: var(--blue); transform-origin: left center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="tiny-agent-motion-a" data-start="0" data-duration="38.808" data-width="1080" data-height="1920">
+      <audio id="a-narration" class="clip" src="assets/audio/narration.mp3" data-start="0" data-duration="38.808" data-track-index="99" data-volume="1"></audio>
+      <div id="a-background" class="clip paper-layer" data-start="0" data-duration="38.808" data-track-index="0"></div>
+
+      <section id="main-content" class="clip" data-start="0" data-duration="33.468" data-track-index="1">
+        <header class="header">
+          <div class="series-name">Tiny Agent</div>
+          <h1 id="a-title" class="content-title">Make Agent Tasks Executable</h1>
+        </header>
+        <main class="stage">
+          <div class="stage-rail"><div id="a-progress"></div></div>
+
+          <section id="a-hook" class="beat">
+            <div id="a-hook-word"><span class="red">Fails</span><br />before start</div>
+            <div id="a-hook-before">The failure happens<br />before execution.</div>
+            <img id="a-hook-human" class="asset" src="assets/pack/sprites/human/surprised.png" alt="Engineer surprised" />
+            <div class="warning-slash"></div>
+            <img id="a-hook-agent" class="asset" src="assets/pack/sprites/agent/blocked-front.png" alt="Tiny Agent blocked" />
+          </section>
+
+          <section id="a-activity" class="beat">
+            <div id="a-activity-line">“Help with the launch”</div>
+            <div id="a-activity-box" class="marker-card">
+              <div id="a-activity-token">ACTIVITY</div>
+              <div id="a-not-outcome">names motion, not a finish line</div>
+            </div>
+            <div id="a-neq">≠</div>
+            <div id="a-outcome-word">OUTCOME</div>
+          </section>
+
+          <section id="a-artifact" class="beat">
+            <div id="a-artifact-label">Name one concrete artifact</div>
+            <div id="a-artifact-card" class="marker-card">
+              <div id="a-artifact-main">Review-ready<br />launch brief</div>
+              <div id="a-artifact-sub">A thing someone can actually review.</div>
+              <img id="a-artifact-doc" class="asset" src="assets/pack/sprites/props/document.png" alt="Document artifact" />
+            </div>
+          </section>
+
+          <section id="a-inputs" class="beat">
+            <div id="a-inputs-title">Then make the brief executable</div>
+            <div id="a-input-context" class="input-card marker-card">
+              <img class="asset" src="assets/pack/sprites/props/document-stack.png" alt="Source materials" />
+              <strong>Context</strong><span>sources that can change the answer</span>
+            </div>
+            <div id="a-input-constraints" class="input-card marker-card">
+              <img class="asset" src="assets/pack/sprites/props/shield.png" alt="Hard constraints" />
+              <strong>Constraints</strong><span>limits the agent cannot cross</span>
+            </div>
+            <div id="a-input-review" class="input-card marker-card">
+              <img class="asset" src="assets/pack/sprites/props/evidence.png" alt="Review evidence" />
+              <strong>Review bar</strong><span>evidence a reviewer must see</span>
+            </div>
+          </section>
+
+          <section id="a-checks" class="beat">
+            <div id="a-checks-title">The agent can now answer three checks</div>
+            <div id="a-check-done" class="check-gate marker-card"><img class="asset" src="assets/pack/sprites/props/target.png" alt="Done state" /><strong>Done</strong><span>What finished looks like</span></div>
+            <div id="a-check-use" class="check-gate marker-card"><img class="asset" src="assets/pack/sprites/props/permission-key.png" alt="Allowed sources" /><strong>May use</strong><span>Which inputs are allowed</span></div>
+            <div id="a-check-stop" class="check-gate marker-card"><img class="asset" src="assets/pack/sprites/props/stop.png" alt="Stop condition" /><strong>Stop</strong><span>When to hand back control</span></div>
+            <div id="a-check-arrow"></div>
+          </section>
+
+          <section id="a-formula" class="beat">
+            <div id="a-formula-title">Tiny rule</div>
+            <div id="a-formula-grid">
+              <div id="a-chip-artifact" class="formula-chip blue">Artifact</div>
+              <div id="a-chip-context" class="formula-chip">Context</div>
+              <div id="a-chip-constraints" class="formula-chip">Constraints</div>
+              <div id="a-chip-review" class="formula-chip blue">Review bar</div>
+            </div>
+            <div id="a-formula-equals">=</div>
+          </section>
+
+          <section id="a-result" class="beat">
+            <div id="a-result-vague" data-layout-allow-occlusion>Vague prompt</div>
+            <div id="a-result-strike" data-layout-allow-occlusion></div>
+            <div id="a-result-arrow">↓</div>
+            <div id="a-result-main"><span>Executable</span>task</div>
+          </section>
+        </main>
+        <section id="caption-shell" class="clip" data-start="0" data-duration="33.468" data-track-index="80"></section>
+      </section>
+
+      <section id="cta-scene" class="clip" data-start="33.468" data-duration="5.34" data-track-index="1">
+        <h2 id="cta-heading"><span id="cta-plus">+</span>Follow Tiny Agent</h2>
+        <img id="cta-agent" class="asset" src="assets/pack/sprites/agent/celebrate-front.png" alt="Smiling Tiny Agent celebrating" />
+        <div id="cta-benefit">Tiny Agent helps you<br />get better at using AI.</div>
+        <div id="cta-rule"></div>
+      </section>
+    </div>
+
+    <script>
+      TinyAgentExperiment.mountCaptions(document.querySelector('#caption-shell'));
+      const tl = gsap.timeline({ paused: true });
+      const beats = ['#a-hook', '#a-activity', '#a-artifact', '#a-inputs', '#a-checks', '#a-formula', '#a-result'];
+      tl.set(beats, { autoAlpha: 0 }, 0);
+      tl.fromTo('#a-progress', { scaleX: 0 }, { scaleX: 1, duration: 33.468, ease: 'none', immediateRender: false }, 0);
+
+      tl.set('#a-hook', { autoAlpha: 1 }, 0);
+      tl.fromTo('#a-hook-word', { opacity: 0, scale: 1.34, rotation: -4 }, { opacity: 1, scale: 1, rotation: 0, duration: .72, ease: 'power3.out', immediateRender: false }, .08);
+      tl.fromTo('#a-hook-before', { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: .62, ease: 'power3.out', immediateRender: false }, 1.28);
+      tl.fromTo(['#a-hook-human', '#a-hook-agent'], { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: .66, stagger: .15, ease: 'power3.out', immediateRender: false }, 2.05);
+      tl.fromTo('.warning-slash', { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .45, ease: 'power3.out', immediateRender: false }, 2.65);
+      tl.to('#a-hook', { opacity: 0, y: -55, duration: .34, ease: 'power3.in' }, 3.24);
+
+      tl.set('#a-activity', { autoAlpha: 1 }, 3.625);
+      tl.fromTo('#a-activity-line', { opacity: 0, y: -54 }, { opacity: 1, y: 0, duration: .58, ease: 'power3.out', immediateRender: false }, 3.625);
+      tl.fromTo('#a-activity-box', { opacity: 0, scale: .86 }, { opacity: 1, scale: 1, duration: .68, ease: 'power3.out', immediateRender: false }, 4.25);
+      tl.fromTo('#a-activity-token', { opacity: 0, x: -90 }, { opacity: 1, x: 0, duration: .48, ease: 'power3.out', immediateRender: false }, 4.72);
+      tl.fromTo('#a-neq', { opacity: 0, rotation: -90, scale: .5 }, { opacity: 1, rotation: 0, scale: 1, duration: .48, ease: 'power3.out', immediateRender: false }, 5.92);
+      tl.fromTo('#a-outcome-word', { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: .52, ease: 'power3.out', immediateRender: false }, 6.37);
+      tl.to('#a-activity', { opacity: 0, x: -90, duration: .34, ease: 'power3.in' }, 7.02);
+
+      tl.set('#a-artifact', { autoAlpha: 1 }, 7.333);
+      tl.fromTo('#a-artifact-label', { opacity: 0, y: -38 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 7.333);
+      tl.fromTo('#a-artifact-card', { opacity: 0, scale: .72, rotation: -3 }, { opacity: 1, scale: 1, rotation: 0, duration: .76, ease: 'power3.out', immediateRender: false }, 7.8);
+      tl.fromTo('#a-artifact-main', { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: .64, ease: 'power3.out', immediateRender: false }, 8.6);
+      tl.fromTo('#a-artifact-sub', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: .52, ease: 'power3.out', immediateRender: false }, 10.28);
+      tl.fromTo('#a-artifact-doc', { opacity: 0, rotation: 16, scale: .5 }, { opacity: 1, rotation: 0, scale: 1, duration: .56, ease: 'power3.out', immediateRender: false }, 11.0);
+      tl.to('#a-artifact', { opacity: 0, scale: .94, duration: .34, ease: 'power3.in' }, 11.79);
+
+      tl.set('#a-inputs', { autoAlpha: 1 }, 12.125);
+      tl.fromTo('#a-inputs-title', { opacity: 0, y: -36 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 12.125);
+      tl.fromTo('#a-input-context', { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .6, ease: 'power3.out', immediateRender: false }, 12.72);
+      tl.fromTo('#a-input-constraints', { opacity: 0, x: 140 }, { opacity: 1, x: 0, duration: .6, ease: 'power3.out', immediateRender: false }, 15.12);
+      tl.fromTo('#a-input-review', { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .6, ease: 'power3.out', immediateRender: false }, 18.15);
+      tl.to('#a-inputs', { opacity: 0, y: -42, duration: .34, ease: 'power3.in' }, 19.55);
+
+      tl.set('#a-checks', { autoAlpha: 1 }, 19.885);
+      tl.fromTo('#a-checks-title', { opacity: 0, y: -36 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 19.885);
+      tl.fromTo('#a-check-done', { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: .62, ease: 'power3.out', immediateRender: false }, 20.38);
+      tl.fromTo('#a-check-use', { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: .62, ease: 'power3.out', immediateRender: false }, 22.02);
+      tl.fromTo('#a-check-stop', { opacity: 0, y: 90 }, { opacity: 1, y: 0, duration: .62, ease: 'power3.out', immediateRender: false }, 23.65);
+      tl.fromTo('#a-check-arrow', { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .62, ease: 'power3.out', immediateRender: false }, 24.2);
+      tl.to('#a-checks', { opacity: 0, x: 72, duration: .34, ease: 'power3.in' }, 24.68);
+
+      tl.set('#a-formula', { autoAlpha: 1 }, 25.02);
+      tl.fromTo('#a-formula-title', { opacity: 0, y: -36 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 25.02);
+      tl.fromTo('#a-chip-artifact', { opacity: 0, x: -90 }, { opacity: 1, x: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 25.45);
+      tl.fromTo('#a-chip-context', { opacity: 0, x: 90 }, { opacity: 1, x: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 26.36);
+      tl.fromTo('#a-chip-constraints', { opacity: 0, x: -90 }, { opacity: 1, x: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 27.35);
+      tl.fromTo('#a-chip-review', { opacity: 0, x: 90 }, { opacity: 1, x: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 28.31);
+      tl.fromTo('#a-formula-equals', { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .42, ease: 'power3.out', immediateRender: false }, 29.05);
+      tl.to('#a-formula', { opacity: 0, scale: .9, duration: .3, ease: 'power3.in' }, 29.58);
+
+      tl.set('#a-result', { autoAlpha: 1 }, 29.874);
+      tl.fromTo('#a-result-vague', { opacity: 0, y: -52 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out', immediateRender: false }, 29.874);
+      tl.fromTo('#a-result-strike', { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .48, ease: 'power3.out', immediateRender: false }, 30.7);
+      tl.fromTo('#a-result-arrow', { opacity: 0, y: -45 }, { opacity: 1, y: 0, duration: .42, ease: 'power3.out', immediateRender: false }, 31.08);
+      tl.fromTo('#a-result-main', { opacity: 0, scale: .64, rotation: 3 }, { opacity: 1, scale: 1, rotation: 0, duration: .7, ease: 'power3.out', immediateRender: false }, 31.42);
+
+      tl.set(['#cta-heading','#cta-agent','#cta-benefit'], { opacity: 1 }, 33.468);
+      tl.fromTo('#cta-heading', { y: -18 }, { y: 0, duration: .38, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-plus', { rotation: -90, scale: .72 }, { rotation: 0, scale: 1, duration: .48, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-agent', { y: 32, scale: .92 }, { y: 0, scale: 1, duration: .58, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-benefit', { y: 18 }, { y: 0, duration: .48, ease: 'power3.out', immediateRender: false }, 33.468);
+      tl.fromTo('#cta-rule', { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .8, ease: 'power3.out', immediateRender: false }, 33.72);
+      tl.to('#cta-agent', { y: -10, duration: 1.3, ease: 'sine.inOut' }, 34.4);
+      tl.to('#cta-agent', { y: 0, duration: 1.3, ease: 'sine.inOut' }, 35.7);
+      tl.to('#cta-plus', { scale: 1.08, duration: .6, ease: 'sine.inOut' }, 36.5);
+      tl.to('#cta-plus', { scale: 1, duration: .6, ease: 'sine.inOut' }, 37.1);
+      tl.to('#cta-rule', { scaleX: .96, duration: .5, ease: 'sine.inOut' }, 37.7);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines['tiny-agent-motion-a'] = tl;
+    </script>
+  </body>
+</html>

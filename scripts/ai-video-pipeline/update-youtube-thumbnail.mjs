@@ -49,7 +49,7 @@ function validateThumbnail(thumbnailPath) {
   const [width, height, colorSpace] = output.split(/\s+/);
   const sizeBytes = fs.statSync(thumbnailPath).size;
   assert(path.extname(thumbnailPath).toLowerCase() === '.png', 'Thumbnail must use PNG.');
-  assert(Number(width) === 1280 && Number(height) === 720, `Thumbnail is ${width}x${height}, expected 1280x720.`);
+  assert(Number(width) === 3840 && Number(height) === 2160, `Thumbnail is ${width}x${height}, expected 3840x2160.`);
   assert(colorSpace.toLowerCase() === 'srgb', `Thumbnail color space is ${colorSpace}, expected sRGB.`);
   assert(sizeBytes <= 2 * 1024 * 1024, `Thumbnail exceeds 2 MB: ${sizeBytes} bytes.`);
   return { width: Number(width), height: Number(height), colorSpace, sizeBytes };

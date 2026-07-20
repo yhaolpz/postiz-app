@@ -1,0 +1,121 @@
+{
+  "title": "把任务交给 Agent 前，先写清这六件事",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-19-15-agent-task-brief-longform-zh-CN/SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 512.335604,
+    "chapters": [
+      {
+        "label": "前言",
+        "start": 0,
+        "end": 49.416,
+        "duration": 49.416
+      },
+      {
+        "label": "先定产物",
+        "start": 49.416,
+        "end": 125.75999999999999,
+        "duration": 76.344
+      },
+      {
+        "label": "源材料",
+        "start": 125.75999999999999,
+        "end": 198,
+        "duration": 72.24
+      },
+      {
+        "label": "约束边界",
+        "start": 198,
+        "end": 270.168,
+        "duration": 72.168
+      },
+      {
+        "label": "审阅标准",
+        "start": 270.168,
+        "end": 341.472,
+        "duration": 71.304
+      },
+      {
+        "label": "交付格式",
+        "start": 341.472,
+        "end": 410.472,
+        "duration": 69
+      },
+      {
+        "label": "委托单",
+        "start": 410.472,
+        "end": 481.224,
+        "duration": 70.752
+      },
+      {
+        "label": "总结",
+        "start": 481.224,
+        "end": 512.335604,
+        "duration": 31.111604
+      }
+    ],
+    "visualStates": 28,
+    "captions": 166
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-19-15-agent-task-brief-longform.zh-CN.mp4",
+    "status": "pass"
+  }
+}

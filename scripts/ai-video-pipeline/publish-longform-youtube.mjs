@@ -123,7 +123,7 @@ function validateThumbnail(thumbnailPath) {
   ], { encoding: 'utf8' }).trim();
   const [width, height, colorSpace] = output.split(/\s+/);
   const sizeBytes = fssync.statSync(thumbnailPath).size;
-  assert(Number(width) === 1280 && Number(height) === 720, `Expected a 1280x720 thumbnail, got ${width}x${height}.`);
+  assert(Number(width) === 3840 && Number(height) === 2160, `Expected a 3840x2160 thumbnail, got ${width}x${height}.`);
   assert(String(colorSpace).toLowerCase() === 'srgb', `Expected an sRGB thumbnail, got ${colorSpace}.`);
   assert(sizeBytes <= 2 * 1024 * 1024, `Thumbnail exceeds 2 MB: ${sizeBytes} bytes.`);
   return { path: thumbnailPath, width: Number(width), height: Number(height), colorSpace, sizeBytes };
@@ -153,7 +153,7 @@ function validateInputs(videoPath, metadata) {
   assert(Math.abs(probe.fps - 30) < 0.01, `Expected 30fps, got ${probe.fps}.`);
   assert(probe.videoCodec === 'h264', `Expected H.264, got ${probe.videoCodec}.`);
   assert(probe.audioCodec === 'aac', `Expected AAC, got ${probe.audioCodec}.`);
-  assert(probe.durationSeconds >= 360 && probe.durationSeconds <= 1080, `Duration ${probe.durationSeconds}s is outside 6-18 minutes.`);
+  assert(probe.durationSeconds >= 300 && probe.durationSeconds <= 720, `Duration ${probe.durationSeconds}s is outside 5-12 minutes.`);
   return probe;
 }
 

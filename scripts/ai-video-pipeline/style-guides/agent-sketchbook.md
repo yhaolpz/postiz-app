@@ -203,6 +203,7 @@ characters, miniature engineer, miniature robot, excessive empty space.
 
 - 来源驱动长版为默认发布格式：目标 `50-60s`，准出范围 `45-65s`。
 - 英文旁白：约 `115-145` 个英文词；中文旁白按当前语速建议约 `190-240` 个汉字，最终以 TTS 实际时长为准。
+- 英文短视频固定使用 `edge-tts` 的 `en-US-AnaNeural`，并显式传入 `--rate '+30%'`；不得回退到旧 `+20%` 或其它英文声音。
 - 每集使用 `8-10` 个语义镜头，默认 `9` 个；镜头仍保留唯一 `Subtitle blocks` 作为语义审核稿，但成片字幕不再整段静态展示。
 - 旧 `20-30s / 3-4` 镜头格式只作为历史微短版兼容，不再作为新内容默认值。
 - 屏幕上除顶部 `Tiny Agent` 和底部字幕外，尽量少放文字。
@@ -288,6 +289,24 @@ Agent = model
 - 如果过慢、过严肃、太像老师讲课，也要换。
 - 句子必须短，让底部字幕有足够阅读时间。
 - 未来如果接入更自然的免费或低成本 TTS，只替换 provider / voice，不改变这套语气目标。
+
+## 发布文案
+
+- 英文标题要简单明了，优先使用一个直接对比或一个明确结论，通常不超过约 `28` 个字符；避免堆叠 `Explained`、`Simply`、年份或来源名。
+- 介绍只写 `1-2` 个短句，第一句直接讲清知识点；需要署名时只保留纯文字格式，例如 `Source: Anthropic, Building effective agents.`。
+- YouTube、TikTok 和 Facebook 的公开介绍都不得包含 `http://`、`https://`、Markdown 链接或 IndieSeek 跟踪链接；来源 URL 只保留在内部计划和证据文件。
+- Hashtags 单独放在介绍末尾，不加入额外品牌口号、制作过程或外站 CTA。
+
+推荐格式：
+
+```text
+Title: Workflow vs Agent
+
+The difference between a workflow and an agent is not whether it uses an LLM.
+It is who controls the execution path. Source: Anthropic, Building effective agents.
+
+#AIAgents #AIWorkflow #Anthropic #Automation #TinyAgent
+```
 
 ## 合成参数
 

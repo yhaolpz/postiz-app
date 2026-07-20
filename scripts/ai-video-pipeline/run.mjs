@@ -13,6 +13,7 @@ import {
   buildRealtimeCaptionTrack,
   parseVttCues,
 } from './realtime-captions.mjs';
+import { sanitizeTinyAgentPublicDescription } from './public-copy.mjs';
 
 const require = createRequire(import.meta.url);
 const OpenAI = require('openai');
@@ -112,7 +113,7 @@ function makeId(length = 8) {
 
 function cleanForCaption(value, max = 2000) {
   return value
-    .replace(/\s+\n/g, '\n')
+    .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim()
     .slice(0, max);
@@ -140,8 +141,6 @@ const TINY_AGENT_THEME_BACKGROUND = '#ECECEA';
 const TINY_AGENT_THEME_BACKGROUND_RGB = [236, 236, 234];
 const TINY_AGENT_THEME_INK = '#111413';
 const TINY_AGENT_THEME_BLUE = '#117ABD';
-const TINY_AGENT_YOUTUBE_TRACKING_URL =
-  'https://indieseek.co/?utm_source=youtube&utm_campaign=tiny_agent';
 const LAYOUT_LEFT = 80;
 const LAYOUT_RIGHT = 1000;
 const LAYOUT_CENTER_X = 540;
@@ -1841,7 +1840,7 @@ async function verifyReusableVideo(videoPath, args = {}, content = null) {
       sourceSummary?.theme?.background !== TINY_AGENT_THEME_BACKGROUND)
   ) {
     throw new Error(
-      'Reusable Tiny Agent video must use the fixed CTA, #ECECEA theme, en-US-AnaNeural at +30%, and realtime VTT captions.'
+      `Reusable Tiny Agent video must use the fixed CTA, ${TINY_AGENT_THEME_BACKGROUND} theme, en-US-AnaNeural at ${TINY_AGENT_DEFAULT_TTS_RATE}, and realtime VTT captions.`
     );
   }
 
@@ -2382,19 +2381,15 @@ function makeHashtags(content) {
 
 function makeCaption(content) {
   const tags = makeHashtags(content);
-  return cleanForCaption(`${content.description}\n\n${tags}`, 1200);
+  const description =
+    content.seriesTitle === 'Tiny Agent'
+      ? sanitizeTinyAgentPublicDescription(content.description)
+      : content.description;
+  return cleanForCaption(`${description}\n\n${tags}`, 1200);
 }
 
 function makeYoutubeDescription(content) {
-  if (content.seriesTitle !== 'Tiny Agent') return makeCaption(content);
-
-  const tags = makeHashtags(content);
-  const suffix = `${TINY_AGENT_YOUTUBE_TRACKING_URL}\n\n${tags}`;
-  const description = cleanForCaption(
-    content.description,
-    1200 - suffix.length - 2
-  );
-  return `${description}\n\n${suffix}`;
+  return makeCaption(content);
 }
 
 function normalizeVisibility(value, fallback = 'private') {
@@ -2926,10 +2921,8 @@ async function main() {
   const summary = {
     topic: content.topic || topic,
     title: content.title,
-    youtubeTrackingUrl:
-      content.seriesTitle === 'Tiny Agent'
-        ? TINY_AGENT_YOUTUBE_TRACKING_URL
-        : null,
+    youtubeTrackingUrl: null,
+    publicCaption: makeCaption(content),
     youtubeDescription: makeYoutubeDescription(content),
     layoutStandard: usesTinyAgentLayout(content) ? TINY_AGENT_LAYOUT_STANDARD : null,
     layoutSpec: usesTinyAgentLayout(content) ? tinyAgentLayoutSpec() : null,

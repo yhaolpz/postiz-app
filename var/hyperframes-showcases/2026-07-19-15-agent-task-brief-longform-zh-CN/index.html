@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root { --board:#ececea; --ink:#111413; --muted:#6f7976; --blue:#117abd; --line:#dfe7e4; --progress-played:#c9cbc5; --progress-rest:#dde0da; }
+      * { box-sizing:border-box; }
+      html, body { width:1920px; height:1080px; margin:0; overflow:hidden; }
+      @font-face { font-family:"Tiny Agent CJK"; src:url("assets/fonts/HiraginoSansGB.ttc"); font-style:normal; font-weight:100 900; }
+      body { color:var(--ink); font-family:"Tiny Agent CJK",sans-serif; letter-spacing:0; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; }
+      .board-fill { position:absolute; inset:0; background-color:var(--board); background-image:linear-gradient(rgba(17,20,19,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(17,20,19,.035) 1px,transparent 1px); background-size:48px 48px; }
+      .masthead { position:absolute; top:42px; right:72px; left:72px; z-index:80; display:flex; height:76px; align-items:center; opacity:0; }
+      .brand { color:var(--blue); font-family:"Inter",sans-serif; font-size:27px; font-weight:900; }
+      .title { margin:0 0 0 52px; font-size:44px; font-weight:900; line-height:1.3; }
+      .story-slot { position:absolute; inset:0; z-index:10; width:1920px; height:1080px; }
+      .caption-band { position:absolute; right:154px; bottom:100px; left:154px; z-index:90; height:142px; background:rgba(236,236,234,.985); }
+      .caption { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:10px 54px 4px; font-size:35px; font-weight:700; line-height:1.38; text-align:center; opacity:0; }
+      .caption.is-first { opacity:1; }
+      .chapter-progress { position:absolute; right:0; bottom:0; left:0; z-index:96; display:flex; height:52px; align-items:flex-start; gap:4px; }
+      .progress-segment { flex:var(--chapter-weight) 1 0; min-width:0; }
+      .progress-label { position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:0; color:var(--ink); font-size:20px; font-weight:760; line-height:1; text-align:center; text-overflow:ellipsis; white-space:nowrap; }
+      .progress-label.is-current { font-weight:900; }
+      .progress-track { position:relative; width:100%; height:52px; overflow:hidden; background:var(--progress-rest); }
+      .progress-fill { position:absolute; inset:0; background:var(--progress-played); transform:scaleX(0); transform-origin:left center; }
+      .outro-overlay { position:absolute; inset:0; z-index:200; width:1920px; height:1080px; overflow:hidden; background:#ececea; opacity:0; }
+      .outro-character { position:absolute; inset:0; display:block; width:1920px; height:1080px; object-fit:cover; }
+      .outro-copy { position:absolute; top:214px; right:82px; z-index:4; width:850px; min-height:660px; padding:52px 40px 48px 54px; }
+      .outro-follow-row { display:flex; align-items:center; gap:28px; }
+      .outro-mark { position:relative; display:block; flex:0 0 82px; width:82px; height:82px; border:8px solid var(--blue); border-radius:50%; }
+      .outro-mark::before, .outro-mark::after { position:absolute; top:50%; left:50%; display:block; width:38px; height:8px; border-radius:5px; background:var(--blue); content:""; transform:translate(-50%,-50%); }
+      .outro-mark::after { transform:translate(-50%,-50%) rotate(90deg); }
+      .outro-heading { color:var(--blue); font-size:78px; font-weight:900; line-height:1.02; letter-spacing:-2px; white-space:nowrap; }
+      .outro-rule { display:block; width:100%; height:5px; margin:44px 0 42px; background:#c9cbc5; }
+      .outro-benefit { max-width:790px; margin:0; font-size:68px; font-weight:900; line-height:1.22; letter-spacing:-1.5px; }
+      .outro-benefit span { display:block; }
+      .outro-underline { display:block; width:728px; height:12px; margin-top:36px; border-radius:8px; background:var(--blue); transform-origin:left center; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-main-root" id="root" data-composition-id="main" data-start="0" data-duration="512.336" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-board" class="board-fill content-layer"></div>
+      <div data-hf-id="hf-story-slot" id="story-slot" class="story-slot content-layer" data-composition-id="story" data-composition-src="compositions/story.html" data-start="0" data-duration="512.336" data-track-index="1" data-layout-allow-overlap data-layout-allow-overflow></div>
+      <header data-hf-id="hf-masthead" class="masthead content-layer"><div class="brand">Tiny Agent</div><h1 class="title">Agent 任务委托单</h1></header>
+      <div data-hf-id="hf-caption-band" class="caption-band content-layer">
+        <div data-hf-id="hf-caption-1" id="caption-1" class="caption is-first">很多 Agent 任务失败，并不是因为提示词不够聪明，</div>
+        <div data-hf-id="hf-caption-2" id="caption-2" class="caption">而是因为委托从一个空白输入框开始，</div>
+        <div data-hf-id="hf-caption-3" id="caption-3" class="caption">真实工作却散落在文档、消息、表格、既有决定和没有说出口的标准里。</div>
+        <div data-hf-id="hf-caption-4" id="caption-4" class="caption">OpenAI 关于日常工作的建议，起点完全不同：</div>
+        <div data-hf-id="hf-caption-5" id="caption-5" class="caption">把团队已经在使用的材料交给 Agent，</div>
+        <div data-hf-id="hf-caption-6" id="caption-6" class="caption">再要求它先产出一份真正可用的具体产物。</div>
+        <div data-hf-id="hf-caption-7" id="caption-7" class="caption">目标不是聊得漂亮，而是得到一份可以检查、修改和继续推进的工作结果。</div>
+        <div data-hf-id="hf-caption-8" id="caption-8" class="caption">这会改变一份好委托需要包含的内容。</div>
+        <div data-hf-id="hf-caption-9" id="caption-9" class="caption">Agent 要看到源材料、约束、审阅预期和交付格式，</div>
+        <div data-hf-id="hf-caption-10" id="caption-10" class="caption">也要明确知道最后需要带回什么产物。</div>
+        <div data-hf-id="hf-caption-11" id="caption-11" class="caption">这条视频会把这些要素整理成一张 Agent 任务委托单。</div>
+        <div data-hf-id="hf-caption-12" id="caption-12" class="caption">你会学会怎样先定义产物、打包必要上下文、写清边界、让审阅标准可观察，</div>
+        <div data-hf-id="hf-caption-13" id="caption-13" class="caption">并指定能够顺利交接的输出格式。</div>
+        <div data-hf-id="hf-caption-14" id="caption-14" class="caption">先记住一个原则：不要要求 Agent 理解你的整个世界。</div>
+        <div data-hf-id="hf-caption-15" id="caption-15" class="caption">只提供生成第一版可审阅产物所需的最小完整信息包。</div>
+        <div data-hf-id="hf-caption-16" id="caption-16" class="caption">委托要从产物开始，而不是从活动开始。</div>
+        <div data-hf-id="hf-caption-17" id="caption-17" class="caption">帮我推进这个项目”只描述了投入；</div>
+        <div data-hf-id="hf-caption-18" id="caption-18" class="caption">“比较三个发布方案并生成一份决策备忘录”，</div>
+        <div data-hf-id="hf-caption-19" id="caption-19" class="caption">才描述了一个别人可以审阅和使用的结果。</div>
+        <div data-hf-id="hf-caption-20" id="caption-20" class="caption">OpenAI 给出的日常工作例子包括简报、摘要、演示文稿、工作簿、计</div>
+        <div data-hf-id="hf-caption-21" id="caption-21" class="caption">划、流程文档、每日简报、周度更新、发布材料包、财务复盘和流程审计。</div>
+        <div data-hf-id="hf-caption-22" id="caption-22" class="caption">这些产物都有清楚的形态，也都承接一个下一步决定。</div>
+        <div data-hf-id="hf-caption-23" id="caption-23" class="caption">用可操作的方式定义产物：谁会使用，它支持什么决策或动作，</div>
+        <div data-hf-id="hf-caption-24" id="caption-24" class="caption">达到什么状态就算第一版可用。</div>
+        <div data-hf-id="hf-caption-25" id="caption-25" class="caption">第一版不必完美，但必须完整到足以暴露缺失事实和薄弱推理。</div>
+        <div data-hf-id="hf-caption-26" id="caption-26" class="caption">把交付物和更大的目标分开。</div>
+        <div data-hf-id="hf-caption-27" id="caption-27" class="caption">提高客户留存”是目标；</div>
+        <div data-hf-id="hf-caption-28" id="caption-28" class="caption">一份包含分群分析、三个优先假设、支撑证据和负责人建议的文档，</div>
+        <div data-hf-id="hf-caption-29" id="caption-29" class="caption">才是可以推动目标的产物。</div>
+        <div data-hf-id="hf-caption-30" id="caption-30" class="caption">可以使用“动作、对象、决定”这个结构。</div>
+        <div data-hf-id="hf-caption-31" id="caption-31" class="caption">生成周度运营简报，让负责人识别阻塞；制作发布检查单，</div>
+        <div data-hf-id="hf-caption-32" id="caption-32" class="caption">让发布负责人决定继续还是停止；把分散研究整理成对比表，</div>
+        <div data-hf-id="hf-caption-33" id="caption-33" class="caption">让采购者能够选择。</div>
+        <div data-hf-id="hf-caption-34" id="caption-34" class="caption">最常见的错误，是只要求 Agent 动起来，却没有定义完成状态。</div>
+        <div data-hf-id="hf-caption-35" id="caption-35" class="caption">它会搜索、总结和写作，但双方都不知道什么时候算结束。</div>
+        <div data-hf-id="hf-caption-36" id="caption-36" class="caption">明确产物，才能让后面的约束和审阅标准有落点。</div>
+        <div data-hf-id="hf-caption-37" id="caption-37" class="caption">小结。</div>
+        <div data-hf-id="hf-caption-38" id="caption-38" class="caption">第一，描述工作之前，先定义一个具体产物。</div>
+        <div data-hf-id="hf-caption-39" id="caption-39" class="caption">第二，把产物连接到真实使用者和真实决定。</div>
+        <div data-hf-id="hf-caption-40" id="caption-40" class="caption">第三，让第一版足够可用，能够暴露还缺什么。</div>
+        <div data-hf-id="hf-caption-41" id="caption-41" class="caption">真实工作通常已经有上下文，</div>
+        <div data-hf-id="hf-caption-42" id="caption-42" class="caption">可能存在日历、消息、邮件、文档、看板、电子表格、跟踪器、演示稿或讨论</div>
+        <div data-hf-id="hf-caption-43" id="caption-43" class="caption">记录里。</div>
+        <div data-hf-id="hf-caption-44" id="caption-44" class="caption">任务委托单要指向那些真正会改变结果的材料。</div>
+        <div data-hf-id="hf-caption-45" id="caption-45" class="caption">不要把所有内容一股脑塞进去，而是建立源材料地图。</div>
+        <div data-hf-id="hf-caption-46" id="caption-46" class="caption">对每个来源说明它包含什么、为什么重要、更新时间，</div>
+        <div data-hf-id="hf-caption-47" id="caption-47" class="caption">以及它是一手事实、支撑材料还是背景信息。</div>
+        <div data-hf-id="hf-caption-48" id="caption-48" class="caption">把权威材料放在前面。</div>
+        <div data-hf-id="hf-caption-49" id="caption-49" class="caption">正式需求高于聊天摘要，当前看板高于上季度截图，</div>
+        <div data-hf-id="hf-caption-50" id="caption-50" class="caption">实现问题优先查看仓库文件，而不是复制出来的一小段代码。</div>
+        <div data-hf-id="hf-caption-51" id="caption-51" class="caption">两个来源冲突时，Agent 必须知道谁优先。</div>
+        <div data-hf-id="hf-caption-52" id="caption-52" class="caption">不要掩盖不确定性。</div>
+        <div data-hf-id="hf-caption-53" id="caption-53" class="caption">把假设、缺失记录、过期数字和仍待确认的事实标出来。</div>
+        <div data-hf-id="hf-caption-54" id="caption-54" class="caption">这样第一版产物才能区分证据和推断，而不是把两者抹平成一个自信结论。</div>
+        <div data-hf-id="hf-caption-55" id="caption-55" class="caption">例如制作周度运营简报，</div>
+        <div data-hf-id="hf-caption-56" id="caption-56" class="caption">源材料可以包括当前项目跟踪器、会议决定、故障记录和未来截止日期。</div>
+        <div data-hf-id="hf-caption-57" id="caption-57" class="caption">它不需要团队历史上发过的每一条消息。</div>
+        <div data-hf-id="hf-caption-58" id="caption-58" class="caption">最常见的错误是上下文堆积。</div>
+        <div data-hf-id="hf-caption-59" id="caption-59" class="caption">附件越多，越可能埋没信号、制造矛盾并拉长审阅。</div>
+        <div data-hf-id="hf-caption-60" id="caption-60" class="caption">只有当一个来源会影响结论、约束、决定或必需产物时，才应该进入信息包。</div>
+        <div data-hf-id="hf-caption-61" id="caption-61" class="caption">小结。</div>
+        <div data-hf-id="hf-caption-62" id="caption-62" class="caption">第一，只提供会改变产物的源材料。</div>
+        <div data-hf-id="hf-caption-63" id="caption-63" class="caption">第二，标明哪些来源最新、最权威。</div>
+        <div data-hf-id="hf-caption-64" id="caption-64" class="caption">第三，显式标注缺失事实和不确定性，不让 Agent 猜。</div>
+        <div data-hf-id="hf-caption-65" id="caption-65" class="caption">约束定义了产物可以在什么范围内发挥作用。</div>
+        <div data-hf-id="hf-caption-66" id="caption-66" class="caption">它包括截止时间、受众、范围、预算、权限、禁止动作、必须包含的说法，</div>
+        <div data-hf-id="hf-caption-67" id="caption-67" class="caption">以及绝对不能出现的内容。</div>
+        <div data-hf-id="hf-caption-68" id="caption-68" class="caption">把约束写成可以检查的测试，不要停留在模糊偏好。</div>
+        <div data-hf-id="hf-caption-69" id="caption-69" class="caption">尽量简洁”很难验收；“控制在一页以内，最多五条建议，</div>
+        <div data-hf-id="hf-caption-70" id="caption-70" class="caption">把未决问题单列”就能直接检查。</div>
+        <div data-hf-id="hf-caption-71" id="caption-71" class="caption">区分硬约束和偏好。</div>
+        <div data-hf-id="hf-caption-72" id="caption-72" class="caption">硬约束不满足就不能接收，</div>
+        <div data-hf-id="hf-caption-73" id="caption-73" class="caption">例如法律文案、数据边界、批准渠道、最高预算和必需格式。</div>
+        <div data-hf-id="hf-caption-74" id="caption-74" class="caption">偏好用于指导质量，在证据发生冲突时可以重新取舍。</div>
+        <div data-hf-id="hf-caption-75" id="caption-75" class="caption">不仅要写内容边界，也要写动作边界。</div>
+        <div data-hf-id="hf-caption-76" id="caption-76" class="caption">Agent 可以读取文件并起草邮件，不代表可以直接发送；</div>
+        <div data-hf-id="hf-caption-77" id="caption-77" class="caption">可以准备发布材料，不代表可以公开发布。</div>
+        <div data-hf-id="hf-caption-78" id="caption-78" class="caption">动作越难撤回，授权门槛就应该越高。</div>
+        <div data-hf-id="hf-caption-79" id="caption-79" class="caption">同时定义停止条件。</div>
+        <div data-hf-id="hf-caption-80" id="caption-80" class="caption">关键来源缺失、两个权威记录冲突、成本超过上限、权限不清楚，</div>
+        <div data-hf-id="hf-caption-81" id="caption-81" class="caption">或者任务扩大到原委托之外时，都应该暂停。</div>
+        <div data-hf-id="hf-caption-82" id="caption-82" class="caption">好的暂停会带回阻塞原因和继续所需的最小决定。</div>
+        <div data-hf-id="hf-caption-83" id="caption-83" class="caption">最常见的错误，是把约束留在委托人的脑子里。</div>
+        <div data-hf-id="hf-caption-84" id="caption-84" class="caption">Agent 会用看起来合理的默认值补空白，</div>
+        <div data-hf-id="hf-caption-85" id="caption-85" class="caption">但对真实受众、政策和后果来说，这些默认值可能完全不可接受。</div>
+        <div data-hf-id="hf-caption-86" id="caption-86" class="caption">小结。</div>
+        <div data-hf-id="hf-caption-87" id="caption-87" class="caption">第一，把重要偏好转换成可检查的限制。</div>
+        <div data-hf-id="hf-caption-88" id="caption-88" class="caption">第二，区分硬约束和可协商的指导。</div>
+        <div data-hf-id="hf-caption-89" id="caption-89" class="caption">第三，执行前写清权限和停止条件。</div>
+        <div data-hf-id="hf-caption-90" id="caption-90" class="caption">审阅预期告诉 Agent，第一版会按什么标准被判断。</div>
+        <div data-hf-id="hf-caption-91" id="caption-91" class="caption">没有这些标准，Agent 往往优化语言流畅和形式完整，</div>
+        <div data-hf-id="hf-caption-92" id="caption-92" class="caption">却忽略真正影响决定的部分。</div>
+        <div data-hf-id="hf-caption-93" id="caption-93" class="caption">生产之前先定义验收条件：产物是否回答真实问题，是否使用必需证据，</div>
+        <div data-hf-id="hf-caption-94" id="caption-94" class="caption">是否遵守约束，是否区分事实和推断，是否把未解决事项明确留下。</div>
+        <div data-hf-id="hf-caption-95" id="caption-95" class="caption">让证据可以被检查。</div>
+        <div data-hf-id="hf-caption-96" id="caption-96" class="caption">可以要求标注材料出处、保留计算说明、列出变更文件、提供截图、测试结果</div>
+        <div data-hf-id="hf-caption-97" id="caption-97" class="caption">或简短决策记录。</div>
+        <div data-hf-id="hf-caption-98" id="caption-98" class="caption">具体证据随产物变化，但必须让审阅者能够验证关键结论。</div>
+        <div data-hf-id="hf-caption-99" id="caption-99" class="caption">分清审阅角色。</div>
+        <div data-hf-id="hf-caption-100" id="caption-100" class="caption">Agent 可以检查结构、一致性、缺失字段和常规验证；</div>
+        <div data-hf-id="hf-caption-101" id="caption-101" class="caption">领域专家判断专业结论；</div>
+        <div data-hf-id="hf-caption-102" id="caption-102" class="caption">承担责任的人批准公开、发送、花钱、删除或做出受保护声明等高后果动作。</div>
+        <div data-hf-id="hf-caption-103" id="caption-103" class="caption">把第一版可用产物当作审阅界面。</div>
+        <div data-hf-id="hf-caption-104" id="caption-104" class="caption">不要等到一份精美终稿完成后，才发现目标理解错了。</div>
+        <div data-hf-id="hf-caption-105" id="caption-105" class="caption">早期审阅应该尽快暴露未决问题、来源冲突和假设，因为此时修改成本最低。</div>
+        <div data-hf-id="hf-caption-106" id="caption-106" class="caption">最常见的错误，是要求“高质量”，却没有定义拒绝规则。</div>
+        <div data-hf-id="hf-caption-107" id="caption-107" class="caption">如果没人能说明为什么失败，Agent 就无法瞄准真正标准，</div>
+        <div data-hf-id="hf-caption-108" id="caption-108" class="caption">审阅者也无法给出精确反馈。</div>
+        <div data-hf-id="hf-caption-109" id="caption-109" class="caption">小结。</div>
+        <div data-hf-id="hf-caption-110" id="caption-110" class="caption">第一，Agent 开始前先定义验收条件。</div>
+        <div data-hf-id="hf-caption-111" id="caption-111" class="caption">第二，要求能够检查关键结论的证据。</div>
+        <div data-hf-id="hf-caption-112" id="caption-112" class="caption">第三，让承担责任的人继续批准高后果动作。</div>
+        <div data-hf-id="hf-caption-113" id="caption-113" class="caption">交付格式不是装饰。</div>
+        <div data-hf-id="hf-caption-114" id="caption-114" class="caption">它决定 Agent 完成后，工作怎样被消费、编辑、分享或执行。</div>
+        <div data-hf-id="hf-caption-115" id="caption-115" class="caption">内容有用但容器错误，只会制造另一项人工整理任务。</div>
+        <div data-hf-id="hf-caption-116" id="caption-116" class="caption">写清最终载体和结构。</div>
+        <div data-hf-id="hf-caption-117" id="caption-117" class="caption">产物是一份 Markdown 简报、一页文档、带公式的电子表格、演示</div>
+        <div data-hf-id="hf-caption-118" id="caption-118" class="caption">文稿、检查清单、工单更新，还是可以直接放进仓库的一组文件？</div>
+        <div data-hf-id="hf-caption-119" id="caption-119" class="caption">指定必需章节、字段、顺序、尺寸、命名规则和保存位置。</div>
+        <div data-hf-id="hf-caption-120" id="caption-120" class="caption">如果下游系统要解析结果，就提供结构定义或示例；如果由人审阅，</div>
+        <div data-hf-id="hf-caption-121" id="caption-121" class="caption">就优化扫读速度和决策效率。</div>
+        <div data-hf-id="hf-caption-122" id="caption-122" class="caption">不仅交付产物，也要交付当前状态。</div>
+        <div data-hf-id="hf-caption-123" id="caption-123" class="caption">状态应该说明改了什么、检查了哪些证据、还剩什么未决问题，</div>
+        <div data-hf-id="hf-caption-124" id="caption-124" class="caption">以及下一步允许执行什么。</div>
+        <div data-hf-id="hf-caption-125" id="caption-125" class="caption">任务可能在另一个会话恢复时，这一点尤其重要。</div>
+        <div data-hf-id="hf-caption-126" id="caption-126" class="caption">例如发布材料包，</div>
+        <div data-hf-id="hf-caption-127" id="caption-127" class="caption">可能需要发布检查单、批准后的文案、媒体路径、风险表和最终继续或停止状</div>
+        <div data-hf-id="hf-caption-128" id="caption-128" class="caption">态。</div>
+        <div data-hf-id="hf-caption-129" id="caption-129" class="caption">只写一段讨论发布思路的文字，不能算完成。</div>
+        <div data-hf-id="hf-caption-130" id="caption-130" class="caption">最常见的错误，是把格式放到最后再想。</div>
+        <div data-hf-id="hf-caption-131" id="caption-131" class="caption">Agent 解决了认知问题，</div>
+        <div data-hf-id="hf-caption-132" id="caption-132" class="caption">却返回一个无法发布、导入、审阅或恢复的形态，最终仍需要大量返工。</div>
+        <div data-hf-id="hf-caption-133" id="caption-133" class="caption">小结。</div>
+        <div data-hf-id="hf-caption-134" id="caption-134" class="caption">第一，明确交付载体和必需结构。</div>
+        <div data-hf-id="hf-caption-135" id="caption-135" class="caption">第二，必要时写清命名、位置和机器可读规则。</div>
+        <div data-hf-id="hf-caption-136" id="caption-136" class="caption">第三，把产物和已验证的交接状态一起交付。</div>
+        <div data-hf-id="hf-caption-137" id="caption-137" class="caption">现在把前面的内容合并成一张 Agent 任务委托单。</div>
+        <div data-hf-id="hf-caption-138" id="caption-138" class="caption">它是工作负责人和负责生成第一版产物的 Agent 之间的一份紧凑契约</div>
+        <div data-hf-id="hf-caption-139" id="caption-139" class="caption">。</div>
+        <div data-hf-id="hf-caption-140" id="caption-140" class="caption">第一栏是目标产物：写清交付物、使用者、支持的决定，</div>
+        <div data-hf-id="hf-caption-141" id="caption-141" class="caption">以及什么状态算可用。</div>
+        <div data-hf-id="hf-caption-142" id="caption-142" class="caption">第二栏是源材料地图：列出批准输入、权威顺序、更新时间和已知缺口。</div>
+        <div data-hf-id="hf-caption-143" id="caption-143" class="caption">第三栏是约束：硬限制、偏好、权限、禁止动作和停止条件。</div>
+        <div data-hf-id="hf-caption-144" id="caption-144" class="caption">第四栏是审阅：验收标准、必需证据、人工审阅者，</div>
+        <div data-hf-id="hf-caption-145" id="caption-145" class="caption">以及哪些动作必须由人批准。</div>
+        <div data-hf-id="hf-caption-146" id="caption-146" class="caption">第五栏是交付格式：必需章节、结构定义、尺寸、文件名和输出位置。</div>
+        <div data-hf-id="hf-caption-147" id="caption-147" class="caption">第六栏是交接：已完成工作、未决问题、核对证据和下一步允许动作。</div>
+        <div data-hf-id="hf-caption-148" id="caption-148" class="caption">执行前使用这张委托单，任务变化时也要同步更新。</div>
+        <div data-hf-id="hf-caption-149" id="caption-149" class="caption">新来源改变结论，就记录来源；审阅者改变标准，就更新验收条件。</div>
+        <div data-hf-id="hf-caption-150" id="caption-150" class="caption">委托单描述的是当前任务，不是保存已经失效的旧指令。</div>
+        <div data-hf-id="hf-caption-151" id="caption-151" class="caption">最常见的错误，是把委托单写成一份仪式化提示词。</div>
+        <div data-hf-id="hf-caption-152" id="caption-152" class="caption">每个字段都应该改变 Agent 的执行方式或结果的审阅方式。</div>
+        <div data-hf-id="hf-caption-153" id="caption-153" class="caption">两者都不会改变的句子，应该删除。</div>
+        <div data-hf-id="hf-caption-154" id="caption-154" class="caption">小结。</div>
+        <div data-hf-id="hf-caption-155" id="caption-155" class="caption">第一，把产物、来源、约束、审阅、格式和交接打包。</div>
+        <div data-hf-id="hf-caption-156" id="caption-156" class="caption">第二，事实或验收条件变化时，及时更新委托单。</div>
+        <div data-hf-id="hf-caption-157" id="caption-157" class="caption">第三，删除任何不会改变执行或审阅的指令。</div>
+        <div data-hf-id="hf-caption-158" id="caption-158" class="caption">高质量 Agent 工作不是从空白提示词开始，</div>
+        <div data-hf-id="hf-caption-159" id="caption-159" class="caption">而是从真实材料和一个具体产物开始，让别人能够检查、修改并继续推进。</div>
+        <div data-hf-id="hf-caption-160" id="caption-160" class="caption">第一，先定义产物，再提供最小完整源材料包。</div>
+        <div data-hf-id="hf-caption-161" id="caption-161" class="caption">第二，让约束、审阅预期和交付格式可观察。</div>
+        <div data-hf-id="hf-caption-162" id="caption-162" class="caption">第三，返回一份可审阅的第一版，并附带证据、未决问题和清楚交接。</div>
+        <div data-hf-id="hf-caption-163" id="caption-163" class="caption">下一次委托时，直接使用 Agent 任务委托单。</div>
+        <div data-hf-id="hf-caption-164" id="caption-164" class="caption">如果产物、来源、约束、审阅、格式或交接仍然模糊，就先修复那一栏，</div>
+        <div data-hf-id="hf-caption-165" id="caption-165" class="caption">再给 Agent 更多工具和权限。</div>
+        <div data-hf-id="hf-caption-166" id="caption-166" class="caption">关注 Tiny Agent，成为更擅长使用 AI 的人！</div>
+      </div>
+      <nav data-hf-id="hf-chapter-progress" class="chapter-progress content-layer" aria-label="视频章节进度">
+        <div data-hf-id="hf-progress-segment-1" class="progress-segment" style="--chapter-weight:49.416">
+          <div data-hf-id="hf-progress-track-1" class="progress-track"><div data-hf-id="hf-progress-fill-1" id="progress-fill-1" class="progress-fill"></div><div data-hf-id="hf-progress-label-1" id="progress-label-1" class="progress-label is-current">1. 前言</div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-2" class="progress-segment" style="--chapter-weight:76.344">
+          <div data-hf-id="hf-progress-track-2" class="progress-track"><div data-hf-id="hf-progress-fill-2" id="progress-fill-2" class="progress-fill"></div><div data-hf-id="hf-progress-label-2" id="progress-label-2" class="progress-label">2. 先定产物</div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-3" class="progress-segment" style="--chapter-weight:72.240">
+          <div data-hf-id="hf-progress-track-3" class="progress-track"><div data-hf-id="hf-progress-fill-3" id="progress-fill-3" class="progress-fill"></div><div data-hf-id="hf-progress-label-3" id="progress-label-3" class="progress-label">3. 源材料</div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-4" class="progress-segment" style="--chapter-weight:72.168">
+          <div data-hf-id="hf-progress-track-4" class="progress-track"><div data-hf-id="hf-progress-fill-4" id="progress-fill-4" class="progress-fill"></div><div data-hf-id="hf-progress-label-4" id="progress-label-4" class="progress-label">4. 约束边界</div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-5" class="progress-segment" style="--chapter-weight:71.304">
+          <div data-hf-id="hf-progress-track-5" class="progress-track"><div data-hf-id="hf-progress-fill-5" id="progress-fill-5" class="progress-fill"></div><div data-hf-id="hf-progress-label-5" id="progress-label-5" class="progress-label">5. 审阅标准</div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-6" class="progress-segment" style="--chapter-weight:69.000">
+          <div data-hf-id="hf-progress-track-6" class="progress-track"><div data-hf-id="hf-progress-fill-6" id="progress-fill-6" class="progress-fill"></div><div data-hf-id="hf-progress-label-6" id="progress-label-6" class="progress-label">6. 交付格式</div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-7" class="progress-segment" style="--chapter-weight:70.752">
+          <div data-hf-id="hf-progress-track-7" class="progress-track"><div data-hf-id="hf-progress-fill-7" id="progress-fill-7" class="progress-fill"></div><div data-hf-id="hf-progress-label-7" id="progress-label-7" class="progress-label">7. 委托单</div></div>
+        </div>
+        <div data-hf-id="hf-progress-segment-8" class="progress-segment" style="--chapter-weight:31.112">
+          <div data-hf-id="hf-progress-track-8" class="progress-track"><div data-hf-id="hf-progress-fill-8" id="progress-fill-8" class="progress-fill"></div><div data-hf-id="hf-progress-label-8" id="progress-label-8" class="progress-label">8. 总结</div></div>
+        </div>
+      </nav>
+      <section data-hf-id="hf-outro-overlay" id="outro-overlay" class="outro-overlay" aria-label="关注 Tiny Agent">
+        <img class="outro-character" src="assets/images/tiny-agent-outro-key-art-papergray.png" alt="微笑并挥手的 Tiny Agent">
+        <div class="outro-copy">
+          <div class="outro-follow-row"><span id="outro-mark" class="outro-mark" aria-hidden="true"></span><h1 class="outro-heading">关注 Tiny Agent</h1></div>
+          <span class="outro-rule" aria-hidden="true"></span>
+          <p class="outro-benefit"><span>成为更擅长</span><span>使用 AI 的人！</span></p>
+          <span id="outro-underline" class="outro-underline" aria-hidden="true"></span>
+        </div>
+      </section>
+      <audio data-hf-id="hf-narration" id="narration" class="clip" data-start="0" data-duration="512.336" data-track-index="10" data-media-start="0" data-volume="1" src="assets/audio/narration.zh.normalized.mp3"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.to("#caption-1", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 3.541);
+      tl.fromTo("#caption-2", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 3.641);
+      tl.to("#caption-2", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 5.770);
+      tl.fromTo("#caption-3", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 5.870);
+      tl.to("#caption-3", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 9.916);
+      tl.fromTo("#caption-4", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 10.016);
+      tl.to("#caption-4", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 12.926);
+      tl.fromTo("#caption-5", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 13.026);
+      tl.to("#caption-5", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 15.433);
+      tl.fromTo("#caption-6", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 15.533);
+      tl.to("#caption-6", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 17.816);
+      tl.fromTo("#caption-7", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 17.916);
+      tl.to("#caption-7", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 22.625);
+      tl.fromTo("#caption-8", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 22.725);
+      tl.to("#caption-8", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 25.158);
+      tl.fromTo("#caption-9", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 25.258);
+      tl.to("#caption-9", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 28.710);
+      tl.fromTo("#caption-10", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 28.810);
+      tl.to("#caption-10", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 31.033);
+      tl.fromTo("#caption-11", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 31.133);
+      tl.to("#caption-11", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 34.633);
+      tl.fromTo("#caption-12", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 34.733);
+      tl.to("#caption-12", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 39.623);
+      tl.fromTo("#caption-13", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 39.723);
+      tl.to("#caption-13", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 41.825);
+      tl.fromTo("#caption-14", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 41.925);
+      tl.to("#caption-14", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 45.391);
+      tl.fromTo("#caption-15", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 45.491);
+      tl.to("#caption-15", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 49.416);
+      tl.fromTo("#caption-16", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 49.516);
+      tl.to("#caption-16", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 52.307);
+      tl.fromTo("#caption-17", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 52.407);
+      tl.to("#caption-17", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 54.421);
+      tl.fromTo("#caption-18", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 54.521);
+      tl.to("#caption-18", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 57.196);
+      tl.fromTo("#caption-19", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 57.296);
+      tl.to("#caption-19", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 59.707);
+      tl.fromTo("#caption-20", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 59.807);
+      tl.to("#caption-20", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 64.511);
+      tl.fromTo("#caption-21", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 64.611);
+      tl.to("#caption-21", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 69.174);
+      tl.fromTo("#caption-22", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 69.274);
+      tl.to("#caption-22", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 72.449);
+      tl.fromTo("#caption-23", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 72.549);
+      tl.to("#caption-23", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 76.504);
+      tl.fromTo("#caption-24", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 76.604);
+      tl.to("#caption-24", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 78.532);
+      tl.fromTo("#caption-25", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 78.632);
+      tl.to("#caption-25", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 82.741);
+      tl.fromTo("#caption-26", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 82.841);
+      tl.to("#caption-26", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 84.799);
+      tl.fromTo("#caption-27", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 84.899);
+      tl.to("#caption-27", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 86.356);
+      tl.fromTo("#caption-28", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 86.456);
+      tl.to("#caption-28", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 90.601);
+      tl.fromTo("#caption-29", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 90.701);
+      tl.to("#caption-29", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 92.299);
+      tl.fromTo("#caption-30", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 92.399);
+      tl.to("#caption-30", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 94.832);
+      tl.fromTo("#caption-31", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 94.932);
+      tl.to("#caption-31", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 98.718);
+      tl.fromTo("#caption-32", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 98.818);
+      tl.to("#caption-32", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 102.754);
+      tl.fromTo("#caption-33", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 102.854);
+      tl.to("#caption-33", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 104.099);
+      tl.fromTo("#caption-34", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 104.199);
+      tl.to("#caption-34", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 108.091);
+      tl.fromTo("#caption-35", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 108.191);
+      tl.to("#caption-35", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 112.099);
+      tl.fromTo("#caption-36", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 112.199);
+      tl.to("#caption-36", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 115.241);
+      tl.fromTo("#caption-37", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 115.341);
+      tl.to("#caption-37", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 116.082);
+      tl.fromTo("#caption-38", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 116.182);
+      tl.to("#caption-38", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 119.082);
+      tl.fromTo("#caption-39", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 119.182);
+      tl.to("#caption-39", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 122.124);
+      tl.fromTo("#caption-40", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 122.224);
+      tl.to("#caption-40", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 125.760);
+      tl.fromTo("#caption-41", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 125.860);
+      tl.to("#caption-41", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 127.833);
+      tl.fromTo("#caption-42", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 127.933);
+      tl.to("#caption-42", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 133.255);
+      tl.fromTo("#caption-43", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 133.355);
+      tl.to("#caption-43", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 133.843);
+      tl.fromTo("#caption-44", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 133.943);
+      tl.to("#caption-44", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 137.085);
+      tl.fromTo("#caption-45", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 137.185);
+      tl.to("#caption-45", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 140.568);
+      tl.fromTo("#caption-46", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 140.668);
+      tl.to("#caption-46", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 144.123);
+      tl.fromTo("#caption-47", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 144.223);
+      tl.to("#caption-47", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 147.085);
+      tl.fromTo("#caption-48", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 147.185);
+      tl.to("#caption-48", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 148.660);
+      tl.fromTo("#caption-49", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 148.760);
+      tl.to("#caption-49", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 152.060);
+      tl.fromTo("#caption-50", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 152.160);
+      tl.to("#caption-50", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 156.051);
+      tl.fromTo("#caption-51", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 156.151);
+      tl.to("#caption-51", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 158.935);
+      tl.fromTo("#caption-52", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 159.035);
+      tl.to("#caption-52", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 160.368);
+      tl.fromTo("#caption-53", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 160.468);
+      tl.to("#caption-53", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 164.126);
+      tl.fromTo("#caption-54", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 164.226);
+      tl.to("#caption-54", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 168.618);
+      tl.fromTo("#caption-55", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 168.718);
+      tl.to("#caption-55", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 170.240);
+      tl.fromTo("#caption-56", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 170.340);
+      tl.to("#caption-56", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 174.960);
+      tl.fromTo("#caption-57", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 175.060);
+      tl.to("#caption-57", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 177.410);
+      tl.fromTo("#caption-58", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 177.510);
+      tl.to("#caption-58", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 179.610);
+      tl.fromTo("#caption-59", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 179.710);
+      tl.to("#caption-59", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 183.243);
+      tl.fromTo("#caption-60", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 183.343);
+      tl.to("#caption-60", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 188.276);
+      tl.fromTo("#caption-61", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 188.376);
+      tl.to("#caption-61", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 189.118);
+      tl.fromTo("#caption-62", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 189.218);
+      tl.to("#caption-62", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 191.543);
+      tl.fromTo("#caption-63", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 191.643);
+      tl.to("#caption-63", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 194.143);
+      tl.fromTo("#caption-64", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 194.243);
+      tl.to("#caption-64", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 198.000);
+      tl.fromTo("#caption-65", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 198.100);
+      tl.to("#caption-65", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 200.733);
+      tl.fromTo("#caption-66", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 200.833);
+      tl.to("#caption-66", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 205.689);
+      tl.fromTo("#caption-67", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 205.789);
+      tl.to("#caption-67", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 207.491);
+      tl.fromTo("#caption-68", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 207.591);
+      tl.to("#caption-68", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 210.658);
+      tl.fromTo("#caption-69", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 210.758);
+      tl.to("#caption-69", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 214.172);
+      tl.fromTo("#caption-70", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 214.272);
+      tl.to("#caption-70", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 216.200);
+      tl.fromTo("#caption-71", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 216.300);
+      tl.to("#caption-71", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 217.708);
+      tl.fromTo("#caption-72", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 217.808);
+      tl.to("#caption-72", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 219.570);
+      tl.fromTo("#caption-73", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 219.670);
+      tl.to("#caption-73", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 223.758);
+      tl.fromTo("#caption-74", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 223.858);
+      tl.to("#caption-74", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 227.516);
+      tl.fromTo("#caption-75", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 227.616);
+      tl.to("#caption-75", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 230.050);
+      tl.fromTo("#caption-76", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 230.150);
+      tl.to("#caption-76", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 233.773);
+      tl.fromTo("#caption-77", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 233.873);
+      tl.to("#caption-77", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 236.300);
+      tl.fromTo("#caption-78", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 236.400);
+      tl.to("#caption-78", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 238.941);
+      tl.fromTo("#caption-79", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 239.041);
+      tl.to("#caption-79", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 240.400);
+      tl.fromTo("#caption-80", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 240.500);
+      tl.to("#caption-80", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 244.676);
+      tl.fromTo("#caption-81", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 244.776);
+      tl.to("#caption-81", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 247.625);
+      tl.fromTo("#caption-82", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 247.725);
+      tl.to("#caption-82", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 251.133);
+      tl.fromTo("#caption-83", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 251.233);
+      tl.to("#caption-83", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 254.091);
+      tl.fromTo("#caption-84", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 254.191);
+      tl.to("#caption-84", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 256.881);
+      tl.fromTo("#caption-85", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 256.981);
+      tl.to("#caption-85", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 260.733);
+      tl.fromTo("#caption-86", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 260.833);
+      tl.to("#caption-86", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 261.575);
+      tl.fromTo("#caption-87", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 261.675);
+      tl.to("#caption-87", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 264.475);
+      tl.fromTo("#caption-88", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 264.575);
+      tl.to("#caption-88", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 267.091);
+      tl.fromTo("#caption-89", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 267.191);
+      tl.to("#caption-89", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 270.168);
+      tl.fromTo("#caption-90", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 270.268);
+      tl.to("#caption-90", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 273.351);
+      tl.fromTo("#caption-91", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 273.451);
+      tl.to("#caption-91", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 276.878);
+      tl.fromTo("#caption-92", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 276.978);
+      tl.to("#caption-92", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 278.576);
+      tl.fromTo("#caption-93", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 278.676);
+      tl.to("#caption-93", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 283.380);
+      tl.fromTo("#caption-94", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 283.480);
+      tl.to("#caption-94", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 287.884);
+      tl.fromTo("#caption-95", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 287.984);
+      tl.to("#caption-95", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 289.368);
+      tl.fromTo("#caption-96", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 289.468);
+      tl.to("#caption-96", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 294.630);
+      tl.fromTo("#caption-97", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 294.730);
+      tl.to("#caption-97", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 295.868);
+      tl.fromTo("#caption-98", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 295.968);
+      tl.to("#caption-98", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 299.793);
+      tl.fromTo("#caption-99", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 299.893);
+      tl.to("#caption-99", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 301.076);
+      tl.fromTo("#caption-100", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 301.176);
+      tl.to("#caption-100", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 305.063);
+      tl.fromTo("#caption-101", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 305.163);
+      tl.to("#caption-101", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 306.688);
+      tl.fromTo("#caption-102", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 306.788);
+      tl.to("#caption-102", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 311.709);
+      tl.fromTo("#caption-103", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 311.809);
+      tl.to("#caption-103", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 314.018);
+      tl.fromTo("#caption-104", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 314.118);
+      tl.to("#caption-104", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 317.584);
+      tl.fromTo("#caption-105", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 317.684);
+      tl.to("#caption-105", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 322.818);
+      tl.fromTo("#caption-106", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 322.918);
+      tl.to("#caption-106", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 326.343);
+      tl.fromTo("#caption-107", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 326.443);
+      tl.to("#caption-107", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 330.272);
+      tl.fromTo("#caption-108", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 330.373);
+      tl.to("#caption-108", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 332.034);
+      tl.fromTo("#caption-109", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 332.134);
+      tl.to("#caption-109", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 332.876);
+      tl.fromTo("#caption-110", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 332.976);
+      tl.to("#caption-110", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 335.493);
+      tl.fromTo("#caption-111", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 335.593);
+      tl.to("#caption-111", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 338.018);
+      tl.fromTo("#caption-112", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 338.118);
+      tl.to("#caption-112", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 341.472);
+      tl.fromTo("#caption-113", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 341.572);
+      tl.to("#caption-113", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 342.863);
+      tl.fromTo("#caption-114", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 342.963);
+      tl.to("#caption-114", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 347.097);
+      tl.fromTo("#caption-115", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 347.197);
+      tl.to("#caption-115", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 350.663);
+      tl.fromTo("#caption-116", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 350.763);
+      tl.to("#caption-116", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 352.330);
+      tl.fromTo("#caption-117", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 352.430);
+      tl.to("#caption-117", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 356.638);
+      tl.fromTo("#caption-118", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 356.738);
+      tl.to("#caption-118", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 360.313);
+      tl.fromTo("#caption-119", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 360.413);
+      tl.to("#caption-119", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 364.647);
+      tl.fromTo("#caption-120", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 364.747);
+      tl.to("#caption-120", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 369.088);
+      tl.fromTo("#caption-121", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 369.188);
+      tl.to("#caption-121", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 371.013);
+      tl.fromTo("#caption-122", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 371.113);
+      tl.to("#caption-122", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 373.447);
+      tl.fromTo("#caption-123", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 373.547);
+      tl.to("#caption-123", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 377.297);
+      tl.fromTo("#caption-124", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 377.397);
+      tl.to("#caption-124", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 378.947);
+      tl.fromTo("#caption-125", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 379.047);
+      tl.to("#caption-125", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 381.947);
+      tl.fromTo("#caption-126", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 382.047);
+      tl.to("#caption-126", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 383.139);
+      tl.fromTo("#caption-127", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 383.239);
+      tl.to("#caption-127", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 388.207);
+      tl.fromTo("#caption-128", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 388.307);
+      tl.to("#caption-128", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 388.505);
+      tl.fromTo("#caption-129", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 388.605);
+      tl.to("#caption-129", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 391.338);
+      tl.fromTo("#caption-130", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 391.438);
+      tl.to("#caption-130", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 394.130);
+      tl.fromTo("#caption-131", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 394.230);
+      tl.to("#caption-131", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 396.060);
+      tl.fromTo("#caption-132", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 396.160);
+      tl.to("#caption-132", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 400.472);
+      tl.fromTo("#caption-133", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 400.572);
+      tl.to("#caption-133", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 401.313);
+      tl.fromTo("#caption-134", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 401.413);
+      tl.to("#caption-134", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 403.772);
+      tl.fromTo("#caption-135", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 403.872);
+      tl.to("#caption-135", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 407.022);
+      tl.fromTo("#caption-136", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 407.122);
+      tl.to("#caption-136", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 410.472);
+      tl.fromTo("#caption-137", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 410.572);
+      tl.to("#caption-137", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 413.697);
+      tl.fromTo("#caption-138", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 413.797);
+      tl.to("#caption-138", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 418.011);
+      tl.fromTo("#caption-139", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 418.111);
+      tl.to("#caption-139", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 418.138);
+      tl.fromTo("#caption-140", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 418.238);
+      tl.to("#caption-140", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 421.692);
+      tl.fromTo("#caption-141", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 421.792);
+      tl.to("#caption-141", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 423.113);
+      tl.fromTo("#caption-142", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 423.213);
+      tl.to("#caption-142", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 428.105);
+      tl.fromTo("#caption-143", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 428.205);
+      tl.to("#caption-143", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 432.697);
+      tl.fromTo("#caption-144", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 432.797);
+      tl.to("#caption-144", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 436.269);
+      tl.fromTo("#caption-145", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 436.369);
+      tl.to("#caption-145", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 438.288);
+      tl.fromTo("#caption-146", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 438.388);
+      tl.to("#caption-146", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 443.247);
+      tl.fromTo("#caption-147", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 443.347);
+      tl.to("#caption-147", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 447.972);
+      tl.fromTo("#caption-148", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 448.072);
+      tl.to("#caption-148", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 451.572);
+      tl.fromTo("#caption-149", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 451.672);
+      tl.to("#caption-149", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 456.155);
+      tl.fromTo("#caption-150", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 456.255);
+      tl.to("#caption-150", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 459.563);
+      tl.fromTo("#caption-151", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 459.663);
+      tl.to("#caption-151", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 462.972);
+      tl.fromTo("#caption-152", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 463.072);
+      tl.to("#caption-152", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 466.738);
+      tl.fromTo("#caption-153", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 466.838);
+      tl.to("#caption-153", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 469.197);
+      tl.fromTo("#caption-154", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 469.297);
+      tl.to("#caption-154", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 470.038);
+      tl.fromTo("#caption-155", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 470.138);
+      tl.to("#caption-155", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 474.238);
+      tl.fromTo("#caption-156", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 474.338);
+      tl.to("#caption-156", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 477.747);
+      tl.fromTo("#caption-157", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 477.847);
+      tl.to("#caption-157", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 481.224);
+      tl.fromTo("#caption-158", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 481.324);
+      tl.to("#caption-158", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 484.294);
+      tl.fromTo("#caption-159", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 484.394);
+      tl.to("#caption-159", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 488.649);
+      tl.fromTo("#caption-160", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 488.749);
+      tl.to("#caption-160", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 491.849);
+      tl.fromTo("#caption-161", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 491.949);
+      tl.to("#caption-161", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 495.132);
+      tl.fromTo("#caption-162", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 495.232);
+      tl.to("#caption-162", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 499.857);
+      tl.fromTo("#caption-163", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 499.957);
+      tl.to("#caption-163", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 502.849);
+      tl.fromTo("#caption-164", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 502.949);
+      tl.to("#caption-164", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 507.290);
+      tl.fromTo("#caption-165", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 507.390);
+      tl.to("#caption-165", { y: -8, opacity: 0, duration: 0.1, ease: "power2.in" }, 509.649);
+      tl.fromTo("#caption-166", { y: 9, opacity: 0 }, { y: 0, opacity: 1, duration: 0.18, ease: "power2.out", immediateRender: false }, 509.749);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 0.400);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 49.116);
+      tl.to("#progress-fill-1", { scaleX: 1, duration: 49.416, ease: "none" }, 0.000);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 52.496);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 115.041);
+      tl.to("#progress-fill-2", { scaleX: 1, duration: 76.344, ease: "none" }, 49.416);
+      tl.to("#progress-label-1", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 49.416);
+      tl.to("#progress-label-2", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 49.416);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 128.840);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 188.076);
+      tl.to("#progress-fill-3", { scaleX: 1, duration: 72.240, ease: "none" }, 125.760);
+      tl.to("#progress-label-2", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 125.760);
+      tl.to("#progress-label-3", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 125.760);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 201.080);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 260.533);
+      tl.to("#progress-fill-4", { scaleX: 1, duration: 72.168, ease: "none" }, 198.000);
+      tl.to("#progress-label-3", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 198.000);
+      tl.to("#progress-label-4", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 198.000);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 273.248);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 331.834);
+      tl.to("#progress-fill-5", { scaleX: 1, duration: 71.304, ease: "none" }, 270.168);
+      tl.to("#progress-label-4", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 270.168);
+      tl.to("#progress-label-5", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 270.168);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 344.552);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 400.272);
+      tl.to("#progress-fill-6", { scaleX: 1, duration: 69.000, ease: "none" }, 341.472);
+      tl.to("#progress-label-5", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 341.472);
+      tl.to("#progress-label-6", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 341.472);
+      tl.fromTo(".masthead", { y: -14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.46, ease: "power3.out", immediateRender: false }, 413.552);
+      tl.to(".masthead", { y: -10, opacity: 0, duration: 0.3, ease: "power2.inOut" }, 468.997);
+      tl.to("#progress-fill-7", { scaleX: 1, duration: 70.752, ease: "none" }, 410.472);
+      tl.to("#progress-label-6", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 410.472);
+      tl.to("#progress-label-7", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 410.472);
+      tl.to("#progress-fill-8", { scaleX: 1, duration: 31.112, ease: "none" }, 481.224);
+      tl.to("#progress-label-7", { fontWeight: 760, duration: 0.2, ease: "power2.out" }, 481.224);
+      tl.to("#progress-label-8", { fontWeight: 900, duration: 0.2, ease: "power2.out" }, 481.224);
+      tl.set("#outro-underline", { scaleX: 0 }, 0);
+      tl.set(".content-layer", { opacity: 0 }, 509.749);
+      tl.set("#outro-overlay", { opacity: 1 }, 509.749);
+      tl.to("#outro-mark", { scale: 1.08, duration: 0.28, ease: "power2.out" }, 509.849);
+      tl.to("#outro-mark", { scale: 1, duration: 0.32, ease: "power2.inOut" }, 510.129);
+      tl.to("#outro-underline", { scaleX: 1, duration: 0.62, ease: "power3.out" }, 510.669);
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

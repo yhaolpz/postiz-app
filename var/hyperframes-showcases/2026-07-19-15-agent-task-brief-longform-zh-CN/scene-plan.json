@@ -1,0 +1,90 @@
+{
+  "chapters": [
+    {
+      "label": "前言",
+      "showIntro": false,
+      "intro": "用完整信息包替代空白提示词，生成可审阅的第一版产物",
+      "summary": ["从真实工作开始，不从空白提示词开始", "打包四类可观察输入", "产出可审阅的第一版"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["空白提示词","真实工作"],"human":"compare-front","agent":"present-right","agentDirection":"right","props":[{"id":"chat","label":"空白输入"},{"id":"uncertainty","label":"隐藏上下文"},{"id":"folder","label":"真实材料"},{"id":"result-card","label":"可用产物"}],"flow":"cluster","callout":"真实工作存在于提示词之外","accent":"red"},
+        {"paragraphs":[3,3],"layout":"stage","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"folder","label":"源材料"},{"id":"checklist","label":"约束"},{"id":"compare","label":"审阅"},{"id":"document","label":"格式"}],"flow":"cluster","callout":"四类输入让委托可观察","accent":"blue"},
+        {"paragraphs":[4,5],"layout":"process","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"task-list","label":"委托单"},{"id":"workflow","label":"执行"},{"id":"evidence","label":"审阅"}],"flow":"chain","callout":"建立最小完整信息包","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "先定产物",
+      "intro": "先定义具体产物及其支持的决定，再安排执行活动",
+      "summary": ["描述工作之前，先定义一个具体产物", "把产物连接到真实使用者和真实决定", "让第一版足够可用，能够暴露还缺什么"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"decide-front","agent":"ask-front","props":[{"id":"target","label":"决定"},{"id":"result-card","label":"产物"}],"flow":"chain","callout":"先命名可审阅的结果","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["大目标","可用产物"],"human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"trend-up","label":"提高留存"},{"id":"uncertainty","label":"没有终点"},{"id":"spreadsheet","label":"分群证据"},{"id":"task-list","label":"优先行动"}],"flow":"cluster","callout":"把目标和交付物分开","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"handoff-left","humanDirection":"left","agent":"receive-left","agentDirection":"left","props":[{"id":"document","label":"草稿"},{"id":"approval","label":"决定"},{"id":"success","label":"完成状态"}],"flow":"chain","callout":"明确产物才能定义结束","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "源材料",
+      "intro": "建立保留权威顺序、更新时间和已知不确定性的源材料地图",
+      "summary": ["只提供会改变产物的源材料", "标明哪些来源最新、最权威", "显式标注缺失事实和不确定性，不让 Agent 猜"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"write-front","agent":"read-front","props":[{"id":"email","label":"消息"},{"id":"document-stack","label":"文档"},{"id":"spreadsheet","label":"数据"},{"id":"dashboard","label":"状态"}],"flow":"cluster","callout":"真实工作已经有上下文","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["权威来源","不确定信息"],"human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"repository","label":"一手材料"},{"id":"calendar","label":"当前状态"},{"id":"warning","label":"可能过期"},{"id":"question","label":"仍待确认"}],"flow":"cluster","callout":"告诉 Agent 哪个来源优先","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"present-right","humanDirection":"right","agent":"present-right","agentDirection":"right","props":[{"id":"folder","label":"批准输入"},{"id":"summary","label":"高信号"},{"id":"evidence","label":"可追溯产物"}],"flow":"chain","callout":"每个来源都要改变决定","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "约束边界",
+      "intro": "把隐藏期待转换成可检查限制、权限和停止条件",
+      "summary": ["把重要偏好转换成可检查的限制", "区分硬约束和可协商的指导", "执行前写清权限和停止条件"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"caution-front","agent":"evaluate-front","props":[{"id":"calendar","label":"截止"},{"id":"ruler","label":"范围"},{"id":"permission-key","label":"权限"},{"id":"stop","label":"停止"}],"flow":"cluster","callout":"把约束写成测试","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["硬约束","偏好"],"human":"compare-front","agent":"look-left","agentDirection":"left","props":[{"id":"shield","label":"必须通过"},{"id":"error","label":"阻塞验收"},{"id":"settings","label":"指导质量"},{"id":"uncertainty","label":"可以取舍"}],"flow":"cluster","callout":"不同指令的强度不同","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"stop-front","agent":"blocked-front","props":[{"id":"question","label":"事实缺失"},{"id":"warning","label":"来源冲突"},{"id":"human-gate","label":"人工决定"},{"id":"handoff","label":"继续执行"}],"flow":"chain","callout":"有效暂停要带回下一步决定","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "审阅标准",
+      "intro": "产出第一版之前，先定义拒绝规则和必需证据",
+      "summary": ["Agent 开始前先定义验收条件", "要求能够检查关键结论的证据", "让承担责任的人继续批准高后果动作"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["看起来完整","通过审阅"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"result-card","label":"流畅草稿"},{"id":"uncertainty","label":"质量未知"},{"id":"checklist","label":"验收标准"},{"id":"ruler","label":"任务符合"}],"flow":"cluster","callout":"审阅需要拒绝规则","accent":"red"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"citation","label":"来源"},{"id":"evidence","label":"证据"},{"id":"compare","label":"专家审阅"},{"id":"approval","label":"负责人批准"}],"flow":"chain","callout":"让关键结论可检查","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"stage","human":"review-front","agent":"verify-front","props":[{"id":"document","label":"第一版"},{"id":"question","label":"未决问题"},{"id":"workflow","label":"修改"}],"flow":"cluster","callout":"在修改成本低时审阅","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "交付格式",
+      "intro": "指定工作要进入的载体、结构、位置和交接状态",
+      "summary": ["明确交付载体和必需结构", "必要时写清命名、位置和机器可读规则", "把产物和已验证的交接状态一起交付"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"document","label":"简报"},{"id":"spreadsheet","label":"工作簿"},{"id":"image","label":"演示稿"},{"id":"repository","label":"文件"}],"flow":"cluster","callout":"载体会改变工作形态","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"write-front","agent":"read-front","props":[{"id":"form","label":"结构"},{"id":"package","label":"文件"},{"id":"archive","label":"位置"},{"id":"handoff","label":"状态"}],"flow":"chain","callout":"写清结构和恢复状态","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["讨论","交付"],"human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"chat","label":"想法"},{"id":"uncertainty","label":"人工返工"},{"id":"checklist","label":"可用材料包"},{"id":"success","label":"顺利继续"}],"flow":"cluster","callout":"内容有用但形态错误仍然失败","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "委托单",
+      "intro": "把六个字段合并成一份用于执行和审阅的紧凑契约",
+      "summary": ["把产物、来源、约束、审阅、格式和交接打包", "事实或验收条件变化时，及时更新委托单", "删除任何不会改变执行或审阅的指令"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"clipboard","label":"任务委托单"},{"id":"task-list","label":"六个字段"}],"flow":"chain","callout":"真实工作的紧凑契约","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"checklist","label":"约束"},{"id":"evidence","label":"审阅"},{"id":"form","label":"格式"},{"id":"handoff","label":"交接"}],"flow":"cluster","callout":"每个字段都要改变执行或审阅","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"retry-front","props":[{"id":"document","label":"当前委托"},{"id":"question","label":"新事实"},{"id":"workflow","label":"更新"},{"id":"archive","label":"恢复"}],"flow":"chain","callout":"让委托单始终对齐当前任务","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "总结",
+      "showIntro": false,
+      "intro": "增加工具和权限之前，先使用 Agent 任务委托单",
+      "summary": ["先定义产物，再提供最小完整源材料包", "让约束、审阅预期和交付格式可观察", "返回一份可审阅的第一版，并附带证据、未决问题和清楚交接"],
+      "scenes": [
+        {"paragraphs":[1,6],"summaryPointParagraphs":[2,3,4],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"扩展权限前先修复委托单","accent":"blue"}
+      ]
+    }
+  ]
+}

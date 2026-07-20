@@ -1,0 +1,121 @@
+{
+  "title": "The Agent Task Brief",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-19-15-agent-task-brief-longform-en-US/SCRIPT.en-US.md",
+  "language": "en-US",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "en-US-AnaNeural",
+    "rate": "+30%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 683.7874370000001,
+    "chapters": [
+      {
+        "label": "Introduction",
+        "start": 0,
+        "end": 66.528,
+        "duration": 66.528
+      },
+      {
+        "label": "Artifact First",
+        "start": 66.528,
+        "end": 165.36,
+        "duration": 98.832
+      },
+      {
+        "label": "Source Material",
+        "start": 165.36,
+        "end": 263.76,
+        "duration": 98.4
+      },
+      {
+        "label": "Constraints",
+        "start": 263.76,
+        "end": 359.424,
+        "duration": 95.664
+      },
+      {
+        "label": "Review Standards",
+        "start": 359.424,
+        "end": 453.74399999999997,
+        "duration": 94.32
+      },
+      {
+        "label": "Destination Format",
+        "start": 453.74399999999997,
+        "end": 546.9599999999999,
+        "duration": 93.216
+      },
+      {
+        "label": "Task Brief",
+        "start": 546.9599999999999,
+        "end": 641.7359999999999,
+        "duration": 94.776
+      },
+      {
+        "label": "Summary",
+        "start": 641.7359999999999,
+        "end": 683.7874370000001,
+        "duration": 42.05143700000019
+      }
+    ],
+    "visualStates": 28,
+    "captions": 220
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-19-15-agent-task-brief-longform.en-US.mp4",
+    "status": "pass"
+  }
+}
