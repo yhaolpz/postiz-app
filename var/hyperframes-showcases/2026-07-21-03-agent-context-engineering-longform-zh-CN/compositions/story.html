@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="zh-CN">
+  <body>
+    <template id="story-template">
+      <div data-hf-id="hf-v2-story-root" id="v2-story-root" data-composition-id="story" data-width="1920" data-height="1080" data-start="0" data-duration="488.743">
+        <style>
+          @font-face { font-family:"Tiny Agent CJK"; src:url("assets/fonts/HiraginoSansGB.ttc"); font-style:normal; font-weight:100 900; }
+          #v2-story-root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; color:#111413; font-family:"Tiny Agent CJK",sans-serif; }
+          #v2-story-root .phase { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; background-color:#ececea; background-image:linear-gradient(rgba(17,20,19,.035) 1px,rgba(236,236,234,0) 1px),linear-gradient(90deg,rgba(17,20,19,.035) 1px,rgba(236,236,234,0) 1px); background-size:48px 48px; opacity:0; transform-origin:center center; }
+          #v2-story-root .phase.is-first { opacity:1; }
+          #v2-story-root .scene-content-shell { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; transform-origin:center center; }
+          #v2-story-root .balance-layer { position:absolute; inset:0; width:1920px; height:1080px; transform-origin:center center; }
+          #v2-story-root .has-chapter-intro .scene-content-shell { opacity:0; }
+          #v2-story-root .ground-line { position:absolute; right:84px; bottom:244px; left:84px; z-index:3; height:3px; background:#dfe7e4; }
+          #v2-story-root .actor { position:absolute; z-index:24; object-fit:contain; transform-origin:center bottom; }
+          #v2-story-root .callout { position:absolute; z-index:32; color:#111413; font-weight:900; line-height:1.3; letter-spacing:0; }
+          #v2-story-root .prop-zone { position:absolute; inset:0; z-index:16; }
+          #v2-story-root .prop-item { position:absolute; z-index:20; width:calc(var(--prop-size) + 48px); height:calc(var(--prop-size) + 62px); text-align:center; opacity:0; transform-origin:center; }
+          #v2-story-root .prop-item img { position:relative; z-index:2; display:block; width:var(--prop-size); height:var(--prop-size); margin:0 auto; object-fit:contain; transform-origin:center; }
+          #v2-story-root .prop-item span { position:relative; z-index:4; display:block; max-width:calc(var(--prop-size) + 44px); margin:8px auto 0; color:#47514e; font-size:24px; font-weight:800; line-height:1.24; letter-spacing:0; white-space:nowrap; }
+          #v2-story-root .connector { position:absolute; z-index:12; height:5px; border-radius:3px; background:#1597ea; opacity:0; transform-origin:left center; }
+
+          #v2-story-root .layout-stage .callout { font-size:44px; }
+
+          #v2-story-root .layout-process .ground-line { right:180px; bottom:304px; left:180px; }
+          #v2-story-root .layout-process .callout { font-size:54px; }
+
+          #v2-story-root .layout-grid .ground-line { display:none; }
+          #v2-story-root .layout-grid .callout { font-size:54px; }
+
+          #v2-story-root .layout-comparison .ground-line { display:none; }
+          #v2-story-root .layout-comparison .callout { font-size:53px; }
+          #v2-story-root .compare-panel { position:absolute; top:228px; z-index:6; width:690px; height:540px; border:4px solid #dfe7e4; background:rgba(236,236,234,.96); }
+          #v2-story-root .compare-panel-left { left:250px; border-top-color:#f5c84b; }
+          #v2-story-root .compare-panel-right { right:250px; border-top-color:#1597ea; }
+          #v2-story-root .compare-label { position:absolute; top:22px; right:32px; left:32px; font-size:34px; font-weight:900; text-align:center; }
+
+          #v2-story-root .layout-hero .ground-line { display:none; }
+          #v2-story-root .layout-hero .callout { font-size:78px; }
+
+          #v2-story-root .layout-focus .ground-line { display:none; }
+          #v2-story-root .layout-focus .callout { font-size:76px; }
+          #v2-story-root .layout-hero .callout.callout-long { font-size:64px; }
+          #v2-story-root .layout-focus .callout.callout-long { font-size:60px; }
+          #v2-story-root .layout-grid .callout.callout-long,
+          #v2-story-root .layout-process .callout.callout-long,
+          #v2-story-root .layout-comparison .callout.callout-long { font-size:48px; }
+          #v2-story-root .layout-stage .callout.callout-long { font-size:40px; }
+
+          #v2-story-root .chapter-intro { position:absolute; inset:0; z-index:80; overflow:hidden; background:#ececea; clip-path:inset(0 0 0 0); }
+          #v2-story-root .intro-rail { position:absolute; top:176px; left:176px; width:14px; height:560px; background:#1597ea; transform-origin:center top; }
+          #v2-story-root .intro-kicker { position:absolute; top:186px; left:244px; color:#117abd; font-size:28px; font-weight:900; }
+          #v2-story-root .intro-title { position:absolute; top:250px; left:236px; z-index:2; font-size:116px; font-weight:900; line-height:1.08; }
+          #v2-story-root .intro-promise { position:absolute; top:430px; left:244px; z-index:2; width:1080px; font-size:44px; font-weight:700; line-height:1.45; }
+          #v2-story-root .intro-ghost { position:absolute; top:118px; right:70px; width:520px; height:520px; border:12px solid rgba(17,122,189,.07); border-radius:50%; }
+          #v2-story-root .intro-mark { position:absolute; border:7px solid #111413; border-radius:50%; }
+          #v2-story-root .intro-mark-a { right:285px; bottom:245px; width:190px; height:190px; border-color:#1597ea; }
+          #v2-story-root .intro-mark-b { right:185px; bottom:170px; width:92px; height:92px; border-color:#f5c84b; }
+
+          #v2-story-root .chapter-summary { position:absolute; inset:0; z-index:90; display:grid; grid-template-columns:440px 1fr; background:#ececea; clip-path:inset(0 0 0 100%); }
+          #v2-story-root .is-recap .chapter-summary { clip-path:none; }
+          #v2-story-root .summary-side { display:flex; height:840px; flex-direction:column; justify-content:center; padding:90px 58px; border-right:12px solid #117abd; background:#ececea; color:#111413; }
+          #v2-story-root .summary-side span { font-size:27px; font-weight:800; }
+          #v2-story-root .summary-side strong { margin-top:24px; font-size:70px; font-weight:900; line-height:1.15; }
+          #v2-story-root .summary-body { display:flex; height:840px; flex-direction:column; justify-content:center; gap:30px; padding:90px 130px 90px 100px; }
+          #v2-story-root .summary-point { display:grid; grid-template-columns:82px 1fr; min-height:118px; align-items:center; border-bottom:4px solid #dfe7e4; opacity:0; }
+          #v2-story-root .summary-point span { color:#117abd; font-size:27px; font-weight:900; }
+          #v2-story-root .summary-point strong { font-size:42px; font-weight:900; line-height:1.3; }
+          #v2-story-root .summary-cta { display:flex; align-items:center; gap:24px; min-height:84px; margin-top:8px; padding:18px 24px; border-left:8px solid #f5c84b; background:#ececea; opacity:0; }
+          #v2-story-root .summary-cta strong { color:#117abd; font-size:30px; font-weight:900; }
+          #v2-story-root .summary-cta span { color:#27312e; font-size:27px; font-weight:800; }
+          #v2-story-root .is-final-summary .summary-side strong { font-size:62px; }
+          #v2-story-root .is-final-summary .summary-body { gap:22px; }
+          #v2-story-root .is-final-summary .summary-point strong { font-size:36px; }
+        </style>
+
+      <section data-hf-id="hf-v2-phase-c01-s01" id="v2-phase-c01-s01" class="phase layout-comparison variant-standard is-first" style="z-index:1" data-chapter="前言" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,45.98149967454549px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">更多上下文</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">更清楚上下文</div></div>
+            <img data-hf-id="hf-v2-c01-s01-human" class="actor human-actor" style="left:56px;top:485px;width:230px;height:280px" src="assets/pack/sprites/human/surprised.png" alt="工程师 surprised">
+            <img data-hf-id="hf-v2-c01-s01-agent" class="actor agent-actor" style="left:1614px;top:465px;width:250px;height:300px" src="assets/pack/sprites/agent/evaluate-front.png" alt="Tiny Agent evaluate-front">
+            <div data-hf-id="hf-v2-c01-s01-callout" class="callout accent-red" style="left:420px;top:132px;width:1080px;text-align:center">信息更多也可能埋住重点</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c01-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:348.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/document-stack.png" alt="超长历史">
+            <span>超长历史</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s01-prop-2" class="prop-item prop-2" style="left:598.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/archive.png" alt="旧细节">
+            <span>旧细节</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s01-prop-3" class="prop-item prop-3" style="left:1078.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/target.png" alt="当前目标">
+            <span>当前目标</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s01-prop-4" class="prop-item prop-4" style="left:1328.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/summary.png" alt="实时状态">
+            <span>实时状态</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c01-s02" id="v2-phase-c01-s02" class="phase layout-process variant-standard" style="z-index:2" data-chapter="前言" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,55.924240061968874px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c01-s02-human" class="actor human-actor" style="left:56px;top:470px;width:230px;height:270px" src="assets/pack/sprites/human/explain-front.png" alt="工程师 explain-front">
+            <img data-hf-id="hf-v2-c01-s02-agent" class="actor agent-actor" style="left:1619px;top:455px;width:245px;height:285px" src="assets/pack/sprites/agent/plan-front.png" alt="Tiny Agent plan-front">
+            <div data-hf-id="hf-v2-c01-s02-callout" class="callout accent-blue" style="left:350px;top:132px;width:1220px;text-align:center">管理完整注意力预算</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c01-s02-line-1" class="connector connector-1" style="left:579.640625px;top:480px;width:172.00px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c01-s02-line-2" class="connector connector-2" style="left:873.359375px;top:480px;width:172.00px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c01-s02-line-3" class="connector connector-3" style="left:1169px;top:480px;width:177.13px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c01-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:391px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/target.png" alt="目标">
+            <span>目标</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s02-prop-2" class="prop-item prop-2" style="left:686px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/tool.png" alt="工具">
+            <span>工具</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s02-prop-3" class="prop-item prop-3" style="left:981px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/search.png" alt="检索">
+            <span>检索</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s02-prop-4" class="prop-item prop-4" style="left:1276px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/note.png" alt="状态">
+            <span>状态</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c01-s03" id="v2-phase-c01-s03" class="phase layout-hero variant-standard" style="z-index:3" data-chapter="前言" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(83.71037464827145px,45px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c01-s03-human" class="actor human-actor" style="left:74px;top:430px;width:300px;height:345px" src="assets/pack/sprites/human/review-front.png" alt="工程师 review-front">
+            <img data-hf-id="hf-v2-c01-s03-agent" class="actor agent-actor" style="left:395px;top:410px;width:310px;height:355px" src="assets/pack/sprites/agent/verify-front.png" alt="Tiny Agent verify-front">
+            <div data-hf-id="hf-v2-c01-s03-callout" class="callout accent-yellow" style="left:420px;top:170px;width:1080px;text-align:center">最小充分，不是一味最短</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c01-s03-line-1" class="connector connector-1" style="left:1223.109375px;top:550px;width:182.25px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c01-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:1046px;top:447.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/clipboard.png" alt="充分上下文">
+            <span>充分上下文</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s03-prop-2" class="prop-item prop-2" style="left:1341px;top:447.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/target.png" alt="目标行为">
+            <span>目标行为</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c02-s01" id="v2-phase-c02-s01" class="phase layout-grid variant-standard has-chapter-intro" style="z-index:4" data-chapter="注意力预算" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(44.50071976984623px,47.39999999999998px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c02-s01-human" class="actor human-actor" style="left:68px;top:395px;width:250px;height:300px" src="assets/pack/sprites/human/read-front.png" alt="工程师 read-front">
+            <img data-hf-id="hf-v2-c02-s01-agent" class="actor agent-actor" style="left:300px;top:350px;width:310px;height:360px" src="assets/pack/sprites/agent/reason-front.png" alt="Tiny Agent reason-front">
+            <div data-hf-id="hf-v2-c02-s01-callout" class="callout accent-blue" style="left:420px;top:132px;width:1080px;text-align:center">每个 token 都消耗注意力</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c02-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:991px;top:283.4px;--prop-size:170px">
+            <img src="assets/pack/sprites/props/prompt-injection.png" alt="系统指令">
+            <span>系统指令</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s01-prop-2" class="prop-item prop-2" style="left:1321px;top:283.4px;--prop-size:170px">
+            <img src="assets/pack/sprites/props/tool.png" alt="工具">
+            <span>工具</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s01-prop-3" class="prop-item prop-3" style="left:991px;top:546.6px;--prop-size:170px">
+            <img src="assets/pack/sprites/props/document.png" alt="证据">
+            <span>证据</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s01-prop-4" class="prop-item prop-4" style="left:1321px;top:546.6px;--prop-size:170px">
+            <img src="assets/pack/sprites/props/chat.png" alt="历史">
+            <span>历史</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c02-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">第 2 章</div>
+          <div class="intro-title">注意力预算</div>
+          <div class="intro-promise">把上下文当作稀缺注意力，而不是无限存储</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c02-s02" id="v2-phase-c02-s02" class="phase layout-comparison variant-standard" style="z-index:5" data-chapter="注意力预算" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,29.815207601112945px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">全部装入</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">支持判断</div></div>
+            <img data-hf-id="hf-v2-c02-s02-human" class="actor human-actor" style="left:56px;top:485px;width:230px;height:280px" src="assets/pack/sprites/human/compare-front.png" alt="工程师 compare-front">
+            <img data-hf-id="hf-v2-c02-s02-agent" class="actor agent-actor" style="left:1614px;top:465px;width:250px;height:300px" src="assets/pack/sprites/agent/evaluate-front.png" alt="Tiny Agent evaluate-front">
+            <div data-hf-id="hf-v2-c02-s02-callout" class="callout accent-red" style="left:420px;top:132px;width:1080px;text-align:center">写进去了不等于优先</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c02-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:348.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/document-stack.png" alt="原始日志">
+            <span>原始日志</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s02-prop-2" class="prop-item prop-2" style="left:598.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/uncertainty.png" alt="冲突规则">
+            <span>冲突规则</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s02-prop-3" class="prop-item prop-3" style="left:1078.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/target.png" alt="下一判断">
+            <span>下一判断</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s02-prop-4" class="prop-item prop-4" style="left:1328.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/evidence.png" alt="当前证据">
+            <span>当前证据</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c02-s03" id="v2-phase-c02-s03" class="phase layout-process variant-standard" style="z-index:6" data-chapter="注意力预算" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,63.44624243642687px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c02-s03-human" class="actor human-actor" style="left:56px;top:470px;width:230px;height:270px" src="assets/pack/sprites/human/decide-front.png" alt="工程师 decide-front">
+            <img data-hf-id="hf-v2-c02-s03-agent" class="actor agent-actor" style="left:1619px;top:455px;width:245px;height:285px" src="assets/pack/sprites/agent/collaborate-front.png" alt="Tiny Agent collaborate-front">
+            <div data-hf-id="hf-v2-c02-s03-callout" class="callout accent-yellow" style="left:350px;top:132px;width:1220px;text-align:center">有用上下文会随任务变化</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c02-s03-line-1" class="connector connector-1" style="left:579px;top:480px;width:170.72px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c02-s03-line-2" class="connector connector-2" style="left:874.640625px;top:480px;width:182.25px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c02-s03-line-3" class="connector connector-3" style="left:1158.109375px;top:480px;width:193.78px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c02-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:391px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/search.png" alt="新证据">
+            <span>新证据</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s03-prop-2" class="prop-item prop-2" style="left:686px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/warning.png" alt="新边界">
+            <span>新边界</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s03-prop-3" class="prop-item prop-3" style="left:981px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/milestone.png" alt="里程碑">
+            <span>里程碑</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s03-prop-4" class="prop-item prop-4" style="left:1276px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/summary.png" alt="刷新">
+            <span>刷新</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c02-s04" id="v2-phase-c02-s04" class="phase is-recap" style="z-index:7" data-chapter="注意力预算" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c02-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>第 2 章小结</span><strong>注意力预算</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>把上下文当作有限注意力预算，而不是无限存储</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>更多 token 可能稀释下一步最重要的指令</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>保留最小充分集合，并随任务变化持续刷新</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c03-s01" id="v2-phase-c03-s01" class="phase layout-comparison variant-standard has-chapter-intro" style="z-index:8" data-chapter="高信号输入" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,36.762191689583574px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">硬编码规则</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">空泛要求</div></div>
+            <img data-hf-id="hf-v2-c03-s01-human" class="actor human-actor" style="left:56px;top:485px;width:230px;height:280px" src="assets/pack/sprites/human/compare-front.png" alt="工程师 compare-front">
+            <img data-hf-id="hf-v2-c03-s01-agent" class="actor agent-actor" style="left:1614px;top:465px;width:250px;height:300px" src="assets/pack/sprites/agent/reason-front.png" alt="Tiny Agent reason-front">
+            <div data-hf-id="hf-v2-c03-s01-callout" class="callout accent-yellow" style="left:420px;top:132px;width:1080px;text-align:center">指令要在合适抽象层级</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c03-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:348.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/branch.png" alt="复杂分支">
+            <span>复杂分支</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s01-prop-2" class="prop-item prop-2" style="left:598.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/error.png" alt="脆弱">
+            <span>脆弱</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s01-prop-3" class="prop-item prop-3" style="left:1078.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/uncertainty.png" alt="假定共识">
+            <span>假定共识</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s01-prop-4" class="prop-item prop-4" style="left:1328.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/question.png" alt="缺少信号">
+            <span>缺少信号</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c03-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">第 3 章</div>
+          <div class="intro-title">高信号输入</div>
+          <div class="intro-promise">筛选真正能指导行动的指令、工具和示例</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c03-s02" id="v2-phase-c03-s02" class="phase layout-process variant-standard" style="z-index:9" data-chapter="高信号输入" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,55.34743790530291px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c03-s02-human" class="actor human-actor" style="left:56px;top:470px;width:230px;height:270px" src="assets/pack/sprites/human/operate.png" alt="工程师 operate">
+            <img data-hf-id="hf-v2-c03-s02-agent" class="actor agent-actor" style="left:1619px;top:455px;width:245px;height:285px" src="assets/pack/sprites/agent/monitor-right.png" alt="Tiny Agent monitor-right">
+            <div data-hf-id="hf-v2-c03-s02-callout" class="callout accent-blue" style="left:350px;top:132px;width:1220px;text-align:center">工具本身也占用上下文</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c03-s02-line-1" class="connector connector-1" style="left:578.359375px;top:480px;width:172.00px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c03-s02-line-2" class="connector connector-2" style="left:875.28125px;top:480px;width:166.88px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c03-s02-line-3" class="connector connector-3" style="left:1172.203125px;top:480px;width:168.16px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c03-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:391px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/tool.png" alt="清楚契约">
+            <span>清楚契约</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s02-prop-2" class="prop-item prop-2" style="left:686px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/permission-key.png" alt="使用条件">
+            <span>使用条件</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s02-prop-3" class="prop-item prop-3" style="left:981px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/result-card.png" alt="紧凑返回">
+            <span>紧凑返回</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s02-prop-4" class="prop-item prop-4" style="left:1276px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/stop.png" alt="减少重叠">
+            <span>减少重叠</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c03-s03" id="v2-phase-c03-s03" class="phase layout-focus variant-mirror" style="z-index:10" data-chapter="高信号输入" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(-86.40302395269418px,25px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c03-s03-human" class="actor human-actor" style="left:1600px;top:440px;width:260px;height:300px" src="assets/pack/sprites/human/write-front.png" alt="工程师 write-front">
+            <img data-hf-id="hf-v2-c03-s03-agent" class="actor agent-actor" style="left:1210px;top:325px;width:410px;height:470px" src="assets/pack/sprites/agent/read-front.png" alt="Tiny Agent read-front">
+            <div data-hf-id="hf-v2-c03-s03-callout" class="callout accent-red" style="left:260px;top:135px;width:1400px;text-align:center">示例是智能体看得见的模式</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c03-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:483.5px;top:217.33125px;--prop-size:185px">
+            <img src="assets/pack/sprites/props/book.png" alt="典型模式">
+            <span>典型模式</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s03-prop-2" class="prop-item prop-2" style="left:663.5px;top:529.1003953623979px;--prop-size:185px">
+            <img src="assets/pack/sprites/props/compare.png" alt="必要变化">
+            <span>必要变化</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s03-prop-3" class="prop-item prop-3" style="left:303.5px;top:529.1003953623979px;--prop-size:185px">
+            <img src="assets/pack/sprites/props/shield.png" alt="重要边界">
+            <span>重要边界</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c03-s04" id="v2-phase-c03-s04" class="phase is-recap" style="z-index:11" data-chapter="高信号输入" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c03-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>第 3 章小结</span><strong>高信号输入</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>系统指令要落在硬编码和空泛之间的合适层级</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>工具要清楚、高效，并尽量减少功能重叠</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>用少量典型示例教会智能体真正的模式</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c04-s01" id="v2-phase-c04-s01" class="phase layout-comparison variant-standard has-chapter-intro" style="z-index:12" data-chapter="按需检索" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,44.09788887583494px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">全部预加载</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">需要时取用</div></div>
+            <img data-hf-id="hf-v2-c04-s01-human" class="actor human-actor" style="left:56px;top:485px;width:230px;height:280px" src="assets/pack/sprites/human/compare-front.png" alt="工程师 compare-front">
+            <img data-hf-id="hf-v2-c04-s01-agent" class="actor agent-actor" style="left:1614px;top:465px;width:250px;height:300px" src="assets/pack/sprites/agent/search.png" alt="Tiny Agent search">
+            <div data-hf-id="hf-v2-c04-s01-callout" class="callout accent-blue" style="left:420px;top:132px;width:1080px;text-align:center">上下文留地图，细节再取用</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c04-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:348.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/document-stack.png" alt="完整语料">
+            <span>完整语料</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s01-prop-2" class="prop-item prop-2" style="left:598.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/memory.png" alt="预算已占">
+            <span>预算已占</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s01-prop-3" class="prop-item prop-3" style="left:1078.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/folder.png" alt="引用地图">
+            <span>引用地图</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s01-prop-4" class="prop-item prop-4" style="left:1328.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/search.png" alt="目标检索">
+            <span>目标检索</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c04-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">第 4 章</div>
+          <div class="intro-title">按需检索</div>
+          <div class="intro-promise">需要细节时再取用，不在开始时塞满全部材料</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c04-s02" id="v2-phase-c04-s02" class="phase layout-process variant-standard" style="z-index:13" data-chapter="按需检索" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,60.95618248625408px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c04-s02-human" class="actor human-actor" style="left:56px;top:470px;width:230px;height:270px" src="assets/pack/sprites/human/read-front.png" alt="工程师 read-front">
+            <img data-hf-id="hf-v2-c04-s02-agent" class="actor agent-actor" style="left:1619px;top:455px;width:245px;height:285px" src="assets/pack/sprites/agent/execute-right.png" alt="Tiny Agent execute-right">
+            <div data-hf-id="hf-v2-c04-s02-callout" class="callout accent-yellow" style="left:350px;top:132px;width:1220px;text-align:center">渐进式披露保护注意力</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c04-s02-line-1" class="connector connector-1" style="left:579.640625px;top:480px;width:170.72px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c04-s02-line-2" class="connector connector-2" style="left:874px;top:480px;width:177.13px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c04-s02-line-3" class="connector connector-3" style="left:1163.875px;top:480px;width:182.25px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c04-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:391px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/folder.png" alt="识别结构">
+            <span>识别结构</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s02-prop-2" class="prop-item prop-2" style="left:686px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/search.png" alt="缩小范围">
+            <span>缩小范围</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s02-prop-3" class="prop-item prop-3" style="left:981px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/code-file.png" alt="查看片段">
+            <span>查看片段</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s02-prop-4" class="prop-item prop-4" style="left:1276px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/evidence.png" alt="用于判断">
+            <span>用于判断</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c04-s03" id="v2-phase-c04-s03" class="phase layout-focus variant-mirror" style="z-index:14" data-chapter="按需检索" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(-75.88622301350142px,25px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c04-s03-human" class="actor human-actor" style="left:1600px;top:440px;width:260px;height:300px" src="assets/pack/sprites/human/decide-front.png" alt="工程师 decide-front">
+            <img data-hf-id="hf-v2-c04-s03-agent" class="actor agent-actor" style="left:1210px;top:325px;width:410px;height:470px" src="assets/pack/sprites/agent/look-left.png" alt="Tiny Agent look-left">
+            <div data-hf-id="hf-v2-c04-s03-callout" class="callout accent-red" style="left:260px;top:135px;width:1400px;text-align:center">预加载必需项，其余按需取</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c04-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:483.5px;top:222.534375px;--prop-size:185px">
+            <img src="assets/pack/sprites/props/timer.png" alt="检索成本">
+            <span>检索成本</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s03-prop-2" class="prop-item prop-2" style="left:663.5px;top:534.3035203623979px;--prop-size:185px">
+            <img src="assets/pack/sprites/props/route.png" alt="混合边界">
+            <span>混合边界</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s03-prop-3" class="prop-item prop-3" style="left:303.5px;top:534.3035203623979px;--prop-size:185px">
+            <img src="assets/pack/sprites/props/target.png" alt="相关细节">
+            <span>相关细节</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c04-s04" id="v2-phase-c04-s04" class="phase is-recap" style="z-index:15" data-chapter="按需检索" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c04-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>第 4 章小结</span><strong>按需检索</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>保留轻量引用，不要预先塞入全部正文</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>让 AI 智能体在细节真正相关时再逐步发现</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>在更聚焦的上下文和额外检索成本之间做取舍</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c05-s01" id="v2-phase-c05-s01" class="phase layout-process variant-standard has-chapter-intro" style="z-index:16" data-chapter="长任务记忆" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,80px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c05-s01-human" class="actor human-actor" style="left:56px;top:470px;width:230px;height:270px" src="assets/pack/sprites/human/caution-front.png" alt="工程师 caution-front">
+            <img data-hf-id="hf-v2-c05-s01-agent" class="actor agent-actor" style="left:1619px;top:455px;width:245px;height:285px" src="assets/pack/sprites/agent/store-memory.png" alt="Tiny Agent store-memory">
+            <div data-hf-id="hf-v2-c05-s01-callout" class="callout accent-blue" style="left:350px;top:132px;width:1220px;text-align:center">带走连续性，不带走全部轨迹</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c05-s01-line-1" class="connector connector-1" style="left:573.875px;top:480px;width:188.02px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c05-s01-line-2" class="connector connector-2" style="left:863.109375px;top:480px;width:193.78px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c05-s01-line-3" class="connector connector-3" style="left:1158.109375px;top:480px;width:182.25px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c05-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:391px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/chat.png" alt="长轨迹">
+            <span>长轨迹</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s01-prop-2" class="prop-item prop-2" style="left:686px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/summary.png" alt="压缩">
+            <span>压缩</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s01-prop-3" class="prop-item prop-3" style="left:981px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/milestone.png" alt="关键决定">
+            <span>关键决定</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s01-prop-4" class="prop-item prop-4" style="left:1276px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/progress.png" alt="下一动作">
+            <span>下一动作</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c05-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">第 5 章</div>
+          <div class="intro-title">长任务记忆</div>
+          <div class="intro-promise">跨越长任务与上下文重置仍能保留决定和进度</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c05-s02" id="v2-phase-c05-s02" class="phase layout-process variant-standard" style="z-index:17" data-chapter="长任务记忆" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,65.31134623912203px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c05-s02-human" class="actor human-actor" style="left:56px;top:470px;width:230px;height:270px" src="assets/pack/sprites/human/write-front.png" alt="工程师 write-front">
+            <img data-hf-id="hf-v2-c05-s02-agent" class="actor agent-actor" style="left:1619px;top:455px;width:245px;height:285px" src="assets/pack/sprites/agent/recall-memory.png" alt="Tiny Agent recall-memory">
+            <div data-hf-id="hf-v2-c05-s02-callout" class="callout accent-yellow" style="left:350px;top:132px;width:1220px;text-align:center">把工作状态写到窗口之外</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c05-s02-line-1" class="connector connector-1" style="left:568.109375px;top:480px;width:188.02px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c05-s02-line-2" class="connector connector-2" style="left:868.875px;top:480px;width:176.48px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c05-s02-line-3" class="connector connector-3" style="left:1169.640625px;top:480px;width:170.72px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c05-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:391px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/evidence.png" alt="高召回">
+            <span>高召回</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s02-prop-2" class="prop-item prop-2" style="left:686px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/note.png" alt="持久状态">
+            <span>持久状态</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s02-prop-3" class="prop-item prop-3" style="left:981px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/question.png" alt="开放问题">
+            <span>开放问题</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s02-prop-4" class="prop-item prop-4" style="left:1276px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/archive.png" alt="原始历史">
+            <span>原始历史</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c05-s03" id="v2-phase-c05-s03" class="phase layout-comparison variant-standard" style="z-index:18" data-chapter="长任务记忆" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,48.24857026367596px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">一条连续主线</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">多个聚焦探索</div></div>
+            <img data-hf-id="hf-v2-c05-s03-human" class="actor human-actor" style="left:56px;top:485px;width:230px;height:280px" src="assets/pack/sprites/human/handoff-right.png" alt="工程师 handoff-right">
+            <img data-hf-id="hf-v2-c05-s03-agent" class="actor agent-actor" style="left:1614px;top:465px;width:250px;height:300px" src="assets/pack/sprites/agent/delegate-front.png" alt="Tiny Agent delegate-front">
+            <div data-hf-id="hf-v2-c05-s03-callout" class="callout accent-red" style="left:420px;top:132px;width:1080px;text-align:center">按任务形态选择记忆方式</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c05-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:348.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/single-agent.png" alt="主计划">
+            <span>主计划</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s03-prop-2" class="prop-item prop-2" style="left:598.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/note.png" alt="共享状态">
+            <span>共享状态</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s03-prop-3" class="prop-item prop-3" style="left:1078.1px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/parallel-agents.png" alt="独立深挖">
+            <span>独立深挖</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s03-prop-4" class="prop-item prop-4" style="left:1328.9px;top:402.5px;--prop-size:195px">
+            <img src="assets/pack/sprites/props/summary.png" alt="压缩回传">
+            <span>压缩回传</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c05-s04" id="v2-phase-c05-s04" class="phase is-recap" style="z-index:19" data-chapter="长任务记忆" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c05-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>第 5 章小结</span><strong>长任务记忆</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>把长轨迹压缩成高召回的连续性摘要</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>把持久工作状态写进结构化外部笔记</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>只有聚焦探索值得协调成本时，才使用专门 Agent</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c06-s01" id="v2-phase-c06-s01" class="phase layout-hero variant-mirror has-chapter-intro" style="z-index:20" data-chapter="上下文包" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(-85.84945079085765px,45px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c06-s01-human" class="actor human-actor" style="left:1546px;top:430px;width:300px;height:345px" src="assets/pack/sprites/human/handoff-right.png" alt="工程师 handoff-right">
+            <img data-hf-id="hf-v2-c06-s01-agent" class="actor agent-actor" style="left:1215px;top:410px;width:310px;height:355px" src="assets/pack/sprites/agent/receive-right.png" alt="Tiny Agent receive-right">
+            <div data-hf-id="hf-v2-c06-s01-callout" class="callout accent-blue" style="left:420px;top:170px;width:1080px;text-align:center">六部分，一个可检查上下文包</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c06-s01-line-1" class="connector connector-1" style="left:696.890625px;top:550px;width:182.25px;clip-path:inset(0 100% 0 0);transform:rotate(180.000deg)"></div>
+          <div data-hf-id="hf-v2-c06-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:621px;top:447.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/clipboard.png" alt="上下文包">
+            <span>上下文包</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s01-prop-2" class="prop-item prop-2" style="left:326px;top:447.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/target.png" alt="结果目标">
+            <span>结果目标</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c06-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">第 6 章</div>
+          <div class="intro-title">上下文包</div>
+          <div class="intro-promise">为真实工作建立可复用的六部分上下文包</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c06-s02" id="v2-phase-c06-s02" class="phase layout-grid variant-mirror" style="z-index:21" data-chapter="上下文包" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(-53.672073132955006px,47.39999999999998px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c06-s02-human" class="actor human-actor" style="left:1602px;top:395px;width:250px;height:300px" src="assets/pack/sprites/human/explain-front.png" alt="工程师 explain-front">
+            <img data-hf-id="hf-v2-c06-s02-agent" class="actor agent-actor" style="left:1310px;top:350px;width:310px;height:360px" src="assets/pack/sprites/agent/plan-front.png" alt="Tiny Agent plan-front">
+            <div data-hf-id="hf-v2-c06-s02-callout" class="callout accent-yellow" style="left:420px;top:132px;width:1080px;text-align:center">把行动方式和限制写清</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c06-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:711px;top:283.4px;--prop-size:170px">
+            <img src="assets/pack/sprites/props/shield.png" alt="运行规则">
+            <span>运行规则</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s02-prop-2" class="prop-item prop-2" style="left:381px;top:283.4px;--prop-size:170px">
+            <img src="assets/pack/sprites/props/tool.png" alt="工具地图">
+            <span>工具地图</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s02-prop-3" class="prop-item prop-3" style="left:711px;top:546.6px;--prop-size:170px">
+            <img src="assets/pack/sprites/props/book.png" alt="典型示例">
+            <span>典型示例</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s02-prop-4" class="prop-item prop-4" style="left:381px;top:546.6px;--prop-size:170px">
+            <img src="assets/pack/sprites/props/permission-key.png" alt="权限边界">
+            <span>权限边界</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c06-s03" id="v2-phase-c06-s03" class="phase layout-process variant-standard" style="z-index:22" data-chapter="上下文包" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(0px,64.80693117778924px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c06-s03-human" class="actor human-actor" style="left:56px;top:470px;width:230px;height:270px" src="assets/pack/sprites/human/review-front.png" alt="工程师 review-front">
+            <img data-hf-id="hf-v2-c06-s03-agent" class="actor agent-actor" style="left:1619px;top:455px;width:245px;height:285px" src="assets/pack/sprites/agent/collaborate-front.png" alt="Tiny Agent collaborate-front">
+            <div data-hf-id="hf-v2-c06-s03-callout" class="callout accent-red" style="left:350px;top:132px;width:1220px;text-align:center">到达里程碑就更新上下文包</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c06-s03-line-1" class="connector connector-1" style="left:579.640625px;top:480px;width:170.72px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c06-s03-line-2" class="connector connector-2" style="left:874px;top:480px;width:177.13px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div><div data-hf-id="hf-v2-c06-s03-line-3" class="connector connector-3" style="left:1163.875px;top:480px;width:172.00px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c06-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:391px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/folder.png" alt="检索索引">
+            <span>检索索引</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s03-prop-2" class="prop-item prop-2" style="left:686px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/search.png" alt="打开条件">
+            <span>打开条件</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s03-prop-3" class="prop-item prop-3" style="left:981px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/note.png" alt="工作状态">
+            <span>工作状态</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s03-prop-4" class="prop-item prop-4" style="left:1276px;top:377.5px;--prop-size:205px">
+            <img src="assets/pack/sprites/props/loop.png" alt="持续更新">
+            <span>持续更新</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c06-s04" id="v2-phase-c06-s04" class="phase is-recap" style="z-index:23" data-chapter="上下文包" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c06-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>第 6 章小结</span><strong>上下文包</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>用结果目标和运行规则锚定 AI 智能体</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>用工具地图、典型示例和检索索引指导行动</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>用紧凑且持续更新的工作状态保持连续性</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c07-s01" id="v2-phase-c07-s01" class="phase is-recap is-final-summary" style="z-index:24" data-chapter="总结" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c07-s01-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>总结</span><strong>AI 智能体上下文<br>保留信号，减少噪声</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>管理完整上下文状态，不只优化提示词。根据下一步判断需要什么，保留目标、约束、工具、证据和当前状态</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>提高信号质量。用合适层级的指令、最小工具集和少量典型示例，替代脆弱规则与边缘情况堆积</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>最后，用压缩、结构化笔记和六部分最小高信号上下文包保护长任务。保留信号，按需取细节，持续维护工作状态</strong></div>
+
+          </div>
+        </div>
+      </section>
+        <script>
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+      gsap.set("#v2-phase-c01-s01 .human-actor", { y: 8, opacity: 0 });
+      gsap.set("#v2-phase-c01-s01 .agent-actor", { y: 10, opacity: 0 });
+      tl.to("#v2-phase-c01-s01 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 0.160);
+      tl.to("#v2-phase-c01-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 0.200);
+      gsap.set("#v2-phase-c01-s01 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" });
+      gsap.set("#v2-phase-c01-s01 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" });
+      gsap.set("#v2-phase-c01-s01 .callout", { y: -12, opacity: 0 });
+      tl.to("#v2-phase-c01-s01 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 0.160);
+      tl.to("#v2-phase-c01-s01 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 0.160);
+      tl.to("#v2-phase-c01-s01 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 0.200);
+      tl.fromTo("#v2-phase-c01-s01 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 0.220);
+      tl.fromTo("#v2-phase-c01-s01 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 0.220);
+      tl.fromTo("#v2-phase-c01-s01 .prop-3", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 0.220);
+      tl.fromTo("#v2-phase-c01-s01 .prop-4", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 0.220);
+      tl.to("#v2-phase-c01-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 24.375);
+      tl.fromTo("#v2-phase-c01-s02", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 24.375);
+      tl.to("#v2-phase-c01-s01", { opacity: 0, duration: 0.01, ease: "none" }, 24.915);
+      tl.set("#v2-phase-c01-s02 .human-actor", { y: 8, opacity: 0 }, 24.355);
+      tl.set("#v2-phase-c01-s02 .agent-actor", { y: 10, opacity: 0 }, 24.355);
+      tl.to("#v2-phase-c01-s02 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 24.415);
+      tl.to("#v2-phase-c01-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 24.455);
+      tl.set("#v2-phase-c01-s02 .callout", { y: -14, opacity: 0 }, 24.355);
+      tl.to("#v2-phase-c01-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 24.415);
+      tl.fromTo("#v2-phase-c01-s02 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 24.595);
+      tl.fromTo("#v2-phase-c01-s02 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 24.595);
+      tl.fromTo("#v2-phase-c01-s02 .prop-3", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 24.595);
+      tl.fromTo("#v2-phase-c01-s02 .prop-4", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 24.595);
+      tl.fromTo("#v2-phase-c01-s02 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 24.775);
+      tl.fromTo("#v2-phase-c01-s02 .connector-2", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 24.775);
+      tl.fromTo("#v2-phase-c01-s02 .connector-3", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 24.775);
+      tl.to("#v2-phase-c01-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 45.666);
+      tl.fromTo("#v2-phase-c01-s03", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 45.666);
+      tl.to("#v2-phase-c01-s02", { opacity: 0, duration: 0.01, ease: "none" }, 46.206);
+      tl.set("#v2-phase-c01-s03 .human-actor", { y: 8, opacity: 0 }, 45.646);
+      tl.set("#v2-phase-c01-s03 .agent-actor", { y: 10, opacity: 0 }, 45.646);
+      tl.to("#v2-phase-c01-s03 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 45.706);
+      tl.to("#v2-phase-c01-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 45.746);
+      tl.set("#v2-phase-c01-s03 .callout", { x: -42, opacity: 0 }, 45.646);
+      tl.to("#v2-phase-c01-s03 .callout", { x: 0, opacity: 1, duration: 0.58, ease: "power2.out" }, 45.706);
+      tl.fromTo("#v2-phase-c01-s03 .prop-1", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 45.886);
+      tl.fromTo("#v2-phase-c01-s03 .prop-2", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 45.886);
+      tl.fromTo("#v2-phase-c01-s03 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 46.066);
+      tl.to("#v2-phase-c01-s03", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 51.936);
+      tl.fromTo("#v2-phase-c02-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 51.936);
+      tl.to("#v2-phase-c01-s03", { opacity: 0, duration: 0.01, ease: "none" }, 52.676);
+      tl.set("#v2-phase-c02-s01 .intro-rail", { scaleY: 0 }, 51.916);
+      tl.set("#v2-phase-c02-s01 .intro-kicker", { x: -55, opacity: 0 }, 51.916);
+      tl.set("#v2-phase-c02-s01 .intro-title", { x: -90, opacity: 0 }, 51.916);
+      tl.set("#v2-phase-c02-s01 .intro-promise", { y: 34, opacity: 0 }, 51.916);
+      tl.set("#v2-phase-c02-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 51.916);
+      tl.to("#v2-phase-c02-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 51.976);
+      tl.to("#v2-phase-c02-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 52.116);
+      tl.to("#v2-phase-c02-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 52.176);
+      tl.to("#v2-phase-c02-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 52.456);
+      tl.to("#v2-phase-c02-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 52.316);
+      tl.to("#v2-phase-c02-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 54.116);
+      tl.to("#v2-phase-c02-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 54.756);
+      tl.set("#v2-phase-c02-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 54.096);
+      tl.to("#v2-phase-c02-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 54.116);
+      tl.set("#v2-phase-c02-s01 .human-actor", { y: 8, opacity: 0 }, 54.096);
+      tl.set("#v2-phase-c02-s01 .agent-actor", { y: 10, opacity: 0 }, 54.096);
+      tl.to("#v2-phase-c02-s01 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 54.276);
+      tl.to("#v2-phase-c02-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 54.316);
+      tl.set("#v2-phase-c02-s01 .callout", { x: -24, opacity: 0 }, 54.096);
+      tl.to("#v2-phase-c02-s01 .callout", { x: 0, opacity: 1, duration: 0.52, ease: "power2.out" }, 54.276);
+      tl.fromTo("#v2-phase-c02-s01 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 54.796);
+      tl.fromTo("#v2-phase-c02-s01 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 54.796);
+      tl.fromTo("#v2-phase-c02-s01 .prop-3", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 54.796);
+      tl.fromTo("#v2-phase-c02-s01 .prop-4", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 54.796);
+      tl.to("#v2-phase-c02-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 78.077);
+      tl.fromTo("#v2-phase-c02-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 78.077);
+      tl.to("#v2-phase-c02-s01", { opacity: 0, duration: 0.01, ease: "none" }, 78.617);
+      tl.set("#v2-phase-c02-s02 .human-actor", { y: 8, opacity: 0 }, 78.057);
+      tl.set("#v2-phase-c02-s02 .agent-actor", { y: 10, opacity: 0 }, 78.057);
+      tl.to("#v2-phase-c02-s02 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 78.117);
+      tl.to("#v2-phase-c02-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 78.157);
+      tl.set("#v2-phase-c02-s02 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" }, 78.057);
+      tl.set("#v2-phase-c02-s02 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" }, 78.057);
+      tl.set("#v2-phase-c02-s02 .callout", { y: -12, opacity: 0 }, 78.057);
+      tl.to("#v2-phase-c02-s02 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 78.117);
+      tl.to("#v2-phase-c02-s02 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 78.117);
+      tl.to("#v2-phase-c02-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 78.157);
+      tl.fromTo("#v2-phase-c02-s02 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 78.297);
+      tl.fromTo("#v2-phase-c02-s02 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 78.297);
+      tl.fromTo("#v2-phase-c02-s02 .prop-3", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 78.297);
+      tl.fromTo("#v2-phase-c02-s02 .prop-4", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 78.297);
+      tl.to("#v2-phase-c02-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 104.894);
+      tl.fromTo("#v2-phase-c02-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 104.894);
+      tl.to("#v2-phase-c02-s02", { opacity: 0, duration: 0.01, ease: "none" }, 105.434);
+      tl.set("#v2-phase-c02-s03 .human-actor", { y: 8, opacity: 0 }, 104.874);
+      tl.set("#v2-phase-c02-s03 .agent-actor", { y: 10, opacity: 0 }, 104.874);
+      tl.to("#v2-phase-c02-s03 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 104.934);
+      tl.to("#v2-phase-c02-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 104.974);
+      tl.set("#v2-phase-c02-s03 .callout", { y: -14, opacity: 0 }, 104.874);
+      tl.to("#v2-phase-c02-s03 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 104.934);
+      tl.fromTo("#v2-phase-c02-s03 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 105.114);
+      tl.fromTo("#v2-phase-c02-s03 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 105.114);
+      tl.fromTo("#v2-phase-c02-s03 .prop-3", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 105.114);
+      tl.fromTo("#v2-phase-c02-s03 .prop-4", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 105.114);
+      tl.fromTo("#v2-phase-c02-s03 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 105.294);
+      tl.fromTo("#v2-phase-c02-s03 .connector-2", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 105.294);
+      tl.fromTo("#v2-phase-c02-s03 .connector-3", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 105.294);
+      tl.to("#v2-phase-c02-s03", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 124.144);
+      tl.fromTo("#v2-phase-c02-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 124.144);
+      tl.to("#v2-phase-c02-s03", { opacity: 0, duration: 0.01, ease: "none" }, 124.684);
+      tl.set("#v2-phase-c02-s04 .summary-side span", { x: -35, opacity: 0 }, 124.124);
+      tl.set("#v2-phase-c02-s04 .summary-side strong", { y: 26, opacity: 0 }, 124.124);
+      tl.to("#v2-phase-c02-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 124.224);
+      tl.to("#v2-phase-c02-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 124.324);
+      tl.fromTo("#v2-phase-c02-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 124.564);
+      tl.fromTo("#v2-phase-c02-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 128.644);
+      tl.fromTo("#v2-phase-c02-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 131.636);
+      tl.to("#v2-phase-c02-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 135.480);
+      tl.fromTo("#v2-phase-c03-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 135.480);
+      tl.to("#v2-phase-c02-s04", { opacity: 0, duration: 0.01, ease: "none" }, 136.220);
+      tl.set("#v2-phase-c03-s01 .intro-rail", { scaleY: 0 }, 135.460);
+      tl.set("#v2-phase-c03-s01 .intro-kicker", { x: -55, opacity: 0 }, 135.460);
+      tl.set("#v2-phase-c03-s01 .intro-title", { x: -90, opacity: 0 }, 135.460);
+      tl.set("#v2-phase-c03-s01 .intro-promise", { y: 34, opacity: 0 }, 135.460);
+      tl.set("#v2-phase-c03-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 135.460);
+      tl.to("#v2-phase-c03-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 135.520);
+      tl.to("#v2-phase-c03-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 135.660);
+      tl.to("#v2-phase-c03-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 135.720);
+      tl.to("#v2-phase-c03-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 136.000);
+      tl.to("#v2-phase-c03-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 135.860);
+      tl.to("#v2-phase-c03-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 137.660);
+      tl.to("#v2-phase-c03-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 138.300);
+      tl.set("#v2-phase-c03-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 137.640);
+      tl.to("#v2-phase-c03-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 137.660);
+      tl.set("#v2-phase-c03-s01 .human-actor", { y: 8, opacity: 0 }, 137.640);
+      tl.set("#v2-phase-c03-s01 .agent-actor", { y: 10, opacity: 0 }, 137.640);
+      tl.to("#v2-phase-c03-s01 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 137.820);
+      tl.to("#v2-phase-c03-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 137.860);
+      tl.set("#v2-phase-c03-s01 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" }, 137.640);
+      tl.set("#v2-phase-c03-s01 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" }, 137.640);
+      tl.set("#v2-phase-c03-s01 .callout", { y: -12, opacity: 0 }, 137.640);
+      tl.to("#v2-phase-c03-s01 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 137.820);
+      tl.to("#v2-phase-c03-s01 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 137.820);
+      tl.to("#v2-phase-c03-s01 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 137.860);
+      tl.fromTo("#v2-phase-c03-s01 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 138.340);
+      tl.fromTo("#v2-phase-c03-s01 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 138.340);
+      tl.fromTo("#v2-phase-c03-s01 .prop-3", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 138.340);
+      tl.fromTo("#v2-phase-c03-s01 .prop-4", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 138.340);
+      tl.to("#v2-phase-c03-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 157.838);
+      tl.fromTo("#v2-phase-c03-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 157.838);
+      tl.to("#v2-phase-c03-s01", { opacity: 0, duration: 0.01, ease: "none" }, 158.378);
+      tl.set("#v2-phase-c03-s02 .human-actor", { y: 8, opacity: 0 }, 157.818);
+      tl.set("#v2-phase-c03-s02 .agent-actor", { y: 10, opacity: 0 }, 157.818);
+      tl.to("#v2-phase-c03-s02 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 157.878);
+      tl.to("#v2-phase-c03-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 157.918);
+      tl.set("#v2-phase-c03-s02 .callout", { y: -14, opacity: 0 }, 157.818);
+      tl.to("#v2-phase-c03-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 157.878);
+      tl.fromTo("#v2-phase-c03-s02 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 158.058);
+      tl.fromTo("#v2-phase-c03-s02 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 158.058);
+      tl.fromTo("#v2-phase-c03-s02 .prop-3", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 158.058);
+      tl.fromTo("#v2-phase-c03-s02 .prop-4", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 158.058);
+      tl.fromTo("#v2-phase-c03-s02 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 158.238);
+      tl.fromTo("#v2-phase-c03-s02 .connector-2", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 158.238);
+      tl.fromTo("#v2-phase-c03-s02 .connector-3", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 158.238);
+      tl.to("#v2-phase-c03-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 180.655);
+      tl.fromTo("#v2-phase-c03-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 180.655);
+      tl.to("#v2-phase-c03-s02", { opacity: 0, duration: 0.01, ease: "none" }, 181.195);
+      tl.set("#v2-phase-c03-s03 .human-actor", { y: 8, opacity: 0 }, 180.635);
+      tl.set("#v2-phase-c03-s03 .agent-actor", { y: 10, opacity: 0 }, 180.635);
+      tl.to("#v2-phase-c03-s03 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 180.695);
+      tl.to("#v2-phase-c03-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 180.735);
+      tl.set("#v2-phase-c03-s03 .callout", { scale: 0.96, opacity: 0 }, 180.635);
+      tl.to("#v2-phase-c03-s03 .callout", { scale: 1, opacity: 1, duration: 0.52, ease: "power2.out" }, 180.695);
+      tl.fromTo("#v2-phase-c03-s03 .prop-1", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 180.875);
+      tl.fromTo("#v2-phase-c03-s03 .prop-2", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 180.875);
+      tl.fromTo("#v2-phase-c03-s03 .prop-3", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 180.875);
+      tl.to("#v2-phase-c03-s03", { scale: 0.995, duration: 0.48, ease: "power2.inOut" }, 202.605);
+      tl.fromTo("#v2-phase-c03-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.48, ease: "power2.inOut", immediateRender: false }, 202.605);
+      tl.to("#v2-phase-c03-s03", { opacity: 0, duration: 0.01, ease: "none" }, 203.085);
+      tl.set("#v2-phase-c03-s04 .summary-side span", { x: -35, opacity: 0 }, 202.585);
+      tl.set("#v2-phase-c03-s04 .summary-side strong", { y: 26, opacity: 0 }, 202.585);
+      tl.to("#v2-phase-c03-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 202.685);
+      tl.to("#v2-phase-c03-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 202.785);
+      tl.fromTo("#v2-phase-c03-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 203.025);
+      tl.fromTo("#v2-phase-c03-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 207.021);
+      tl.fromTo("#v2-phase-c03-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 210.480);
+      tl.to("#v2-phase-c03-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 214.080);
+      tl.fromTo("#v2-phase-c04-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 214.080);
+      tl.to("#v2-phase-c03-s04", { opacity: 0, duration: 0.01, ease: "none" }, 214.820);
+      tl.set("#v2-phase-c04-s01 .intro-rail", { scaleY: 0 }, 214.060);
+      tl.set("#v2-phase-c04-s01 .intro-kicker", { x: -55, opacity: 0 }, 214.060);
+      tl.set("#v2-phase-c04-s01 .intro-title", { x: -90, opacity: 0 }, 214.060);
+      tl.set("#v2-phase-c04-s01 .intro-promise", { y: 34, opacity: 0 }, 214.060);
+      tl.set("#v2-phase-c04-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 214.060);
+      tl.to("#v2-phase-c04-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 214.120);
+      tl.to("#v2-phase-c04-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 214.260);
+      tl.to("#v2-phase-c04-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 214.320);
+      tl.to("#v2-phase-c04-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 214.600);
+      tl.to("#v2-phase-c04-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 214.460);
+      tl.to("#v2-phase-c04-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 216.260);
+      tl.to("#v2-phase-c04-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 216.900);
+      tl.set("#v2-phase-c04-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 216.240);
+      tl.to("#v2-phase-c04-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 216.260);
+      tl.set("#v2-phase-c04-s01 .human-actor", { y: 8, opacity: 0 }, 216.240);
+      tl.set("#v2-phase-c04-s01 .agent-actor", { y: 10, opacity: 0 }, 216.240);
+      tl.to("#v2-phase-c04-s01 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 216.420);
+      tl.to("#v2-phase-c04-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 216.460);
+      tl.set("#v2-phase-c04-s01 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" }, 216.240);
+      tl.set("#v2-phase-c04-s01 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" }, 216.240);
+      tl.set("#v2-phase-c04-s01 .callout", { y: -12, opacity: 0 }, 216.240);
+      tl.to("#v2-phase-c04-s01 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 216.420);
+      tl.to("#v2-phase-c04-s01 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 216.420);
+      tl.to("#v2-phase-c04-s01 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 216.460);
+      tl.fromTo("#v2-phase-c04-s01 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 216.940);
+      tl.fromTo("#v2-phase-c04-s01 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 216.940);
+      tl.fromTo("#v2-phase-c04-s01 .prop-3", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 216.940);
+      tl.fromTo("#v2-phase-c04-s01 .prop-4", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 216.940);
+      tl.to("#v2-phase-c04-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 235.896);
+      tl.fromTo("#v2-phase-c04-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 235.896);
+      tl.to("#v2-phase-c04-s01", { opacity: 0, duration: 0.01, ease: "none" }, 236.436);
+      tl.set("#v2-phase-c04-s02 .human-actor", { y: 8, opacity: 0 }, 235.876);
+      tl.set("#v2-phase-c04-s02 .agent-actor", { y: 10, opacity: 0 }, 235.876);
+      tl.to("#v2-phase-c04-s02 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 235.936);
+      tl.to("#v2-phase-c04-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 235.976);
+      tl.set("#v2-phase-c04-s02 .callout", { y: -14, opacity: 0 }, 235.876);
+      tl.to("#v2-phase-c04-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 235.936);
+      tl.fromTo("#v2-phase-c04-s02 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 236.116);
+      tl.fromTo("#v2-phase-c04-s02 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 236.116);
+      tl.fromTo("#v2-phase-c04-s02 .prop-3", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 236.116);
+      tl.fromTo("#v2-phase-c04-s02 .prop-4", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 236.116);
+      tl.fromTo("#v2-phase-c04-s02 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 236.296);
+      tl.fromTo("#v2-phase-c04-s02 .connector-2", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 236.296);
+      tl.fromTo("#v2-phase-c04-s02 .connector-3", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 236.296);
+      tl.to("#v2-phase-c04-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 257.846);
+      tl.fromTo("#v2-phase-c04-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 257.846);
+      tl.to("#v2-phase-c04-s02", { opacity: 0, duration: 0.01, ease: "none" }, 258.386);
+      tl.set("#v2-phase-c04-s03 .human-actor", { y: 8, opacity: 0 }, 257.826);
+      tl.set("#v2-phase-c04-s03 .agent-actor", { y: 10, opacity: 0 }, 257.826);
+      tl.to("#v2-phase-c04-s03 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 257.886);
+      tl.to("#v2-phase-c04-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 257.926);
+      tl.set("#v2-phase-c04-s03 .callout", { scale: 0.96, opacity: 0 }, 257.826);
+      tl.to("#v2-phase-c04-s03 .callout", { scale: 1, opacity: 1, duration: 0.52, ease: "power2.out" }, 257.886);
+      tl.fromTo("#v2-phase-c04-s03 .prop-1", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 258.066);
+      tl.fromTo("#v2-phase-c04-s03 .prop-2", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 258.066);
+      tl.fromTo("#v2-phase-c04-s03 .prop-3", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 258.066);
+      tl.to("#v2-phase-c04-s03", { scale: 0.995, duration: 0.48, ease: "power2.inOut" }, 281.955);
+      tl.fromTo("#v2-phase-c04-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.48, ease: "power2.inOut", immediateRender: false }, 281.955);
+      tl.to("#v2-phase-c04-s03", { opacity: 0, duration: 0.01, ease: "none" }, 282.435);
+      tl.set("#v2-phase-c04-s04 .summary-side span", { x: -35, opacity: 0 }, 281.935);
+      tl.set("#v2-phase-c04-s04 .summary-side strong", { y: 26, opacity: 0 }, 281.935);
+      tl.to("#v2-phase-c04-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 282.035);
+      tl.to("#v2-phase-c04-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 282.135);
+      tl.fromTo("#v2-phase-c04-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 282.375);
+      tl.fromTo("#v2-phase-c04-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 285.988);
+      tl.fromTo("#v2-phase-c04-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 289.796);
+      tl.to("#v2-phase-c04-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 293.856);
+      tl.fromTo("#v2-phase-c05-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 293.856);
+      tl.to("#v2-phase-c04-s04", { opacity: 0, duration: 0.01, ease: "none" }, 294.596);
+      tl.set("#v2-phase-c05-s01 .intro-rail", { scaleY: 0 }, 293.836);
+      tl.set("#v2-phase-c05-s01 .intro-kicker", { x: -55, opacity: 0 }, 293.836);
+      tl.set("#v2-phase-c05-s01 .intro-title", { x: -90, opacity: 0 }, 293.836);
+      tl.set("#v2-phase-c05-s01 .intro-promise", { y: 34, opacity: 0 }, 293.836);
+      tl.set("#v2-phase-c05-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 293.836);
+      tl.to("#v2-phase-c05-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 293.896);
+      tl.to("#v2-phase-c05-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 294.036);
+      tl.to("#v2-phase-c05-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 294.096);
+      tl.to("#v2-phase-c05-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 294.376);
+      tl.to("#v2-phase-c05-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 294.236);
+      tl.to("#v2-phase-c05-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 296.036);
+      tl.to("#v2-phase-c05-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 296.676);
+      tl.set("#v2-phase-c05-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 296.016);
+      tl.to("#v2-phase-c05-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 296.036);
+      tl.set("#v2-phase-c05-s01 .human-actor", { y: 8, opacity: 0 }, 296.016);
+      tl.set("#v2-phase-c05-s01 .agent-actor", { y: 10, opacity: 0 }, 296.016);
+      tl.to("#v2-phase-c05-s01 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 296.196);
+      tl.to("#v2-phase-c05-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 296.236);
+      tl.set("#v2-phase-c05-s01 .callout", { y: -14, opacity: 0 }, 296.016);
+      tl.to("#v2-phase-c05-s01 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 296.196);
+      tl.fromTo("#v2-phase-c05-s01 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 296.716);
+      tl.fromTo("#v2-phase-c05-s01 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 296.716);
+      tl.fromTo("#v2-phase-c05-s01 .prop-3", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 296.716);
+      tl.fromTo("#v2-phase-c05-s01 .prop-4", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 296.716);
+      tl.fromTo("#v2-phase-c05-s01 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 296.896);
+      tl.fromTo("#v2-phase-c05-s01 .connector-2", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 296.896);
+      tl.fromTo("#v2-phase-c05-s01 .connector-3", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 296.896);
+      tl.to("#v2-phase-c05-s01", { scale: 0.995, duration: 0.48, ease: "power2.inOut" }, 316.797);
+      tl.fromTo("#v2-phase-c05-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.48, ease: "power2.inOut", immediateRender: false }, 316.797);
+      tl.to("#v2-phase-c05-s01", { opacity: 0, duration: 0.01, ease: "none" }, 317.277);
+      tl.set("#v2-phase-c05-s02 .human-actor", { y: 8, opacity: 0 }, 316.777);
+      tl.set("#v2-phase-c05-s02 .agent-actor", { y: 10, opacity: 0 }, 316.777);
+      tl.to("#v2-phase-c05-s02 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 316.837);
+      tl.to("#v2-phase-c05-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 316.877);
+      tl.set("#v2-phase-c05-s02 .callout", { y: -14, opacity: 0 }, 316.777);
+      tl.to("#v2-phase-c05-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 316.837);
+      tl.fromTo("#v2-phase-c05-s02 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 317.017);
+      tl.fromTo("#v2-phase-c05-s02 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 317.017);
+      tl.fromTo("#v2-phase-c05-s02 .prop-3", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 317.017);
+      tl.fromTo("#v2-phase-c05-s02 .prop-4", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 317.017);
+      tl.fromTo("#v2-phase-c05-s02 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 317.197);
+      tl.fromTo("#v2-phase-c05-s02 .connector-2", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 317.197);
+      tl.fromTo("#v2-phase-c05-s02 .connector-3", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 317.197);
+      tl.to("#v2-phase-c05-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 338.964);
+      tl.fromTo("#v2-phase-c05-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 338.964);
+      tl.to("#v2-phase-c05-s02", { opacity: 0, duration: 0.01, ease: "none" }, 339.504);
+      tl.set("#v2-phase-c05-s03 .human-actor", { y: 8, opacity: 0 }, 338.944);
+      tl.set("#v2-phase-c05-s03 .agent-actor", { y: 10, opacity: 0 }, 338.944);
+      tl.to("#v2-phase-c05-s03 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 339.004);
+      tl.to("#v2-phase-c05-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 339.044);
+      tl.set("#v2-phase-c05-s03 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" }, 338.944);
+      tl.set("#v2-phase-c05-s03 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" }, 338.944);
+      tl.set("#v2-phase-c05-s03 .callout", { y: -12, opacity: 0 }, 338.944);
+      tl.to("#v2-phase-c05-s03 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 339.004);
+      tl.to("#v2-phase-c05-s03 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 339.004);
+      tl.to("#v2-phase-c05-s03 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 339.044);
+      tl.fromTo("#v2-phase-c05-s03 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 339.184);
+      tl.fromTo("#v2-phase-c05-s03 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 339.184);
+      tl.fromTo("#v2-phase-c05-s03 .prop-3", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 339.184);
+      tl.fromTo("#v2-phase-c05-s03 .prop-4", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 339.184);
+      tl.to("#v2-phase-c05-s03", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 361.964);
+      tl.fromTo("#v2-phase-c05-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 361.964);
+      tl.to("#v2-phase-c05-s03", { opacity: 0, duration: 0.01, ease: "none" }, 362.504);
+      tl.set("#v2-phase-c05-s04 .summary-side span", { x: -35, opacity: 0 }, 361.944);
+      tl.set("#v2-phase-c05-s04 .summary-side strong", { y: 26, opacity: 0 }, 361.944);
+      tl.to("#v2-phase-c05-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 362.044);
+      tl.to("#v2-phase-c05-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 362.144);
+      tl.fromTo("#v2-phase-c05-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 362.384);
+      tl.fromTo("#v2-phase-c05-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 365.706);
+      tl.fromTo("#v2-phase-c05-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 368.772);
+      tl.to("#v2-phase-c05-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 372.720);
+      tl.fromTo("#v2-phase-c06-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 372.720);
+      tl.to("#v2-phase-c05-s04", { opacity: 0, duration: 0.01, ease: "none" }, 373.460);
+      tl.set("#v2-phase-c06-s01 .intro-rail", { scaleY: 0 }, 372.700);
+      tl.set("#v2-phase-c06-s01 .intro-kicker", { x: -55, opacity: 0 }, 372.700);
+      tl.set("#v2-phase-c06-s01 .intro-title", { x: -90, opacity: 0 }, 372.700);
+      tl.set("#v2-phase-c06-s01 .intro-promise", { y: 34, opacity: 0 }, 372.700);
+      tl.set("#v2-phase-c06-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 372.700);
+      tl.to("#v2-phase-c06-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 372.760);
+      tl.to("#v2-phase-c06-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 372.900);
+      tl.to("#v2-phase-c06-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 372.960);
+      tl.to("#v2-phase-c06-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 373.240);
+      tl.to("#v2-phase-c06-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 373.100);
+      tl.to("#v2-phase-c06-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 374.900);
+      tl.to("#v2-phase-c06-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 375.540);
+      tl.set("#v2-phase-c06-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 374.880);
+      tl.to("#v2-phase-c06-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 374.900);
+      tl.set("#v2-phase-c06-s01 .human-actor", { y: 8, opacity: 0 }, 374.880);
+      tl.set("#v2-phase-c06-s01 .agent-actor", { y: 10, opacity: 0 }, 374.880);
+      tl.to("#v2-phase-c06-s01 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 375.060);
+      tl.to("#v2-phase-c06-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 375.100);
+      tl.set("#v2-phase-c06-s01 .callout", { x: 42, opacity: 0 }, 374.880);
+      tl.to("#v2-phase-c06-s01 .callout", { x: 0, opacity: 1, duration: 0.58, ease: "power2.out" }, 375.060);
+      tl.fromTo("#v2-phase-c06-s01 .prop-1", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 375.580);
+      tl.fromTo("#v2-phase-c06-s01 .prop-2", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 375.580);
+      tl.fromTo("#v2-phase-c06-s01 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 375.760);
+      tl.to("#v2-phase-c06-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 396.478);
+      tl.fromTo("#v2-phase-c06-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 396.478);
+      tl.to("#v2-phase-c06-s01", { opacity: 0, duration: 0.01, ease: "none" }, 397.018);
+      tl.set("#v2-phase-c06-s02 .human-actor", { y: 8, opacity: 0 }, 396.458);
+      tl.set("#v2-phase-c06-s02 .agent-actor", { y: 10, opacity: 0 }, 396.458);
+      tl.to("#v2-phase-c06-s02 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 396.518);
+      tl.to("#v2-phase-c06-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 396.558);
+      tl.set("#v2-phase-c06-s02 .callout", { x: 24, opacity: 0 }, 396.458);
+      tl.to("#v2-phase-c06-s02 .callout", { x: 0, opacity: 1, duration: 0.52, ease: "power2.out" }, 396.518);
+      tl.fromTo("#v2-phase-c06-s02 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 396.698);
+      tl.fromTo("#v2-phase-c06-s02 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 396.698);
+      tl.fromTo("#v2-phase-c06-s02 .prop-3", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 396.698);
+      tl.fromTo("#v2-phase-c06-s02 .prop-4", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 396.698);
+      tl.to("#v2-phase-c06-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 417.570);
+      tl.fromTo("#v2-phase-c06-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 417.570);
+      tl.to("#v2-phase-c06-s02", { opacity: 0, duration: 0.01, ease: "none" }, 418.110);
+      tl.set("#v2-phase-c06-s03 .human-actor", { y: 8, opacity: 0 }, 417.550);
+      tl.set("#v2-phase-c06-s03 .agent-actor", { y: 10, opacity: 0 }, 417.550);
+      tl.to("#v2-phase-c06-s03 .human-actor", { y: 0, opacity: 1, duration: 0.56, ease: "sine.out" }, 417.610);
+      tl.to("#v2-phase-c06-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 417.650);
+      tl.set("#v2-phase-c06-s03 .callout", { y: -14, opacity: 0 }, 417.550);
+      tl.to("#v2-phase-c06-s03 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 417.610);
+      tl.fromTo("#v2-phase-c06-s03 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 417.790);
+      tl.fromTo("#v2-phase-c06-s03 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 417.790);
+      tl.fromTo("#v2-phase-c06-s03 .prop-3", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 417.790);
+      tl.fromTo("#v2-phase-c06-s03 .prop-4", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 417.790);
+      tl.fromTo("#v2-phase-c06-s03 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 417.970);
+      tl.fromTo("#v2-phase-c06-s03 .connector-2", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 417.970);
+      tl.fromTo("#v2-phase-c06-s03 .connector-3", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 417.970);
+      tl.to("#v2-phase-c06-s03", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 438.078);
+      tl.fromTo("#v2-phase-c06-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 438.078);
+      tl.to("#v2-phase-c06-s03", { opacity: 0, duration: 0.01, ease: "none" }, 438.618);
+      tl.set("#v2-phase-c06-s04 .summary-side span", { x: -35, opacity: 0 }, 438.058);
+      tl.set("#v2-phase-c06-s04 .summary-side strong", { y: 26, opacity: 0 }, 438.058);
+      tl.to("#v2-phase-c06-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 438.158);
+      tl.to("#v2-phase-c06-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 438.258);
+      tl.fromTo("#v2-phase-c06-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 438.498);
+      tl.fromTo("#v2-phase-c06-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 442.153);
+      tl.fromTo("#v2-phase-c06-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 445.911);
+      tl.to("#v2-phase-c06-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 449.592);
+      tl.fromTo("#v2-phase-c07-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 449.592);
+      tl.to("#v2-phase-c06-s04", { opacity: 0, duration: 0.01, ease: "none" }, 450.332);
+      tl.set("#v2-phase-c07-s01 .summary-side span", { x: -35, opacity: 0 }, 449.572);
+      tl.set("#v2-phase-c07-s01 .summary-side strong", { y: 26, opacity: 0 }, 449.572);
+      tl.to("#v2-phase-c07-s01 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 449.672);
+      tl.to("#v2-phase-c07-s01 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 449.772);
+      tl.fromTo("#v2-phase-c07-s01 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 455.558);
+      tl.fromTo("#v2-phase-c07-s01 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 463.750);
+      tl.fromTo("#v2-phase-c07-s01 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 478.275);
+      tl.fromTo("#v2-phase-c07-s01 .summary-cta", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.58, ease: "power3.out", immediateRender: false }, 486.158);
+          window.__timelines.story = tl;
+        </script>
+      </div>
+    </template>
+  </body>
+</html>

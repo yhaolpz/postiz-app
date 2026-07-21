@@ -1,0 +1,1468 @@
+{
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-21-03-agent-context-engineering-longform-en-US/SCRIPT.en-US.md",
+  "timingSource": "edge-tts-vtt",
+  "fixedCta": {
+    "text": "Follow Tiny Agent. Tiny Agent helps you get better at using AI.",
+    "start": 650.429,
+    "outroStart": 650.429,
+    "frameErrorSeconds": 0,
+    "spokenEnd": 654.693979,
+    "videoEnd": 654.913979,
+    "tailSeconds": 0.22000000000002728
+  },
+  "chapters": [
+    {
+      "label": "Introduction",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "An AI Agent can read a longer prompt, carry more history, and still lose the point. The failure is not always missing information. Sometimes the decisive instruction is buried under status updates, tool output, examples, and old decisions that all compete for attention.",
+          "start": 0,
+          "end": 16.394
+        },
+        {
+          "number": 2,
+          "text": "Anthropic calls the broader solution context engineering. Prompt engineering asks how to phrase an instruction. Context engineering asks which information should be available now, which detail should be retrieved later, and which old material should be compressed or removed.",
+          "start": 16.394,
+          "end": 31.567
+        },
+        {
+          "number": 3,
+          "text": "That distinction matters because an Agent's context window is not an unlimited memory vault. It is a finite attention budget. Adding more tokens can increase coverage while reducing the relative strength of the signals that should guide the next action.",
+          "start": 31.567,
+          "end": 45.278
+        },
+        {
+          "number": 4,
+          "text": "In this video, you will learn how to manage that budget: choose high-signal instructions, tools, and examples; retrieve detail on demand; preserve coherence across long tasks; and build a six-part context pack you can reuse.",
+          "start": 45.278,
+          "end": 58.44
+        }
+      ]
+    },
+    {
+      "label": "Attention Budget",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Context includes every token available when the model produces its next response: system instructions, tool definitions, examples, retrieved documents, message history, intermediate results, and the current request. Context engineering manages that whole state, not just the opening prompt.",
+          "start": 58.44,
+          "end": 75.651
+        },
+        {
+          "number": 2,
+          "text": "Anthropic describes context as finite and subject to diminishing returns. Research on context rot shows a recurring pattern: as the amount of material grows, models can become less reliable at recalling the relevant item hidden inside it. A larger window does not make attention free.",
+          "start": 75.651,
+          "end": 92.113
+        },
+        {
+          "number": 3,
+          "text": "This explains why a giant prompt can fail. The correct rule may be present, yet surrounded by obsolete plans, repeated explanations, raw logs, and edge cases. The model must infer which parts are current, authoritative, and relevant before it can even solve the task.",
+          "start": 92.113,
+          "end": 108.757
+        },
+        {
+          "number": 4,
+          "text": "Good context engineering is therefore selective. Before every meaningful step, ask what information changes the next decision. Keep the goal, necessary constraints, current evidence, and live state. Move reference detail behind an index when it can be fetched later.",
+          "start": 108.757,
+          "end": 125.286
+        },
+        {
+          "number": 5,
+          "text": "Selection is iterative. After a tool call, the Agent has new evidence. After an error, a new boundary becomes important. After a milestone, raw traces may be replaced by a compact state summary. The useful context at step ten is not identical to the useful context at step one.",
+          "start": 125.286,
+          "end": 144.016
+        },
+        {
+          "number": 6,
+          "text": "Minimal does not mean short. A complex migration may need extensive acceptance criteria, repository conventions, and risk controls. The standard is the smallest set that fully supports the expected behavior, not the fewest possible words.",
+          "start": 144.016,
+          "end": 158.757
+        },
+        {
+          "number": 7,
+          "text": "First, treat context as a finite attention budget rather than unlimited storage.",
+          "start": 158.757,
+          "end": 163.843
+        },
+        {
+          "number": 8,
+          "text": "Second, more tokens can dilute the instruction that matters next.",
+          "start": 163.843,
+          "end": 168.045
+        },
+        {
+          "number": 9,
+          "text": "Third, keep the smallest sufficient set and refresh it as the task changes.",
+          "start": 168.045,
+          "end": 172.56
+        }
+      ]
+    },
+    {
+      "label": "High-Signal Inputs",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Start with system instructions at the right altitude. At one extreme, a prompt hard-codes every branch with brittle if-else logic. At the other, it says something vague like do a great job and assumes the Agent shares your unstated expectations.",
+          "start": 172.56,
+          "end": 187.13
+        },
+        {
+          "number": 2,
+          "text": "The useful middle gives clear goals, boundaries, and heuristics while leaving room to reason. Organize background, instructions, tool guidance, and output expectations into distinct sections. The formatting helps, but the decisive value is the clarity and priority of the content.",
+          "start": 187.13,
+          "end": 204.27100000000002
+        },
+        {
+          "number": 3,
+          "text": "Next, inspect the tools. A tool is not only an action; it is a contract between the Agent and its environment. Names, descriptions, parameters, error behavior, and returned data all enter context and shape which action the Agent chooses.",
+          "start": 204.27100000000002,
+          "end": 219.49200000000002
+        },
+        {
+          "number": 4,
+          "text": "Overlapping tools create ambiguous decisions and waste attention. If a human cannot clearly explain when to use one tool instead of another, the Agent is unlikely to resolve the ambiguity reliably. Keep a minimal viable set, return token-efficient results, and let each tool do one understandable job.",
+          "start": 219.49200000000002,
+          "end": 237.31
+        },
+        {
+          "number": 5,
+          "text": "Then curate examples. A long catalogue of edge cases feels comprehensive, but it can bury the pattern. Anthropic recommends a small, diverse set of canonical examples that show the expected behavior, important variation, and a meaningful boundary.",
+          "start": 237.31,
+          "end": 252.36700000000002
+        },
+        {
+          "number": 6,
+          "text": "High signal is not a fixed token count. It is information with a clear job: establish the outcome, constrain behavior, select a tool, demonstrate a pattern, provide evidence, or expose a stop condition. Remove material only when it performs none of those jobs.",
+          "start": 252.36700000000002,
+          "end": 268.367
+        },
+        {
+          "number": 7,
+          "text": "First, write instructions at the right altitude between brittle and vague.",
+          "start": 268.367,
+          "end": 272.733
+        },
+        {
+          "number": 8,
+          "text": "Second, keep tools clear, efficient, and minimally overlapping.",
+          "start": 272.733,
+          "end": 277.194
+        },
+        {
+          "number": 9,
+          "text": "Third, teach the pattern with a small set of canonical examples.",
+          "start": 277.194,
+          "end": 281.23199999999997
+        }
+      ]
+    },
+    {
+      "label": "Retrieve on Demand",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Many systems preload every document that might be relevant before the Agent starts. That can be fast when the corpus is small and stable, but it also spends the attention budget before the Agent knows which detail matters.",
+          "start": 281.23199999999997,
+          "end": 293.48199999999997
+        },
+        {
+          "number": 2,
+          "text": "Just-in-time retrieval uses lightweight references instead: file paths, stored queries, links, identifiers, folder names, and timestamps. The Agent keeps the map in context, then opens the specific source when a decision requires it.",
+          "start": 293.48199999999997,
+          "end": 308.203
+        },
+        {
+          "number": 3,
+          "text": "This creates progressive disclosure. A filename suggests purpose. A directory reveals structure. A file size suggests complexity. One search result narrows the next query. The Agent assembles understanding layer by layer while keeping only the active subset in working context.",
+          "start": 308.203,
+          "end": 326.693
+        },
+        {
+          "number": 4,
+          "text": "Claude Code illustrates the pattern. Stable project instructions can be loaded up front, while file search, grep, head, and tail let the Agent inspect targeted parts of a large repository. It does not need every file body in context at once.",
+          "start": 326.693,
+          "end": 341.472
+        },
+        {
+          "number": 5,
+          "text": "The trade-off is real. Runtime exploration is slower than preloading, and poor navigation can waste tokens on dead ends. The Agent needs good search tools, informative names, and heuristics for when to stop exploring and act.",
+          "start": 341.472,
+          "end": 355.876
+        },
+        {
+          "number": 6,
+          "text": "Use a hybrid strategy. Preload stable rules, the current outcome, and the small facts that almost every step needs. Keep changing, detailed, or rarely used material behind retrieval handles. The right boundary depends on the task and the cost of a missed detail.",
+          "start": 355.876,
+          "end": 372.174
+        },
+        {
+          "number": 7,
+          "text": "First, keep lightweight references instead of every source body.",
+          "start": 372.174,
+          "end": 376.183
+        },
+        {
+          "number": 8,
+          "text": "Second, let the AI Agent discover detail progressively when it becomes relevant.",
+          "start": 376.183,
+          "end": 381.116
+        },
+        {
+          "number": 9,
+          "text": "Third, balance retrieval focus against the extra time and navigation cost.",
+          "start": 381.116,
+          "end": 385.82399999999996
+        }
+      ]
+    },
+    {
+      "label": "Long-Horizon Memory",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Long tasks create a second problem. Even well-curated context eventually fills as the Agent takes actions, observes results, fixes errors, and accumulates decisions. A task that lasts hours may exceed the usable window several times.",
+          "start": 385.82399999999996,
+          "end": 400.82899999999995
+        },
+        {
+          "number": 2,
+          "text": "Compaction is the first lever. Summarize the conversation or trace, start a fresh window, and carry forward the decisions, unresolved bugs, constraints, evidence, and next actions needed for continuity. Raw tool output that has already served its purpose can usually disappear.",
+          "start": 400.82899999999995,
+          "end": 417.756
+        },
+        {
+          "number": 3,
+          "text": "Compaction has a risk: a subtle detail that looks unimportant now may become critical later. Anthropic recommends tuning for high recall first, then improving precision. Losing a decisive constraint is more expensive than carrying a little extra context.",
+          "start": 417.756,
+          "end": 432.65999999999997
+        },
+        {
+          "number": 4,
+          "text": "Structured notes provide another layer. The Agent writes progress, milestones, discoveries, and open questions outside the window, then reloads the relevant note later. This makes working state durable without keeping the entire conversation active.",
+          "start": 432.65999999999997,
+          "end": 447.59299999999996
+        },
+        {
+          "number": 5,
+          "text": "Specialized agents can isolate deep exploration. A lead Agent keeps the high-level plan while focused agents investigate separate questions with clean contexts and return condensed findings. This pays off when parallel research value exceeds coordination cost.",
+          "start": 447.59299999999996,
+          "end": 463.102
+        },
+        {
+          "number": 6,
+          "text": "Choose by task shape. Use compaction for conversational continuity, notes for iterative work with clear milestones, and specialized agents for independent deep investigations. Whichever method you choose, the handoff must preserve outcome, decisions, evidence, unknowns, and next action.",
+          "start": 463.102,
+          "end": 480.881
+        },
+        {
+          "number": 7,
+          "text": "First, compact long traces into high-recall continuity summaries.",
+          "start": 480.881,
+          "end": 485.41999999999996
+        },
+        {
+          "number": 8,
+          "text": "Second, keep durable working state in structured external notes.",
+          "start": 485.41999999999996,
+          "end": 489.56399999999996
+        },
+        {
+          "number": 9,
+          "text": "Third, use specialized agents only when focused exploration justifies coordination.",
+          "start": 489.56399999999996,
+          "end": 494.78399999999993
+        }
+      ]
+    },
+    {
+      "label": "Context Pack",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "Turn the method into one Minimum High-Signal Context Pack. It has six parts: Outcome, Operating Rules, Tool Map, Canonical Examples, Retrieval Index, and Working State. The pack is small enough to inspect and complete enough to guide real work.",
+          "start": 494.78399999999993,
+          "end": 510.29299999999995
+        },
+        {
+          "number": 2,
+          "text": "Part one is Outcome. State the goal, intended user, deliverable, acceptance criteria, and the decision the result must support. This prevents a fluent Agent from optimizing for an attractive output that does not solve the actual problem.",
+          "start": 510.29299999999995,
+          "end": 524.4279999999999
+        },
+        {
+          "number": 3,
+          "text": "Part two is Operating Rules. Record hard constraints, permissions, risk boundaries, escalation points, and stop conditions. Separate permanent rules from temporary assumptions so an old workaround does not silently become policy.",
+          "start": 524.4279999999999,
+          "end": 538.8799999999999
+        },
+        {
+          "number": 4,
+          "text": "Part three is the Tool Map, paired with Canonical Examples. For each tool, explain when to use it, what input it expects, what efficient output looks like, and which nearby tool it does not replace. Add two or three examples that show the main pattern and an important boundary.",
+          "start": 538.8799999999999,
+          "end": 555.3599999999999
+        },
+        {
+          "number": 5,
+          "text": "Part four is the Retrieval Index. Store lightweight handles to source material with a short purpose label and a trigger for opening it. The Agent should know both where the evidence lives and when the evidence becomes necessary.",
+          "start": 555.3599999999999,
+          "end": 568.0619999999999
+        },
+        {
+          "number": 6,
+          "text": "Part five is Working State. Record completed work, current focus, key decisions and evidence, unresolved questions, failed approaches, and the next concrete action. Update this state at milestones, then compact or archive the raw trace it replaces.",
+          "start": 568.0619999999999,
+          "end": 584.1009999999999
+        },
+        {
+          "number": 7,
+          "text": "First, anchor the AI Agent with Outcome and Operating Rules.",
+          "start": 584.1009999999999,
+          "end": 588.1869999999999
+        },
+        {
+          "number": 8,
+          "text": "Second, guide action with a Tool Map, Canonical Examples, and a Retrieval Index.",
+          "start": 588.1869999999999,
+          "end": 593.7739999999999
+        },
+        {
+          "number": 9,
+          "text": "Third, preserve continuity with a compact, regularly updated Working State.",
+          "start": 593.7739999999999,
+          "end": 598.776
+        }
+      ]
+    },
+    {
+      "label": "Summary",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "An AI Agent does not forget only because information is missing. It can also lose focus because too much undifferentiated information competes for a finite attention budget.",
+          "start": 598.776,
+          "end": 608.92
+        },
+        {
+          "number": 2,
+          "text": "First, manage the whole context state, not only the prompt. Keep goals, constraints, tools, evidence, and current state according to what changes the next decision.",
+          "start": 608.92,
+          "end": 619.526
+        },
+        {
+          "number": 3,
+          "text": "Second, raise signal quality. Use instructions at the right altitude, a minimal tool set, and a few canonical examples instead of brittle rules and edge-case piles.",
+          "start": 619.526,
+          "end": 629.67
+        },
+        {
+          "number": 4,
+          "text": "Third, retrieve detail on demand. Keep stable essentials up front and let the Agent progressively open changing or specialized material through clear references.",
+          "start": 629.67,
+          "end": 639.208
+        },
+        {
+          "number": 5,
+          "text": "Finally, protect long tasks with compaction, structured notes, and the six-part Minimum High-Signal Context Pack. Keep the signal, retrieve the detail, and preserve the working state.",
+          "start": 639.208,
+          "end": 650.429
+        },
+        {
+          "number": 6,
+          "text": "Follow Tiny Agent. Tiny Agent helps you get better at using AI.",
+          "start": 650.429,
+          "end": 654.913979
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "c01-s01",
+      "chapter": "Introduction",
+      "paragraphs": [
+        1,
+        1
+      ],
+      "start": 0,
+      "end": 16.394,
+      "transition": {
+        "primeAt": 0,
+        "contentRevealAt": 0,
+        "contentAt": 0.16,
+        "humanAt": 0.16,
+        "agentAt": 0.2
+      },
+      "propBeatTimes": [
+        0.22,
+        0.22,
+        0.22,
+        0.22
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "An AI Agent can read a longer prompt",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 950.4890371770585,
+        "y": 433.0518409353755,
+        "offsetX": -9.510962822941451,
+        "offsetY": -36.94815906462452,
+        "rawOffsetX": -9.510962822941451,
+        "rawOffsetY": -88.94815906462452,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c01-s02",
+      "chapter": "Introduction",
+      "paragraphs": [
+        2,
+        3
+      ],
+      "start": 16.394,
+      "end": 45.278,
+      "transition": {
+        "primeAt": 16.374,
+        "contentRevealAt": 16.394,
+        "contentAt": 16.433999999999997,
+        "humanAt": 16.433999999999997,
+        "agentAt": 16.473999999999997
+      },
+      "propBeatTimes": [
+        31.487000000000002,
+        31.487000000000002,
+        31.487000000000002,
+        31.487000000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "That distinction matters",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 31.567,
+          "time": 31.487000000000002,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 415.296875,
+        "gap": 213.096875
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 976.0553033788536,
+        "y": 433.5429310534814,
+        "offsetX": 16.055303378853637,
+        "offsetY": -36.457068946518575,
+        "rawOffsetX": 16.055303378853637,
+        "rawOffsetY": -116.45706894651858,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "id": "c01-s03",
+      "chapter": "Introduction",
+      "paragraphs": [
+        4,
+        4
+      ],
+      "start": 45.278,
+      "end": 58.44,
+      "transition": {
+        "primeAt": 45.257999999999996,
+        "contentRevealAt": 45.278,
+        "contentAt": 45.318,
+        "humanAt": 45.318,
+        "agentAt": 45.358
+      },
+      "propBeatTimes": [
+        55.74952369611812,
+        55.74952369611812
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "build a six-part context pack",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 55.829523696118116,
+          "time": 55.74952369611812,
+          "clampedToContentStart": false
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 372.8,
+        "contentTop": 476.5625,
+        "gap": 103.76249999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 394.2109546433381,
+        "offsetX": 0,
+        "offsetY": -75.78904535666192,
+        "rawOffsetX": -45.90864256979444,
+        "rawOffsetY": -120.78904535666192,
+        "appliedShiftX": 45.90864256979444,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c02-s01",
+      "chapter": "Attention Budget",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 58.44,
+      "end": 92.113,
+      "transition": {
+        "primeAt": 60.599999999999994,
+        "contentRevealAt": 60.62,
+        "contentAt": 60.779999999999994,
+        "humanAt": 60.779999999999994,
+        "agentAt": 60.81999999999999
+      },
+      "propBeatTimes": [
+        61.3,
+        61.3,
+        61.3,
+        61.3
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Context includes every token",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 58.54,
+          "time": 61.3,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.74375,
+        "gap": 112.54374999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 394.9538691866473,
+        "offsetX": 0,
+        "offsetY": -75.0461308133527,
+        "rawOffsetX": -41.528292712314396,
+        "rawOffsetY": -122.44613081335268,
+        "appliedShiftX": 41.528292712314396,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "id": "c02-s02",
+      "chapter": "Attention Budget",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 92.113,
+      "end": 125.286,
+      "transition": {
+        "primeAt": 92.093,
+        "contentRevealAt": 92.113,
+        "contentAt": 92.153,
+        "humanAt": 92.153,
+        "agentAt": 92.19300000000001
+      },
+      "propBeatTimes": [
+        92.333,
+        92.333,
+        92.333,
+        92.333
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "This explains why a giant prompt can fail",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 92.113,
+          "time": 92.333,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 952.8781989088236,
+        "y": 456.9013370954523,
+        "offsetX": -7.121801091176394,
+        "offsetY": -13.098662904547723,
+        "rawOffsetX": -7.121801091176394,
+        "rawOffsetY": -65.09866290454772,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c02-s03",
+      "chapter": "Attention Budget",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 125.286,
+      "end": 158.757,
+      "transition": {
+        "primeAt": 125.266,
+        "contentRevealAt": 125.286,
+        "contentAt": 125.32600000000001,
+        "humanAt": 125.32600000000001,
+        "agentAt": 125.36600000000001
+      },
+      "propBeatTimes": [
+        125.506,
+        125.506,
+        125.506,
+        125.506
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Selection is iterative",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 125.286,
+          "time": 125.506,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 416.578125,
+        "gap": 222.178125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1012.8587453970474,
+        "y": 451.232185843324,
+        "offsetX": 52.858745397047414,
+        "offsetY": -18.767814156676025,
+        "rawOffsetX": 52.858745397047414,
+        "rawOffsetY": -98.76781415667602,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "id": "c02-s04",
+      "chapter": "Attention Budget",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 158.757,
+      "end": 172.56,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        158.757,
+        163.843,
+        168.045
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c03-s01",
+      "chapter": "High-Signal Inputs",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 172.56,
+      "end": 204.27100000000002,
+      "transition": {
+        "primeAt": 174.72,
+        "contentRevealAt": 174.74,
+        "contentAt": 174.9,
+        "humanAt": 174.9,
+        "agentAt": 174.94
+      },
+      "propBeatTimes": [
+        175.42000000000002,
+        175.42000000000002,
+        175.42000000000002,
+        175.42000000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Start with system instructions at the right altitude",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 172.66,
+          "time": 175.42000000000002,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 965.4160167791543,
+        "y": 451.1268327408561,
+        "offsetX": 5.416016779154347,
+        "offsetY": -18.873167259143884,
+        "rawOffsetX": 5.416016779154347,
+        "rawOffsetY": -70.87316725914388,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c03-s02",
+      "chapter": "High-Signal Inputs",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 204.27100000000002,
+      "end": 237.31,
+      "transition": {
+        "primeAt": 204.251,
+        "contentRevealAt": 204.27100000000002,
+        "contentAt": 204.311,
+        "humanAt": 204.311,
+        "agentAt": 204.351
+      },
+      "propBeatTimes": [
+        204.491,
+        204.491,
+        204.491,
+        204.491
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Next, inspect the tools",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 204.27100000000002,
+          "time": 204.491,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 415.296875,
+        "gap": 213.096875
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 961.269875728352,
+        "y": 456.0304487287664,
+        "offsetX": 1.2698757283519626,
+        "offsetY": -13.969551271233627,
+        "rawOffsetX": 1.2698757283519626,
+        "rawOffsetY": -93.96955127123363,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "id": "c03-s03",
+      "chapter": "High-Signal Inputs",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 237.31,
+      "end": 268.367,
+      "transition": {
+        "primeAt": 237.29,
+        "contentRevealAt": 237.31,
+        "contentAt": 237.35,
+        "humanAt": 237.35,
+        "agentAt": 237.39
+      },
+      "propBeatTimes": [
+        237.53,
+        237.53,
+        237.53
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Then curate examples",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 237.31,
+          "time": 237.53,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 213,
+        "contentTop": 240.12265309173472,
+        "gap": 27.12265309173472
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 373.778165679255,
+        "offsetX": 0,
+        "offsetY": -96.22183432074502,
+        "rawOffsetX": 84.04051666064174,
+        "rawOffsetY": -121.22183432074502,
+        "appliedShiftX": -84.04051666064174,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c03-s04",
+      "chapter": "High-Signal Inputs",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 268.367,
+      "end": 281.23199999999997,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        268.367,
+        272.733,
+        277.194
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c04-s01",
+      "chapter": "Retrieve on Demand",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 281.23199999999997,
+      "end": 308.203,
+      "transition": {
+        "primeAt": 283.392,
+        "contentRevealAt": 283.412,
+        "contentAt": 283.572,
+        "humanAt": 283.572,
+        "agentAt": 283.612
+      },
+      "propBeatTimes": [
+        284.092,
+        284.092,
+        284.092,
+        284.092
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Many systems preload every document",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 281.332,
+          "time": 284.092,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 975.7826475567015,
+        "y": 445.5486321766872,
+        "offsetX": 15.782647556701477,
+        "offsetY": -24.451367823312808,
+        "rawOffsetX": 15.782647556701477,
+        "rawOffsetY": -76.45136782331281,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c04-s02",
+      "chapter": "Retrieve on Demand",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 308.203,
+      "end": 341.472,
+      "transition": {
+        "primeAt": 308.183,
+        "contentRevealAt": 308.203,
+        "contentAt": 308.243,
+        "humanAt": 308.243,
+        "agentAt": 308.283
+      },
+      "propBeatTimes": [
+        308.423,
+        308.423,
+        308.423,
+        308.423
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "This creates progressive disclosure",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 308.203,
+          "time": 308.423,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 416.578125,
+        "gap": 222.178125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1020.9909442459124,
+        "y": 444.3160784907085,
+        "offsetX": 60.990944245912374,
+        "offsetY": -25.68392150929151,
+        "rawOffsetX": 60.990944245912374,
+        "rawOffsetY": -105.68392150929151,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "id": "c04-s03",
+      "chapter": "Retrieve on Demand",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 341.472,
+      "end": 372.174,
+      "transition": {
+        "primeAt": 341.452,
+        "contentRevealAt": 341.472,
+        "contentAt": 341.512,
+        "humanAt": 341.512,
+        "agentAt": 341.552
+      },
+      "propBeatTimes": [
+        341.692,
+        341.692,
+        341.692
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The trade-off is real",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 341.472,
+          "time": 341.692,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 213,
+        "contentTop": 237,
+        "gap": 24
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 371.4878213126681,
+        "offsetX": 0,
+        "offsetY": -98.51217868733193,
+        "rawOffsetX": 71.64700938863211,
+        "rawOffsetY": -123.51217868733193,
+        "appliedShiftX": -71.64700938863211,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "id": "c04-s04",
+      "chapter": "Retrieve on Demand",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 372.174,
+      "end": 385.82399999999996,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        372.174,
+        376.183,
+        381.116
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c05-s01",
+      "chapter": "Long-Horizon Memory",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 385.82399999999996,
+      "end": 417.756,
+      "transition": {
+        "primeAt": 387.984,
+        "contentRevealAt": 388.00399999999996,
+        "contentAt": 388.164,
+        "humanAt": 388.164,
+        "agentAt": 388.204
+      },
+      "propBeatTimes": [
+        388.68399999999997,
+        388.68399999999997,
+        388.68399999999997,
+        388.68399999999997
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Long tasks create a second problem",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 385.924,
+          "time": 388.68399999999997,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 416.578125,
+        "gap": 222.178125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 980.6365598904405,
+        "y": 435.1563412093155,
+        "offsetX": 20.63655989044048,
+        "offsetY": -34.843658790684515,
+        "rawOffsetX": 20.63655989044048,
+        "rawOffsetY": -114.84365879068451,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "id": "c05-s02",
+      "chapter": "Long-Horizon Memory",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 417.756,
+      "end": 447.59299999999996,
+      "transition": {
+        "primeAt": 417.736,
+        "contentRevealAt": 417.756,
+        "contentAt": 417.796,
+        "humanAt": 417.796,
+        "agentAt": 417.836
+      },
+      "propBeatTimes": [
+        417.976,
+        417.976,
+        417.976,
+        417.976
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Compaction has a risk",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 417.756,
+          "time": 417.976,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1004.783092134096,
+        "y": 446.59899868854075,
+        "offsetX": 44.78309213409602,
+        "offsetY": -23.401001311459254,
+        "rawOffsetX": 44.78309213409602,
+        "rawOffsetY": -103.40100131145925,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "id": "c05-s03",
+      "chapter": "Long-Horizon Memory",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 447.59299999999996,
+      "end": 480.881,
+      "transition": {
+        "primeAt": 447.573,
+        "contentRevealAt": 447.59299999999996,
+        "contentAt": 447.633,
+        "humanAt": 447.633,
+        "agentAt": 447.673
+      },
+      "propBeatTimes": [
+        447.813,
+        447.813,
+        447.813,
+        447.813
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Specialized agents can isolate deep exploration",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 447.59299999999996,
+          "time": 447.813,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1000.3951353181618,
+        "y": 442.2278262832421,
+        "offsetX": 40.395135318161806,
+        "offsetY": -27.77217371675789,
+        "rawOffsetX": 40.395135318161806,
+        "rawOffsetY": -79.77217371675789,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "id": "c05-s04",
+      "chapter": "Long-Horizon Memory",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 480.881,
+      "end": 494.78399999999993,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        480.881,
+        485.41999999999996,
+        489.56399999999996
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c06-s01",
+      "chapter": "Context Pack",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 494.78399999999993,
+      "end": 524.4279999999999,
+      "transition": {
+        "primeAt": 496.94399999999996,
+        "contentRevealAt": 496.96399999999994,
+        "contentAt": 497.12399999999997,
+        "humanAt": 497.12399999999997,
+        "agentAt": 497.164
+      },
+      "propBeatTimes": [
+        497.64399999999995,
+        497.64399999999995
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Turn the method into one",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 494.88399999999996,
+          "time": 497.64399999999995,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 372.8,
+        "contentTop": 476.5625,
+        "gap": 103.76249999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 397.41185387682697,
+        "offsetX": 0,
+        "offsetY": -72.58814612317303,
+        "rawOffsetX": 52.156825362998006,
+        "rawOffsetY": -117.58814612317303,
+        "appliedShiftX": -52.156825362998006,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "id": "c06-s02",
+      "chapter": "Context Pack",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 524.4279999999999,
+      "end": 555.3599999999999,
+      "transition": {
+        "primeAt": 524.4079999999999,
+        "contentRevealAt": 524.4279999999999,
+        "contentAt": 524.4679999999998,
+        "humanAt": 524.4679999999998,
+        "agentAt": 524.5079999999998
+      },
+      "propBeatTimes": [
+        524.6479999999999,
+        524.6479999999999,
+        524.6479999999999,
+        524.6479999999999
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Part two is Operating Rules",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 524.4279999999999,
+          "time": 524.6479999999999,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.74375,
+        "gap": 112.54374999999999
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 398.993961048369,
+        "offsetX": 0,
+        "offsetY": -71.00603895163101,
+        "rawOffsetX": 42.26373604527976,
+        "rawOffsetY": -118.40603895163099,
+        "appliedShiftX": -42.26373604527976,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "id": "c06-s03",
+      "chapter": "Context Pack",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 555.3599999999999,
+      "end": 584.1009999999999,
+      "transition": {
+        "primeAt": 555.3399999999999,
+        "contentRevealAt": 555.3599999999999,
+        "contentAt": 555.3999999999999,
+        "humanAt": 555.3999999999999,
+        "agentAt": 555.4399999999998
+      },
+      "propBeatTimes": [
+        555.5799999999999,
+        555.5799999999999,
+        555.5799999999999,
+        555.5799999999999
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Part four is the Retrieval Index",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 555.3599999999999,
+          "time": 555.5799999999999,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 418.5,
+        "gap": 216.3
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 1007.2954270736584,
+        "y": 445.8447403141078,
+        "offsetX": 47.2954270736584,
+        "offsetY": -24.15525968589219,
+        "rawOffsetX": 47.2954270736584,
+        "rawOffsetY": -104.15525968589219,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "id": "c06-s04",
+      "chapter": "Context Pack",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 584.1009999999999,
+      "end": 598.776,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        584.1009999999999,
+        588.1869999999999,
+        593.7739999999999
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c07-s01",
+      "chapter": "Summary",
+      "paragraphs": [
+        1,
+        6
+      ],
+      "start": 598.776,
+      "end": 654.913979,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        608.92,
+        619.526,
+        639.208
+      ],
+      "ctaAt": 650.429,
+      "visualBalance": null
+    }
+  ]
+}

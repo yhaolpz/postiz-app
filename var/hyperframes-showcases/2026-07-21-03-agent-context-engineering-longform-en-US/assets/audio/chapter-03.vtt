@@ -1,0 +1,83 @@
+1
+00:00:00,100 --> 00:00:03,376
+Start with system instructions at the right altitude.
+
+2
+00:00:03,326 --> 00:00:08,173
+At one extreme, a prompt hard-codes every branch with brittle if-else logic.
+
+3
+00:00:08,173 --> 00:00:14,570
+At the other, it says something vague like do a great job and assumes the Agent shares your unstated expectations.
+
+4
+00:00:14,570 --> 00:00:20,086
+The useful middle gives clear goals, boundaries, and heuristics while leaving room to reason.
+
+5
+00:00:20,086 --> 00:00:26,538
+Organize background, instructions, tool guidance, and output expectations into distinct sections.
+
+6
+00:00:26,538 --> 00:00:31,711
+The formatting helps, but the decisive value is the clarity and priority of the content.
+
+7
+00:00:31,711 --> 00:00:34,057
+Next, inspect the tools.
+
+8
+00:00:34,057 --> 00:00:39,048
+A tool is not only an action; it is a contract between the Agent and its environment.
+
+9
+00:00:39,048 --> 00:00:46,932
+Names, descriptions, parameters, error behavior, and returned data all enter context and shape which action the Agent chooses.
+
+10
+00:00:46,932 --> 00:00:50,932
+Overlapping tools create ambiguous decisions and waste attention.
+
+11
+00:00:50,932 --> 00:00:58,423
+If a human cannot clearly explain when to use one tool instead of another, the Agent is unlikely to resolve the ambiguity reliably.
+
+12
+00:00:58,423 --> 00:01:04,750
+Keep a minimal viable set, return token-efficient results, and let each tool do one understandable job.
+
+13
+00:01:04,750 --> 00:01:06,692
+Then curate examples.
+
+14
+00:01:06,692 --> 00:01:11,490
+A long catalogue of edge cases feels comprehensive, but it can bury the pattern.
+
+15
+00:01:11,490 --> 00:01:19,807
+Anthropic recommends a small, diverse set of canonical examples that show the expected behavior, important variation, and a meaningful boundary.
+
+16
+00:01:19,807 --> 00:01:22,576
+High signal is not a fixed token count.
+
+17
+00:01:22,576 --> 00:01:32,221
+It is information with a clear job: establish the outcome, constrain behavior, select a tool, demonstrate a pattern, provide evidence, or expose a stop condition.
+
+18
+00:01:32,221 --> 00:01:35,807
+Remove material only when it performs none of those jobs.
+
+19
+00:01:35,807 --> 00:01:40,173
+First, write instructions at the right altitude between brittle and vague.
+
+20
+00:01:40,173 --> 00:01:44,634
+Second, keep tools clear, efficient, and minimally overlapping.
+
+21
+00:01:44,634 --> 00:01:48,644
+Third, teach the pattern with a small set of canonical examples.

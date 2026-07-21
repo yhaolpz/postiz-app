@@ -1362,14 +1362,14 @@ function renderStoryV2(scenes, duration) {
 
           #v2-story-root .chapter-summary { position:absolute; inset:0; z-index:90; display:grid; grid-template-columns:440px 1fr; background:#ececea; clip-path:inset(0 0 0 100%); }
           #v2-story-root .is-recap .chapter-summary { clip-path:none; }
-          #v2-story-root .summary-side { display:flex; height:840px; flex-direction:column; justify-content:center; padding:90px 58px; background:#117abd; color:#fff; }
+          #v2-story-root .summary-side { display:flex; height:840px; flex-direction:column; justify-content:center; padding:90px 58px; border-right:12px solid #117abd; background:#ececea; color:#111413; }
           #v2-story-root .summary-side span { font-size:27px; font-weight:800; }
           #v2-story-root .summary-side strong { margin-top:24px; font-size:70px; font-weight:900; line-height:1.15; }
           #v2-story-root .summary-body { display:flex; height:840px; flex-direction:column; justify-content:center; gap:30px; padding:90px 130px 90px 100px; }
           #v2-story-root .summary-point { display:grid; grid-template-columns:82px 1fr; min-height:118px; align-items:center; border-bottom:4px solid #dfe7e4; opacity:0; }
           #v2-story-root .summary-point span { color:#117abd; font-size:27px; font-weight:900; }
           #v2-story-root .summary-point strong { font-size:42px; font-weight:900; line-height:1.3; }
-          #v2-story-root .summary-cta { display:flex; align-items:center; gap:24px; min-height:84px; margin-top:8px; padding:18px 24px; border-left:8px solid #f5c84b; background:#eef7fc; opacity:0; }
+          #v2-story-root .summary-cta { display:flex; align-items:center; gap:24px; min-height:84px; margin-top:8px; padding:18px 24px; border-left:8px solid #f5c84b; background:#ececea; opacity:0; }
           #v2-story-root .summary-cta strong { color:#117abd; font-size:30px; font-weight:900; }
           #v2-story-root .summary-cta span { color:#27312e; font-size:27px; font-weight:800; }
           #v2-story-root .is-final-summary .summary-side strong { font-size:62px; }
@@ -1533,7 +1533,15 @@ async function compile() {
     const cues = parseVtt(await readFile(vttPath, 'utf8'));
     chapterCueGroups.push(cues);
     for (const cue of cues) {
-      captions.push(...splitCue({ start: offset + cue.start, end: offset + cue.end, text: cue.text }));
+      const pieces = splitCue({ start: offset + cue.start, end: offset + cue.end, text: cue.text });
+      for (const piece of pieces) {
+        if (/^[,.;:!?，。！？；：]+$/.test(piece.text) && captions.length > 0) {
+          captions.at(-1).text += piece.text;
+          captions.at(-1).end = piece.end;
+        } else {
+          captions.push(piece);
+        }
+      }
     }
     offset += duration;
   }

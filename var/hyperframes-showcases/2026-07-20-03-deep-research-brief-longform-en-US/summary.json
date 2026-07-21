@@ -1,0 +1,122 @@
+{
+  "title": "The Decision-Ready Research Brief",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-20-03-deep-research-brief-longform-en-US/SCRIPT.en-US.md",
+  "language": "en-US",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "en-US-AnaNeural",
+    "rate": "+30%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 646.223187,
+    "chapters": [
+      {
+        "label": "Introduction",
+        "start": 0,
+        "end": 74.856,
+        "duration": 74.856
+      },
+      {
+        "label": "Decision First",
+        "start": 74.856,
+        "end": 175.944,
+        "duration": 101.088
+      },
+      {
+        "label": "Research Plan",
+        "start": 175.944,
+        "end": 291.408,
+        "duration": 115.464
+      },
+      {
+        "label": "Evidence Standard",
+        "start": 291.408,
+        "end": 392.35200000000003,
+        "duration": 100.944
+      },
+      {
+        "label": "Missing & Limits",
+        "start": 392.35200000000003,
+        "end": 492.096,
+        "duration": 99.744
+      },
+      {
+        "label": "Research Brief",
+        "start": 492.096,
+        "end": 599.616,
+        "duration": 107.52
+      },
+      {
+        "label": "Summary",
+        "start": 599.616,
+        "end": 646.223187,
+        "duration": 46.60718700000007
+      }
+    ],
+    "visualStates": 24,
+    "captions": 208
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-20-03-deep-research-brief-longform.en-US.mp4",
+    "status": "pass",
+    "actualDurationSeconds": 646.250667,
+    "sizeBytes": 32159340,
+    "video": "H.264 1920x1080 30fps yuv420p BT.709",
+    "audio": "AAC 48kHz stereo",
+    "integratedLoudnessLUFS": -17.3,
+    "truePeakDbFS": -2.4,
+    "finalReport": "qa/final-release-report.json"
+  }
+}

@@ -6,7 +6,7 @@
       "intro": "把资料堆改造成问题—证据—决策链路",
       "summary": ["从决策而不是主题开始", "让证据和边界可核验", "交付能推动工作的下一步"],
       "scenes": [
-        {"paragraphs":[1,2],"layout":"comparison","labels":["资料堆","决策链"],"human":"compare-front","agent":"present-right","agentDirection":"right","props":[{"id":"document-stack","label":"大量来源"},{"id":"uncertainty","label":"没有下一步"},{"id":"evidence","label":"证据"},{"id":"approval","label":"决策"}],"flow":"cluster","callout":"资料很多，仍然可能无法行动","accent":"red"},
+        {"paragraphs":[1,2],"layout":"comparison","labels":["资料堆","决策链"],"human":"compare-front","agent":"present-right","agentDirection":"right","props":[{"id":"document-stack","label":"大量来源"},{"id":"uncertainty","label":"没有下一步"},{"id":"evidence","label":"证据"},{"id":"target","label":"决策"}],"flow":"cluster","callout":"资料很多，仍然可能无法行动","accent":"red"},
         {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"question","label":"问题"},{"id":"evidence","label":"证据"},{"id":"uncertainty","label":"边界"},{"id":"result-card","label":"决策简报"}],"flow":"chain","callout":"研究开始前先建立契约","accent":"blue"},
         {"paragraphs":[5,5],"layout":"hero","human":"review-front","agent":"verify-front","props":[{"id":"target","label":"可核验"},{"id":"approval","label":"可决策"}],"flow":"chain","callout":"研究质量取决于能否推动决策","accent":"yellow"}
       ]
@@ -49,7 +49,7 @@
       "intro": "在未知、冲突和置信度扭曲决策前暴露它们",
       "summary": ["具体列出未知项、争议点和数据限制", "当缺失证据可能改变建议时使用停止条件", "说明当前置信度以及什么证据会改变它"],
       "scenes": [
-        {"paragraphs":[1,2],"layout":"focus","human":"ask-front","agent":"reason-front","props":[{"id":"question","label":"未知项"},{"id":"uncertainty","label":"限制"}],"flow":"cluster","callout":"缺少什么，本身就是研究结果","accent":"blue"},
+        {"paragraphs":[1,2],"layout":"hero","human":"ask-front","agent":"reason-front","props":[{"id":"question","label":"未知项"},{"id":"uncertainty","label":"限制"}],"flow":"cluster","callout":"缺少什么，本身就是研究结果","accent":"blue"},
         {"paragraphs":[3,4],"layout":"process","human":"stop-front","agent":"blocked-front","props":[{"id":"stop","label":"停止"},{"id":"warning","label":"冲突"},{"id":"human-gate","label":"决策"},{"id":"question","label":"缺失输入"}],"flow":"chain","callout":"关键证据缺失时要安全停止","accent":"red"},
         {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"monitor-right","agentDirection":"right","props":[{"id":"trend-up","label":"弱信号"},{"id":"notification","label":"监测"},{"id":"compare","label":"新证据"},{"id":"result-card","label":"更新结论"}],"flow":"chain","callout":"把不确定性变成观察计划","accent":"yellow"},
         {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
@@ -62,7 +62,7 @@
       "scenes": [
         {"paragraphs":[1,2],"layout":"hero","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"clipboard","label":"研究模板"},{"id":"task-list","label":"六个字段"}],"flow":"chain","callout":"为可决策研究建立小型契约","accent":"blue"},
         {"paragraphs":[3,4],"layout":"grid","human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"branch","label":"计划"},{"id":"citation","label":"证据"},{"id":"uncertainty","label":"缺口"},{"id":"result-card","label":"交付物"}],"flow":"cluster","callout":"每个字段都要改变研究或评审","accent":"yellow"},
-        {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"retry-front","props":[{"id":"search","label":"深挖"},{"id":"evidence","label":"验证"},{"id":"compare","label":"比较"},{"id":"approval","label":"决策"}],"flow":"chain","callout":"围绕决定性不确定项继续追问","accent":"red"},
+        {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"retry-front","props":[{"id":"search","label":"深挖"},{"id":"evidence","label":"验证"},{"id":"compare","label":"比较"},{"id":"target","label":"决策"}],"flow":"chain","callout":"围绕决定性不确定项继续追问","accent":"red"},
         {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
       ]
     },

@@ -1,0 +1,2062 @@
+{
+  "duration": 488.74327100000005,
+  "voice": "zh-CN-YunxiaNeural",
+  "rate": "+50%",
+  "chapters": [
+    {
+      "label": "前言",
+      "start": 0,
+      "end": 51.936,
+      "duration": 51.936
+    },
+    {
+      "label": "注意力预算",
+      "start": 51.936,
+      "end": 135.48,
+      "duration": 83.544
+    },
+    {
+      "label": "高信号输入",
+      "start": 135.48,
+      "end": 214.07999999999998,
+      "duration": 78.6
+    },
+    {
+      "label": "按需检索",
+      "start": 214.07999999999998,
+      "end": 293.856,
+      "duration": 79.776
+    },
+    {
+      "label": "长任务记忆",
+      "start": 293.856,
+      "end": 372.72,
+      "duration": 78.864
+    },
+    {
+      "label": "上下文包",
+      "start": 372.72,
+      "end": 449.59200000000004,
+      "duration": 76.872
+    },
+    {
+      "label": "总结",
+      "start": 449.59200000000004,
+      "end": 488.74327100000005,
+      "duration": 39.15127100000001
+    }
+  ],
+  "scenes": [
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "comparison",
+      "labels": [
+        "更多上下文",
+        "更清楚上下文"
+      ],
+      "human": "surprised",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "超长历史"
+        },
+        {
+          "id": "archive",
+          "label": "旧细节"
+        },
+        {
+          "id": "target",
+          "label": "当前目标"
+        },
+        {
+          "id": "summary",
+          "label": "实时状态"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "信息更多也可能埋住重点",
+      "accent": "red",
+      "id": "c01-s01",
+      "chapter": "前言",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "理解为什么提示词更长，AI 智能体仍可能忘记重点",
+      "chapterSummary": [
+        "上下文是有限注意力预算",
+        "高信号比原始信息量更重要",
+        "六部分上下文包让方法可复用"
+      ],
+      "start": 0,
+      "end": 24.375,
+      "narration": "AI 智能体可以读到更长的提示词、更多历史记录，却仍然忘记重点。问题不一定是信息不够，也可能是关键要求被状态更新、工具输出、旧结论和大量例子埋住了。它们同时争夺下一步推理的注意力。 Anthropic 把更完整的解决方法叫做上下文工程。提示词工程关注一句指令怎样表达；上下文工程关注此刻应该保留什么、哪些细节等需要时再取、哪些旧信息应该压缩或清除。",
+      "cueStarts": [
+        0.1,
+        4.383,
+        10.533,
+        12.691,
+        15.916
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        0.22,
+        0.22,
+        0.22,
+        0.22
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "AI 智能体可以读到更长的提示词",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 45.98149967454549
+      },
+      "visualBalance": {
+        "x": 948.5847930275032,
+        "y": 470,
+        "offsetX": -11.415206972496776,
+        "offsetY": 0,
+        "rawOffsetX": -11.415206972496776,
+        "rawOffsetY": -45.98149967454549,
+        "appliedShiftX": 0,
+        "appliedShiftY": 45.98149967454549
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "explain-front",
+      "agent": "plan-front",
+      "props": [
+        {
+          "id": "target",
+          "label": "目标"
+        },
+        {
+          "id": "tool",
+          "label": "工具"
+        },
+        {
+          "id": "search",
+          "label": "检索"
+        },
+        {
+          "id": "note",
+          "label": "状态"
+        }
+      ],
+      "flow": "chain",
+      "callout": "管理完整注意力预算",
+      "accent": "blue",
+      "id": "c01-s02",
+      "chapter": "前言",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "理解为什么提示词更长，AI 智能体仍可能忘记重点",
+      "chapterSummary": [
+        "上下文是有限注意力预算",
+        "高信号比原始信息量更重要",
+        "六部分上下文包让方法可复用"
+      ],
+      "start": 24.375,
+      "end": 45.666,
+      "narration": "这个区别很重要。上下文窗口不是无限记忆库，而是一份有限的注意力预算。新增信息可以扩大覆盖面，也会降低关键规则在整段上下文里的相对权重。 这期视频会讲清怎样管理这份预算：选择高信号的指令、工具和示例；按需检索细节；让长任务跨过上下文重置仍保持连贯；最后做出一份六部分的最小高信号上下文包。",
+      "cueStarts": [
+        24.375,
+        25.65,
+        29.416,
+        34.375
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        24.595,
+        24.595,
+        24.595,
+        24.595
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "这个区别很重要",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 24.375,
+          "time": 24.595,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 415.296875,
+        "gap": 213.096875
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 55.924240061968874
+      },
+      "visualBalance": {
+        "x": 981.2680133841628,
+        "y": 470,
+        "offsetX": 21.268013384162828,
+        "offsetY": 0,
+        "rawOffsetX": 21.268013384162828,
+        "rawOffsetY": -55.924240061968874,
+        "appliedShiftX": 0,
+        "appliedShiftY": 55.924240061968874
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        5
+      ],
+      "layout": "hero",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "充分上下文"
+        },
+        {
+          "id": "target",
+          "label": "目标行为"
+        }
+      ],
+      "flow": "chain",
+      "callout": "最小充分，不是一味最短",
+      "accent": "yellow",
+      "id": "c01-s03",
+      "chapter": "前言",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "理解为什么提示词更长，AI 智能体仍可能忘记重点",
+      "chapterSummary": [
+        "上下文是有限注意力预算",
+        "高信号比原始信息量更重要",
+        "六部分上下文包让方法可复用"
+      ],
+      "start": 45.666,
+      "end": 51.936,
+      "narration": "核心目标只有一句：给 AI 智能体足以支持目标行为的最小上下文，并随着任务变化持续更新。",
+      "cueStarts": [
+        45.666
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        45.885999999999996,
+        45.885999999999996
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "核心目标只有一句",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 45.666,
+          "time": 45.885999999999996,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 476.5625,
+        "gap": 205.16250000000002
+      },
+      "balanceShift": {
+        "x": 83.71037464827145,
+        "y": 45
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 430.7707449422011,
+        "offsetX": 0,
+        "offsetY": -39.22925505779892,
+        "rawOffsetX": -83.71037464827145,
+        "rawOffsetY": -84.22925505779892,
+        "appliedShiftX": 83.71037464827145,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "grid",
+      "human": "read-front",
+      "agent": "reason-front",
+      "props": [
+        {
+          "id": "prompt-injection",
+          "label": "系统指令"
+        },
+        {
+          "id": "tool",
+          "label": "工具"
+        },
+        {
+          "id": "document",
+          "label": "证据"
+        },
+        {
+          "id": "chat",
+          "label": "历史"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "每个 token 都消耗注意力",
+      "accent": "blue",
+      "id": "c02-s01",
+      "chapter": "注意力预算",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "把上下文当作稀缺注意力，而不是无限存储",
+      "chapterSummary": [
+        "把上下文当作有限注意力预算，而不是无限存储",
+        "更多 token 可能稀释下一步最重要的指令",
+        "保留最小充分集合，并随任务变化持续刷新"
+      ],
+      "start": 51.936,
+      "end": 78.077,
+      "narration": "上下文包含模型生成下一次回复时能看到的全部 token：系统指令、工具定义、示例、检索到的文档、消息历史、中间结果和当前请求。上下文工程管理的是这整个状态，不只是开头那一段提示词。 Anthropic 把上下文描述为有限资源，而且新增内容的边际收益会下降。有关 context rot 的研究反复看到一种现象：材料越多，模型越可能难以准确找回藏在其中的相关信息。窗口更大，不代表注意力免费。",
+      "cueStarts": [
+        52.036,
+        61.186,
+        64.994,
+        69.436,
+        75.969
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        54.796,
+        54.796,
+        54.796,
+        54.796
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "上下文包含模型生成下一次回复时能看到的全部 token",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 52.036,
+          "time": 54.796,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.74375,
+        "gap": 112.54374999999999
+      },
+      "balanceShift": {
+        "x": 44.50071976984623,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 407.8700265428496,
+        "offsetX": 0,
+        "offsetY": -62.12997345715041,
+        "rawOffsetX": -44.50071976984623,
+        "rawOffsetY": -109.52997345715039,
+        "appliedShiftX": 44.50071976984623,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "comparison",
+      "labels": [
+        "全部装入",
+        "支持判断"
+      ],
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "原始日志"
+        },
+        {
+          "id": "uncertainty",
+          "label": "冲突规则"
+        },
+        {
+          "id": "target",
+          "label": "下一判断"
+        },
+        {
+          "id": "evidence",
+          "label": "当前证据"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "写进去了不等于优先",
+      "accent": "red",
+      "id": "c02-s02",
+      "chapter": "注意力预算",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "把上下文当作稀缺注意力，而不是无限存储",
+      "chapterSummary": [
+        "把上下文当作有限注意力预算，而不是无限存储",
+        "更多 token 可能稀释下一步最重要的指令",
+        "保留最小充分集合，并随任务变化持续刷新"
+      ],
+      "start": 78.077,
+      "end": 104.894,
+      "narration": "这解释了为什么超长提示词仍会失败。正确规则可能确实写进去了，但周围还有过期计划、重复说明、原始日志和一长串边缘情况。智能体在解决任务前，先要猜哪些内容仍然有效、权威而且与当前步骤有关。 所以，好的上下文工程首先是筛选。每个关键步骤开始前，都问一句：什么信息会改变下一步判断？保留目标、必要约束、当前证据和实时状态；能够稍后获取的参考细节，只保留索引。",
+      "cueStarts": [
+        78.077,
+        80.844,
+        87.244,
+        92.369,
+        94.977,
+        99.069
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        78.297,
+        78.297,
+        78.297,
+        78.297
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "这解释了为什么超长提示词仍会失败",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 78.077,
+          "time": 78.297,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 29.815207601112945
+      },
+      "visualBalance": {
+        "x": 951.8243916475966,
+        "y": 470,
+        "offsetX": -8.175608352403401,
+        "offsetY": 0,
+        "rawOffsetX": -8.175608352403401,
+        "rawOffsetY": -29.815207601112945,
+        "appliedShiftX": 0,
+        "appliedShiftY": 29.815207601112945
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "process",
+      "human": "decide-front",
+      "agent": "collaborate-front",
+      "props": [
+        {
+          "id": "search",
+          "label": "新证据"
+        },
+        {
+          "id": "warning",
+          "label": "新边界"
+        },
+        {
+          "id": "milestone",
+          "label": "里程碑"
+        },
+        {
+          "id": "summary",
+          "label": "刷新"
+        }
+      ],
+      "flow": "chain",
+      "callout": "有用上下文会随任务变化",
+      "accent": "yellow",
+      "id": "c02-s03",
+      "chapter": "注意力预算",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "把上下文当作稀缺注意力，而不是无限存储",
+      "chapterSummary": [
+        "把上下文当作有限注意力预算，而不是无限存储",
+        "更多 token 可能稀释下一步最重要的指令",
+        "保留最小充分集合，并随任务变化持续刷新"
+      ],
+      "start": 104.894,
+      "end": 124.144,
+      "narration": "筛选还要持续进行。工具调用带来新证据，错误暴露新边界，完成里程碑后，原始轨迹可以换成紧凑状态摘要。第十步需要的上下文，不会和第一步完全一样。 最小不等于短。复杂迁移仍可能需要完整验收条件、仓库约定和风险控制。标准不是字最少，而是足以支持预期行为的最小集合。",
+      "cueStarts": [
+        104.894,
+        106.477,
+        112.37700000000001,
+        115.386,
+        116.594,
+        120.73599999999999
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        105.114,
+        105.114,
+        105.114,
+        105.114
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "筛选还要持续进行",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 104.894,
+          "time": 105.114,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 63.44624243642687
+      },
+      "visualBalance": {
+        "x": 1021.5091081152891,
+        "y": 470,
+        "offsetX": 61.50910811528911,
+        "offsetY": 0,
+        "rawOffsetX": 61.50910811528911,
+        "rawOffsetY": -63.44624243642687,
+        "appliedShiftX": 0,
+        "appliedShiftY": 63.44624243642687
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c02-s04",
+      "chapter": "注意力预算",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "把上下文当作稀缺注意力，而不是无限存储",
+      "chapterSummary": [
+        "把上下文当作有限注意力预算，而不是无限存储",
+        "更多 token 可能稀释下一步最重要的指令",
+        "保留最小充分集合，并随任务变化持续刷新"
+      ],
+      "start": 124.144,
+      "end": 135.48,
+      "narration": "小结。第一，把上下文当作有限注意力预算，而不是无限存储。 第二，更多 token 可能稀释下一步最重要的指令。 第三，保留最小充分集合，并随任务变化持续刷新。",
+      "cueStarts": [
+        124.144,
+        124.98599999999999,
+        128.644,
+        131.636
+      ],
+      "summaryPointTimes": [
+        124.144,
+        128.644,
+        131.636
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "comparison",
+      "labels": [
+        "硬编码规则",
+        "空泛要求"
+      ],
+      "human": "compare-front",
+      "agent": "reason-front",
+      "props": [
+        {
+          "id": "branch",
+          "label": "复杂分支"
+        },
+        {
+          "id": "error",
+          "label": "脆弱"
+        },
+        {
+          "id": "uncertainty",
+          "label": "假定共识"
+        },
+        {
+          "id": "question",
+          "label": "缺少信号"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "指令要在合适抽象层级",
+      "accent": "yellow",
+      "id": "c03-s01",
+      "chapter": "高信号输入",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "筛选真正能指导行动的指令、工具和示例",
+      "chapterSummary": [
+        "系统指令要落在硬编码和空泛之间的合适层级",
+        "工具要清楚、高效，并尽量减少功能重叠",
+        "用少量典型示例教会智能体真正的模式"
+      ],
+      "start": 135.48,
+      "end": 157.838,
+      "narration": "先把系统指令写在合适的抽象层级。一端是把所有分支硬编码成脆弱的规则；另一端只是说“把事情做好”，默认智能体知道没有明说的标准。 更有效的中间位置会明确目标、边界和判断原则，同时给推理留下空间。背景、指令、工具说明和输出要求可以分区组织。格式有帮助，但真正决定效果的是内容是否清楚、优先级是否明确。",
+      "cueStarts": [
+        135.57999999999998,
+        138.096,
+        144.646,
+        149.55499999999998,
+        153.188
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        138.34,
+        138.34,
+        138.34,
+        138.34
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "先把系统指令写在合适的抽象层级",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 135.57999999999998,
+          "time": 138.34,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 36.762191689583574
+      },
+      "visualBalance": {
+        "x": 966.2100176853115,
+        "y": 470,
+        "offsetX": 6.210017685311527,
+        "offsetY": 0,
+        "rawOffsetX": 6.210017685311527,
+        "rawOffsetY": -36.762191689583574,
+        "appliedShiftX": 0,
+        "appliedShiftY": 36.762191689583574
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "operate",
+      "agent": "monitor-right",
+      "agentDirection": "right",
+      "props": [
+        {
+          "id": "tool",
+          "label": "清楚契约"
+        },
+        {
+          "id": "permission-key",
+          "label": "使用条件"
+        },
+        {
+          "id": "result-card",
+          "label": "紧凑返回"
+        },
+        {
+          "id": "stop",
+          "label": "减少重叠"
+        }
+      ],
+      "flow": "chain",
+      "callout": "工具本身也占用上下文",
+      "accent": "blue",
+      "id": "c03-s02",
+      "chapter": "高信号输入",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "筛选真正能指导行动的指令、工具和示例",
+      "chapterSummary": [
+        "系统指令要落在硬编码和空泛之间的合适层级",
+        "工具要清楚、高效，并尽量减少功能重叠",
+        "用少量典型示例教会智能体真正的模式"
+      ],
+      "start": 157.838,
+      "end": 180.65499999999997,
+      "narration": "接着检查工具。工具不只是一个动作，还是智能体与环境之间的契约。名称、说明、参数、错误处理和返回数据都会进入上下文，并影响智能体选择哪一个动作。 功能重叠会制造模糊决策，也会浪费注意力。如果人都说不清两个工具分别什么时候使用，就不能期待智能体稳定判断。保留最小可用工具集，让每个工具职责单一、输入明确、结果紧凑。",
+      "cueStarts": [
+        157.838,
+        159.03799999999998,
+        162.346,
+        168.51299999999998,
+        171.571,
+        176.221
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        158.058,
+        158.058,
+        158.058,
+        158.058
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "接着检查工具",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 157.838,
+          "time": 158.058,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 415.296875,
+        "gap": 213.096875
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 55.34743790530291
+      },
+      "visualBalance": {
+        "x": 961.5046202791798,
+        "y": 470,
+        "offsetX": 1.5046202791797896,
+        "offsetY": 0,
+        "rawOffsetX": 1.5046202791797896,
+        "rawOffsetY": -55.34743790530291,
+        "appliedShiftX": 0,
+        "appliedShiftY": 55.34743790530291
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "focus",
+      "human": "write-front",
+      "agent": "read-front",
+      "props": [
+        {
+          "id": "book",
+          "label": "典型模式"
+        },
+        {
+          "id": "compare",
+          "label": "必要变化"
+        },
+        {
+          "id": "shield",
+          "label": "重要边界"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "示例是智能体看得见的模式",
+      "accent": "red",
+      "id": "c03-s03",
+      "chapter": "高信号输入",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "筛选真正能指导行动的指令、工具和示例",
+      "chapterSummary": [
+        "系统指令要落在硬编码和空泛之间的合适层级",
+        "工具要清楚、高效，并尽量减少功能重叠",
+        "用少量典型示例教会智能体真正的模式"
+      ],
+      "start": 180.65499999999997,
+      "end": 202.605,
+      "narration": "然后筛选示例。堆满边缘情况看起来很全面，却容易把规律埋掉。Anthropic 更推荐少量、多样、典型的例子，让智能体看见预期模式、必要变化和一条重要边界。 高信号不是固定字数。它指一段信息有明确工作：确定结果、约束行为、选择工具、展示模式、提供证据或暴露停止条件。只有完全不承担这些工作时，才应该删除。",
+      "cueStarts": [
+        180.65499999999997,
+        181.87099999999998,
+        185.255,
+        191.363,
+        193.07999999999998,
+        199.77999999999997
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        180.87499999999997,
+        180.87499999999997,
+        180.87499999999997
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "然后筛选示例",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 180.65499999999997,
+          "time": 180.87499999999997,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 257.8,
+        "gap": 24
+      },
+      "balanceShift": {
+        "x": -86.40302395269418,
+        "y": 25
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 387.45792004897845,
+        "offsetX": 0,
+        "offsetY": -82.54207995102155,
+        "rawOffsetX": 86.40302395269418,
+        "rawOffsetY": -107.54207995102155,
+        "appliedShiftX": -86.40302395269418,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c03-s04",
+      "chapter": "高信号输入",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "筛选真正能指导行动的指令、工具和示例",
+      "chapterSummary": [
+        "系统指令要落在硬编码和空泛之间的合适层级",
+        "工具要清楚、高效，并尽量减少功能重叠",
+        "用少量典型示例教会智能体真正的模式"
+      ],
+      "start": 202.605,
+      "end": 214.07999999999998,
+      "narration": "小结。第一，系统指令要落在硬编码和空泛之间的合适层级。 第二，工具要清楚、高效，并尽量减少功能重叠。 第三，用少量典型示例教会智能体真正的模式。",
+      "cueStarts": [
+        202.605,
+        203.44599999999997,
+        207.021,
+        210.48
+      ],
+      "summaryPointTimes": [
+        202.605,
+        207.021,
+        210.48
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "comparison",
+      "labels": [
+        "全部预加载",
+        "需要时取用"
+      ],
+      "human": "compare-front",
+      "agent": "search",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "完整语料"
+        },
+        {
+          "id": "memory",
+          "label": "预算已占"
+        },
+        {
+          "id": "folder",
+          "label": "引用地图"
+        },
+        {
+          "id": "search",
+          "label": "目标检索"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "上下文留地图，细节再取用",
+      "accent": "blue",
+      "id": "c04-s01",
+      "chapter": "按需检索",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "需要细节时再取用，不在开始时塞满全部材料",
+      "chapterSummary": [
+        "保留轻量引用，不要预先塞入全部正文",
+        "让 AI 智能体在细节真正相关时再逐步发现",
+        "在更聚焦的上下文和额外检索成本之间做取舍"
+      ],
+      "start": 214.07999999999998,
+      "end": 235.896,
+      "narration": "不少系统会在智能体开始前，把所有可能相关的文档全部塞进上下文。材料少而稳定时，这样做很快；但智能体还不知道哪一段真正重要，注意力预算已经提前花掉了。 按需检索只保留轻量引用，比如文件路径、已保存查询、网页链接、对象标识、目录名和时间戳。上下文里保留地图，到了某个判断确实需要证据时，再打开对应内容。",
+      "cueStarts": [
+        214.17999999999998,
+        218.63799999999998,
+        224.73799999999997,
+        231.438
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        216.94,
+        216.94,
+        216.94,
+        216.94
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "不少系统会在智能体开始前",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 214.17999999999998,
+          "time": 216.94,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 44.09788887583494
+      },
+      "visualBalance": {
+        "x": 978.0311135671174,
+        "y": 470,
+        "offsetX": 18.03111356711736,
+        "offsetY": 0,
+        "rawOffsetX": 18.03111356711736,
+        "rawOffsetY": -44.09788887583494,
+        "appliedShiftX": 0,
+        "appliedShiftY": 44.09788887583494
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "read-front",
+      "agent": "execute-right",
+      "agentDirection": "right",
+      "props": [
+        {
+          "id": "folder",
+          "label": "识别结构"
+        },
+        {
+          "id": "search",
+          "label": "缩小范围"
+        },
+        {
+          "id": "code-file",
+          "label": "查看片段"
+        },
+        {
+          "id": "evidence",
+          "label": "用于判断"
+        }
+      ],
+      "flow": "chain",
+      "callout": "渐进式披露保护注意力",
+      "accent": "yellow",
+      "id": "c04-s02",
+      "chapter": "按需检索",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "需要细节时再取用，不在开始时塞满全部材料",
+      "chapterSummary": [
+        "保留轻量引用，不要预先塞入全部正文",
+        "让 AI 智能体在细节真正相关时再逐步发现",
+        "在更聚焦的上下文和额外检索成本之间做取舍"
+      ],
+      "start": 235.896,
+      "end": 257.846,
+      "narration": "这会形成渐进式披露。文件名提示用途，目录结构说明关系，文件大小暗示复杂度，一次搜索结果帮助缩小下一次查询。智能体逐层建立理解，同时只把正在使用的子集放进工作上下文。 Claude Code 就体现了这种方法。稳定的项目指令可以预先加载，文件搜索、grep、head 和 tail 负责查看大仓库里的目标片段，不必一次读取所有文件正文。",
+      "cueStarts": [
+        235.896,
+        237.52999999999997,
+        243.88,
+        248.213,
+        250.188
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        236.11599999999999,
+        236.11599999999999,
+        236.11599999999999,
+        236.11599999999999
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "这会形成渐进式披露",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 235.896,
+          "time": 236.11599999999999,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 60.95618248625408
+      },
+      "visualBalance": {
+        "x": 1034.187303019059,
+        "y": 470,
+        "offsetX": 74.18730301905907,
+        "offsetY": 0,
+        "rawOffsetX": 74.18730301905907,
+        "rawOffsetY": -60.95618248625408,
+        "appliedShiftX": 0,
+        "appliedShiftY": 60.95618248625408
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "focus",
+      "human": "decide-front",
+      "agent": "look-left",
+      "agentDirection": "left",
+      "props": [
+        {
+          "id": "timer",
+          "label": "检索成本"
+        },
+        {
+          "id": "route",
+          "label": "混合边界"
+        },
+        {
+          "id": "target",
+          "label": "相关细节"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "预加载必需项，其余按需取",
+      "accent": "red",
+      "id": "c04-s03",
+      "chapter": "按需检索",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "需要细节时再取用，不在开始时塞满全部材料",
+      "chapterSummary": [
+        "保留轻量引用，不要预先塞入全部正文",
+        "让 AI 智能体在细节真正相关时再逐步发现",
+        "在更聚焦的上下文和额外检索成本之间做取舍"
+      ],
+      "start": 257.846,
+      "end": 281.955,
+      "narration": "取舍同样真实。运行时探索比预加载更慢，导航不佳还会让智能体在错误方向上浪费 token。它需要合适的搜索工具、能说明用途的命名，以及知道什么时候停止探索的规则。 因此更实用的是混合策略。预先放入稳定规则、当前目标和几乎每一步都会用到的少量事实；变化快、细节多或很少使用的材料放到检索入口后面。边界要根据任务和漏掉信息的代价来定。",
+      "cueStarts": [
+        257.846,
+        259.19599999999997,
+        264.33,
+        269.296,
+        271.18,
+        279.255
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        258.06600000000003,
+        258.06600000000003,
+        258.06600000000003
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "取舍同样真实",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 257.846,
+          "time": 258.06600000000003,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 257.8,
+        "gap": 24
+      },
+      "balanceShift": {
+        "x": -75.88622301350142,
+        "y": 25
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 391.1881395585255,
+        "offsetX": 0,
+        "offsetY": -78.8118604414745,
+        "rawOffsetX": 75.88622301350142,
+        "rawOffsetY": -103.8118604414745,
+        "appliedShiftX": -75.88622301350142,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c04-s04",
+      "chapter": "按需检索",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "需要细节时再取用，不在开始时塞满全部材料",
+      "chapterSummary": [
+        "保留轻量引用，不要预先塞入全部正文",
+        "让 AI 智能体在细节真正相关时再逐步发现",
+        "在更聚焦的上下文和额外检索成本之间做取舍"
+      ],
+      "start": 281.955,
+      "end": 293.856,
+      "narration": "小结。第一，保留轻量引用，不要预先塞入全部正文。 第二，让 AI 智能体在细节真正相关时再逐步发现。 第三，在更聚焦的上下文和额外检索成本之间做取舍。",
+      "cueStarts": [
+        281.955,
+        282.796,
+        285.988,
+        289.796
+      ],
+      "summaryPointTimes": [
+        281.955,
+        285.988,
+        289.796
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "process",
+      "human": "caution-front",
+      "agent": "store-memory",
+      "props": [
+        {
+          "id": "chat",
+          "label": "长轨迹"
+        },
+        {
+          "id": "summary",
+          "label": "压缩"
+        },
+        {
+          "id": "milestone",
+          "label": "关键决定"
+        },
+        {
+          "id": "progress",
+          "label": "下一动作"
+        }
+      ],
+      "flow": "chain",
+      "callout": "带走连续性，不带走全部轨迹",
+      "accent": "blue",
+      "id": "c05-s01",
+      "chapter": "长任务记忆",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "跨越长任务与上下文重置仍能保留决定和进度",
+      "chapterSummary": [
+        "把长轨迹压缩成高召回的连续性摘要",
+        "把持久工作状态写进结构化外部笔记",
+        "只有聚焦探索值得协调成本时，才使用专门 Agent"
+      ],
+      "start": 293.856,
+      "end": 316.79699999999997,
+      "narration": "长任务还会带来第二个问题。即使上下文一直被认真筛选，智能体执行动作、观察结果、修复错误和累积决定后，窗口仍会填满。连续工作几小时，可能多次超过可用范围。 第一种方法是压缩。把对话或轨迹总结后开启新窗口，只带上保持连续性所需的决定、未解决问题、约束、证据和下一步动作。已经完成使命的原始工具输出通常可以退出。",
+      "cueStarts": [
+        293.956,
+        295.889,
+        302.531,
+        305.364,
+        306.822,
+        313.897
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        296.716,
+        296.716,
+        296.716,
+        296.716
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "长任务还会带来第二个问题",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 293.956,
+          "time": 296.716,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 983.1189154905765,
+        "y": 459.7882233295318,
+        "offsetX": 23.118915490576455,
+        "offsetY": -10.211776670468225,
+        "rawOffsetX": 23.118915490576455,
+        "rawOffsetY": -90.21177667046823,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "write-front",
+      "agent": "recall-memory",
+      "props": [
+        {
+          "id": "evidence",
+          "label": "高召回"
+        },
+        {
+          "id": "note",
+          "label": "持久状态"
+        },
+        {
+          "id": "question",
+          "label": "开放问题"
+        },
+        {
+          "id": "archive",
+          "label": "原始历史"
+        }
+      ],
+      "flow": "chain",
+      "callout": "把工作状态写到窗口之外",
+      "accent": "yellow",
+      "id": "c05-s02",
+      "chapter": "长任务记忆",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "跨越长任务与上下文重置仍能保留决定和进度",
+      "chapterSummary": [
+        "把长轨迹压缩成高召回的连续性摘要",
+        "把持久工作状态写进结构化外部笔记",
+        "只有聚焦探索值得协调成本时，才使用专门 Agent"
+      ],
+      "start": 316.79699999999997,
+      "end": 338.964,
+      "narration": "压缩存在风险：今天看起来次要的细节，可能后来才显出关键价值。Anthropic 建议先追求高召回，再逐步提高精确度。多带一点内容，通常比丢掉决定性约束更安全。 第二种方法是结构化笔记。智能体把进度、里程碑、发现和开放问题写到窗口之外，需要时再取回相关部分。这样能保留持久工作状态，又不用让整段对话一直在线。",
+      "cueStarts": [
+        316.79699999999997,
+        321.456,
+        324.67199999999997,
+        327.681,
+        329.681,
+        335.18899999999996
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        317.017,
+        317.017,
+        317.017,
+        317.017
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "压缩存在风险",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 316.79699999999997,
+          "time": 317.017,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 65.31134623912203
+      },
+      "visualBalance": {
+        "x": 1013.3333733068025,
+        "y": 470,
+        "offsetX": 53.333373306802514,
+        "offsetY": 0,
+        "rawOffsetX": 53.333373306802514,
+        "rawOffsetY": -65.31134623912203,
+        "appliedShiftX": 0,
+        "appliedShiftY": 65.31134623912203
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "comparison",
+      "labels": [
+        "一条连续主线",
+        "多个聚焦探索"
+      ],
+      "human": "handoff-right",
+      "humanDirection": "right",
+      "agent": "delegate-front",
+      "props": [
+        {
+          "id": "single-agent",
+          "label": "主计划"
+        },
+        {
+          "id": "note",
+          "label": "共享状态"
+        },
+        {
+          "id": "parallel-agents",
+          "label": "独立深挖"
+        },
+        {
+          "id": "summary",
+          "label": "压缩回传"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "按任务形态选择记忆方式",
+      "accent": "red",
+      "id": "c05-s03",
+      "chapter": "长任务记忆",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "跨越长任务与上下文重置仍能保留决定和进度",
+      "chapterSummary": [
+        "把长轨迹压缩成高召回的连续性摘要",
+        "把持久工作状态写进结构化外部笔记",
+        "只有聚焦探索值得协调成本时，才使用专门 Agent"
+      ],
+      "start": 338.964,
+      "end": 361.964,
+      "narration": "专门的 Agent 可以隔离深度探索。主 Agent 保留高层计划，多个专门 Agent 分别研究独立问题，再把压缩后的发现交回。只有并行深挖的价值超过协调成本时，这种方式才值得。 选择要看任务形态：持续对话用压缩，有清晰里程碑的迭代工作用笔记，独立而复杂的研究用专门 Agent。无论采用哪种方式，交接都必须保留目标、决定、证据、未知项和下一步动作。",
+      "cueStarts": [
+        338.964,
+        341.114,
+        346.43899999999996,
+        350.172,
+        356.706
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        339.184,
+        339.184,
+        339.184,
+        339.184
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "专门的 Agent 可以隔离深度探索",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 338.964,
+          "time": 339.184,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 48.24857026367596
+      },
+      "visualBalance": {
+        "x": 1006.0856018328894,
+        "y": 470,
+        "offsetX": 46.08560183288944,
+        "offsetY": 0,
+        "rawOffsetX": 46.08560183288944,
+        "rawOffsetY": -48.24857026367596,
+        "appliedShiftX": 0,
+        "appliedShiftY": 48.24857026367596
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c05-s04",
+      "chapter": "长任务记忆",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "跨越长任务与上下文重置仍能保留决定和进度",
+      "chapterSummary": [
+        "把长轨迹压缩成高召回的连续性摘要",
+        "把持久工作状态写进结构化外部笔记",
+        "只有聚焦探索值得协调成本时，才使用专门 Agent"
+      ],
+      "start": 361.964,
+      "end": 372.72,
+      "narration": "小结。第一，把长轨迹压缩成高召回的连续性摘要。 第二，把持久工作状态写进结构化外部笔记。 第三，只有聚焦探索值得协调成本时，才使用专门 Agent。",
+      "cueStarts": [
+        361.964,
+        362.806,
+        365.706,
+        368.772
+      ],
+      "summaryPointTimes": [
+        361.964,
+        365.706,
+        368.772
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "hero",
+      "human": "handoff-right",
+      "humanDirection": "right",
+      "agent": "receive-right",
+      "agentDirection": "right",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "上下文包"
+        },
+        {
+          "id": "target",
+          "label": "结果目标"
+        }
+      ],
+      "flow": "chain",
+      "callout": "六部分，一个可检查上下文包",
+      "accent": "blue",
+      "id": "c06-s01",
+      "chapter": "上下文包",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "为真实工作建立可复用的六部分上下文包",
+      "chapterSummary": [
+        "用结果目标和运行规则锚定 AI 智能体",
+        "用工具地图、典型示例和检索索引指导行动",
+        "用紧凑且持续更新的工作状态保持连续性"
+      ],
+      "start": 372.72,
+      "end": 396.478,
+      "narration": "把前面的方法整理成一份最小高信号上下文包。它有六部分：结果目标、运行规则、工具地图、典型示例、检索索引和工作状态。它足够紧凑，可以人工检查；也足够完整，可以支持真实工作。 第一部分是结果目标。写清目标、使用者、交付物、验收条件，以及结果要支持的决定。这样可以避免智能体做出很流畅、很好看，却没有解决真实问题的产物。",
+      "cueStarts": [
+        372.82000000000005,
+        375.93600000000004,
+        381.57000000000005,
+        385.82800000000003,
+        387.36100000000005,
+        391.77000000000004
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        375.58000000000004,
+        375.58000000000004
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "把前面的方法整理成一份最小高信号上下文包",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 372.82000000000005,
+          "time": 375.58000000000004,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 476.5625,
+        "gap": 205.16250000000002
+      },
+      "balanceShift": {
+        "x": -85.84945079085765,
+        "y": 45
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 420.7653422586479,
+        "offsetX": 0,
+        "offsetY": -49.23465774135212,
+        "rawOffsetX": 85.84945079085765,
+        "rawOffsetY": -94.23465774135212,
+        "appliedShiftX": -85.84945079085765,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "grid",
+      "human": "explain-front",
+      "agent": "plan-front",
+      "props": [
+        {
+          "id": "shield",
+          "label": "运行规则"
+        },
+        {
+          "id": "tool",
+          "label": "工具地图"
+        },
+        {
+          "id": "book",
+          "label": "典型示例"
+        },
+        {
+          "id": "permission-key",
+          "label": "权限边界"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "把行动方式和限制写清",
+      "accent": "yellow",
+      "id": "c06-s02",
+      "chapter": "上下文包",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "为真实工作建立可复用的六部分上下文包",
+      "chapterSummary": [
+        "用结果目标和运行规则锚定 AI 智能体",
+        "用工具地图、典型示例和检索索引指导行动",
+        "用紧凑且持续更新的工作状态保持连续性"
+      ],
+      "start": 396.478,
+      "end": 417.57000000000005,
+      "narration": "第二部分是运行规则。记录硬约束、权限、风险边界、升级节点和停止条件。把长期规则与临时假设分开，避免一次性的绕行方案悄悄变成永久政策。 第三部分是工具地图和典型示例。每个工具写明使用条件、输入、紧凑输出，以及它不能替代的相邻工具；再加入两三个例子，展示主要模式和一条关键边界。",
+      "cueStarts": [
+        396.478,
+        398.095,
+        402.11100000000005,
+        406.97,
+        409.56100000000004
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        396.69800000000004,
+        396.69800000000004,
+        396.69800000000004,
+        396.69800000000004
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第二部分是运行规则",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 396.478,
+          "time": 396.69800000000004,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.74375,
+        "gap": 112.54374999999999
+      },
+      "balanceShift": {
+        "x": -53.672073132955006,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 448.79479493644016,
+        "offsetX": 0,
+        "offsetY": -21.205205063559845,
+        "rawOffsetX": 53.672073132955006,
+        "rawOffsetY": -68.60520506355982,
+        "appliedShiftX": -53.672073132955006,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "process",
+      "human": "review-front",
+      "agent": "collaborate-front",
+      "props": [
+        {
+          "id": "folder",
+          "label": "检索索引"
+        },
+        {
+          "id": "search",
+          "label": "打开条件"
+        },
+        {
+          "id": "note",
+          "label": "工作状态"
+        },
+        {
+          "id": "loop",
+          "label": "持续更新"
+        }
+      ],
+      "flow": "chain",
+      "callout": "到达里程碑就更新上下文包",
+      "accent": "red",
+      "id": "c06-s03",
+      "chapter": "上下文包",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "为真实工作建立可复用的六部分上下文包",
+      "chapterSummary": [
+        "用结果目标和运行规则锚定 AI 智能体",
+        "用工具地图、典型示例和检索索引指导行动",
+        "用紧凑且持续更新的工作状态保持连续性"
+      ],
+      "start": 417.57000000000005,
+      "end": 438.07800000000003,
+      "narration": "第四部分是检索索引。给每份来源保存轻量入口、用途标签和打开条件。智能体不仅要知道证据在哪里，也要知道什么时候必须取回证据。 第五部分是工作状态。记录已完成事项、当前重点、关键决定与证据、未决问题、失败方法和下一步动作。到达里程碑就更新状态，再压缩或归档它替代的原始轨迹。",
+      "cueStarts": [
+        417.57000000000005,
+        419.42,
+        423.11100000000005,
+        427.16100000000006,
+        428.70300000000003,
+        434.32000000000005
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        417.7900000000001,
+        417.7900000000001,
+        417.7900000000001,
+        417.7900000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第四部分是检索索引",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 417.57000000000005,
+          "time": 417.7900000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 418.5,
+        "gap": 216.3
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 64.80693117778924
+      },
+      "visualBalance": {
+        "x": 1016.6591767682874,
+        "y": 470,
+        "offsetX": 56.65917676828735,
+        "offsetY": 0,
+        "rawOffsetX": 56.65917676828735,
+        "rawOffsetY": -64.80693117778924,
+        "appliedShiftX": 0,
+        "appliedShiftY": 64.80693117778924
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c06-s04",
+      "chapter": "上下文包",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "为真实工作建立可复用的六部分上下文包",
+      "chapterSummary": [
+        "用结果目标和运行规则锚定 AI 智能体",
+        "用工具地图、典型示例和检索索引指导行动",
+        "用紧凑且持续更新的工作状态保持连续性"
+      ],
+      "start": 438.07800000000003,
+      "end": 449.59200000000004,
+      "narration": "小结。第一，用结果目标和运行规则锚定 AI 智能体。 第二，用工具地图、典型示例和检索索引指导行动。 第三，用紧凑且持续更新的工作状态保持连续性。",
+      "cueStarts": [
+        438.07800000000003,
+        438.92,
+        442.153,
+        445.91100000000006
+      ],
+      "summaryPointTimes": [
+        438.07800000000003,
+        442.153,
+        445.91100000000006
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        6
+      ],
+      "summaryPointParagraphs": [
+        2,
+        3,
+        5
+      ],
+      "ctaParagraph": 6,
+      "recap": true,
+      "finalSummary": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "AI 智能体上下文：保留信号",
+      "accent": "blue",
+      "id": "c07-s01",
+      "chapter": "总结",
+      "chapterIndex": 6,
+      "chapterNumber": 7,
+      "chapterStart": true,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "保留信号、按需取细节、持续维护工作状态",
+      "chapterSummary": [
+        "管理完整上下文状态，不只优化提示词。根据下一步判断需要什么，保留目标、约束、工具、证据和当前状态",
+        "提高信号质量。用合适层级的指令、最小工具集和少量典型示例，替代脆弱规则与边缘情况堆积",
+        "最后，用压缩、结构化笔记和六部分最小高信号上下文包保护长任务。保留信号，按需取细节，持续维护工作状态"
+      ],
+      "start": 449.59200000000004,
+      "end": 488.74327100000005,
+      "narration": "AI 智能体忘记重点，不只因为缺信息，也可能因为没有区分的信息太多，共同争夺有限注意力。 第一，管理完整上下文状态，不只优化提示词。根据下一步判断需要什么，保留目标、约束、工具、证据和当前状态。 第二，提高信号质量。用合适层级的指令、最小工具集和少量典型示例，替代脆弱规则与边缘情况堆积。 第三，按需检索细节。稳定且高频的信息放在前面，变化快或专业性强的材料通过明确引用逐步打开。 最后，用压缩、结构化笔记和六部分最小高信号上下文包保护长任务。保留信号，按需取细节，持续维护工作状态。 关注 Tiny Agent，成为更擅长使用 AI 的人！",
+      "cueStarts": [
+        449.69200000000006,
+        455.55800000000005,
+        458.87500000000006,
+        463.75000000000006,
+        465.35800000000006,
+        471.00000000000006,
+        472.80800000000005,
+        478.27500000000003,
+        483.00000000000006,
+        486.158
+      ],
+      "summaryPointTimes": [
+        455.55800000000005,
+        463.75000000000006,
+        478.27500000000003
+      ],
+      "ctaAt": 486.158,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    }
+  ]
+}

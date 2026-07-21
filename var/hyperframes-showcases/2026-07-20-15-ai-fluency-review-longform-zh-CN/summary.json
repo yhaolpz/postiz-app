@@ -1,0 +1,119 @@
+{
+  "title": "第一版 AI 输出为什么越顺眼越要检查？",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-20-15-ai-fluency-review-longform-zh-CN/SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 499.31302100000005,
+    "chapters": [
+      {
+        "label": "前言",
+        "start": 0,
+        "end": 61.056,
+        "duration": 61.056
+      },
+      {
+        "label": "顺眼陷阱",
+        "start": 61.056,
+        "end": 139.68,
+        "duration": 78.624
+      },
+      {
+        "label": "迭代方法",
+        "start": 139.68,
+        "end": 218.04000000000002,
+        "duration": 78.36
+      },
+      {
+        "label": "协作规则",
+        "start": 218.04000000000002,
+        "end": 302.016,
+        "duration": 83.976
+      },
+      {
+        "label": "检查成品",
+        "start": 302.016,
+        "end": 386.37600000000003,
+        "duration": 84.36
+      },
+      {
+        "label": "检查回合",
+        "start": 386.37600000000003,
+        "end": 457.77600000000007,
+        "duration": 71.4
+      },
+      {
+        "label": "总结",
+        "start": 457.77600000000007,
+        "end": 499.31302100000005,
+        "duration": 41.53702099999998
+      }
+    ],
+    "visualStates": 24,
+    "captions": 167
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-20-15-ai-fluency-review-longform.zh-CN.mp4",
+    "status": "pass",
+    "durationSeconds": 499.349333,
+    "sizeBytes": 38407969,
+    "sha256": "6ac8a2719ba86c55855799920f4b4e911ed50957e2a04ced9bd39ec8083193f3",
+    "finalReport": "qa/final-release-report.json"
+  }
+}

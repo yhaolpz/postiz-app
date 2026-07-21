@@ -58,6 +58,10 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
+function hasAiAgentIdentity(title) {
+  return /\bAI[\s-]+Agents?\b/i.test(String(title || ''));
+}
+
 function getPostizBaseUrl() {
   return (process.env.POSTIZ_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000').replace(/\/$/, '');
 }
@@ -137,6 +141,11 @@ function validateInputs(videoPath, metadata) {
   assert(metadata.youtube?.playlistTitle === 'AI Agents: From Chat to Done', 'Unexpected YouTube playlist title.');
   assert(metadata.youtube?.playlistPrivacyStatus === 'public', 'Playlist privacy must be public.');
   assert(Array.isArray(metadata.titleCandidates) && metadata.titleCandidates.length === 3, 'Exactly three title candidates are required.');
+  assert(hasAiAgentIdentity(metadata.title), 'Final YouTube title must naturally contain AI Agent or AI Agents.');
+  metadata.titleCandidates.forEach((title, index) => {
+    assert(hasAiAgentIdentity(title), `YouTube title candidate ${index + 1} must naturally contain AI Agent or AI Agents.`);
+  });
+  assert(hasAiAgentIdentity(metadata.thumbnailText), 'English thumbnail text must naturally contain AI Agent or AI Agents.');
   assert(metadata.title.length <= 100, 'YouTube title exceeds 100 characters.');
   assert(!/https?:\/\//i.test(metadata.description), 'YouTube description must not contain external URLs.');
   assert(

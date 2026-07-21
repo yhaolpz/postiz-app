@@ -1,0 +1,79 @@
+{
+  "chapters": [
+    {
+      "label": "前言",
+      "showIntro": false,
+      "intro": "理解精致外观为什么会掩盖未完成的判断",
+      "summary": ["顺眼会压住可见评估", "迭代把检查放回流程", "五步清单让评审可以复用"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["看起来完成","仍未验证"],"human":"surprised","agent":"present-right","agentDirection":"right","props":[{"id":"result-card","label":"精致输出"},{"id":"success","label":"像成品"},{"id":"uncertainty","label":"隐藏缺口"},{"id":"question","label":"没有追问"}],"flow":"cluster","callout":"顺眼也会藏住关键缺口","accent":"red"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"result-card","label":"第一版"},{"id":"loop","label":"迭代"},{"id":"evidence","label":"验证"},{"id":"approval","label":"使用"}],"flow":"chain","callout":"把评估重新放回协作流程","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"hero","human":"review-front","agent":"verify-front","props":[{"id":"document","label":"草稿"},{"id":"checklist","label":"检查"}],"flow":"chain","callout":"第一版只是制作水平很高的草稿","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "顺眼陷阱",
+      "intro": "识别成品感如何让评估提前停止",
+      "summary": ["精致外观可能先于关键评估完成", "成品对话里指令更多，但可见检查更少", "把顺眼当成检查信号，而不是质量证明"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"read-front","agent":"write-front","props":[{"id":"team","label":"9830 段对话"},{"id":"code-file","label":"代码"},{"id":"document","label":"文档"},{"id":"tool","label":"工具"}],"flow":"cluster","callout":"制作成品会改变人的协作方式","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["指令更多","可见检查更少"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"target","label":"目标"},{"id":"form","label":"格式"},{"id":"uncertainty","label":"缺失上下文"},{"id":"citation","label":"事实核验"}],"flow":"cluster","callout":"指令侧上升，评估侧却下降","accent":"red"},
+        {"paragraphs":[5,6],"layout":"focus","human":"caution-front","agent":"alert-front","props":[{"id":"result-card","label":"成品感"},{"id":"warning","label":"检查信号"}],"flow":"chain","callout":"完成感不是完成证据","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "迭代方法",
+      "intro": "用有目标的追问暴露假设并改进结果",
+      "summary": ["把第一版当作起点，而不是终点", "让每次追问只承担一个明确的评估任务", "验收条件和剩余不确定性清楚时结束迭代"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"present-left","humanDirection":"left","agent":"retry-front","props":[{"id":"loop","label":"85.7% 迭代"},{"id":"trend-up","label":"更多流畅行为"}],"flow":"chain","callout":"迭代与更完整的流畅行为相关","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["模糊重启","检查一个主张"],"human":"compare-front","agent":"reason-front","props":[{"id":"prompt-injection","label":"重写大提示词"},{"id":"uncertainty","label":"缺口仍在"},{"id":"question","label":"一个假设"},{"id":"evidence","label":"一次验证"}],"flow":"cluster","callout":"追问最能改变结果的不确定项","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"decide-front","agent":"collaborate-front","props":[{"id":"target","label":"澄清"},{"id":"question","label":"找缺口"},{"id":"compare","label":"比较"},{"id":"stop","label":"停止"}],"flow":"chain","callout":"每一轮只承担一个评估任务","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "协作规则",
+      "intro": "提前定义质疑、解释与不确定性表达",
+      "summary": ["提前说明什么时候质疑假设和追问上下文", "要求依据、不确定性和停止条件清楚可见", "用证据与实际用途定义验收，而不是用完整外观定义验收"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"write-front","agent":"listen-front","props":[{"id":"form","label":"30% 设规则"},{"id":"chat","label":"互动方式"}],"flow":"chain","callout":"不仅说明任务，也说明怎样协作","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"caution-front","agent":"reason-front","props":[{"id":"question","label":"质疑"},{"id":"uncertainty","label":"不确定性"},{"id":"stop","label":"停止"},{"id":"scorecard","label":"验收"}],"flow":"cluster","callout":"让信心可以被检查","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["自信完成","可检查结果"],"human":"compare-front","agent":"present-left","agentDirection":"left","props":[{"id":"success","label":"看起来完整"},{"id":"result-card","label":"没有边界"},{"id":"evidence","label":"依据"},{"id":"checklist","label":"未决项"}],"flow":"cluster","callout":"奖励可见判断，而不是快速确定","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "检查成品",
+      "intro": "核对目标、上下文、依据和真实表现",
+      "summary": ["确认成品服务于真实目标和约束", "用对应测试核对缺失上下文、证据、计算和实际行为", "让检查深度匹配风险，并保留明确的人类责任人"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"review-front","agent":"ask-front","props":[{"id":"target","label":"目标"},{"id":"ruler","label":"约束"},{"id":"uncertainty","label":"缺口"},{"id":"team","label":"相关方"}],"flow":"chain","callout":"先核对目标，再判断表面质量","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"operate-right","humanDirection":"right","agent":"monitor-left","agentDirection":"left","props":[{"id":"citation","label":"来源"},{"id":"spreadsheet","label":"计算"},{"id":"code-file","label":"代码"},{"id":"experiment","label":"测试"}],"flow":"cluster","callout":"让主张进入真实使用环境","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"focus","human":"decide-front","agent":"handoff-left","agentDirection":"left","props":[{"id":"human-gate","label":"责任人"},{"id":"shield","label":"后果"}],"flow":"chain","callout":"检查深度必须与风险匹配","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "检查回合",
+      "intro": "发布前运行一套可复用的五步清单",
+      "summary": ["在润色之前先检查目标和缺口", "在信任结果之前检查依据和测试", "以能够接受、修订或停止工作的责任人结束回合"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"clipboard","label":"五步回合"},{"id":"target","label":"目标"}],"flow":"chain","callout":"目标 · 缺口 · 依据 · 测试 · 责任人","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"uncertainty","label":"缺口"},{"id":"evidence","label":"依据"},{"id":"citation","label":"追溯"},{"id":"scorecard","label":"信心"}],"flow":"chain","callout":"信心需要逐条获得","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"approve","agent":"verify-front","props":[{"id":"experiment","label":"测试"},{"id":"warning","label":"失败模式"},{"id":"human-gate","label":"责任人"},{"id":"approval","label":"决定"}],"flow":"chain","callout":"以决定结束，不以再次润色结束","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "总结",
+      "showIntro": false,
+      "intro": "把精致草稿变成经过检查并有人负责的结果",
+      "summary": ["记住研究里的反差：生成成品时，用户更会说明目标和格式，也更愿意迭代，但在对话中检查上下文、事实和推理依据的比例更低", "把第一版当作起点。用有目标的追问暴露假设、补强证据、比较方案，并让剩余不确定性清楚可见", "最后，运行五步清单：目标、缺口、依据、测试、责任人。只要其中一步仍然模糊，输出可能看起来完成了，但这次协作回合还没有完成"],
+      "scenes": [
+        {"paragraphs":[1,6],"summaryPointParagraphs":[2,3,5],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"顺眼是检查的起点，不是终点","accent":"blue"}
+      ]
+    }
+  ]
+}

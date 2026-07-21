@@ -1,0 +1,115 @@
+{
+  "title": "AI 智能体上下文：保留信号，减少噪声",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-21-03-agent-context-engineering-longform-zh-CN/SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 488.74327100000005,
+    "chapters": [
+      {
+        "label": "前言",
+        "start": 0,
+        "end": 51.936,
+        "duration": 51.936
+      },
+      {
+        "label": "注意力预算",
+        "start": 51.936,
+        "end": 135.48,
+        "duration": 83.544
+      },
+      {
+        "label": "高信号输入",
+        "start": 135.48,
+        "end": 214.07999999999998,
+        "duration": 78.6
+      },
+      {
+        "label": "按需检索",
+        "start": 214.07999999999998,
+        "end": 293.856,
+        "duration": 79.776
+      },
+      {
+        "label": "长任务记忆",
+        "start": 293.856,
+        "end": 372.72,
+        "duration": 78.864
+      },
+      {
+        "label": "上下文包",
+        "start": 372.72,
+        "end": 449.59200000000004,
+        "duration": 76.872
+      },
+      {
+        "label": "总结",
+        "start": 449.59200000000004,
+        "end": 488.74327100000005,
+        "duration": 39.15127100000001
+      }
+    ],
+    "visualStates": 24,
+    "captions": 159
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-21-03-agent-context-engineering-longform.zh-CN.mp4",
+    "status": "pass"
+  }
+}

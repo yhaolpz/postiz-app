@@ -1,0 +1,119 @@
+{
+  "title": "The AI Output Review Loop",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-20-15-ai-fluency-review-longform-en-US/SCRIPT.en-US.md",
+  "language": "en-US",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "en-US-AnaNeural",
+    "rate": "+30%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 649.9727710000001,
+    "chapters": [
+      {
+        "label": "Introduction",
+        "start": 0,
+        "end": 75.984,
+        "duration": 75.984
+      },
+      {
+        "label": "The Polish Trap",
+        "start": 75.984,
+        "end": 188.39999999999998,
+        "duration": 112.416
+      },
+      {
+        "label": "Iteration",
+        "start": 188.39999999999998,
+        "end": 296.18399999999997,
+        "duration": 107.784
+      },
+      {
+        "label": "Set the Terms",
+        "start": 296.18399999999997,
+        "end": 387.912,
+        "duration": 91.728
+      },
+      {
+        "label": "Inspect the Work",
+        "start": 387.912,
+        "end": 500.544,
+        "duration": 112.632
+      },
+      {
+        "label": "Review Loop",
+        "start": 500.544,
+        "end": 594.8879999999999,
+        "duration": 94.344
+      },
+      {
+        "label": "Summary",
+        "start": 594.8879999999999,
+        "end": 649.9727710000001,
+        "duration": 55.08477100000016
+      }
+    ],
+    "visualStates": 24,
+    "captions": 223
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-20-15-ai-fluency-review-longform.en-US.mp4",
+    "status": "pass",
+    "durationSeconds": 650.005333,
+    "sizeBytes": 48801984,
+    "sha256": "c5ab3cbe4483fe224498ed243f8b44267c6db544ef68027eb7198e195782e3d1",
+    "finalReport": "qa/final-release-report.json"
+  }
+}

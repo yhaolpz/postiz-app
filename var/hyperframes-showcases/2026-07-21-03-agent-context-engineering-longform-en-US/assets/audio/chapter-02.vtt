@@ -1,0 +1,91 @@
+1
+00:00:00,100 --> 00:00:12,694
+Context includes every token available when the model produces its next response: system instructions, tool definitions, examples, retrieved documents, message history, intermediate results, and the current request.
+
+2
+00:00:12,644 --> 00:00:17,211
+Context engineering manages that whole state, not just the opening prompt.
+
+3
+00:00:17,211 --> 00:00:21,875
+Anthropic describes context as finite and subject to diminishing returns.
+
+4
+00:00:21,875 --> 00:00:30,846
+Research on context rot shows a recurring pattern: as the amount of material grows, models can become less reliable at recalling the relevant item hidden inside it.
+
+5
+00:00:30,846 --> 00:00:33,673
+A larger window does not make attention free.
+
+6
+00:00:33,673 --> 00:00:36,653
+This explains why a giant prompt can fail.
+
+7
+00:00:36,653 --> 00:00:44,163
+The correct rule may be present, yet surrounded by obsolete plans, repeated explanations, raw logs, and edge cases.
+
+8
+00:00:44,163 --> 00:00:50,317
+The model must infer which parts are current, authoritative, and relevant before it can even solve the task.
+
+9
+00:00:50,317 --> 00:00:53,519
+Good context engineering is therefore selective.
+
+10
+00:00:53,519 --> 00:00:58,153
+Before every meaningful step, ask what information changes the next decision.
+
+11
+00:00:58,153 --> 00:01:02,951
+Keep the goal, necessary constraints, current evidence, and live state.
+
+12
+00:01:02,951 --> 00:01:06,846
+Move reference detail behind an index when it can be fetched later.
+
+13
+00:01:06,846 --> 00:01:08,836
+Selection is iterative.
+
+14
+00:01:08,836 --> 00:01:12,125
+After a tool call, the Agent has new evidence.
+
+15
+00:01:12,125 --> 00:01:15,451
+After an error, a new boundary becomes important.
+
+16
+00:01:15,451 --> 00:01:20,144
+After a milestone, raw traces may be replaced by a compact state summary.
+
+17
+00:01:20,144 --> 00:01:25,576
+The useful context at step ten is not identical to the useful context at step one.
+
+18
+00:01:25,576 --> 00:01:27,663
+Minimal does not mean short.
+
+19
+00:01:27,663 --> 00:01:34,298
+A complex migration may need extensive acceptance criteria, repository conventions, and risk controls.
+
+20
+00:01:34,298 --> 00:01:40,317
+The standard is the smallest set that fully supports the expected behavior, not the fewest possible words.
+
+21
+00:01:40,317 --> 00:01:45,403
+First, treat context as a finite attention budget rather than unlimited storage.
+
+22
+00:01:45,403 --> 00:01:49,605
+Second, more tokens can dilute the instruction that matters next.
+
+23
+00:01:49,605 --> 00:01:54,105
+Third, keep the smallest sufficient set and refresh it as the task changes.

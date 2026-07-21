@@ -6,7 +6,7 @@
       "intro": "Replace the source pile with a path from question to evidence to decision",
       "summary": ["Start from a decision, not a topic", "Make evidence and limits auditable", "Deliver a usable next action"],
       "scenes": [
-        {"paragraphs":[1,2],"layout":"comparison","labels":["Source pile","Decision path"],"human":"compare-front","agent":"present-right","agentDirection":"right","props":[{"id":"document-stack","label":"Many sources"},{"id":"uncertainty","label":"No decision"},{"id":"evidence","label":"Evidence"},{"id":"approval","label":"Decision"}],"flow":"cluster","callout":"More sources can still leave no next step","accent":"red"},
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Source pile","Decision path"],"human":"compare-front","agent":"present-right","agentDirection":"right","props":[{"id":"document-stack","label":"Many sources"},{"id":"uncertainty","label":"No decision"},{"id":"evidence","label":"Evidence"},{"id":"target","label":"Decision"}],"flow":"cluster","callout":"Sources are not a decision path","accent":"red"},
         {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"question","label":"Question"},{"id":"evidence","label":"Evidence"},{"id":"uncertainty","label":"Limits"},{"id":"result-card","label":"Decision brief"}],"flow":"chain","callout":"Build a contract before the research starts","accent":"blue"},
         {"paragraphs":[5,5],"layout":"hero","human":"review-front","agent":"verify-front","props":[{"id":"target","label":"Inspect"},{"id":"approval","label":"Decide"}],"flow":"chain","callout":"Research quality is a usable decision","accent":"yellow"}
       ]
@@ -29,7 +29,7 @@
       "scenes": [
         {"paragraphs":[1,2],"layout":"process","human":"write-front","agent":"plan-front","props":[{"id":"question","label":"Main question"},{"id":"branch","label":"Sub-questions"},{"id":"route","label":"Source plan"},{"id":"target","label":"Decision test"}],"flow":"chain","callout":"Review the plan before expensive work","accent":"blue"},
         {"paragraphs":[3,4],"layout":"grid","human":"caution-front","agent":"read-front","props":[{"id":"calendar","label":"Timeframe"},{"id":"ruler","label":"Scope"},{"id":"team","label":"Population"},{"id":"stop","label":"Exclusions"}],"flow":"cluster","callout":"Bound the question before sources mix","accent":"yellow"},
-        {"paragraphs":[5,6],"layout":"comparison","labels":["Evidence strategy","Vague request"],"human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"citation","label":"Primary"},{"id":"checklist","label":"Criteria"},{"id":"chat","label":"Reliable sources"},{"id":"uncertainty","label":"No test"}],"flow":"cluster","callout":"Define how strong sources will be judged","accent":"red"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["Evidence strategy","Vague request"],"human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"citation","label":"Primary"},{"id":"checklist","label":"Criteria"},{"id":"chat","label":"Reliable sources"},{"id":"uncertainty","label":"No test"}],"flow":"cluster","callout":"Set source standards before search","accent":"red"},
         {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
       ]
     },
@@ -49,7 +49,7 @@
       "intro": "Surface unknowns, contradictions, and confidence before they distort the decision",
       "summary": ["require a specific account of unknowns, disputes, and data limits", "use stop conditions when missing evidence could change the recommendation", "state confidence and the evidence that would change it"],
       "scenes": [
-        {"paragraphs":[1,2],"layout":"focus","human":"ask-front","agent":"reason-front","props":[{"id":"question","label":"Unknown"},{"id":"uncertainty","label":"Limit"}],"flow":"cluster","callout":"What is missing belongs in the result","accent":"blue"},
+        {"paragraphs":[1,2],"layout":"hero","human":"ask-front","agent":"reason-front","props":[{"id":"question","label":"Unknown"},{"id":"uncertainty","label":"Limit"}],"flow":"cluster","callout":"What is missing belongs in the result","accent":"blue"},
         {"paragraphs":[3,4],"layout":"process","human":"stop-front","agent":"blocked-front","props":[{"id":"stop","label":"Stop"},{"id":"warning","label":"Conflict"},{"id":"human-gate","label":"Decision"},{"id":"question","label":"Missing input"}],"flow":"chain","callout":"Missing evidence can require a safe stop","accent":"red"},
         {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"monitor-right","agentDirection":"right","props":[{"id":"trend-up","label":"Weak signal"},{"id":"notification","label":"Monitor"},{"id":"compare","label":"New evidence"},{"id":"result-card","label":"Update"}],"flow":"chain","callout":"Turn uncertainty into a watch plan","accent":"yellow"},
         {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
@@ -62,7 +62,7 @@
       "scenes": [
         {"paragraphs":[1,2],"layout":"hero","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"clipboard","label":"Research brief"},{"id":"task-list","label":"Six fields"}],"flow":"chain","callout":"A compact contract for decision-ready research","accent":"blue"},
         {"paragraphs":[3,4],"layout":"grid","human":"present-left","humanDirection":"left","agent":"look-right","agentDirection":"right","props":[{"id":"branch","label":"Plan"},{"id":"citation","label":"Evidence"},{"id":"uncertainty","label":"Gaps"},{"id":"result-card","label":"Deliverable"}],"flow":"cluster","callout":"Every field changes research or review","accent":"yellow"},
-        {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"retry-front","props":[{"id":"search","label":"Deepen"},{"id":"evidence","label":"Validate"},{"id":"compare","label":"Compare"},{"id":"approval","label":"Decide"}],"flow":"chain","callout":"Follow up on the decisive uncertainty","accent":"red"},
+        {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"retry-front","props":[{"id":"search","label":"Deepen"},{"id":"evidence","label":"Validate"},{"id":"compare","label":"Compare"},{"id":"target","label":"Decide"}],"flow":"chain","callout":"Follow up on the decisive uncertainty","accent":"red"},
         {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
       ]
     },

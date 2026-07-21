@@ -1,0 +1,627 @@
+{
+  "policy": "semantic-trigger-v1",
+  "scenes": 18,
+  "props": 66,
+  "beats": 18,
+  "fallbackBeats": 0,
+  "sceneResults": [
+    {
+      "id": "c01-s01",
+      "narration": "An AI Agent can read a longer prompt, carry more history, and still lose the point. The failure is not always missing information. Sometimes the decisive instruction is buried under status updates, tool output, examples, and old decisions that all compete for attention.",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Long history"
+        },
+        {
+          "id": "archive",
+          "label": "Old detail"
+        },
+        {
+          "id": "target",
+          "label": "Current goal"
+        },
+        {
+          "id": "summary",
+          "label": "Live state"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "An AI Agent can read a longer prompt",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c01-s02",
+      "narration": "Anthropic calls the broader solution context engineering. Prompt engineering asks how to phrase an instruction. Context engineering asks which information should be available now, which detail should be retrieved later, and which old material should be compressed or removed. That distinction matters because an Agent's context window is not an unlimited memory vault. It is a finite attention budget. Adding more tokens can increase coverage while reducing the relative strength of the signals that should guide the next action.",
+      "props": [
+        {
+          "id": "target",
+          "label": "Goal"
+        },
+        {
+          "id": "tool",
+          "label": "Tools"
+        },
+        {
+          "id": "search",
+          "label": "Retrieve"
+        },
+        {
+          "id": "note",
+          "label": "State"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "That distinction matters",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 31.567,
+          "time": 31.487000000000002,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c01-s03",
+      "narration": "In this video, you will learn how to manage that budget: choose high-signal instructions, tools, and examples; retrieve detail on demand; preserve coherence across long tasks; and build a six-part context pack you can reuse.",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "Sufficient context"
+        },
+        {
+          "id": "target",
+          "label": "Desired behavior"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "build a six-part context pack",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 55.829523696118116,
+          "time": 55.74952369611812,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c02-s01",
+      "narration": "Context includes every token available when the model produces its next response: system instructions, tool definitions, examples, retrieved documents, message history, intermediate results, and the current request. Context engineering manages that whole state, not just the opening prompt. Anthropic describes context as finite and subject to diminishing returns. Research on context rot shows a recurring pattern: as the amount of material grows, models can become less reliable at recalling the relevant item hidden inside it. A larger window does not make attention free.",
+      "props": [
+        {
+          "id": "prompt-injection",
+          "label": "Instructions"
+        },
+        {
+          "id": "tool",
+          "label": "Tools"
+        },
+        {
+          "id": "document",
+          "label": "Evidence"
+        },
+        {
+          "id": "chat",
+          "label": "History"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Context includes every token",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 58.54,
+          "time": 61.3,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c02-s02",
+      "narration": "This explains why a giant prompt can fail. The correct rule may be present, yet surrounded by obsolete plans, repeated explanations, raw logs, and edge cases. The model must infer which parts are current, authoritative, and relevant before it can even solve the task. Good context engineering is therefore selective. Before every meaningful step, ask what information changes the next decision. Keep the goal, necessary constraints, current evidence, and live state. Move reference detail behind an index when it can be fetched later.",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Raw logs"
+        },
+        {
+          "id": "uncertainty",
+          "label": "Competing rules"
+        },
+        {
+          "id": "target",
+          "label": "Next decision"
+        },
+        {
+          "id": "evidence",
+          "label": "Live evidence"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "This explains why a giant prompt can fail",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 92.113,
+          "time": 92.333,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c02-s03",
+      "narration": "Selection is iterative. After a tool call, the Agent has new evidence. After an error, a new boundary becomes important. After a milestone, raw traces may be replaced by a compact state summary. The useful context at step ten is not identical to the useful context at step one. Minimal does not mean short. A complex migration may need extensive acceptance criteria, repository conventions, and risk controls. The standard is the smallest set that fully supports the expected behavior, not the fewest possible words.",
+      "props": [
+        {
+          "id": "search",
+          "label": "New evidence"
+        },
+        {
+          "id": "warning",
+          "label": "New boundary"
+        },
+        {
+          "id": "milestone",
+          "label": "Milestone"
+        },
+        {
+          "id": "summary",
+          "label": "Refresh"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Selection is iterative",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 125.286,
+          "time": 125.506,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c03-s01",
+      "narration": "Start with system instructions at the right altitude. At one extreme, a prompt hard-codes every branch with brittle if-else logic. At the other, it says something vague like do a great job and assumes the Agent shares your unstated expectations. The useful middle gives clear goals, boundaries, and heuristics while leaving room to reason. Organize background, instructions, tool guidance, and output expectations into distinct sections. The formatting helps, but the decisive value is the clarity and priority of the content.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Hard-coded branches"
+        },
+        {
+          "id": "error",
+          "label": "Fragile"
+        },
+        {
+          "id": "uncertainty",
+          "label": "Assumed context"
+        },
+        {
+          "id": "question",
+          "label": "No concrete signal"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Start with system instructions at the right altitude",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 172.66,
+          "time": 175.42000000000002,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c03-s02",
+      "narration": "Next, inspect the tools. A tool is not only an action; it is a contract between the Agent and its environment. Names, descriptions, parameters, error behavior, and returned data all enter context and shape which action the Agent chooses. Overlapping tools create ambiguous decisions and waste attention. If a human cannot clearly explain when to use one tool instead of another, the Agent is unlikely to resolve the ambiguity reliably. Keep a minimal viable set, return token-efficient results, and let each tool do one understandable job.",
+      "props": [
+        {
+          "id": "tool",
+          "label": "Clear contract"
+        },
+        {
+          "id": "permission-key",
+          "label": "Use condition"
+        },
+        {
+          "id": "result-card",
+          "label": "Efficient result"
+        },
+        {
+          "id": "stop",
+          "label": "No overlap"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Next, inspect the tools",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 204.27100000000002,
+          "time": 204.491,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c03-s03",
+      "narration": "Then curate examples. A long catalogue of edge cases feels comprehensive, but it can bury the pattern. Anthropic recommends a small, diverse set of canonical examples that show the expected behavior, important variation, and a meaningful boundary. High signal is not a fixed token count. It is information with a clear job: establish the outcome, constrain behavior, select a tool, demonstrate a pattern, provide evidence, or expose a stop condition. Remove material only when it performs none of those jobs.",
+      "props": [
+        {
+          "id": "book",
+          "label": "Canonical pattern"
+        },
+        {
+          "id": "compare",
+          "label": "Useful variation"
+        },
+        {
+          "id": "shield",
+          "label": "Boundary"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Then curate examples",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 237.31,
+          "time": 237.53,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s01",
+      "narration": "Many systems preload every document that might be relevant before the Agent starts. That can be fast when the corpus is small and stable, but it also spends the attention budget before the Agent knows which detail matters. Just-in-time retrieval uses lightweight references instead: file paths, stored queries, links, identifiers, folder names, and timestamps. The Agent keeps the map in context, then opens the specific source when a decision requires it.",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Full corpus"
+        },
+        {
+          "id": "memory",
+          "label": "Spent budget"
+        },
+        {
+          "id": "folder",
+          "label": "Reference map"
+        },
+        {
+          "id": "search",
+          "label": "Targeted fetch"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Many systems preload every document",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 281.332,
+          "time": 284.092,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s02",
+      "narration": "This creates progressive disclosure. A filename suggests purpose. A directory reveals structure. A file size suggests complexity. One search result narrows the next query. The Agent assembles understanding layer by layer while keeping only the active subset in working context. Claude Code illustrates the pattern. Stable project instructions can be loaded up front, while file search, grep, head, and tail let the Agent inspect targeted parts of a large repository. It does not need every file body in context at once.",
+      "props": [
+        {
+          "id": "folder",
+          "label": "Structure"
+        },
+        {
+          "id": "search",
+          "label": "Narrow"
+        },
+        {
+          "id": "code-file",
+          "label": "Inspect"
+        },
+        {
+          "id": "evidence",
+          "label": "Use"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "This creates progressive disclosure",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 308.203,
+          "time": 308.423,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c04-s03",
+      "narration": "The trade-off is real. Runtime exploration is slower than preloading, and poor navigation can waste tokens on dead ends. The Agent needs good search tools, informative names, and heuristics for when to stop exploring and act. Use a hybrid strategy. Preload stable rules, the current outcome, and the small facts that almost every step needs. Keep changing, detailed, or rarely used material behind retrieval handles. The right boundary depends on the task and the cost of a missed detail.",
+      "props": [
+        {
+          "id": "timer",
+          "label": "Retrieval cost"
+        },
+        {
+          "id": "route",
+          "label": "Hybrid boundary"
+        },
+        {
+          "id": "target",
+          "label": "Relevant detail"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "The trade-off is real",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 341.472,
+          "time": 341.692,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s01",
+      "narration": "Long tasks create a second problem. Even well-curated context eventually fills as the Agent takes actions, observes results, fixes errors, and accumulates decisions. A task that lasts hours may exceed the usable window several times. Compaction is the first lever. Summarize the conversation or trace, start a fresh window, and carry forward the decisions, unresolved bugs, constraints, evidence, and next actions needed for continuity. Raw tool output that has already served its purpose can usually disappear.",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Long trace"
+        },
+        {
+          "id": "summary",
+          "label": "Compact"
+        },
+        {
+          "id": "milestone",
+          "label": "Decisions"
+        },
+        {
+          "id": "progress",
+          "label": "Next action"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Long tasks create a second problem",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 385.924,
+          "time": 388.68399999999997,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s02",
+      "narration": "Compaction has a risk: a subtle detail that looks unimportant now may become critical later. Anthropic recommends tuning for high recall first, then improving precision. Losing a decisive constraint is more expensive than carrying a little extra context. Structured notes provide another layer. The Agent writes progress, milestones, discoveries, and open questions outside the window, then reloads the relevant note later. This makes working state durable without keeping the entire conversation active.",
+      "props": [
+        {
+          "id": "evidence",
+          "label": "High recall"
+        },
+        {
+          "id": "note",
+          "label": "Durable state"
+        },
+        {
+          "id": "question",
+          "label": "Open items"
+        },
+        {
+          "id": "archive",
+          "label": "Raw history"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Compaction has a risk",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 417.756,
+          "time": 417.976,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c05-s03",
+      "narration": "Specialized agents can isolate deep exploration. A lead Agent keeps the high-level plan while focused agents investigate separate questions with clean contexts and return condensed findings. This pays off when parallel research value exceeds coordination cost. Choose by task shape. Use compaction for conversational continuity, notes for iterative work with clear milestones, and specialized agents for independent deep investigations. Whichever method you choose, the handoff must preserve outcome, decisions, evidence, unknowns, and next action.",
+      "props": [
+        {
+          "id": "single-agent",
+          "label": "Lead plan"
+        },
+        {
+          "id": "note",
+          "label": "Shared state"
+        },
+        {
+          "id": "parallel-agents",
+          "label": "Deep dives"
+        },
+        {
+          "id": "summary",
+          "label": "Condensed return"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Specialized agents can isolate deep exploration",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 447.59299999999996,
+          "time": 447.813,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s01",
+      "narration": "Turn the method into one Minimum High-Signal Context Pack. It has six parts: Outcome, Operating Rules, Tool Map, Canonical Examples, Retrieval Index, and Working State. The pack is small enough to inspect and complete enough to guide real work. Part one is Outcome. State the goal, intended user, deliverable, acceptance criteria, and the decision the result must support. This prevents a fluent Agent from optimizing for an attractive output that does not solve the actual problem.",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "Context Pack"
+        },
+        {
+          "id": "target",
+          "label": "Outcome"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Turn the method into one",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 494.88399999999996,
+          "time": 497.64399999999995,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s02",
+      "narration": "Part two is Operating Rules. Record hard constraints, permissions, risk boundaries, escalation points, and stop conditions. Separate permanent rules from temporary assumptions so an old workaround does not silently become policy. Part three is the Tool Map, paired with Canonical Examples. For each tool, explain when to use it, what input it expects, what efficient output looks like, and which nearby tool it does not replace. Add two or three examples that show the main pattern and an important boundary.",
+      "props": [
+        {
+          "id": "shield",
+          "label": "Rules"
+        },
+        {
+          "id": "tool",
+          "label": "Tool Map"
+        },
+        {
+          "id": "book",
+          "label": "Examples"
+        },
+        {
+          "id": "permission-key",
+          "label": "Boundaries"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Part two is Operating Rules",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 524.4279999999999,
+          "time": 524.6479999999999,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s03",
+      "narration": "Part four is the Retrieval Index. Store lightweight handles to source material with a short purpose label and a trigger for opening it. The Agent should know both where the evidence lives and when the evidence becomes necessary. Part five is Working State. Record completed work, current focus, key decisions and evidence, unresolved questions, failed approaches, and the next concrete action. Update this state at milestones, then compact or archive the raw trace it replaces.",
+      "props": [
+        {
+          "id": "folder",
+          "label": "Retrieval Index"
+        },
+        {
+          "id": "search",
+          "label": "Open trigger"
+        },
+        {
+          "id": "note",
+          "label": "Working State"
+        },
+        {
+          "id": "loop",
+          "label": "Update"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Part four is the Retrieval Index",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 555.3599999999999,
+          "time": 555.5799999999999,
+          "clampedToContentStart": true
+        }
+      ]
+    }
+  ]
+}

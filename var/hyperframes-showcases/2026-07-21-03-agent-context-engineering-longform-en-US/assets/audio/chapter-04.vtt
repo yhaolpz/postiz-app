@@ -1,0 +1,91 @@
+1
+00:00:00,100 --> 00:00:04,944
+Many systems preload every document that might be relevant before the Agent starts.
+
+2
+00:00:04,894 --> 00:00:12,250
+That can be fast when the corpus is small and stable, but it also spends the attention budget before the Agent knows which detail matters.
+
+3
+00:00:12,250 --> 00:00:21,461
+Just-in-time retrieval uses lightweight references instead: file paths, stored queries, links, identifiers, folder names, and timestamps.
+
+4
+00:00:21,461 --> 00:00:26,971
+The Agent keeps the map in context, then opens the specific source when a decision requires it.
+
+5
+00:00:26,971 --> 00:00:29,403
+This creates progressive disclosure.
+
+6
+00:00:29,403 --> 00:00:31,721
+A filename suggests purpose.
+
+7
+00:00:31,721 --> 00:00:33,980
+A directory reveals structure.
+
+8
+00:00:33,980 --> 00:00:36,579
+A file size suggests complexity.
+
+9
+00:00:36,579 --> 00:00:39,413
+One search result narrows the next query.
+
+10
+00:00:39,413 --> 00:00:45,461
+The Agent assembles understanding layer by layer while keeping only the active subset in working context.
+
+11
+00:00:45,461 --> 00:00:47,855
+Claude Code illustrates the pattern.
+
+12
+00:00:47,855 --> 00:00:56,682
+Stable project instructions can be loaded up front, while file search, grep, head, and tail let the Agent inspect targeted parts of a large repository.
+
+13
+00:00:56,682 --> 00:01:00,240
+It does not need every file body in context at once.
+
+14
+00:01:00,240 --> 00:01:02,019
+The trade-off is real.
+
+15
+00:01:02,019 --> 00:01:08,125
+Runtime exploration is slower than preloading, and poor navigation can waste tokens on dead ends.
+
+16
+00:01:08,125 --> 00:01:14,644
+The Agent needs good search tools, informative names, and heuristics for when to stop exploring and act.
+
+17
+00:01:14,644 --> 00:01:16,605
+Use a hybrid strategy.
+
+18
+00:01:16,605 --> 00:01:22,230
+Preload stable rules, the current outcome, and the small facts that almost every step needs.
+
+19
+00:01:22,230 --> 00:01:27,048
+Keep changing, detailed, or rarely used material behind retrieval handles.
+
+20
+00:01:27,048 --> 00:01:30,942
+The right boundary depends on the task and the cost of a missed detail.
+
+21
+00:01:30,942 --> 00:01:34,951
+First, keep lightweight references instead of every source body.
+
+22
+00:01:34,951 --> 00:01:39,884
+Second, let the AI Agent discover detail progressively when it becomes relevant.
+
+23
+00:01:39,884 --> 00:01:44,576
+Third, balance retrieval focus against the extra time and navigation cost.

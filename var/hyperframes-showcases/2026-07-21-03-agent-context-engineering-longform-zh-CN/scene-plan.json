@@ -1,0 +1,79 @@
+{
+  "chapters": [
+    {
+      "label": "前言",
+      "showIntro": false,
+      "intro": "理解为什么提示词更长，AI 智能体仍可能忘记重点",
+      "summary": ["上下文是有限注意力预算", "高信号比原始信息量更重要", "六部分上下文包让方法可复用"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["更多上下文","更清楚上下文"],"human":"surprised","agent":"evaluate-front","props":[{"id":"document-stack","label":"超长历史"},{"id":"archive","label":"旧细节"},{"id":"target","label":"当前目标"},{"id":"summary","label":"实时状态"}],"flow":"cluster","callout":"信息更多也可能埋住重点","accent":"red"},
+        {"paragraphs":[3,4],"layout":"process","human":"explain-front","agent":"plan-front","props":[{"id":"target","label":"目标"},{"id":"tool","label":"工具"},{"id":"search","label":"检索"},{"id":"note","label":"状态"}],"flow":"chain","callout":"管理完整注意力预算","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"hero","human":"review-front","agent":"verify-front","props":[{"id":"clipboard","label":"充分上下文"},{"id":"target","label":"目标行为"}],"flow":"chain","callout":"最小充分，不是一味最短","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "注意力预算",
+      "intro": "把上下文当作稀缺注意力，而不是无限存储",
+      "summary": ["把上下文当作有限注意力预算，而不是无限存储", "更多 token 可能稀释下一步最重要的指令", "保留最小充分集合，并随任务变化持续刷新"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"read-front","agent":"reason-front","props":[{"id":"prompt-injection","label":"系统指令"},{"id":"tool","label":"工具"},{"id":"document","label":"证据"},{"id":"chat","label":"历史"}],"flow":"cluster","callout":"每个 token 都消耗注意力","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["全部装入","支持判断"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"document-stack","label":"原始日志"},{"id":"uncertainty","label":"冲突规则"},{"id":"target","label":"下一判断"},{"id":"evidence","label":"当前证据"}],"flow":"cluster","callout":"写进去了不等于优先","accent":"red"},
+        {"paragraphs":[5,6],"layout":"process","human":"decide-front","agent":"collaborate-front","props":[{"id":"search","label":"新证据"},{"id":"warning","label":"新边界"},{"id":"milestone","label":"里程碑"},{"id":"summary","label":"刷新"}],"flow":"chain","callout":"有用上下文会随任务变化","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "高信号输入",
+      "intro": "筛选真正能指导行动的指令、工具和示例",
+      "summary": ["系统指令要落在硬编码和空泛之间的合适层级", "工具要清楚、高效，并尽量减少功能重叠", "用少量典型示例教会智能体真正的模式"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["硬编码规则","空泛要求"],"human":"compare-front","agent":"reason-front","props":[{"id":"branch","label":"复杂分支"},{"id":"error","label":"脆弱"},{"id":"uncertainty","label":"假定共识"},{"id":"question","label":"缺少信号"}],"flow":"cluster","callout":"指令要在合适抽象层级","accent":"yellow"},
+        {"paragraphs":[3,4],"layout":"process","human":"operate","agent":"monitor-right","agentDirection":"right","props":[{"id":"tool","label":"清楚契约"},{"id":"permission-key","label":"使用条件"},{"id":"result-card","label":"紧凑返回"},{"id":"stop","label":"减少重叠"}],"flow":"chain","callout":"工具本身也占用上下文","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"focus","human":"write-front","agent":"read-front","props":[{"id":"book","label":"典型模式"},{"id":"compare","label":"必要变化"},{"id":"shield","label":"重要边界"}],"flow":"cluster","callout":"示例是智能体看得见的模式","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "按需检索",
+      "intro": "需要细节时再取用，不在开始时塞满全部材料",
+      "summary": ["保留轻量引用，不要预先塞入全部正文", "让 AI 智能体在细节真正相关时再逐步发现", "在更聚焦的上下文和额外检索成本之间做取舍"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["全部预加载","需要时取用"],"human":"compare-front","agent":"search","props":[{"id":"document-stack","label":"完整语料"},{"id":"memory","label":"预算已占"},{"id":"folder","label":"引用地图"},{"id":"search","label":"目标检索"}],"flow":"cluster","callout":"上下文留地图，细节再取用","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"read-front","agent":"execute-right","agentDirection":"right","props":[{"id":"folder","label":"识别结构"},{"id":"search","label":"缩小范围"},{"id":"code-file","label":"查看片段"},{"id":"evidence","label":"用于判断"}],"flow":"chain","callout":"渐进式披露保护注意力","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"focus","human":"decide-front","agent":"look-left","agentDirection":"left","props":[{"id":"timer","label":"检索成本"},{"id":"route","label":"混合边界"},{"id":"target","label":"相关细节"}],"flow":"cluster","callout":"预加载必需项，其余按需取","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "长任务记忆",
+      "intro": "跨越长任务与上下文重置仍能保留决定和进度",
+      "summary": ["把长轨迹压缩成高召回的连续性摘要", "把持久工作状态写进结构化外部笔记", "只有聚焦探索值得协调成本时，才使用专门 Agent"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"caution-front","agent":"store-memory","props":[{"id":"chat","label":"长轨迹"},{"id":"summary","label":"压缩"},{"id":"milestone","label":"关键决定"},{"id":"progress","label":"下一动作"}],"flow":"chain","callout":"带走连续性，不带走全部轨迹","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"write-front","agent":"recall-memory","props":[{"id":"evidence","label":"高召回"},{"id":"note","label":"持久状态"},{"id":"question","label":"开放问题"},{"id":"archive","label":"原始历史"}],"flow":"chain","callout":"把工作状态写到窗口之外","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["一条连续主线","多个聚焦探索"],"human":"handoff-right","humanDirection":"right","agent":"delegate-front","props":[{"id":"single-agent","label":"主计划"},{"id":"note","label":"共享状态"},{"id":"parallel-agents","label":"独立深挖"},{"id":"summary","label":"压缩回传"}],"flow":"cluster","callout":"按任务形态选择记忆方式","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "上下文包",
+      "intro": "为真实工作建立可复用的六部分上下文包",
+      "summary": ["用结果目标和运行规则锚定 AI 智能体", "用工具地图、典型示例和检索索引指导行动", "用紧凑且持续更新的工作状态保持连续性"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"clipboard","label":"上下文包"},{"id":"target","label":"结果目标"}],"flow":"chain","callout":"六部分，一个可检查上下文包","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"explain-front","agent":"plan-front","props":[{"id":"shield","label":"运行规则"},{"id":"tool","label":"工具地图"},{"id":"book","label":"典型示例"},{"id":"permission-key","label":"权限边界"}],"flow":"cluster","callout":"把行动方式和限制写清","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"review-front","agent":"collaborate-front","props":[{"id":"folder","label":"检索索引"},{"id":"search","label":"打开条件"},{"id":"note","label":"工作状态"},{"id":"loop","label":"持续更新"}],"flow":"chain","callout":"到达里程碑就更新上下文包","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "总结",
+      "showIntro": false,
+      "intro": "保留信号、按需取细节、持续维护工作状态",
+      "summary": ["管理完整上下文状态，不只优化提示词。根据下一步判断需要什么，保留目标、约束、工具、证据和当前状态", "提高信号质量。用合适层级的指令、最小工具集和少量典型示例，替代脆弱规则与边缘情况堆积", "最后，用压缩、结构化笔记和六部分最小高信号上下文包保护长任务。保留信号，按需取细节，持续维护工作状态"],
+      "scenes": [
+        {"paragraphs":[1,6],"summaryPointParagraphs":[2,3,5],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"AI 智能体上下文：保留信号","accent":"blue"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,869 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:04.674
+An AI Agent can read a longer prompt, carry more history, and still lose
+
+2
+00:00:04.674 --> 00:00:05.309
+the point.
+
+3
+00:00:05.259 --> 00:00:08.173
+The failure is not always missing information.
+
+4
+00:00:08.173 --> 00:00:12.403
+Sometimes the decisive instruction is buried under status updates, tool
+
+5
+00:00:12.403 --> 00:00:16.394
+output, examples, and old decisions that all compete for attention.
+
+6
+00:00:16.394 --> 00:00:20.028
+Anthropic calls the broader solution context engineering.
+
+7
+00:00:20.028 --> 00:00:23.230
+Prompt engineering asks how to phrase an instruction.
+
+8
+00:00:23.230 --> 00:00:26.699
+Context engineering asks which information should be available now,
+
+9
+00:00:26.699 --> 00:00:30.428
+which detail should be retrieved later, and which old material should be
+
+10
+00:00:30.428 --> 00:00:31.567
+compressed or removed.
+
+11
+00:00:31.567 --> 00:00:35.476
+That distinction matters because an Agent's context window is not an
+
+12
+00:00:35.476 --> 00:00:36.798
+unlimited memory vault.
+
+13
+00:00:36.798 --> 00:00:39.028
+It is a finite attention budget.
+
+14
+00:00:39.028 --> 00:00:42.401
+Adding more tokens can increase coverage while reducing the relative
+
+15
+00:00:42.401 --> 00:00:45.278
+strength of the signals that should guide the next action.
+
+16
+00:00:45.278 --> 00:00:49.017
+In this video, you will learn how to manage that budget: choose
+
+17
+00:00:49.017 --> 00:00:52.875
+high-signal instructions, tools, and examples; retrieve detail on
+
+18
+00:00:52.875 --> 00:00:56.792
+demand; preserve coherence across long tasks; and build a six-part
+
+19
+00:00:56.792 --> 00:00:58.394
+context pack you can reuse.
+
+20
+00:00:58.540 --> 00:01:02.758
+Context includes every token available when the model produces its next
+
+21
+00:01:02.758 --> 00:01:06.797
+response: system instructions, tool definitions, examples, retrieved
+
+22
+00:01:06.797 --> 00:01:10.659
+documents, message history, intermediate results, and the current
+
+23
+00:01:10.659 --> 00:01:11.134
+request.
+
+24
+00:01:11.084 --> 00:01:15.213
+Context engineering manages that whole state, not just the opening
+
+25
+00:01:15.213 --> 00:01:15.651
+prompt.
+
+26
+00:01:15.651 --> 00:01:19.797
+Anthropic describes context as finite and subject to diminishing
+
+27
+00:01:19.797 --> 00:01:20.315
+returns.
+
+28
+00:01:20.315 --> 00:01:24.025
+Research on context rot shows a recurring pattern: as the amount of
+
+29
+00:01:24.025 --> 00:01:27.569
+material grows, models can become less reliable at recalling the
+
+30
+00:01:27.569 --> 00:01:29.286
+relevant item hidden inside it.
+
+31
+00:01:29.286 --> 00:01:32.113
+A larger window does not make attention free.
+
+32
+00:01:32.113 --> 00:01:35.093
+This explains why a giant prompt can fail.
+
+33
+00:01:35.093 --> 00:01:39.441
+The correct rule may be present, yet surrounded by obsolete plans,
+
+34
+00:01:39.441 --> 00:01:42.603
+repeated explanations, raw logs, and edge cases.
+
+35
+00:01:42.603 --> 00:01:46.284
+The model must infer which parts are current, authoritative, and
+
+36
+00:01:46.284 --> 00:01:48.757
+relevant before it can even solve the task.
+
+37
+00:01:48.757 --> 00:01:51.959
+Good context engineering is therefore selective.
+
+38
+00:01:51.959 --> 00:01:56.044
+Before every meaningful step, ask what information changes the next
+
+39
+00:01:56.044 --> 00:01:56.593
+decision.
+
+40
+00:01:56.593 --> 00:02:01.391
+Keep the goal, necessary constraints, current evidence, and live state.
+
+41
+00:02:01.391 --> 00:02:05.286
+Move reference detail behind an index when it can be fetched later.
+
+42
+00:02:05.286 --> 00:02:07.276
+Selection is iterative.
+
+43
+00:02:07.276 --> 00:02:10.565
+After a tool call, the Agent has new evidence.
+
+44
+00:02:10.565 --> 00:02:13.891
+After an error, a new boundary becomes important.
+
+45
+00:02:13.891 --> 00:02:18.063
+After a milestone, raw traces may be replaced by a compact state
+
+46
+00:02:18.063 --> 00:02:18.584
+summary.
+
+47
+00:02:18.584 --> 00:02:23.412
+The useful context at step ten is not identical to the useful context at
+
+48
+00:02:23.412 --> 00:02:24.016
+step one.
+
+49
+00:02:24.016 --> 00:02:26.103
+Minimal does not mean short.
+
+50
+00:02:26.103 --> 00:02:30.702
+A complex migration may need extensive acceptance criteria, repository
+
+51
+00:02:30.702 --> 00:02:32.738
+conventions, and risk controls.
+
+52
+00:02:32.738 --> 00:02:36.464
+The standard is the smallest set that fully supports the expected
+
+53
+00:02:36.464 --> 00:02:38.757
+behavior, not the fewest possible words.
+
+54
+00:02:38.757 --> 00:02:43.328
+First, treat context as a finite attention budget rather than unlimited
+
+55
+00:02:43.328 --> 00:02:43.843
+storage.
+
+56
+00:02:43.843 --> 00:02:48.045
+Second, more tokens can dilute the instruction that matters next.
+
+57
+00:02:48.045 --> 00:02:52.059
+Third, keep the smallest sufficient set and refresh it as the task
+
+58
+00:02:52.059 --> 00:02:52.545
+changes.
+
+59
+00:02:52.660 --> 00:02:55.936
+Start with system instructions at the right altitude.
+
+60
+00:02:55.886 --> 00:03:00.345
+At one extreme, a prompt hard-codes every branch with brittle if-else
+
+61
+00:03:00.345 --> 00:03:00.733
+logic.
+
+62
+00:03:00.733 --> 00:03:04.639
+At the other, it says something vague like do a great job and assumes
+
+63
+00:03:04.639 --> 00:03:07.130
+the Agent shares your unstated expectations.
+
+64
+00:03:07.130 --> 00:03:11.267
+The useful middle gives clear goals, boundaries, and heuristics while
+
+65
+00:03:11.267 --> 00:03:12.646
+leaving room to reason.
+
+66
+00:03:12.646 --> 00:03:16.679
+Organize background, instructions, tool guidance, and output
+
+67
+00:03:16.679 --> 00:03:19.098
+expectations into distinct sections.
+
+68
+00:03:19.098 --> 00:03:23.379
+The formatting helps, but the decisive value is the clarity and priority
+
+69
+00:03:23.379 --> 00:03:24.271
+of the content.
+
+70
+00:03:24.271 --> 00:03:26.617
+Next, inspect the tools.
+
+71
+00:03:26.617 --> 00:03:30.895
+A tool is not only an action; it is a contract between the Agent and its
+
+72
+00:03:30.895 --> 00:03:31.608
+environment.
+
+73
+00:03:31.608 --> 00:03:36.023
+Names, descriptions, parameters, error behavior, and returned data all
+
+74
+00:03:36.023 --> 00:03:39.492
+enter context and shape which action the Agent chooses.
+
+75
+00:03:39.492 --> 00:03:43.492
+Overlapping tools create ambiguous decisions and waste attention.
+
+76
+00:03:43.492 --> 00:03:47.238
+If a human cannot clearly explain when to use one tool instead of
+
+77
+00:03:47.238 --> 00:03:50.983
+another, the Agent is unlikely to resolve the ambiguity reliably.
+
+78
+00:03:50.983 --> 00:03:55.387
+Keep a minimal viable set, return token-efficient results, and let each
+
+79
+00:03:55.387 --> 00:03:57.310
+tool do one understandable job.
+
+80
+00:03:57.310 --> 00:03:59.252
+Then curate examples.
+
+81
+00:03:59.252 --> 00:04:03.564
+A long catalogue of edge cases feels comprehensive, but it can bury the
+
+82
+00:04:03.564 --> 00:04:04.050
+pattern.
+
+83
+00:04:04.050 --> 00:04:08.033
+Anthropic recommends a small, diverse set of canonical examples that
+
+84
+00:04:08.033 --> 00:04:11.840
+show the expected behavior, important variation, and a meaningful
+
+85
+00:04:11.840 --> 00:04:12.367
+boundary.
+
+86
+00:04:12.367 --> 00:04:15.136
+High signal is not a fixed token count.
+
+87
+00:04:15.136 --> 00:04:19.235
+It is information with a clear job: establish the outcome, constrain
+
+88
+00:04:19.235 --> 00:04:23.334
+behavior, select a tool, demonstrate a pattern, provide evidence, or
+
+89
+00:04:23.334 --> 00:04:24.781
+expose a stop condition.
+
+90
+00:04:24.781 --> 00:04:28.367
+Remove material only when it performs none of those jobs.
+
+91
+00:04:28.367 --> 00:04:32.374
+First, write instructions at the right altitude between brittle and
+
+92
+00:04:32.374 --> 00:04:32.733
+vague.
+
+93
+00:04:32.733 --> 00:04:37.194
+Second, keep tools clear, efficient, and minimally overlapping.
+
+94
+00:04:37.194 --> 00:04:41.204
+Third, teach the pattern with a small set of canonical examples.
+
+95
+00:04:41.332 --> 00:04:45.408
+Many systems preload every document that might be relevant before the
+
+96
+00:04:45.408 --> 00:04:46.176
+Agent starts.
+
+97
+00:04:46.126 --> 00:04:49.992
+That can be fast when the corpus is small and stable, but it also spends
+
+98
+00:04:49.992 --> 00:04:53.482
+the attention budget before the Agent knows which detail matters.
+
+99
+00:04:53.482 --> 00:04:58.291
+Just-in-time retrieval uses lightweight references instead: file paths,
+
+100
+00:04:58.291 --> 00:05:02.693
+stored queries, links, identifiers, folder names, and timestamps.
+
+101
+00:05:02.693 --> 00:05:06.855
+The Agent keeps the map in context, then opens the specific source when
+
+102
+00:05:06.855 --> 00:05:08.203
+a decision requires it.
+
+103
+00:05:08.203 --> 00:05:10.635
+This creates progressive disclosure.
+
+104
+00:05:10.635 --> 00:05:12.953
+A filename suggests purpose.
+
+105
+00:05:12.953 --> 00:05:15.212
+A directory reveals structure.
+
+106
+00:05:15.212 --> 00:05:17.811
+A file size suggests complexity.
+
+107
+00:05:17.811 --> 00:05:20.645
+One search result narrows the next query.
+
+108
+00:05:20.645 --> 00:05:24.774
+The Agent assembles understanding layer by layer while keeping only the
+
+109
+00:05:24.774 --> 00:05:26.693
+active subset in working context.
+
+110
+00:05:26.693 --> 00:05:29.087
+Claude Code illustrates the pattern.
+
+111
+00:05:29.087 --> 00:05:33.234
+Stable project instructions can be loaded up front, while file search,
+
+112
+00:05:33.234 --> 00:05:37.262
+grep, head, and tail let the Agent inspect targeted parts of a large
+
+113
+00:05:37.262 --> 00:05:37.914
+repository.
+
+114
+00:05:37.914 --> 00:05:41.472
+It does not need every file body in context at once.
+
+115
+00:05:41.472 --> 00:05:43.251
+The trade-off is real.
+
+116
+00:05:43.251 --> 00:05:47.703
+Runtime exploration is slower than preloading, and poor navigation can
+
+117
+00:05:47.703 --> 00:05:49.357
+waste tokens on dead ends.
+
+118
+00:05:49.357 --> 00:05:53.914
+The Agent needs good search tools, informative names, and heuristics for
+
+119
+00:05:53.914 --> 00:05:55.876
+when to stop exploring and act.
+
+120
+00:05:55.876 --> 00:05:57.837
+Use a hybrid strategy.
+
+121
+00:05:57.837 --> 00:06:01.978
+Preload stable rules, the current outcome, and the small facts that
+
+122
+00:06:01.978 --> 00:06:03.462
+almost every step needs.
+
+123
+00:06:03.462 --> 00:06:07.752
+Keep changing, detailed, or rarely used material behind retrieval
+
+124
+00:06:07.752 --> 00:06:08.280
+handles.
+
+125
+00:06:08.280 --> 00:06:12.174
+The right boundary depends on the task and the cost of a missed detail.
+
+126
+00:06:12.174 --> 00:06:16.183
+First, keep lightweight references instead of every source body.
+
+127
+00:06:16.183 --> 00:06:20.554
+Second, let the AI Agent discover detail progressively when it becomes
+
+128
+00:06:20.554 --> 00:06:21.116
+relevant.
+
+129
+00:06:21.116 --> 00:06:25.487
+Third, balance retrieval focus against the extra time and navigation
+
+130
+00:06:25.487 --> 00:06:25.808
+cost.
+
+131
+00:06:25.924 --> 00:06:28.508
+Long tasks create a second problem.
+
+132
+00:06:28.458 --> 00:06:32.891
+Even well-curated context eventually fills as the Agent takes actions,
+
+133
+00:06:32.891 --> 00:06:36.564
+observes results, fixes errors, and accumulates decisions.
+
+134
+00:06:36.564 --> 00:06:40.829
+A task that lasts hours may exceed the usable window several times.
+
+135
+00:06:40.829 --> 00:06:43.006
+Compaction is the first lever.
+
+136
+00:06:43.006 --> 00:06:47.208
+Summarize the conversation or trace, start a fresh window, and carry
+
+137
+00:06:47.208 --> 00:06:51.595
+forward the decisions, unresolved bugs, constraints, evidence, and next
+
+138
+00:06:51.595 --> 00:06:53.449
+actions needed for continuity.
+
+139
+00:06:53.449 --> 00:06:57.166
+Raw tool output that has already served its purpose can usually
+
+140
+00:06:57.166 --> 00:06:57.756
+disappear.
+
+141
+00:06:57.756 --> 00:07:01.825
+Compaction has a risk: a subtle detail that looks unimportant now may
+
+142
+00:07:01.825 --> 00:07:03.122
+become critical later.
+
+143
+00:07:03.122 --> 00:07:07.080
+Anthropic recommends tuning for high recall first, then improving
+
+144
+00:07:07.080 --> 00:07:07.689
+precision.
+
+145
+00:07:07.689 --> 00:07:11.822
+Losing a decisive constraint is more expensive than carrying a little
+
+146
+00:07:11.822 --> 00:07:12.660
+extra context.
+
+147
+00:07:12.660 --> 00:07:15.218
+Structured notes provide another layer.
+
+148
+00:07:15.218 --> 00:07:19.532
+The Agent writes progress, milestones, discoveries, and open questions
+
+149
+00:07:19.532 --> 00:07:23.045
+outside the window, then reloads the relevant note later.
+
+150
+00:07:23.045 --> 00:07:27.190
+This makes working state durable without keeping the entire conversation
+
+151
+00:07:27.190 --> 00:07:27.593
+active.
+
+152
+00:07:27.593 --> 00:07:31.035
+Specialized agents can isolate deep exploration.
+
+153
+00:07:31.035 --> 00:07:34.912
+A lead Agent keeps the high-level plan while focused agents investigate
+
+154
+00:07:34.912 --> 00:07:38.679
+separate questions with clean contexts and return condensed findings.
+
+155
+00:07:38.679 --> 00:07:43.102
+This pays off when parallel research value exceeds coordination cost.
+
+156
+00:07:43.102 --> 00:07:44.939
+Choose by task shape.
+
+157
+00:07:44.939 --> 00:07:49.026
+Use compaction for conversational continuity, notes for iterative work
+
+158
+00:07:49.026 --> 00:07:52.880
+with clear milestones, and specialized agents for independent deep
+
+159
+00:07:52.880 --> 00:07:53.756
+investigations.
+
+160
+00:07:53.756 --> 00:07:57.837
+Whichever method you choose, the handoff must preserve outcome,
+
+161
+00:07:57.837 --> 00:08:00.881
+decisions, evidence, unknowns, and next action.
+
+162
+00:08:00.881 --> 00:08:05.420
+First, compact long traces into high-recall continuity summaries.
+
+163
+00:08:05.420 --> 00:08:09.564
+Second, keep durable working state in structured external notes.
+
+164
+00:08:09.564 --> 00:08:13.941
+Third, use specialized agents only when focused exploration justifies
+
+165
+00:08:13.941 --> 00:08:14.766
+coordination.
+
+166
+00:08:14.884 --> 00:08:18.507
+Turn the method into one Minimum High-Signal Context Pack.
+
+167
+00:08:18.457 --> 00:08:22.921
+It has six parts: Outcome, Operating Rules, Tool Map, Canonical
+
+168
+00:08:22.921 --> 00:08:26.110
+Examples, Retrieval Index, and Working State.
+
+169
+00:08:26.110 --> 00:08:30.010
+The pack is small enough to inspect and complete enough to guide real
+
+170
+00:08:30.010 --> 00:08:30.293
+work.
+
+171
+00:08:30.293 --> 00:08:32.091
+Part one is Outcome.
+
+172
+00:08:32.091 --> 00:08:36.614
+State the goal, intended user, deliverable, acceptance criteria, and the
+
+173
+00:08:36.614 --> 00:08:38.687
+decision the result must support.
+
+174
+00:08:38.687 --> 00:08:42.355
+This prevents a fluent Agent from optimizing for an attractive output
+
+175
+00:08:42.355 --> 00:08:44.428
+that does not solve the actual problem.
+
+176
+00:08:44.428 --> 00:08:46.697
+Part two is Operating Rules.
+
+177
+00:08:46.697 --> 00:08:51.092
+Record hard constraints, permissions, risk boundaries, escalation
+
+178
+00:08:51.092 --> 00:08:52.985
+points, and stop conditions.
+
+179
+00:08:52.985 --> 00:08:57.066
+Separate permanent rules from temporary assumptions so an old workaround
+
+180
+00:08:57.066 --> 00:08:58.880
+does not silently become policy.
+
+181
+00:08:58.880 --> 00:09:02.735
+Part three is the Tool Map, paired with Canonical Examples.
+
+182
+00:09:02.735 --> 00:09:06.640
+For each tool, explain when to use it, what input it expects, what
+
+183
+00:09:06.640 --> 00:09:10.841
+efficient output looks like, and which nearby tool it does not replace.
+
+184
+00:09:10.841 --> 00:09:14.839
+Add two or three examples that show the main pattern and an important
+
+185
+00:09:14.839 --> 00:09:15.360
+boundary.
+
+186
+00:09:15.360 --> 00:09:17.860
+Part four is the Retrieval Index.
+
+187
+00:09:17.860 --> 00:09:21.704
+Store lightweight handles to source material with a short purpose label
+
+188
+00:09:21.704 --> 00:09:23.274
+and a trigger for opening it.
+
+189
+00:09:23.274 --> 00:09:26.641
+The Agent should know both where the evidence lives and when the
+
+190
+00:09:26.641 --> 00:09:28.062
+evidence becomes necessary.
+
+191
+00:09:28.062 --> 00:09:30.168
+Part five is Working State.
+
+192
+00:09:30.168 --> 00:09:34.307
+Record completed work, current focus, key decisions and evidence,
+
+193
+00:09:34.307 --> 00:09:38.764
+unresolved questions, failed approaches, and the next concrete action.
+
+194
+00:09:38.764 --> 00:09:43.320
+Update this state at milestones, then compact or archive the raw trace
+
+195
+00:09:43.320 --> 00:09:44.101
+it replaces.
+
+196
+00:09:44.101 --> 00:09:48.187
+First, anchor the AI Agent with Outcome and Operating Rules.
+
+197
+00:09:48.187 --> 00:09:52.642
+Second, guide action with a Tool Map, Canonical Examples, and a
+
+198
+00:09:52.642 --> 00:09:53.774
+Retrieval Index.
+
+199
+00:09:53.774 --> 00:09:58.351
+Third, preserve continuity with a compact, regularly updated Working
+
+200
+00:09:58.351 --> 00:09:58.755
+State.
+
+201
+00:09:58.876 --> 00:10:02.845
+An AI Agent does not forget only because information is missing.
+
+202
+00:10:02.795 --> 00:10:06.688
+It can also lose focus because too much undifferentiated information
+
+203
+00:10:06.688 --> 00:10:08.920
+competes for a finite attention budget.
+
+204
+00:10:08.920 --> 00:10:13.054
+First, manage the whole context state, not only the prompt.
+
+205
+00:10:13.054 --> 00:10:17.578
+Keep goals, constraints, tools, evidence, and current state according to
+
+206
+00:10:17.578 --> 00:10:19.526
+what changes the next decision.
+
+207
+00:10:19.526 --> 00:10:21.929
+Second, raise signal quality.
+
+208
+00:10:21.929 --> 00:10:25.945
+Use instructions at the right altitude, a minimal tool set, and a few
+
+209
+00:10:25.945 --> 00:10:29.670
+canonical examples instead of brittle rules and edge-case piles.
+
+210
+00:10:29.670 --> 00:10:32.343
+Third, retrieve detail on demand.
+
+211
+00:10:32.343 --> 00:10:36.048
+Keep stable essentials up front and let the Agent progressively open
+
+212
+00:10:36.048 --> 00:10:39.208
+changing or specialized material through clear references.
+
+213
+00:10:39.208 --> 00:10:43.643
+Finally, protect long tasks with compaction, structured notes, and the
+
+214
+00:10:43.643 --> 00:10:46.304
+six-part Minimum High-Signal Context Pack.
+
+215
+00:10:46.304 --> 00:10:50.429
+Keep the signal, retrieve the detail, and preserve the working state.
+
+216
+00:10:50.429 --> 00:10:52.276
+Follow Tiny Agent.
+
+217
+00:10:52.276 --> 00:10:54.694
+Tiny Agent helps you get better at using AI.

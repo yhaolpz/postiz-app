@@ -1,0 +1,17 @@
+Context includes every token available when the model produces its next response: system instructions, tool definitions, examples, retrieved documents, message history, intermediate results, and the current request. Context engineering manages that whole state, not just the opening prompt.
+
+Anthropic describes context as finite and subject to diminishing returns. Research on context rot shows a recurring pattern: as the amount of material grows, models can become less reliable at recalling the relevant item hidden inside it. A larger window does not make attention free.
+
+This explains why a giant prompt can fail. The correct rule may be present, yet surrounded by obsolete plans, repeated explanations, raw logs, and edge cases. The model must infer which parts are current, authoritative, and relevant before it can even solve the task.
+
+Good context engineering is therefore selective. Before every meaningful step, ask what information changes the next decision. Keep the goal, necessary constraints, current evidence, and live state. Move reference detail behind an index when it can be fetched later.
+
+Selection is iterative. After a tool call, the Agent has new evidence. After an error, a new boundary becomes important. After a milestone, raw traces may be replaced by a compact state summary. The useful context at step ten is not identical to the useful context at step one.
+
+Minimal does not mean short. A complex migration may need extensive acceptance criteria, repository conventions, and risk controls. The standard is the smallest set that fully supports the expected behavior, not the fewest possible words.
+
+First, treat context as a finite attention budget rather than unlimited storage.
+
+Second, more tokens can dilute the instruction that matters next.
+
+Third, keep the smallest sufficient set and refresh it as the task changes.

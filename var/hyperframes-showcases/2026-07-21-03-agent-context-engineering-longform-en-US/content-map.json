@@ -1,0 +1,66 @@
+{
+  "runKey": "2026-07-21-03",
+  "source": {
+    "publisher": "Anthropic",
+    "title": "Effective context engineering for AI agents",
+    "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "publishedDate": "2025-09-29"
+  },
+  "viewerQuestion": "Why do AI Agents lose focus even when their prompts and histories keep getting longer?",
+  "centralThesis": "AI Agent reliability comes from continuously curating a finite attention budget: keep the smallest sufficient set of high-signal instructions, tools, examples, retrieved evidence, and working state instead of preloading everything.",
+  "reusableArtifact": "Minimum High-Signal Context Pack: Outcome, Operating Rules, Tool Map, Canonical Examples, Retrieval Index, Working State",
+  "priorities": {
+    "P0": [
+      "Context is a finite attention budget rather than an unlimited knowledge container",
+      "More tokens can dilute decisive signals instead of improving behavior",
+      "The six-part context pack is the reusable operating method"
+    ],
+    "P1": [
+      "Set system instructions at the right altitude",
+      "Keep tool contracts clear, efficient, and minimally overlapping",
+      "Use a small set of canonical examples",
+      "Retrieve detailed context just in time through lightweight references",
+      "Preserve long-task coherence through compaction, notes, or specialized agents"
+    ],
+    "P2": [
+      "Anthropic's distinction between prompt engineering and iterative context engineering",
+      "Context-rot and attention-budget mechanisms",
+      "The trade-off between preloading speed and just-in-time focus",
+      "The compaction recall-versus-precision boundary",
+      "Claude Code examples of lightweight references, shell exploration, and persistent notes",
+      "Task-characteristic boundaries for compaction, notes, and sub-agent architectures"
+    ],
+    "P3Removed": [
+      "Product calls to action and platform setup details",
+      "Repeated definitions that add no mechanism or action",
+      "Institutional acknowledgements and publication logistics",
+      "Unsupported claims that one context strategy is universally best"
+    ]
+  },
+  "chapters": [
+    {"number": 1, "label": "Introduction", "promise": "See why a longer prompt can still make an AI Agent forget the point"},
+    {"number": 2, "label": "Attention Budget", "promise": "Treat context as scarce attention instead of unlimited storage"},
+    {"number": 3, "label": "High-Signal Inputs", "promise": "Choose instructions, tools, and examples that guide without crowding"},
+    {"number": 4, "label": "Retrieve on Demand", "promise": "Load detail when it becomes relevant instead of preloading everything"},
+    {"number": 5, "label": "Long-Horizon Memory", "promise": "Preserve decisions and progress across long tasks and context resets"},
+    {"number": 6, "label": "Context Pack", "promise": "Build one reusable six-part context package for real AI Agent work"},
+    {"number": 7, "label": "Summary", "promise": "Keep the signal, retrieve the detail, and preserve working state"}
+  ],
+  "visualSemantics": {
+    "humanRole": "defines outcomes, constraints, retrieval boundaries, and acceptance criteria",
+    "agentRole": "selects high-signal context, retrieves evidence, updates state, and continues the task",
+    "artifact": "one compact context packet that replaces a swelling pile of prompts and history"
+  },
+  "factBoundaries": [
+    "Minimal means sufficient and high-signal, not automatically short",
+    "Context rot is a reliability warning, not proof that every longer context performs worse on every task",
+    "Just-in-time retrieval is slower than preloading and depends on good tools and heuristics",
+    "Compaction can remove subtle information whose importance appears later",
+    "Sub-agents help when focused parallel exploration justifies coordination cost"
+  ],
+  "contentEdit": {
+    "status": "passed",
+    "keptEvidence": "All P0 and P1 material plus P2 evidence that establishes source credibility, mechanism, transfer, or a boundary",
+    "removedOnly": "Repeated wording, product promotion, acknowledgements, and details that add no new fact, mechanism, boundary, step, or understanding value"
+  }
+}

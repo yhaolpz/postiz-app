@@ -1,0 +1,17 @@
+Start with system instructions at the right altitude. At one extreme, a prompt hard-codes every branch with brittle if-else logic. At the other, it says something vague like do a great job and assumes the Agent shares your unstated expectations.
+
+The useful middle gives clear goals, boundaries, and heuristics while leaving room to reason. Organize background, instructions, tool guidance, and output expectations into distinct sections. The formatting helps, but the decisive value is the clarity and priority of the content.
+
+Next, inspect the tools. A tool is not only an action; it is a contract between the Agent and its environment. Names, descriptions, parameters, error behavior, and returned data all enter context and shape which action the Agent chooses.
+
+Overlapping tools create ambiguous decisions and waste attention. If a human cannot clearly explain when to use one tool instead of another, the Agent is unlikely to resolve the ambiguity reliably. Keep a minimal viable set, return token-efficient results, and let each tool do one understandable job.
+
+Then curate examples. A long catalogue of edge cases feels comprehensive, but it can bury the pattern. Anthropic recommends a small, diverse set of canonical examples that show the expected behavior, important variation, and a meaningful boundary.
+
+High signal is not a fixed token count. It is information with a clear job: establish the outcome, constrain behavior, select a tool, demonstrate a pattern, provide evidence, or expose a stop condition. Remove material only when it performs none of those jobs.
+
+First, write instructions at the right altitude between brittle and vague.
+
+Second, keep tools clear, efficient, and minimally overlapping.
+
+Third, teach the pattern with a small set of canonical examples.

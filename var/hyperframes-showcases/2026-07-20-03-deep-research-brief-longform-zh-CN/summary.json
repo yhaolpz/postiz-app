@@ -1,0 +1,122 @@
+{
+  "title": "Deep Research 怎样提问，才不会只得到一堆资料？",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-20-03-deep-research-brief-longform-zh-CN/SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 484.08645800000005,
+    "chapters": [
+      {
+        "label": "前言",
+        "start": 0,
+        "end": 59.4,
+        "duration": 59.4
+      },
+      {
+        "label": "决策优先",
+        "start": 59.4,
+        "end": 134.208,
+        "duration": 74.808
+      },
+      {
+        "label": "研究计划",
+        "start": 134.208,
+        "end": 214.584,
+        "duration": 80.376
+      },
+      {
+        "label": "证据标准",
+        "start": 214.584,
+        "end": 292.896,
+        "duration": 78.312
+      },
+      {
+        "label": "缺口边界",
+        "start": 292.896,
+        "end": 370.68,
+        "duration": 77.784
+      },
+      {
+        "label": "任务模板",
+        "start": 370.68,
+        "end": 449.832,
+        "duration": 79.152
+      },
+      {
+        "label": "总结",
+        "start": 449.832,
+        "end": 484.08645800000005,
+        "duration": 34.25445800000006
+      }
+    ],
+    "visualStates": 24,
+    "captions": 156
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-20-03-deep-research-brief-longform.zh-CN.mp4",
+    "status": "pass",
+    "actualDurationSeconds": 484.117333,
+    "sizeBytes": 24975444,
+    "video": "H.264 1920x1080 30fps yuv420p BT.709",
+    "audio": "AAC 48kHz stereo",
+    "integratedLoudnessLUFS": -17.4,
+    "truePeakDbFS": -1.8,
+    "finalReport": "qa/final-release-report.json"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "chapters": [
+    {
+      "label": "Introduction",
+      "showIntro": false,
+      "intro": "See why visual polish can hide an unfinished reasoning process",
+      "summary": ["Polish can suppress visible evaluation", "Iteration restores inspection", "The five-pass loop makes review reusable"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Looks finished","Still unverified"],"human":"surprised","agent":"present-right","agentDirection":"right","props":[{"id":"result-card","label":"Polished output"},{"id":"success","label":"Looks done"},{"id":"uncertainty","label":"Hidden gaps"},{"id":"question","label":"Unasked questions"}],"flow":"cluster","callout":"Polish can hide the biggest gap","accent":"red"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"result-card","label":"First draft"},{"id":"loop","label":"Iterate"},{"id":"evidence","label":"Verify"},{"id":"approval","label":"Use"}],"flow":"chain","callout":"Put evaluation back in the loop","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"hero","human":"review-front","agent":"verify-front","props":[{"id":"document","label":"Draft"},{"id":"checklist","label":"Review"}],"flow":"chain","callout":"A polished first answer is a draft","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "The Polish Trap",
+      "intro": "Recognize when a finished-looking artifact suppresses evaluation",
+      "summary": ["polished presentation can arrive before critical evaluation is complete", "artifact conversations show more direction but less visible checking", "use polish as a review trigger rather than proof of quality"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"read-front","agent":"write-front","props":[{"id":"team","label":"9,830 chats"},{"id":"code-file","label":"Code"},{"id":"document","label":"Documents"},{"id":"tool","label":"Tools"}],"flow":"cluster","callout":"Artifacts change collaboration","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["More direction","Less visible checking"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"target","label":"Goals"},{"id":"form","label":"Format"},{"id":"uncertainty","label":"Missing context"},{"id":"citation","label":"Fact check"}],"flow":"cluster","callout":"More direction, less checking","accent":"red"},
+        {"paragraphs":[5,6],"layout":"focus","human":"caution-front","agent":"alert-front","props":[{"id":"result-card","label":"Finished look"},{"id":"warning","label":"Review trigger"}],"flow":"chain","callout":"Polish is not proof","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Iteration",
+      "intro": "Use follow-up turns to expose assumptions and improve the work",
+      "summary": ["treat the first response as a starting point instead of a finish line", "give each follow-up one distinct evaluation job", "stop when acceptance criteria and remaining uncertainty are explicit"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"present-left","humanDirection":"left","agent":"retry-front","props":[{"id":"loop","label":"85.7% iterated"},{"id":"trend-up","label":"More fluent behavior"}],"flow":"chain","callout":"Iteration broadens visible fluency","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["Restart vaguely","Inspect one claim"],"human":"compare-front","agent":"reason-front","props":[{"id":"prompt-injection","label":"New giant prompt"},{"id":"uncertainty","label":"Same gaps"},{"id":"question","label":"One assumption"},{"id":"evidence","label":"One test"}],"flow":"cluster","callout":"Follow up on decisive uncertainty","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"decide-front","agent":"collaborate-front","props":[{"id":"target","label":"Clarify"},{"id":"question","label":"Expose gaps"},{"id":"compare","label":"Compare"},{"id":"stop","label":"Stop"}],"flow":"chain","callout":"Give each turn one review job","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Set the Terms",
+      "intro": "Define how the AI should challenge, explain, and signal uncertainty",
+      "summary": ["tell the AI when to challenge assumptions and ask for context", "require visible grounds, uncertainty, and stop conditions", "define acceptance in terms of evidence and use rather than completeness"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"write-front","agent":"listen-front","props":[{"id":"form","label":"30% set terms"},{"id":"chat","label":"Interaction rules"}],"flow":"chain","callout":"Specify how collaboration works","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"caution-front","agent":"reason-front","props":[{"id":"question","label":"Challenge"},{"id":"uncertainty","label":"Uncertainty"},{"id":"stop","label":"Stop"},{"id":"scorecard","label":"Acceptance"}],"flow":"cluster","callout":"Make confidence inspectable","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"comparison","labels":["Confident finish","Inspectable result"],"human":"compare-front","agent":"present-left","agentDirection":"left","props":[{"id":"success","label":"Looks complete"},{"id":"result-card","label":"No boundary"},{"id":"evidence","label":"Grounds"},{"id":"checklist","label":"Open items"}],"flow":"cluster","callout":"Reward judgment, not certainty","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Inspect the Work",
+      "intro": "Check goal fit, context, grounds, and real-world performance",
+      "summary": ["confirm that the artifact serves the actual goal and constraints", "verify missing context, evidence, calculations, and behavior through appropriate tests", "match review depth to stakes and keep a named human owner"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"review-front","agent":"ask-front","props":[{"id":"target","label":"Goal"},{"id":"ruler","label":"Constraints"},{"id":"uncertainty","label":"Gaps"},{"id":"team","label":"Stakeholders"}],"flow":"chain","callout":"Check goal fit before polish","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"grid","human":"operate-right","humanDirection":"right","agent":"monitor-left","agentDirection":"left","props":[{"id":"citation","label":"Source"},{"id":"spreadsheet","label":"Numbers"},{"id":"code-file","label":"Code"},{"id":"experiment","label":"Test"}],"flow":"cluster","callout":"Test claims in their environment","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"focus","human":"decide-front","agent":"handoff-left","agentDirection":"left","props":[{"id":"human-gate","label":"Owner"},{"id":"shield","label":"Consequences"}],"flow":"chain","callout":"Match review to stakes","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Review Loop",
+      "intro": "Run one reusable five-pass checklist before release",
+      "summary": ["check Goal and Gaps before refining the presentation", "check Grounds and Test before trusting the result", "finish with an Owner who can accept, revise, or stop the work"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"hero","human":"handoff-right","humanDirection":"right","agent":"receive-right","agentDirection":"right","props":[{"id":"clipboard","label":"Five-pass loop"},{"id":"target","label":"Goal"}],"flow":"chain","callout":"Goal·Gaps·Grounds·Test·Owner","accent":"blue"},
+        {"paragraphs":[3,4],"layout":"process","human":"present-right","humanDirection":"right","agent":"look-left","agentDirection":"left","props":[{"id":"uncertainty","label":"Gaps"},{"id":"evidence","label":"Grounds"},{"id":"citation","label":"Trace"},{"id":"scorecard","label":"Confidence"}],"flow":"chain","callout":"Earn confidence claim by claim","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"approve","agent":"verify-front","props":[{"id":"experiment","label":"Test"},{"id":"warning","label":"Failure mode"},{"id":"human-gate","label":"Owner"},{"id":"approval","label":"Decision"}],"flow":"chain","callout":"End with a decision, not polish","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Summary",
+      "showIntro": false,
+      "intro": "Turn polished drafts into inspected and owned results",
+      "summary": ["remember the warning in Anthropic's data: artifact conversations showed more direction and iteration, but less visible checking of context, facts, and reasoning", "treat the first output as a starting point. Use focused follow-ups to expose assumptions, strengthen evidence, compare alternatives, and make uncertainty explicit", "Finally, run the five-pass checklist: Goal, Gaps, Grounds, Test, and Owner. If any pass is vague, the work may look finished, but the collaboration turn is not finished yet"],
+      "scenes": [
+        {"paragraphs":[1,6],"summaryPointParagraphs":[2,3,5],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Polish starts review, not the end","accent":"blue"}
+      ]
+    }
+  ]
+}

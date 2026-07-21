@@ -1,0 +1,2070 @@
+{
+  "duration": 654.913979,
+  "voice": "en-US-AnaNeural",
+  "rate": "+30%",
+  "chapters": [
+    {
+      "label": "Introduction",
+      "start": 0,
+      "end": 58.44,
+      "duration": 58.44
+    },
+    {
+      "label": "Attention Budget",
+      "start": 58.44,
+      "end": 172.56,
+      "duration": 114.12
+    },
+    {
+      "label": "High-Signal Inputs",
+      "start": 172.56,
+      "end": 281.23199999999997,
+      "duration": 108.672
+    },
+    {
+      "label": "Retrieve on Demand",
+      "start": 281.23199999999997,
+      "end": 385.82399999999996,
+      "duration": 104.592
+    },
+    {
+      "label": "Long-Horizon Memory",
+      "start": 385.82399999999996,
+      "end": 494.78399999999993,
+      "duration": 108.96
+    },
+    {
+      "label": "Context Pack",
+      "start": 494.78399999999993,
+      "end": 598.776,
+      "duration": 103.992
+    },
+    {
+      "label": "Summary",
+      "start": 598.776,
+      "end": 654.913979,
+      "duration": 56.13797900000009
+    }
+  ],
+  "scenes": [
+    {
+      "paragraphs": [
+        1,
+        1
+      ],
+      "layout": "comparison",
+      "labels": [
+        "More context",
+        "Clearer context"
+      ],
+      "human": "surprised",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Long history"
+        },
+        {
+          "id": "archive",
+          "label": "Old detail"
+        },
+        {
+          "id": "target",
+          "label": "Current goal"
+        },
+        {
+          "id": "summary",
+          "label": "Live state"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "More context can bury the point",
+      "accent": "red",
+      "id": "c01-s01",
+      "chapter": "Introduction",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "See why a longer prompt can still make an AI Agent forget the point",
+      "chapterSummary": [
+        "Context is a finite attention budget",
+        "High signal beats raw volume",
+        "The six-part pack makes context reusable"
+      ],
+      "start": 0,
+      "end": 16.394,
+      "narration": "An AI Agent can read a longer prompt, carry more history, and still lose the point. The failure is not always missing information. Sometimes the decisive instruction is buried under status updates, tool output, examples, and old decisions that all compete for attention.",
+      "cueStarts": [
+        0.1,
+        5.259,
+        8.173
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        0.22,
+        0.22,
+        0.22,
+        0.22
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "An AI Agent can read a longer prompt",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 950.4890371770585,
+        "y": 433.0518409353755,
+        "offsetX": -9.510962822941451,
+        "offsetY": -36.94815906462452,
+        "rawOffsetX": -9.510962822941451,
+        "rawOffsetY": -88.94815906462452,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        2,
+        3
+      ],
+      "layout": "process",
+      "human": "explain-front",
+      "agent": "plan-front",
+      "props": [
+        {
+          "id": "target",
+          "label": "Goal"
+        },
+        {
+          "id": "tool",
+          "label": "Tools"
+        },
+        {
+          "id": "search",
+          "label": "Retrieve"
+        },
+        {
+          "id": "note",
+          "label": "State"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Manage the whole attention budget",
+      "accent": "blue",
+      "id": "c01-s02",
+      "chapter": "Introduction",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "See why a longer prompt can still make an AI Agent forget the point",
+      "chapterSummary": [
+        "Context is a finite attention budget",
+        "High signal beats raw volume",
+        "The six-part pack makes context reusable"
+      ],
+      "start": 16.394,
+      "end": 45.278,
+      "narration": "Anthropic calls the broader solution context engineering. Prompt engineering asks how to phrase an instruction. Context engineering asks which information should be available now, which detail should be retrieved later, and which old material should be compressed or removed. That distinction matters because an Agent's context window is not an unlimited memory vault. It is a finite attention budget. Adding more tokens can increase coverage while reducing the relative strength of the signals that should guide the next action.",
+      "cueStarts": [
+        16.394,
+        20.028,
+        23.23,
+        31.567,
+        36.798,
+        39.028
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        31.487000000000002,
+        31.487000000000002,
+        31.487000000000002,
+        31.487000000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "That distinction matters",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 31.567,
+          "time": 31.487000000000002,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 415.296875,
+        "gap": 213.096875
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 976.0553033788536,
+        "y": 433.5429310534814,
+        "offsetX": 16.055303378853637,
+        "offsetY": -36.457068946518575,
+        "rawOffsetX": 16.055303378853637,
+        "rawOffsetY": -116.45706894651858,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        4,
+        4
+      ],
+      "layout": "hero",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "Sufficient context"
+        },
+        {
+          "id": "target",
+          "label": "Desired behavior"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Smallest sufficient, not shortest",
+      "accent": "yellow",
+      "id": "c01-s03",
+      "chapter": "Introduction",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "See why a longer prompt can still make an AI Agent forget the point",
+      "chapterSummary": [
+        "Context is a finite attention budget",
+        "High signal beats raw volume",
+        "The six-part pack makes context reusable"
+      ],
+      "start": 45.278,
+      "end": 58.44,
+      "narration": "In this video, you will learn how to manage that budget: choose high-signal instructions, tools, and examples; retrieve detail on demand; preserve coherence across long tasks; and build a six-part context pack you can reuse.",
+      "cueStarts": [
+        45.278
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        55.74952369611812,
+        55.74952369611812
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "build a six-part context pack",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 55.829523696118116,
+          "time": 55.74952369611812,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 372.8,
+        "contentTop": 476.5625,
+        "gap": 103.76249999999999
+      },
+      "balanceShift": {
+        "x": 45.90864256979444,
+        "y": 45
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 394.2109546433381,
+        "offsetX": 0,
+        "offsetY": -75.78904535666192,
+        "rawOffsetX": -45.90864256979444,
+        "rawOffsetY": -120.78904535666192,
+        "appliedShiftX": 45.90864256979444,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "grid",
+      "human": "read-front",
+      "agent": "reason-front",
+      "props": [
+        {
+          "id": "prompt-injection",
+          "label": "Instructions"
+        },
+        {
+          "id": "tool",
+          "label": "Tools"
+        },
+        {
+          "id": "document",
+          "label": "Evidence"
+        },
+        {
+          "id": "chat",
+          "label": "History"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Every token draws on attention",
+      "accent": "blue",
+      "id": "c02-s01",
+      "chapter": "Attention Budget",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Treat context as scarce attention instead of unlimited storage",
+      "chapterSummary": [
+        "treat context as a finite attention budget rather than unlimited storage",
+        "more tokens can dilute the instruction that matters next",
+        "keep the smallest sufficient set and refresh it as the task changes"
+      ],
+      "start": 58.44,
+      "end": 92.113,
+      "narration": "Context includes every token available when the model produces its next response: system instructions, tool definitions, examples, retrieved documents, message history, intermediate results, and the current request. Context engineering manages that whole state, not just the opening prompt. Anthropic describes context as finite and subject to diminishing returns. Research on context rot shows a recurring pattern: as the amount of material grows, models can become less reliable at recalling the relevant item hidden inside it. A larger window does not make attention free.",
+      "cueStarts": [
+        58.54,
+        71.084,
+        75.651,
+        80.315,
+        89.286
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        61.3,
+        61.3,
+        61.3,
+        61.3
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Context includes every token",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 58.54,
+          "time": 61.3,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.74375,
+        "gap": 112.54374999999999
+      },
+      "balanceShift": {
+        "x": 41.528292712314396,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 394.9538691866473,
+        "offsetX": 0,
+        "offsetY": -75.0461308133527,
+        "rawOffsetX": -41.528292712314396,
+        "rawOffsetY": -122.44613081335268,
+        "appliedShiftX": 41.528292712314396,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "comparison",
+      "labels": [
+        "Everything loaded",
+        "Decision-ready"
+      ],
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Raw logs"
+        },
+        {
+          "id": "uncertainty",
+          "label": "Competing rules"
+        },
+        {
+          "id": "target",
+          "label": "Next decision"
+        },
+        {
+          "id": "evidence",
+          "label": "Live evidence"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Presence is not priority",
+      "accent": "red",
+      "id": "c02-s02",
+      "chapter": "Attention Budget",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Treat context as scarce attention instead of unlimited storage",
+      "chapterSummary": [
+        "treat context as a finite attention budget rather than unlimited storage",
+        "more tokens can dilute the instruction that matters next",
+        "keep the smallest sufficient set and refresh it as the task changes"
+      ],
+      "start": 92.113,
+      "end": 125.286,
+      "narration": "This explains why a giant prompt can fail. The correct rule may be present, yet surrounded by obsolete plans, repeated explanations, raw logs, and edge cases. The model must infer which parts are current, authoritative, and relevant before it can even solve the task. Good context engineering is therefore selective. Before every meaningful step, ask what information changes the next decision. Keep the goal, necessary constraints, current evidence, and live state. Move reference detail behind an index when it can be fetched later.",
+      "cueStarts": [
+        92.113,
+        95.09299999999999,
+        102.603,
+        108.757,
+        111.959,
+        116.59299999999999,
+        121.39099999999999
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        92.333,
+        92.333,
+        92.333,
+        92.333
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "This explains why a giant prompt can fail",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 92.113,
+          "time": 92.333,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 952.8781989088236,
+        "y": 456.9013370954523,
+        "offsetX": -7.121801091176394,
+        "offsetY": -13.098662904547723,
+        "rawOffsetX": -7.121801091176394,
+        "rawOffsetY": -65.09866290454772,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "process",
+      "human": "decide-front",
+      "agent": "collaborate-front",
+      "props": [
+        {
+          "id": "search",
+          "label": "New evidence"
+        },
+        {
+          "id": "warning",
+          "label": "New boundary"
+        },
+        {
+          "id": "milestone",
+          "label": "Milestone"
+        },
+        {
+          "id": "summary",
+          "label": "Refresh"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Useful context changes with the task",
+      "accent": "yellow",
+      "id": "c02-s03",
+      "chapter": "Attention Budget",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Treat context as scarce attention instead of unlimited storage",
+      "chapterSummary": [
+        "treat context as a finite attention budget rather than unlimited storage",
+        "more tokens can dilute the instruction that matters next",
+        "keep the smallest sufficient set and refresh it as the task changes"
+      ],
+      "start": 125.286,
+      "end": 158.757,
+      "narration": "Selection is iterative. After a tool call, the Agent has new evidence. After an error, a new boundary becomes important. After a milestone, raw traces may be replaced by a compact state summary. The useful context at step ten is not identical to the useful context at step one. Minimal does not mean short. A complex migration may need extensive acceptance criteria, repository conventions, and risk controls. The standard is the smallest set that fully supports the expected behavior, not the fewest possible words.",
+      "cueStarts": [
+        125.286,
+        127.276,
+        130.565,
+        133.891,
+        138.584,
+        144.016,
+        146.103,
+        152.738
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        125.506,
+        125.506,
+        125.506,
+        125.506
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Selection is iterative",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 125.286,
+          "time": 125.506,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 416.578125,
+        "gap": 222.178125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 1012.8587453970474,
+        "y": 451.232185843324,
+        "offsetX": 52.858745397047414,
+        "offsetY": -18.767814156676025,
+        "rawOffsetX": 52.858745397047414,
+        "rawOffsetY": -98.76781415667602,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c02-s04",
+      "chapter": "Attention Budget",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Treat context as scarce attention instead of unlimited storage",
+      "chapterSummary": [
+        "treat context as a finite attention budget rather than unlimited storage",
+        "more tokens can dilute the instruction that matters next",
+        "keep the smallest sufficient set and refresh it as the task changes"
+      ],
+      "start": 158.757,
+      "end": 172.56,
+      "narration": "First, treat context as a finite attention budget rather than unlimited storage. Second, more tokens can dilute the instruction that matters next. Third, keep the smallest sufficient set and refresh it as the task changes.",
+      "cueStarts": [
+        158.757,
+        163.843,
+        168.045
+      ],
+      "summaryPointTimes": [
+        158.757,
+        163.843,
+        168.045
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "comparison",
+      "labels": [
+        "Brittle rules",
+        "Vague guidance"
+      ],
+      "human": "compare-front",
+      "agent": "reason-front",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Hard-coded branches"
+        },
+        {
+          "id": "error",
+          "label": "Fragile"
+        },
+        {
+          "id": "uncertainty",
+          "label": "Assumed context"
+        },
+        {
+          "id": "question",
+          "label": "No concrete signal"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Aim for the right altitude",
+      "accent": "yellow",
+      "id": "c03-s01",
+      "chapter": "High-Signal Inputs",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Choose instructions, tools, and examples that guide without crowding",
+      "chapterSummary": [
+        "write instructions at the right altitude between brittle and vague",
+        "keep tools clear, efficient, and minimally overlapping",
+        "teach the pattern with a small set of canonical examples"
+      ],
+      "start": 172.56,
+      "end": 204.27100000000002,
+      "narration": "Start with system instructions at the right altitude. At one extreme, a prompt hard-codes every branch with brittle if-else logic. At the other, it says something vague like do a great job and assumes the Agent shares your unstated expectations. The useful middle gives clear goals, boundaries, and heuristics while leaving room to reason. Organize background, instructions, tool guidance, and output expectations into distinct sections. The formatting helps, but the decisive value is the clarity and priority of the content.",
+      "cueStarts": [
+        172.66,
+        175.886,
+        180.733,
+        187.13,
+        192.64600000000002,
+        199.098
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        175.42000000000002,
+        175.42000000000002,
+        175.42000000000002,
+        175.42000000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Start with system instructions at the right altitude",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 172.66,
+          "time": 175.42000000000002,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 965.4160167791543,
+        "y": 451.1268327408561,
+        "offsetX": 5.416016779154347,
+        "offsetY": -18.873167259143884,
+        "rawOffsetX": 5.416016779154347,
+        "rawOffsetY": -70.87316725914388,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "operate",
+      "agent": "monitor-right",
+      "agentDirection": "right",
+      "props": [
+        {
+          "id": "tool",
+          "label": "Clear contract"
+        },
+        {
+          "id": "permission-key",
+          "label": "Use condition"
+        },
+        {
+          "id": "result-card",
+          "label": "Efficient result"
+        },
+        {
+          "id": "stop",
+          "label": "No overlap"
+        }
+      ],
+      "flow": "chain",
+      "callout": "A tool also consumes context",
+      "accent": "blue",
+      "id": "c03-s02",
+      "chapter": "High-Signal Inputs",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Choose instructions, tools, and examples that guide without crowding",
+      "chapterSummary": [
+        "write instructions at the right altitude between brittle and vague",
+        "keep tools clear, efficient, and minimally overlapping",
+        "teach the pattern with a small set of canonical examples"
+      ],
+      "start": 204.27100000000002,
+      "end": 237.31,
+      "narration": "Next, inspect the tools. A tool is not only an action; it is a contract between the Agent and its environment. Names, descriptions, parameters, error behavior, and returned data all enter context and shape which action the Agent chooses. Overlapping tools create ambiguous decisions and waste attention. If a human cannot clearly explain when to use one tool instead of another, the Agent is unlikely to resolve the ambiguity reliably. Keep a minimal viable set, return token-efficient results, and let each tool do one understandable job.",
+      "cueStarts": [
+        204.27100000000002,
+        206.61700000000002,
+        211.608,
+        219.49200000000002,
+        223.49200000000002,
+        230.983
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        204.491,
+        204.491,
+        204.491,
+        204.491
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Next, inspect the tools",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 204.27100000000002,
+          "time": 204.491,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 415.296875,
+        "gap": 213.096875
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 961.269875728352,
+        "y": 456.0304487287664,
+        "offsetX": 1.2698757283519626,
+        "offsetY": -13.969551271233627,
+        "rawOffsetX": 1.2698757283519626,
+        "rawOffsetY": -93.96955127123363,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "focus",
+      "human": "write-front",
+      "agent": "read-front",
+      "props": [
+        {
+          "id": "book",
+          "label": "Canonical pattern"
+        },
+        {
+          "id": "compare",
+          "label": "Useful variation"
+        },
+        {
+          "id": "shield",
+          "label": "Boundary"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Examples are pictures for the Agent",
+      "accent": "red",
+      "id": "c03-s03",
+      "chapter": "High-Signal Inputs",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Choose instructions, tools, and examples that guide without crowding",
+      "chapterSummary": [
+        "write instructions at the right altitude between brittle and vague",
+        "keep tools clear, efficient, and minimally overlapping",
+        "teach the pattern with a small set of canonical examples"
+      ],
+      "start": 237.31,
+      "end": 268.367,
+      "narration": "Then curate examples. A long catalogue of edge cases feels comprehensive, but it can bury the pattern. Anthropic recommends a small, diverse set of canonical examples that show the expected behavior, important variation, and a meaningful boundary. High signal is not a fixed token count. It is information with a clear job: establish the outcome, constrain behavior, select a tool, demonstrate a pattern, provide evidence, or expose a stop condition. Remove material only when it performs none of those jobs.",
+      "cueStarts": [
+        237.31,
+        239.252,
+        244.05,
+        252.36700000000002,
+        255.136,
+        264.781
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        237.53,
+        237.53,
+        237.53
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Then curate examples",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 237.31,
+          "time": 237.53,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 213,
+        "contentTop": 240.12265309173472,
+        "gap": 27.12265309173472
+      },
+      "balanceShift": {
+        "x": -84.04051666064174,
+        "y": 25
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 373.778165679255,
+        "offsetX": 0,
+        "offsetY": -96.22183432074502,
+        "rawOffsetX": 84.04051666064174,
+        "rawOffsetY": -121.22183432074502,
+        "appliedShiftX": -84.04051666064174,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c03-s04",
+      "chapter": "High-Signal Inputs",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Choose instructions, tools, and examples that guide without crowding",
+      "chapterSummary": [
+        "write instructions at the right altitude between brittle and vague",
+        "keep tools clear, efficient, and minimally overlapping",
+        "teach the pattern with a small set of canonical examples"
+      ],
+      "start": 268.367,
+      "end": 281.23199999999997,
+      "narration": "First, write instructions at the right altitude between brittle and vague. Second, keep tools clear, efficient, and minimally overlapping. Third, teach the pattern with a small set of canonical examples.",
+      "cueStarts": [
+        268.367,
+        272.733,
+        277.194
+      ],
+      "summaryPointTimes": [
+        268.367,
+        272.733,
+        277.194
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "comparison",
+      "labels": [
+        "Preload all",
+        "Retrieve when needed"
+      ],
+      "human": "compare-front",
+      "agent": "search",
+      "props": [
+        {
+          "id": "document-stack",
+          "label": "Full corpus"
+        },
+        {
+          "id": "memory",
+          "label": "Spent budget"
+        },
+        {
+          "id": "folder",
+          "label": "Reference map"
+        },
+        {
+          "id": "search",
+          "label": "Targeted fetch"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Keep the map, fetch the detail",
+      "accent": "blue",
+      "id": "c04-s01",
+      "chapter": "Retrieve on Demand",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Load detail when it becomes relevant instead of preloading everything",
+      "chapterSummary": [
+        "keep lightweight references instead of every source body",
+        "let the AI Agent discover detail progressively when it becomes relevant",
+        "balance retrieval focus against the extra time and navigation cost"
+      ],
+      "start": 281.23199999999997,
+      "end": 308.203,
+      "narration": "Many systems preload every document that might be relevant before the Agent starts. That can be fast when the corpus is small and stable, but it also spends the attention budget before the Agent knows which detail matters. Just-in-time retrieval uses lightweight references instead: file paths, stored queries, links, identifiers, folder names, and timestamps. The Agent keeps the map in context, then opens the specific source when a decision requires it.",
+      "cueStarts": [
+        281.332,
+        286.126,
+        293.48199999999997,
+        302.693
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        284.092,
+        284.092,
+        284.092,
+        284.092
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Many systems preload every document",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 281.332,
+          "time": 284.092,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 975.7826475567015,
+        "y": 445.5486321766872,
+        "offsetX": 15.782647556701477,
+        "offsetY": -24.451367823312808,
+        "rawOffsetX": 15.782647556701477,
+        "rawOffsetY": -76.45136782331281,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "read-front",
+      "agent": "execute-right",
+      "agentDirection": "right",
+      "props": [
+        {
+          "id": "folder",
+          "label": "Structure"
+        },
+        {
+          "id": "search",
+          "label": "Narrow"
+        },
+        {
+          "id": "code-file",
+          "label": "Inspect"
+        },
+        {
+          "id": "evidence",
+          "label": "Use"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Progressive disclosure protects focus",
+      "accent": "yellow",
+      "id": "c04-s02",
+      "chapter": "Retrieve on Demand",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Load detail when it becomes relevant instead of preloading everything",
+      "chapterSummary": [
+        "keep lightweight references instead of every source body",
+        "let the AI Agent discover detail progressively when it becomes relevant",
+        "balance retrieval focus against the extra time and navigation cost"
+      ],
+      "start": 308.203,
+      "end": 341.472,
+      "narration": "This creates progressive disclosure. A filename suggests purpose. A directory reveals structure. A file size suggests complexity. One search result narrows the next query. The Agent assembles understanding layer by layer while keeping only the active subset in working context. Claude Code illustrates the pattern. Stable project instructions can be loaded up front, while file search, grep, head, and tail let the Agent inspect targeted parts of a large repository. It does not need every file body in context at once.",
+      "cueStarts": [
+        308.203,
+        310.635,
+        312.953,
+        315.212,
+        317.811,
+        320.645,
+        326.693,
+        329.087,
+        337.914
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        308.423,
+        308.423,
+        308.423,
+        308.423
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "This creates progressive disclosure",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 308.203,
+          "time": 308.423,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 416.578125,
+        "gap": 222.178125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 1020.9909442459124,
+        "y": 444.3160784907085,
+        "offsetX": 60.990944245912374,
+        "offsetY": -25.68392150929151,
+        "rawOffsetX": 60.990944245912374,
+        "rawOffsetY": -105.68392150929151,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "focus",
+      "human": "decide-front",
+      "agent": "look-left",
+      "agentDirection": "left",
+      "props": [
+        {
+          "id": "timer",
+          "label": "Retrieval cost"
+        },
+        {
+          "id": "route",
+          "label": "Hybrid boundary"
+        },
+        {
+          "id": "target",
+          "label": "Relevant detail"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Preload essentials, retrieve the rest",
+      "accent": "red",
+      "id": "c04-s03",
+      "chapter": "Retrieve on Demand",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Load detail when it becomes relevant instead of preloading everything",
+      "chapterSummary": [
+        "keep lightweight references instead of every source body",
+        "let the AI Agent discover detail progressively when it becomes relevant",
+        "balance retrieval focus against the extra time and navigation cost"
+      ],
+      "start": 341.472,
+      "end": 372.174,
+      "narration": "The trade-off is real. Runtime exploration is slower than preloading, and poor navigation can waste tokens on dead ends. The Agent needs good search tools, informative names, and heuristics for when to stop exploring and act. Use a hybrid strategy. Preload stable rules, the current outcome, and the small facts that almost every step needs. Keep changing, detailed, or rarely used material behind retrieval handles. The right boundary depends on the task and the cost of a missed detail.",
+      "cueStarts": [
+        341.472,
+        343.251,
+        349.35699999999997,
+        355.876,
+        357.837,
+        363.462,
+        368.28
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        341.692,
+        341.692,
+        341.692
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "The trade-off is real",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 341.472,
+          "time": 341.692,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 213,
+        "contentTop": 237,
+        "gap": 24
+      },
+      "balanceShift": {
+        "x": -71.64700938863211,
+        "y": 25
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 371.4878213126681,
+        "offsetX": 0,
+        "offsetY": -98.51217868733193,
+        "rawOffsetX": 71.64700938863211,
+        "rawOffsetY": -123.51217868733193,
+        "appliedShiftX": -71.64700938863211,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c04-s04",
+      "chapter": "Retrieve on Demand",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Load detail when it becomes relevant instead of preloading everything",
+      "chapterSummary": [
+        "keep lightweight references instead of every source body",
+        "let the AI Agent discover detail progressively when it becomes relevant",
+        "balance retrieval focus against the extra time and navigation cost"
+      ],
+      "start": 372.174,
+      "end": 385.82399999999996,
+      "narration": "First, keep lightweight references instead of every source body. Second, let the AI Agent discover detail progressively when it becomes relevant. Third, balance retrieval focus against the extra time and navigation cost.",
+      "cueStarts": [
+        372.174,
+        376.183,
+        381.116
+      ],
+      "summaryPointTimes": [
+        372.174,
+        376.183,
+        381.116
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "process",
+      "human": "caution-front",
+      "agent": "store-memory",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Long trace"
+        },
+        {
+          "id": "summary",
+          "label": "Compact"
+        },
+        {
+          "id": "milestone",
+          "label": "Decisions"
+        },
+        {
+          "id": "progress",
+          "label": "Next action"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Carry continuity, not the whole trace",
+      "accent": "blue",
+      "id": "c05-s01",
+      "chapter": "Long-Horizon Memory",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Preserve decisions and progress across long tasks and context resets",
+      "chapterSummary": [
+        "compact long traces into high-recall continuity summaries",
+        "keep durable working state in structured external notes",
+        "use specialized agents only when focused exploration justifies coordination"
+      ],
+      "start": 385.82399999999996,
+      "end": 417.756,
+      "narration": "Long tasks create a second problem. Even well-curated context eventually fills as the Agent takes actions, observes results, fixes errors, and accumulates decisions. A task that lasts hours may exceed the usable window several times. Compaction is the first lever. Summarize the conversation or trace, start a fresh window, and carry forward the decisions, unresolved bugs, constraints, evidence, and next actions needed for continuity. Raw tool output that has already served its purpose can usually disappear.",
+      "cueStarts": [
+        385.924,
+        388.45799999999997,
+        396.56399999999996,
+        400.82899999999995,
+        403.006,
+        413.44899999999996
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        388.68399999999997,
+        388.68399999999997,
+        388.68399999999997,
+        388.68399999999997
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Long tasks create a second problem",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 385.924,
+          "time": 388.68399999999997,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 416.578125,
+        "gap": 222.178125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 980.6365598904405,
+        "y": 435.1563412093155,
+        "offsetX": 20.63655989044048,
+        "offsetY": -34.843658790684515,
+        "rawOffsetX": 20.63655989044048,
+        "rawOffsetY": -114.84365879068451,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "write-front",
+      "agent": "recall-memory",
+      "props": [
+        {
+          "id": "evidence",
+          "label": "High recall"
+        },
+        {
+          "id": "note",
+          "label": "Durable state"
+        },
+        {
+          "id": "question",
+          "label": "Open items"
+        },
+        {
+          "id": "archive",
+          "label": "Raw history"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Write state outside the window",
+      "accent": "yellow",
+      "id": "c05-s02",
+      "chapter": "Long-Horizon Memory",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Preserve decisions and progress across long tasks and context resets",
+      "chapterSummary": [
+        "compact long traces into high-recall continuity summaries",
+        "keep durable working state in structured external notes",
+        "use specialized agents only when focused exploration justifies coordination"
+      ],
+      "start": 417.756,
+      "end": 447.59299999999996,
+      "narration": "Compaction has a risk: a subtle detail that looks unimportant now may become critical later. Anthropic recommends tuning for high recall first, then improving precision. Losing a decisive constraint is more expensive than carrying a little extra context. Structured notes provide another layer. The Agent writes progress, milestones, discoveries, and open questions outside the window, then reloads the relevant note later. This makes working state durable without keeping the entire conversation active.",
+      "cueStarts": [
+        417.756,
+        423.12199999999996,
+        427.68899999999996,
+        432.65999999999997,
+        435.21799999999996,
+        443.04499999999996
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        417.976,
+        417.976,
+        417.976,
+        417.976
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Compaction has a risk",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 417.756,
+          "time": 417.976,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 1004.783092134096,
+        "y": 446.59899868854075,
+        "offsetX": 44.78309213409602,
+        "offsetY": -23.401001311459254,
+        "rawOffsetX": 44.78309213409602,
+        "rawOffsetY": -103.40100131145925,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "comparison",
+      "labels": [
+        "One continuity thread",
+        "Focused exploration"
+      ],
+      "human": "handoff-right",
+      "humanDirection": "right",
+      "agent": "delegate-front",
+      "props": [
+        {
+          "id": "single-agent",
+          "label": "Lead plan"
+        },
+        {
+          "id": "note",
+          "label": "Shared state"
+        },
+        {
+          "id": "parallel-agents",
+          "label": "Deep dives"
+        },
+        {
+          "id": "summary",
+          "label": "Condensed return"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Choose memory by task shape",
+      "accent": "red",
+      "id": "c05-s03",
+      "chapter": "Long-Horizon Memory",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Preserve decisions and progress across long tasks and context resets",
+      "chapterSummary": [
+        "compact long traces into high-recall continuity summaries",
+        "keep durable working state in structured external notes",
+        "use specialized agents only when focused exploration justifies coordination"
+      ],
+      "start": 447.59299999999996,
+      "end": 480.881,
+      "narration": "Specialized agents can isolate deep exploration. A lead Agent keeps the high-level plan while focused agents investigate separate questions with clean contexts and return condensed findings. This pays off when parallel research value exceeds coordination cost. Choose by task shape. Use compaction for conversational continuity, notes for iterative work with clear milestones, and specialized agents for independent deep investigations. Whichever method you choose, the handoff must preserve outcome, decisions, evidence, unknowns, and next action.",
+      "cueStarts": [
+        447.59299999999996,
+        451.03499999999997,
+        458.679,
+        463.102,
+        464.93899999999996,
+        473.756
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        447.813,
+        447.813,
+        447.813,
+        447.813
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Specialized agents can isolate deep exploration",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 447.59299999999996,
+          "time": 447.813,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 1000.3951353181618,
+        "y": 442.2278262832421,
+        "offsetX": 40.395135318161806,
+        "offsetY": -27.77217371675789,
+        "rawOffsetX": 40.395135318161806,
+        "rawOffsetY": -79.77217371675789,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c05-s04",
+      "chapter": "Long-Horizon Memory",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Preserve decisions and progress across long tasks and context resets",
+      "chapterSummary": [
+        "compact long traces into high-recall continuity summaries",
+        "keep durable working state in structured external notes",
+        "use specialized agents only when focused exploration justifies coordination"
+      ],
+      "start": 480.881,
+      "end": 494.78399999999993,
+      "narration": "First, compact long traces into high-recall continuity summaries. Second, keep durable working state in structured external notes. Third, use specialized agents only when focused exploration justifies coordination.",
+      "cueStarts": [
+        480.881,
+        485.41999999999996,
+        489.56399999999996
+      ],
+      "summaryPointTimes": [
+        480.881,
+        485.41999999999996,
+        489.56399999999996
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "hero",
+      "human": "handoff-right",
+      "humanDirection": "right",
+      "agent": "receive-right",
+      "agentDirection": "right",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "Context Pack"
+        },
+        {
+          "id": "target",
+          "label": "Outcome"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Six parts, one inspectable package",
+      "accent": "blue",
+      "id": "c06-s01",
+      "chapter": "Context Pack",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Build one reusable six-part context package for real AI Agent work",
+      "chapterSummary": [
+        "anchor the AI Agent with Outcome and Operating Rules",
+        "guide action with a Tool Map, Canonical Examples, and a Retrieval Index",
+        "preserve continuity with a compact, regularly updated Working State"
+      ],
+      "start": 494.78399999999993,
+      "end": 524.4279999999999,
+      "narration": "Turn the method into one Minimum High-Signal Context Pack. It has six parts: Outcome, Operating Rules, Tool Map, Canonical Examples, Retrieval Index, and Working State. The pack is small enough to inspect and complete enough to guide real work. Part one is Outcome. State the goal, intended user, deliverable, acceptance criteria, and the decision the result must support. This prevents a fluent Agent from optimizing for an attractive output that does not solve the actual problem.",
+      "cueStarts": [
+        494.88399999999996,
+        498.45699999999994,
+        506.10999999999996,
+        510.29299999999995,
+        512.0909999999999,
+        518.6869999999999
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        497.64399999999995,
+        497.64399999999995
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Turn the method into one",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 494.88399999999996,
+          "time": 497.64399999999995,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 372.8,
+        "contentTop": 476.5625,
+        "gap": 103.76249999999999
+      },
+      "balanceShift": {
+        "x": -52.156825362998006,
+        "y": 45
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 397.41185387682697,
+        "offsetX": 0,
+        "offsetY": -72.58814612317303,
+        "rawOffsetX": 52.156825362998006,
+        "rawOffsetY": -117.58814612317303,
+        "appliedShiftX": -52.156825362998006,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "grid",
+      "human": "explain-front",
+      "agent": "plan-front",
+      "props": [
+        {
+          "id": "shield",
+          "label": "Rules"
+        },
+        {
+          "id": "tool",
+          "label": "Tool Map"
+        },
+        {
+          "id": "book",
+          "label": "Examples"
+        },
+        {
+          "id": "permission-key",
+          "label": "Boundaries"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Make action and limits explicit",
+      "accent": "yellow",
+      "id": "c06-s02",
+      "chapter": "Context Pack",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Build one reusable six-part context package for real AI Agent work",
+      "chapterSummary": [
+        "anchor the AI Agent with Outcome and Operating Rules",
+        "guide action with a Tool Map, Canonical Examples, and a Retrieval Index",
+        "preserve continuity with a compact, regularly updated Working State"
+      ],
+      "start": 524.4279999999999,
+      "end": 555.3599999999999,
+      "narration": "Part two is Operating Rules. Record hard constraints, permissions, risk boundaries, escalation points, and stop conditions. Separate permanent rules from temporary assumptions so an old workaround does not silently become policy. Part three is the Tool Map, paired with Canonical Examples. For each tool, explain when to use it, what input it expects, what efficient output looks like, and which nearby tool it does not replace. Add two or three examples that show the main pattern and an important boundary.",
+      "cueStarts": [
+        524.4279999999999,
+        526.6969999999999,
+        532.9849999999999,
+        538.8799999999999,
+        542.7349999999999,
+        550.8409999999999
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        524.6479999999999,
+        524.6479999999999,
+        524.6479999999999,
+        524.6479999999999
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Part two is Operating Rules",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 524.4279999999999,
+          "time": 524.6479999999999,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.74375,
+        "gap": 112.54374999999999
+      },
+      "balanceShift": {
+        "x": -42.26373604527976,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 398.993961048369,
+        "offsetX": 0,
+        "offsetY": -71.00603895163101,
+        "rawOffsetX": 42.26373604527976,
+        "rawOffsetY": -118.40603895163099,
+        "appliedShiftX": -42.26373604527976,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "process",
+      "human": "review-front",
+      "agent": "collaborate-front",
+      "props": [
+        {
+          "id": "folder",
+          "label": "Retrieval Index"
+        },
+        {
+          "id": "search",
+          "label": "Open trigger"
+        },
+        {
+          "id": "note",
+          "label": "Working State"
+        },
+        {
+          "id": "loop",
+          "label": "Update"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Keep the pack alive at milestones",
+      "accent": "red",
+      "id": "c06-s03",
+      "chapter": "Context Pack",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Build one reusable six-part context package for real AI Agent work",
+      "chapterSummary": [
+        "anchor the AI Agent with Outcome and Operating Rules",
+        "guide action with a Tool Map, Canonical Examples, and a Retrieval Index",
+        "preserve continuity with a compact, regularly updated Working State"
+      ],
+      "start": 555.3599999999999,
+      "end": 584.1009999999999,
+      "narration": "Part four is the Retrieval Index. Store lightweight handles to source material with a short purpose label and a trigger for opening it. The Agent should know both where the evidence lives and when the evidence becomes necessary. Part five is Working State. Record completed work, current focus, key decisions and evidence, unresolved questions, failed approaches, and the next concrete action. Update this state at milestones, then compact or archive the raw trace it replaces.",
+      "cueStarts": [
+        555.3599999999999,
+        557.8599999999999,
+        563.2739999999999,
+        568.0619999999999,
+        570.1679999999999,
+        578.7639999999999
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        555.5799999999999,
+        555.5799999999999,
+        555.5799999999999,
+        555.5799999999999
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Part four is the Retrieval Index",
+          "props": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "rawTime": 555.3599999999999,
+          "time": 555.5799999999999,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 418.5,
+        "gap": 216.3
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 1007.2954270736584,
+        "y": 445.8447403141078,
+        "offsetX": 47.2954270736584,
+        "offsetY": -24.15525968589219,
+        "rawOffsetX": 47.2954270736584,
+        "rawOffsetY": -104.15525968589219,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c06-s04",
+      "chapter": "Context Pack",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Build one reusable six-part context package for real AI Agent work",
+      "chapterSummary": [
+        "anchor the AI Agent with Outcome and Operating Rules",
+        "guide action with a Tool Map, Canonical Examples, and a Retrieval Index",
+        "preserve continuity with a compact, regularly updated Working State"
+      ],
+      "start": 584.1009999999999,
+      "end": 598.776,
+      "narration": "First, anchor the AI Agent with Outcome and Operating Rules. Second, guide action with a Tool Map, Canonical Examples, and a Retrieval Index. Third, preserve continuity with a compact, regularly updated Working State.",
+      "cueStarts": [
+        584.1009999999999,
+        588.1869999999999,
+        593.7739999999999
+      ],
+      "summaryPointTimes": [
+        584.1009999999999,
+        588.1869999999999,
+        593.7739999999999
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        6
+      ],
+      "summaryPointParagraphs": [
+        2,
+        3,
+        5
+      ],
+      "ctaParagraph": 6,
+      "recap": true,
+      "finalSummary": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "AI Agent context: keep the signal",
+      "accent": "blue",
+      "id": "c07-s01",
+      "chapter": "Summary",
+      "chapterIndex": 6,
+      "chapterNumber": 7,
+      "chapterStart": true,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Keep the signal, retrieve the detail, and preserve working state",
+      "chapterSummary": [
+        "manage the whole context state, not only the prompt. Keep goals, constraints, tools, evidence, and current state according to what changes the next decision",
+        "raise signal quality. Use instructions at the right altitude, a minimal tool set, and a few canonical examples instead of brittle rules and edge-case piles",
+        "Finally, protect long tasks with compaction, structured notes, and the six-part Minimum High-Signal Context Pack. Keep the signal, retrieve the detail, and preserve the working state"
+      ],
+      "start": 598.776,
+      "end": 654.913979,
+      "narration": "An AI Agent does not forget only because information is missing. It can also lose focus because too much undifferentiated information competes for a finite attention budget. First, manage the whole context state, not only the prompt. Keep goals, constraints, tools, evidence, and current state according to what changes the next decision. Second, raise signal quality. Use instructions at the right altitude, a minimal tool set, and a few canonical examples instead of brittle rules and edge-case piles. Third, retrieve detail on demand. Keep stable essentials up front and let the Agent progressively open changing or specialized material through clear references. Finally, protect long tasks with compaction, structured notes, and the six-part Minimum High-Signal Context Pack. Keep the signal, retrieve the detail, and preserve the working state. Follow Tiny Agent. Tiny Agent helps you get better at using AI.",
+      "cueStarts": [
+        598.876,
+        602.795,
+        608.92,
+        613.054,
+        619.526,
+        621.929,
+        629.67,
+        632.343,
+        639.208,
+        646.304,
+        650.429,
+        652.276
+      ],
+      "summaryPointTimes": [
+        608.92,
+        619.526,
+        639.208
+      ],
+      "ctaAt": 650.429,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    }
+  ]
+}
