@@ -1,0 +1,781 @@
+{
+  "policy": "semantic-trigger-v1",
+  "scenes": 19,
+  "props": 68,
+  "beats": 35,
+  "fallbackBeats": 0,
+  "sceneResults": [
+    {
+      "id": "c01-s01",
+      "narration": "AI 智能体说任务已经完成。汇报很完整，语气很确定，清单也全部打勾。但文件可能放错目录，退款记录可能根本没有写进数据库，研究结论也可能没有得到来源支持。 这就是 AI 智能体验收最核心的问题：完成消息只是一项声明。可靠验收要确认目标状态是否真的存在，质量边界是否满足，以及同一个智能体能不能再次成功，而不是只在一次运行中碰巧做对。",
+      "props": [
+        {
+          "id": "chat",
+          "label": "完成声明"
+        },
+        {
+          "id": "checklist",
+          "label": "全绿清单"
+        },
+        {
+          "id": "database",
+          "label": "最终状态"
+        },
+        {
+          "id": "evidence",
+          "label": "真实证据"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "AI 智能体说任务已经完成",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "目标状态是否真的存在",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 16.219965517241377,
+          "time": 16.13996551724138,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c01-s02",
+      "narration": "Anthropic 对智能体评估的总结指出，智能体越能自主使用工具、连续行动和修改环境，就越难只靠一次回复判断结果。它还可能用评估者没有预想的路径，得到一个真正有效的答案。 这期视频会建立一套可执行的验收方法：怎样定义公平任务，区分过程轨迹与最终结果，组合代码、模型和人工评分，怎样通过多次试验判断稳定性，以及怎样发现评估本身正在误导你。",
+      "props": [
+        {
+          "id": "task-list",
+          "label": "公平任务"
+        },
+        {
+          "id": "result-card",
+          "label": "结果状态"
+        },
+        {
+          "id": "scorecard",
+          "label": "评分组合"
+        },
+        {
+          "id": "experiment",
+          "label": "多次试验"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "越能自主使用工具",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 26.90344827586207,
+          "time": 26.82344827586207,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "组合代码、模型和人工评分",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 40.5715,
+          "time": 40.4915,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c01-s03",
+      "narration": "最后会得到一张 AI 智能体结果验收表，把“看起来完成了”变成可以检查、重复并支持发布决定的证据。",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "结果验收表"
+        },
+        {
+          "id": "approval",
+          "label": "发布决定"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "AI 智能体结果验收表",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 48.04365079365079,
+          "time": 47.96365079365079,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c02-s01",
+      "narration": "从评估的最小单元开始：任务。一个任务向 AI 智能体提供明确输入和成功条件；对任务的一次尝试叫一次试验；一组相关任务合在一起，才构成评估套件。 这个区分很重要，因为模糊任务只能得到模糊分数。如果两位领域专家不能独立得出相同的通过或失败判断，任务就还没有准备好。智能体应该知道交付什么、结果放在哪里，以及哪些约束不能违反。",
+      "props": [
+        {
+          "id": "task-list",
+          "label": "任务"
+        },
+        {
+          "id": "form",
+          "label": "输入"
+        },
+        {
+          "id": "target",
+          "label": "成功"
+        },
+        {
+          "id": "checklist",
+          "label": "判定条件"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "从评估的最小单元开始",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 53.716,
+          "time": 56.476,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "成功条件",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 58.4314019138756,
+          "time": 58.3514019138756,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c02-s02",
+      "narration": "接着区分过程轨迹和最终结果。轨迹记录消息、工具调用、中间产物、推理和错误；结果则是一次试验结束后，环境里真正留下的最终状态。 订票智能体说“机票已经预订”，这句话只在轨迹里。真正结果是数据库里存在有效订单。编程智能体的解释再有说服力，也不能代替仓库改动、通过的测试和没有被破坏的旧行为。",
+      "props": [
+        {
+          "id": "chat",
+          "label": "消息"
+        },
+        {
+          "id": "tool",
+          "label": "工具调用"
+        },
+        {
+          "id": "database",
+          "label": "最终状态"
+        },
+        {
+          "id": "result-card",
+          "label": "可用结果"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "区分过程轨迹和最终结果",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 76.5457142857143,
+          "time": 76.4657142857143,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "环境里真正留下的最终状态",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 83.5005625,
+          "time": 83.4205625,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c02-s03",
+      "narration": "评分器只负责衡量一个维度。它可以检查确定状态，可以按质量标准打分，也可以交给领域专家判断主观结果。真实任务通常要组合多个评分器，因为成功往往不只一个维度。 最后要记住被评估的对象。AI 智能体不只是模型。运行框架还提供指令、工具、状态和编排。工具契约含糊或环境不稳定，都会让同一个模型失败，因此必须把模型和智能体框架一起评估。",
+      "props": [
+        {
+          "id": "scorecard",
+          "label": "评分器"
+        },
+        {
+          "id": "settings",
+          "label": "运行框架"
+        },
+        {
+          "id": "tool",
+          "label": "工具"
+        },
+        {
+          "id": "workflow",
+          "label": "编排"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "评分器只负责衡量一个维度",
+          "props": [
+            0
+          ],
+          "rawTime": 96.916,
+          "time": 97.136,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "运行框架还提供指令",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 112.199,
+          "time": 112.119,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c03-s01",
+      "narration": "验收的第一个问题很简单：目标状态真的存在吗？直接检查文件、数据库、应用状态或外部效果，通常比相信智能体自己的完成消息更可靠。 对于结构化工作，代码评分器速度快、成本低、可复现，也容易定位问题。单元测试、数据结构检查、静态分析、精确匹配和状态断言，都适合验证有客观答案的条件。",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "产物"
+        },
+        {
+          "id": "database",
+          "label": "状态"
+        },
+        {
+          "id": "success",
+          "label": "测试"
+        },
+        {
+          "id": "evidence",
+          "label": "证据"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "目标状态真的存在吗",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 133.7701818181818,
+          "time": 134.812,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "单元测试",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 146.46,
+          "time": 146.38,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c03-s02",
+      "narration": "但确定性评分也可能太脆弱。一个有效答案可能使用不同文字、不同文件结构，或者通过评估者没想到的创意方法满足用户。如果通过评估需要猜中评估者最喜欢的实现，而不是真正解决问题，这个测试就设计错了。 模型评分器适合开放结果。清楚的标准可以分别评价事实依据、完整性、指令遵循和沟通质量。逐维打分或两项结果对比，通常比一句“请判断整体质量”更可靠。 模型评分仍有随机性，所以必须和人工判断校准。给它结构化标准；证据不足时允许回答“无法判断”。高风险或专业工作仍需要领域专家，作为自动评分是否符合真实质量的参照。",
+      "props": [
+        {
+          "id": "code-file",
+          "label": "代码评分"
+        },
+        {
+          "id": "scorecard",
+          "label": "模型标准"
+        },
+        {
+          "id": "human-gate",
+          "label": "人工校准"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "确定性评分也可能太脆弱",
+          "props": [
+            0
+          ],
+          "rawTime": 152.99553846153847,
+          "time": 153.047,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "模型评分器适合开放结果",
+          "props": [
+            1
+          ],
+          "rawTime": 166.66,
+          "time": 166.57999999999998,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "领域专家",
+          "props": [
+            2
+          ],
+          "rawTime": 186.05991176470587,
+          "time": 185.97991176470586,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c03-s03",
+      "narration": "实用顺序是先验结果，再在确实重要时检查过程。先确认最终状态，再补充安全、权限或效率相关的轨迹检查；如果多条路径都能得到正确结果，就不要强迫智能体按唯一工具顺序行动。",
+      "props": [
+        {
+          "id": "branch",
+          "label": "有效路径"
+        },
+        {
+          "id": "target",
+          "label": "关键结果"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "先验结果",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 190.25640909090907,
+          "time": 190.17640909090906,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c04-s01",
+      "narration": "一次通过不能证明 AI 智能体可靠。智能体每次运行的行为会变化，所以一次成功可能来自稳定能力，也可能只是幸运轨迹，或者评估器漏掉了问题。 因此，重要任务要运行多次。结果分布能说明智能体是通常成功、偶尔成功，还是总在同一环节失败。这些信息都可能被单次试验隐藏。",
+      "props": [
+        {
+          "id": "experiment",
+          "label": "第一次"
+        },
+        {
+          "id": "loop",
+          "label": "重复"
+        },
+        {
+          "id": "trend-up",
+          "label": "稳定成功"
+        },
+        {
+          "id": "trend-down",
+          "label": "隐藏失败"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "一次通过不能证明",
+          "props": [
+            0
+          ],
+          "rawTime": 213.532,
+          "time": 216.29200000000003,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "重要任务要运行多次",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 223.567,
+          "time": 223.487,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c04-s02",
+      "narration": "至少一次成功指标关注多次尝试中有没有一次做对，适合探索型工作，只要找到一个可行答案就有价值。连续全部成功指标要求每次都通过，更适合用户期待稳定执行的任务。 两者对应不同产品要求。研究助手给出多个假设，其中一个高质量结果可能就有用；面向客户处理退款的智能体则必须稳定，因为一次错误就可能带来真实资金和信任损失。",
+      "props": [
+        {
+          "id": "search",
+          "label": "探索"
+        },
+        {
+          "id": "success",
+          "label": "一个答案"
+        },
+        {
+          "id": "shield",
+          "label": "一致性"
+        },
+        {
+          "id": "approval",
+          "label": "可靠行动"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "至少一次成功指标",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 232.48200000000003,
+          "time": 232.70200000000003,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "连续全部成功指标",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 239.09000000000003,
+          "time": 239.01000000000002,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c04-s03",
+      "narration": "稳定性还取决于任务是否平衡。既要测试某个行为应该发生的情况，也要测试它不该发生的情况。只奖励搜索，智能体可能什么都搜索；只奖励拒绝，它又可能停止完成有价值的工作。 每次试验还要隔离。遗留文件、缓存状态、资源不足或上一轮历史，既可能虚高成绩，也可能制造相关失败。测试环境要接近生产，同时重置会污染比较的状态。",
+      "props": [
+        {
+          "id": "compare",
+          "label": "平衡样本"
+        },
+        {
+          "id": "stop",
+          "label": "反向样本"
+        },
+        {
+          "id": "archive",
+          "label": "清洁状态"
+        },
+        {
+          "id": "settings",
+          "label": "稳定环境"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "任务是否平衡",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 256.344,
+          "time": 256.264,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "每次试验还要隔离",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 266.957,
+          "time": 266.877,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c05-s01",
+      "narration": "低分不一定说明 AI 智能体能力弱。任务可能含糊，环境可能损坏，评分器也可能拒绝一个有效答案。评估质量本身同样需要被检查。 从已经发生的失败开始。人工提测项、客服反馈、生产故障和困难边界都是高价值样本，因为它们对应真实用户期待，而不是凭空设计的题目。",
+      "props": [
+        {
+          "id": "error",
+          "label": "真实失败"
+        },
+        {
+          "id": "notification",
+          "label": "用户反馈"
+        },
+        {
+          "id": "checklist",
+          "label": "人工检查"
+        },
+        {
+          "id": "task-list",
+          "label": "评估任务"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "低分不一定说明",
+          "props": [
+            0
+          ],
+          "rawTime": 289.4440000000001,
+          "time": 292.20400000000006,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "从已经发生的失败开始",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 298.10200000000003,
+          "time": 298.02200000000005,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c05-s02",
+      "narration": "每个任务都要让两位合格评审者得出相同判断。写清输入、必要结果、关键约束，以及评分器会检查的全部内容；再制作一个已知可通过的参考答案，证明任务可解，也证明评分器能识别正确结果。 问题集要保持平衡，起步可以很小。早期几十个真实任务，往往比几百个薄弱样本更有价值。产品成熟后，再加入更困难、能区分改进的任务，并把已经解决的能力测试转成持续回归保护。",
+      "props": [
+        {
+          "id": "form",
+          "label": "明确任务"
+        },
+        {
+          "id": "success",
+          "label": "参考答案"
+        },
+        {
+          "id": "scorecard",
+          "label": "公平评分"
+        },
+        {
+          "id": "evidence",
+          "label": "已知证据"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "每个任务都要让两位合格评审者",
+          "props": [
+            0
+          ],
+          "rawTime": 307.36000000000007,
+          "time": 307.5800000000001,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "制作一个已知可通过的参考答案",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 314.83700000000005,
+          "time": 314.75700000000006,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c05-s03",
+      "narration": "定期阅读多次试验的轨迹和评分。失败轨迹能区分是真正的智能体错误、运行框架阻塞，还是评分器惩罚了合理方案。如果失败看起来不公平，应该先修评估，再优化智能体。 把评估套件当作活的工程资产。模型会变强，产品会变化，用户行为会迁移，原本困难的任务也会饱和。明确维护责任、结合生产监控，并定期用人工判断校准，才能长期保持信号有效。",
+      "props": [
+        {
+          "id": "chat",
+          "label": "阅读轨迹"
+        },
+        {
+          "id": "dashboard",
+          "label": "观察信号"
+        },
+        {
+          "id": "trend-up",
+          "label": "提高难度"
+        },
+        {
+          "id": "human-gate",
+          "label": "人工校准"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "定期阅读多次试验的轨迹和评分",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 332.119,
+          "time": 332.33900000000006,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "活的工程资产",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 344.95200000000006,
+          "time": 344.87200000000007,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c06-s01",
+      "narration": "现在把方法整理成一张 AI 智能体结果验收表。它既可以用于发布前的一项高价值任务，也可以用于重复工作流，或者作为完整评估套件的起点。 第一块是结果。写明用户可见结果、证明它存在的最终状态、通过阈值和证据位置。不要把“智能体说完成了”当作证据。 第二块是任务环境。记录输入、工具、权限、起始状态、关键约束和参考答案。这样任务才能复现，也能暴露环境本身是否在制造噪声。",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "结果"
+        },
+        {
+          "id": "form",
+          "label": "任务环境"
+        },
+        {
+          "id": "target",
+          "label": "通过阈值"
+        },
+        {
+          "id": "success",
+          "label": "答案"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "一张 AI 智能体结果验收表",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 370.0116190476191,
+          "time": 371.52400000000006,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "通过阈值",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 382.0776666666667,
+          "time": 381.9976666666667,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c06-s02",
+      "narration": "第三块是评分组合。客观状态使用确定性检查，开放质量使用模型标准，校准或专业判断使用人工评审。每个评分器只承担一个清楚维度，不要给它一个含糊的整体工作。",
+      "props": [
+        {
+          "id": "code-file",
+          "label": "确定检查"
+        },
+        {
+          "id": "scorecard",
+          "label": "模型标准"
+        },
+        {
+          "id": "human-gate",
+          "label": "人工评审"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "第三块是评分组合",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 395.00500000000005,
+          "time": 395.2250000000001,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s03",
+      "narration": "第四块是稳定性。写明试验次数、符合产品目标的指标和最低通过线。探索任务也许一次成功就够了，重复执行的用户任务则需要稳定通过标准。 第五块是评估健康与决定。记录轨迹抽查、已知评分缺口、环境故障、例外、最终发布决定，以及下一条应该加入评估的新失败。这样既验收智能体，也验收你对测试结果的信心。",
+      "props": [
+        {
+          "id": "experiment",
+          "label": "重复试验"
+        },
+        {
+          "id": "dashboard",
+          "label": "评估健康"
+        },
+        {
+          "id": "warning",
+          "label": "例外"
+        },
+        {
+          "id": "approval",
+          "label": "发布决定"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "第四块是稳定性",
+          "props": [
+            0
+          ],
+          "rawTime": 406.32200000000006,
+          "time": 406.5420000000001,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "第五块是评估健康与决定",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 416.01400000000007,
+          "time": 415.9340000000001,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c07-s01",
+      "narration": "AI 智能体写出一份漂亮的完成汇报，不等于任务已经可靠完成。真正验收要把目标结果写成任务，检查最终状态，并确认它能在公平条件下重复成功。",
+      "props": [
+        {
+          "id": "chat",
+          "label": "完成声明"
+        },
+        {
+          "id": "evidence",
+          "label": "验证结果"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "漂亮的完成汇报，不等于",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 440.16689655172416,
+          "time": 440.0868965517242,
+          "clampedToContentStart": false
+        }
+      ]
+    }
+  ]
+}

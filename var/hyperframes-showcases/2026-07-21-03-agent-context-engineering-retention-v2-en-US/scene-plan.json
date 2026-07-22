@@ -1,0 +1,627 @@
+{
+  "chapters": [
+    {
+      "label": "Introduction",
+      "showIntro": false,
+      "intro": "See why a longer prompt can still make an AI Agent forget the point",
+      "summary": [
+        "Context is a finite attention budget",
+        "High signal beats raw volume",
+        "The six-part pack makes context reusable"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            1
+          ],
+          "layout": "comparison",
+          "labels": [
+            "More context",
+            "Clearer context"
+          ],
+          "human": "surprised",
+          "agent": "evaluate-front",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Long history"
+            },
+            {
+              "id": "target",
+              "label": "Current goal"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Why AI Agents Forget Long Tasks",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            2,
+            3
+          ],
+          "layout": "process",
+          "human": "explain-front",
+          "agent": "plan-front",
+          "props": [
+            {
+              "id": "target",
+              "label": "Goal"
+            },
+            {
+              "id": "note",
+              "label": "State"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Context Is a Finite Attention Budget",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            4,
+            4
+          ],
+          "layout": "hero",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [
+            {
+              "id": "clipboard",
+              "label": "Sufficient context"
+            },
+            {
+              "id": "target",
+              "label": "Desired behavior"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Six-Part AI Agent Context Pack",
+          "accent": "yellow"
+        }
+      ]
+    },
+    {
+      "label": "Attention Budget",
+      "intro": "Treat context as scarce attention instead of unlimited storage",
+      "summary": [
+        "treat context as a finite attention budget rather than unlimited storage",
+        "more tokens can dilute the instruction that matters next",
+        "keep the smallest sufficient set and refresh it as the task changes"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "grid",
+          "human": "read-front",
+          "agent": "reason-front",
+          "props": [
+            {
+              "id": "prompt-injection",
+              "label": "Instructions"
+            },
+            {
+              "id": "chat",
+              "label": "History"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Every token draws on attention",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Everything loaded",
+            "Decision-ready"
+          ],
+          "human": "compare-front",
+          "agent": "evaluate-front",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Raw logs"
+            },
+            {
+              "id": "target",
+              "label": "Next decision"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Presence is not priority",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "process",
+          "human": "decide-front",
+          "agent": "collaborate-front",
+          "props": [
+            {
+              "id": "search",
+              "label": "New evidence"
+            },
+            {
+              "id": "summary",
+              "label": "Refresh"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Useful context changes with the task",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "High-Signal Inputs",
+      "intro": "Choose instructions, tools, and examples that guide without crowding",
+      "summary": [
+        "write instructions at the right altitude between brittle and vague",
+        "keep tools clear, efficient, and minimally overlapping",
+        "teach the pattern with a small set of canonical examples"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Brittle rules",
+            "Vague guidance"
+          ],
+          "human": "compare-front",
+          "agent": "reason-front",
+          "props": [
+            {
+              "id": "branch",
+              "label": "Hard-coded branches"
+            },
+            {
+              "id": "uncertainty",
+              "label": "Assumed context"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Aim for the right altitude",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "process",
+          "human": "operate",
+          "agent": "monitor-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "tool",
+              "label": "Clear contract"
+            },
+            {
+              "id": "stop",
+              "label": "No overlap"
+            }
+          ],
+          "flow": "chain",
+          "callout": "A tool also consumes context",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "focus",
+          "human": "write-front",
+          "agent": "read-front",
+          "props": [
+            {
+              "id": "book",
+              "label": "Canonical pattern"
+            },
+            {
+              "id": "shield",
+              "label": "Boundary"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Examples are pictures for the Agent",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Retrieve on Demand",
+      "intro": "Load detail when it becomes relevant instead of preloading everything",
+      "summary": [
+        "keep lightweight references instead of every source body",
+        "let the AI Agent discover detail progressively when it becomes relevant",
+        "balance retrieval focus against the extra time and navigation cost"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "comparison",
+          "labels": [
+            "Preload all",
+            "Retrieve when needed"
+          ],
+          "human": "compare-front",
+          "agent": "search",
+          "props": [
+            {
+              "id": "document-stack",
+              "label": "Full corpus"
+            },
+            {
+              "id": "folder",
+              "label": "Reference map"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Keep the map, fetch the detail",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "process",
+          "human": "read-front",
+          "agent": "execute-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "folder",
+              "label": "Structure"
+            },
+            {
+              "id": "evidence",
+              "label": "Use"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Progressive disclosure protects focus",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "focus",
+          "human": "decide-front",
+          "agent": "look-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "timer",
+              "label": "Retrieval cost"
+            },
+            {
+              "id": "target",
+              "label": "Relevant detail"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Preload essentials, retrieve the rest",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Long-Horizon Memory",
+      "intro": "Preserve decisions and progress across long tasks and context resets",
+      "summary": [
+        "compact long traces into high-recall continuity summaries",
+        "keep durable working state in structured external notes",
+        "use specialized agents only when focused exploration justifies coordination"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "process",
+          "human": "caution-front",
+          "agent": "store-memory",
+          "props": [
+            {
+              "id": "chat",
+              "label": "Long trace"
+            },
+            {
+              "id": "progress",
+              "label": "Next action"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Carry continuity, not the whole trace",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "process",
+          "human": "write-front",
+          "agent": "recall-memory",
+          "props": [
+            {
+              "id": "evidence",
+              "label": "High recall"
+            },
+            {
+              "id": "archive",
+              "label": "Raw history"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Write state outside the window",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "comparison",
+          "labels": [
+            "One continuity thread",
+            "Focused exploration"
+          ],
+          "human": "handoff-right",
+          "humanDirection": "right",
+          "agent": "delegate-front",
+          "props": [
+            {
+              "id": "single-agent",
+              "label": "Lead plan"
+            },
+            {
+              "id": "parallel-agents",
+              "label": "Deep dives"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Choose memory by task shape",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Context Pack",
+      "intro": "Build one reusable six-part context package for real AI Agent work",
+      "summary": [
+        "anchor the AI Agent with Outcome and Operating Rules",
+        "guide action with a Tool Map, Canonical Examples, and a Retrieval Index",
+        "preserve continuity with a compact, regularly updated Working State"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            2
+          ],
+          "layout": "hero",
+          "human": "handoff-right",
+          "humanDirection": "right",
+          "agent": "receive-right",
+          "agentDirection": "right",
+          "props": [
+            {
+              "id": "clipboard",
+              "label": "Context Pack"
+            },
+            {
+              "id": "target",
+              "label": "Outcome"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Six parts, one inspectable package",
+          "accent": "blue"
+        },
+        {
+          "paragraphs": [
+            3,
+            4
+          ],
+          "layout": "grid",
+          "human": "explain-front",
+          "agent": "plan-front",
+          "props": [
+            {
+              "id": "shield",
+              "label": "Rules"
+            },
+            {
+              "id": "permission-key",
+              "label": "Boundaries"
+            }
+          ],
+          "flow": "cluster",
+          "callout": "Make action and limits explicit",
+          "accent": "yellow"
+        },
+        {
+          "paragraphs": [
+            5,
+            6
+          ],
+          "layout": "process",
+          "human": "review-front",
+          "agent": "collaborate-front",
+          "props": [
+            {
+              "id": "folder",
+              "label": "Retrieval Index"
+            },
+            {
+              "id": "loop",
+              "label": "Update"
+            }
+          ],
+          "flow": "chain",
+          "callout": "Keep the pack alive at milestones",
+          "accent": "red"
+        },
+        {
+          "paragraphs": [
+            7,
+            9
+          ],
+          "summaryPointParagraphs": [
+            7,
+            8,
+            9
+          ],
+          "recap": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "Recap",
+          "accent": "blue"
+        }
+      ]
+    },
+    {
+      "label": "Summary",
+      "showIntro": false,
+      "intro": "Keep the signal, retrieve the detail, and preserve working state",
+      "summary": [
+        "manage the whole context state, not only the prompt. Keep goals, constraints, tools, evidence, and current state according to what changes the next decision",
+        "raise signal quality. Use instructions at the right altitude, a minimal tool set, and a few canonical examples instead of brittle rules and edge-case piles",
+        "Finally, protect long tasks with compaction, structured notes, and the six-part Minimum High-Signal Context Pack. Keep the signal, retrieve the detail, and preserve the working state"
+      ],
+      "scenes": [
+        {
+          "paragraphs": [
+            1,
+            6
+          ],
+          "summaryPointParagraphs": [
+            2,
+            3,
+            5
+          ],
+          "ctaParagraph": 6,
+          "recap": true,
+          "finalSummary": true,
+          "layout": "focus",
+          "human": "review-front",
+          "agent": "verify-front",
+          "props": [],
+          "flow": "cluster",
+          "callout": "AI Agent context: keep the signal",
+          "accent": "blue"
+        }
+      ]
+    }
+  ],
+  "retentionPolicy": {
+    "version": "retention-v2-large-simple",
+    "activeCharactersPerBodyScene": 1,
+    "maximumCorePropsPerBodyScene": 2,
+    "minimumAgentFrameHeight": 500
+  }
+}

@@ -1,0 +1,17 @@
+Start with the smallest unit of evaluation: a task. A task gives the AI Agent defined inputs and success criteria. One attempt at that task is a trial, and a collection of related tasks becomes an evaluation suite.
+
+The distinction matters because a vague request produces a vague score. If two domain experts cannot independently decide whether the task passed, the specification is not yet ready to measure. The Agent should know what it must produce, where the result belongs, and which constraints are essential.
+
+Next, separate the transcript from the outcome. The transcript records messages, tool calls, intermediate results, reasoning, and errors. The outcome is the final state left in the environment after the trial.
+
+For a booking Agent, “your flight is booked” appears in the transcript. The outcome is a valid reservation in the database. For a coding Agent, a convincing explanation is not the outcome; the changed repository, passing tests, and preserved behavior are.
+
+A grader scores one dimension of performance. It may check an exact state, apply a quality rubric, or ask a human expert to judge a subjective result. A task can use several graders because success is often multidimensional.
+
+Finally, remember what you are evaluating. An AI Agent is not only a model. The harness supplies instructions, tools, state, and orchestration. A weak tool contract or unstable environment can make the same model fail, so the model and harness must be evaluated together.
+
+First, define one task with explicit inputs and success criteria.
+
+Second, separate the transcript from the final outcome.
+
+Third, evaluate the model and the Agent harness together.

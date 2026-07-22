@@ -1,0 +1,79 @@
+1
+00:00:00,100 --> 00:00:04,376
+One successful trial does not prove that an AI Agent is reliable.
+
+2
+00:00:04,326 --> 00:00:12,515
+Agent behavior varies between runs, so a pass can reflect a stable capability, a lucky trajectory, or an evaluator that missed the failure.
+
+3
+00:00:12,515 --> 00:00:16,000
+This is why each important task should run more than once.
+
+4
+00:00:16,000 --> 00:00:24,259
+The distribution of results reveals whether the Agent usually succeeds, occasionally succeeds, or fails in a consistent way that one trial would hide.
+
+5
+00:00:24,259 --> 00:00:28,182
+Pass at k asks whether at least one of k attempts succeeds.
+
+6
+00:00:28,182 --> 00:00:32,615
+It is useful when exploration matters and one working solution is enough.
+
+7
+00:00:32,615 --> 00:00:40,653
+Pass to the k asks whether all k attempts succeed, which is the harder and more relevant bar when users expect the same task to work every time.
+
+8
+00:00:40,653 --> 00:00:42,750
+The difference is operational.
+
+9
+00:00:42,750 --> 00:00:48,067
+A research assistant that proposes several hypotheses may benefit from one strong result.
+
+10
+00:00:48,067 --> 00:00:56,173
+A customer-facing Agent that processes refunds needs consistent correctness, because one failure can create a real financial or trust problem.
+
+11
+00:00:56,173 --> 00:00:59,375
+Reliability also depends on task balance.
+
+12
+00:00:59,375 --> 00:01:03,365
+Test cases where a behavior should happen and cases where it should not.
+
+13
+00:01:03,365 --> 00:01:07,173
+If you only reward searching, the Agent may search everything.
+
+14
+00:01:07,173 --> 00:01:11,163
+If you only reward refusal, it may stop doing useful work.
+
+15
+00:01:11,163 --> 00:01:13,153
+Keep trials isolated.
+
+16
+00:01:13,153 --> 00:01:21,490
+Shared files, cached state, resource exhaustion, or history from a previous run can either inflate performance or create correlated failures.
+
+17
+00:01:21,490 --> 00:01:26,865
+The test environment should resemble production while resetting the state that would contaminate comparison.
+
+18
+00:01:26,865 --> 00:01:30,692
+First, run multiple trials because one pass can be luck.
+
+19
+00:01:30,692 --> 00:01:35,471
+Second, choose pass at k for discovery and pass to the k for consistency.
+
+20
+00:01:35,471 --> 00:01:40,125
+Third, balance tasks and isolate the environment before comparing results.

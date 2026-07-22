@@ -1,0 +1,15 @@
+{
+  "name": "tiny-agent-context-retention-sample-v2-en-us",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tts": "node build.mjs --tts",
+    "build": "node build.mjs --compile",
+    "check": "pnpm dlx hyperframes@0.7.65 check . --snapshots --frame-check=severity=error",
+    "snapshot": "pnpm dlx hyperframes@0.7.65 snapshot . --at 0,1.599,2,3.197,7.864,12.532,15.809,19.087,23.44,27.793,34.368,40.943,45.371,47.8 --no-end --output snapshots",
+    "render": "pnpm dlx hyperframes@0.7.65 render . --quality high --strict --quiet --workers 1 --low-memory-mode --output renders/retention-sample-v2.en-US.mp4"
+  },
+  "devDependencies": {
+    "hyperframes": "0.7.65"
+  }
+}

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI 智能体上下文工程 Retention Sample</title>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face{font-family:TA;src:url("assets/fonts/HiraginoSansGB.ttc") format("truetype");font-weight:100 900}
+    :root{--paper:#ECECEA;--ink:#111413;--blue:#117ABD;--yellow:#F4C542;--red:#D84B3E;--muted:#C9CBC5}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--paper);font-family:TA,"Arial Black",Arial,sans-serif;color:var(--ink)}
+    .composition{position:relative;width:1920px;height:1080px;overflow:hidden;background-color:var(--paper);background-image:linear-gradient(rgba(17,20,19,.038) 2px,transparent 2px),linear-gradient(90deg,rgba(17,20,19,.038) 2px,transparent 2px);background-size:64px 64px}
+    .cover{position:absolute;inset:0;z-index:40;background:var(--paper)}.cover img{width:100%;height:100%;display:block;object-fit:cover}
+    .scene{position:absolute;inset:0;visibility:hidden;opacity:0;padding:58px 72px 188px}.scene h1{position:relative;z-index:3;margin:0 auto;width:1776px;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:82px;line-height:1.03;letter-spacing:-2px;font-weight:900;text-wrap:balance}
+    .scene-body{height:700px;display:flex;align-items:center;justify-content:center;gap:92px}.agent-right .agent-wrap{order:2}.agent-right .core-wrap{order:1}.agent-left .agent-wrap{order:1}.agent-left .core-wrap{order:2}
+    .agent-wrap{width:520px;height:640px;display:flex;align-items:flex-end;justify-content:center}.agent{width:480px;height:620px;object-fit:contain;filter:drop-shadow(0 15px 0 rgba(17,20,19,.08))}
+    .core-wrap{width:570px;height:570px;display:flex;align-items:center;justify-content:center}.core-card{position:relative;width:480px;height:480px;border:10px solid var(--ink);border-radius:42px;background:var(--paper);box-shadow:18px 18px 0 rgba(17,20,19,.12);overflow:hidden}
+    .context-stack{display:flex;align-items:center;justify-content:center;flex-direction:column}.context-stack img{width:430px;height:390px;object-fit:contain}.context-stack strong{position:absolute;bottom:28px;padding:12px 24px;border:6px solid var(--ink);border-radius:18px;background:var(--red);color:var(--paper);font-size:40px;letter-spacing:1px}
+    .source-card{display:grid;grid-template-rows:auto 1fr auto;place-items:center;padding:22px}.source-card .source-name{font-size:52px;font-weight:900;color:var(--blue);letter-spacing:2px}.source-card img{width:240px;height:240px;object-fit:contain}.source-card strong{font-size:38px;padding:8px 16px;border-top:7px solid var(--yellow);text-align:center}
+    .stakes-card{display:grid;grid-template-rows:1fr auto auto;place-items:center;padding:20px}.stakes-card img{width:220px;height:220px;object-fit:contain;filter:saturate(.75)}.stakes-card>strong{font-size:36px;line-height:1.05;text-align:center;color:var(--red)}.benefit-label{margin-top:6px;padding:6px 16px;border:5px solid var(--ink);border-radius:16px;font-size:32px;font-weight:900;background:var(--paper)}
+    .pack-card{display:grid;grid-template-columns:138px 1fr;align-items:center;padding:26px}.pack-card>img{width:138px;height:138px;object-fit:contain}.pack-lines{display:flex;flex-direction:column;gap:10px}.pack-lines span{display:flex;align-items:center;gap:14px;font-size:34px;font-weight:850;line-height:1.08}.pack-lines b{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;border:4px solid var(--ink);border-radius:50%;background:var(--yellow);font-size:32px}
+    .budget-device{display:grid;place-items:center}.budget-state{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;place-items:center;padding:42px}.budget-state span{font-size:42px;font-weight:900}.budget-state strong{display:grid;place-items:center;width:300px;height:300px;border:34px solid var(--red);border-radius:50%;font-size:92px;background:var(--paper)}.budget-state i{width:320px;height:18px;border-radius:9px;background:linear-gradient(90deg,var(--red) 24%,var(--muted) 24%)}.state-focus,.state-retrieve{visibility:hidden;opacity:0}.state-focus strong{border-color:var(--yellow)}.state-focus i{background:linear-gradient(90deg,var(--yellow) 68%,var(--muted) 68%)}.state-retrieve strong{border-color:var(--blue)}.state-retrieve i{background:linear-gradient(90deg,var(--blue) 92%,var(--muted) 92%)}
+    .decision-card{display:grid;grid-template-columns:110px 1fr;grid-template-rows:1fr auto;padding:22px;gap:8px 18px}.decision-card>img{width:110px;height:110px;object-fit:contain}.decision-lines{display:flex;flex-direction:column;justify-content:center;gap:8px}.decision-lines span{font-size:36px;font-weight:900;border-bottom:5px solid var(--muted);padding-bottom:4px}.decision-ready{grid-column:1/-1;justify-self:center;padding:8px 12px;border:5px solid var(--ink);border-radius:14px;font-size:32px;text-align:center;background:var(--paper)}
+    .captions{position:absolute;z-index:30;left:100px;right:100px;bottom:28px;height:132px;display:grid;place-items:center}.caption-cue{position:absolute;visibility:hidden;opacity:0;max-width:1720px;padding:18px 32px 20px;border:6px solid var(--ink);border-radius:24px;background:rgba(236,236,234,.96);box-shadow:10px 10px 0 rgba(17,20,19,.12);font-size:46px;line-height:1.14;font-weight:800;text-align:center;text-wrap:balance}
+  </style>
+</head>
+<body>
+  <div data-hf-id="hf-root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="60" data-fps="30" id="composition" class="composition">
+    <section data-hf-id="hf-scene-hook" id="scene-hook" class="scene agent-right scene-first"><h1>更多上下文，可能让 AI 智能体更失焦</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/alert-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card context-stack"><img src="assets/pack/sprites/props/document-stack.png" alt=""><strong>HIGH SIGNAL?</strong></div></div></div></section><section data-hf-id="hf-scene-authority" id="scene-authority" class="scene agent-left "><h1>上下文是有限的注意力预算</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/read-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card source-card"><span class="source-name">ANTHROPIC</span><img src="assets/pack/sprites/props/document.png" alt=""><strong>注意力预算有限</strong></div></div></div></section><section data-hf-id="hf-scene-stakes" id="scene-stakes" class="scene agent-right "><h1>旧细节会抢走下一步决策</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/evaluate-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card stakes-card"><img src="assets/pack/sprites/props/target.png" alt=""><strong>旧细节 &gt; 当前目标</strong><span class="benefit-label">筛出高信号</span></div></div></div></section><section data-hf-id="hf-scene-artifact" id="scene-artifact" class="scene agent-right "><h1>六部分高信号上下文包</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/present-left.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card pack-card"><img src="assets/pack/sprites/props/package.png" alt=""><div class="pack-lines"><span><b>1</b>目标</span><span><b>2</b>运行规则</span><span><b>3</b>工具地图</span><span><b>4</b>标准示例</span><span><b>5</b>检索索引</span><span><b>6</b>当前状态</span></div></div></div></div></section><section data-hf-id="hf-scene-budget" id="scene-budget" class="scene agent-left "><h1>信息更多，不等于信号更强</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/reason-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card budget-device"><div class="budget-state state-raw"><span>原始历史</span><strong>24%</strong><i></i></div><div class="budget-state state-focus"><span>当前信号</span><strong>68%</strong><i></i></div><div class="budget-state state-retrieve"><span>按需检索</span><strong>92%</strong><i></i></div></div></div></div></section><section data-hf-id="hf-scene-decision" id="scene-decision" class="scene agent-right "><h1>每一步只保留四件事</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/verify-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card decision-card"><img src="assets/pack/sprites/props/task-list.png" alt=""><div class="decision-lines"><span>目标</span><span>约束</span><span>证据</span><span>当前状态</span></div><strong class="decision-ready">可以做下一步决策</strong></div></div></div></section>
+    <div data-hf-id="hf-captions" class="captions"><div data-hf-id="hf-caption-1" id="caption-1" class="caption-cue">AI 智能体读了更多上下文，反而可能更抓不住重点——问题就在这里。</div><div data-hf-id="hf-caption-2" id="caption-2" class="caption-cue">Anthropic 把上下文看成有限的注意力预算：窗口越满，下一步真正重要的信号越容易变弱，判断也会偏离。</div><div data-hf-id="hf-caption-3" id="caption-3" class="caption-cue">结果就是，提示词更长，智能体却更自信地追着旧细节跑。</div><div data-hf-id="hf-caption-4" id="caption-4" class="caption-cue">接下来一分钟，你会拿到一个能直接复用的解决办法。</div><div data-hf-id="hf-caption-5" id="caption-5" class="caption-cue">把上下文压成一个可复用的六部分高信号包：目标、运行规则、工具地图、标准示例、检索索引和当前状态。</div><div data-hf-id="hf-caption-6" id="caption-6" class="caption-cue">用它替代整段原始历史。</div><div data-hf-id="hf-caption-7" id="caption-7" class="caption-cue">看注意力预算。</div><div data-hf-id="hf-caption-8" id="caption-8" class="caption-cue">原始历史塞满窗口时，目标会被挤小，旧信息却占着最醒目的位置。</div><div data-hf-id="hf-caption-9" id="caption-9" class="caption-cue">换成当前约束和有效证据，目标重新变大，下一步判断也更清楚。</div><div data-hf-id="hf-caption-10" id="caption-10" class="caption-cue">不是把知识删掉，而是把暂时无关的内容移到窗口外。</div><div data-hf-id="hf-caption-11" id="caption-11" class="caption-cue">其余细节只在下一步决策真正需要时再检索，避免提前占用注意力，让当前动作排在前面。</div><div data-hf-id="hf-caption-12" id="caption-12" class="caption-cue">每一步只让 AI 智能体看见四件事：目标、约束、证据和当前状态。</div><div data-hf-id="hf-caption-13" id="caption-13" class="caption-cue">其他信息先留在窗口外，真正需要时再取，判断完成后再更新状态。</div></div>
+    <div data-hf-id="hf-cover" id="cover" class="cover"><img src="assets/cover.png" alt="给 AI 智能体高信号上下文"></div>
+    <audio data-hf-id="hf-narration" id="narration" class="clip" data-start="0" data-duration="60" data-track-index="1" data-media-start="0" data-volume="1" src="audio/narration.zh-CN.mp3"></audio>
+  </div>
+  <script>
+    window.__timelines=window.__timelines||{};
+    const tl=gsap.timeline({paused:true});
+    tl.set("#scene-hook", { autoAlpha: 1 }, 0);
+    tl.fromTo("#scene-hook h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 0.800);
+    tl.fromTo("#scene-hook .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 0.800);
+    tl.fromTo("#scene-hook .core-card", { x: -34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 0.800);
+    tl.set("#scene-hook", { autoAlpha: 0 }, 5.000);
+    tl.set("#scene-authority", { autoAlpha: 1 }, 5.000);
+    tl.fromTo("#scene-authority h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 5.000);
+    tl.fromTo("#scene-authority .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 5.000);
+    tl.fromTo("#scene-authority .core-card", { x: 34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 5.000);
+    tl.set("#scene-authority", { autoAlpha: 0 }, 12.000);
+    tl.set("#scene-stakes", { autoAlpha: 1 }, 12.000);
+    tl.fromTo("#scene-stakes h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 12.000);
+    tl.fromTo("#scene-stakes .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 12.000);
+    tl.fromTo("#scene-stakes .core-card", { x: -34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 12.000);
+    tl.set("#scene-stakes", { autoAlpha: 0 }, 20.000);
+    tl.set("#scene-artifact", { autoAlpha: 1 }, 20.000);
+    tl.fromTo("#scene-artifact h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 20.000);
+    tl.fromTo("#scene-artifact .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 20.000);
+    tl.fromTo("#scene-artifact .core-card", { x: -34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 20.000);
+    tl.set("#scene-artifact", { autoAlpha: 0 }, 30.000);
+    tl.set("#scene-budget", { autoAlpha: 1 }, 30.000);
+    tl.fromTo("#scene-budget h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 30.000);
+    tl.fromTo("#scene-budget .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 30.000);
+    tl.fromTo("#scene-budget .core-card", { x: 34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 30.000);
+    tl.set("#scene-budget", { autoAlpha: 0 }, 50.000);
+    tl.set("#scene-decision", { autoAlpha: 1 }, 50.000);
+    tl.fromTo("#scene-decision h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 50.000);
+    tl.fromTo("#scene-decision .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 50.000);
+    tl.fromTo("#scene-decision .core-card", { x: -34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 50.000);
+    tl.set("#cover", { autoAlpha: 0 }, 0.800);
+    tl.to("#scene-stakes .benefit-label", { backgroundColor: "#F4C542", duration: 0.28, ease: "power2.out" }, 16.083);
+    tl.to("#scene-artifact .pack-card", { scale: 1.05, duration: 0.28, yoyo: true, repeat: 1, ease: "power2.inOut" }, 25.000);
+    tl.set("#scene-budget .state-raw", { autoAlpha: 0 }, 35.683);
+    tl.set("#scene-budget .state-focus", { autoAlpha: 1 }, 35.683);
+    tl.set("#scene-budget .state-focus", { autoAlpha: 0 }, 43.566);
+    tl.set("#scene-budget .state-retrieve", { autoAlpha: 1 }, 43.566);
+    tl.to("#scene-decision .decision-ready", { backgroundColor: "#F4C542", scale: 1.04, duration: 0.32, ease: "power2.out" }, 55.458);
+    tl.set("#caption-1", { autoAlpha: 1, y: 0 }, 0.100);
+    tl.set("#caption-1", { autoAlpha: 0 }, 4.416);
+    tl.set("#caption-2", { autoAlpha: 1, y: 0 }, 5.100);
+    tl.set("#caption-2", { autoAlpha: 0 }, 11.783);
+    tl.set("#caption-3", { autoAlpha: 1, y: 0 }, 12.100);
+    tl.set("#caption-3", { autoAlpha: 0 }, 16.133);
+    tl.set("#caption-4", { autoAlpha: 1, y: 0 }, 16.083);
+    tl.set("#caption-4", { autoAlpha: 0 }, 19.683);
+    tl.set("#caption-5", { autoAlpha: 1, y: 0 }, 20.100);
+    tl.set("#caption-5", { autoAlpha: 0 }, 27.475);
+    tl.set("#caption-6", { autoAlpha: 1, y: 0 }, 27.425);
+    tl.set("#caption-6", { autoAlpha: 0 }, 29.416);
+    tl.set("#caption-7", { autoAlpha: 1, y: 0 }, 30.100);
+    tl.set("#caption-7", { autoAlpha: 0 }, 31.216);
+    tl.set("#caption-8", { autoAlpha: 1, y: 0 }, 31.166);
+    tl.set("#caption-8", { autoAlpha: 0 }, 35.683);
+    tl.set("#caption-9", { autoAlpha: 1, y: 0 }, 35.683);
+    tl.set("#caption-9", { autoAlpha: 0 }, 40.091);
+    tl.set("#caption-10", { autoAlpha: 1, y: 0 }, 40.091);
+    tl.set("#caption-10", { autoAlpha: 0 }, 43.566);
+    tl.set("#caption-11", { autoAlpha: 1, y: 0 }, 43.566);
+    tl.set("#caption-11", { autoAlpha: 0 }, 49.591);
+    tl.set("#caption-12", { autoAlpha: 1, y: 0 }, 50.650);
+    tl.set("#caption-12", { autoAlpha: 0 }, 55.508);
+    tl.set("#caption-13", { autoAlpha: 1, y: 0 }, 55.458);
+    tl.set("#caption-13", { autoAlpha: 0 }, 60.000);
+    window.__timelines.main=tl;
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name":"tiny-agent-context-production-review-v1-zh-cn",
+  "private":true,
+  "type":"module",
+  "scripts":{
+    "tts":"node build.mjs --tts",
+    "build":"node build.mjs --compile",
+    "check":"pnpm dlx hyperframes@0.7.65 check . --snapshots --frame-check=severity=error",
+    "render":"pnpm dlx hyperframes@0.7.65 render . --quality high --strict --quiet --workers 1 --low-memory-mode --video-bitrate 10M --output renders/ai-agent-context-production-review.zh-CN.mp4"
+  },
+  "devDependencies":{"hyperframes":"0.7.65"}
+}

@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="en-US">
+  <body>
+    <template id="story-template">
+      <div data-hf-id="hf-v2-story-root" id="v2-story-root" data-composition-id="story" data-width="1920" data-height="1080" data-start="0" data-duration="570.286">
+        <style>
+          @font-face { font-family:"Tiny Agent CJK"; src:url("assets/fonts/HiraginoSansGB.ttc"); font-style:normal; font-weight:100 900; }
+          #v2-story-root { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; color:#111413; font-family:"Tiny Agent CJK",sans-serif; }
+          #v2-story-root .phase { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; background-color:#ececea; background-image:linear-gradient(rgba(17,20,19,.035) 1px,rgba(236,236,234,0) 1px),linear-gradient(90deg,rgba(17,20,19,.035) 1px,rgba(236,236,234,0) 1px); background-size:48px 48px; opacity:0; transform-origin:center center; }
+          #v2-story-root .phase.is-first { opacity:1; }
+          #v2-story-root .scene-content-shell { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; transform-origin:center center; }
+          #v2-story-root .balance-layer { position:absolute; inset:0; width:1920px; height:1080px; transform-origin:center center; }
+          #v2-story-root .has-chapter-intro .scene-content-shell { opacity:0; }
+          #v2-story-root .ground-line { position:absolute; right:84px; bottom:244px; left:84px; z-index:3; height:3px; background:#dfe7e4; }
+          #v2-story-root .actor { position:absolute; z-index:24; object-fit:contain; transform-origin:center bottom; }
+          #v2-story-root .callout { position:absolute; z-index:32; color:#111413; font-weight:900; line-height:1.3; letter-spacing:0; }
+          #v2-story-root .prop-zone { position:absolute; inset:0; z-index:16; }
+          #v2-story-root .prop-item { position:absolute; z-index:20; width:calc(var(--prop-size) + 48px); height:calc(var(--prop-size) + 62px); text-align:center; opacity:0; transform-origin:center; }
+          #v2-story-root .prop-item img { position:relative; z-index:2; display:block; width:var(--prop-size); height:var(--prop-size); margin:0 auto; object-fit:contain; transform-origin:center; }
+          #v2-story-root .prop-item span { position:relative; z-index:4; display:block; max-width:calc(var(--prop-size) + 44px); margin:8px auto 0; color:#47514e; font-size:32px; font-weight:850; line-height:1.2; letter-spacing:0; white-space:nowrap; }
+          #v2-story-root .connector { position:absolute; z-index:12; height:5px; border-radius:3px; background:#1597ea; opacity:0; transform-origin:left center; }
+
+          #v2-story-root .layout-stage .callout { font-size:44px; }
+
+          #v2-story-root .layout-process .ground-line { right:180px; bottom:304px; left:180px; }
+          #v2-story-root .layout-process .callout { font-size:54px; }
+
+          #v2-story-root .layout-grid .ground-line { display:none; }
+          #v2-story-root .layout-grid .callout { font-size:54px; }
+
+          #v2-story-root .layout-comparison .ground-line { display:none; }
+          #v2-story-root .layout-comparison .callout { font-size:53px; }
+          #v2-story-root .compare-panel { position:absolute; top:228px; z-index:6; width:690px; height:540px; border:4px solid #dfe7e4; background:rgba(236,236,234,.96); }
+          #v2-story-root .compare-panel-left { left:480px; border-top-color:#f5c84b; }
+          #v2-story-root .compare-panel-right { right:160px; border-top-color:#1597ea; }
+          #v2-story-root .compare-label { position:absolute; top:22px; right:32px; left:32px; font-size:34px; font-weight:900; text-align:center; }
+
+          #v2-story-root .layout-hero .ground-line { display:none; }
+          #v2-story-root .layout-hero .callout { font-size:78px; }
+
+          #v2-story-root .layout-focus .ground-line { display:none; }
+          #v2-story-root .layout-focus .callout { font-size:76px; }
+          #v2-story-root .layout-hero .callout.callout-long { font-size:64px; }
+          #v2-story-root .layout-focus .callout.callout-long { font-size:60px; }
+          #v2-story-root .layout-grid .callout.callout-long,
+          #v2-story-root .layout-process .callout.callout-long,
+          #v2-story-root .layout-comparison .callout.callout-long { font-size:48px; }
+          #v2-story-root .layout-stage .callout.callout-long { font-size:40px; }
+
+          #v2-story-root .chapter-intro { position:absolute; inset:0; z-index:80; overflow:hidden; background:#ececea; clip-path:inset(0 0 0 0); }
+          #v2-story-root .intro-rail { position:absolute; top:176px; left:176px; width:14px; height:560px; background:#1597ea; transform-origin:center top; }
+          #v2-story-root .intro-kicker { position:absolute; top:186px; left:244px; color:#117abd; font-size:28px; font-weight:900; }
+          #v2-story-root .intro-title { position:absolute; top:250px; left:236px; z-index:2; font-size:116px; font-weight:900; line-height:1.08; }
+          #v2-story-root .intro-promise { position:absolute; top:430px; left:244px; z-index:2; width:1080px; font-size:44px; font-weight:700; line-height:1.45; }
+          #v2-story-root .intro-ghost { position:absolute; top:118px; right:70px; width:520px; height:520px; border:12px solid rgba(17,122,189,.07); border-radius:50%; }
+          #v2-story-root .intro-mark { position:absolute; border:7px solid #111413; border-radius:50%; }
+          #v2-story-root .intro-mark-a { right:285px; bottom:245px; width:190px; height:190px; border-color:#1597ea; }
+          #v2-story-root .intro-mark-b { right:185px; bottom:170px; width:92px; height:92px; border-color:#f5c84b; }
+
+          #v2-story-root .chapter-summary { position:absolute; inset:0; z-index:90; display:grid; grid-template-columns:440px 1fr; background:#ececea; clip-path:inset(0 0 0 100%); }
+          #v2-story-root .is-recap .chapter-summary { clip-path:none; }
+          #v2-story-root .summary-side { display:flex; height:840px; flex-direction:column; justify-content:center; padding:90px 58px; border-right:12px solid #117abd; background:#ececea; color:#111413; }
+          #v2-story-root .summary-side span { font-size:27px; font-weight:800; }
+          #v2-story-root .summary-side strong { margin-top:24px; font-size:70px; font-weight:900; line-height:1.15; }
+          #v2-story-root .summary-body { display:flex; height:840px; flex-direction:column; justify-content:center; gap:30px; padding:90px 130px 90px 100px; }
+          #v2-story-root .summary-point { display:grid; grid-template-columns:82px 1fr; min-height:118px; align-items:center; border-bottom:4px solid #dfe7e4; opacity:0; }
+          #v2-story-root .summary-point span { color:#117abd; font-size:27px; font-weight:900; }
+          #v2-story-root .summary-point strong { font-size:42px; font-weight:900; line-height:1.3; }
+          #v2-story-root .summary-cta { display:flex; align-items:center; gap:24px; min-height:84px; margin-top:8px; padding:18px 24px; border-left:8px solid #f5c84b; background:#ececea; opacity:0; }
+          #v2-story-root .summary-cta strong { color:#117abd; font-size:30px; font-weight:900; }
+          #v2-story-root .summary-cta span { color:#27312e; font-size:27px; font-weight:800; }
+          #v2-story-root .is-final-summary .summary-side strong { font-size:62px; }
+          #v2-story-root .is-final-summary .summary-body { gap:22px; }
+          #v2-story-root .is-final-summary .summary-point strong { font-size:36px; }
+        </style>
+
+      <section data-hf-id="hf-v2-phase-c01-s01" id="v2-phase-c01-s01" class="phase layout-comparison variant-standard is-first" style="z-index:1" data-chapter="Introduction" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(94.50860440662336px,20px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">More context</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">Clearer context</div></div>
+            <img data-hf-id="hf-v2-c01-s01-agent" class="actor agent-actor" style="left:60px;top:300px;width:390px;height:500px" src="assets/pack/sprites/agent/evaluate-front.png" alt="Tiny Agent evaluate-front">
+            <div data-hf-id="hf-v2-c01-s01-callout" class="callout accent-red" style="left:420px;top:132px;width:1080px;text-align:center">Why AI Agents Forget Long Tasks</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c01-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:641px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/document-stack.png" alt="Long history">
+            <span>Long history</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s01-prop-2" class="prop-item prop-2" style="left:1251px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/target.png" alt="Current goal">
+            <span>Current goal</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c01-s02" id="v2-phase-c01-s02" class="phase layout-process variant-standard" style="z-index:2" data-chapter="Introduction" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(90.0022446915226px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c01-s02-agent" class="actor agent-actor" style="left:60px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/plan-front.png" alt="Tiny Agent plan-front">
+            <div data-hf-id="hf-v2-c01-s02-callout" class="callout callout-long accent-blue" style="left:350px;top:132px;width:1220px;text-align:center">Context Is a Finite Attention Budget</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c01-s02-line-1" class="connector connector-1" style="left:1135.9375px;top:500px;width:216.56px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c01-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:871px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/target.png" alt="Goal">
+            <span>Goal</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s02-prop-2" class="prop-item prop-2" style="left:1261px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/note.png" alt="State">
+            <span>State</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c01-s03" id="v2-phase-c01-s03" class="phase layout-hero variant-standard" style="z-index:3" data-chapter="Introduction" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(35.633416090428796px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c01-s03-agent" class="actor agent-actor" style="left:70px;top:300px;width:430px;height:520px" src="assets/pack/sprites/agent/verify-front.png" alt="Tiny Agent verify-front">
+            <div data-hf-id="hf-v2-c01-s03-callout" class="callout accent-yellow" style="left:420px;top:170px;width:1080px;text-align:center">Six-Part AI Agent Context Pack</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c01-s03-line-1" class="connector connector-1" style="left:1199.0625px;top:550px;width:225.00px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c01-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:951px;top:400px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/clipboard.png" alt="Sufficient context">
+            <span>Sufficient context</span>
+          </div>
+          <div data-hf-id="hf-v2-c01-s03-prop-2" class="prop-item prop-2" style="left:1341px;top:400px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/target.png" alt="Desired behavior">
+            <span>Desired behavior</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c02-s01" id="v2-phase-c02-s01" class="phase layout-grid variant-standard has-chapter-intro" style="z-index:4" data-chapter="Attention Budget" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(109.6945094683399px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c02-s01-agent" class="actor agent-actor" style="left:60px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/reason-front.png" alt="Tiny Agent reason-front">
+            <div data-hf-id="hf-v2-c02-s01-callout" class="callout accent-blue" style="left:420px;top:132px;width:1080px;text-align:center">Every token draws on attention</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c02-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:887.8px;top:360px;--prop-size:280px">
+            <img src="assets/pack/sprites/props/prompt-injection.png" alt="Instructions">
+            <span>Instructions</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s01-prop-2" class="prop-item prop-2" style="left:1314.2px;top:360px;--prop-size:280px">
+            <img src="assets/pack/sprites/props/chat.png" alt="History">
+            <span>History</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c02-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">Chapter 2</div>
+          <div class="intro-title">Attention Budget</div>
+          <div class="intro-promise">Treat context as scarce attention instead of unlimited storage</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c02-s02" id="v2-phase-c02-s02" class="phase layout-comparison variant-standard" style="z-index:5" data-chapter="Attention Budget" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(102.27534964003814px,20px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">Everything loaded</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">Decision-ready</div></div>
+            <img data-hf-id="hf-v2-c02-s02-agent" class="actor agent-actor" style="left:60px;top:300px;width:390px;height:500px" src="assets/pack/sprites/agent/evaluate-front.png" alt="Tiny Agent evaluate-front">
+            <div data-hf-id="hf-v2-c02-s02-callout" class="callout accent-red" style="left:420px;top:132px;width:1080px;text-align:center">Presence is not priority</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c02-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:641px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/document-stack.png" alt="Raw logs">
+            <span>Raw logs</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s02-prop-2" class="prop-item prop-2" style="left:1251px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/target.png" alt="Next decision">
+            <span>Next decision</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c02-s03" id="v2-phase-c02-s03" class="phase layout-process variant-standard" style="z-index:6" data-chapter="Attention Budget" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(160.10464083559782px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c02-s03-agent" class="actor agent-actor" style="left:60px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/collaborate-front.png" alt="Tiny Agent collaborate-front">
+            <div data-hf-id="hf-v2-c02-s03-callout" class="callout callout-long accent-yellow" style="left:350px;top:132px;width:1220px;text-align:center">Useful context changes with the task</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c02-s03-line-1" class="connector connector-1" style="left:1135px;top:500px;width:225.94px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c02-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:871px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/search.png" alt="New evidence">
+            <span>New evidence</span>
+          </div>
+          <div data-hf-id="hf-v2-c02-s03-prop-2" class="prop-item prop-2" style="left:1261px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/summary.png" alt="Refresh">
+            <span>Refresh</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c02-s04" id="v2-phase-c02-s04" class="phase is-recap" style="z-index:7" data-chapter="Attention Budget" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c02-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>Chapter 2 recap</span><strong>Attention Budget</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>treat context as a finite attention budget rather than unlimited storage</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>more tokens can dilute the instruction that matters next</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>keep the smallest sufficient set and refresh it as the task changes</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c03-s01" id="v2-phase-c03-s01" class="phase layout-comparison variant-standard has-chapter-intro" style="z-index:8" data-chapter="High-Signal Inputs" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(100.49632185685834px,20px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">Brittle rules</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">Vague guidance</div></div>
+            <img data-hf-id="hf-v2-c03-s01-agent" class="actor agent-actor" style="left:60px;top:300px;width:390px;height:500px" src="assets/pack/sprites/agent/reason-front.png" alt="Tiny Agent reason-front">
+            <div data-hf-id="hf-v2-c03-s01-callout" class="callout accent-yellow" style="left:420px;top:132px;width:1080px;text-align:center">Aim for the right altitude</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c03-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:641px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/branch.png" alt="Hard-coded branches">
+            <span>Hard-coded branches</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s01-prop-2" class="prop-item prop-2" style="left:1251px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/uncertainty.png" alt="Assumed context">
+            <span>Assumed context</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c03-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">Chapter 3</div>
+          <div class="intro-title">High-Signal Inputs</div>
+          <div class="intro-promise">Choose instructions, tools, and examples that guide without crowding</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c03-s02" id="v2-phase-c03-s02" class="phase layout-process variant-standard" style="z-index:9" data-chapter="High-Signal Inputs" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(78.68365640211016px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c03-s02-agent" class="actor agent-actor" style="left:60px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/monitor-right.png" alt="Tiny Agent monitor-right">
+            <div data-hf-id="hf-v2-c03-s02-callout" class="callout accent-blue" style="left:350px;top:132px;width:1220px;text-align:center">A tool also consumes context</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c03-s02-line-1" class="connector connector-1" style="left:1134.0625px;top:500px;width:210.00px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c03-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:871px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/tool.png" alt="Clear contract">
+            <span>Clear contract</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s02-prop-2" class="prop-item prop-2" style="left:1261px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/stop.png" alt="No overlap">
+            <span>No overlap</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c03-s03" id="v2-phase-c03-s03" class="phase layout-focus variant-mirror" style="z-index:10" data-chapter="High-Signal Inputs" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(-72.02189475777573px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c03-s03-agent" class="actor agent-actor" style="left:1430px;top:300px;width:430px;height:520px" src="assets/pack/sprites/agent/read-front.png" alt="Tiny Agent read-front">
+            <div data-hf-id="hf-v2-c03-s03-callout" class="callout callout-long accent-red" style="left:260px;top:135px;width:1400px;text-align:center">Examples are pictures for the Agent</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c03-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:623.2px;top:360px;--prop-size:280px">
+            <img src="assets/pack/sprites/props/book.png" alt="Canonical pattern">
+            <span>Canonical pattern</span>
+          </div>
+          <div data-hf-id="hf-v2-c03-s03-prop-2" class="prop-item prop-2" style="left:248.79999999999995px;top:360px;--prop-size:280px">
+            <img src="assets/pack/sprites/props/shield.png" alt="Boundary">
+            <span>Boundary</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c03-s04" id="v2-phase-c03-s04" class="phase is-recap" style="z-index:11" data-chapter="High-Signal Inputs" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c03-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>Chapter 3 recap</span><strong>High-Signal Inputs</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>write instructions at the right altitude between brittle and vague</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>keep tools clear, efficient, and minimally overlapping</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>teach the pattern with a small set of canonical examples</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c04-s01" id="v2-phase-c04-s01" class="phase layout-comparison variant-standard has-chapter-intro" style="z-index:12" data-chapter="Retrieve on Demand" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(104px,20px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">Preload all</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">Retrieve when needed</div></div>
+            <img data-hf-id="hf-v2-c04-s01-agent" class="actor agent-actor" style="left:60px;top:300px;width:390px;height:500px" src="assets/pack/sprites/agent/search.png" alt="Tiny Agent search">
+            <div data-hf-id="hf-v2-c04-s01-callout" class="callout accent-blue" style="left:420px;top:132px;width:1080px;text-align:center">Keep the map, fetch the detail</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c04-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:641px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/document-stack.png" alt="Full corpus">
+            <span>Full corpus</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s01-prop-2" class="prop-item prop-2" style="left:1251px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/folder.png" alt="Reference map">
+            <span>Reference map</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c04-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">Chapter 4</div>
+          <div class="intro-title">Retrieve on Demand</div>
+          <div class="intro-promise">Load detail when it becomes relevant instead of preloading everything</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c04-s02" id="v2-phase-c04-s02" class="phase layout-process variant-standard" style="z-index:13" data-chapter="Retrieve on Demand" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(143.54281989519075px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c04-s02-agent" class="actor agent-actor" style="left:60px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/execute-right.png" alt="Tiny Agent execute-right">
+            <div data-hf-id="hf-v2-c04-s02-callout" class="callout callout-long accent-yellow" style="left:350px;top:132px;width:1220px;text-align:center">Progressive disclosure protects focus</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c04-s02-line-1" class="connector connector-1" style="left:1135.9375px;top:500px;width:216.56px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c04-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:871px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/folder.png" alt="Structure">
+            <span>Structure</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s02-prop-2" class="prop-item prop-2" style="left:1261px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/evidence.png" alt="Use">
+            <span>Use</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c04-s03" id="v2-phase-c04-s03" class="phase layout-focus variant-mirror" style="z-index:14" data-chapter="Retrieve on Demand" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(-58.63207468394228px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c04-s03-agent" class="actor agent-actor" style="left:1430px;top:300px;width:430px;height:520px" src="assets/pack/sprites/agent/look-left.png" alt="Tiny Agent look-left">
+            <div data-hf-id="hf-v2-c04-s03-callout" class="callout callout-long accent-red" style="left:260px;top:135px;width:1400px;text-align:center">Preload essentials, retrieve the rest</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c04-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:623.2px;top:360px;--prop-size:280px">
+            <img src="assets/pack/sprites/props/timer.png" alt="Retrieval cost">
+            <span>Retrieval cost</span>
+          </div>
+          <div data-hf-id="hf-v2-c04-s03-prop-2" class="prop-item prop-2" style="left:248.79999999999995px;top:360px;--prop-size:280px">
+            <img src="assets/pack/sprites/props/target.png" alt="Relevant detail">
+            <span>Relevant detail</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c04-s04" id="v2-phase-c04-s04" class="phase is-recap" style="z-index:15" data-chapter="Retrieve on Demand" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c04-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>Chapter 4 recap</span><strong>Retrieve on Demand</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>keep lightweight references instead of every source body</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>let the AI Agent discover detail progressively when it becomes relevant</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>balance retrieval focus against the extra time and navigation cost</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c05-s01" id="v2-phase-c05-s01" class="phase layout-process variant-standard has-chapter-intro" style="z-index:16" data-chapter="Long-Horizon Memory" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(102.27565266611737px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c05-s01-agent" class="actor agent-actor" style="left:60px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/store-memory.png" alt="Tiny Agent store-memory">
+            <div data-hf-id="hf-v2-c05-s01-callout" class="callout callout-long accent-blue" style="left:350px;top:132px;width:1220px;text-align:center">Carry continuity, not the whole trace</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c05-s01-line-1" class="connector connector-1" style="left:1127.5px;top:500px;width:216.56px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c05-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:871px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/chat.png" alt="Long trace">
+            <span>Long trace</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s01-prop-2" class="prop-item prop-2" style="left:1261px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/progress.png" alt="Next action">
+            <span>Next action</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c05-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">Chapter 5</div>
+          <div class="intro-title">Long-Horizon Memory</div>
+          <div class="intro-promise">Preserve decisions and progress across long tasks and context resets</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c05-s02" id="v2-phase-c05-s02" class="phase layout-process variant-standard" style="z-index:17" data-chapter="Long-Horizon Memory" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(125.69258146028699px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c05-s02-agent" class="actor agent-actor" style="left:60px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/recall-memory.png" alt="Tiny Agent recall-memory">
+            <div data-hf-id="hf-v2-c05-s02-callout" class="callout accent-yellow" style="left:350px;top:132px;width:1220px;text-align:center">Write state outside the window</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c05-s02-line-1" class="connector connector-1" style="left:1119.0625px;top:500px;width:225.00px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c05-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:871px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/evidence.png" alt="High recall">
+            <span>High recall</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s02-prop-2" class="prop-item prop-2" style="left:1261px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/archive.png" alt="Raw history">
+            <span>Raw history</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c05-s03" id="v2-phase-c05-s03" class="phase layout-comparison variant-standard" style="z-index:18" data-chapter="Long-Horizon Memory" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(104px,20px)">
+            <div class="ground-line"></div>
+
+          <div class="compare-panel compare-panel-left"><div class="compare-label">One continuity thread</div></div>
+          <div class="compare-panel compare-panel-right"><div class="compare-label">Focused exploration</div></div>
+            <img data-hf-id="hf-v2-c05-s03-agent" class="actor agent-actor" style="left:60px;top:300px;width:390px;height:500px" src="assets/pack/sprites/agent/delegate-front.png" alt="Tiny Agent delegate-front">
+            <div data-hf-id="hf-v2-c05-s03-callout" class="callout accent-red" style="left:420px;top:132px;width:1080px;text-align:center">Choose memory by task shape</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c05-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:641px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/single-agent.png" alt="Lead plan">
+            <span>Lead plan</span>
+          </div>
+          <div data-hf-id="hf-v2-c05-s03-prop-2" class="prop-item prop-2" style="left:1251px;top:340px;--prop-size:320px">
+            <img src="assets/pack/sprites/props/parallel-agents.png" alt="Deep dives">
+            <span>Deep dives</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c05-s04" id="v2-phase-c05-s04" class="phase is-recap" style="z-index:19" data-chapter="Long-Horizon Memory" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c05-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>Chapter 5 recap</span><strong>Long-Horizon Memory</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>compact long traces into high-recall continuity summaries</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>keep durable working state in structured external notes</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>use specialized agents only when focused exploration justifies coordination</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c06-s01" id="v2-phase-c06-s01" class="phase layout-hero variant-mirror has-chapter-intro" style="z-index:20" data-chapter="Context Pack" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(-44.95543581362597px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c06-s01-agent" class="actor agent-actor" style="left:1420px;top:300px;width:430px;height:520px" src="assets/pack/sprites/agent/receive-right.png" alt="Tiny Agent receive-right">
+            <div data-hf-id="hf-v2-c06-s01-callout" class="callout accent-blue" style="left:420px;top:170px;width:1080px;text-align:center">Six parts, one inspectable package</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c06-s01-line-1" class="connector connector-1" style="left:720.9375px;top:550px;width:225.00px;clip-path:inset(0 100% 0 0);transform:rotate(180.000deg)"></div>
+          <div data-hf-id="hf-v2-c06-s01-prop-1" class="prop-item prop-1 focus-prop" style="left:621px;top:400px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/clipboard.png" alt="Context Pack">
+            <span>Context Pack</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s01-prop-2" class="prop-item prop-2" style="left:231px;top:400px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/target.png" alt="Outcome">
+            <span>Outcome</span>
+          </div></div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-v2-c06-s01-chapter-intro" class="chapter-intro">
+          <div class="intro-rail"></div>
+          <div class="intro-kicker">Chapter 6</div>
+          <div class="intro-title">Context Pack</div>
+          <div class="intro-promise">Build one reusable six-part context package for real AI Agent work</div>
+          <div class="intro-ghost" aria-hidden="true"></div>
+          <div class="intro-mark intro-mark-a"></div>
+          <div class="intro-mark intro-mark-b"></div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c06-s02" id="v2-phase-c06-s02" class="phase layout-grid variant-mirror" style="z-index:21" data-chapter="Context Pack" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(-82.42612779337696px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c06-s02-agent" class="actor agent-actor" style="left:1440px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/plan-front.png" alt="Tiny Agent plan-front">
+            <div data-hf-id="hf-v2-c06-s02-callout" class="callout accent-yellow" style="left:420px;top:132px;width:1080px;text-align:center">Make action and limits explicit</div>
+            <div class="prop-zone">
+          <div data-hf-id="hf-v2-c06-s02-prop-1" class="prop-item prop-1 focus-prop" style="left:704.2px;top:360px;--prop-size:280px">
+            <img src="assets/pack/sprites/props/shield.png" alt="Rules">
+            <span>Rules</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s02-prop-2" class="prop-item prop-2" style="left:277.79999999999995px;top:360px;--prop-size:280px">
+            <img src="assets/pack/sprites/props/permission-key.png" alt="Boundaries">
+            <span>Boundaries</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c06-s03" id="v2-phase-c06-s03" class="phase layout-process variant-standard" style="z-index:22" data-chapter="Context Pack" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div class="scene-content-shell">
+          <div class="balance-layer" style="transform:translate(135.53536501081578px,0px)">
+            <div class="ground-line"></div>
+
+            <img data-hf-id="hf-v2-c06-s03-agent" class="actor agent-actor" style="left:60px;top:300px;width:420px;height:520px" src="assets/pack/sprites/agent/collaborate-front.png" alt="Tiny Agent collaborate-front">
+            <div data-hf-id="hf-v2-c06-s03-callout" class="callout accent-red" style="left:350px;top:132px;width:1220px;text-align:center">Keep the pack alive at milestones</div>
+            <div class="prop-zone"><div data-hf-id="hf-v2-c06-s03-line-1" class="connector connector-1" style="left:1135.9375px;top:500px;width:201.56px;clip-path:inset(0 100% 0 0);transform:rotate(0.000deg)"></div>
+          <div data-hf-id="hf-v2-c06-s03-prop-1" class="prop-item prop-1 focus-prop" style="left:871px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/folder.png" alt="Retrieval Index">
+            <span>Retrieval Index</span>
+          </div>
+          <div data-hf-id="hf-v2-c06-s03-prop-2" class="prop-item prop-2" style="left:1261px;top:350px;--prop-size:300px">
+            <img src="assets/pack/sprites/props/loop.png" alt="Update">
+            <span>Update</span>
+          </div></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c06-s04" id="v2-phase-c06-s04" class="phase is-recap" style="z-index:23" data-chapter="Context Pack" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c06-s04-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>Chapter 6 recap</span><strong>Context Pack</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>anchor the AI Agent with Outcome and Operating Rules</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>guide action with a Tool Map, Canonical Examples, and a Retrieval Index</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>preserve continuity with a compact, regularly updated Working State</strong></div>
+
+          </div>
+        </div>
+      </section>
+
+      <section data-hf-id="hf-v2-phase-c07-s01" id="v2-phase-c07-s01" class="phase is-recap is-final-summary" style="z-index:24" data-chapter="Summary" data-layout-allow-overlap data-layout-allow-overflow data-layout-allow-occlusion>
+        <div data-hf-id="hf-v2-c07-s01-chapter-summary" class="chapter-summary">
+          <div class="summary-side"><span>Summary</span><strong>AI Agent Context<br>Keep the signal, lose the noise</strong></div>
+          <div class="summary-body">
+            <div class="summary-point summary-point-1"><span>1.</span><strong>manage the whole context state, not only the prompt. Keep goals, constraints, tools, evidence, and current state according to what changes the next decision</strong></div><div class="summary-point summary-point-2"><span>2.</span><strong>raise signal quality. Use instructions at the right altitude, a minimal tool set, and a few canonical examples instead of brittle rules and edge-case piles</strong></div><div class="summary-point summary-point-3"><span>3.</span><strong>Finally, protect long tasks with compaction, structured notes, and the six-part Minimum High-Signal Context Pack. Keep the signal, retrieve the detail, and preserve the working state</strong></div>
+
+          </div>
+        </div>
+      </section>
+        <script>
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+      gsap.set("#v2-phase-c01-s01 .agent-actor", { y: 10, opacity: 0 });
+      tl.to("#v2-phase-c01-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 0.200);
+      gsap.set("#v2-phase-c01-s01 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" });
+      gsap.set("#v2-phase-c01-s01 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" });
+      gsap.set("#v2-phase-c01-s01 .callout", { y: -12, opacity: 0 });
+      tl.to("#v2-phase-c01-s01 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 0.160);
+      tl.to("#v2-phase-c01-s01 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 0.160);
+      tl.to("#v2-phase-c01-s01 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 0.200);
+      tl.fromTo("#v2-phase-c01-s01 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 0.220);
+      tl.fromTo("#v2-phase-c01-s01 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 0.220);
+      tl.to("#v2-phase-c01-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 7.413);
+      tl.fromTo("#v2-phase-c01-s02", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 7.413);
+      tl.to("#v2-phase-c01-s01", { opacity: 0, duration: 0.01, ease: "none" }, 7.953);
+      tl.set("#v2-phase-c01-s02 .agent-actor", { y: 10, opacity: 0 }, 7.393);
+      tl.to("#v2-phase-c01-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 7.493);
+      tl.set("#v2-phase-c01-s02 .callout", { y: -14, opacity: 0 }, 7.393);
+      tl.to("#v2-phase-c01-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 7.453);
+      tl.fromTo("#v2-phase-c01-s02 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 7.633);
+      tl.fromTo("#v2-phase-c01-s02 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 7.633);
+      tl.fromTo("#v2-phase-c01-s02 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 7.813);
+      tl.to("#v2-phase-c01-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 24.567);
+      tl.fromTo("#v2-phase-c01-s03", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 24.567);
+      tl.to("#v2-phase-c01-s02", { opacity: 0, duration: 0.01, ease: "none" }, 25.107);
+      tl.set("#v2-phase-c01-s03 .agent-actor", { y: 10, opacity: 0 }, 24.547);
+      tl.to("#v2-phase-c01-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 24.647);
+      tl.set("#v2-phase-c01-s03 .callout", { x: -42, opacity: 0 }, 24.547);
+      tl.to("#v2-phase-c01-s03 .callout", { x: 0, opacity: 1, duration: 0.58, ease: "power2.out" }, 24.607);
+      tl.fromTo("#v2-phase-c01-s03 .prop-1", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 25.602);
+      tl.fromTo("#v2-phase-c01-s03 .prop-2", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 25.602);
+      tl.fromTo("#v2-phase-c01-s03 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 25.782);
+      tl.to("#v2-phase-c01-s03", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 37.200);
+      tl.fromTo("#v2-phase-c02-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 37.200);
+      tl.to("#v2-phase-c01-s03", { opacity: 0, duration: 0.01, ease: "none" }, 37.940);
+      tl.set("#v2-phase-c02-s01 .intro-rail", { scaleY: 0 }, 37.180);
+      tl.set("#v2-phase-c02-s01 .intro-kicker", { x: -55, opacity: 0 }, 37.180);
+      tl.set("#v2-phase-c02-s01 .intro-title", { x: -90, opacity: 0 }, 37.180);
+      tl.set("#v2-phase-c02-s01 .intro-promise", { y: 34, opacity: 0 }, 37.180);
+      tl.set("#v2-phase-c02-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 37.180);
+      tl.to("#v2-phase-c02-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 37.240);
+      tl.to("#v2-phase-c02-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 37.380);
+      tl.to("#v2-phase-c02-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 37.440);
+      tl.to("#v2-phase-c02-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 37.720);
+      tl.to("#v2-phase-c02-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 37.580);
+      tl.to("#v2-phase-c02-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 39.380);
+      tl.to("#v2-phase-c02-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 40.020);
+      tl.set("#v2-phase-c02-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 39.360);
+      tl.to("#v2-phase-c02-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 39.380);
+      tl.set("#v2-phase-c02-s01 .agent-actor", { y: 10, opacity: 0 }, 39.360);
+      tl.to("#v2-phase-c02-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 39.580);
+      tl.set("#v2-phase-c02-s01 .callout", { x: -24, opacity: 0 }, 39.360);
+      tl.to("#v2-phase-c02-s01 .callout", { x: 0, opacity: 1, duration: 0.52, ease: "power2.out" }, 39.540);
+      tl.fromTo("#v2-phase-c02-s01 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 40.060);
+      tl.fromTo("#v2-phase-c02-s01 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 40.060);
+      tl.to("#v2-phase-c02-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 68.203);
+      tl.fromTo("#v2-phase-c02-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 68.203);
+      tl.to("#v2-phase-c02-s01", { opacity: 0, duration: 0.01, ease: "none" }, 68.743);
+      tl.set("#v2-phase-c02-s02 .agent-actor", { y: 10, opacity: 0 }, 68.183);
+      tl.to("#v2-phase-c02-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 68.283);
+      tl.set("#v2-phase-c02-s02 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" }, 68.183);
+      tl.set("#v2-phase-c02-s02 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" }, 68.183);
+      tl.set("#v2-phase-c02-s02 .callout", { y: -12, opacity: 0 }, 68.183);
+      tl.to("#v2-phase-c02-s02 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 68.243);
+      tl.to("#v2-phase-c02-s02 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 68.243);
+      tl.to("#v2-phase-c02-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 68.283);
+      tl.fromTo("#v2-phase-c02-s02 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 68.423);
+      tl.fromTo("#v2-phase-c02-s02 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 68.423);
+      tl.to("#v2-phase-c02-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 97.512);
+      tl.fromTo("#v2-phase-c02-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 97.512);
+      tl.to("#v2-phase-c02-s02", { opacity: 0, duration: 0.01, ease: "none" }, 98.052);
+      tl.set("#v2-phase-c02-s03 .agent-actor", { y: 10, opacity: 0 }, 97.492);
+      tl.to("#v2-phase-c02-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 97.592);
+      tl.set("#v2-phase-c02-s03 .callout", { y: -14, opacity: 0 }, 97.492);
+      tl.to("#v2-phase-c02-s03 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 97.552);
+      tl.fromTo("#v2-phase-c02-s03 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 97.732);
+      tl.fromTo("#v2-phase-c02-s03 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 97.732);
+      tl.fromTo("#v2-phase-c02-s03 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 97.912);
+      tl.to("#v2-phase-c02-s03", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 126.707);
+      tl.fromTo("#v2-phase-c02-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 126.707);
+      tl.to("#v2-phase-c02-s03", { opacity: 0, duration: 0.01, ease: "none" }, 127.247);
+      tl.set("#v2-phase-c02-s04 .summary-side span", { x: -35, opacity: 0 }, 126.687);
+      tl.set("#v2-phase-c02-s04 .summary-side strong", { y: 26, opacity: 0 }, 126.687);
+      tl.to("#v2-phase-c02-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 126.787);
+      tl.to("#v2-phase-c02-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 126.887);
+      tl.fromTo("#v2-phase-c02-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 127.127);
+      tl.fromTo("#v2-phase-c02-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 131.310);
+      tl.fromTo("#v2-phase-c02-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 135.018);
+      tl.to("#v2-phase-c02-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 139.133);
+      tl.fromTo("#v2-phase-c03-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 139.133);
+      tl.to("#v2-phase-c02-s04", { opacity: 0, duration: 0.01, ease: "none" }, 139.873);
+      tl.set("#v2-phase-c03-s01 .intro-rail", { scaleY: 0 }, 139.113);
+      tl.set("#v2-phase-c03-s01 .intro-kicker", { x: -55, opacity: 0 }, 139.113);
+      tl.set("#v2-phase-c03-s01 .intro-title", { x: -90, opacity: 0 }, 139.113);
+      tl.set("#v2-phase-c03-s01 .intro-promise", { y: 34, opacity: 0 }, 139.113);
+      tl.set("#v2-phase-c03-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 139.113);
+      tl.to("#v2-phase-c03-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 139.173);
+      tl.to("#v2-phase-c03-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 139.313);
+      tl.to("#v2-phase-c03-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 139.373);
+      tl.to("#v2-phase-c03-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 139.653);
+      tl.to("#v2-phase-c03-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 139.513);
+      tl.to("#v2-phase-c03-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 141.313);
+      tl.to("#v2-phase-c03-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 141.953);
+      tl.set("#v2-phase-c03-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 141.293);
+      tl.to("#v2-phase-c03-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 141.313);
+      tl.set("#v2-phase-c03-s01 .agent-actor", { y: 10, opacity: 0 }, 141.293);
+      tl.to("#v2-phase-c03-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 141.513);
+      tl.set("#v2-phase-c03-s01 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" }, 141.293);
+      tl.set("#v2-phase-c03-s01 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" }, 141.293);
+      tl.set("#v2-phase-c03-s01 .callout", { y: -12, opacity: 0 }, 141.293);
+      tl.to("#v2-phase-c03-s01 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 141.473);
+      tl.to("#v2-phase-c03-s01 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 141.473);
+      tl.to("#v2-phase-c03-s01 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 141.513);
+      tl.fromTo("#v2-phase-c03-s01 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 141.993);
+      tl.fromTo("#v2-phase-c03-s01 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 141.993);
+      tl.to("#v2-phase-c03-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 167.732);
+      tl.fromTo("#v2-phase-c03-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 167.732);
+      tl.to("#v2-phase-c03-s01", { opacity: 0, duration: 0.01, ease: "none" }, 168.272);
+      tl.set("#v2-phase-c03-s02 .agent-actor", { y: 10, opacity: 0 }, 167.712);
+      tl.to("#v2-phase-c03-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 167.812);
+      tl.set("#v2-phase-c03-s02 .callout", { y: -14, opacity: 0 }, 167.712);
+      tl.to("#v2-phase-c03-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 167.772);
+      tl.fromTo("#v2-phase-c03-s02 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 167.952);
+      tl.fromTo("#v2-phase-c03-s02 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 167.952);
+      tl.fromTo("#v2-phase-c03-s02 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 168.132);
+      tl.to("#v2-phase-c03-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 197.519);
+      tl.fromTo("#v2-phase-c03-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 197.519);
+      tl.to("#v2-phase-c03-s02", { opacity: 0, duration: 0.01, ease: "none" }, 198.059);
+      tl.set("#v2-phase-c03-s03 .agent-actor", { y: 10, opacity: 0 }, 197.499);
+      tl.to("#v2-phase-c03-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 197.599);
+      tl.set("#v2-phase-c03-s03 .callout", { scale: 0.96, opacity: 0 }, 197.499);
+      tl.to("#v2-phase-c03-s03 .callout", { scale: 1, opacity: 1, duration: 0.52, ease: "power2.out" }, 197.559);
+      tl.fromTo("#v2-phase-c03-s03 .prop-1", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 197.739);
+      tl.fromTo("#v2-phase-c03-s03 .prop-2", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 197.739);
+      tl.to("#v2-phase-c03-s03", { scale: 0.995, duration: 0.48, ease: "power2.inOut" }, 225.399);
+      tl.fromTo("#v2-phase-c03-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.48, ease: "power2.inOut", immediateRender: false }, 225.399);
+      tl.to("#v2-phase-c03-s03", { opacity: 0, duration: 0.01, ease: "none" }, 225.879);
+      tl.set("#v2-phase-c03-s04 .summary-side span", { x: -35, opacity: 0 }, 225.379);
+      tl.set("#v2-phase-c03-s04 .summary-side strong", { y: 26, opacity: 0 }, 225.379);
+      tl.to("#v2-phase-c03-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 225.479);
+      tl.to("#v2-phase-c03-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 225.579);
+      tl.fromTo("#v2-phase-c03-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 225.819);
+      tl.fromTo("#v2-phase-c03-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 229.301);
+      tl.fromTo("#v2-phase-c03-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 233.244);
+      tl.to("#v2-phase-c03-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 236.867);
+      tl.fromTo("#v2-phase-c04-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 236.867);
+      tl.to("#v2-phase-c03-s04", { opacity: 0, duration: 0.01, ease: "none" }, 237.607);
+      tl.set("#v2-phase-c04-s01 .intro-rail", { scaleY: 0 }, 236.847);
+      tl.set("#v2-phase-c04-s01 .intro-kicker", { x: -55, opacity: 0 }, 236.847);
+      tl.set("#v2-phase-c04-s01 .intro-title", { x: -90, opacity: 0 }, 236.847);
+      tl.set("#v2-phase-c04-s01 .intro-promise", { y: 34, opacity: 0 }, 236.847);
+      tl.set("#v2-phase-c04-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 236.847);
+      tl.to("#v2-phase-c04-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 236.907);
+      tl.to("#v2-phase-c04-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 237.047);
+      tl.to("#v2-phase-c04-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 237.107);
+      tl.to("#v2-phase-c04-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 237.387);
+      tl.to("#v2-phase-c04-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 237.247);
+      tl.to("#v2-phase-c04-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 239.047);
+      tl.to("#v2-phase-c04-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 239.687);
+      tl.set("#v2-phase-c04-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 239.027);
+      tl.to("#v2-phase-c04-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 239.047);
+      tl.set("#v2-phase-c04-s01 .agent-actor", { y: 10, opacity: 0 }, 239.027);
+      tl.to("#v2-phase-c04-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 239.247);
+      tl.set("#v2-phase-c04-s01 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" }, 239.027);
+      tl.set("#v2-phase-c04-s01 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" }, 239.027);
+      tl.set("#v2-phase-c04-s01 .callout", { y: -12, opacity: 0 }, 239.027);
+      tl.to("#v2-phase-c04-s01 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 239.207);
+      tl.to("#v2-phase-c04-s01 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 239.207);
+      tl.to("#v2-phase-c04-s01 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 239.247);
+      tl.fromTo("#v2-phase-c04-s01 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 239.727);
+      tl.fromTo("#v2-phase-c04-s01 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 239.727);
+      tl.to("#v2-phase-c04-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 261.744);
+      tl.fromTo("#v2-phase-c04-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 261.744);
+      tl.to("#v2-phase-c04-s01", { opacity: 0, duration: 0.01, ease: "none" }, 262.284);
+      tl.set("#v2-phase-c04-s02 .agent-actor", { y: 10, opacity: 0 }, 261.724);
+      tl.to("#v2-phase-c04-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 261.824);
+      tl.set("#v2-phase-c04-s02 .callout", { y: -14, opacity: 0 }, 261.724);
+      tl.to("#v2-phase-c04-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 261.784);
+      tl.fromTo("#v2-phase-c04-s02 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 261.964);
+      tl.fromTo("#v2-phase-c04-s02 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 261.964);
+      tl.fromTo("#v2-phase-c04-s02 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 262.144);
+      tl.to("#v2-phase-c04-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 290.094);
+      tl.fromTo("#v2-phase-c04-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 290.094);
+      tl.to("#v2-phase-c04-s02", { opacity: 0, duration: 0.01, ease: "none" }, 290.634);
+      tl.set("#v2-phase-c04-s03 .agent-actor", { y: 10, opacity: 0 }, 290.074);
+      tl.to("#v2-phase-c04-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 290.174);
+      tl.set("#v2-phase-c04-s03 .callout", { scale: 0.96, opacity: 0 }, 290.074);
+      tl.to("#v2-phase-c04-s03 .callout", { scale: 1, opacity: 1, duration: 0.52, ease: "power2.out" }, 290.134);
+      tl.fromTo("#v2-phase-c04-s03 .prop-1", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 290.314);
+      tl.fromTo("#v2-phase-c04-s03 .prop-2", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 290.314);
+      tl.to("#v2-phase-c04-s03", { scale: 0.995, duration: 0.48, ease: "power2.inOut" }, 317.053);
+      tl.fromTo("#v2-phase-c04-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.48, ease: "power2.inOut", immediateRender: false }, 317.053);
+      tl.to("#v2-phase-c04-s03", { opacity: 0, duration: 0.01, ease: "none" }, 317.533);
+      tl.set("#v2-phase-c04-s04 .summary-side span", { x: -35, opacity: 0 }, 317.033);
+      tl.set("#v2-phase-c04-s04 .summary-side strong", { y: 26, opacity: 0 }, 317.033);
+      tl.to("#v2-phase-c04-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 317.133);
+      tl.to("#v2-phase-c04-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 317.233);
+      tl.fromTo("#v2-phase-c04-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 317.473);
+      tl.fromTo("#v2-phase-c04-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 320.542);
+      tl.fromTo("#v2-phase-c04-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 325.000);
+      tl.to("#v2-phase-c04-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 329.300);
+      tl.fromTo("#v2-phase-c05-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 329.300);
+      tl.to("#v2-phase-c04-s04", { opacity: 0, duration: 0.01, ease: "none" }, 330.040);
+      tl.set("#v2-phase-c05-s01 .intro-rail", { scaleY: 0 }, 329.280);
+      tl.set("#v2-phase-c05-s01 .intro-kicker", { x: -55, opacity: 0 }, 329.280);
+      tl.set("#v2-phase-c05-s01 .intro-title", { x: -90, opacity: 0 }, 329.280);
+      tl.set("#v2-phase-c05-s01 .intro-promise", { y: 34, opacity: 0 }, 329.280);
+      tl.set("#v2-phase-c05-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 329.280);
+      tl.to("#v2-phase-c05-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 329.340);
+      tl.to("#v2-phase-c05-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 329.480);
+      tl.to("#v2-phase-c05-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 329.540);
+      tl.to("#v2-phase-c05-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 329.820);
+      tl.to("#v2-phase-c05-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 329.680);
+      tl.to("#v2-phase-c05-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 331.480);
+      tl.to("#v2-phase-c05-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 332.120);
+      tl.set("#v2-phase-c05-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 331.460);
+      tl.to("#v2-phase-c05-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 331.480);
+      tl.set("#v2-phase-c05-s01 .agent-actor", { y: 10, opacity: 0 }, 331.460);
+      tl.to("#v2-phase-c05-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 331.680);
+      tl.set("#v2-phase-c05-s01 .callout", { y: -14, opacity: 0 }, 331.460);
+      tl.to("#v2-phase-c05-s01 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 331.640);
+      tl.fromTo("#v2-phase-c05-s01 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 332.160);
+      tl.fromTo("#v2-phase-c05-s01 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 332.160);
+      tl.fromTo("#v2-phase-c05-s01 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 332.340);
+      tl.to("#v2-phase-c05-s01", { scale: 0.995, duration: 0.48, ease: "power2.inOut" }, 358.094);
+      tl.fromTo("#v2-phase-c05-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.48, ease: "power2.inOut", immediateRender: false }, 358.094);
+      tl.to("#v2-phase-c05-s01", { opacity: 0, duration: 0.01, ease: "none" }, 358.574);
+      tl.set("#v2-phase-c05-s02 .agent-actor", { y: 10, opacity: 0 }, 358.074);
+      tl.to("#v2-phase-c05-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 358.174);
+      tl.set("#v2-phase-c05-s02 .callout", { y: -14, opacity: 0 }, 358.074);
+      tl.to("#v2-phase-c05-s02 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 358.134);
+      tl.fromTo("#v2-phase-c05-s02 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 358.314);
+      tl.fromTo("#v2-phase-c05-s02 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 358.314);
+      tl.fromTo("#v2-phase-c05-s02 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 358.494);
+      tl.to("#v2-phase-c05-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 384.673);
+      tl.fromTo("#v2-phase-c05-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 384.673);
+      tl.to("#v2-phase-c05-s02", { opacity: 0, duration: 0.01, ease: "none" }, 385.213);
+      tl.set("#v2-phase-c05-s03 .agent-actor", { y: 10, opacity: 0 }, 384.653);
+      tl.to("#v2-phase-c05-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 384.753);
+      tl.set("#v2-phase-c05-s03 .compare-panel-left", { clipPath: "inset(0 100% 0 0)" }, 384.653);
+      tl.set("#v2-phase-c05-s03 .compare-panel-right", { clipPath: "inset(0 0 0 100%)" }, 384.653);
+      tl.set("#v2-phase-c05-s03 .callout", { y: -12, opacity: 0 }, 384.653);
+      tl.to("#v2-phase-c05-s03 .compare-panel-left", { clipPath: "inset(0 0% 0 0)", duration: 0.54, ease: "power2.inOut" }, 384.713);
+      tl.to("#v2-phase-c05-s03 .compare-panel-right", { clipPath: "inset(0 0 0 0%)", duration: 0.54, ease: "power2.inOut" }, 384.713);
+      tl.to("#v2-phase-c05-s03 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 384.753);
+      tl.fromTo("#v2-phase-c05-s03 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 384.893);
+      tl.fromTo("#v2-phase-c05-s03 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 384.893);
+      tl.to("#v2-phase-c05-s03", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 414.767);
+      tl.fromTo("#v2-phase-c05-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 414.767);
+      tl.to("#v2-phase-c05-s03", { opacity: 0, duration: 0.01, ease: "none" }, 415.307);
+      tl.set("#v2-phase-c05-s04 .summary-side span", { x: -35, opacity: 0 }, 414.747);
+      tl.set("#v2-phase-c05-s04 .summary-side strong", { y: 26, opacity: 0 }, 414.747);
+      tl.to("#v2-phase-c05-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 414.847);
+      tl.to("#v2-phase-c05-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 414.947);
+      tl.fromTo("#v2-phase-c05-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 415.187);
+      tl.fromTo("#v2-phase-c05-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 418.832);
+      tl.fromTo("#v2-phase-c05-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 422.501);
+      tl.to("#v2-phase-c05-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 427.300);
+      tl.fromTo("#v2-phase-c06-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 427.300);
+      tl.to("#v2-phase-c05-s04", { opacity: 0, duration: 0.01, ease: "none" }, 428.040);
+      tl.set("#v2-phase-c06-s01 .intro-rail", { scaleY: 0 }, 427.280);
+      tl.set("#v2-phase-c06-s01 .intro-kicker", { x: -55, opacity: 0 }, 427.280);
+      tl.set("#v2-phase-c06-s01 .intro-title", { x: -90, opacity: 0 }, 427.280);
+      tl.set("#v2-phase-c06-s01 .intro-promise", { y: 34, opacity: 0 }, 427.280);
+      tl.set("#v2-phase-c06-s01 .intro-mark", { scale: 0.4, opacity: 0 }, 427.280);
+      tl.to("#v2-phase-c06-s01 .intro-rail", { scaleY: 1, duration: 0.62, ease: "power3.out" }, 427.340);
+      tl.to("#v2-phase-c06-s01 .intro-kicker", { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 427.480);
+      tl.to("#v2-phase-c06-s01 .intro-title", { x: 0, opacity: 1, duration: 0.72, ease: "power4.out" }, 427.540);
+      tl.to("#v2-phase-c06-s01 .intro-promise", { y: 0, opacity: 1, duration: 0.62, ease: "power2.out" }, 427.820);
+      tl.to("#v2-phase-c06-s01 .intro-mark", { scale: 1, opacity: 1, duration: 0.64, stagger: 0.12, ease: "back.out(1.3)" }, 427.680);
+      tl.to("#v2-phase-c06-s01 .chapter-intro", { clipPath: "inset(0 0 100% 0)", duration: 0.64, ease: "power3.inOut" }, 429.480);
+      tl.to("#v2-phase-c06-s01 .chapter-intro", { opacity: 0, duration: 0.01, ease: "none" }, 430.120);
+      tl.set("#v2-phase-c06-s01 .scene-content-shell", { clipPath: "inset(0 100% 0 0)", x: 46, opacity: 0 }, 429.460);
+      tl.to("#v2-phase-c06-s01 .scene-content-shell", { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 0.64, ease: "power3.inOut" }, 429.480);
+      tl.set("#v2-phase-c06-s01 .agent-actor", { y: 10, opacity: 0 }, 429.460);
+      tl.to("#v2-phase-c06-s01 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 429.680);
+      tl.set("#v2-phase-c06-s01 .callout", { x: 42, opacity: 0 }, 429.460);
+      tl.to("#v2-phase-c06-s01 .callout", { x: 0, opacity: 1, duration: 0.58, ease: "power2.out" }, 429.640);
+      tl.fromTo("#v2-phase-c06-s01 .prop-1", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 430.160);
+      tl.fromTo("#v2-phase-c06-s01 .prop-2", { y: 18, scale: 1.12, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 430.160);
+      tl.fromTo("#v2-phase-c06-s01 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 430.340);
+      tl.to("#v2-phase-c06-s01", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 453.644);
+      tl.fromTo("#v2-phase-c06-s02", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 453.644);
+      tl.to("#v2-phase-c06-s01", { opacity: 0, duration: 0.01, ease: "none" }, 454.184);
+      tl.set("#v2-phase-c06-s02 .agent-actor", { y: 10, opacity: 0 }, 453.624);
+      tl.to("#v2-phase-c06-s02 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 453.724);
+      tl.set("#v2-phase-c06-s02 .callout", { x: 24, opacity: 0 }, 453.624);
+      tl.to("#v2-phase-c06-s02 .callout", { x: 0, opacity: 1, duration: 0.52, ease: "power2.out" }, 453.684);
+      tl.fromTo("#v2-phase-c06-s02 .prop-1", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 453.864);
+      tl.fromTo("#v2-phase-c06-s02 .prop-2", { y: 24, scale: 0.94, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 453.864);
+      tl.to("#v2-phase-c06-s02", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 481.397);
+      tl.fromTo("#v2-phase-c06-s03", { clipPath: "inset(0 100% 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 481.397);
+      tl.to("#v2-phase-c06-s02", { opacity: 0, duration: 0.01, ease: "none" }, 481.937);
+      tl.set("#v2-phase-c06-s03 .agent-actor", { y: 10, opacity: 0 }, 481.377);
+      tl.to("#v2-phase-c06-s03 .agent-actor", { y: 0, opacity: 1, duration: 0.58, ease: "sine.out" }, 481.477);
+      tl.set("#v2-phase-c06-s03 .callout", { y: -14, opacity: 0 }, 481.377);
+      tl.to("#v2-phase-c06-s03 .callout", { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 481.437);
+      tl.fromTo("#v2-phase-c06-s03 .prop-1", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 481.617);
+      tl.fromTo("#v2-phase-c06-s03 .prop-2", { x: -30, opacity: 0 }, { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.48, ease: "power3.out", immediateRender: false }, 481.617);
+      tl.fromTo("#v2-phase-c06-s03 .connector-1", { clipPath: "inset(0 100% 0 0)", opacity: 0 }, { clipPath: "inset(0 0% 0 0)", opacity: 0.62, duration: 0.42, ease: "power2.out", immediateRender: false }, 481.797);
+      tl.to("#v2-phase-c06-s03", { scale: 0.992, duration: 0.54, ease: "power2.inOut" }, 506.807);
+      tl.fromTo("#v2-phase-c06-s04", { clipPath: "inset(0 0 0 100%)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.54, ease: "power3.inOut", immediateRender: false }, 506.807);
+      tl.to("#v2-phase-c06-s03", { opacity: 0, duration: 0.01, ease: "none" }, 507.347);
+      tl.set("#v2-phase-c06-s04 .summary-side span", { x: -35, opacity: 0 }, 506.787);
+      tl.set("#v2-phase-c06-s04 .summary-side strong", { y: 26, opacity: 0 }, 506.787);
+      tl.to("#v2-phase-c06-s04 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 506.887);
+      tl.to("#v2-phase-c06-s04 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 506.987);
+      tl.fromTo("#v2-phase-c06-s04 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 507.227);
+      tl.fromTo("#v2-phase-c06-s04 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 510.416);
+      tl.fromTo("#v2-phase-c06-s04 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 515.524);
+      tl.to("#v2-phase-c06-s04", { scale: 0.992, duration: 0.74, ease: "power2.inOut" }, 520.033);
+      tl.fromTo("#v2-phase-c07-s01", { clipPath: "inset(100% 0 0 0)", opacity: 1 }, { clipPath: "inset(0 0 0 0)", opacity: 1, duration: 0.74, ease: "power2.inOut", immediateRender: false }, 520.033);
+      tl.to("#v2-phase-c06-s04", { opacity: 0, duration: 0.01, ease: "none" }, 520.773);
+      tl.set("#v2-phase-c07-s01 .summary-side span", { x: -35, opacity: 0 }, 520.013);
+      tl.set("#v2-phase-c07-s01 .summary-side strong", { y: 26, opacity: 0 }, 520.013);
+      tl.to("#v2-phase-c07-s01 .summary-side span", { x: 0, opacity: 1, duration: 0.46, ease: "power3.out" }, 520.113);
+      tl.to("#v2-phase-c07-s01 .summary-side strong", { y: 0, opacity: 1, duration: 0.62, ease: "power3.out" }, 520.213);
+      tl.fromTo("#v2-phase-c07-s01 .summary-point-1", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 529.154);
+      tl.fromTo("#v2-phase-c07-s01 .summary-point-2", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 538.694);
+      tl.fromTo("#v2-phase-c07-s01 .summary-point-3", { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.52, ease: "power3.out", immediateRender: false }, 556.273);
+      tl.fromTo("#v2-phase-c07-s01 .summary-cta", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.58, ease: "power3.out", immediateRender: false }, 566.388);
+          window.__timelines.story = tl;
+        </script>
+      </div>
+    </template>
+  </body>
+</html>

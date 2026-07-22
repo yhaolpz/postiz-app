@@ -1,0 +1,781 @@
+{
+  "policy": "semantic-trigger-v1",
+  "scenes": 19,
+  "props": 68,
+  "beats": 35,
+  "fallbackBeats": 0,
+  "sceneResults": [
+    {
+      "id": "c01-s01",
+      "narration": "An AI Agent says it completed the task. The report looks polished, the final message sounds confident, and every checklist item appears green. But the file may be in the wrong folder, the refund may not exist in the database, or the research answer may contain claims that its sources do not support. That gap is the central problem of AI Agent evaluation. A completion message is only a claim. Reliable acceptance asks whether the intended state actually exists, whether the work met clear quality boundaries, and whether the same Agent can succeed again instead of getting lucky once.",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Completion claim"
+        },
+        {
+          "id": "checklist",
+          "label": "Green checklist"
+        },
+        {
+          "id": "database",
+          "label": "Final state"
+        },
+        {
+          "id": "evidence",
+          "label": "Proof"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "An AI Agent says it completed the task",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "whether the intended state actually exists",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 24.82674356261023,
+          "time": 24.74674356261023,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c01-s02",
+      "narration": "Anthropic's guidance on Agent evals makes one point especially useful: the flexibility that makes Agents valuable also makes them harder to test. They act over many turns, call tools, change environments, and sometimes reach a good result through a path the evaluator did not predict. So this video will build a practical acceptance method. You will learn how to define a fair task, separate the transcript from the outcome, select code, model, and human graders, measure repeated trials, and check whether the evaluation itself is misleading you.",
+      "props": [
+        {
+          "id": "task-list",
+          "label": "Fair task"
+        },
+        {
+          "id": "result-card",
+          "label": "Outcome"
+        },
+        {
+          "id": "scorecard",
+          "label": "Graders"
+        },
+        {
+          "id": "experiment",
+          "label": "Trials"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "the flexibility that makes Agents valuable",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 37.60476223776224,
+          "time": 37.52476223776224,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "select code, model, and human graders",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 57.89122133599202,
+          "time": 57.81122133599202,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c01-s03",
+      "narration": "At the end, you will have an AI Agent Acceptance Sheet that turns “it feels done” into evidence you can review, repeat, and use for a release decision.",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "Acceptance sheet"
+        },
+        {
+          "id": "approval",
+          "label": "Release decision"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "AI Agent Acceptance Sheet",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 66.35535436241611,
+          "time": 66.27535436241611,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c02-s01",
+      "narration": "Start with the smallest unit of evaluation: a task. A task gives the AI Agent defined inputs and success criteria. One attempt at that task is a trial, and a collection of related tasks becomes an evaluation suite. The distinction matters because a vague request produces a vague score. If two domain experts cannot independently decide whether the task passed, the specification is not yet ready to measure. The Agent should know what it must produce, where the result belongs, and which constraints are essential.",
+      "props": [
+        {
+          "id": "task-list",
+          "label": "Task"
+        },
+        {
+          "id": "form",
+          "label": "Inputs"
+        },
+        {
+          "id": "target",
+          "label": "Success"
+        },
+        {
+          "id": "checklist",
+          "label": "Criteria"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Start with the smallest unit of evaluation",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 73.51599999999999,
+          "time": 76.276,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "success criteria",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 79.94323076923077,
+          "time": 79.86323076923077,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c02-s02",
+      "narration": "Next, separate the transcript from the outcome. The transcript records messages, tool calls, intermediate results, reasoning, and errors. The outcome is the final state left in the environment after the trial. For a booking Agent, “your flight is booked” appears in the transcript. The outcome is a valid reservation in the database. For a coding Agent, a convincing explanation is not the outcome; the changed repository, passing tests, and preserved behavior are.",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Messages"
+        },
+        {
+          "id": "tool",
+          "label": "Tool calls"
+        },
+        {
+          "id": "database",
+          "label": "Final state"
+        },
+        {
+          "id": "result-card",
+          "label": "Working result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "separate the transcript from the outcome",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 103.80758536585365,
+          "time": 103.72758536585366,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "The outcome is the final state",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 112.502,
+          "time": 112.422,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c02-s03",
+      "narration": "A grader scores one dimension of performance. It may check an exact state, apply a quality rubric, or ask a human expert to judge a subjective result. A task can use several graders because success is often multidimensional. Finally, remember what you are evaluating. An AI Agent is not only a model. The harness supplies instructions, tools, state, and orchestration. A weak tool contract or unstable environment can make the same model fail, so the model and harness must be evaluated together.",
+      "props": [
+        {
+          "id": "scorecard",
+          "label": "Grader"
+        },
+        {
+          "id": "settings",
+          "label": "Harness"
+        },
+        {
+          "id": "tool",
+          "label": "Tools"
+        },
+        {
+          "id": "workflow",
+          "label": "Orchestration"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "A grader scores one dimension",
+          "props": [
+            0
+          ],
+          "rawTime": 131.867,
+          "time": 132.087,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "The harness supplies instructions",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 151.31,
+          "time": 151.23,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c03-s01",
+      "narration": "The first acceptance question is simple: did the intended final state exist? Outcome checks are usually stronger than trusting the Agent's own completion message because they inspect the artifact, database, application state, or external effect directly. For structured work, code-based graders are fast, cheap, reproducible, and easy to debug. Unit tests, schema checks, static analysis, exact matches, and state assertions can verify conditions that have objective answers.",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "Artifact"
+        },
+        {
+          "id": "database",
+          "label": "State"
+        },
+        {
+          "id": "success",
+          "label": "Tests"
+        },
+        {
+          "id": "evidence",
+          "label": "Proof"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "did the intended final state exist",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 177.56503728813556,
+          "time": 177.844,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Unit tests",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 195.176,
+          "time": 195.09599999999998,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c03-s02",
+      "narration": "But deterministic graders can be brittle. A valid answer may use different wording, a different file structure, or a creative solution that satisfies the user while missing an overly narrow expected pattern. Passing the evaluator should require solving the task, not guessing the evaluator's favorite implementation. Model-based graders help with open-ended work. A clear rubric can score groundedness, completeness, instruction following, or communication quality. Pairwise comparison and separate dimension scores are often more reliable than one vague request to judge everything at once. Model graders are still nondeterministic and must be calibrated against human judgment. Give them structured criteria and an “unknown” option when evidence is insufficient. For high-stakes or specialized work, human experts remain the reference used to check whether automated grading matches real quality.",
+      "props": [
+        {
+          "id": "code-file",
+          "label": "Code grader"
+        },
+        {
+          "id": "scorecard",
+          "label": "Model rubric"
+        },
+        {
+          "id": "human-gate",
+          "label": "Human calibration"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "deterministic graders can be brittle",
+          "props": [
+            0
+          ],
+          "rawTime": 203.81099999999998,
+          "time": 203.80899999999997,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Model-based graders help",
+          "props": [
+            1
+          ],
+          "rawTime": 221.051,
+          "time": 220.97099999999998,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "human experts remain the reference",
+          "props": [
+            2
+          ],
+          "rawTime": 248.91415542521992,
+          "time": 248.8341554252199,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c03-s03",
+      "narration": "The practical pattern is outcome first, then behavior where behavior matters. Verify the final state, add transcript checks for safety or efficiency, and avoid requiring one exact sequence of tool calls when several valid paths can reach the right result.",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Valid paths"
+        },
+        {
+          "id": "target",
+          "label": "Essential result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "outcome first",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 255.6070374665477,
+          "time": 255.52703746654768,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c04-s01",
+      "narration": "One successful trial does not prove that an AI Agent is reliable. Agent behavior varies between runs, so a pass can reflect a stable capability, a lucky trajectory, or an evaluator that missed the failure. This is why each important task should run more than once. The distribution of results reveals whether the Agent usually succeeds, occasionally succeeds, or fails in a consistent way that one trial would hide.",
+      "props": [
+        {
+          "id": "experiment",
+          "label": "Trial one"
+        },
+        {
+          "id": "loop",
+          "label": "Repeat"
+        },
+        {
+          "id": "trend-up",
+          "label": "Stable success"
+        },
+        {
+          "id": "trend-down",
+          "label": "Hidden failure"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "One successful trial does not prove",
+          "props": [
+            0
+          ],
+          "rawTime": 282.628,
+          "time": 285.388,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "run more than once",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 297.3663333333333,
+          "time": 297.2863333333333,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c04-s02",
+      "narration": "Pass at k asks whether at least one of k attempts succeeds. It is useful when exploration matters and one working solution is enough. Pass to the k asks whether all k attempts succeed, which is the harder and more relevant bar when users expect the same task to work every time. The difference is operational. A research assistant that proposes several hypotheses may benefit from one strong result. A customer-facing Agent that processes refunds needs consistent correctness, because one failure can create a real financial or trust problem.",
+      "props": [
+        {
+          "id": "search",
+          "label": "Discovery"
+        },
+        {
+          "id": "success",
+          "label": "One solution"
+        },
+        {
+          "id": "shield",
+          "label": "Consistency"
+        },
+        {
+          "id": "approval",
+          "label": "Reliable action"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Pass at k asks",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 306.787,
+          "time": 307.007,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Pass to the k asks",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 315.143,
+          "time": 315.063,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c04-s03",
+      "narration": "Reliability also depends on task balance. Test cases where a behavior should happen and cases where it should not. If you only reward searching, the Agent may search everything. If you only reward refusal, it may stop doing useful work. Keep trials isolated. Shared files, cached state, resource exhaustion, or history from a previous run can either inflate performance or create correlated failures. The test environment should resemble production while resetting the state that would contaminate comparison.",
+      "props": [
+        {
+          "id": "compare",
+          "label": "Balanced cases"
+        },
+        {
+          "id": "stop",
+          "label": "Negative cases"
+        },
+        {
+          "id": "archive",
+          "label": "Clean state"
+        },
+        {
+          "id": "settings",
+          "label": "Stable environment"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "task balance",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 340.8356666666666,
+          "time": 340.7556666666666,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "Keep trials isolated",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 353.691,
+          "time": 353.611,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c05-s01",
+      "narration": "A low score does not always mean the AI Agent is weak. The task may be ambiguous, the environment may be broken, or the grader may reject a valid answer. Evaluation quality must be tested too. Start with failures you already see. Manual checks, support tickets, production bugs, and difficult edge cases are high-value seeds because they represent real user expectations rather than imaginary benchmark puzzles.",
+      "props": [
+        {
+          "id": "error",
+          "label": "Real failure"
+        },
+        {
+          "id": "notification",
+          "label": "User report"
+        },
+        {
+          "id": "checklist",
+          "label": "Manual check"
+        },
+        {
+          "id": "task-list",
+          "label": "Eval task"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "A low score does not always mean",
+          "props": [
+            0
+          ],
+          "rawTime": 382.78,
+          "time": 385.53999999999996,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Start with failures you already see",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 395.06399999999996,
+          "time": 394.984,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c05-s02",
+      "narration": "Write each task so two qualified reviewers can reach the same verdict. Include the input, required outcome, important constraints, and everything the grader will inspect. Then create a reference solution that proves the task is solvable and that the graders can recognize a known good result. Build balanced sets and begin small. A useful early suite can contain a few dozen realistic tasks instead of hundreds of weak examples. As the product matures, add harder cases that distinguish improvements and convert solved capability tests into regression protection.",
+      "props": [
+        {
+          "id": "form",
+          "label": "Clear task"
+        },
+        {
+          "id": "success",
+          "label": "Reference solution"
+        },
+        {
+          "id": "scorecard",
+          "label": "Fair grader"
+        },
+        {
+          "id": "evidence",
+          "label": "Known proof"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Write each task so two qualified reviewers",
+          "props": [
+            0
+          ],
+          "rawTime": 408.04499999999996,
+          "time": 408.265,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "create a reference solution",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 418.57933793103444,
+          "time": 418.49933793103446,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c05-s03",
+      "narration": "Read transcripts and grades from many trials. A failed trace tells you whether the Agent made a genuine mistake, whether the harness blocked progress, or whether the grader punished a reasonable solution. If failures do not look fair, revise the evaluation before optimizing the Agent. Treat the suite as a living artifact. Models improve, products change, user behavior shifts, and once-difficult tasks saturate. Ownership, regular maintenance, production monitoring, and periodic human calibration keep the signal useful over time.",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Read traces"
+        },
+        {
+          "id": "dashboard",
+          "label": "Watch signal"
+        },
+        {
+          "id": "trend-up",
+          "label": "Raise difficulty"
+        },
+        {
+          "id": "human-gate",
+          "label": "Calibrate"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Read transcripts and grades",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 440.61199999999997,
+          "time": 440.832,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "living artifact",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 457.9939677419354,
+          "time": 457.91396774193544,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c06-s01",
+      "narration": "Now turn the method into one AI Agent Acceptance Sheet. Use it for a single high-value task before a release, for a repeated workflow, or as the seed of a larger evaluation suite. Block one is Outcome. Name the user-visible result, the final state that proves it exists, the acceptance threshold, and the evidence location. Do not use “Agent said done” as evidence. Block two is Task Setup. Record the input, tools, permissions, starting state, important constraints, and a reference solution. This makes the task reproducible and exposes whether the environment itself creates noise.",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "Outcome"
+        },
+        {
+          "id": "form",
+          "label": "Task setup"
+        },
+        {
+          "id": "target",
+          "label": "Threshold"
+        },
+        {
+          "id": "success",
+          "label": "Reference"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "one AI Agent Acceptance Sheet",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 488.27521739130435,
+          "time": 489.46,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "acceptance threshold",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 503.5514,
+          "time": 503.4714,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c06-s02",
+      "narration": "Block three is Grader Mix. Choose deterministic checks for objective state, model rubrics for open-ended quality, and human review for calibration or expert judgment. Give each grader one clear dimension instead of one grader an undefined job.",
+      "props": [
+        {
+          "id": "code-file",
+          "label": "Deterministic"
+        },
+        {
+          "id": "scorecard",
+          "label": "Model rubric"
+        },
+        {
+          "id": "human-gate",
+          "label": "Human review"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Block three is Grader Mix",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 523.4359999999999,
+          "time": 523.656,
+          "clampedToContentStart": true
+        }
+      ]
+    },
+    {
+      "id": "c06-s03",
+      "narration": "Block four is Reliability. Set the number of trials, the metric that matches the product need, and the minimum acceptable result. One success may be enough for exploration, but repeated customer actions need a consistency bar. Block five is Eval Health and Decision. Record transcript spot checks, known grader gaps, environment failures, exceptions, the release decision, and the next failure that should become a new task. The sheet evaluates both the Agent and your confidence in the test.",
+      "props": [
+        {
+          "id": "experiment",
+          "label": "Repeated trials"
+        },
+        {
+          "id": "dashboard",
+          "label": "Eval health"
+        },
+        {
+          "id": "warning",
+          "label": "Exceptions"
+        },
+        {
+          "id": "approval",
+          "label": "Release decision"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "Block four is Reliability",
+          "props": [
+            0
+          ],
+          "rawTime": 538.5229999999999,
+          "time": 538.7429999999999,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Block five is Eval Health and Decision",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 552.1859999999999,
+          "time": 552.1059999999999,
+          "clampedToContentStart": false
+        }
+      ]
+    },
+    {
+      "id": "c07-s01",
+      "narration": "An AI Agent's polished completion message is not proof. Reliable acceptance turns the intended result into a task, inspects the final state, and asks whether success repeats under fair conditions.",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Done claim"
+        },
+        {
+          "id": "evidence",
+          "label": "Verified result"
+        }
+      ],
+      "beats": [
+        {
+          "trigger": "polished completion message is not proof",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 583.2664893617022,
+          "time": 583.1864893617021,
+          "clampedToContentStart": false
+        }
+      ]
+    }
+  ]
+}

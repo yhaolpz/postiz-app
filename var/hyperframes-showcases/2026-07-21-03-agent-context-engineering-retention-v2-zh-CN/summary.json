@@ -1,0 +1,116 @@
+{
+  "title": "AI 智能体为什么会忘：用高信号上下文完成长期任务",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-21-03-agent-context-engineering-retention-v2-zh-CN/SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt-audible-bounds",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1",
+    "openingCoverSeconds": 0.8
+  },
+  "composition": {
+    "designVersion": "retention-v2-large-simple",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 443.164979,
+    "chapters": [
+      {
+        "label": "前言",
+        "start": 0,
+        "end": 34.2,
+        "duration": 34.2
+      },
+      {
+        "label": "注意力预算",
+        "start": 34.2,
+        "end": 112.533333,
+        "duration": 78.333333
+      },
+      {
+        "label": "高信号输入",
+        "start": 112.533333,
+        "end": 185.9,
+        "duration": 73.366667
+      },
+      {
+        "label": "按需检索",
+        "start": 185.9,
+        "end": 260.933333,
+        "duration": 75.033333
+      },
+      {
+        "label": "长任务记忆",
+        "start": 260.933333,
+        "end": 334.5,
+        "duration": 73.566667
+      },
+      {
+        "label": "上下文包",
+        "start": 334.5,
+        "end": 406.166667,
+        "duration": 71.666667
+      },
+      {
+        "label": "总结",
+        "start": 406.166667,
+        "end": 443.164979,
+        "duration": 36.998312
+      }
+    ],
+    "visualStates": 24,
+    "captions": 155
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 450
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-21-03-agent-context-engineering-retention-v2.zh-CN.mp4",
+    "status": "pass"
+  }
+}

@@ -1,0 +1,997 @@
+[
+  {
+    "start": 0.1,
+    "end": 2.973,
+    "text": "An AI Agent says it completed the task."
+  },
+  {
+    "start": 2.923,
+    "end": 7.151752475247525,
+    "text": "The report looks polished, the final message sounds confident, and every"
+  },
+  {
+    "start": 7.151752475247525,
+    "end": 8.855,
+    "text": "checklist item appears green."
+  },
+  {
+    "start": 8.855,
+    "end": 12.718845161290321,
+    "text": "But the file may be in the wrong folder, the refund may not exist in the"
+  },
+  {
+    "start": 12.718845161290321,
+    "end": 16.52902580645161,
+    "text": "database, or the research answer may contain claims that its sources do"
+  },
+  {
+    "start": 16.52902580645161,
+    "end": 17.173,
+    "text": "not support."
+  },
+  {
+    "start": 17.173,
+    "end": 20.942,
+    "text": "That gap is the central problem of AI Agent evaluation."
+  },
+  {
+    "start": 20.942,
+    "end": 23.5,
+    "text": "A completion message is only a claim."
+  },
+  {
+    "start": 23.5,
+    "end": 27.118391534391534,
+    "text": "Reliable acceptance asks whether the intended state actually exists,"
+  },
+  {
+    "start": 27.118391534391534,
+    "end": 30.68357142857143,
+    "text": "whether the work met clear quality boundaries, and whether the same"
+  },
+  {
+    "start": 30.68357142857143,
+    "end": 33.557,
+    "text": "Agent can succeed again instead of getting lucky once."
+  },
+  {
+    "start": 33.557,
+    "end": 37.60476223776224,
+    "text": "Anthropic's guidance on Agent evals makes one point especially useful:"
+  },
+  {
+    "start": 37.60476223776224,
+    "end": 41.53687412587413,
+    "text": "the flexibility that makes Agents valuable also makes them harder to"
+  },
+  {
+    "start": 41.53687412587413,
+    "end": 41.826,
+    "text": "test."
+  },
+  {
+    "start": 41.826,
+    "end": 46.01040875912409,
+    "text": "They act over many turns, call tools, change environments, and sometimes"
+  },
+  {
+    "start": 46.01040875912409,
+    "end": 49.788,
+    "text": "reach a good result through a path the evaluator did not predict."
+  },
+  {
+    "start": 49.788,
+    "end": 53.211,
+    "text": "So this video will build a practical acceptance method."
+  },
+  {
+    "start": 53.211,
+    "end": 57.17354901960784,
+    "text": "You will learn how to define a fair task, separate the transcript from"
+  },
+  {
+    "start": 57.17354901960784,
+    "end": 61.022882352941174,
+    "text": "the outcome, select code, model, and human graders, measure repeated"
+  },
+  {
+    "start": 61.022882352941174,
+    "end": 64.759,
+    "text": "trials, and check whether the evaluation itself is misleading you."
+  },
+  {
+    "start": 64.759,
+    "end": 68.74988590604026,
+    "text": "At the end, you will have an AI Agent Acceptance Sheet that turns “it"
+  },
+  {
+    "start": 68.74988590604026,
+    "end": 72.85644966442953,
+    "text": "feels done” into evidence you can review, repeat, and use for a release"
+  },
+  {
+    "start": 72.85644966442953,
+    "end": 73.377,
+    "text": "decision."
+  },
+  {
+    "start": 73.51599999999999,
+    "end": 77.071,
+    "text": "Start with the smallest unit of evaluation: a task."
+  },
+  {
+    "start": 77.021,
+    "end": 81.24199999999999,
+    "text": "A task gives the AI Agent defined inputs and success criteria."
+  },
+  {
+    "start": 81.24199999999999,
+    "end": 85.41128571428571,
+    "text": "One attempt at that task is a trial, and a collection of related tasks"
+  },
+  {
+    "start": 85.41128571428571,
+    "end": 87.079,
+    "text": "becomes an evaluation suite."
+  },
+  {
+    "start": 87.079,
+    "end": 91.06,
+    "text": "The distinction matters because a vague request produces a vague score."
+  },
+  {
+    "start": 91.06,
+    "end": 94.80935,
+    "text": "If two domain experts cannot independently decide whether the task"
+  },
+  {
+    "start": 94.80935,
+    "end": 97.877,
+    "text": "passed, the specification is not yet ready to measure."
+  },
+  {
+    "start": 97.877,
+    "end": 101.51691428571428,
+    "text": "The Agent should know what it must produce, where the result belongs,"
+  },
+  {
+    "start": 101.51691428571428,
+    "end": 103.416,
+    "text": "and which constraints are essential."
+  },
+  {
+    "start": 103.416,
+    "end": 106.627,
+    "text": "Next, separate the transcript from the outcome."
+  },
+  {
+    "start": 106.627,
+    "end": 111.03325,
+    "text": "The transcript records messages, tool calls, intermediate results,"
+  },
+  {
+    "start": 111.03325,
+    "end": 112.502,
+    "text": "reasoning, and errors."
+  },
+  {
+    "start": 112.502,
+    "end": 116.406,
+    "text": "The outcome is the final state left in the environment after the trial."
+  },
+  {
+    "start": 116.406,
+    "end": 120.589,
+    "text": "For a booking Agent, “your flight is booked” appears in the transcript."
+  },
+  {
+    "start": 120.589,
+    "end": 123.8,
+    "text": "The outcome is a valid reservation in the database."
+  },
+  {
+    "start": 123.8,
+    "end": 128.01966153846152,
+    "text": "For a coding Agent, a convincing explanation is not the outcome; the"
+  },
+  {
+    "start": 128.01966153846152,
+    "end": 131.867,
+    "text": "changed repository, passing tests, and preserved behavior are."
+  },
+  {
+    "start": 131.867,
+    "end": 134.925,
+    "text": "A grader scores one dimension of performance."
+  },
+  {
+    "start": 134.925,
+    "end": 139.0529805825243,
+    "text": "It may check an exact state, apply a quality rubric, or ask a human"
+  },
+  {
+    "start": 139.0529805825243,
+    "end": 141.27100000000002,
+    "text": "expert to judge a subjective result."
+  },
+  {
+    "start": 141.27100000000002,
+    "end": 144.6351666666667,
+    "text": "A task can use several graders because success is often"
+  },
+  {
+    "start": 144.6351666666667,
+    "end": 145.675,
+    "text": "multidimensional."
+  },
+  {
+    "start": 145.675,
+    "end": 148.666,
+    "text": "Finally, remember what you are evaluating."
+  },
+  {
+    "start": 148.666,
+    "end": 151.31,
+    "text": "An AI Agent is not only a model."
+  },
+  {
+    "start": 151.31,
+    "end": 155.858,
+    "text": "The harness supplies instructions, tools, state, and orchestration."
+  },
+  {
+    "start": 155.858,
+    "end": 159.75504761904762,
+    "text": "A weak tool contract or unstable environment can make the same model"
+  },
+  {
+    "start": 159.75504761904762,
+    "end": 163.079,
+    "text": "fail, so the model and harness must be evaluated together."
+  },
+  {
+    "start": 163.079,
+    "end": 167.656,
+    "text": "First, define one task with explicit inputs and success criteria."
+  },
+  {
+    "start": 167.656,
+    "end": 171.262,
+    "text": "Second, separate the transcript from the final outcome."
+  },
+  {
+    "start": 171.262,
+    "end": 174.954,
+    "text": "Third, evaluate the model and the Agent harness together."
+  },
+  {
+    "start": 175.08399999999997,
+    "end": 179.26631999999998,
+    "text": "The first acceptance question is simple: did the intended final state"
+  },
+  {
+    "start": 179.26631999999998,
+    "end": 179.62999999999997,
+    "text": "exist?"
+  },
+  {
+    "start": 179.57999999999998,
+    "end": 183.11562857142854,
+    "text": "Outcome checks are usually stronger than trusting the Agent's own"
+  },
+  {
+    "start": 183.11562857142854,
+    "end": 186.54246857142857,
+    "text": "completion message because they inspect the artifact, database,"
+  },
+  {
+    "start": 186.54246857142857,
+    "end": 189.099,
+    "text": "application state, or external effect directly."
+  },
+  {
+    "start": 189.099,
+    "end": 193.93297727272727,
+    "text": "For structured work, code-based graders are fast, cheap, reproducible,"
+  },
+  {
+    "start": 193.93297727272727,
+    "end": 195.176,
+    "text": "and easy to debug."
+  },
+  {
+    "start": 195.176,
+    "end": 199.61075968992245,
+    "text": "Unit tests, schema checks, static analysis, exact matches, and state"
+  },
+  {
+    "start": 199.61075968992245,
+    "end": 203.58899999999997,
+    "text": "assertions can verify conditions that have objective answers."
+  },
+  {
+    "start": 203.58899999999997,
+    "end": 206.253,
+    "text": "But deterministic graders can be brittle."
+  },
+  {
+    "start": 206.253,
+    "end": 210.173245398773,
+    "text": "A valid answer may use different wording, a different file structure, or"
+  },
+  {
+    "start": 210.173245398773,
+    "end": 213.82125153374233,
+    "text": "a creative solution that satisfies the user while missing an overly"
+  },
+  {
+    "start": 213.82125153374233,
+    "end": 215.128,
+    "text": "narrow expected pattern."
+  },
+  {
+    "start": 215.128,
+    "end": 219.058214953271,
+    "text": "Passing the evaluator should require solving the task, not guessing the"
+  },
+  {
+    "start": 219.058214953271,
+    "end": 221.051,
+    "text": "evaluator's favorite implementation."
+  },
+  {
+    "start": 221.051,
+    "end": 224.08899999999997,
+    "text": "Model-based graders help with open-ended work."
+  },
+  {
+    "start": 224.08899999999997,
+    "end": 228.04611999999997,
+    "text": "A clear rubric can score groundedness, completeness, instruction"
+  },
+  {
+    "start": 228.04611999999997,
+    "end": 230.272,
+    "text": "following, or communication quality."
+  },
+  {
+    "start": 230.272,
+    "end": 233.7610322580645,
+    "text": "Pairwise comparison and separate dimension scores are often more"
+  },
+  {
+    "start": 233.7610322580645,
+    "end": 237.03199999999998,
+    "text": "reliable than one vague request to judge everything at once."
+  },
+  {
+    "start": 237.03199999999998,
+    "end": 241.16733720930233,
+    "text": "Model graders are still nondeterministic and must be calibrated against"
+  },
+  {
+    "start": 241.16733720930233,
+    "end": 242.041,
+    "text": "human judgment."
+  },
+  {
+    "start": 242.041,
+    "end": 246.14485542168674,
+    "text": "Give them structured criteria and an “unknown” option when evidence is"
+  },
+  {
+    "start": 246.14485542168674,
+    "end": 246.90699999999998,
+    "text": "insufficient."
+  },
+  {
+    "start": 246.90699999999998,
+    "end": 250.7958636363636,
+    "text": "For high-stakes or specialized work, human experts remain the reference"
+  },
+  {
+    "start": 250.7958636363636,
+    "end": 254.13699999999997,
+    "text": "used to check whether automated grading matches real quality."
+  },
+  {
+    "start": 254.13699999999997,
+    "end": 258.2671052631579,
+    "text": "The practical pattern is outcome first, then behavior where behavior"
+  },
+  {
+    "start": 258.2671052631579,
+    "end": 258.753,
+    "text": "matters."
+  },
+  {
+    "start": 258.753,
+    "end": 262.81379428571427,
+    "text": "Verify the final state, add transcript checks for safety or efficiency,"
+  },
+  {
+    "start": 262.81379428571427,
+    "end": 266.87458857142855,
+    "text": "and avoid requiring one exact sequence of tool calls when several valid"
+  },
+  {
+    "start": 266.87458857142855,
+    "end": 268.76199999999994,
+    "text": "paths can reach the right result."
+  },
+  {
+    "start": 268.76199999999994,
+    "end": 272.907,
+    "text": "First, verify the final state before trusting the Agent's claim."
+  },
+  {
+    "start": 272.907,
+    "end": 277.46397297297295,
+    "text": "Second, combine deterministic, model-based, and human graders by"
+  },
+  {
+    "start": 277.46397297297295,
+    "end": 278.176,
+    "text": "dimension."
+  },
+  {
+    "start": 278.176,
+    "end": 282.493,
+    "text": "Third, grade essential outcomes without overfitting to one valid path."
+  },
+  {
+    "start": 282.628,
+    "end": 286.90399999999994,
+    "text": "One successful trial does not prove that an AI Agent is reliable."
+  },
+  {
+    "start": 286.854,
+    "end": 290.77047826086954,
+    "text": "Agent behavior varies between runs, so a pass can reflect a stable"
+  },
+  {
+    "start": 290.77047826086954,
+    "end": 295.04299999999995,
+    "text": "capability, a lucky trajectory, or an evaluator that missed the failure."
+  },
+  {
+    "start": 295.04299999999995,
+    "end": 298.52799999999996,
+    "text": "This is why each important task should run more than once."
+  },
+  {
+    "start": 298.52799999999996,
+    "end": 302.4900878378378,
+    "text": "The distribution of results reveals whether the Agent usually succeeds,"
+  },
+  {
+    "start": 302.4900878378378,
+    "end": 306.5079797297297,
+    "text": "occasionally succeeds, or fails in a consistent way that one trial would"
+  },
+  {
+    "start": 306.5079797297297,
+    "end": 306.787,
+    "text": "hide."
+  },
+  {
+    "start": 306.787,
+    "end": 310.71,
+    "text": "Pass at k asks whether at least one of k attempts succeeds."
+  },
+  {
+    "start": 310.71,
+    "end": 314.71201388888886,
+    "text": "It is useful when exploration matters and one working solution is"
+  },
+  {
+    "start": 314.71201388888886,
+    "end": 315.143,
+    "text": "enough."
+  },
+  {
+    "start": 315.143,
+    "end": 319.1053943661972,
+    "text": "Pass to the k asks whether all k attempts succeed, which is the harder"
+  },
+  {
+    "start": 319.1053943661972,
+    "end": 322.8979718309859,
+    "text": "and more relevant bar when users expect the same task to work every"
+  },
+  {
+    "start": 322.8979718309859,
+    "end": 323.181,
+    "text": "time."
+  },
+  {
+    "start": 323.181,
+    "end": 325.27799999999996,
+    "text": "The difference is operational."
+  },
+  {
+    "start": 325.27799999999996,
+    "end": 329.5074318181818,
+    "text": "A research assistant that proposes several hypotheses may benefit from"
+  },
+  {
+    "start": 329.5074318181818,
+    "end": 330.59499999999997,
+    "text": "one strong result."
+  },
+  {
+    "start": 330.59499999999997,
+    "end": 334.24269999999996,
+    "text": "A customer-facing Agent that processes refunds needs consistent"
+  },
+  {
+    "start": 334.24269999999996,
+    "end": 338.2378,
+    "text": "correctness, because one failure can create a real financial or trust"
+  },
+  {
+    "start": 338.2378,
+    "end": 338.70099999999996,
+    "text": "problem."
+  },
+  {
+    "start": 338.70099999999996,
+    "end": 341.90299999999996,
+    "text": "Reliability also depends on task balance."
+  },
+  {
+    "start": 341.90299999999996,
+    "end": 345.893,
+    "text": "Test cases where a behavior should happen and cases where it should not."
+  },
+  {
+    "start": 345.893,
+    "end": 349.70099999999996,
+    "text": "If you only reward searching, the Agent may search everything."
+  },
+  {
+    "start": 349.70099999999996,
+    "end": 353.691,
+    "text": "If you only reward refusal, it may stop doing useful work."
+  },
+  {
+    "start": 353.691,
+    "end": 355.681,
+    "text": "Keep trials isolated."
+  },
+  {
+    "start": 355.681,
+    "end": 359.63957553956834,
+    "text": "Shared files, cached state, resource exhaustion, or history from a"
+  },
+  {
+    "start": 359.63957553956834,
+    "end": 363.4781942446043,
+    "text": "previous run can either inflate performance or create correlated"
+  },
+  {
+    "start": 363.4781942446043,
+    "end": 364.018,
+    "text": "failures."
+  },
+  {
+    "start": 364.018,
+    "end": 367.38365420560746,
+    "text": "The test environment should resemble production while resetting the"
+  },
+  {
+    "start": 367.38365420560746,
+    "end": 369.393,
+    "text": "state that would contaminate comparison."
+  },
+  {
+    "start": 369.393,
+    "end": 373.21999999999997,
+    "text": "First, run multiple trials because one pass can be luck."
+  },
+  {
+    "start": 373.21999999999997,
+    "end": 377.2025,
+    "text": "Second, choose pass at k for discovery and pass to the k for"
+  },
+  {
+    "start": 377.2025,
+    "end": 377.99899999999997,
+    "text": "consistency."
+  },
+  {
+    "start": 377.99899999999997,
+    "end": 382.1429726027397,
+    "text": "Third, balance tasks and isolate the environment before comparing"
+  },
+  {
+    "start": 382.1429726027397,
+    "end": 382.65299999999996,
+    "text": "results."
+  },
+  {
+    "start": 382.78,
+    "end": 386.35499999999996,
+    "text": "A low score does not always mean the AI Agent is weak."
+  },
+  {
+    "start": 386.30499999999995,
+    "end": 390.6052577319587,
+    "text": "The task may be ambiguous, the environment may be broken, or the grader"
+  },
+  {
+    "start": 390.6052577319587,
+    "end": 392.17999999999995,
+    "text": "may reject a valid answer."
+  },
+  {
+    "start": 392.17999999999995,
+    "end": 395.06399999999996,
+    "text": "Evaluation quality must be tested too."
+  },
+  {
+    "start": 395.06399999999996,
+    "end": 397.56399999999996,
+    "text": "Start with failures you already see."
+  },
+  {
+    "start": 397.56399999999996,
+    "end": 401.4870558659218,
+    "text": "Manual checks, support tickets, production bugs, and difficult edge"
+  },
+  {
+    "start": 401.4870558659218,
+    "end": 405.70287709497205,
+    "text": "cases are high-value seeds because they represent real user expectations"
+  },
+  {
+    "start": 405.70287709497205,
+    "end": 408.04499999999996,
+    "text": "rather than imaginary benchmark puzzles."
+  },
+  {
+    "start": 408.04499999999996,
+    "end": 412.36199999999997,
+    "text": "Write each task so two qualified reviewers can reach the same verdict."
+  },
+  {
+    "start": 412.36199999999997,
+    "end": 416.2005,
+    "text": "Include the input, required outcome, important constraints, and"
+  },
+  {
+    "start": 416.2005,
+    "end": 418.33299999999997,
+    "text": "everything the grader will inspect."
+  },
+  {
+    "start": 418.33299999999997,
+    "end": 421.90489999999994,
+    "text": "Then create a reference solution that proves the task is solvable and"
+  },
+  {
+    "start": 421.90489999999994,
+    "end": 424.54499999999996,
+    "text": "that the graders can recognize a known good result."
+  },
+  {
+    "start": 424.54499999999996,
+    "end": 427.15099999999995,
+    "text": "Build balanced sets and begin small."
+  },
+  {
+    "start": 427.15099999999995,
+    "end": 431.4863917525773,
+    "text": "A useful early suite can contain a few dozen realistic tasks instead of"
+  },
+  {
+    "start": 431.4863917525773,
+    "end": 433.07399999999996,
+    "text": "hundreds of weak examples."
+  },
+  {
+    "start": 433.07399999999996,
+    "end": 437.0413684210526,
+    "text": "As the product matures, add harder cases that distinguish improvements"
+  },
+  {
+    "start": 437.0413684210526,
+    "end": 440.61199999999997,
+    "text": "and convert solved capability tests into regression protection."
+  },
+  {
+    "start": 440.61199999999997,
+    "end": 443.756,
+    "text": "Read transcripts and grades from many trials."
+  },
+  {
+    "start": 443.756,
+    "end": 447.1122692307692,
+    "text": "A failed trace tells you whether the Agent made a genuine mistake,"
+  },
+  {
+    "start": 447.1122692307692,
+    "end": 450.6719487179487,
+    "text": "whether the harness blocked progress, or whether the grader punished a"
+  },
+  {
+    "start": 450.6719487179487,
+    "end": 451.68899999999996,
+    "text": "reasonable solution."
+  },
+  {
+    "start": 451.68899999999996,
+    "end": 456.0648227848101,
+    "text": "If failures do not look fair, revise the evaluation before optimizing"
+  },
+  {
+    "start": 456.0648227848101,
+    "end": 456.69899999999996,
+    "text": "the Agent."
+  },
+  {
+    "start": 456.69899999999996,
+    "end": 459.20799999999997,
+    "text": "Treat the suite as a living artifact."
+  },
+  {
+    "start": 459.20799999999997,
+    "end": 463.1816590909091,
+    "text": "Models improve, products change, user behavior shifts, and"
+  },
+  {
+    "start": 463.1816590909091,
+    "end": 465.23699999999997,
+    "text": "once-difficult tasks saturate."
+  },
+  {
+    "start": 465.23699999999997,
+    "end": 469.26097457627117,
+    "text": "Ownership, regular maintenance, production monitoring, and periodic"
+  },
+  {
+    "start": 469.26097457627117,
+    "end": 472.32399999999996,
+    "text": "human calibration keep the signal useful over time."
+  },
+  {
+    "start": 472.32399999999996,
+    "end": 476.5803835616438,
+    "text": "First, turn real failures into unambiguous tasks with reference"
+  },
+  {
+    "start": 476.5803835616438,
+    "end": 477.256,
+    "text": "solutions."
+  },
+  {
+    "start": 477.256,
+    "end": 481.55499999999995,
+    "text": "Second, read transcripts to tell Agent errors from grader errors."
+  },
+  {
+    "start": 481.55499999999995,
+    "end": 486.0836849315068,
+    "text": "Third, keep the suite current as capabilities, products, and risks"
+  },
+  {
+    "start": 486.0836849315068,
+    "end": 486.56399999999996,
+    "text": "change."
+  },
+  {
+    "start": 486.7,
+    "end": 490.323,
+    "text": "Now turn the method into one AI Agent Acceptance Sheet."
+  },
+  {
+    "start": 490.27299999999997,
+    "end": 494.29781967213114,
+    "text": "Use it for a single high-value task before a release, for a repeated"
+  },
+  {
+    "start": 494.29781967213114,
+    "end": 497.49399999999997,
+    "text": "workflow, or as the seed of a larger evaluation suite."
+  },
+  {
+    "start": 497.49399999999997,
+    "end": 499.34,
+    "text": "Block one is Outcome."
+  },
+  {
+    "start": 499.34,
+    "end": 503.5514,
+    "text": "Name the user-visible result, the final state that proves it exists, the"
+  },
+  {
+    "start": 503.5514,
+    "end": 506.359,
+    "text": "acceptance threshold, and the evidence location."
+  },
+  {
+    "start": 506.359,
+    "end": 509.44599999999997,
+    "text": "Do not use “Agent said done” as evidence."
+  },
+  {
+    "start": 509.44599999999997,
+    "end": 511.59999999999997,
+    "text": "Block two is Task Setup."
+  },
+  {
+    "start": 511.59999999999997,
+    "end": 515.7380396039604,
+    "text": "Record the input, tools, permissions, starting state, important"
+  },
+  {
+    "start": 515.7380396039604,
+    "end": 518.2339999999999,
+    "text": "constraints, and a reference solution."
+  },
+  {
+    "start": 518.2339999999999,
+    "end": 522.2085617977527,
+    "text": "This makes the task reproducible and exposes whether the environment"
+  },
+  {
+    "start": 522.2085617977527,
+    "end": 523.4359999999999,
+    "text": "itself creates noise."
+  },
+  {
+    "start": 523.4359999999999,
+    "end": 525.6669999999999,
+    "text": "Block three is Grader Mix."
+  },
+  {
+    "start": 525.6669999999999,
+    "end": 529.5667391304347,
+    "text": "Choose deterministic checks for objective state, model rubrics for"
+  },
+  {
+    "start": 529.5667391304347,
+    "end": 533.8209999999999,
+    "text": "open-ended quality, and human review for calibration or expert judgment."
+  },
+  {
+    "start": 533.8209999999999,
+    "end": 538.2722266666666,
+    "text": "Give each grader one clear dimension instead of one grader an undefined"
+  },
+  {
+    "start": 538.2722266666666,
+    "end": 538.5229999999999,
+    "text": "job."
+  },
+  {
+    "start": 538.5229999999999,
+    "end": 540.6859999999999,
+    "text": "Block four is Reliability."
+  },
+  {
+    "start": 540.6859999999999,
+    "end": 544.7688514851484,
+    "text": "Set the number of trials, the metric that matches the product need, and"
+  },
+  {
+    "start": 544.7688514851484,
+    "end": 546.4939999999999,
+    "text": "the minimum acceptable result."
+  },
+  {
+    "start": 546.4939999999999,
+    "end": 550.8079368421052,
+    "text": "One success may be enough for exploration, but repeated customer actions"
+  },
+  {
+    "start": 550.8079368421052,
+    "end": 552.1859999999999,
+    "text": "need a consistency bar."
+  },
+  {
+    "start": 552.1859999999999,
+    "end": 554.9749999999999,
+    "text": "Block five is Eval Health and Decision."
+  },
+  {
+    "start": 554.9749999999999,
+    "end": 559.2427870967741,
+    "text": "Record transcript spot checks, known grader gaps, environment failures,"
+  },
+  {
+    "start": 559.2427870967741,
+    "end": 563.2100258064515,
+    "text": "exceptions, the release decision, and the next failure that should"
+  },
+  {
+    "start": 563.2100258064515,
+    "end": 564.2919999999999,
+    "text": "become a new task."
+  },
+  {
+    "start": 564.2919999999999,
+    "end": 568.1279999999999,
+    "text": "The sheet evaluates both the Agent and your confidence in the test."
+  },
+  {
+    "start": 568.1279999999999,
+    "end": 572.1479999999999,
+    "text": "First, write the outcome and task setup before choosing a grader."
+  },
+  {
+    "start": 572.1479999999999,
+    "end": 577.0533552631579,
+    "text": "Second, collect final-state evidence, behavior evidence, and repeated"
+  },
+  {
+    "start": 577.0533552631579,
+    "end": 577.5509999999999,
+    "text": "trials."
+  },
+  {
+    "start": 577.5509999999999,
+    "end": 582.2819999999999,
+    "text": "Third, record the release decision, exceptions, and next test to add."
+  },
+  {
+    "start": 582.412,
+    "end": 586.063,
+    "text": "An AI Agent's polished completion message is not proof."
+  },
+  {
+    "start": 586.013,
+    "end": 590.1289568345325,
+    "text": "Reliable acceptance turns the intended result into a task, inspects the"
+  },
+  {
+    "start": 590.1289568345325,
+    "end": 594.071,
+    "text": "final state, and asks whether success repeats under fair conditions."
+  },
+  {
+    "start": 594.071,
+    "end": 597.879,
+    "text": "First, define success before the AI Agent starts."
+  },
+  {
+    "start": 597.879,
+    "end": 601.59,
+    "text": "Second, verify final state with the right grader mix."
+  },
+  {
+    "start": 601.59,
+    "end": 605.36,
+    "text": "Third, repeat trials and audit the evaluation itself."
+  },
+  {
+    "start": 605.36,
+    "end": 609.5828129496404,
+    "text": "Use the AI Agent Acceptance Sheet to record the outcome, setup,"
+  },
+  {
+    "start": 609.5828129496404,
+    "end": 614.0737410071943,
+    "text": "evidence, grader mix, reliability bar, evaluation gaps, and release"
+  },
+  {
+    "start": 614.0737410071943,
+    "end": 614.677,
+    "text": "decision."
+  },
+  {
+    "start": 614.677,
+    "end": 617.956,
+    "text": "That is how “done” becomes a result you can trust."
+  },
+  {
+    "start": 617.956,
+    "end": 619.802,
+    "text": "Follow Tiny Agent."
+  },
+  {
+    "start": 619.802,
+    "end": 622.224521,
+    "text": "Tiny Agent helps you get better at using AI."
+  }
+]

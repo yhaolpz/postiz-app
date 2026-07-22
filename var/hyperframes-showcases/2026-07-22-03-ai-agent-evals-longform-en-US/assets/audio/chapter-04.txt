@@ -1,0 +1,17 @@
+One successful trial does not prove that an AI Agent is reliable. Agent behavior varies between runs, so a pass can reflect a stable capability, a lucky trajectory, or an evaluator that missed the failure.
+
+This is why each important task should run more than once. The distribution of results reveals whether the Agent usually succeeds, occasionally succeeds, or fails in a consistent way that one trial would hide.
+
+Pass at k asks whether at least one of k attempts succeeds. It is useful when exploration matters and one working solution is enough. Pass to the k asks whether all k attempts succeed, which is the harder and more relevant bar when users expect the same task to work every time.
+
+The difference is operational. A research assistant that proposes several hypotheses may benefit from one strong result. A customer-facing Agent that processes refunds needs consistent correctness, because one failure can create a real financial or trust problem.
+
+Reliability also depends on task balance. Test cases where a behavior should happen and cases where it should not. If you only reward searching, the Agent may search everything. If you only reward refusal, it may stop doing useful work.
+
+Keep trials isolated. Shared files, cached state, resource exhaustion, or history from a previous run can either inflate performance or create correlated failures. The test environment should resemble production while resetting the state that would contaminate comparison.
+
+First, run multiple trials because one pass can be luck.
+
+Second, choose pass at k for discovery and pass to the k for consistency.
+
+Third, balance tasks and isolate the environment before comparing results.

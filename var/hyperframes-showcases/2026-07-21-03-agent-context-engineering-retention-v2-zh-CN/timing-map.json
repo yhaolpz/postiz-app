@@ -1,0 +1,1414 @@
+{
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-21-03-agent-context-engineering-retention-v2-zh-CN/SCRIPT.zh-CN.md",
+  "timingSource": "edge-tts-vtt",
+  "fixedCta": {
+    "text": "关注 Tiny Agent，成为更擅长使用 AI 的人！",
+    "start": 440.642667,
+    "outroStart": 440.642667,
+    "frameErrorSeconds": 0,
+    "spokenEnd": 442.944979,
+    "videoEnd": 443.164979,
+    "tailSeconds": 0.22000000000002728
+  },
+  "chapters": [
+    {
+      "label": "前言",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "你的 AI 智能体为什么做着做着就忘了长期任务的目标？因为信息还在，不等于重点还在。",
+          "start": 0,
+          "end": 5.716
+        },
+        {
+          "number": 2,
+          "text": "Anthropic 的上下文工程给出关键原因：上下文是一份有限的注意力预算。旧决策、工具输出和原始历史越多，下一步信号越弱。",
+          "start": 5.716,
+          "end": 13.511
+        },
+        {
+          "number": 3,
+          "text": "所以，喂得更多反而可能让 AI 智能体跑偏。接下来你会学会保住目标、按需检索，并持续更新工作状态。",
+          "start": 13.511,
+          "end": 20.3
+        },
+        {
+          "number": 4,
+          "text": "最后带走一份六部分高信号上下文包：目标、规则、工具、示例、检索和状态。先收藏，下一次长期任务直接套用。",
+          "start": 20.3,
+          "end": 28.095
+        },
+        {
+          "number": 5,
+          "text": "核心判断只有一句：给 AI 智能体支持下一步行动的最小充分上下文，并随着长期任务持续更新。",
+          "start": 28.095,
+          "end": 34.2
+        }
+      ]
+    },
+    {
+      "label": "注意力预算",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "上下文包含模型生成下一次回复时能看到的全部 token：系统指令、工具定义、示例、检索到的文档、消息历史、中间结果和当前请求。上下文工程管理的是这整个状态，不只是开头那一段提示词。",
+          "start": 34.2,
+          "end": 46.842
+        },
+        {
+          "number": 2,
+          "text": "Anthropic 把上下文描述为有限资源，而且新增内容的边际收益会下降。有关 context rot 的研究反复看到一种现象：材料越多，模型越可能难以准确找回藏在其中的相关信息。窗口更大，不代表注意力免费。",
+          "start": 46.842,
+          "end": 59.173
+        },
+        {
+          "number": 3,
+          "text": "这解释了为什么超长提示词仍会失败。正确规则可能确实写进去了，但周围还有过期计划、重复说明、原始日志和一长串边缘情况。智能体在解决任务前，先要猜哪些内容仍然有效、权威而且与当前步骤有关。",
+          "start": 59.173,
+          "end": 72.71000000000001
+        },
+        {
+          "number": 4,
+          "text": "所以，好的上下文工程首先是筛选。每个关键步骤开始前，都问一句：什么信息会改变下一步判断？保留目标、必要约束、当前证据和实时状态；能够稍后获取的参考细节，只保留索引。",
+          "start": 72.71000000000001,
+          "end": 84.549
+        },
+        {
+          "number": 5,
+          "text": "筛选还要持续进行。工具调用带来新证据，错误暴露新边界，完成里程碑后，原始轨迹可以换成紧凑状态摘要。第十步需要的上下文，不会和第一步完全一样。",
+          "start": 84.549,
+          "end": 94.28200000000001
+        },
+        {
+          "number": 6,
+          "text": "最小不等于短。复杂迁移仍可能需要完整验收条件、仓库约定和风险控制。标准不是字最少，而是足以支持预期行为的最小集合。",
+          "start": 94.28200000000001,
+          "end": 102.296
+        },
+        {
+          "number": 7,
+          "text": "小结。第一，把上下文当作有限注意力预算，而不是无限存储。",
+          "start": 102.296,
+          "end": 106.3
+        },
+        {
+          "number": 8,
+          "text": "第二，更多 token 可能稀释下一步最重要的指令。",
+          "start": 106.3,
+          "end": 109.074
+        },
+        {
+          "number": 9,
+          "text": "第三，保留最小充分集合，并随任务变化持续刷新。",
+          "start": 109.074,
+          "end": 112.533333
+        }
+      ]
+    },
+    {
+      "label": "高信号输入",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "先把系统指令写在合适的抽象层级。一端是把所有分支硬编码成脆弱的规则；另一端只是说“把事情做好”，默认智能体知道没有明说的标准。",
+          "start": 112.533333,
+          "end": 121.277333
+        },
+        {
+          "number": 2,
+          "text": "更有效的中间位置会明确目标、边界和判断原则，同时给推理留下空间。背景、指令、工具说明和输出要求可以分区组织。格式有帮助，但真正决定效果的是内容是否清楚、优先级是否明确。",
+          "start": 121.277333,
+          "end": 133.735333
+        },
+        {
+          "number": 3,
+          "text": "接着检查工具。工具不只是一个动作，还是智能体与环境之间的契约。名称、说明、参数、错误处理和返回数据都会进入上下文，并影响智能体选择哪一个动作。",
+          "start": 133.735333,
+          "end": 143.644333
+        },
+        {
+          "number": 4,
+          "text": "功能重叠会制造模糊决策，也会浪费注意力。如果人都说不清两个工具分别什么时候使用，就不能期待智能体稳定判断。保留最小可用工具集，让每个工具职责单一、输入明确、结果紧凑。",
+          "start": 143.644333,
+          "end": 155.027333
+        },
+        {
+          "number": 5,
+          "text": "然后筛选示例。堆满边缘情况看起来很全面，却容易把规律埋掉。Anthropic 更推荐少量、多样、典型的例子，让智能体看见预期模式、必要变化和一条重要边界。",
+          "start": 155.027333,
+          "end": 164.996333
+        },
+        {
+          "number": 6,
+          "text": "高信号不是固定字数。它指一段信息有明确工作：确定结果、约束行为、选择工具、展示模式、提供证据或暴露停止条件。只有完全不承担这些工作时，才应该删除。",
+          "start": 164.996333,
+          "end": 175.488333
+        },
+        {
+          "number": 7,
+          "text": "小结。第一，系统指令要落在硬编码和空泛之间的合适层级。",
+          "start": 175.488333,
+          "end": 179.42933299999999
+        },
+        {
+          "number": 8,
+          "text": "第二，工具要清楚、高效，并尽量减少功能重叠。",
+          "start": 179.42933299999999,
+          "end": 182.675333
+        },
+        {
+          "number": 9,
+          "text": "第三，用少量典型示例教会智能体真正的模式。",
+          "start": 182.675333,
+          "end": 185.9
+        }
+      ]
+    },
+    {
+      "label": "按需检索",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "不少系统会在智能体开始前，把所有可能相关的文档全部塞进上下文。材料少而稳定时，这样做很快；但智能体还不知道哪一段真正重要，注意力预算已经提前花掉了。",
+          "start": 185.9,
+          "end": 196.147
+        },
+        {
+          "number": 2,
+          "text": "按需检索只保留轻量引用，比如文件路径、已保存查询、网页链接、对象标识、目录名和时间戳。上下文里保留地图，到了某个判断确实需要证据时，再打开对应内容。",
+          "start": 196.147,
+          "end": 206.827
+        },
+        {
+          "number": 3,
+          "text": "这会形成渐进式披露。文件名提示用途，目录结构说明关系，文件大小暗示复杂度，一次搜索结果帮助缩小下一次查询。智能体逐层建立理解，同时只把正在使用的子集放进工作上下文。",
+          "start": 206.827,
+          "end": 218.363
+        },
+        {
+          "number": 4,
+          "text": "Claude Code 就体现了这种方法。稳定的项目指令可以预先加载，文件搜索、grep、head 和 tail 负责查看大仓库里的目标片段，不必一次读取所有文件正文。",
+          "start": 218.363,
+          "end": 227.502
+        },
+        {
+          "number": 5,
+          "text": "取舍同样真实。运行时探索比预加载更慢，导航不佳还会让智能体在错误方向上浪费 token。它需要合适的搜索工具、能说明用途的命名，以及知道什么时候停止探索的规则。",
+          "start": 227.502,
+          "end": 238.19
+        },
+        {
+          "number": 6,
+          "text": "因此更实用的是混合策略。预先放入稳定规则、当前目标和几乎每一步都会用到的少量事实；变化快、细节多或很少使用的材料放到检索入口后面。边界要根据任务和漏掉信息的代价来定。",
+          "start": 238.19,
+          "end": 250.09300000000002
+        },
+        {
+          "number": 7,
+          "text": "小结。第一，保留轻量引用，不要预先塞入全部正文。",
+          "start": 250.09300000000002,
+          "end": 253.633
+        },
+        {
+          "number": 8,
+          "text": "第二，让 AI 智能体在细节真正相关时再逐步发现。",
+          "start": 253.633,
+          "end": 257.231
+        },
+        {
+          "number": 9,
+          "text": "第三，在更聚焦的上下文和额外检索成本之间做取舍。",
+          "start": 257.231,
+          "end": 260.933333
+        }
+      ]
+    },
+    {
+      "label": "长任务记忆",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "长任务还会带来第二个问题。即使上下文一直被认真筛选，智能体执行动作、观察结果、修复错误和累积决定后，窗口仍会填满。连续工作几小时，可能多次超过可用范围。",
+          "start": 260.933333,
+          "end": 271.762333
+        },
+        {
+          "number": 2,
+          "text": "第一种方法是压缩。把对话或轨迹总结后开启新窗口，只带上保持连续性所需的决定、未解决问题、约束、证据和下一步动作。已经完成使命的原始工具输出通常可以退出。",
+          "start": 271.762333,
+          "end": 282.432333
+        },
+        {
+          "number": 3,
+          "text": "压缩存在风险：今天看起来次要的细节，可能后来才显出关键价值。Anthropic 建议先追求高召回，再逐步提高精确度。多带一点内容，通常比丢掉决定性约束更安全。",
+          "start": 282.432333,
+          "end": 292.551333
+        },
+        {
+          "number": 4,
+          "text": "第二种方法是结构化笔记。智能体把进度、里程碑、发现和开放问题写到窗口之外，需要时再取回相关部分。这样能保留持久工作状态，又不用让整段对话一直在线。",
+          "start": 292.551333,
+          "end": 303.056333
+        },
+        {
+          "number": 5,
+          "text": "专门的 Agent 可以隔离深度探索。主 Agent 保留高层计划，多个专门 Agent 分别研究独立问题，再把压缩后的发现交回。只有并行深挖的价值超过协调成本时，这种方式才值得。",
+          "start": 303.056333,
+          "end": 313.504333
+        },
+        {
+          "number": 6,
+          "text": "选择要看任务形态：持续对话用压缩，有清晰里程碑的迭代工作用笔记，独立而复杂的研究用专门 Agent。无论采用哪种方式，交接都必须保留目标、决定、证据、未知项和下一步动作。",
+          "start": 313.504333,
+          "end": 324.811333
+        },
+        {
+          "number": 7,
+          "text": "小结。第一，把长轨迹压缩成高召回的连续性摘要。",
+          "start": 324.811333,
+          "end": 328.077333
+        },
+        {
+          "number": 8,
+          "text": "第二，把持久工作状态写进结构化外部笔记。",
+          "start": 328.077333,
+          "end": 330.93433300000004
+        },
+        {
+          "number": 9,
+          "text": "第三，只有聚焦探索值得协调成本时，才使用专门 Agent。",
+          "start": 330.93433300000004,
+          "end": 334.5
+        }
+      ]
+    },
+    {
+      "label": "上下文包",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "把前面的方法整理成一份最小高信号上下文包。它有六部分：结果目标、运行规则、工具地图、典型示例、检索索引和工作状态。它足够紧凑，可以人工检查；也足够完整，可以支持真实工作。",
+          "start": 334.5,
+          "end": 346.932
+        },
+        {
+          "number": 2,
+          "text": "第一部分是结果目标。写清目标、使用者、交付物、验收条件，以及结果要支持的决定。这样可以避免智能体做出很流畅、很好看，却没有解决真实问题的产物。",
+          "start": 346.932,
+          "end": 356.845
+        },
+        {
+          "number": 3,
+          "text": "第二部分是运行规则。记录硬约束、权限、风险边界、升级节点和停止条件。把长期规则与临时假设分开，避免一次性的绕行方案悄悄变成永久政策。",
+          "start": 356.845,
+          "end": 366.589
+        },
+        {
+          "number": 4,
+          "text": "第三部分是工具地图和典型示例。每个工具写明使用条件、输入、紧凑输出，以及它不能替代的相邻工具；再加入两三个例子，展示主要模式和一条关键边界。",
+          "start": 366.589,
+          "end": 376.698
+        },
+        {
+          "number": 5,
+          "text": "第四部分是检索索引。给每份来源保存轻量入口、用途标签和打开条件。智能体不仅要知道证据在哪里，也要知道什么时候必须取回证据。",
+          "start": 376.698,
+          "end": 385.522
+        },
+        {
+          "number": 6,
+          "text": "第五部分是工作状态。记录已完成事项、当前重点、关键决定与证据、未决问题、失败方法和下一步动作。到达里程碑就更新状态，再压缩或归档它替代的原始轨迹。",
+          "start": 385.522,
+          "end": 395.713
+        },
+        {
+          "number": 7,
+          "text": "小结。第一，用结果目标和运行规则锚定 AI 智能体。",
+          "start": 395.713,
+          "end": 399.304
+        },
+        {
+          "number": 8,
+          "text": "第二，用工具地图、典型示例和检索索引指导行动。",
+          "start": 399.304,
+          "end": 402.85
+        },
+        {
+          "number": 9,
+          "text": "第三，用紧凑且持续更新的工作状态保持连续性。",
+          "start": 402.85,
+          "end": 406.166667
+        }
+      ]
+    },
+    {
+      "label": "总结",
+      "paragraphs": [
+        {
+          "number": 1,
+          "text": "AI 智能体忘记重点，不只因为缺信息，也可能因为没有区分的信息太多，共同争夺有限注意力。",
+          "start": 406.166667,
+          "end": 411.988667
+        },
+        {
+          "number": 2,
+          "text": "第一，管理完整上下文状态，不只优化提示词。根据下一步判断需要什么，保留目标、约束、工具、证据和当前状态。",
+          "start": 411.988667,
+          "end": 419.691667
+        },
+        {
+          "number": 3,
+          "text": "第二，提高信号质量。用合适层级的指令、最小工具集和少量典型示例，替代脆弱规则与边缘情况堆积。",
+          "start": 419.691667,
+          "end": 426.458667
+        },
+        {
+          "number": 4,
+          "text": "第三，按需检索细节。稳定且高频的信息放在前面，变化快或专业性强的材料通过明确引用逐步打开。",
+          "start": 426.458667,
+          "end": 433.25266700000003
+        },
+        {
+          "number": 5,
+          "text": "最后，用压缩、结构化笔记和六部分最小高信号上下文包保护长任务。保留信号，按需取细节，持续维护工作状态。",
+          "start": 433.25266700000003,
+          "end": 440.642667
+        },
+        {
+          "number": 6,
+          "text": "关注 Tiny Agent，成为更擅长使用 AI 的人！",
+          "start": 440.642667,
+          "end": 443.164979
+        }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "c01-s01",
+      "chapter": "前言",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 0,
+      "end": 13.511,
+      "transition": {
+        "primeAt": 0,
+        "contentRevealAt": 0,
+        "contentAt": 0.16,
+        "humanAt": 0.16,
+        "agentAt": 0.2
+      },
+      "propBeatTimes": [
+        0.22,
+        0.22
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "你的 AI 智能体为什么",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 436.82574319484274,
+        "offsetX": 0,
+        "offsetY": -13.174256805157256,
+        "rawOffsetX": -100.08736293778088,
+        "rawOffsetY": -33.174256805157256,
+        "appliedShiftX": 100.08736293778088,
+        "appliedShiftY": 20
+      }
+    },
+    {
+      "id": "c01-s02",
+      "chapter": "前言",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 13.511,
+      "end": 28.095,
+      "transition": {
+        "primeAt": 13.491,
+        "contentRevealAt": 13.511,
+        "contentAt": 13.550999999999998,
+        "humanAt": 13.550999999999998,
+        "agentAt": 13.590999999999998
+      },
+      "propBeatTimes": [
+        13.731,
+        13.731
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "所以，喂得更多",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 13.511,
+          "time": 13.731,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 397.5,
+        "gap": 195.3
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 413.2637326845397,
+        "offsetX": 0,
+        "offsetY": -36.73626731546028,
+        "rawOffsetX": -95.25503564840676,
+        "rawOffsetY": -36.73626731546028,
+        "appliedShiftX": 95.25503564840676,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c01-s03",
+      "chapter": "前言",
+      "paragraphs": [
+        5,
+        5
+      ],
+      "start": 28.095,
+      "end": 34.2,
+      "transition": {
+        "primeAt": 28.075,
+        "contentRevealAt": 28.095,
+        "contentAt": 28.134999999999998,
+        "humanAt": 28.134999999999998,
+        "agentAt": 28.174999999999997
+      },
+      "propBeatTimes": [
+        28.314999999999998,
+        28.314999999999998
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "核心判断只有一句",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 28.095,
+          "time": 28.314999999999998,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 397.5,
+        "gap": 126.10000000000002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 401.78516896556135,
+        "offsetX": 0,
+        "offsetY": -48.214831034438646,
+        "rawOffsetX": -54.59260247300699,
+        "rawOffsetY": -48.214831034438646,
+        "appliedShiftX": 54.59260247300699,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c02-s01",
+      "chapter": "注意力预算",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 34.2,
+      "end": 59.173,
+      "transition": {
+        "primeAt": 36.36,
+        "contentRevealAt": 36.38,
+        "contentAt": 36.54,
+        "humanAt": 36.54,
+        "agentAt": 36.58
+      },
+      "propBeatTimes": [
+        37.06,
+        37.06
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "上下文包含模型生成下一次回复时能看到的全部 token",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 34.300000000000004,
+          "time": 37.06,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 397.5,
+        "gap": 195.3
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 401.37293439505,
+        "offsetX": 0,
+        "offsetY": -48.62706560495002,
+        "rawOffsetX": -116.17973543614835,
+        "rawOffsetY": -48.62706560495002,
+        "appliedShiftX": 116.17973543614835,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c02-s02",
+      "chapter": "注意力预算",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 59.173,
+      "end": 84.549,
+      "transition": {
+        "primeAt": 59.153,
+        "contentRevealAt": 59.173,
+        "contentAt": 59.213,
+        "humanAt": 59.213,
+        "agentAt": 59.253
+      },
+      "propBeatTimes": [
+        59.393,
+        59.393
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "这解释了为什么超长提示词仍会失败",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 59.173,
+          "time": 59.393,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 950.4127270641351,
+        "y": 450,
+        "offsetX": -9.587272935864917,
+        "offsetY": 0,
+        "rawOffsetX": -113.58727293586492,
+        "rawOffsetY": 0.5967398483865054,
+        "appliedShiftX": 104,
+        "appliedShiftY": -0.5967398483865054
+      }
+    },
+    {
+      "id": "c02-s03",
+      "chapter": "注意力预算",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 84.549,
+      "end": 102.296,
+      "transition": {
+        "primeAt": 84.52900000000001,
+        "contentRevealAt": 84.549,
+        "contentAt": 84.58900000000001,
+        "humanAt": 84.58900000000001,
+        "agentAt": 84.62900000000002
+      },
+      "propBeatTimes": [
+        84.769,
+        84.769
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "筛选还要持续进行",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 84.549,
+          "time": 84.769,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 397.5,
+        "gap": 195.3
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 450,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -179.5251471417514,
+        "rawOffsetY": 0.6852846726910116,
+        "appliedShiftX": 179.5251471417514,
+        "appliedShiftY": -0.6852846726910116
+      }
+    },
+    {
+      "id": "c02-s04",
+      "chapter": "注意力预算",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 102.296,
+      "end": 112.533333,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        102.296,
+        106.3,
+        109.074
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c03-s01",
+      "chapter": "高信号输入",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 112.533333,
+      "end": 133.735333,
+      "transition": {
+        "primeAt": 114.69333300000001,
+        "contentRevealAt": 114.713333,
+        "contentAt": 114.873333,
+        "humanAt": 114.873333,
+        "agentAt": 114.91333300000001
+      },
+      "propBeatTimes": [
+        115.393333,
+        115.393333
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "先把系统指令写在合适的抽象层级",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 112.633333,
+          "time": 115.393333,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 951.9900941464304,
+        "y": 450,
+        "offsetX": -8.009905853569649,
+        "offsetY": 0,
+        "rawOffsetX": -112.00990585356965,
+        "rawOffsetY": -6.865289446526617,
+        "appliedShiftX": 104,
+        "appliedShiftY": 6.865289446526617
+      }
+    },
+    {
+      "id": "c03-s02",
+      "chapter": "高信号输入",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 133.735333,
+      "end": 155.027333,
+      "transition": {
+        "primeAt": 133.715333,
+        "contentRevealAt": 133.735333,
+        "contentAt": 133.775333,
+        "humanAt": 133.775333,
+        "agentAt": 133.81533299999998
+      },
+      "propBeatTimes": [
+        133.955333,
+        133.955333
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "接着检查工具",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 133.735333,
+          "time": 133.955333,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 397.5,
+        "gap": 195.3
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 443.5924478525345,
+        "offsetX": 0,
+        "offsetY": -6.407552147465481,
+        "rawOffsetX": -90.61354242612867,
+        "rawOffsetY": -6.407552147465481,
+        "appliedShiftX": 90.61354242612867,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c03-s03",
+      "chapter": "高信号输入",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 155.027333,
+      "end": 175.488333,
+      "transition": {
+        "primeAt": 155.007333,
+        "contentRevealAt": 155.027333,
+        "contentAt": 155.067333,
+        "humanAt": 155.067333,
+        "agentAt": 155.10733299999998
+      },
+      "propBeatTimes": [
+        155.247333,
+        155.247333
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "然后筛选示例",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 155.027333,
+          "time": 155.247333,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 397.5,
+        "gap": 163.7
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 368.66864328823647,
+        "offsetX": 0,
+        "offsetY": -81.33135671176353,
+        "rawOffsetX": 73.8921980801806,
+        "rawOffsetY": -81.33135671176353,
+        "appliedShiftX": -73.8921980801806,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c03-s04",
+      "chapter": "高信号输入",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 175.488333,
+      "end": 185.9,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        175.488333,
+        179.42933299999999,
+        182.675333
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c04-s01",
+      "chapter": "按需检索",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 185.9,
+      "end": 206.827,
+      "transition": {
+        "primeAt": 188.06,
+        "contentRevealAt": 188.08,
+        "contentAt": 188.24,
+        "humanAt": 188.24,
+        "agentAt": 188.28
+      },
+      "propBeatTimes": [
+        188.76000000000002,
+        188.76000000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "不少系统会在智能体开始前",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 186,
+          "time": 188.76000000000002,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 898.0944910983206,
+        "y": 450,
+        "offsetX": -61.905508901679354,
+        "offsetY": 0,
+        "rawOffsetX": -165.90550890167935,
+        "rawOffsetY": -8.33979640736709,
+        "appliedShiftX": 104,
+        "appliedShiftY": 8.33979640736709
+      }
+    },
+    {
+      "id": "c04-s02",
+      "chapter": "按需检索",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 206.827,
+      "end": 227.502,
+      "transition": {
+        "primeAt": 206.807,
+        "contentRevealAt": 206.827,
+        "contentAt": 206.867,
+        "humanAt": 206.867,
+        "agentAt": 206.90699999999998
+      },
+      "propBeatTimes": [
+        207.047,
+        207.047
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "这会形成渐进式披露",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 206.827,
+          "time": 207.047,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 397.5,
+        "gap": 195.3
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 450,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -167.1839149939973,
+        "rawOffsetY": 1.1888705790000813,
+        "appliedShiftX": 167.1839149939973,
+        "appliedShiftY": -1.1888705790000813
+      }
+    },
+    {
+      "id": "c04-s03",
+      "chapter": "按需检索",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 227.502,
+      "end": 250.09300000000002,
+      "transition": {
+        "primeAt": 227.482,
+        "contentRevealAt": 227.502,
+        "contentAt": 227.542,
+        "humanAt": 227.542,
+        "agentAt": 227.582
+      },
+      "propBeatTimes": [
+        227.722,
+        227.722
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "取舍同样真实",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 227.502,
+          "time": 227.722,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 397.5,
+        "gap": 163.7
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 371.40299556395365,
+        "offsetX": 0,
+        "offsetY": -78.59700443604635,
+        "rawOffsetX": 61.78258009432568,
+        "rawOffsetY": -78.59700443604635,
+        "appliedShiftX": -61.78258009432568,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c04-s04",
+      "chapter": "按需检索",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 250.09300000000002,
+      "end": 260.933333,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        250.09300000000002,
+        253.633,
+        257.231
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c05-s01",
+      "chapter": "长任务记忆",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 260.933333,
+      "end": 282.432333,
+      "transition": {
+        "primeAt": 263.09333300000003,
+        "contentRevealAt": 263.113333,
+        "contentAt": 263.27333300000004,
+        "humanAt": 263.27333300000004,
+        "agentAt": 263.31333300000006
+      },
+      "propBeatTimes": [
+        263.793333,
+        263.793333
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "长任务还会带来第二个问题",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 261.033333,
+          "time": 263.793333,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 401.5625,
+        "gap": 199.3625
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 414.8279745162015,
+        "offsetX": 0,
+        "offsetY": -35.17202548379851,
+        "rawOffsetX": -112.47125063040585,
+        "rawOffsetY": -35.17202548379851,
+        "appliedShiftX": 112.47125063040585,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c05-s02",
+      "chapter": "长任务记忆",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 282.432333,
+      "end": 303.056333,
+      "transition": {
+        "primeAt": 282.41233300000005,
+        "contentRevealAt": 282.432333,
+        "contentAt": 282.47233300000005,
+        "humanAt": 282.47233300000005,
+        "agentAt": 282.51233300000007
+      },
+      "propBeatTimes": [
+        282.65233300000006,
+        282.65233300000006
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "压缩存在风险",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 282.432333,
+          "time": 282.65233300000006,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 402.578125,
+        "gap": 200.378125
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 443.54950021967625,
+        "offsetX": 0,
+        "offsetY": -6.450499780323753,
+        "rawOffsetX": -144.5664730498953,
+        "rawOffsetY": -6.450499780323753,
+        "appliedShiftX": 144.5664730498953,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c05-s03",
+      "chapter": "长任务记忆",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 303.056333,
+      "end": 324.811333,
+      "transition": {
+        "primeAt": 303.036333,
+        "contentRevealAt": 303.056333,
+        "contentAt": 303.096333,
+        "humanAt": 303.096333,
+        "agentAt": 303.13633300000004
+      },
+      "propBeatTimes": [
+        303.276333,
+        303.276333
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "专门的 Agent 可以隔离深度探索",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 303.056333,
+          "time": 303.276333,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 908.3461158572466,
+        "y": 450,
+        "offsetX": -51.65388414275344,
+        "offsetY": 0,
+        "rawOffsetX": -155.65388414275344,
+        "rawOffsetY": -10.725326900861376,
+        "appliedShiftX": 104,
+        "appliedShiftY": 10.725326900861376
+      }
+    },
+    {
+      "id": "c05-s04",
+      "chapter": "长任务记忆",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 324.811333,
+      "end": 334.5,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        324.811333,
+        328.077333,
+        330.93433300000004
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c06-s01",
+      "chapter": "上下文包",
+      "paragraphs": [
+        1,
+        2
+      ],
+      "start": 334.5,
+      "end": 356.845,
+      "transition": {
+        "primeAt": 336.66,
+        "contentRevealAt": 336.68,
+        "contentAt": 336.84000000000003,
+        "humanAt": 336.84000000000003,
+        "agentAt": 336.88000000000005
+      },
+      "propBeatTimes": [
+        337.36,
+        337.36
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "把前面的方法整理成一份最小高信号上下文包",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 334.6,
+          "time": 337.36,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 397.5,
+        "gap": 126.10000000000002
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 405.7089763647693,
+        "offsetX": 0,
+        "offsetY": -44.291023635230715,
+        "rawOffsetX": 68.3488031601255,
+        "rawOffsetY": -44.291023635230715,
+        "appliedShiftX": -68.3488031601255,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c06-s02",
+      "chapter": "上下文包",
+      "paragraphs": [
+        3,
+        4
+      ],
+      "start": 356.845,
+      "end": 376.698,
+      "transition": {
+        "primeAt": 356.82500000000005,
+        "contentRevealAt": 356.845,
+        "contentAt": 356.88500000000005,
+        "humanAt": 356.88500000000005,
+        "agentAt": 356.92500000000007
+      },
+      "propBeatTimes": [
+        357.06500000000005,
+        357.06500000000005
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第二部分是运行规则",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 356.845,
+          "time": 357.06500000000005,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 397.5,
+        "gap": 195.3
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 435.1488222800188,
+        "offsetX": 0,
+        "offsetY": -14.851177719981195,
+        "rawOffsetX": 100.36265146392748,
+        "rawOffsetY": -14.851177719981195,
+        "appliedShiftX": -100.36265146392748,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c06-s03",
+      "chapter": "上下文包",
+      "paragraphs": [
+        5,
+        6
+      ],
+      "start": 376.698,
+      "end": 395.713,
+      "transition": {
+        "primeAt": 376.678,
+        "contentRevealAt": 376.698,
+        "contentAt": 376.738,
+        "humanAt": 376.738,
+        "agentAt": 376.778
+      },
+      "propBeatTimes": [
+        376.918,
+        376.918
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第四部分是检索索引",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 376.698,
+          "time": 376.918,
+          "clampedToContentStart": true
+        }
+      ],
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 397.5,
+        "gap": 195.3
+      },
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "visualBalance": {
+        "x": 960,
+        "y": 444.7461855270816,
+        "offsetX": 0,
+        "offsetY": -5.253814472918407,
+        "rawOffsetX": -156.08449839451146,
+        "rawOffsetY": -5.253814472918407,
+        "appliedShiftX": 156.08449839451146,
+        "appliedShiftY": 0
+      }
+    },
+    {
+      "id": "c06-s04",
+      "chapter": "上下文包",
+      "paragraphs": [
+        7,
+        9
+      ],
+      "start": 395.713,
+      "end": 406.166667,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        395.713,
+        399.304,
+        402.85
+      ],
+      "ctaAt": null,
+      "visualBalance": null
+    },
+    {
+      "id": "c07-s01",
+      "chapter": "总结",
+      "paragraphs": [
+        1,
+        6
+      ],
+      "start": 406.166667,
+      "end": 443.164979,
+      "transition": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "titleLane": null,
+      "summaryPointTimes": [
+        411.988667,
+        419.691667,
+        433.25266700000003
+      ],
+      "ctaAt": 440.642667,
+      "visualBalance": null
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "chapters": [
+    {
+      "label": "Introduction",
+      "showIntro": false,
+      "intro": "See why an AI Agent completion message is only a claim",
+      "summary": ["A completion message is not evidence", "Acceptance checks outcome and repeatability", "The acceptance sheet turns done into a decision"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["Agent says done","Outcome is real"],"human":"surprised","agent":"evaluate-front","props":[{"id":"chat","label":"Completion claim"},{"id":"checklist","label":"Green checklist"},{"id":"database","label":"Final state"},{"id":"evidence","label":"Proof"}],"flow":"cluster","callout":"Done is a claim, not proof","accent":"red"},
+        {"paragraphs":[3,4],"layout":"process","human":"explain-front","agent":"plan-front","props":[{"id":"task-list","label":"Fair task"},{"id":"result-card","label":"Outcome"},{"id":"scorecard","label":"Graders"},{"id":"experiment","label":"Trials"}],"flow":"chain","callout":"Evaluate the work and the system","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"hero","human":"review-front","agent":"verify-front","props":[{"id":"clipboard","label":"Acceptance sheet"},{"id":"approval","label":"Release decision"}],"flow":"chain","callout":"Turn done into evidence","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "Define Success",
+      "intro": "Define a fair task before asking whether the AI Agent passed",
+      "summary": ["define one task with explicit inputs and success criteria", "separate the transcript from the final outcome", "evaluate the model and the Agent harness together"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"write-front","agent":"listen-front","props":[{"id":"task-list","label":"Task"},{"id":"form","label":"Inputs"},{"id":"target","label":"Success"},{"id":"checklist","label":"Criteria"}],"flow":"cluster","callout":"A vague task creates a vague score","accent":"yellow"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["Transcript","Outcome"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"chat","label":"Messages"},{"id":"tool","label":"Tool calls"},{"id":"database","label":"Final state"},{"id":"result-card","label":"Working result"}],"flow":"cluster","callout":"What happened is not what remains","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"process","human":"explain-front","agent":"collaborate-front","props":[{"id":"scorecard","label":"Grader"},{"id":"settings","label":"Harness"},{"id":"tool","label":"Tools"},{"id":"workflow","label":"Orchestration"}],"flow":"chain","callout":"Evaluate model plus harness","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Grade the Outcome",
+      "intro": "Inspect the final state with the grader that fits each dimension",
+      "summary": ["verify the final state before trusting the Agent's claim", "combine deterministic, model-based, and human graders by dimension", "grade essential outcomes without overfitting to one valid path"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"operate","agent":"verify-front","props":[{"id":"result-card","label":"Artifact"},{"id":"database","label":"State"},{"id":"success","label":"Tests"},{"id":"evidence","label":"Proof"}],"flow":"chain","callout":"Inspect the state, not the sentence","accent":"blue"},
+        {"paragraphs":[3,5],"layout":"grid","human":"compare-front","agent":"evaluate-front","props":[{"id":"code-file","label":"Code grader"},{"id":"scorecard","label":"Model rubric"},{"id":"human-gate","label":"Human calibration"}],"flow":"cluster","callout":"One dimension, one clear grader job","accent":"yellow"},
+        {"paragraphs":[6,6],"layout":"grid","human":"decide-front","agent":"reason-front","props":[{"id":"branch","label":"Valid paths"},{"id":"target","label":"Essential result"}],"flow":"cluster","callout":"Grade the outcome without freezing the path","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Test Reliability",
+      "intro": "Run repeated trials to separate stable capability from one lucky pass",
+      "summary": ["run multiple trials because one pass can be luck", "choose pass at k for discovery and pass to the k for consistency", "balance tasks and isolate the environment before comparing results"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"caution-front","agent":"retry-front","props":[{"id":"experiment","label":"Trial one"},{"id":"loop","label":"Repeat"},{"id":"trend-up","label":"Stable success"},{"id":"trend-down","label":"Hidden failure"}],"flow":"chain","callout":"One pass can be luck","accent":"red"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["At least one succeeds","Every trial succeeds"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"search","label":"Discovery"},{"id":"success","label":"One solution"},{"id":"shield","label":"Consistency"},{"id":"approval","label":"Reliable action"}],"flow":"cluster","callout":"Choose the metric for the user promise","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"grid","human":"review-front","agent":"monitor-left","agentDirection":"left","props":[{"id":"compare","label":"Balanced cases"},{"id":"stop","label":"Negative cases"},{"id":"archive","label":"Clean state"},{"id":"settings","label":"Stable environment"}],"flow":"cluster","callout":"Balance cases and isolate every trial","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Audit the Eval",
+      "intro": "Check whether the task, harness, and graders are producing a fair signal",
+      "summary": ["turn real failures into unambiguous tasks with reference solutions", "read transcripts to tell Agent errors from grader errors", "keep the suite current as capabilities, products, and risks change"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"caution-front","agent":"read-front","props":[{"id":"error","label":"Real failure"},{"id":"notification","label":"User report"},{"id":"checklist","label":"Manual check"},{"id":"task-list","label":"Eval task"}],"flow":"chain","callout":"A low score may be an eval failure","accent":"red"},
+        {"paragraphs":[3,4],"layout":"grid","human":"write-front","agent":"verify-front","props":[{"id":"form","label":"Clear task"},{"id":"success","label":"Reference solution"},{"id":"scorecard","label":"Fair grader"},{"id":"evidence","label":"Known proof"}],"flow":"cluster","callout":"Prove the task and grader can pass","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"focus","human":"review-front","agent":"monitor-right","agentDirection":"right","props":[{"id":"chat","label":"Read traces"},{"id":"dashboard","label":"Watch signal"},{"id":"trend-up","label":"Raise difficulty"},{"id":"human-gate","label":"Calibrate"}],"flow":"cluster","callout":"The suite is a living product asset","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Acceptance Sheet",
+      "intro": "Capture the evidence and release decision in one reusable AI Agent sheet",
+      "summary": ["write the outcome and task setup before choosing a grader", "collect final-state evidence, behavior evidence, and repeated trials", "record the release decision, exceptions, and next test to add"],
+      "scenes": [
+        {"paragraphs":[1,3],"layout":"process","human":"write-front","agent":"plan-front","props":[{"id":"result-card","label":"Outcome"},{"id":"form","label":"Task setup"},{"id":"target","label":"Threshold"},{"id":"success","label":"Reference"}],"flow":"chain","callout":"Start with outcome and reproducible setup","accent":"blue"},
+        {"paragraphs":[4,4],"layout":"grid","human":"compare-front","agent":"evaluate-front","props":[{"id":"code-file","label":"Deterministic"},{"id":"scorecard","label":"Model rubric"},{"id":"human-gate","label":"Human review"}],"flow":"cluster","callout":"Match each dimension to a grader","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"decide-front","agent":"verify-front","props":[{"id":"experiment","label":"Repeated trials"},{"id":"dashboard","label":"Eval health"},{"id":"warning","label":"Exceptions"},{"id":"approval","label":"Release decision"}],"flow":"chain","callout":"Record confidence, gaps, and the decision","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"Recap","accent":"blue"}
+      ]
+    },
+    {
+      "label": "Summary",
+      "showIntro": false,
+      "intro": "Turn an AI Agent completion claim into a result you can trust",
+      "summary": ["define success before the AI Agent starts", "verify final state with the right grader mix", "repeat trials and audit the evaluation itself"],
+      "scenes": [
+        {"paragraphs":[1,1],"layout":"focus","human":"caution-front","agent":"evaluate-front","props":[{"id":"chat","label":"Done claim"},{"id":"evidence","label":"Verified result"}],"flow":"chain","callout":"Polished is not proven","accent":"red"},
+        {"paragraphs":[2,6],"summaryPointParagraphs":[2,3,4],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"approve","agent":"celebrate-front","props":[],"flow":"cluster","callout":"AI Agent Acceptance Sheet","accent":"yellow"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2253 @@
+{
+  "duration": 622.444521,
+  "voice": "en-US-AnaNeural",
+  "rate": "+30%",
+  "chapters": [
+    {
+      "label": "Introduction",
+      "start": 0,
+      "end": 73.416,
+      "duration": 73.416
+    },
+    {
+      "label": "Define Success",
+      "start": 73.416,
+      "end": 174.98399999999998,
+      "duration": 101.568
+    },
+    {
+      "label": "Grade the Outcome",
+      "start": 174.98399999999998,
+      "end": 282.52799999999996,
+      "duration": 107.544
+    },
+    {
+      "label": "Test Reliability",
+      "start": 282.52799999999996,
+      "end": 382.67999999999995,
+      "duration": 100.152
+    },
+    {
+      "label": "Audit the Eval",
+      "start": 382.67999999999995,
+      "end": 486.59999999999997,
+      "duration": 103.92
+    },
+    {
+      "label": "Acceptance Sheet",
+      "start": 486.59999999999997,
+      "end": 582.312,
+      "duration": 95.712
+    },
+    {
+      "label": "Summary",
+      "start": 582.312,
+      "end": 622.444521,
+      "duration": 40.132521
+    }
+  ],
+  "scenes": [
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "comparison",
+      "labels": [
+        "Agent says done",
+        "Outcome is real"
+      ],
+      "human": "surprised",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Completion claim"
+        },
+        {
+          "id": "checklist",
+          "label": "Green checklist"
+        },
+        {
+          "id": "database",
+          "label": "Final state"
+        },
+        {
+          "id": "evidence",
+          "label": "Proof"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Done is a claim, not proof",
+      "accent": "red",
+      "id": "c01-s01",
+      "chapter": "Introduction",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "See why an AI Agent completion message is only a claim",
+      "chapterSummary": [
+        "A completion message is not evidence",
+        "Acceptance checks outcome and repeatability",
+        "The acceptance sheet turns done into a decision"
+      ],
+      "start": 0,
+      "end": 33.557,
+      "narration": "An AI Agent says it completed the task. The report looks polished, the final message sounds confident, and every checklist item appears green. But the file may be in the wrong folder, the refund may not exist in the database, or the research answer may contain claims that its sources do not support. That gap is the central problem of AI Agent evaluation. A completion message is only a claim. Reliable acceptance asks whether the intended state actually exists, whether the work met clear quality boundaries, and whether the same Agent can succeed again instead of getting lucky once.",
+      "cueStarts": [
+        0.1,
+        2.923,
+        8.855,
+        17.173,
+        20.942,
+        23.5
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        0.22,
+        0.22,
+        24.74674356261023,
+        24.74674356261023
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "An AI Agent says it completed the task",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "whether the intended state actually exists",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 24.82674356261023,
+          "time": 24.74674356261023,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 970.7675242964789,
+        "y": 443.53245541085045,
+        "offsetX": 10.767524296478882,
+        "offsetY": -26.467544589149554,
+        "rawOffsetX": 10.767524296478882,
+        "rawOffsetY": -78.46754458914955,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "explain-front",
+      "agent": "plan-front",
+      "props": [
+        {
+          "id": "task-list",
+          "label": "Fair task"
+        },
+        {
+          "id": "result-card",
+          "label": "Outcome"
+        },
+        {
+          "id": "scorecard",
+          "label": "Graders"
+        },
+        {
+          "id": "experiment",
+          "label": "Trials"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Evaluate the work and the system",
+      "accent": "blue",
+      "id": "c01-s02",
+      "chapter": "Introduction",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "See why an AI Agent completion message is only a claim",
+      "chapterSummary": [
+        "A completion message is not evidence",
+        "Acceptance checks outcome and repeatability",
+        "The acceptance sheet turns done into a decision"
+      ],
+      "start": 33.557,
+      "end": 64.759,
+      "narration": "Anthropic's guidance on Agent evals makes one point especially useful: the flexibility that makes Agents valuable also makes them harder to test. They act over many turns, call tools, change environments, and sometimes reach a good result through a path the evaluator did not predict. So this video will build a practical acceptance method. You will learn how to define a fair task, separate the transcript from the outcome, select code, model, and human graders, measure repeated trials, and check whether the evaluation itself is misleading you.",
+      "cueStarts": [
+        33.557,
+        41.826,
+        49.788,
+        53.211
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        37.52476223776224,
+        37.52476223776224,
+        57.81122133599202,
+        57.81122133599202
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "the flexibility that makes Agents valuable",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 37.60476223776224,
+          "time": 37.52476223776224,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "select code, model, and human graders",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 57.89122133599202,
+          "time": 57.81122133599202,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 992.6034152401272,
+        "y": 425.6040741571477,
+        "offsetX": 32.60341524012722,
+        "offsetY": -44.39592584285231,
+        "rawOffsetX": 32.60341524012722,
+        "rawOffsetY": -124.39592584285231,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        5
+      ],
+      "layout": "hero",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "Acceptance sheet"
+        },
+        {
+          "id": "approval",
+          "label": "Release decision"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Turn done into evidence",
+      "accent": "yellow",
+      "id": "c01-s03",
+      "chapter": "Introduction",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "See why an AI Agent completion message is only a claim",
+      "chapterSummary": [
+        "A completion message is not evidence",
+        "Acceptance checks outcome and repeatability",
+        "The acceptance sheet turns done into a decision"
+      ],
+      "start": 64.759,
+      "end": 73.416,
+      "narration": "At the end, you will have an AI Agent Acceptance Sheet that turns “it feels done” into evidence you can review, repeat, and use for a release decision.",
+      "cueStarts": [
+        64.759
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        66.27535436241611,
+        66.27535436241611
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "AI Agent Acceptance Sheet",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 66.35535436241611,
+          "time": 66.27535436241611,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 476.5625,
+        "gap": 205.16250000000002
+      },
+      "balanceShift": {
+        "x": 75.04766231764745,
+        "y": 45
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 413.6885089153714,
+        "offsetX": 0,
+        "offsetY": -56.311491084628585,
+        "rawOffsetX": -75.04766231764745,
+        "rawOffsetY": -101.31149108462859,
+        "appliedShiftX": 75.04766231764745,
+        "appliedShiftY": 45
+      }
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "grid",
+      "human": "write-front",
+      "agent": "listen-front",
+      "props": [
+        {
+          "id": "task-list",
+          "label": "Task"
+        },
+        {
+          "id": "form",
+          "label": "Inputs"
+        },
+        {
+          "id": "target",
+          "label": "Success"
+        },
+        {
+          "id": "checklist",
+          "label": "Criteria"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "A vague task creates a vague score",
+      "accent": "yellow",
+      "id": "c02-s01",
+      "chapter": "Define Success",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Define a fair task before asking whether the AI Agent passed",
+      "chapterSummary": [
+        "define one task with explicit inputs and success criteria",
+        "separate the transcript from the final outcome",
+        "evaluate the model and the Agent harness together"
+      ],
+      "start": 73.416,
+      "end": 103.416,
+      "narration": "Start with the smallest unit of evaluation: a task. A task gives the AI Agent defined inputs and success criteria. One attempt at that task is a trial, and a collection of related tasks becomes an evaluation suite. The distinction matters because a vague request produces a vague score. If two domain experts cannot independently decide whether the task passed, the specification is not yet ready to measure. The Agent should know what it must produce, where the result belongs, and which constraints are essential.",
+      "cueStarts": [
+        73.51599999999999,
+        77.021,
+        81.24199999999999,
+        87.079,
+        91.06,
+        97.877
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        76.276,
+        76.276,
+        79.86323076923077,
+        79.86323076923077
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Start with the smallest unit of evaluation",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 73.51599999999999,
+          "time": 76.276,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "success criteria",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 79.94323076923077,
+          "time": 79.86323076923077,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 330.15,
+        "gap": 127.94999999999999
+      },
+      "balanceShift": {
+        "x": 75.23327500310415,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 392.0693405955216,
+        "offsetX": 0,
+        "offsetY": -77.93065940447838,
+        "rawOffsetX": -75.23327500310415,
+        "rawOffsetY": -125.33065940447835,
+        "appliedShiftX": 75.23327500310415,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "comparison",
+      "labels": [
+        "Transcript",
+        "Outcome"
+      ],
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Messages"
+        },
+        {
+          "id": "tool",
+          "label": "Tool calls"
+        },
+        {
+          "id": "database",
+          "label": "Final state"
+        },
+        {
+          "id": "result-card",
+          "label": "Working result"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "What happened is not what remains",
+      "accent": "blue",
+      "id": "c02-s02",
+      "chapter": "Define Success",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Define a fair task before asking whether the AI Agent passed",
+      "chapterSummary": [
+        "define one task with explicit inputs and success criteria",
+        "separate the transcript from the final outcome",
+        "evaluate the model and the Agent harness together"
+      ],
+      "start": 103.416,
+      "end": 131.867,
+      "narration": "Next, separate the transcript from the outcome. The transcript records messages, tool calls, intermediate results, reasoning, and errors. The outcome is the final state left in the environment after the trial. For a booking Agent, “your flight is booked” appears in the transcript. The outcome is a valid reservation in the database. For a coding Agent, a convincing explanation is not the outcome; the changed repository, passing tests, and preserved behavior are.",
+      "cueStarts": [
+        103.416,
+        106.627,
+        112.502,
+        116.406,
+        120.589,
+        123.8
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        103.72758536585366,
+        103.72758536585366,
+        112.422,
+        112.422
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "separate the transcript from the outcome",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 103.80758536585365,
+          "time": 103.72758536585366,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "The outcome is the final state",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 112.502,
+          "time": 112.422,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 966.4576379580128,
+        "y": 422.73496508805675,
+        "offsetX": 6.4576379580128105,
+        "offsetY": -47.265034911943246,
+        "rawOffsetX": 6.4576379580128105,
+        "rawOffsetY": -99.26503491194325,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "process",
+      "human": "explain-front",
+      "agent": "collaborate-front",
+      "props": [
+        {
+          "id": "scorecard",
+          "label": "Grader"
+        },
+        {
+          "id": "settings",
+          "label": "Harness"
+        },
+        {
+          "id": "tool",
+          "label": "Tools"
+        },
+        {
+          "id": "workflow",
+          "label": "Orchestration"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Evaluate model plus harness",
+      "accent": "red",
+      "id": "c02-s03",
+      "chapter": "Define Success",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Define a fair task before asking whether the AI Agent passed",
+      "chapterSummary": [
+        "define one task with explicit inputs and success criteria",
+        "separate the transcript from the final outcome",
+        "evaluate the model and the Agent harness together"
+      ],
+      "start": 131.867,
+      "end": 163.079,
+      "narration": "A grader scores one dimension of performance. It may check an exact state, apply a quality rubric, or ask a human expert to judge a subjective result. A task can use several graders because success is often multidimensional. Finally, remember what you are evaluating. An AI Agent is not only a model. The harness supplies instructions, tools, state, and orchestration. A weak tool contract or unstable environment can make the same model fail, so the model and harness must be evaluated together.",
+      "cueStarts": [
+        131.867,
+        134.925,
+        141.27100000000002,
+        145.675,
+        148.666,
+        151.31,
+        155.858
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        132.087,
+        151.23,
+        151.23,
+        151.23
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "A grader scores one dimension",
+          "props": [
+            0
+          ],
+          "rawTime": 131.867,
+          "time": 132.087,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "The harness supplies instructions",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 151.31,
+          "time": 151.23,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 415.296875,
+        "gap": 213.096875
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 1023.4337431519295,
+        "y": 458.32860055617965,
+        "offsetX": 63.43374315192955,
+        "offsetY": -11.671399443820349,
+        "rawOffsetX": 63.43374315192955,
+        "rawOffsetY": -91.67139944382035,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c02-s04",
+      "chapter": "Define Success",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Define a fair task before asking whether the AI Agent passed",
+      "chapterSummary": [
+        "define one task with explicit inputs and success criteria",
+        "separate the transcript from the final outcome",
+        "evaluate the model and the Agent harness together"
+      ],
+      "start": 163.079,
+      "end": 174.98399999999998,
+      "narration": "First, define one task with explicit inputs and success criteria. Second, separate the transcript from the final outcome. Third, evaluate the model and the Agent harness together.",
+      "cueStarts": [
+        163.079,
+        167.656,
+        171.262
+      ],
+      "summaryPointTimes": [
+        163.079,
+        167.656,
+        171.262
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "process",
+      "human": "operate",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "Artifact"
+        },
+        {
+          "id": "database",
+          "label": "State"
+        },
+        {
+          "id": "success",
+          "label": "Tests"
+        },
+        {
+          "id": "evidence",
+          "label": "Proof"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Inspect the state, not the sentence",
+      "accent": "blue",
+      "id": "c03-s01",
+      "chapter": "Grade the Outcome",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Inspect the final state with the grader that fits each dimension",
+      "chapterSummary": [
+        "verify the final state before trusting the Agent's claim",
+        "combine deterministic, model-based, and human graders by dimension",
+        "grade essential outcomes without overfitting to one valid path"
+      ],
+      "start": 174.98399999999998,
+      "end": 203.58899999999997,
+      "narration": "The first acceptance question is simple: did the intended final state exist? Outcome checks are usually stronger than trusting the Agent's own completion message because they inspect the artifact, database, application state, or external effect directly. For structured work, code-based graders are fast, cheap, reproducible, and easy to debug. Unit tests, schema checks, static analysis, exact matches, and state assertions can verify conditions that have objective answers.",
+      "cueStarts": [
+        175.08399999999997,
+        179.57999999999998,
+        189.099,
+        195.176
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        177.844,
+        177.844,
+        195.09599999999998,
+        195.09599999999998
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "did the intended final state exist",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 177.56503728813556,
+          "time": 177.844,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Unit tests",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 195.176,
+          "time": 195.09599999999998,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 412.734375,
+        "gap": 218.334375
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 976.3129422622669,
+        "y": 455.83804572846486,
+        "offsetX": 16.312942262266915,
+        "offsetY": -14.161954271535137,
+        "rawOffsetX": 16.312942262266915,
+        "rawOffsetY": -94.16195427153514,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        5
+      ],
+      "layout": "grid",
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "code-file",
+          "label": "Code grader"
+        },
+        {
+          "id": "scorecard",
+          "label": "Model rubric"
+        },
+        {
+          "id": "human-gate",
+          "label": "Human calibration"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "One dimension, one clear grader job",
+      "accent": "yellow",
+      "id": "c03-s02",
+      "chapter": "Grade the Outcome",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Inspect the final state with the grader that fits each dimension",
+      "chapterSummary": [
+        "verify the final state before trusting the Agent's claim",
+        "combine deterministic, model-based, and human graders by dimension",
+        "grade essential outcomes without overfitting to one valid path"
+      ],
+      "start": 203.58899999999997,
+      "end": 254.13699999999997,
+      "narration": "But deterministic graders can be brittle. A valid answer may use different wording, a different file structure, or a creative solution that satisfies the user while missing an overly narrow expected pattern. Passing the evaluator should require solving the task, not guessing the evaluator's favorite implementation. Model-based graders help with open-ended work. A clear rubric can score groundedness, completeness, instruction following, or communication quality. Pairwise comparison and separate dimension scores are often more reliable than one vague request to judge everything at once. Model graders are still nondeterministic and must be calibrated against human judgment. Give them structured criteria and an “unknown” option when evidence is insufficient. For high-stakes or specialized work, human experts remain the reference used to check whether automated grading matches real quality.",
+      "cueStarts": [
+        203.58899999999997,
+        206.253,
+        215.128,
+        221.051,
+        224.08899999999997,
+        230.272,
+        237.03199999999998,
+        242.041,
+        246.90699999999998
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        203.80899999999997,
+        220.97099999999998,
+        248.8341554252199
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "deterministic graders can be brittle",
+          "props": [
+            0
+          ],
+          "rawTime": 203.81099999999998,
+          "time": 203.80899999999997,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Model-based graders help",
+          "props": [
+            1
+          ],
+          "rawTime": 221.051,
+          "time": 220.97099999999998,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "human experts remain the reference",
+          "props": [
+            2
+          ],
+          "rawTime": 248.91415542521992,
+          "time": 248.8341554252199,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 220.25483125431822,
+        "gap": 25.854831254318213
+      },
+      "balanceShift": {
+        "x": -92.41075955752785,
+        "y": 60.244603127159166
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 422.2571213119365,
+        "offsetX": 0,
+        "offsetY": -47.74287868806351,
+        "rawOffsetX": 92.41075955752785,
+        "rawOffsetY": -107.98748181522268,
+        "appliedShiftX": -92.41075955752785,
+        "appliedShiftY": 60.244603127159166
+      }
+    },
+    {
+      "paragraphs": [
+        6,
+        6
+      ],
+      "layout": "grid",
+      "human": "decide-front",
+      "agent": "reason-front",
+      "props": [
+        {
+          "id": "branch",
+          "label": "Valid paths"
+        },
+        {
+          "id": "target",
+          "label": "Essential result"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Grade the outcome without freezing the path",
+      "accent": "red",
+      "id": "c03-s03",
+      "chapter": "Grade the Outcome",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Inspect the final state with the grader that fits each dimension",
+      "chapterSummary": [
+        "verify the final state before trusting the Agent's claim",
+        "combine deterministic, model-based, and human graders by dimension",
+        "grade essential outcomes without overfitting to one valid path"
+      ],
+      "start": 254.13699999999997,
+      "end": 268.76199999999994,
+      "narration": "The practical pattern is outcome first, then behavior where behavior matters. Verify the final state, add transcript checks for safety or efficiency, and avoid requiring one exact sequence of tool calls when several valid paths can reach the right result.",
+      "cueStarts": [
+        254.13699999999997,
+        258.753
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        255.52703746654768,
+        255.52703746654768
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "outcome first",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 255.6070374665477,
+          "time": 255.52703746654768,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 256.8,
+        "contentTop": 417.5,
+        "gap": 160.7
+      },
+      "balanceShift": {
+        "x": 52.090388710668435,
+        "y": 110
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 409.41666187403627,
+        "offsetX": 0,
+        "offsetY": -60.583338125963735,
+        "rawOffsetX": -52.090388710668435,
+        "rawOffsetY": -170.58333812596373,
+        "appliedShiftX": 52.090388710668435,
+        "appliedShiftY": 110
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c03-s04",
+      "chapter": "Grade the Outcome",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Inspect the final state with the grader that fits each dimension",
+      "chapterSummary": [
+        "verify the final state before trusting the Agent's claim",
+        "combine deterministic, model-based, and human graders by dimension",
+        "grade essential outcomes without overfitting to one valid path"
+      ],
+      "start": 268.76199999999994,
+      "end": 282.52799999999996,
+      "narration": "First, verify the final state before trusting the Agent's claim. Second, combine deterministic, model-based, and human graders by dimension. Third, grade essential outcomes without overfitting to one valid path.",
+      "cueStarts": [
+        268.76199999999994,
+        272.907,
+        278.176
+      ],
+      "summaryPointTimes": [
+        268.76199999999994,
+        272.907,
+        278.176
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "process",
+      "human": "caution-front",
+      "agent": "retry-front",
+      "props": [
+        {
+          "id": "experiment",
+          "label": "Trial one"
+        },
+        {
+          "id": "loop",
+          "label": "Repeat"
+        },
+        {
+          "id": "trend-up",
+          "label": "Stable success"
+        },
+        {
+          "id": "trend-down",
+          "label": "Hidden failure"
+        }
+      ],
+      "flow": "chain",
+      "callout": "One pass can be luck",
+      "accent": "red",
+      "id": "c04-s01",
+      "chapter": "Test Reliability",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Run repeated trials to separate stable capability from one lucky pass",
+      "chapterSummary": [
+        "run multiple trials because one pass can be luck",
+        "choose pass at k for discovery and pass to the k for consistency",
+        "balance tasks and isolate the environment before comparing results"
+      ],
+      "start": 282.52799999999996,
+      "end": 306.787,
+      "narration": "One successful trial does not prove that an AI Agent is reliable. Agent behavior varies between runs, so a pass can reflect a stable capability, a lucky trajectory, or an evaluator that missed the failure. This is why each important task should run more than once. The distribution of results reveals whether the Agent usually succeeds, occasionally succeeds, or fails in a consistent way that one trial would hide.",
+      "cueStarts": [
+        282.628,
+        286.854,
+        295.04299999999995,
+        298.52799999999996
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        285.388,
+        297.2863333333333,
+        297.2863333333333,
+        297.2863333333333
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "One successful trial does not prove",
+          "props": [
+            0
+          ],
+          "rawTime": 282.628,
+          "time": 285.388,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "run more than once",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 297.3663333333333,
+          "time": 297.2863333333333,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 978.6005578794816,
+        "y": 468.9505046258884,
+        "offsetX": 18.600557879481585,
+        "offsetY": -1.0494953741115864,
+        "rawOffsetX": 18.600557879481585,
+        "rawOffsetY": -81.04949537411159,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "comparison",
+      "labels": [
+        "At least one succeeds",
+        "Every trial succeeds"
+      ],
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "search",
+          "label": "Discovery"
+        },
+        {
+          "id": "success",
+          "label": "One solution"
+        },
+        {
+          "id": "shield",
+          "label": "Consistency"
+        },
+        {
+          "id": "approval",
+          "label": "Reliable action"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Choose the metric for the user promise",
+      "accent": "blue",
+      "id": "c04-s02",
+      "chapter": "Test Reliability",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Run repeated trials to separate stable capability from one lucky pass",
+      "chapterSummary": [
+        "run multiple trials because one pass can be luck",
+        "choose pass at k for discovery and pass to the k for consistency",
+        "balance tasks and isolate the environment before comparing results"
+      ],
+      "start": 306.787,
+      "end": 338.70099999999996,
+      "narration": "Pass at k asks whether at least one of k attempts succeeds. It is useful when exploration matters and one working solution is enough. Pass to the k asks whether all k attempts succeed, which is the harder and more relevant bar when users expect the same task to work every time. The difference is operational. A research assistant that proposes several hypotheses may benefit from one strong result. A customer-facing Agent that processes refunds needs consistent correctness, because one failure can create a real financial or trust problem.",
+      "cueStarts": [
+        306.787,
+        310.71,
+        315.143,
+        323.181,
+        325.27799999999996,
+        330.59499999999997
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        307.007,
+        307.007,
+        315.063,
+        315.063
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Pass at k asks",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 306.787,
+          "time": 307.007,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Pass to the k asks",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 315.143,
+          "time": 315.063,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 228,
+        "gap": 33.599999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 963.756755996743,
+        "y": 430.24181890683616,
+        "offsetX": 3.7567559967429816,
+        "offsetY": -39.75818109316384,
+        "rawOffsetX": 3.7567559967429816,
+        "rawOffsetY": -91.75818109316384,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "grid",
+      "human": "review-front",
+      "agent": "monitor-left",
+      "agentDirection": "left",
+      "props": [
+        {
+          "id": "compare",
+          "label": "Balanced cases"
+        },
+        {
+          "id": "stop",
+          "label": "Negative cases"
+        },
+        {
+          "id": "archive",
+          "label": "Clean state"
+        },
+        {
+          "id": "settings",
+          "label": "Stable environment"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Balance cases and isolate every trial",
+      "accent": "yellow",
+      "id": "c04-s03",
+      "chapter": "Test Reliability",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Run repeated trials to separate stable capability from one lucky pass",
+      "chapterSummary": [
+        "run multiple trials because one pass can be luck",
+        "choose pass at k for discovery and pass to the k for consistency",
+        "balance tasks and isolate the environment before comparing results"
+      ],
+      "start": 338.70099999999996,
+      "end": 369.393,
+      "narration": "Reliability also depends on task balance. Test cases where a behavior should happen and cases where it should not. If you only reward searching, the Agent may search everything. If you only reward refusal, it may stop doing useful work. Keep trials isolated. Shared files, cached state, resource exhaustion, or history from a previous run can either inflate performance or create correlated failures. The test environment should resemble production while resetting the state that would contaminate comparison.",
+      "cueStarts": [
+        338.70099999999996,
+        341.90299999999996,
+        345.893,
+        349.70099999999996,
+        353.691,
+        355.681,
+        364.018
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        340.7556666666666,
+        340.7556666666666,
+        353.611,
+        353.611
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "task balance",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 340.8356666666666,
+          "time": 340.7556666666666,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "Keep trials isolated",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 353.691,
+          "time": 353.611,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 315.80625,
+        "gap": 121.40624999999997
+      },
+      "balanceShift": {
+        "x": -69.76978261322029,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 406.8108584429526,
+        "offsetX": 0,
+        "offsetY": -63.18914155704738,
+        "rawOffsetX": 69.76978261322029,
+        "rawOffsetY": -110.58914155704736,
+        "appliedShiftX": -69.76978261322029,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c04-s04",
+      "chapter": "Test Reliability",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Run repeated trials to separate stable capability from one lucky pass",
+      "chapterSummary": [
+        "run multiple trials because one pass can be luck",
+        "choose pass at k for discovery and pass to the k for consistency",
+        "balance tasks and isolate the environment before comparing results"
+      ],
+      "start": 369.393,
+      "end": 382.67999999999995,
+      "narration": "First, run multiple trials because one pass can be luck. Second, choose pass at k for discovery and pass to the k for consistency. Third, balance tasks and isolate the environment before comparing results.",
+      "cueStarts": [
+        369.393,
+        373.21999999999997,
+        377.99899999999997
+      ],
+      "summaryPointTimes": [
+        369.393,
+        373.21999999999997,
+        377.99899999999997
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "process",
+      "human": "caution-front",
+      "agent": "read-front",
+      "props": [
+        {
+          "id": "error",
+          "label": "Real failure"
+        },
+        {
+          "id": "notification",
+          "label": "User report"
+        },
+        {
+          "id": "checklist",
+          "label": "Manual check"
+        },
+        {
+          "id": "task-list",
+          "label": "Eval task"
+        }
+      ],
+      "flow": "chain",
+      "callout": "A low score may be an eval failure",
+      "accent": "red",
+      "id": "c05-s01",
+      "chapter": "Audit the Eval",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Check whether the task, harness, and graders are producing a fair signal",
+      "chapterSummary": [
+        "turn real failures into unambiguous tasks with reference solutions",
+        "read transcripts to tell Agent errors from grader errors",
+        "keep the suite current as capabilities, products, and risks change"
+      ],
+      "start": 382.67999999999995,
+      "end": 408.04499999999996,
+      "narration": "A low score does not always mean the AI Agent is weak. The task may be ambiguous, the environment may be broken, or the grader may reject a valid answer. Evaluation quality must be tested too. Start with failures you already see. Manual checks, support tickets, production bugs, and difficult edge cases are high-value seeds because they represent real user expectations rather than imaginary benchmark puzzles.",
+      "cueStarts": [
+        382.78,
+        386.30499999999995,
+        392.17999999999995,
+        395.06399999999996,
+        397.56399999999996
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        385.53999999999996,
+        394.984,
+        394.984,
+        394.984
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "A low score does not always mean",
+          "props": [
+            0
+          ],
+          "rawTime": 382.78,
+          "time": 385.53999999999996,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Start with failures you already see",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 395.06399999999996,
+          "time": 394.984,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.65625,
+        "gap": 212.45625
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 961.5347713631741,
+        "y": 427.38228808022,
+        "offsetX": 1.534771363174059,
+        "offsetY": -42.61771191977999,
+        "rawOffsetX": 1.534771363174059,
+        "rawOffsetY": -122.61771191977999,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "grid",
+      "human": "write-front",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "form",
+          "label": "Clear task"
+        },
+        {
+          "id": "success",
+          "label": "Reference solution"
+        },
+        {
+          "id": "scorecard",
+          "label": "Fair grader"
+        },
+        {
+          "id": "evidence",
+          "label": "Known proof"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Prove the task and grader can pass",
+      "accent": "blue",
+      "id": "c05-s02",
+      "chapter": "Audit the Eval",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Check whether the task, harness, and graders are producing a fair signal",
+      "chapterSummary": [
+        "turn real failures into unambiguous tasks with reference solutions",
+        "read transcripts to tell Agent errors from grader errors",
+        "keep the suite current as capabilities, products, and risks change"
+      ],
+      "start": 408.04499999999996,
+      "end": 440.61199999999997,
+      "narration": "Write each task so two qualified reviewers can reach the same verdict. Include the input, required outcome, important constraints, and everything the grader will inspect. Then create a reference solution that proves the task is solvable and that the graders can recognize a known good result. Build balanced sets and begin small. A useful early suite can contain a few dozen realistic tasks instead of hundreds of weak examples. As the product matures, add harder cases that distinguish improvements and convert solved capability tests into regression protection.",
+      "cueStarts": [
+        408.04499999999996,
+        412.36199999999997,
+        418.33299999999997,
+        424.54499999999996,
+        427.15099999999995,
+        433.07399999999996
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        408.265,
+        418.49933793103446,
+        418.49933793103446,
+        418.49933793103446
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Write each task so two qualified reviewers",
+          "props": [
+            0
+          ],
+          "rawTime": 408.04499999999996,
+          "time": 408.265,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "create a reference solution",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 418.57933793103444,
+          "time": 418.49933793103446,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.2125,
+        "gap": 112.01249999999999
+      },
+      "balanceShift": {
+        "x": 62.15435624438601,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 391.5746675245557,
+        "offsetX": 0,
+        "offsetY": -78.42533247544429,
+        "rawOffsetX": -62.15435624438601,
+        "rawOffsetY": -125.82533247544427,
+        "appliedShiftX": 62.15435624438601,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "monitor-right",
+      "agentDirection": "right",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Read traces"
+        },
+        {
+          "id": "dashboard",
+          "label": "Watch signal"
+        },
+        {
+          "id": "trend-up",
+          "label": "Raise difficulty"
+        },
+        {
+          "id": "human-gate",
+          "label": "Calibrate"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "The suite is a living product asset",
+      "accent": "yellow",
+      "id": "c05-s03",
+      "chapter": "Audit the Eval",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Check whether the task, harness, and graders are producing a fair signal",
+      "chapterSummary": [
+        "turn real failures into unambiguous tasks with reference solutions",
+        "read transcripts to tell Agent errors from grader errors",
+        "keep the suite current as capabilities, products, and risks change"
+      ],
+      "start": 440.61199999999997,
+      "end": 472.32399999999996,
+      "narration": "Read transcripts and grades from many trials. A failed trace tells you whether the Agent made a genuine mistake, whether the harness blocked progress, or whether the grader punished a reasonable solution. If failures do not look fair, revise the evaluation before optimizing the Agent. Treat the suite as a living artifact. Models improve, products change, user behavior shifts, and once-difficult tasks saturate. Ownership, regular maintenance, production monitoring, and periodic human calibration keep the signal useful over time.",
+      "cueStarts": [
+        440.61199999999997,
+        443.756,
+        451.68899999999996,
+        456.69899999999996,
+        459.20799999999997,
+        465.23699999999997
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        440.832,
+        440.832,
+        457.91396774193544,
+        457.91396774193544
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Read transcripts and grades",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 440.61199999999997,
+          "time": 440.832,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "living artifact",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 457.9939677419354,
+          "time": 457.91396774193544,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 213,
+        "contentTop": 320.5875,
+        "gap": 107.58749999999998
+      },
+      "balanceShift": {
+        "x": -85.07050221990403,
+        "y": 25
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 380.37041642000605,
+        "offsetX": 0,
+        "offsetY": -89.62958357999395,
+        "rawOffsetX": 85.07050221990403,
+        "rawOffsetY": -114.62958357999395,
+        "appliedShiftX": -85.07050221990403,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c05-s04",
+      "chapter": "Audit the Eval",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Check whether the task, harness, and graders are producing a fair signal",
+      "chapterSummary": [
+        "turn real failures into unambiguous tasks with reference solutions",
+        "read transcripts to tell Agent errors from grader errors",
+        "keep the suite current as capabilities, products, and risks change"
+      ],
+      "start": 472.32399999999996,
+      "end": 486.59999999999997,
+      "narration": "First, turn real failures into unambiguous tasks with reference solutions. Second, read transcripts to tell Agent errors from grader errors. Third, keep the suite current as capabilities, products, and risks change.",
+      "cueStarts": [
+        472.32399999999996,
+        477.256,
+        481.55499999999995
+      ],
+      "summaryPointTimes": [
+        472.32399999999996,
+        477.256,
+        481.55499999999995
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        3
+      ],
+      "layout": "process",
+      "human": "write-front",
+      "agent": "plan-front",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "Outcome"
+        },
+        {
+          "id": "form",
+          "label": "Task setup"
+        },
+        {
+          "id": "target",
+          "label": "Threshold"
+        },
+        {
+          "id": "success",
+          "label": "Reference"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Start with outcome and reproducible setup",
+      "accent": "blue",
+      "id": "c06-s01",
+      "chapter": "Acceptance Sheet",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "Capture the evidence and release decision in one reusable AI Agent sheet",
+      "chapterSummary": [
+        "write the outcome and task setup before choosing a grader",
+        "collect final-state evidence, behavior evidence, and repeated trials",
+        "record the release decision, exceptions, and next test to add"
+      ],
+      "start": 486.59999999999997,
+      "end": 523.4359999999999,
+      "narration": "Now turn the method into one AI Agent Acceptance Sheet. Use it for a single high-value task before a release, for a repeated workflow, or as the seed of a larger evaluation suite. Block one is Outcome. Name the user-visible result, the final state that proves it exists, the acceptance threshold, and the evidence location. Do not use “Agent said done” as evidence. Block two is Task Setup. Record the input, tools, permissions, starting state, important constraints, and a reference solution. This makes the task reproducible and exposes whether the environment itself creates noise.",
+      "cueStarts": [
+        486.7,
+        490.27299999999997,
+        497.49399999999997,
+        499.34,
+        506.359,
+        509.44599999999997,
+        511.59999999999997,
+        518.2339999999999
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        489.46,
+        489.46,
+        503.4714,
+        503.4714
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "one AI Agent Acceptance Sheet",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 488.27521739130435,
+          "time": 489.46,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "acceptance threshold",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 503.5514,
+          "time": 503.4714,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 414.65625,
+        "gap": 220.25625
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 998.1610068237644,
+        "y": 431.5349404722229,
+        "offsetX": 38.16100682376441,
+        "offsetY": -38.4650595277771,
+        "rawOffsetX": 38.16100682376441,
+        "rawOffsetY": -118.4650595277771,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        4,
+        4
+      ],
+      "layout": "grid",
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "code-file",
+          "label": "Deterministic"
+        },
+        {
+          "id": "scorecard",
+          "label": "Model rubric"
+        },
+        {
+          "id": "human-gate",
+          "label": "Human review"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "Match each dimension to a grader",
+      "accent": "yellow",
+      "id": "c06-s02",
+      "chapter": "Acceptance Sheet",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Capture the evidence and release decision in one reusable AI Agent sheet",
+      "chapterSummary": [
+        "write the outcome and task setup before choosing a grader",
+        "collect final-state evidence, behavior evidence, and repeated trials",
+        "record the release decision, exceptions, and next test to add"
+      ],
+      "start": 523.4359999999999,
+      "end": 538.5229999999999,
+      "narration": "Block three is Grader Mix. Choose deterministic checks for objective state, model rubrics for open-ended quality, and human review for calibration or expert judgment. Give each grader one clear dimension instead of one grader an undefined job.",
+      "cueStarts": [
+        523.4359999999999,
+        525.6669999999999,
+        533.8209999999999
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        523.656,
+        523.656,
+        523.656
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Block three is Grader Mix",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 523.4359999999999,
+          "time": 523.656,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 226.2,
+        "gap": 24
+      },
+      "balanceShift": {
+        "x": -86.33062949358941,
+        "y": 54.29943438147734
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 406.59057346540413,
+        "offsetX": 0,
+        "offsetY": -63.409426534595866,
+        "rawOffsetX": 86.33062949358941,
+        "rawOffsetY": -117.7088609160732,
+        "appliedShiftX": -86.33062949358941,
+        "appliedShiftY": 54.29943438147734
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "process",
+      "human": "decide-front",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "experiment",
+          "label": "Repeated trials"
+        },
+        {
+          "id": "dashboard",
+          "label": "Eval health"
+        },
+        {
+          "id": "warning",
+          "label": "Exceptions"
+        },
+        {
+          "id": "approval",
+          "label": "Release decision"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Record confidence, gaps, and the decision",
+      "accent": "red",
+      "id": "c06-s03",
+      "chapter": "Acceptance Sheet",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Capture the evidence and release decision in one reusable AI Agent sheet",
+      "chapterSummary": [
+        "write the outcome and task setup before choosing a grader",
+        "collect final-state evidence, behavior evidence, and repeated trials",
+        "record the release decision, exceptions, and next test to add"
+      ],
+      "start": 538.5229999999999,
+      "end": 568.1279999999999,
+      "narration": "Block four is Reliability. Set the number of trials, the metric that matches the product need, and the minimum acceptable result. One success may be enough for exploration, but repeated customer actions need a consistency bar. Block five is Eval Health and Decision. Record transcript spot checks, known grader gaps, environment failures, exceptions, the release decision, and the next failure that should become a new task. The sheet evaluates both the Agent and your confidence in the test.",
+      "cueStarts": [
+        538.5229999999999,
+        540.6859999999999,
+        546.4939999999999,
+        552.1859999999999,
+        554.9749999999999,
+        564.2919999999999
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        538.7429999999999,
+        552.1059999999999,
+        552.1059999999999,
+        552.1059999999999
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "Block four is Reliability",
+          "props": [
+            0
+          ],
+          "rawTime": 538.5229999999999,
+          "time": 538.7429999999999,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "Block five is Eval Health and Decision",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 552.1859999999999,
+          "time": 552.1059999999999,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 194.4,
+        "contentTop": 416.578125,
+        "gap": 222.178125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 1009.5367001861836,
+        "y": 431.8306970924508,
+        "offsetX": 49.536700186183566,
+        "offsetY": -38.169302907549195,
+        "rawOffsetX": 49.536700186183566,
+        "rawOffsetY": -118.1693029075492,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "Recap",
+      "accent": "blue",
+      "id": "c06-s04",
+      "chapter": "Acceptance Sheet",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Capture the evidence and release decision in one reusable AI Agent sheet",
+      "chapterSummary": [
+        "write the outcome and task setup before choosing a grader",
+        "collect final-state evidence, behavior evidence, and repeated trials",
+        "record the release decision, exceptions, and next test to add"
+      ],
+      "start": 568.1279999999999,
+      "end": 582.312,
+      "narration": "First, write the outcome and task setup before choosing a grader. Second, collect final-state evidence, behavior evidence, and repeated trials. Third, record the release decision, exceptions, and next test to add.",
+      "cueStarts": [
+        568.1279999999999,
+        572.1479999999999,
+        577.5509999999999
+      ],
+      "summaryPointTimes": [
+        568.1279999999999,
+        572.1479999999999,
+        577.5509999999999
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    },
+    {
+      "paragraphs": [
+        1,
+        1
+      ],
+      "layout": "focus",
+      "human": "caution-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "chat",
+          "label": "Done claim"
+        },
+        {
+          "id": "evidence",
+          "label": "Verified result"
+        }
+      ],
+      "flow": "chain",
+      "callout": "Polished is not proven",
+      "accent": "red",
+      "id": "c07-s01",
+      "chapter": "Summary",
+      "chapterIndex": 6,
+      "chapterNumber": 7,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "Turn an AI Agent completion claim into a result you can trust",
+      "chapterSummary": [
+        "define success before the AI Agent starts",
+        "verify final state with the right grader mix",
+        "repeat trials and audit the evaluation itself"
+      ],
+      "start": 582.312,
+      "end": 594.071,
+      "narration": "An AI Agent's polished completion message is not proof. Reliable acceptance turns the intended result into a task, inspects the final state, and asks whether success repeats under fair conditions.",
+      "cueStarts": [
+        582.412,
+        586.013
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        583.1864893617021,
+        583.1864893617021
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "polished completion message is not proof",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 583.2664893617022,
+          "time": 583.1864893617021,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 413.125,
+        "gap": 179.325
+      },
+      "balanceShift": {
+        "x": 98.83196533420471,
+        "y": 25
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 374.8372370540751,
+        "offsetX": 0,
+        "offsetY": -95.1627629459249,
+        "rawOffsetX": -98.83196533420471,
+        "rawOffsetY": -120.1627629459249,
+        "appliedShiftX": 98.83196533420471,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "paragraphs": [
+        2,
+        6
+      ],
+      "summaryPointParagraphs": [
+        2,
+        3,
+        4
+      ],
+      "ctaParagraph": 6,
+      "recap": true,
+      "finalSummary": true,
+      "layout": "focus",
+      "human": "approve",
+      "agent": "celebrate-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "AI Agent Acceptance Sheet",
+      "accent": "yellow",
+      "id": "c07-s02",
+      "chapter": "Summary",
+      "chapterIndex": 6,
+      "chapterNumber": 7,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "Turn an AI Agent completion claim into a result you can trust",
+      "chapterSummary": [
+        "define success before the AI Agent starts",
+        "verify final state with the right grader mix",
+        "repeat trials and audit the evaluation itself"
+      ],
+      "start": 594.071,
+      "end": 622.444521,
+      "narration": "First, define success before the AI Agent starts. Second, verify final state with the right grader mix. Third, repeat trials and audit the evaluation itself. Use the AI Agent Acceptance Sheet to record the outcome, setup, evidence, grader mix, reliability bar, evaluation gaps, and release decision. That is how “done” becomes a result you can trust. Follow Tiny Agent. Tiny Agent helps you get better at using AI.",
+      "cueStarts": [
+        594.071,
+        597.879,
+        601.59,
+        605.36,
+        614.677,
+        617.956,
+        619.802
+      ],
+      "summaryPointTimes": [
+        594.071,
+        597.879,
+        601.59
+      ],
+      "ctaAt": 617.956,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    }
+  ]
+}

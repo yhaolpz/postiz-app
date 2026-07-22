@@ -1,0 +1,129 @@
+# Tiny Agent Horizontal Long-Form Script
+
+## Full Narration Script
+
+### 1 | Introduction
+
+An AI Agent says it completed the task. The report looks polished, the final message sounds confident, and every checklist item appears green. But the file may be in the wrong folder, the refund may not exist in the database, or the research answer may contain claims that its sources do not support.
+
+That gap is the central problem of AI Agent evaluation. A completion message is only a claim. Reliable acceptance asks whether the intended state actually exists, whether the work met clear quality boundaries, and whether the same Agent can succeed again instead of getting lucky once.
+
+Anthropic's guidance on Agent evals makes one point especially useful: the flexibility that makes Agents valuable also makes them harder to test. They act over many turns, call tools, change environments, and sometimes reach a good result through a path the evaluator did not predict.
+
+So this video will build a practical acceptance method. You will learn how to define a fair task, separate the transcript from the outcome, select code, model, and human graders, measure repeated trials, and check whether the evaluation itself is misleading you.
+
+At the end, you will have an AI Agent Acceptance Sheet that turns “it feels done” into evidence you can review, repeat, and use for a release decision.
+
+### 2 | Define Success
+
+Start with the smallest unit of evaluation: a task. A task gives the AI Agent defined inputs and success criteria. One attempt at that task is a trial, and a collection of related tasks becomes an evaluation suite.
+
+The distinction matters because a vague request produces a vague score. If two domain experts cannot independently decide whether the task passed, the specification is not yet ready to measure. The Agent should know what it must produce, where the result belongs, and which constraints are essential.
+
+Next, separate the transcript from the outcome. The transcript records messages, tool calls, intermediate results, reasoning, and errors. The outcome is the final state left in the environment after the trial.
+
+For a booking Agent, “your flight is booked” appears in the transcript. The outcome is a valid reservation in the database. For a coding Agent, a convincing explanation is not the outcome; the changed repository, passing tests, and preserved behavior are.
+
+A grader scores one dimension of performance. It may check an exact state, apply a quality rubric, or ask a human expert to judge a subjective result. A task can use several graders because success is often multidimensional.
+
+Finally, remember what you are evaluating. An AI Agent is not only a model. The harness supplies instructions, tools, state, and orchestration. A weak tool contract or unstable environment can make the same model fail, so the model and harness must be evaluated together.
+
+First, define one task with explicit inputs and success criteria.
+
+Second, separate the transcript from the final outcome.
+
+Third, evaluate the model and the Agent harness together.
+
+### 3 | Grade the Outcome
+
+The first acceptance question is simple: did the intended final state exist? Outcome checks are usually stronger than trusting the Agent's own completion message because they inspect the artifact, database, application state, or external effect directly.
+
+For structured work, code-based graders are fast, cheap, reproducible, and easy to debug. Unit tests, schema checks, static analysis, exact matches, and state assertions can verify conditions that have objective answers.
+
+But deterministic graders can be brittle. A valid answer may use different wording, a different file structure, or a creative solution that satisfies the user while missing an overly narrow expected pattern. Passing the evaluator should require solving the task, not guessing the evaluator's favorite implementation.
+
+Model-based graders help with open-ended work. A clear rubric can score groundedness, completeness, instruction following, or communication quality. Pairwise comparison and separate dimension scores are often more reliable than one vague request to judge everything at once.
+
+Model graders are still nondeterministic and must be calibrated against human judgment. Give them structured criteria and an “unknown” option when evidence is insufficient. For high-stakes or specialized work, human experts remain the reference used to check whether automated grading matches real quality.
+
+The practical pattern is outcome first, then behavior where behavior matters. Verify the final state, add transcript checks for safety or efficiency, and avoid requiring one exact sequence of tool calls when several valid paths can reach the right result.
+
+First, verify the final state before trusting the Agent's claim.
+
+Second, combine deterministic, model-based, and human graders by dimension.
+
+Third, grade essential outcomes without overfitting to one valid path.
+
+### 4 | Test Reliability
+
+One successful trial does not prove that an AI Agent is reliable. Agent behavior varies between runs, so a pass can reflect a stable capability, a lucky trajectory, or an evaluator that missed the failure.
+
+This is why each important task should run more than once. The distribution of results reveals whether the Agent usually succeeds, occasionally succeeds, or fails in a consistent way that one trial would hide.
+
+Pass at k asks whether at least one of k attempts succeeds. It is useful when exploration matters and one working solution is enough. Pass to the k asks whether all k attempts succeed, which is the harder and more relevant bar when users expect the same task to work every time.
+
+The difference is operational. A research assistant that proposes several hypotheses may benefit from one strong result. A customer-facing Agent that processes refunds needs consistent correctness, because one failure can create a real financial or trust problem.
+
+Reliability also depends on task balance. Test cases where a behavior should happen and cases where it should not. If you only reward searching, the Agent may search everything. If you only reward refusal, it may stop doing useful work.
+
+Keep trials isolated. Shared files, cached state, resource exhaustion, or history from a previous run can either inflate performance or create correlated failures. The test environment should resemble production while resetting the state that would contaminate comparison.
+
+First, run multiple trials because one pass can be luck.
+
+Second, choose pass at k for discovery and pass to the k for consistency.
+
+Third, balance tasks and isolate the environment before comparing results.
+
+### 5 | Audit the Eval
+
+A low score does not always mean the AI Agent is weak. The task may be ambiguous, the environment may be broken, or the grader may reject a valid answer. Evaluation quality must be tested too.
+
+Start with failures you already see. Manual checks, support tickets, production bugs, and difficult edge cases are high-value seeds because they represent real user expectations rather than imaginary benchmark puzzles.
+
+Write each task so two qualified reviewers can reach the same verdict. Include the input, required outcome, important constraints, and everything the grader will inspect. Then create a reference solution that proves the task is solvable and that the graders can recognize a known good result.
+
+Build balanced sets and begin small. A useful early suite can contain a few dozen realistic tasks instead of hundreds of weak examples. As the product matures, add harder cases that distinguish improvements and convert solved capability tests into regression protection.
+
+Read transcripts and grades from many trials. A failed trace tells you whether the Agent made a genuine mistake, whether the harness blocked progress, or whether the grader punished a reasonable solution. If failures do not look fair, revise the evaluation before optimizing the Agent.
+
+Treat the suite as a living artifact. Models improve, products change, user behavior shifts, and once-difficult tasks saturate. Ownership, regular maintenance, production monitoring, and periodic human calibration keep the signal useful over time.
+
+First, turn real failures into unambiguous tasks with reference solutions.
+
+Second, read transcripts to tell Agent errors from grader errors.
+
+Third, keep the suite current as capabilities, products, and risks change.
+
+### 6 | Acceptance Sheet
+
+Now turn the method into one AI Agent Acceptance Sheet. Use it for a single high-value task before a release, for a repeated workflow, or as the seed of a larger evaluation suite.
+
+Block one is Outcome. Name the user-visible result, the final state that proves it exists, the acceptance threshold, and the evidence location. Do not use “Agent said done” as evidence.
+
+Block two is Task Setup. Record the input, tools, permissions, starting state, important constraints, and a reference solution. This makes the task reproducible and exposes whether the environment itself creates noise.
+
+Block three is Grader Mix. Choose deterministic checks for objective state, model rubrics for open-ended quality, and human review for calibration or expert judgment. Give each grader one clear dimension instead of one grader an undefined job.
+
+Block four is Reliability. Set the number of trials, the metric that matches the product need, and the minimum acceptable result. One success may be enough for exploration, but repeated customer actions need a consistency bar.
+
+Block five is Eval Health and Decision. Record transcript spot checks, known grader gaps, environment failures, exceptions, the release decision, and the next failure that should become a new task. The sheet evaluates both the Agent and your confidence in the test.
+
+First, write the outcome and task setup before choosing a grader.
+
+Second, collect final-state evidence, behavior evidence, and repeated trials.
+
+Third, record the release decision, exceptions, and next test to add.
+
+### 7 | Summary
+
+An AI Agent's polished completion message is not proof. Reliable acceptance turns the intended result into a task, inspects the final state, and asks whether success repeats under fair conditions.
+
+First, define success before the AI Agent starts.
+
+Second, verify final state with the right grader mix.
+
+Third, repeat trials and audit the evaluation itself.
+
+Use the AI Agent Acceptance Sheet to record the outcome, setup, evidence, grader mix, reliability bar, evaluation gaps, and release decision. That is how “done” becomes a result you can trust.
+
+Follow Tiny Agent. Tiny Agent helps you get better at using AI.

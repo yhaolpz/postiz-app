@@ -1,0 +1,797 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:02.973
+An AI Agent says it completed the task.
+
+2
+00:00:02.923 --> 00:00:07.152
+The report looks polished, the final message sounds confident, and every
+
+3
+00:00:07.152 --> 00:00:08.855
+checklist item appears green.
+
+4
+00:00:08.855 --> 00:00:12.719
+But the file may be in the wrong folder, the refund may not exist in the
+
+5
+00:00:12.719 --> 00:00:16.529
+database, or the research answer may contain claims that its sources do
+
+6
+00:00:16.529 --> 00:00:17.173
+not support.
+
+7
+00:00:17.173 --> 00:00:20.942
+That gap is the central problem of AI Agent evaluation.
+
+8
+00:00:20.942 --> 00:00:23.500
+A completion message is only a claim.
+
+9
+00:00:23.500 --> 00:00:27.118
+Reliable acceptance asks whether the intended state actually exists,
+
+10
+00:00:27.118 --> 00:00:30.684
+whether the work met clear quality boundaries, and whether the same
+
+11
+00:00:30.684 --> 00:00:33.557
+Agent can succeed again instead of getting lucky once.
+
+12
+00:00:33.557 --> 00:00:37.605
+Anthropic's guidance on Agent evals makes one point especially useful:
+
+13
+00:00:37.605 --> 00:00:41.537
+the flexibility that makes Agents valuable also makes them harder to
+
+14
+00:00:41.537 --> 00:00:41.826
+test.
+
+15
+00:00:41.826 --> 00:00:46.010
+They act over many turns, call tools, change environments, and sometimes
+
+16
+00:00:46.010 --> 00:00:49.788
+reach a good result through a path the evaluator did not predict.
+
+17
+00:00:49.788 --> 00:00:53.211
+So this video will build a practical acceptance method.
+
+18
+00:00:53.211 --> 00:00:57.174
+You will learn how to define a fair task, separate the transcript from
+
+19
+00:00:57.174 --> 00:01:01.023
+the outcome, select code, model, and human graders, measure repeated
+
+20
+00:01:01.023 --> 00:01:04.759
+trials, and check whether the evaluation itself is misleading you.
+
+21
+00:01:04.759 --> 00:01:08.750
+At the end, you will have an AI Agent Acceptance Sheet that turns “it
+
+22
+00:01:08.750 --> 00:01:12.856
+feels done” into evidence you can review, repeat, and use for a release
+
+23
+00:01:12.856 --> 00:01:13.377
+decision.
+
+24
+00:01:13.516 --> 00:01:17.071
+Start with the smallest unit of evaluation: a task.
+
+25
+00:01:17.021 --> 00:01:21.242
+A task gives the AI Agent defined inputs and success criteria.
+
+26
+00:01:21.242 --> 00:01:25.411
+One attempt at that task is a trial, and a collection of related tasks
+
+27
+00:01:25.411 --> 00:01:27.079
+becomes an evaluation suite.
+
+28
+00:01:27.079 --> 00:01:31.060
+The distinction matters because a vague request produces a vague score.
+
+29
+00:01:31.060 --> 00:01:34.809
+If two domain experts cannot independently decide whether the task
+
+30
+00:01:34.809 --> 00:01:37.877
+passed, the specification is not yet ready to measure.
+
+31
+00:01:37.877 --> 00:01:41.517
+The Agent should know what it must produce, where the result belongs,
+
+32
+00:01:41.517 --> 00:01:43.416
+and which constraints are essential.
+
+33
+00:01:43.416 --> 00:01:46.627
+Next, separate the transcript from the outcome.
+
+34
+00:01:46.627 --> 00:01:51.033
+The transcript records messages, tool calls, intermediate results,
+
+35
+00:01:51.033 --> 00:01:52.502
+reasoning, and errors.
+
+36
+00:01:52.502 --> 00:01:56.406
+The outcome is the final state left in the environment after the trial.
+
+37
+00:01:56.406 --> 00:02:00.589
+For a booking Agent, “your flight is booked” appears in the transcript.
+
+38
+00:02:00.589 --> 00:02:03.800
+The outcome is a valid reservation in the database.
+
+39
+00:02:03.800 --> 00:02:08.020
+For a coding Agent, a convincing explanation is not the outcome; the
+
+40
+00:02:08.020 --> 00:02:11.867
+changed repository, passing tests, and preserved behavior are.
+
+41
+00:02:11.867 --> 00:02:14.925
+A grader scores one dimension of performance.
+
+42
+00:02:14.925 --> 00:02:19.053
+It may check an exact state, apply a quality rubric, or ask a human
+
+43
+00:02:19.053 --> 00:02:21.271
+expert to judge a subjective result.
+
+44
+00:02:21.271 --> 00:02:24.635
+A task can use several graders because success is often
+
+45
+00:02:24.635 --> 00:02:25.675
+multidimensional.
+
+46
+00:02:25.675 --> 00:02:28.666
+Finally, remember what you are evaluating.
+
+47
+00:02:28.666 --> 00:02:31.310
+An AI Agent is not only a model.
+
+48
+00:02:31.310 --> 00:02:35.858
+The harness supplies instructions, tools, state, and orchestration.
+
+49
+00:02:35.858 --> 00:02:39.755
+A weak tool contract or unstable environment can make the same model
+
+50
+00:02:39.755 --> 00:02:43.079
+fail, so the model and harness must be evaluated together.
+
+51
+00:02:43.079 --> 00:02:47.656
+First, define one task with explicit inputs and success criteria.
+
+52
+00:02:47.656 --> 00:02:51.262
+Second, separate the transcript from the final outcome.
+
+53
+00:02:51.262 --> 00:02:54.954
+Third, evaluate the model and the Agent harness together.
+
+54
+00:02:55.084 --> 00:02:59.266
+The first acceptance question is simple: did the intended final state
+
+55
+00:02:59.266 --> 00:02:59.630
+exist?
+
+56
+00:02:59.580 --> 00:03:03.116
+Outcome checks are usually stronger than trusting the Agent's own
+
+57
+00:03:03.116 --> 00:03:06.542
+completion message because they inspect the artifact, database,
+
+58
+00:03:06.542 --> 00:03:09.099
+application state, or external effect directly.
+
+59
+00:03:09.099 --> 00:03:13.933
+For structured work, code-based graders are fast, cheap, reproducible,
+
+60
+00:03:13.933 --> 00:03:15.176
+and easy to debug.
+
+61
+00:03:15.176 --> 00:03:19.611
+Unit tests, schema checks, static analysis, exact matches, and state
+
+62
+00:03:19.611 --> 00:03:23.589
+assertions can verify conditions that have objective answers.
+
+63
+00:03:23.589 --> 00:03:26.253
+But deterministic graders can be brittle.
+
+64
+00:03:26.253 --> 00:03:30.173
+A valid answer may use different wording, a different file structure, or
+
+65
+00:03:30.173 --> 00:03:33.821
+a creative solution that satisfies the user while missing an overly
+
+66
+00:03:33.821 --> 00:03:35.128
+narrow expected pattern.
+
+67
+00:03:35.128 --> 00:03:39.058
+Passing the evaluator should require solving the task, not guessing the
+
+68
+00:03:39.058 --> 00:03:41.051
+evaluator's favorite implementation.
+
+69
+00:03:41.051 --> 00:03:44.089
+Model-based graders help with open-ended work.
+
+70
+00:03:44.089 --> 00:03:48.046
+A clear rubric can score groundedness, completeness, instruction
+
+71
+00:03:48.046 --> 00:03:50.272
+following, or communication quality.
+
+72
+00:03:50.272 --> 00:03:53.761
+Pairwise comparison and separate dimension scores are often more
+
+73
+00:03:53.761 --> 00:03:57.032
+reliable than one vague request to judge everything at once.
+
+74
+00:03:57.032 --> 00:04:01.167
+Model graders are still nondeterministic and must be calibrated against
+
+75
+00:04:01.167 --> 00:04:02.041
+human judgment.
+
+76
+00:04:02.041 --> 00:04:06.145
+Give them structured criteria and an “unknown” option when evidence is
+
+77
+00:04:06.145 --> 00:04:06.907
+insufficient.
+
+78
+00:04:06.907 --> 00:04:10.796
+For high-stakes or specialized work, human experts remain the reference
+
+79
+00:04:10.796 --> 00:04:14.137
+used to check whether automated grading matches real quality.
+
+80
+00:04:14.137 --> 00:04:18.267
+The practical pattern is outcome first, then behavior where behavior
+
+81
+00:04:18.267 --> 00:04:18.753
+matters.
+
+82
+00:04:18.753 --> 00:04:22.814
+Verify the final state, add transcript checks for safety or efficiency,
+
+83
+00:04:22.814 --> 00:04:26.875
+and avoid requiring one exact sequence of tool calls when several valid
+
+84
+00:04:26.875 --> 00:04:28.762
+paths can reach the right result.
+
+85
+00:04:28.762 --> 00:04:32.907
+First, verify the final state before trusting the Agent's claim.
+
+86
+00:04:32.907 --> 00:04:37.464
+Second, combine deterministic, model-based, and human graders by
+
+87
+00:04:37.464 --> 00:04:38.176
+dimension.
+
+88
+00:04:38.176 --> 00:04:42.493
+Third, grade essential outcomes without overfitting to one valid path.
+
+89
+00:04:42.628 --> 00:04:46.904
+One successful trial does not prove that an AI Agent is reliable.
+
+90
+00:04:46.854 --> 00:04:50.770
+Agent behavior varies between runs, so a pass can reflect a stable
+
+91
+00:04:50.770 --> 00:04:55.043
+capability, a lucky trajectory, or an evaluator that missed the failure.
+
+92
+00:04:55.043 --> 00:04:58.528
+This is why each important task should run more than once.
+
+93
+00:04:58.528 --> 00:05:02.490
+The distribution of results reveals whether the Agent usually succeeds,
+
+94
+00:05:02.490 --> 00:05:06.508
+occasionally succeeds, or fails in a consistent way that one trial would
+
+95
+00:05:06.508 --> 00:05:06.787
+hide.
+
+96
+00:05:06.787 --> 00:05:10.710
+Pass at k asks whether at least one of k attempts succeeds.
+
+97
+00:05:10.710 --> 00:05:14.712
+It is useful when exploration matters and one working solution is
+
+98
+00:05:14.712 --> 00:05:15.143
+enough.
+
+99
+00:05:15.143 --> 00:05:19.105
+Pass to the k asks whether all k attempts succeed, which is the harder
+
+100
+00:05:19.105 --> 00:05:22.898
+and more relevant bar when users expect the same task to work every
+
+101
+00:05:22.898 --> 00:05:23.181
+time.
+
+102
+00:05:23.181 --> 00:05:25.278
+The difference is operational.
+
+103
+00:05:25.278 --> 00:05:29.507
+A research assistant that proposes several hypotheses may benefit from
+
+104
+00:05:29.507 --> 00:05:30.595
+one strong result.
+
+105
+00:05:30.595 --> 00:05:34.243
+A customer-facing Agent that processes refunds needs consistent
+
+106
+00:05:34.243 --> 00:05:38.238
+correctness, because one failure can create a real financial or trust
+
+107
+00:05:38.238 --> 00:05:38.701
+problem.
+
+108
+00:05:38.701 --> 00:05:41.903
+Reliability also depends on task balance.
+
+109
+00:05:41.903 --> 00:05:45.893
+Test cases where a behavior should happen and cases where it should not.
+
+110
+00:05:45.893 --> 00:05:49.701
+If you only reward searching, the Agent may search everything.
+
+111
+00:05:49.701 --> 00:05:53.691
+If you only reward refusal, it may stop doing useful work.
+
+112
+00:05:53.691 --> 00:05:55.681
+Keep trials isolated.
+
+113
+00:05:55.681 --> 00:05:59.640
+Shared files, cached state, resource exhaustion, or history from a
+
+114
+00:05:59.640 --> 00:06:03.478
+previous run can either inflate performance or create correlated
+
+115
+00:06:03.478 --> 00:06:04.018
+failures.
+
+116
+00:06:04.018 --> 00:06:07.384
+The test environment should resemble production while resetting the
+
+117
+00:06:07.384 --> 00:06:09.393
+state that would contaminate comparison.
+
+118
+00:06:09.393 --> 00:06:13.220
+First, run multiple trials because one pass can be luck.
+
+119
+00:06:13.220 --> 00:06:17.203
+Second, choose pass at k for discovery and pass to the k for
+
+120
+00:06:17.203 --> 00:06:17.999
+consistency.
+
+121
+00:06:17.999 --> 00:06:22.143
+Third, balance tasks and isolate the environment before comparing
+
+122
+00:06:22.143 --> 00:06:22.653
+results.
+
+123
+00:06:22.780 --> 00:06:26.355
+A low score does not always mean the AI Agent is weak.
+
+124
+00:06:26.305 --> 00:06:30.605
+The task may be ambiguous, the environment may be broken, or the grader
+
+125
+00:06:30.605 --> 00:06:32.180
+may reject a valid answer.
+
+126
+00:06:32.180 --> 00:06:35.064
+Evaluation quality must be tested too.
+
+127
+00:06:35.064 --> 00:06:37.564
+Start with failures you already see.
+
+128
+00:06:37.564 --> 00:06:41.487
+Manual checks, support tickets, production bugs, and difficult edge
+
+129
+00:06:41.487 --> 00:06:45.703
+cases are high-value seeds because they represent real user expectations
+
+130
+00:06:45.703 --> 00:06:48.045
+rather than imaginary benchmark puzzles.
+
+131
+00:06:48.045 --> 00:06:52.362
+Write each task so two qualified reviewers can reach the same verdict.
+
+132
+00:06:52.362 --> 00:06:56.201
+Include the input, required outcome, important constraints, and
+
+133
+00:06:56.201 --> 00:06:58.333
+everything the grader will inspect.
+
+134
+00:06:58.333 --> 00:07:01.905
+Then create a reference solution that proves the task is solvable and
+
+135
+00:07:01.905 --> 00:07:04.545
+that the graders can recognize a known good result.
+
+136
+00:07:04.545 --> 00:07:07.151
+Build balanced sets and begin small.
+
+137
+00:07:07.151 --> 00:07:11.486
+A useful early suite can contain a few dozen realistic tasks instead of
+
+138
+00:07:11.486 --> 00:07:13.074
+hundreds of weak examples.
+
+139
+00:07:13.074 --> 00:07:17.041
+As the product matures, add harder cases that distinguish improvements
+
+140
+00:07:17.041 --> 00:07:20.612
+and convert solved capability tests into regression protection.
+
+141
+00:07:20.612 --> 00:07:23.756
+Read transcripts and grades from many trials.
+
+142
+00:07:23.756 --> 00:07:27.112
+A failed trace tells you whether the Agent made a genuine mistake,
+
+143
+00:07:27.112 --> 00:07:30.672
+whether the harness blocked progress, or whether the grader punished a
+
+144
+00:07:30.672 --> 00:07:31.689
+reasonable solution.
+
+145
+00:07:31.689 --> 00:07:36.065
+If failures do not look fair, revise the evaluation before optimizing
+
+146
+00:07:36.065 --> 00:07:36.699
+the Agent.
+
+147
+00:07:36.699 --> 00:07:39.208
+Treat the suite as a living artifact.
+
+148
+00:07:39.208 --> 00:07:43.182
+Models improve, products change, user behavior shifts, and
+
+149
+00:07:43.182 --> 00:07:45.237
+once-difficult tasks saturate.
+
+150
+00:07:45.237 --> 00:07:49.261
+Ownership, regular maintenance, production monitoring, and periodic
+
+151
+00:07:49.261 --> 00:07:52.324
+human calibration keep the signal useful over time.
+
+152
+00:07:52.324 --> 00:07:56.580
+First, turn real failures into unambiguous tasks with reference
+
+153
+00:07:56.580 --> 00:07:57.256
+solutions.
+
+154
+00:07:57.256 --> 00:08:01.555
+Second, read transcripts to tell Agent errors from grader errors.
+
+155
+00:08:01.555 --> 00:08:06.084
+Third, keep the suite current as capabilities, products, and risks
+
+156
+00:08:06.084 --> 00:08:06.564
+change.
+
+157
+00:08:06.700 --> 00:08:10.323
+Now turn the method into one AI Agent Acceptance Sheet.
+
+158
+00:08:10.273 --> 00:08:14.298
+Use it for a single high-value task before a release, for a repeated
+
+159
+00:08:14.298 --> 00:08:17.494
+workflow, or as the seed of a larger evaluation suite.
+
+160
+00:08:17.494 --> 00:08:19.340
+Block one is Outcome.
+
+161
+00:08:19.340 --> 00:08:23.551
+Name the user-visible result, the final state that proves it exists, the
+
+162
+00:08:23.551 --> 00:08:26.359
+acceptance threshold, and the evidence location.
+
+163
+00:08:26.359 --> 00:08:29.446
+Do not use “Agent said done” as evidence.
+
+164
+00:08:29.446 --> 00:08:31.600
+Block two is Task Setup.
+
+165
+00:08:31.600 --> 00:08:35.738
+Record the input, tools, permissions, starting state, important
+
+166
+00:08:35.738 --> 00:08:38.234
+constraints, and a reference solution.
+
+167
+00:08:38.234 --> 00:08:42.209
+This makes the task reproducible and exposes whether the environment
+
+168
+00:08:42.209 --> 00:08:43.436
+itself creates noise.
+
+169
+00:08:43.436 --> 00:08:45.667
+Block three is Grader Mix.
+
+170
+00:08:45.667 --> 00:08:49.567
+Choose deterministic checks for objective state, model rubrics for
+
+171
+00:08:49.567 --> 00:08:53.821
+open-ended quality, and human review for calibration or expert judgment.
+
+172
+00:08:53.821 --> 00:08:58.272
+Give each grader one clear dimension instead of one grader an undefined
+
+173
+00:08:58.272 --> 00:08:58.523
+job.
+
+174
+00:08:58.523 --> 00:09:00.686
+Block four is Reliability.
+
+175
+00:09:00.686 --> 00:09:04.769
+Set the number of trials, the metric that matches the product need, and
+
+176
+00:09:04.769 --> 00:09:06.494
+the minimum acceptable result.
+
+177
+00:09:06.494 --> 00:09:10.808
+One success may be enough for exploration, but repeated customer actions
+
+178
+00:09:10.808 --> 00:09:12.186
+need a consistency bar.
+
+179
+00:09:12.186 --> 00:09:14.975
+Block five is Eval Health and Decision.
+
+180
+00:09:14.975 --> 00:09:19.243
+Record transcript spot checks, known grader gaps, environment failures,
+
+181
+00:09:19.243 --> 00:09:23.210
+exceptions, the release decision, and the next failure that should
+
+182
+00:09:23.210 --> 00:09:24.292
+become a new task.
+
+183
+00:09:24.292 --> 00:09:28.128
+The sheet evaluates both the Agent and your confidence in the test.
+
+184
+00:09:28.128 --> 00:09:32.148
+First, write the outcome and task setup before choosing a grader.
+
+185
+00:09:32.148 --> 00:09:37.053
+Second, collect final-state evidence, behavior evidence, and repeated
+
+186
+00:09:37.053 --> 00:09:37.551
+trials.
+
+187
+00:09:37.551 --> 00:09:42.282
+Third, record the release decision, exceptions, and next test to add.
+
+188
+00:09:42.412 --> 00:09:46.063
+An AI Agent's polished completion message is not proof.
+
+189
+00:09:46.013 --> 00:09:50.129
+Reliable acceptance turns the intended result into a task, inspects the
+
+190
+00:09:50.129 --> 00:09:54.071
+final state, and asks whether success repeats under fair conditions.
+
+191
+00:09:54.071 --> 00:09:57.879
+First, define success before the AI Agent starts.
+
+192
+00:09:57.879 --> 00:10:01.590
+Second, verify final state with the right grader mix.
+
+193
+00:10:01.590 --> 00:10:05.360
+Third, repeat trials and audit the evaluation itself.
+
+194
+00:10:05.360 --> 00:10:09.583
+Use the AI Agent Acceptance Sheet to record the outcome, setup,
+
+195
+00:10:09.583 --> 00:10:14.074
+evidence, grader mix, reliability bar, evaluation gaps, and release
+
+196
+00:10:14.074 --> 00:10:14.677
+decision.
+
+197
+00:10:14.677 --> 00:10:17.956
+That is how “done” becomes a result you can trust.
+
+198
+00:10:17.956 --> 00:10:19.802
+Follow Tiny Agent.
+
+199
+00:10:19.802 --> 00:10:22.225
+Tiny Agent helps you get better at using AI.

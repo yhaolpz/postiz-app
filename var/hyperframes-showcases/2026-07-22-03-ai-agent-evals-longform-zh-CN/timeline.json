@@ -1,0 +1,2251 @@
+{
+  "duration": 469.469396,
+  "voice": "zh-CN-YunxiaNeural",
+  "rate": "+50%",
+  "chapters": [
+    {
+      "label": "前言",
+      "start": 0,
+      "end": 53.616,
+      "duration": 53.616
+    },
+    {
+      "label": "定义成功",
+      "start": 53.616,
+      "end": 131.952,
+      "duration": 78.336
+    },
+    {
+      "label": "验证结果",
+      "start": 131.952,
+      "end": 213.43200000000002,
+      "duration": 81.48
+    },
+    {
+      "label": "测试稳定性",
+      "start": 213.43200000000002,
+      "end": 289.34400000000005,
+      "duration": 75.912
+    },
+    {
+      "label": "检查评估",
+      "start": 289.34400000000005,
+      "end": 368.66400000000004,
+      "duration": 79.32
+    },
+    {
+      "label": "验收表",
+      "start": 368.66400000000004,
+      "end": 438.79200000000003,
+      "duration": 70.128
+    },
+    {
+      "label": "总结",
+      "start": 438.79200000000003,
+      "end": 469.469396,
+      "duration": 30.677395999999987
+    }
+  ],
+  "scenes": [
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "comparison",
+      "labels": [
+        "智能体说完成",
+        "结果真实存在"
+      ],
+      "human": "surprised",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "chat",
+          "label": "完成声明"
+        },
+        {
+          "id": "checklist",
+          "label": "全绿清单"
+        },
+        {
+          "id": "database",
+          "label": "最终状态"
+        },
+        {
+          "id": "evidence",
+          "label": "真实证据"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "完成是声明，不是证明",
+      "accent": "red",
+      "id": "c01-s01",
+      "chapter": "前言",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "看清 AI 智能体的完成消息为什么只是一项声明",
+      "chapterSummary": [
+        "完成消息不是证据",
+        "验收要检查结果与稳定性",
+        "验收表把完成变成决定"
+      ],
+      "start": 0,
+      "end": 23.775,
+      "narration": "AI 智能体说任务已经完成。汇报很完整，语气很确定，清单也全部打勾。但文件可能放错目录，退款记录可能根本没有写进数据库，研究结论也可能没有得到来源支持。 这就是 AI 智能体验收最核心的问题：完成消息只是一项声明。可靠验收要确认目标状态是否真的存在，质量边界是否满足，以及同一个智能体能不能再次成功，而不是只在一次运行中碰巧做对。",
+      "cueStarts": [
+        0.1,
+        2.05,
+        5.125,
+        10.95,
+        15.183
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        0.22,
+        0.22,
+        16.13996551724138,
+        16.13996551724138
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "AI 智能体说任务已经完成",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 0.1,
+          "time": 0.22,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "目标状态是否真的存在",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 16.219965517241377,
+          "time": 16.13996551724138,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 42.583462515401436
+      },
+      "visualBalance": {
+        "x": 972.4841517647578,
+        "y": 470,
+        "offsetX": 12.484151764757826,
+        "offsetY": 0,
+        "rawOffsetX": 12.484151764757826,
+        "rawOffsetY": -42.583462515401436,
+        "appliedShiftX": 0,
+        "appliedShiftY": 42.583462515401436
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "process",
+      "human": "explain-front",
+      "agent": "plan-front",
+      "props": [
+        {
+          "id": "task-list",
+          "label": "公平任务"
+        },
+        {
+          "id": "result-card",
+          "label": "结果状态"
+        },
+        {
+          "id": "scorecard",
+          "label": "评分组合"
+        },
+        {
+          "id": "experiment",
+          "label": "多次试验"
+        }
+      ],
+      "flow": "chain",
+      "callout": "同时评估工作结果和运行系统",
+      "accent": "blue",
+      "id": "c01-s02",
+      "chapter": "前言",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "看清 AI 智能体的完成消息为什么只是一项声明",
+      "chapterSummary": [
+        "完成消息不是证据",
+        "验收要检查结果与稳定性",
+        "验收表把完成变成决定"
+      ],
+      "start": 23.775,
+      "end": 47,
+      "narration": "Anthropic 对智能体评估的总结指出，智能体越能自主使用工具、连续行动和修改环境，就越难只靠一次回复判断结果。它还可能用评估者没有预想的路径，得到一个真正有效的答案。 这期视频会建立一套可执行的验收方法：怎样定义公平任务，区分过程轨迹与最终结果，组合代码、模型和人工评分，怎样通过多次试验判断稳定性，以及怎样发现评估本身正在误导你。",
+      "cueStarts": [
+        23.775,
+        31.033,
+        34.741
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        26.82344827586207,
+        26.82344827586207,
+        40.4915,
+        40.4915
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "越能自主使用工具",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 26.90344827586207,
+          "time": 26.82344827586207,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "组合代码、模型和人工评分",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 40.5715,
+          "time": 40.4915,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 80
+      },
+      "visualBalance": {
+        "x": 998.2657765870792,
+        "y": 456.6055677840126,
+        "offsetX": 38.265776587079245,
+        "offsetY": -13.394432215987422,
+        "rawOffsetX": 38.265776587079245,
+        "rawOffsetY": -93.39443221598742,
+        "appliedShiftX": 0,
+        "appliedShiftY": 80
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        5
+      ],
+      "layout": "hero",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "clipboard",
+          "label": "结果验收表"
+        },
+        {
+          "id": "approval",
+          "label": "发布决定"
+        }
+      ],
+      "flow": "chain",
+      "callout": "把完成变成证据",
+      "accent": "yellow",
+      "id": "c01-s03",
+      "chapter": "前言",
+      "chapterIndex": 0,
+      "chapterNumber": 1,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "看清 AI 智能体的完成消息为什么只是一项声明",
+      "chapterSummary": [
+        "完成消息不是证据",
+        "验收要检查结果与稳定性",
+        "验收表把完成变成决定"
+      ],
+      "start": 47,
+      "end": 53.616,
+      "narration": "最后会得到一张 AI 智能体结果验收表，把“看起来完成了”变成可以检查、重复并支持发布决定的证据。",
+      "cueStarts": [
+        47
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        47.96365079365079,
+        47.96365079365079
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "AI 智能体结果验收表",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 48.04365079365079,
+          "time": 47.96365079365079,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 271.4,
+        "contentTop": 476.5625,
+        "gap": 205.16250000000002
+      },
+      "balanceShift": {
+        "x": 104.28799649545431,
+        "y": 43.65168768068844
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -104.28799649545431,
+        "rawOffsetY": -43.65168768068844,
+        "appliedShiftX": 104.28799649545431,
+        "appliedShiftY": 43.65168768068844
+      }
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "grid",
+      "human": "write-front",
+      "agent": "listen-front",
+      "props": [
+        {
+          "id": "task-list",
+          "label": "任务"
+        },
+        {
+          "id": "form",
+          "label": "输入"
+        },
+        {
+          "id": "target",
+          "label": "成功"
+        },
+        {
+          "id": "checklist",
+          "label": "判定条件"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "模糊任务只能得到模糊分数",
+      "accent": "yellow",
+      "id": "c02-s01",
+      "chapter": "定义成功",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "先定义公平任务，再判断 AI 智能体是否通过",
+      "chapterSummary": [
+        "用明确输入和成功条件定义一个任务",
+        "区分过程轨迹和最终结果",
+        "把模型和智能体运行框架放在一起评估"
+      ],
+      "start": 53.616,
+      "end": 76.21600000000001,
+      "narration": "从评估的最小单元开始：任务。一个任务向 AI 智能体提供明确输入和成功条件；对任务的一次尝试叫一次试验；一组相关任务合在一起，才构成评估套件。 这个区分很重要，因为模糊任务只能得到模糊分数。如果两位领域专家不能独立得出相同的通过或失败判断，任务就还没有准备好。智能体应该知道交付什么、结果放在哪里，以及哪些约束不能违反。",
+      "cueStarts": [
+        53.716,
+        55.891,
+        63.699,
+        67.082,
+        71.857
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        56.476,
+        56.476,
+        58.3514019138756,
+        58.3514019138756
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "从评估的最小单元开始",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 53.716,
+          "time": 56.476,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "成功条件",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 58.4314019138756,
+          "time": 58.3514019138756,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 330.15,
+        "gap": 127.94999999999999
+      },
+      "balanceShift": {
+        "x": 94.21698572947241,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 436.875644662416,
+        "offsetX": 0,
+        "offsetY": -33.12435533758401,
+        "rawOffsetX": -94.21698572947241,
+        "rawOffsetY": -80.52435533758398,
+        "appliedShiftX": 94.21698572947241,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "comparison",
+      "labels": [
+        "过程轨迹",
+        "最终结果"
+      ],
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "chat",
+          "label": "消息"
+        },
+        {
+          "id": "tool",
+          "label": "工具调用"
+        },
+        {
+          "id": "database",
+          "label": "最终状态"
+        },
+        {
+          "id": "result-card",
+          "label": "可用结果"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "发生过什么，不等于最后留下什么",
+      "accent": "blue",
+      "id": "c02-s02",
+      "chapter": "定义成功",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "先定义公平任务，再判断 AI 智能体是否通过",
+      "chapterSummary": [
+        "用明确输入和成功条件定义一个任务",
+        "区分过程轨迹和最终结果",
+        "把模型和智能体运行框架放在一起评估"
+      ],
+      "start": 76.21600000000001,
+      "end": 96.916,
+      "narration": "接着区分过程轨迹和最终结果。轨迹记录消息、工具调用、中间产物、推理和错误；结果则是一次试验结束后，环境里真正留下的最终状态。 订票智能体说“机票已经预订”，这句话只在轨迹里。真正结果是数据库里存在有效订单。编程智能体的解释再有说服力，也不能代替仓库改动、通过的测试和没有被破坏的旧行为。",
+      "cueStarts": [
+        76.21600000000001,
+        78.524,
+        85.349,
+        88.566,
+        91.166
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        76.4657142857143,
+        76.4657142857143,
+        83.4205625,
+        83.4205625
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "区分过程轨迹和最终结果",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 76.5457142857143,
+          "time": 76.4657142857143,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "环境里真正留下的最终状态",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 83.5005625,
+          "time": 83.4205625,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 52
+      },
+      "visualBalance": {
+        "x": 967.1737612161612,
+        "y": 445.38925691129407,
+        "offsetX": 7.1737612161612105,
+        "offsetY": -24.61074308870593,
+        "rawOffsetX": 7.1737612161612105,
+        "rawOffsetY": -76.61074308870593,
+        "appliedShiftX": 0,
+        "appliedShiftY": 52
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "process",
+      "human": "explain-front",
+      "agent": "collaborate-front",
+      "props": [
+        {
+          "id": "scorecard",
+          "label": "评分器"
+        },
+        {
+          "id": "settings",
+          "label": "运行框架"
+        },
+        {
+          "id": "tool",
+          "label": "工具"
+        },
+        {
+          "id": "workflow",
+          "label": "编排"
+        }
+      ],
+      "flow": "chain",
+      "callout": "评估模型加运行框架",
+      "accent": "red",
+      "id": "c02-s03",
+      "chapter": "定义成功",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "先定义公平任务，再判断 AI 智能体是否通过",
+      "chapterSummary": [
+        "用明确输入和成功条件定义一个任务",
+        "区分过程轨迹和最终结果",
+        "把模型和智能体运行框架放在一起评估"
+      ],
+      "start": 96.916,
+      "end": 121.857,
+      "narration": "评分器只负责衡量一个维度。它可以检查确定状态，可以按质量标准打分，也可以交给领域专家判断主观结果。真实任务通常要组合多个评分器，因为成功往往不只一个维度。 最后要记住被评估的对象。AI 智能体不只是模型。运行框架还提供指令、工具、状态和编排。工具契约含糊或环境不稳定，都会让同一个模型失败，因此必须把模型和智能体框架一起评估。",
+      "cueStarts": [
+        96.916,
+        98.941,
+        104.107,
+        108.157,
+        110.324,
+        112.199,
+        115.482
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        97.136,
+        112.119,
+        112.119,
+        112.119
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "评分器只负责衡量一个维度",
+          "props": [
+            0
+          ],
+          "rawTime": 96.916,
+          "time": 97.136,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "运行框架还提供指令",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 112.199,
+          "time": 112.119,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 415.296875,
+        "gap": 213.096875
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 47.58807829886774
+      },
+      "visualBalance": {
+        "x": 1036.6723389833173,
+        "y": 470,
+        "offsetX": 76.67233898331733,
+        "offsetY": 0,
+        "rawOffsetX": 76.67233898331733,
+        "rawOffsetY": -47.58807829886774,
+        "appliedShiftX": 0,
+        "appliedShiftY": 47.58807829886774
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c02-s04",
+      "chapter": "定义成功",
+      "chapterIndex": 1,
+      "chapterNumber": 2,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "先定义公平任务，再判断 AI 智能体是否通过",
+      "chapterSummary": [
+        "用明确输入和成功条件定义一个任务",
+        "区分过程轨迹和最终结果",
+        "把模型和智能体运行框架放在一起评估"
+      ],
+      "start": 121.857,
+      "end": 131.952,
+      "narration": "小结。第一，用明确输入和成功条件定义一个任务。 第二，区分过程轨迹和最终结果。 第三，把模型和智能体运行框架放在一起评估。",
+      "cueStarts": [
+        121.857,
+        122.699,
+        125.774,
+        128.349
+      ],
+      "summaryPointTimes": [
+        121.857,
+        125.774,
+        128.349
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "process",
+      "human": "operate",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "产物"
+        },
+        {
+          "id": "database",
+          "label": "状态"
+        },
+        {
+          "id": "success",
+          "label": "测试"
+        },
+        {
+          "id": "evidence",
+          "label": "证据"
+        }
+      ],
+      "flow": "chain",
+      "callout": "检查状态，不只听一句完成",
+      "accent": "blue",
+      "id": "c03-s01",
+      "chapter": "验证结果",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "用适合每个维度的评分器检查最终状态",
+      "chapterSummary": [
+        "先验证最终状态，再相信智能体的完成声明",
+        "按维度组合代码、模型和人工评分",
+        "验收关键结果，不要过度拟合唯一正确路径"
+      ],
+      "start": 131.952,
+      "end": 152.827,
+      "narration": "验收的第一个问题很简单：目标状态真的存在吗？直接检查文件、数据库、应用状态或外部效果，通常比相信智能体自己的完成消息更可靠。 对于结构化工作，代码评分器速度快、成本低、可复现，也容易定位问题。单元测试、数据结构检查、静态分析、精确匹配和状态断言，都适合验证有客观答案的条件。",
+      "cueStarts": [
+        132.052,
+        135.152,
+        141.552,
+        146.46
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        134.812,
+        134.812,
+        146.38,
+        146.38
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "目标状态真的存在吗",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 133.7701818181818,
+          "time": 134.812,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "单元测试",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 146.46,
+          "time": 146.38,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 412.734375,
+        "gap": 210.534375
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 68.56029420558099
+      },
+      "visualBalance": {
+        "x": 978.1755399757203,
+        "y": 470,
+        "offsetX": 18.175539975720312,
+        "offsetY": 0,
+        "rawOffsetX": 18.175539975720312,
+        "rawOffsetY": -68.56029420558099,
+        "appliedShiftX": 0,
+        "appliedShiftY": 68.56029420558099
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        5
+      ],
+      "layout": "grid",
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "code-file",
+          "label": "代码评分"
+        },
+        {
+          "id": "scorecard",
+          "label": "模型标准"
+        },
+        {
+          "id": "human-gate",
+          "label": "人工校准"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "一个维度对应一个清楚职责",
+      "accent": "yellow",
+      "id": "c03-s02",
+      "chapter": "验证结果",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "用适合每个维度的评分器检查最终状态",
+      "chapterSummary": [
+        "先验证最终状态，再相信智能体的完成声明",
+        "按维度组合代码、模型和人工评分",
+        "验收关键结果，不要过度拟合唯一正确路径"
+      ],
+      "start": 152.827,
+      "end": 189.493,
+      "narration": "但确定性评分也可能太脆弱。一个有效答案可能使用不同文字、不同文件结构，或者通过评估者没想到的创意方法满足用户。如果通过评估需要猜中评估者最喜欢的实现，而不是真正解决问题，这个测试就设计错了。 模型评分器适合开放结果。清楚的标准可以分别评价事实依据、完整性、指令遵循和沟通质量。逐维打分或两项结果对比，通常比一句“请判断整体质量”更可靠。 模型评分仍有随机性，所以必须和人工判断校准。给它结构化标准；证据不足时允许回答“无法判断”。高风险或专业工作仍需要领域专家，作为自动评分是否符合真实质量的参照。",
+      "cueStarts": [
+        152.827,
+        155.018,
+        160.985,
+        166.66,
+        168.793,
+        173.46,
+        177.69299999999998,
+        181.01,
+        184.418
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        153.047,
+        166.57999999999998,
+        185.97991176470586
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "确定性评分也可能太脆弱",
+          "props": [
+            0
+          ],
+          "rawTime": 152.99553846153847,
+          "time": 153.047,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "模型评分器适合开放结果",
+          "props": [
+            1
+          ],
+          "rawTime": 166.66,
+          "time": 166.57999999999998,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "领域专家",
+          "props": [
+            2
+          ],
+          "rawTime": 186.05991176470587,
+          "time": 185.97991176470586,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 226.2,
+        "gap": 24
+      },
+      "balanceShift": {
+        "x": -104.16859587879117,
+        "y": 54.29943438147734
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 444.8554782065604,
+        "offsetX": 0,
+        "offsetY": -25.144521793439594,
+        "rawOffsetX": 104.16859587879117,
+        "rawOffsetY": -79.44395617491693,
+        "appliedShiftX": -104.16859587879117,
+        "appliedShiftY": 54.29943438147734
+      }
+    },
+    {
+      "paragraphs": [
+        6,
+        6
+      ],
+      "layout": "grid",
+      "human": "decide-front",
+      "agent": "reason-front",
+      "props": [
+        {
+          "id": "branch",
+          "label": "有效路径"
+        },
+        {
+          "id": "target",
+          "label": "关键结果"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "验结果，不要锁死过程",
+      "accent": "red",
+      "id": "c03-s03",
+      "chapter": "验证结果",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "用适合每个维度的评分器检查最终状态",
+      "chapterSummary": [
+        "先验证最终状态，再相信智能体的完成声明",
+        "按维度组合代码、模型和人工评分",
+        "验收关键结果，不要过度拟合唯一正确路径"
+      ],
+      "start": 189.493,
+      "end": 202.118,
+      "narration": "实用顺序是先验结果，再在确实重要时检查过程。先确认最终状态，再补充安全、权限或效率相关的轨迹检查；如果多条路径都能得到正确结果，就不要强迫智能体按唯一工具顺序行动。",
+      "cueStarts": [
+        189.493,
+        192.852
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        190.17640909090906,
+        190.17640909090906
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "先验结果",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 190.25640909090907,
+          "time": 190.17640909090906,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 417.5,
+        "gap": 215.3
+      },
+      "balanceShift": {
+        "x": 101.99020607775776,
+        "y": 80.21634065077262
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 470,
+        "offsetX": 0,
+        "offsetY": 0,
+        "rawOffsetX": -101.99020607775776,
+        "rawOffsetY": -80.21634065077262,
+        "appliedShiftX": 101.99020607775776,
+        "appliedShiftY": 80.21634065077262
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c03-s04",
+      "chapter": "验证结果",
+      "chapterIndex": 2,
+      "chapterNumber": 3,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "用适合每个维度的评分器检查最终状态",
+      "chapterSummary": [
+        "先验证最终状态，再相信智能体的完成声明",
+        "按维度组合代码、模型和人工评分",
+        "验收关键结果，不要过度拟合唯一正确路径"
+      ],
+      "start": 202.118,
+      "end": 213.43200000000002,
+      "narration": "小结。第一，先验证最终状态，再相信智能体的完成声明。 第二，按维度组合代码、模型和人工评分。 第三，验收关键结果，不要过度拟合唯一正确路径。",
+      "cueStarts": [
+        202.118,
+        202.95999999999998,
+        206.435,
+        209.66
+      ],
+      "summaryPointTimes": [
+        202.118,
+        206.435,
+        209.66
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "process",
+      "human": "caution-front",
+      "agent": "retry-front",
+      "props": [
+        {
+          "id": "experiment",
+          "label": "第一次"
+        },
+        {
+          "id": "loop",
+          "label": "重复"
+        },
+        {
+          "id": "trend-up",
+          "label": "稳定成功"
+        },
+        {
+          "id": "trend-down",
+          "label": "隐藏失败"
+        }
+      ],
+      "flow": "chain",
+      "callout": "一次通过可能只是运气",
+      "accent": "red",
+      "id": "c04-s01",
+      "chapter": "测试稳定性",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "用重复试验区分稳定能力和一次幸运通过",
+      "chapterSummary": [
+        "多次运行，因为一次通过可能只是运气",
+        "根据探索成功或稳定成功的产品需要选择指标",
+        "平衡任务，并在比较结果前隔离运行环境"
+      ],
+      "start": 213.43200000000002,
+      "end": 232.48200000000003,
+      "narration": "一次通过不能证明 AI 智能体可靠。智能体每次运行的行为会变化，所以一次成功可能来自稳定能力，也可能只是幸运轨迹，或者评估器漏掉了问题。 因此，重要任务要运行多次。结果分布能说明智能体是通常成功、偶尔成功，还是总在同一环节失败。这些信息都可能被单次试验隐藏。",
+      "cueStarts": [
+        213.532,
+        215.89000000000001,
+        223.09,
+        225.157,
+        230.09000000000003
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        216.29200000000003,
+        223.487,
+        223.487,
+        223.487
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "一次通过不能证明",
+          "props": [
+            0
+          ],
+          "rawTime": 213.532,
+          "time": 216.29200000000003,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "重要任务要运行多次",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 223.567,
+          "time": 223.487,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 68.75805553438806
+      },
+      "visualBalance": {
+        "x": 979.6311060792547,
+        "y": 470,
+        "offsetX": 19.631106079254664,
+        "offsetY": 0,
+        "rawOffsetX": 19.631106079254664,
+        "rawOffsetY": -68.75805553438806,
+        "appliedShiftX": 0,
+        "appliedShiftY": 68.75805553438806
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "comparison",
+      "labels": [
+        "至少一次成功",
+        "每次都成功"
+      ],
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "search",
+          "label": "探索"
+        },
+        {
+          "id": "success",
+          "label": "一个答案"
+        },
+        {
+          "id": "shield",
+          "label": "一致性"
+        },
+        {
+          "id": "approval",
+          "label": "可靠行动"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "按用户承诺选择指标",
+      "accent": "blue",
+      "id": "c04-s02",
+      "chapter": "测试稳定性",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "用重复试验区分稳定能力和一次幸运通过",
+      "chapterSummary": [
+        "多次运行，因为一次通过可能只是运气",
+        "根据探索成功或稳定成功的产品需要选择指标",
+        "平衡任务，并在比较结果前隔离运行环境"
+      ],
+      "start": 232.48200000000003,
+      "end": 255.14000000000001,
+      "narration": "至少一次成功指标关注多次尝试中有没有一次做对，适合探索型工作，只要找到一个可行答案就有价值。连续全部成功指标要求每次都通过，更适合用户期待稳定执行的任务。 两者对应不同产品要求。研究助手给出多个假设，其中一个高质量结果可能就有用；面向客户处理退款的智能体则必须稳定，因为一次错误就可能带来真实资金和信任损失。",
+      "cueStarts": [
+        232.48200000000003,
+        239.09000000000003,
+        243.79000000000002,
+        245.548
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        232.70200000000003,
+        232.70200000000003,
+        239.01000000000002,
+        239.01000000000002
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "至少一次成功指标",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 232.48200000000003,
+          "time": 232.70200000000003,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "连续全部成功指标",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 239.09000000000003,
+          "time": 239.01000000000002,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 200.9,
+        "contentTop": 228,
+        "gap": 27.099999999999994
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 30.93299966757712
+      },
+      "visualBalance": {
+        "x": 964.8036778490192,
+        "y": 470,
+        "offsetX": 4.803677849019209,
+        "offsetY": 0,
+        "rawOffsetX": 4.803677849019209,
+        "rawOffsetY": -30.93299966757712,
+        "appliedShiftX": 0,
+        "appliedShiftY": 30.93299966757712
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "grid",
+      "human": "review-front",
+      "agent": "monitor-left",
+      "agentDirection": "left",
+      "props": [
+        {
+          "id": "compare",
+          "label": "平衡样本"
+        },
+        {
+          "id": "stop",
+          "label": "反向样本"
+        },
+        {
+          "id": "archive",
+          "label": "清洁状态"
+        },
+        {
+          "id": "settings",
+          "label": "稳定环境"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "平衡任务并隔离每次试验",
+      "accent": "yellow",
+      "id": "c04-s03",
+      "chapter": "测试稳定性",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "用重复试验区分稳定能力和一次幸运通过",
+      "chapterSummary": [
+        "多次运行，因为一次通过可能只是运气",
+        "根据探索成功或稳定成功的产品需要选择指标",
+        "平衡任务，并在比较结果前隔离运行环境"
+      ],
+      "start": 255.14000000000001,
+      "end": 277.632,
+      "narration": "稳定性还取决于任务是否平衡。既要测试某个行为应该发生的情况，也要测试它不该发生的情况。只奖励搜索，智能体可能什么都搜索；只奖励拒绝，它又可能停止完成有价值的工作。 每次试验还要隔离。遗留文件、缓存状态、资源不足或上一轮历史，既可能虚高成绩，也可能制造相关失败。测试环境要接近生产，同时重置会污染比较的状态。",
+      "cueStarts": [
+        255.14000000000001,
+        257.548,
+        261.615,
+        266.957,
+        268.40700000000004,
+        274.298
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        256.264,
+        256.264,
+        266.877,
+        266.877
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "任务是否平衡",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 256.344,
+          "time": 256.264,
+          "clampedToContentStart": false
+        },
+        {
+          "trigger": "每次试验还要隔离",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 266.957,
+          "time": 266.877,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 315.80625,
+        "gap": 113.60624999999999
+      },
+      "balanceShift": {
+        "x": -82.93682131109358,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 445.19932545693416,
+        "offsetX": 0,
+        "offsetY": -24.80067454306584,
+        "rawOffsetX": 82.93682131109358,
+        "rawOffsetY": -72.20067454306582,
+        "appliedShiftX": -82.93682131109358,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c04-s04",
+      "chapter": "测试稳定性",
+      "chapterIndex": 3,
+      "chapterNumber": 4,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "用重复试验区分稳定能力和一次幸运通过",
+      "chapterSummary": [
+        "多次运行，因为一次通过可能只是运气",
+        "根据探索成功或稳定成功的产品需要选择指标",
+        "平衡任务，并在比较结果前隔离运行环境"
+      ],
+      "start": 277.632,
+      "end": 289.34400000000005,
+      "narration": "小结。第一，多次运行，因为一次通过可能只是运气。 第二，根据探索成功或稳定成功的产品需要选择指标。 第三，平衡任务，并在比较结果前隔离运行环境。",
+      "cueStarts": [
+        277.632,
+        278.473,
+        281.74800000000005,
+        285.582
+      ],
+      "summaryPointTimes": [
+        277.632,
+        281.74800000000005,
+        285.582
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        2
+      ],
+      "layout": "process",
+      "human": "caution-front",
+      "agent": "read-front",
+      "props": [
+        {
+          "id": "error",
+          "label": "真实失败"
+        },
+        {
+          "id": "notification",
+          "label": "用户反馈"
+        },
+        {
+          "id": "checklist",
+          "label": "人工检查"
+        },
+        {
+          "id": "task-list",
+          "label": "评估任务"
+        }
+      ],
+      "flow": "chain",
+      "callout": "低分也可能是评估失败",
+      "accent": "red",
+      "id": "c05-s01",
+      "chapter": "检查评估",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "确认任务、运行框架和评分器正在产生公平信号",
+      "chapterSummary": [
+        "把真实失败写成明确任务，并提供参考答案",
+        "阅读轨迹，区分智能体错误和评分器错误",
+        "随着能力、产品和风险变化持续维护评估套件"
+      ],
+      "start": 289.34400000000005,
+      "end": 307.36000000000007,
+      "narration": "低分不一定说明 AI 智能体能力弱。任务可能含糊，环境可能损坏，评分器也可能拒绝一个有效答案。评估质量本身同样需要被检查。 从已经发生的失败开始。人工提测项、客服反馈、生产故障和困难边界都是高价值样本，因为它们对应真实用户期待，而不是凭空设计的题目。",
+      "cueStarts": [
+        289.4440000000001,
+        291.76000000000005,
+        295.82700000000006,
+        298.10200000000003,
+        299.8190000000001
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        292.20400000000006,
+        298.02200000000005,
+        298.02200000000005,
+        298.02200000000005
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "低分不一定说明",
+          "props": [
+            0
+          ],
+          "rawTime": 289.4440000000001,
+          "time": 292.20400000000006,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "从已经发生的失败开始",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 298.10200000000003,
+          "time": 298.02200000000005,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.65625,
+        "gap": 212.45625
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 65.87614323969433
+      },
+      "visualBalance": {
+        "x": 962.0178212270243,
+        "y": 470,
+        "offsetX": 2.017821227024342,
+        "offsetY": 0,
+        "rawOffsetX": 2.017821227024342,
+        "rawOffsetY": -65.87614323969433,
+        "appliedShiftX": 0,
+        "appliedShiftY": 65.87614323969433
+      }
+    },
+    {
+      "paragraphs": [
+        3,
+        4
+      ],
+      "layout": "grid",
+      "human": "write-front",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "form",
+          "label": "明确任务"
+        },
+        {
+          "id": "success",
+          "label": "参考答案"
+        },
+        {
+          "id": "scorecard",
+          "label": "公平评分"
+        },
+        {
+          "id": "evidence",
+          "label": "已知证据"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "先证明任务和评分器可以通过",
+      "accent": "blue",
+      "id": "c05-s02",
+      "chapter": "检查评估",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "确认任务、运行框架和评分器正在产生公平信号",
+      "chapterSummary": [
+        "把真实失败写成明确任务，并提供参考答案",
+        "阅读轨迹，区分智能体错误和评分器错误",
+        "随着能力、产品和风险变化持续维护评估套件"
+      ],
+      "start": 307.36000000000007,
+      "end": 332.119,
+      "narration": "每个任务都要让两位合格评审者得出相同判断。写清输入、必要结果、关键约束，以及评分器会检查的全部内容；再制作一个已知可通过的参考答案，证明任务可解，也证明评分器能识别正确结果。 问题集要保持平衡，起步可以很小。早期几十个真实任务，往往比几百个薄弱样本更有价值。产品成熟后，再加入更困难、能区分改进的任务，并把已经解决的能力测试转成持续回归保护。",
+      "cueStarts": [
+        307.36000000000007,
+        310.60200000000003,
+        319.91900000000004,
+        322.29400000000004,
+        326.0690000000001
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        307.5800000000001,
+        314.75700000000006,
+        314.75700000000006,
+        314.75700000000006
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "每个任务都要让两位合格评审者",
+          "props": [
+            0
+          ],
+          "rawTime": 307.36000000000007,
+          "time": 307.5800000000001,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "制作一个已知可通过的参考答案",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 314.83700000000005,
+          "time": 314.75700000000006,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 314.2125,
+        "gap": 112.01249999999999
+      },
+      "balanceShift": {
+        "x": 74.90297501990108,
+        "y": 47.39999999999998
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 427.89484791859746,
+        "offsetX": 0,
+        "offsetY": -42.10515208140254,
+        "rawOffsetX": -74.90297501990108,
+        "rawOffsetY": -89.50515208140251,
+        "appliedShiftX": 74.90297501990108,
+        "appliedShiftY": 47.39999999999998
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "monitor-right",
+      "agentDirection": "right",
+      "props": [
+        {
+          "id": "chat",
+          "label": "阅读轨迹"
+        },
+        {
+          "id": "dashboard",
+          "label": "观察信号"
+        },
+        {
+          "id": "trend-up",
+          "label": "提高难度"
+        },
+        {
+          "id": "human-gate",
+          "label": "人工校准"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "评估套件是活的产品资产",
+      "accent": "yellow",
+      "id": "c05-s03",
+      "chapter": "检查评估",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "确认任务、运行框架和评分器正在产生公平信号",
+      "chapterSummary": [
+        "把真实失败写成明确任务，并提供参考答案",
+        "阅读轨迹，区分智能体错误和评分器错误",
+        "随着能力、产品和风险变化持续维护评估套件"
+      ],
+      "start": 332.119,
+      "end": 356.619,
+      "narration": "定期阅读多次试验的轨迹和评分。失败轨迹能区分是真正的智能体错误、运行框架阻塞，还是评分器惩罚了合理方案。如果失败看起来不公平，应该先修评估，再优化智能体。 把评估套件当作活的工程资产。模型会变强，产品会变化，用户行为会迁移，原本困难的任务也会饱和。明确维护责任、结合生产监控，并定期用人工判断校准，才能长期保持信号有效。",
+      "cueStarts": [
+        332.119,
+        334.45200000000006,
+        340.0690000000001,
+        343.82700000000006,
+        346.07700000000006,
+        351.23500000000007
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        332.33900000000006,
+        332.33900000000006,
+        344.87200000000007,
+        344.87200000000007
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "定期阅读多次试验的轨迹和评分",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 332.119,
+          "time": 332.33900000000006,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "活的工程资产",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 344.95200000000006,
+          "time": 344.87200000000007,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 320.5875,
+        "gap": 86.78749999999997
+      },
+      "balanceShift": {
+        "x": -91.20073160667494,
+        "y": 25
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 398.42915354117366,
+        "offsetX": 0,
+        "offsetY": -71.57084645882634,
+        "rawOffsetX": 91.20073160667494,
+        "rawOffsetY": -96.57084645882634,
+        "appliedShiftX": -91.20073160667494,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c05-s04",
+      "chapter": "检查评估",
+      "chapterIndex": 4,
+      "chapterNumber": 5,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "确认任务、运行框架和评分器正在产生公平信号",
+      "chapterSummary": [
+        "把真实失败写成明确任务，并提供参考答案",
+        "阅读轨迹，区分智能体错误和评分器错误",
+        "随着能力、产品和风险变化持续维护评估套件"
+      ],
+      "start": 356.619,
+      "end": 368.66400000000004,
+      "narration": "小结。第一，把真实失败写成明确任务，并提供参考答案。 第二，阅读轨迹，区分智能体错误和评分器错误。 第三，随着能力、产品和风险变化持续维护评估套件。",
+      "cueStarts": [
+        356.619,
+        357.46000000000004,
+        360.994,
+        364.552
+      ],
+      "summaryPointTimes": [
+        356.619,
+        360.994,
+        364.552
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "standard"
+    },
+    {
+      "paragraphs": [
+        1,
+        3
+      ],
+      "layout": "process",
+      "human": "write-front",
+      "agent": "plan-front",
+      "props": [
+        {
+          "id": "result-card",
+          "label": "结果"
+        },
+        {
+          "id": "form",
+          "label": "任务环境"
+        },
+        {
+          "id": "target",
+          "label": "通过阈值"
+        },
+        {
+          "id": "success",
+          "label": "答案"
+        }
+      ],
+      "flow": "chain",
+      "callout": "先写结果和可复现环境",
+      "accent": "blue",
+      "propShiftX": -24,
+      "id": "c06-s01",
+      "chapter": "验收表",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": true,
+      "chapterIntro": "用一张可复用表记录 AI 智能体证据和发布决定",
+      "chapterSummary": [
+        "先写结果和任务环境，再选择评分器",
+        "收集最终状态、关键行为和多次试验的证据",
+        "记录发布决定、例外和下一条新增测试"
+      ],
+      "start": 368.66400000000004,
+      "end": 395.00500000000005,
+      "narration": "现在把方法整理成一张 AI 智能体结果验收表。它既可以用于发布前的一项高价值任务，也可以用于重复工作流，或者作为完整评估套件的起点。 第一块是结果。写明用户可见结果、证明它存在的最终状态、通过阈值和证据位置。不要把“智能体说完成了”当作证据。 第二块是任务环境。记录输入、工具、权限、起始状态、关键约束和参考答案。这样任务才能复现，也能暴露环境本身是否在制造噪声。",
+      "cueStarts": [
+        368.76400000000007,
+        371.98900000000003,
+        377.97200000000004,
+        379.15500000000003,
+        383.53900000000004,
+        385.74700000000007,
+        387.13000000000005,
+        391.37200000000007
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        371.52400000000006,
+        371.52400000000006,
+        381.9976666666667,
+        381.9976666666667
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "一张 AI 智能体结果验收表",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 370.0116190476191,
+          "time": 371.52400000000006,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "通过阈值",
+          "props": [
+            2,
+            3
+          ],
+          "rawTime": 382.0776666666667,
+          "time": 381.9976666666667,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 414.65625,
+        "gap": 212.45625
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 64.47938873460163
+      },
+      "visualBalance": {
+        "x": 997.2774227425734,
+        "y": 470,
+        "offsetX": 37.277422742573435,
+        "offsetY": 0,
+        "rawOffsetX": 37.277422742573435,
+        "rawOffsetY": -64.47938873460163,
+        "appliedShiftX": 0,
+        "appliedShiftY": 64.47938873460163
+      }
+    },
+    {
+      "paragraphs": [
+        4,
+        4
+      ],
+      "layout": "grid",
+      "human": "compare-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "code-file",
+          "label": "确定检查"
+        },
+        {
+          "id": "scorecard",
+          "label": "模型标准"
+        },
+        {
+          "id": "human-gate",
+          "label": "人工评审"
+        }
+      ],
+      "flow": "cluster",
+      "callout": "每个维度匹配一种评分",
+      "accent": "yellow",
+      "id": "c06-s02",
+      "chapter": "验收表",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "用一张可复用表记录 AI 智能体证据和发布决定",
+      "chapterSummary": [
+        "先写结果和任务环境，再选择评分器",
+        "收集最终状态、关键行为和多次试验的证据",
+        "记录发布决定、例外和下一条新增测试"
+      ],
+      "start": 395.00500000000005,
+      "end": 406.32200000000006,
+      "narration": "第三块是评分组合。客观状态使用确定性检查，开放质量使用模型标准，校准或专业判断使用人工评审。每个评分器只承担一个清楚维度，不要给它一个含糊的整体工作。",
+      "cueStarts": [
+        395.00500000000005,
+        396.57200000000006,
+        402.27200000000005
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        395.2250000000001,
+        395.2250000000001,
+        395.2250000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第三块是评分组合",
+          "props": [
+            0,
+            1,
+            2
+          ],
+          "rawTime": 395.00500000000005,
+          "time": 395.2250000000001,
+          "clampedToContentStart": true
+        }
+      ],
+      "visualVariant": "mirror",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 226.2,
+        "gap": 24
+      },
+      "balanceShift": {
+        "x": -111.17187645275772,
+        "y": 54.29943438147734
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 459.8784835341595,
+        "offsetX": 0,
+        "offsetY": -10.1215164658405,
+        "rawOffsetX": 111.17187645275772,
+        "rawOffsetY": -64.42095084731784,
+        "appliedShiftX": -111.17187645275772,
+        "appliedShiftY": 54.29943438147734
+      }
+    },
+    {
+      "paragraphs": [
+        5,
+        6
+      ],
+      "layout": "process",
+      "human": "decide-front",
+      "agent": "verify-front",
+      "props": [
+        {
+          "id": "experiment",
+          "label": "重复试验"
+        },
+        {
+          "id": "dashboard",
+          "label": "评估健康"
+        },
+        {
+          "id": "warning",
+          "label": "例外"
+        },
+        {
+          "id": "approval",
+          "label": "发布决定"
+        }
+      ],
+      "flow": "chain",
+      "callout": "记录信心、缺口和决定",
+      "accent": "red",
+      "id": "c06-s03",
+      "chapter": "验收表",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "用一张可复用表记录 AI 智能体证据和发布决定",
+      "chapterSummary": [
+        "先写结果和任务环境，再选择评分器",
+        "收集最终状态、关键行为和多次试验的证据",
+        "记录发布决定、例外和下一条新增测试"
+      ],
+      "start": 406.32200000000006,
+      "end": 427.78000000000003,
+      "narration": "第四块是稳定性。写明试验次数、符合产品目标的指标和最低通过线。探索任务也许一次成功就够了，重复执行的用户任务则需要稳定通过标准。 第五块是评估健康与决定。记录轨迹抽查、已知评分缺口、环境故障、例外、最终发布决定，以及下一条应该加入评估的新失败。这样既验收智能体，也验收你对测试结果的信心。",
+      "cueStarts": [
+        406.32200000000006,
+        407.64700000000005,
+        411.20500000000004,
+        416.01400000000007,
+        417.98900000000003,
+        424.52200000000005
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        406.5420000000001,
+        415.9340000000001,
+        415.9340000000001,
+        415.9340000000001
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "第四块是稳定性",
+          "props": [
+            0
+          ],
+          "rawTime": 406.32200000000006,
+          "time": 406.5420000000001,
+          "clampedToContentStart": true
+        },
+        {
+          "trigger": "第五块是评估健康与决定",
+          "props": [
+            1,
+            2,
+            3
+          ],
+          "rawTime": 416.01400000000007,
+          "time": 415.9340000000001,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 202.2,
+        "contentTop": 416.578125,
+        "gap": 214.378125
+      },
+      "balanceShift": {
+        "x": 0,
+        "y": 63.940782725505926
+      },
+      "visualBalance": {
+        "x": 1023.4504613344855,
+        "y": 470,
+        "offsetX": 63.45046133448545,
+        "offsetY": 0,
+        "rawOffsetX": 63.45046133448545,
+        "rawOffsetY": -63.940782725505926,
+        "appliedShiftX": 0,
+        "appliedShiftY": 63.940782725505926
+      }
+    },
+    {
+      "paragraphs": [
+        7,
+        9
+      ],
+      "summaryPointParagraphs": [
+        7,
+        8,
+        9
+      ],
+      "recap": true,
+      "layout": "focus",
+      "human": "review-front",
+      "agent": "verify-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "小结",
+      "accent": "blue",
+      "id": "c06-s04",
+      "chapter": "验收表",
+      "chapterIndex": 5,
+      "chapterNumber": 6,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "用一张可复用表记录 AI 智能体证据和发布决定",
+      "chapterSummary": [
+        "先写结果和任务环境，再选择评分器",
+        "收集最终状态、关键行为和多次试验的证据",
+        "记录发布决定、例外和下一条新增测试"
+      ],
+      "start": 427.78000000000003,
+      "end": 438.79200000000003,
+      "narration": "小结。第一，先写结果和任务环境，再选择评分器。 第二，收集最终状态、关键行为和多次试验的证据。 第三，记录发布决定、例外和下一条新增测试。",
+      "cueStarts": [
+        427.78000000000003,
+        428.62200000000007,
+        431.69700000000006,
+        435.23900000000003
+      ],
+      "summaryPointTimes": [
+        427.78000000000003,
+        431.69700000000006,
+        435.23900000000003
+      ],
+      "ctaAt": null,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    },
+    {
+      "paragraphs": [
+        1,
+        1
+      ],
+      "layout": "focus",
+      "human": "caution-front",
+      "agent": "evaluate-front",
+      "props": [
+        {
+          "id": "chat",
+          "label": "完成声明"
+        },
+        {
+          "id": "evidence",
+          "label": "验证结果"
+        }
+      ],
+      "flow": "chain",
+      "callout": "漂亮不等于已经证明",
+      "accent": "red",
+      "id": "c07-s01",
+      "chapter": "总结",
+      "chapterIndex": 6,
+      "chapterNumber": 7,
+      "chapterStart": true,
+      "chapterEnd": false,
+      "showIntro": false,
+      "chapterIntro": "把 AI 智能体完成声明变成真正可信的结果",
+      "chapterSummary": [
+        "在 AI 智能体开始前定义成功",
+        "用合适的评分组合验证最终状态",
+        "重复试验，并检查评估本身是否可靠"
+      ],
+      "start": 438.79200000000003,
+      "end": 448.783,
+      "narration": "AI 智能体写出一份漂亮的完成汇报，不等于任务已经可靠完成。真正验收要把目标结果写成任务，检查最终状态，并确认它能在公平条件下重复成功。",
+      "cueStarts": [
+        438.89200000000005,
+        442.95000000000005
+      ],
+      "summaryPointTimes": [],
+      "ctaAt": null,
+      "propBeatTimes": [
+        440.0868965517242,
+        440.0868965517242
+      ],
+      "semanticBeats": [
+        {
+          "trigger": "漂亮的完成汇报，不等于",
+          "props": [
+            0,
+            1
+          ],
+          "rawTime": 440.16689655172416,
+          "time": 440.0868965517242,
+          "clampedToContentStart": false
+        }
+      ],
+      "visualVariant": "standard",
+      "titleLane": {
+        "titleBottom": 233.8,
+        "contentTop": 413.125,
+        "gap": 179.325
+      },
+      "balanceShift": {
+        "x": 117.99484362322846,
+        "y": 25
+      },
+      "visualBalance": {
+        "x": 960,
+        "y": 406.9144463599842,
+        "offsetX": 0,
+        "offsetY": -63.0855536400158,
+        "rawOffsetX": -117.99484362322846,
+        "rawOffsetY": -88.0855536400158,
+        "appliedShiftX": 117.99484362322846,
+        "appliedShiftY": 25
+      }
+    },
+    {
+      "paragraphs": [
+        2,
+        6
+      ],
+      "summaryPointParagraphs": [
+        2,
+        3,
+        4
+      ],
+      "ctaParagraph": 6,
+      "recap": true,
+      "finalSummary": true,
+      "layout": "focus",
+      "human": "approve",
+      "agent": "celebrate-front",
+      "props": [],
+      "flow": "cluster",
+      "callout": "AI 智能体结果验收表",
+      "accent": "yellow",
+      "id": "c07-s02",
+      "chapter": "总结",
+      "chapterIndex": 6,
+      "chapterNumber": 7,
+      "chapterStart": false,
+      "chapterEnd": true,
+      "showIntro": false,
+      "chapterIntro": "把 AI 智能体完成声明变成真正可信的结果",
+      "chapterSummary": [
+        "在 AI 智能体开始前定义成功",
+        "用合适的评分组合验证最终状态",
+        "重复试验，并检查评估本身是否可靠"
+      ],
+      "start": 448.783,
+      "end": 469.469396,
+      "narration": "第一，在 AI 智能体开始前定义成功。 第二，用合适的评分组合验证最终状态。 第三，重复试验，并检查评估本身是否可靠。 用 AI 智能体结果验收表记录结果、环境、证据、评分组合、稳定标准、评估缺口和发布决定。这样才能把“完成”变成真正可信的结果。 关注 Tiny Agent，成为更擅长使用 AI 的人！",
+      "cueStarts": [
+        448.783,
+        451.3,
+        454.05,
+        457.39200000000005,
+        464.25,
+        466.88300000000004
+      ],
+      "summaryPointTimes": [
+        448.783,
+        451.3,
+        454.05
+      ],
+      "ctaAt": 466.88300000000004,
+      "propBeatTimes": [],
+      "semanticBeats": [],
+      "visualVariant": "mirror"
+    }
+  ]
+}

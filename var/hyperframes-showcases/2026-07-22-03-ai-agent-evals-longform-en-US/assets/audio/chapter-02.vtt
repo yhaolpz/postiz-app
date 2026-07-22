@@ -1,0 +1,87 @@
+1
+00:00:00,100 --> 00:00:03,655
+Start with the smallest unit of evaluation: a task.
+
+2
+00:00:03,605 --> 00:00:07,826
+A task gives the AI Agent defined inputs and success criteria.
+
+3
+00:00:07,826 --> 00:00:13,663
+One attempt at that task is a trial, and a collection of related tasks becomes an evaluation suite.
+
+4
+00:00:13,663 --> 00:00:17,644
+The distinction matters because a vague request produces a vague score.
+
+5
+00:00:17,644 --> 00:00:24,461
+If two domain experts cannot independently decide whether the task passed, the specification is not yet ready to measure.
+
+6
+00:00:24,461 --> 00:00:30,000
+The Agent should know what it must produce, where the result belongs, and which constraints are essential.
+
+7
+00:00:30,000 --> 00:00:33,211
+Next, separate the transcript from the outcome.
+
+8
+00:00:33,211 --> 00:00:39,086
+The transcript records messages, tool calls, intermediate results, reasoning, and errors.
+
+9
+00:00:39,086 --> 00:00:42,990
+The outcome is the final state left in the environment after the trial.
+
+10
+00:00:42,990 --> 00:00:47,173
+For a booking Agent, “your flight is booked” appears in the transcript.
+
+11
+00:00:47,173 --> 00:00:50,384
+The outcome is a valid reservation in the database.
+
+12
+00:00:50,384 --> 00:00:58,451
+For a coding Agent, a convincing explanation is not the outcome; the changed repository, passing tests, and preserved behavior are.
+
+13
+00:00:58,451 --> 00:01:01,509
+A grader scores one dimension of performance.
+
+14
+00:01:01,509 --> 00:01:07,855
+It may check an exact state, apply a quality rubric, or ask a human expert to judge a subjective result.
+
+15
+00:01:07,855 --> 00:01:12,259
+A task can use several graders because success is often multidimensional.
+
+16
+00:01:12,259 --> 00:01:15,250
+Finally, remember what you are evaluating.
+
+17
+00:01:15,250 --> 00:01:17,894
+An AI Agent is not only a model.
+
+18
+00:01:17,894 --> 00:01:22,442
+The harness supplies instructions, tools, state, and orchestration.
+
+19
+00:01:22,442 --> 00:01:29,663
+A weak tool contract or unstable environment can make the same model fail, so the model and harness must be evaluated together.
+
+20
+00:01:29,663 --> 00:01:34,240
+First, define one task with explicit inputs and success criteria.
+
+21
+00:01:34,240 --> 00:01:37,846
+Second, separate the transcript from the final outcome.
+
+22
+00:01:37,846 --> 00:01:41,538
+Third, evaluate the model and the Agent harness together.

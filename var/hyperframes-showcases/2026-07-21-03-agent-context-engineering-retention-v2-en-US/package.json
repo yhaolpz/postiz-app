@@ -1,0 +1,17 @@
+{
+  "name": "2026-07-21-03-agent-context-engineering-retention-v2-en-us",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "node build.mjs --prepare",
+    "tts": "node build.mjs --tts",
+    "compile": "node build.mjs --compile",
+    "check": "pnpm dlx hyperframes@0.7.65 check . --snapshots --frame-check=severity=error",
+    "check:balance": "node qa/check-visual-balance.mjs",
+    "check:semantics": "node qa/check-semantic-beats.mjs",
+    "check:transitions": "node qa/check-transition-continuity.mjs",
+    "check:full": "pnpm dlx hyperframes@0.7.65 check . --at-transitions --timeout 30000 --snapshots --frame-check=severity=error",
+    "preview": "pnpm dlx hyperframes@0.7.65 preview . --port 3031 --no-open",
+    "render": "pnpm dlx hyperframes@0.7.65 render . --quality high --strict --low-memory-mode --workers 1 --output renders/2026-07-21-03-agent-context-engineering-retention-v2.en-US.mp4"
+  }
+}

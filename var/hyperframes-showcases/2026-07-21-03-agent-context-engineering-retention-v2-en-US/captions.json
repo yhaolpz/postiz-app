@@ -1,0 +1,1057 @@
+[
+  {
+    "start": 0.1,
+    "end": 3.427,
+    "text": "Why does an AI Agent forget the goal halfway through a long task?"
+  },
+  {
+    "start": 3.427,
+    "end": 7.29859493670886,
+    "text": "Because information can still be present while the important signal gets"
+  },
+  {
+    "start": 7.29859493670886,
+    "end": 7.413,
+    "text": "buried."
+  },
+  {
+    "start": 7.413,
+    "end": 11.395,
+    "text": "Anthropic's context-engineering work gives the cause: context is a"
+  },
+  {
+    "start": 11.395,
+    "end": 12.249,
+    "text": "finite attention budget."
+  },
+  {
+    "start": 12.249,
+    "end": 15.105,
+    "text": "Old decisions and raw history weaken the next signal."
+  },
+  {
+    "start": 15.105,
+    "end": 18.417,
+    "text": "More context can therefore make an AI Agent less reliable."
+  },
+  {
+    "start": 18.417,
+    "end": 22.084714285714288,
+    "text": "You will learn to keep the goal visible, retrieve detail only when"
+  },
+  {
+    "start": 22.084714285714288,
+    "end": 24.567,
+    "text": "needed, and preserve working state across many steps."
+  },
+  {
+    "start": 24.567,
+    "end": 28.5793125,
+    "text": "You will also get a six-part high-signal context pack: Outcome,"
+  },
+  {
+    "start": 28.5793125,
+    "end": 32.846375,
+    "text": "Operating Rules, Tool Map, Canonical Examples, Retrieval Index, and"
+  },
+  {
+    "start": 32.846375,
+    "end": 33.141,
+    "text": "Working State."
+  },
+  {
+    "start": 33.141,
+    "end": 37.300000000000004,
+    "text": "Save this lesson so you can reuse it on your next long AI Agent task."
+  },
+  {
+    "start": 37.300000000000004,
+    "end": 41.517801886792455,
+    "text": "Context includes every token available when the model produces its next"
+  },
+  {
+    "start": 41.517801886792455,
+    "end": 45.55738679245283,
+    "text": "response: system instructions, tool definitions, examples, retrieved"
+  },
+  {
+    "start": 45.55738679245283,
+    "end": 49.41875471698114,
+    "text": "documents, message history, intermediate results, and the current"
+  },
+  {
+    "start": 49.41875471698114,
+    "end": 49.49875471698114,
+    "text": "request."
+  },
+  {
+    "start": 49.49875471698114,
+    "end": 53.4632191780822,
+    "text": "Context engineering manages that whole state, not just the opening"
+  },
+  {
+    "start": 53.4632191780822,
+    "end": 53.5432191780822,
+    "text": "prompt."
+  },
+  {
+    "start": 53.5432191780822,
+    "end": 57.56322222222222,
+    "text": "Anthropic describes context as finite and subject to diminishing"
+  },
+  {
+    "start": 57.56322222222222,
+    "end": 57.64322222222222,
+    "text": "returns."
+  },
+  {
+    "start": 57.64322222222222,
+    "end": 61.24326543209877,
+    "text": "Research on context rot shows a recurring pattern: as the amount of"
+  },
+  {
+    "start": 61.24326543209877,
+    "end": 64.78262345679012,
+    "text": "material grows, models can become less reliable at recalling the"
+  },
+  {
+    "start": 64.78262345679012,
+    "end": 65.904,
+    "text": "relevant item hidden inside it."
+  },
+  {
+    "start": 65.904,
+    "end": 68.203,
+    "text": "A larger window does not make attention free."
+  },
+  {
+    "start": 68.203,
+    "end": 70.596,
+    "text": "This explains why a giant prompt can fail."
+  },
+  {
+    "start": 70.596,
+    "end": 74.93694736842104,
+    "text": "The correct rule may be present, yet surrounded by obsolete plans,"
+  },
+  {
+    "start": 74.93694736842104,
+    "end": 77.555,
+    "text": "repeated explanations, raw logs, and edge cases."
+  },
+  {
+    "start": 77.555,
+    "end": 81.22871962616823,
+    "text": "The model must infer which parts are current, authoritative, and"
+  },
+  {
+    "start": 81.22871962616823,
+    "end": 83.21000000000001,
+    "text": "relevant before it can even solve the task."
+  },
+  {
+    "start": 83.21000000000001,
+    "end": 85.87100000000001,
+    "text": "Good context engineering is therefore selective."
+  },
+  {
+    "start": 85.87100000000001,
+    "end": 89.94653947368421,
+    "text": "Before every meaningful step, ask what information changes the next"
+  },
+  {
+    "start": 89.94653947368421,
+    "end": 90.02653947368421,
+    "text": "decision."
+  },
+  {
+    "start": 90.02653947368421,
+    "end": 94.124,
+    "text": "Keep the goal, necessary constraints, current evidence, and live state."
+  },
+  {
+    "start": 94.124,
+    "end": 97.512,
+    "text": "Move reference detail behind an index when it can be fetched later."
+  },
+  {
+    "start": 97.512,
+    "end": 98.97,
+    "text": "Selection is iterative."
+  },
+  {
+    "start": 98.97,
+    "end": 101.714,
+    "text": "After a tool call, the Agent has new evidence."
+  },
+  {
+    "start": 101.714,
+    "end": 104.51700000000001,
+    "text": "After an error, a new boundary becomes important."
+  },
+  {
+    "start": 104.51700000000001,
+    "end": 108.677,
+    "text": "After a milestone, raw traces may be replaced by a compact state"
+  },
+  {
+    "start": 108.677,
+    "end": 108.757,
+    "text": "summary."
+  },
+  {
+    "start": 108.757,
+    "end": 113.43166666666667,
+    "text": "The useful context at step ten is not identical to the useful context at"
+  },
+  {
+    "start": 113.43166666666667,
+    "end": 113.538,
+    "text": "step one."
+  },
+  {
+    "start": 113.538,
+    "end": 115.08200000000001,
+    "text": "Minimal does not mean short."
+  },
+  {
+    "start": 115.08200000000001,
+    "end": 119.67219801980198,
+    "text": "A complex migration may need extensive acceptance criteria, repository"
+  },
+  {
+    "start": 119.67219801980198,
+    "end": 121.157,
+    "text": "conventions, and risk controls."
+  },
+  {
+    "start": 121.157,
+    "end": 124.87561904761905,
+    "text": "The standard is the smallest set that fully supports the expected"
+  },
+  {
+    "start": 124.87561904761905,
+    "end": 126.70700000000001,
+    "text": "behavior, not the fewest possible words."
+  },
+  {
+    "start": 126.70700000000001,
+    "end": 131.26807594936707,
+    "text": "First, treat context as a finite attention budget rather than unlimited"
+  },
+  {
+    "start": 131.26807594936707,
+    "end": 131.3480759493671,
+    "text": "storage."
+  },
+  {
+    "start": 131.3480759493671,
+    "end": 135.018,
+    "text": "Second, more tokens can dilute the instruction that matters next."
+  },
+  {
+    "start": 135.018,
+    "end": 139.02081081081081,
+    "text": "Third, keep the smallest sufficient set and refresh it as the task"
+  },
+  {
+    "start": 139.02081081081081,
+    "end": 139.233333,
+    "text": "changes."
+  },
+  {
+    "start": 139.233333,
+    "end": 141.981333,
+    "text": "Start with system instructions at the right altitude."
+  },
+  {
+    "start": 141.981333,
+    "end": 146.42861299999998,
+    "text": "At one extreme, a prompt hard-codes every branch with brittle if-else"
+  },
+  {
+    "start": 146.42861299999998,
+    "end": 146.508613,
+    "text": "logic."
+  },
+  {
+    "start": 146.508613,
+    "end": 150.2061383097345,
+    "text": "At the other, it says something vague like do a great job and assumes"
+  },
+  {
+    "start": 150.2061383097345,
+    "end": 152.18533299999999,
+    "text": "the Agent shares your unstated expectations."
+  },
+  {
+    "start": 152.18533299999999,
+    "end": 156.323083,
+    "text": "The useful middle gives clear goals, boundaries, and heuristics while"
+  },
+  {
+    "start": 156.323083,
+    "end": 157.151333,
+    "text": "leaving room to reason."
+  },
+  {
+    "start": 157.151333,
+    "end": 161.176333,
+    "text": "Organize background, instructions, tool guidance, and output"
+  },
+  {
+    "start": 161.176333,
+    "end": 163.046333,
+    "text": "expectations into distinct sections."
+  },
+  {
+    "start": 163.046333,
+    "end": 167.3175054137931,
+    "text": "The formatting helps, but the decisive value is the clarity and priority"
+  },
+  {
+    "start": 167.3175054137931,
+    "end": 167.73233299999998,
+    "text": "of the content."
+  },
+  {
+    "start": 167.73233299999998,
+    "end": 169.544333,
+    "text": "Next, inspect the tools."
+  },
+  {
+    "start": 169.544333,
+    "end": 173.81119014285716,
+    "text": "A tool is not only an action; it is a contract between the Agent and its"
+  },
+  {
+    "start": 173.81119014285716,
+    "end": 173.978333,
+    "text": "environment."
+  },
+  {
+    "start": 173.978333,
+    "end": 178.387213,
+    "text": "Names, descriptions, parameters, error behavior, and returned data all"
+  },
+  {
+    "start": 178.387213,
+    "end": 181.394333,
+    "text": "enter context and shape which action the Agent chooses."
+  },
+  {
+    "start": 181.394333,
+    "end": 184.80433299999999,
+    "text": "Overlapping tools create ambiguous decisions and waste attention."
+  },
+  {
+    "start": 184.80433299999999,
+    "end": 188.543333,
+    "text": "If a human cannot clearly explain when to use one tool instead of"
+  },
+  {
+    "start": 188.543333,
+    "end": 191.739333,
+    "text": "another, the Agent is unlikely to resolve the ambiguity reliably."
+  },
+  {
+    "start": 191.739333,
+    "end": 196.13506829411764,
+    "text": "Keep a minimal viable set, return token-efficient results, and let each"
+  },
+  {
+    "start": 196.13506829411764,
+    "end": 197.519333,
+    "text": "tool do one understandable job."
+  },
+  {
+    "start": 197.519333,
+    "end": 198.944333,
+    "text": "Then curate examples."
+  },
+  {
+    "start": 198.944333,
+    "end": 203.2456747721519,
+    "text": "A long catalogue of edge cases feels comprehensive, but it can bury the"
+  },
+  {
+    "start": 203.2456747721519,
+    "end": 203.3256747721519,
+    "text": "pattern."
+  },
+  {
+    "start": 203.3256747721519,
+    "end": 207.1613752535211,
+    "text": "Anthropic recommends a small, diverse set of canonical examples that"
+  },
+  {
+    "start": 207.1613752535211,
+    "end": 210.96295976056336,
+    "text": "show the expected behavior, important variation, and a meaningful"
+  },
+  {
+    "start": 210.96295976056336,
+    "end": 211.04295976056338,
+    "text": "boundary."
+  },
+  {
+    "start": 211.04295976056338,
+    "end": 213.224333,
+    "text": "High signal is not a fixed token count."
+  },
+  {
+    "start": 213.224333,
+    "end": 217.317933,
+    "text": "It is information with a clear job: establish the outcome, constrain"
+  },
+  {
+    "start": 217.317933,
+    "end": 221.41153300000002,
+    "text": "behavior, select a tool, demonstrate a pattern, provide evidence, or"
+  },
+  {
+    "start": 221.41153300000002,
+    "end": 222.288333,
+    "text": "expose a stop condition."
+  },
+  {
+    "start": 222.288333,
+    "end": 225.39933299999998,
+    "text": "Remove material only when it performs none of those jobs."
+  },
+  {
+    "start": 225.39933299999998,
+    "end": 229.3945521780822,
+    "text": "First, write instructions at the right altitude between brittle and"
+  },
+  {
+    "start": 229.3945521780822,
+    "end": 229.4745521780822,
+    "text": "vague."
+  },
+  {
+    "start": 229.4745521780822,
+    "end": 233.24433299999998,
+    "text": "Second, keep tools clear, efficient, and minimally overlapping."
+  },
+  {
+    "start": 233.24433299999998,
+    "end": 236.966666,
+    "text": "Third, teach the pattern with a small set of canonical examples."
+  },
+  {
+    "start": 236.966666,
+    "end": 241.0427147804878,
+    "text": "Many systems preload every document that might be relevant before the"
+  },
+  {
+    "start": 241.0427147804878,
+    "end": 241.264666,
+    "text": "Agent starts."
+  },
+  {
+    "start": 241.264666,
+    "end": 245.12428643795621,
+    "text": "That can be fast when the corpus is small and stable, but it also spends"
+  },
+  {
+    "start": 245.12428643795621,
+    "end": 248.127666,
+    "text": "the attention budget before the Agent knows which detail matters."
+  },
+  {
+    "start": 248.127666,
+    "end": 252.9306071764706,
+    "text": "Just-in-time retrieval uses lightweight references instead: file paths,"
+  },
+  {
+    "start": 252.9306071764706,
+    "end": 256.79366600000003,
+    "text": "stored queries, links, identifiers, folder names, and timestamps."
+  },
+  {
+    "start": 256.79366600000003,
+    "end": 260.9464106808511,
+    "text": "The Agent keeps the map in context, then opens the specific source when"
+  },
+  {
+    "start": 260.9464106808511,
+    "end": 261.743666,
+    "text": "a decision requires it."
+  },
+  {
+    "start": 261.743666,
+    "end": 263.620666,
+    "text": "This creates progressive disclosure."
+  },
+  {
+    "start": 263.620666,
+    "end": 265.400666,
+    "text": "A filename suggests purpose."
+  },
+  {
+    "start": 265.400666,
+    "end": 267.120666,
+    "text": "A directory reveals structure."
+  },
+  {
+    "start": 267.120666,
+    "end": 269.140666,
+    "text": "A file size suggests complexity."
+  },
+  {
+    "start": 269.140666,
+    "end": 271.395666,
+    "text": "One search result narrows the next query."
+  },
+  {
+    "start": 271.395666,
+    "end": 275.51639676923077,
+    "text": "The Agent assembles understanding layer by layer while keeping only the"
+  },
+  {
+    "start": 275.51639676923077,
+    "end": 276.94266600000003,
+    "text": "active subset in working context."
+  },
+  {
+    "start": 276.94266600000003,
+    "end": 278.766666,
+    "text": "Claude Code illustrates the pattern."
+  },
+  {
+    "start": 278.766666,
+    "end": 282.9079411677852,
+    "text": "Stable project instructions can be loaded up front, while file search,"
+  },
+  {
+    "start": 282.9079411677852,
+    "end": 286.9308941879195,
+    "text": "grep, head, and tail let the Agent inspect targeted parts of a large"
+  },
+  {
+    "start": 286.9308941879195,
+    "end": 287.030666,
+    "text": "repository."
+  },
+  {
+    "start": 287.030666,
+    "end": 290.093666,
+    "text": "It does not need every file body in context at once."
+  },
+  {
+    "start": 290.093666,
+    "end": 291.304666,
+    "text": "The trade-off is real."
+  },
+  {
+    "start": 291.304666,
+    "end": 295.74820766666664,
+    "text": "Runtime exploration is slower than preloading, and poor navigation can"
+  },
+  {
+    "start": 295.74820766666664,
+    "end": 296.850666,
+    "text": "waste tokens on dead ends."
+  },
+  {
+    "start": 296.850666,
+    "end": 301.39924852427185,
+    "text": "The Agent needs good search tools, informative names, and heuristics for"
+  },
+  {
+    "start": 301.39924852427185,
+    "end": 302.870666,
+    "text": "when to stop exploring and act."
+  },
+  {
+    "start": 302.870666,
+    "end": 304.289666,
+    "text": "Use a hybrid strategy."
+  },
+  {
+    "start": 304.289666,
+    "end": 308.42231435164837,
+    "text": "Preload stable rules, the current outcome, and the small facts that"
+  },
+  {
+    "start": 308.42231435164837,
+    "end": 309.380666,
+    "text": "almost every step needs."
+  },
+  {
+    "start": 309.380666,
+    "end": 313.65909065753425,
+    "text": "Keep changing, detailed, or rarely used material behind retrieval"
+  },
+  {
+    "start": 313.65909065753425,
+    "end": 313.73909065753423,
+    "text": "handles."
+  },
+  {
+    "start": 313.73909065753423,
+    "end": 317.05266600000004,
+    "text": "The right boundary depends on the task and the cost of a missed detail."
+  },
+  {
+    "start": 317.05266600000004,
+    "end": 320.541666,
+    "text": "First, keep lightweight references instead of every source body."
+  },
+  {
+    "start": 320.541666,
+    "end": 324.9020457468355,
+    "text": "Second, let the AI Agent discover detail progressively when it becomes"
+  },
+  {
+    "start": 324.9020457468355,
+    "end": 324.999666,
+    "text": "relevant."
+  },
+  {
+    "start": 324.999666,
+    "end": 329.3591180547945,
+    "text": "Third, balance retrieval focus against the extra time and navigation"
+  },
+  {
+    "start": 329.3591180547945,
+    "end": 329.4391180547945,
+    "text": "cost."
+  },
+  {
+    "start": 329.4391180547945,
+    "end": 331.444999,
+    "text": "Long tasks create a second problem."
+  },
+  {
+    "start": 331.444999,
+    "end": 335.87140525,
+    "text": "Even well-curated context eventually fills as the Agent takes actions,"
+  },
+  {
+    "start": 335.87140525,
+    "end": 339.022999,
+    "text": "observes results, fixes errors, and accumulates decisions."
+  },
+  {
+    "start": 339.022999,
+    "end": 342.794999,
+    "text": "A task that lasts hours may exceed the usable window several times."
+  },
+  {
+    "start": 342.794999,
+    "end": 344.42899900000003,
+    "text": "Compaction is the first lever."
+  },
+  {
+    "start": 344.42899900000003,
+    "end": 348.62568539053257,
+    "text": "Summarize the conversation or trace, start a fresh window, and carry"
+  },
+  {
+    "start": 348.62568539053257,
+    "end": 353.0075197100592,
+    "text": "forward the decisions, unresolved bugs, constraints, evidence, and next"
+  },
+  {
+    "start": 353.0075197100592,
+    "end": 354.28199900000004,
+    "text": "actions needed for continuity."
+  },
+  {
+    "start": 354.28199900000004,
+    "end": 357.9895058493151,
+    "text": "Raw tool output that has already served its purpose can usually"
+  },
+  {
+    "start": 357.9895058493151,
+    "end": 358.093999,
+    "text": "disappear."
+  },
+  {
+    "start": 358.093999,
+    "end": 362.1528671318681,
+    "text": "Compaction has a risk: a subtle detail that looks unimportant now may"
+  },
+  {
+    "start": 362.1528671318681,
+    "end": 362.891999,
+    "text": "become critical later."
+  },
+  {
+    "start": 362.891999,
+    "end": 366.8396656666667,
+    "text": "Anthropic recommends tuning for high recall first, then improving"
+  },
+  {
+    "start": 366.8396656666667,
+    "end": 366.9196656666667,
+    "text": "precision."
+  },
+  {
+    "start": 366.9196656666667,
+    "end": 371.02554116867475,
+    "text": "Losing a decisive constraint is more expensive than carrying a little"
+  },
+  {
+    "start": 371.02554116867475,
+    "end": 371.37599900000004,
+    "text": "extra context."
+  },
+  {
+    "start": 371.37599900000004,
+    "end": 373.350999,
+    "text": "Structured notes provide another layer."
+  },
+  {
+    "start": 373.350999,
+    "end": 377.65847931496063,
+    "text": "The Agent writes progress, milestones, discoveries, and open questions"
+  },
+  {
+    "start": 377.65847931496063,
+    "end": 380.599999,
+    "text": "outside the window, then reloads the relevant note later."
+  },
+  {
+    "start": 380.599999,
+    "end": 384.73407494936714,
+    "text": "This makes working state durable without keeping the entire conversation"
+  },
+  {
+    "start": 384.73407494936714,
+    "end": 384.8140749493671,
+    "text": "active."
+  },
+  {
+    "start": 384.8140749493671,
+    "end": 387.556999,
+    "text": "Specialized agents can isolate deep exploration."
+  },
+  {
+    "start": 387.556999,
+    "end": 391.4275132857143,
+    "text": "A lead Agent keeps the high-level plan while focused agents investigate"
+  },
+  {
+    "start": 391.4275132857143,
+    "end": 394.646999,
+    "text": "separate questions with clean contexts and return condensed findings."
+  },
+  {
+    "start": 394.646999,
+    "end": 398.585999,
+    "text": "This pays off when parallel research value exceeds coordination cost."
+  },
+  {
+    "start": 398.585999,
+    "end": 399.895999,
+    "text": "Choose by task shape."
+  },
+  {
+    "start": 399.895999,
+    "end": 403.9777870794702,
+    "text": "Use compaction for conversational continuity, notes for iterative work"
+  },
+  {
+    "start": 403.9777870794702,
+    "end": 407.82633012582784,
+    "text": "with clear milestones, and specialized agents for independent deep"
+  },
+  {
+    "start": 407.82633012582784,
+    "end": 408.164999,
+    "text": "investigations."
+  },
+  {
+    "start": 408.164999,
+    "end": 412.2388080909091,
+    "text": "Whichever method you choose, the handoff must preserve outcome,"
+  },
+  {
+    "start": 412.2388080909091,
+    "end": 414.766999,
+    "text": "decisions, evidence, unknowns, and next action."
+  },
+  {
+    "start": 414.766999,
+    "end": 418.831999,
+    "text": "First, compact long traces into high-recall continuity summaries."
+  },
+  {
+    "start": 418.831999,
+    "end": 422.500999,
+    "text": "Second, keep durable working state in structured external notes."
+  },
+  {
+    "start": 422.500999,
+    "end": 426.86819412195126,
+    "text": "Third, use specialized agents only when focused exploration justifies"
+  },
+  {
+    "start": 426.86819412195126,
+    "end": 427.39999900000004,
+    "text": "coordination."
+  },
+  {
+    "start": 427.39999900000004,
+    "end": 430.497999,
+    "text": "Turn the method into one Minimum High-Signal Context Pack."
+  },
+  {
+    "start": 430.497999,
+    "end": 434.9558323333333,
+    "text": "It has six parts: Outcome, Operating Rules, Tool Map, Canonical"
+  },
+  {
+    "start": 434.9558323333333,
+    "end": 437.514999,
+    "text": "Examples, Retrieval Index, and Working State."
+  },
+  {
+    "start": 437.514999,
+    "end": 441.40417467567573,
+    "text": "The pack is small enough to inspect and complete enough to guide real"
+  },
+  {
+    "start": 441.40417467567573,
+    "end": 441.4841746756757,
+    "text": "work."
+  },
+  {
+    "start": 441.4841746756757,
+    "end": 442.443999,
+    "text": "Part one is Outcome."
+  },
+  {
+    "start": 442.443999,
+    "end": 446.95874185714285,
+    "text": "State the goal, intended user, deliverable, acceptance criteria, and the"
+  },
+  {
+    "start": 446.95874185714285,
+    "end": 448.419999,
+    "text": "decision the result must support."
+  },
+  {
+    "start": 448.419999,
+    "end": 452.0795545555556,
+    "text": "This prevents a fluent Agent from optimizing for an attractive output"
+  },
+  {
+    "start": 452.0795545555556,
+    "end": 453.643999,
+    "text": "that does not solve the actual problem."
+  },
+  {
+    "start": 453.643999,
+    "end": 455.369999,
+    "text": "Part two is Operating Rules."
+  },
+  {
+    "start": 455.369999,
+    "end": 459.7564506129032,
+    "text": "Record hard constraints, permissions, risk boundaries, escalation"
+  },
+  {
+    "start": 459.7564506129032,
+    "end": 461.119999,
+    "text": "points, and stop conditions."
+  },
+  {
+    "start": 461.119999,
+    "end": 465.1921528461539,
+    "text": "Separate permanent rules from temporary assumptions so an old workaround"
+  },
+  {
+    "start": 465.1921528461539,
+    "end": 466.50599900000003,
+    "text": "does not silently become policy."
+  },
+  {
+    "start": 466.50599900000003,
+    "end": 469.816999,
+    "text": "Part three is the Tool Map, paired with Canonical Examples."
+  },
+  {
+    "start": 469.816999,
+    "end": 473.716298270073,
+    "text": "For each tool, explain when to use it, what input it expects, what"
+  },
+  {
+    "start": 473.716298270073,
+    "end": 477.391999,
+    "text": "efficient output looks like, and which nearby tool it does not replace."
+  },
+  {
+    "start": 477.391999,
+    "end": 481.37896053846157,
+    "text": "Add two or three examples that show the main pattern and an important"
+  },
+  {
+    "start": 481.37896053846157,
+    "end": 481.45896053846155,
+    "text": "boundary."
+  },
+  {
+    "start": 481.45896053846155,
+    "end": 483.352999,
+    "text": "Part four is the Retrieval Index."
+  },
+  {
+    "start": 483.352999,
+    "end": 487.18770900000004,
+    "text": "Store lightweight handles to source material with a short purpose label"
+  },
+  {
+    "start": 487.18770900000004,
+    "end": 488.155999,
+    "text": "and a trigger for opening it."
+  },
+  {
+    "start": 488.155999,
+    "end": 491.5149440549451,
+    "text": "The Agent should know both where the evidence lives and when the"
+  },
+  {
+    "start": 491.5149440549451,
+    "end": 492.429999,
+    "text": "evidence becomes necessary."
+  },
+  {
+    "start": 492.429999,
+    "end": 493.946999,
+    "text": "Part five is Working State."
+  },
+  {
+    "start": 493.946999,
+    "end": 498.080036037037,
+    "text": "Record completed work, current focus, key decisions and evidence,"
+  },
+  {
+    "start": 498.080036037037,
+    "end": 501.95799900000003,
+    "text": "unresolved questions, failed approaches, and the next concrete action."
+  },
+  {
+    "start": 501.95799900000003,
+    "end": 506.5037307073171,
+    "text": "Update this state at milestones, then compact or archive the raw trace"
+  },
+  {
+    "start": 506.5037307073171,
+    "end": 506.806999,
+    "text": "it replaces."
+  },
+  {
+    "start": 506.806999,
+    "end": 510.415999,
+    "text": "First, anchor the AI Agent with Outcome and Operating Rules."
+  },
+  {
+    "start": 510.415999,
+    "end": 514.8618850759493,
+    "text": "Second, guide action with a Tool Map, Canonical Examples, and a"
+  },
+  {
+    "start": 514.8618850759493,
+    "end": 515.523999,
+    "text": "Retrieval Index."
+  },
+  {
+    "start": 515.523999,
+    "end": 520.0901071081082,
+    "text": "Third, preserve continuity with a compact, regularly updated Working"
+  },
+  {
+    "start": 520.0901071081082,
+    "end": 520.1701071081083,
+    "text": "State."
+  },
+  {
+    "start": 520.1701071081083,
+    "end": 523.5693319999999,
+    "text": "An AI Agent does not forget only because information is missing."
+  },
+  {
+    "start": 523.5693319999999,
+    "end": 527.4542291962616,
+    "text": "It can also lose focus because too much undifferentiated information"
+  },
+  {
+    "start": 527.4542291962616,
+    "end": 529.154332,
+    "text": "competes for a finite attention budget."
+  },
+  {
+    "start": 529.154332,
+    "end": 532.7463319999999,
+    "text": "First, manage the whole context state, not only the prompt."
+  },
+  {
+    "start": 532.7463319999999,
+    "end": 537.2613611262136,
+    "text": "Keep goals, constraints, tools, evidence, and current state according to"
+  },
+  {
+    "start": 537.2613611262136,
+    "end": 538.694332,
+    "text": "what changes the next decision."
+  },
+  {
+    "start": 538.694332,
+    "end": 540.532332,
+    "text": "Second, raise signal quality."
+  },
+  {
+    "start": 540.532332,
+    "end": 544.5415951578947,
+    "text": "Use instructions at the right altitude, a minimal tool set, and a few"
+  },
+  {
+    "start": 544.5415951578947,
+    "end": 547.763332,
+    "text": "canonical examples instead of brittle rules and edge-case piles."
+  },
+  {
+    "start": 547.763332,
+    "end": 549.894332,
+    "text": "Third, retrieve detail on demand."
+  },
+  {
+    "start": 549.894332,
+    "end": 553.5927764444443,
+    "text": "Keep stable essentials up front and let the Agent progressively open"
+  },
+  {
+    "start": 553.5927764444443,
+    "end": 556.273332,
+    "text": "changing or specialized material through clear references."
+  },
+  {
+    "start": 556.273332,
+    "end": 560.700832,
+    "text": "Finally, protect long tasks with compaction, structured notes, and the"
+  },
+  {
+    "start": 560.700832,
+    "end": 562.826332,
+    "text": "six-part Minimum High-Signal Context Pack."
+  },
+  {
+    "start": 562.826332,
+    "end": 566.388332,
+    "text": "Keep the signal, retrieve the detail, and preserve the working state."
+  },
+  {
+    "start": 566.388332,
+    "end": 567.6993319999999,
+    "text": "Follow Tiny Agent."
+  },
+  {
+    "start": 567.6993319999999,
+    "end": 570.065792,
+    "text": "Tiny Agent helps you get better at using AI."
+  }
+]

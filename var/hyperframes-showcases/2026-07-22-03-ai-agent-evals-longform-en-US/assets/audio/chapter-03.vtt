@@ -1,0 +1,71 @@
+1
+00:00:00,100 --> 00:00:04,646
+The first acceptance question is simple: did the intended final state exist?
+
+2
+00:00:04,596 --> 00:00:14,115
+Outcome checks are usually stronger than trusting the Agent's own completion message because they inspect the artifact, database, application state, or external effect directly.
+
+3
+00:00:14,115 --> 00:00:20,192
+For structured work, code-based graders are fast, cheap, reproducible, and easy to debug.
+
+4
+00:00:20,192 --> 00:00:28,605
+Unit tests, schema checks, static analysis, exact matches, and state assertions can verify conditions that have objective answers.
+
+5
+00:00:28,605 --> 00:00:31,269
+But deterministic graders can be brittle.
+
+6
+00:00:31,269 --> 00:00:40,144
+A valid answer may use different wording, a different file structure, or a creative solution that satisfies the user while missing an overly narrow expected pattern.
+
+7
+00:00:40,144 --> 00:00:46,067
+Passing the evaluator should require solving the task, not guessing the evaluator's favorite implementation.
+
+8
+00:00:46,067 --> 00:00:49,105
+Model-based graders help with open-ended work.
+
+9
+00:00:49,105 --> 00:00:55,288
+A clear rubric can score groundedness, completeness, instruction following, or communication quality.
+
+10
+00:00:55,288 --> 00:01:02,048
+Pairwise comparison and separate dimension scores are often more reliable than one vague request to judge everything at once.
+
+11
+00:01:02,048 --> 00:01:07,057
+Model graders are still nondeterministic and must be calibrated against human judgment.
+
+12
+00:01:07,057 --> 00:01:11,923
+Give them structured criteria and an “unknown” option when evidence is insufficient.
+
+13
+00:01:11,923 --> 00:01:19,153
+For high-stakes or specialized work, human experts remain the reference used to check whether automated grading matches real quality.
+
+14
+00:01:19,153 --> 00:01:23,769
+The practical pattern is outcome first, then behavior where behavior matters.
+
+15
+00:01:23,769 --> 00:01:33,778
+Verify the final state, add transcript checks for safety or efficiency, and avoid requiring one exact sequence of tool calls when several valid paths can reach the right result.
+
+16
+00:01:33,778 --> 00:01:37,923
+First, verify the final state before trusting the Agent's claim.
+
+17
+00:01:37,923 --> 00:01:43,192
+Second, combine deterministic, model-based, and human graders by dimension.
+
+18
+00:01:43,192 --> 00:01:47,509
+Third, grade essential outcomes without overfitting to one valid path.

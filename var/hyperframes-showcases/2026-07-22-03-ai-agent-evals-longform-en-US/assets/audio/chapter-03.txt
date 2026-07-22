@@ -1,0 +1,17 @@
+The first acceptance question is simple: did the intended final state exist? Outcome checks are usually stronger than trusting the Agent's own completion message because they inspect the artifact, database, application state, or external effect directly.
+
+For structured work, code-based graders are fast, cheap, reproducible, and easy to debug. Unit tests, schema checks, static analysis, exact matches, and state assertions can verify conditions that have objective answers.
+
+But deterministic graders can be brittle. A valid answer may use different wording, a different file structure, or a creative solution that satisfies the user while missing an overly narrow expected pattern. Passing the evaluator should require solving the task, not guessing the evaluator's favorite implementation.
+
+Model-based graders help with open-ended work. A clear rubric can score groundedness, completeness, instruction following, or communication quality. Pairwise comparison and separate dimension scores are often more reliable than one vague request to judge everything at once.
+
+Model graders are still nondeterministic and must be calibrated against human judgment. Give them structured criteria and an “unknown” option when evidence is insufficient. For high-stakes or specialized work, human experts remain the reference used to check whether automated grading matches real quality.
+
+The practical pattern is outcome first, then behavior where behavior matters. Verify the final state, add transcript checks for safety or efficiency, and avoid requiring one exact sequence of tool calls when several valid paths can reach the right result.
+
+First, verify the final state before trusting the Agent's claim.
+
+Second, combine deterministic, model-based, and human graders by dimension.
+
+Third, grade essential outcomes without overfitting to one valid path.

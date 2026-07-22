@@ -1,0 +1,80 @@
+{
+  "chapters": [
+    {
+      "label": "前言",
+      "showIntro": false,
+      "intro": "看清 AI 智能体的完成消息为什么只是一项声明",
+      "summary": ["完成消息不是证据", "验收要检查结果与稳定性", "验收表把完成变成决定"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"comparison","labels":["智能体说完成","结果真实存在"],"human":"surprised","agent":"evaluate-front","props":[{"id":"chat","label":"完成声明"},{"id":"checklist","label":"全绿清单"},{"id":"database","label":"最终状态"},{"id":"evidence","label":"真实证据"}],"flow":"cluster","callout":"完成是声明，不是证明","accent":"red"},
+        {"paragraphs":[3,4],"layout":"process","human":"explain-front","agent":"plan-front","props":[{"id":"task-list","label":"公平任务"},{"id":"result-card","label":"结果状态"},{"id":"scorecard","label":"评分组合"},{"id":"experiment","label":"多次试验"}],"flow":"chain","callout":"同时评估工作结果和运行系统","accent":"blue"},
+        {"paragraphs":[5,5],"layout":"hero","human":"review-front","agent":"verify-front","props":[{"id":"clipboard","label":"结果验收表"},{"id":"approval","label":"发布决定"}],"flow":"chain","callout":"把完成变成证据","accent":"yellow"}
+      ]
+    },
+    {
+      "label": "定义成功",
+      "intro": "先定义公平任务，再判断 AI 智能体是否通过",
+      "summary": ["用明确输入和成功条件定义一个任务", "区分过程轨迹和最终结果", "把模型和智能体运行框架放在一起评估"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"grid","human":"write-front","agent":"listen-front","props":[{"id":"task-list","label":"任务"},{"id":"form","label":"输入"},{"id":"target","label":"成功"},{"id":"checklist","label":"判定条件"}],"flow":"cluster","callout":"模糊任务只能得到模糊分数","accent":"yellow"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["过程轨迹","最终结果"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"chat","label":"消息"},{"id":"tool","label":"工具调用"},{"id":"database","label":"最终状态"},{"id":"result-card","label":"可用结果"}],"flow":"cluster","callout":"发生过什么，不等于最后留下什么","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"process","human":"explain-front","agent":"collaborate-front","props":[{"id":"scorecard","label":"评分器"},{"id":"settings","label":"运行框架"},{"id":"tool","label":"工具"},{"id":"workflow","label":"编排"}],"flow":"chain","callout":"评估模型加运行框架","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "验证结果",
+      "intro": "用适合每个维度的评分器检查最终状态",
+      "summary": ["先验证最终状态，再相信智能体的完成声明", "按维度组合代码、模型和人工评分", "验收关键结果，不要过度拟合唯一正确路径"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"operate","agent":"verify-front","props":[{"id":"result-card","label":"产物"},{"id":"database","label":"状态"},{"id":"success","label":"测试"},{"id":"evidence","label":"证据"}],"flow":"chain","callout":"检查状态，不只听一句完成","accent":"blue"},
+        {"paragraphs":[3,5],"layout":"grid","human":"compare-front","agent":"evaluate-front","props":[{"id":"code-file","label":"代码评分"},{"id":"scorecard","label":"模型标准"},{"id":"human-gate","label":"人工校准"}],"flow":"cluster","callout":"一个维度对应一个清楚职责","accent":"yellow"},
+        {"paragraphs":[6,6],"layout":"grid","human":"decide-front","agent":"reason-front","props":[{"id":"branch","label":"有效路径"},{"id":"target","label":"关键结果"}],"flow":"cluster","callout":"验结果，不要锁死过程","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "测试稳定性",
+      "intro": "用重复试验区分稳定能力和一次幸运通过",
+      "summary": ["多次运行，因为一次通过可能只是运气", "根据探索成功或稳定成功的产品需要选择指标", "平衡任务，并在比较结果前隔离运行环境"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"caution-front","agent":"retry-front","props":[{"id":"experiment","label":"第一次"},{"id":"loop","label":"重复"},{"id":"trend-up","label":"稳定成功"},{"id":"trend-down","label":"隐藏失败"}],"flow":"chain","callout":"一次通过可能只是运气","accent":"red"},
+        {"paragraphs":[3,4],"layout":"comparison","labels":["至少一次成功","每次都成功"],"human":"compare-front","agent":"evaluate-front","props":[{"id":"search","label":"探索"},{"id":"success","label":"一个答案"},{"id":"shield","label":"一致性"},{"id":"approval","label":"可靠行动"}],"flow":"cluster","callout":"按用户承诺选择指标","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"grid","human":"review-front","agent":"monitor-left","agentDirection":"left","props":[{"id":"compare","label":"平衡样本"},{"id":"stop","label":"反向样本"},{"id":"archive","label":"清洁状态"},{"id":"settings","label":"稳定环境"}],"flow":"cluster","callout":"平衡任务并隔离每次试验","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "检查评估",
+      "intro": "确认任务、运行框架和评分器正在产生公平信号",
+      "summary": ["把真实失败写成明确任务，并提供参考答案", "阅读轨迹，区分智能体错误和评分器错误", "随着能力、产品和风险变化持续维护评估套件"],
+      "scenes": [
+        {"paragraphs":[1,2],"layout":"process","human":"caution-front","agent":"read-front","props":[{"id":"error","label":"真实失败"},{"id":"notification","label":"用户反馈"},{"id":"checklist","label":"人工检查"},{"id":"task-list","label":"评估任务"}],"flow":"chain","callout":"低分也可能是评估失败","accent":"red"},
+        {"paragraphs":[3,4],"layout":"grid","human":"write-front","agent":"verify-front","props":[{"id":"form","label":"明确任务"},{"id":"success","label":"参考答案"},{"id":"scorecard","label":"公平评分"},{"id":"evidence","label":"已知证据"}],"flow":"cluster","callout":"先证明任务和评分器可以通过","accent":"blue"},
+        {"paragraphs":[5,6],"layout":"focus","human":"review-front","agent":"monitor-right","agentDirection":"right","props":[{"id":"chat","label":"阅读轨迹"},{"id":"dashboard","label":"观察信号"},{"id":"trend-up","label":"提高难度"},{"id":"human-gate","label":"人工校准"}],"flow":"cluster","callout":"评估套件是活的产品资产","accent":"yellow"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "验收表",
+      "intro": "用一张可复用表记录 AI 智能体证据和发布决定",
+      "summary": ["先写结果和任务环境，再选择评分器", "收集最终状态、关键行为和多次试验的证据", "记录发布决定、例外和下一条新增测试"],
+      "scenes": [
+      {"paragraphs":[1,3],"layout":"process","human":"write-front","agent":"plan-front","props":[{"id":"result-card","label":"结果"},{"id":"form","label":"任务环境"},{"id":"target","label":"通过阈值"},{"id":"success","label":"答案"}],"flow":"chain","callout":"先写结果和可复现环境","accent":"blue","propShiftX":-24},
+        {"paragraphs":[4,4],"layout":"grid","human":"compare-front","agent":"evaluate-front","props":[{"id":"code-file","label":"确定检查"},{"id":"scorecard","label":"模型标准"},{"id":"human-gate","label":"人工评审"}],"flow":"cluster","callout":"每个维度匹配一种评分","accent":"yellow"},
+        {"paragraphs":[5,6],"layout":"process","human":"decide-front","agent":"verify-front","props":[{"id":"experiment","label":"重复试验"},{"id":"dashboard","label":"评估健康"},{"id":"warning","label":"例外"},{"id":"approval","label":"发布决定"}],"flow":"chain","callout":"记录信心、缺口和决定","accent":"red"},
+        {"paragraphs":[7,9],"summaryPointParagraphs":[7,8,9],"recap":true,"layout":"focus","human":"review-front","agent":"verify-front","props":[],"flow":"cluster","callout":"小结","accent":"blue"}
+      ]
+    },
+    {
+      "label": "总结",
+      "showIntro": false,
+      "intro": "把 AI 智能体完成声明变成真正可信的结果",
+      "summary": ["在 AI 智能体开始前定义成功", "用合适的评分组合验证最终状态", "重复试验，并检查评估本身是否可靠"],
+      "scenes": [
+        {"paragraphs":[1,1],"layout":"focus","human":"caution-front","agent":"evaluate-front","props":[{"id":"chat","label":"完成声明"},{"id":"evidence","label":"验证结果"}],"flow":"chain","callout":"漂亮不等于已经证明","accent":"red"},
+        {"paragraphs":[2,6],"summaryPointParagraphs":[2,3,4],"ctaParagraph":6,"recap":true,"finalSummary":true,"layout":"focus","human":"approve","agent":"celebrate-front","props":[],"flow":"cluster","callout":"AI 智能体结果验收表","accent":"yellow"}
+      ]
+    }
+  ]
+}

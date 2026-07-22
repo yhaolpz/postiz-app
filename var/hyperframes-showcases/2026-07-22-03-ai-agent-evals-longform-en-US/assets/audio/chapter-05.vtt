@@ -1,0 +1,79 @@
+1
+00:00:00,100 --> 00:00:03,675
+A low score does not always mean the AI Agent is weak.
+
+2
+00:00:03,625 --> 00:00:09,500
+The task may be ambiguous, the environment may be broken, or the grader may reject a valid answer.
+
+3
+00:00:09,500 --> 00:00:12,384
+Evaluation quality must be tested too.
+
+4
+00:00:12,384 --> 00:00:14,884
+Start with failures you already see.
+
+5
+00:00:14,884 --> 00:00:25,365
+Manual checks, support tickets, production bugs, and difficult edge cases are high-value seeds because they represent real user expectations rather than imaginary benchmark puzzles.
+
+6
+00:00:25,365 --> 00:00:29,682
+Write each task so two qualified reviewers can reach the same verdict.
+
+7
+00:00:29,682 --> 00:00:35,653
+Include the input, required outcome, important constraints, and everything the grader will inspect.
+
+8
+00:00:35,653 --> 00:00:41,865
+Then create a reference solution that proves the task is solvable and that the graders can recognize a known good result.
+
+9
+00:00:41,865 --> 00:00:44,471
+Build balanced sets and begin small.
+
+10
+00:00:44,471 --> 00:00:50,394
+A useful early suite can contain a few dozen realistic tasks instead of hundreds of weak examples.
+
+11
+00:00:50,394 --> 00:00:57,932
+As the product matures, add harder cases that distinguish improvements and convert solved capability tests into regression protection.
+
+12
+00:00:57,932 --> 00:01:01,076
+Read transcripts and grades from many trials.
+
+13
+00:01:01,076 --> 00:01:09,009
+A failed trace tells you whether the Agent made a genuine mistake, whether the harness blocked progress, or whether the grader punished a reasonable solution.
+
+14
+00:01:09,009 --> 00:01:14,019
+If failures do not look fair, revise the evaluation before optimizing the Agent.
+
+15
+00:01:14,019 --> 00:01:16,528
+Treat the suite as a living artifact.
+
+16
+00:01:16,528 --> 00:01:22,557
+Models improve, products change, user behavior shifts, and once-difficult tasks saturate.
+
+17
+00:01:22,557 --> 00:01:29,644
+Ownership, regular maintenance, production monitoring, and periodic human calibration keep the signal useful over time.
+
+18
+00:01:29,644 --> 00:01:34,576
+First, turn real failures into unambiguous tasks with reference solutions.
+
+19
+00:01:34,576 --> 00:01:38,875
+Second, read transcripts to tell Agent errors from grader errors.
+
+20
+00:01:38,875 --> 00:01:43,884
+Third, keep the suite current as capabilities, products, and risks change.

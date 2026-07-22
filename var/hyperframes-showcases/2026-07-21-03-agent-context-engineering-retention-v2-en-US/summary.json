@@ -1,0 +1,116 @@
+{
+  "title": "Why AI Agents Forget: Use High-Signal Context for Long Tasks",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-21-03-agent-context-engineering-retention-v2-en-US/SCRIPT.en-US.md",
+  "language": "en-US",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "en-US-AnaNeural",
+    "rate": "+30%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt-audible-bounds",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1",
+    "openingCoverSeconds": 0.8
+  },
+  "composition": {
+    "designVersion": "retention-v2-large-simple",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 570.285792,
+    "chapters": [
+      {
+        "label": "Introduction",
+        "start": 0,
+        "end": 37.2,
+        "duration": 37.2
+      },
+      {
+        "label": "Attention Budget",
+        "start": 37.2,
+        "end": 139.133333,
+        "duration": 101.933333
+      },
+      {
+        "label": "High-Signal Inputs",
+        "start": 139.133333,
+        "end": 236.866666,
+        "duration": 97.733333
+      },
+      {
+        "label": "Retrieve on Demand",
+        "start": 236.866666,
+        "end": 329.299999,
+        "duration": 92.433333
+      },
+      {
+        "label": "Long-Horizon Memory",
+        "start": 329.299999,
+        "end": 427.299999,
+        "duration": 98
+      },
+      {
+        "label": "Context Pack",
+        "start": 427.299999,
+        "end": 520.033332,
+        "duration": 92.733333
+      },
+      {
+        "label": "Summary",
+        "start": 520.033332,
+        "end": 570.285792,
+        "duration": 50.25246000000004
+      }
+    ],
+    "visualStates": 24,
+    "captions": 211
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 450
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-21-03-agent-context-engineering-retention-v2.en-US.mp4",
+    "status": "pass"
+  }
+}

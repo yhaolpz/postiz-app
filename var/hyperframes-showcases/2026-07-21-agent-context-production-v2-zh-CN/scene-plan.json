@@ -1,0 +1,1434 @@
+{
+  "locale": "zh-CN",
+  "profile": "tiny-agent-longform-retention-production-approved-project-v2",
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "label": "前言",
+      "scenes": [
+        {
+          "id": "c01-p01",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 1,
+          "narration": "你知道怎么给 AI 智能体高信号上下文吗？",
+          "headline": "你知道怎么给 AI 智能体高信号上下文吗？",
+          "coreLabel": "高信号？",
+          "type": "hook",
+          "human": "idle",
+          "agent": "ask-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "question"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 0,
+          "end": 2.66
+        },
+        {
+          "id": "c01-p02",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 2,
+          "narration": "接下来我来告诉你，Anthropic 是怎么解决这个问题的。视频全程干货高价值，让你成为更擅长使用 AI 的人，内容较长，点点关注收藏不迷路。",
+          "headline": "Anthropic 如何解决 AI 智能体上下文问题",
+          "coreLabel": "成为更擅长使用 AI 的人",
+          "type": "promise",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "result-card"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 2.66,
+          "end": 11.446
+        },
+        {
+          "id": "c01-p03",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 3,
+          "narration": "Anthropic 把上下文看成有限的注意力预算。窗口越满，真正重要的信号越容易被稀释。",
+          "headline": "AI 智能体上下文是有限的注意力预算",
+          "coreLabel": "注意力预算有限",
+          "type": "authority",
+          "human": "idle",
+          "agent": "read-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "document"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 11.446,
+          "end": 16.753
+        },
+        {
+          "id": "c01-p04",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 4,
+          "narration": "提示词越长，AI 智能体越可能追着旧细节跑。解决办法，是六部分高信号包：目标、规则、工具、示例、检索和状态。",
+          "headline": "给 AI 智能体一个六部分高信号包",
+          "coreLabel": "目标 · 规则 · 工具 · 示例 · 检索 · 状态",
+          "type": "pack",
+          "human": "idle",
+          "agent": "handoff-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "package"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 16.753,
+          "end": 24.955
+        },
+        {
+          "id": "c01-p05",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 5,
+          "narration": "只保留当前约束和有效证据，目标就会重新变大。其他材料留在窗口外，需要时再检索。",
+          "headline": "AI 智能体看到更多，不等于信号更强",
+          "coreLabel": "当前信号 68%",
+          "type": "budget",
+          "human": "idle",
+          "agent": "reason-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "document-stack"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 24.955,
+          "end": 30.665
+        },
+        {
+          "id": "c01-p06",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 6,
+          "narration": "核心判断只有一句：给 AI 智能体支持下一步行动的最小充分上下文，并随着任务持续更新。",
+          "headline": "AI 智能体需要最小充分上下文",
+          "coreLabel": "支持下一步行动",
+          "type": "generic",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 30.665,
+          "end": 36.746
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "label": "注意力预算",
+      "scenes": [
+        {
+          "id": "c02-p01",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 1,
+          "narration": "先看注意力预算。这一章会帮你判断，什么信息值得进入 AI 智能体的当前窗口。",
+          "headline": "第 2 章：注意力预算",
+          "coreLabel": "判断什么信息值得进入当前窗口",
+          "type": "chapter-intro",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 36.746,
+          "end": 41.777
+        },
+        {
+          "id": "c02-p02",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 2,
+          "narration": "上下文不只是提示词。系统指令、工具、示例、历史记录和当前请求，都会争夺同一份注意力。",
+          "headline": "AI 智能体看见的是完整上下文",
+          "coreLabel": "指令 · 工具 · 示例 · 历史 · 请求",
+          "type": "list",
+          "human": "idle",
+          "agent": "read-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "document-stack"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 41.777,
+          "end": 48.183
+        },
+        {
+          "id": "c02-p03",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 3,
+          "narration": "材料越多，AI 智能体越难找回真正相关的信息。规则即使写进去了，也可能被旧计划和原始日志淹没。",
+          "headline": "规则写进去了，也可能被噪声淹没",
+          "coreLabel": "材料越多，找回重点越难",
+          "type": "generic",
+          "human": "idle",
+          "agent": "alert-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "warning"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 48.183,
+          "end": 54.746
+        },
+        {
+          "id": "c02-p04",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 4,
+          "narration": "每一步开始前，只问一个问题：什么信息会改变下一步判断？保留目标、约束、证据和当前状态，其余内容只留索引。",
+          "headline": "只保留会改变下一步判断的信息",
+          "coreLabel": "目标 · 约束 · 证据 · 状态",
+          "type": "list",
+          "human": "idle",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 54.746,
+          "end": 62.581
+        },
+        {
+          "id": "c02-p05",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 5,
+          "narration": "例如准备代码修改时，仓库规则和当前错误必须在窗口里；完整日志可以只留路径。",
+          "headline": "必要信息进入窗口，完整日志只留路径",
+          "coreLabel": "规则 + 当前错误",
+          "type": "generic",
+          "human": "idle",
+          "agent": "read-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "code-file"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 62.581,
+          "end": 68.059
+        },
+        {
+          "id": "c02-p06",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 6,
+          "narration": "最小充分不等于越短越好。验收条件、风险边界和必要证据，仍然必须完整。",
+          "headline": "最小充分，不等于越短越好",
+          "coreLabel": "验收 · 风险 · 必要证据",
+          "type": "list",
+          "human": "idle",
+          "agent": "compare-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "ruler"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 68.059,
+          "end": 73.496
+        },
+        {
+          "id": "c02-p07",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 7,
+          "narration": "工具带来新证据后，要更新当前状态。用紧凑摘要替代已经完成使命的原始轨迹。",
+          "headline": "上下文必须持续刷新",
+          "coreLabel": "新证据进入 · 旧轨迹退出",
+          "type": "generic",
+          "human": "idle",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "summary"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 73.496,
+          "end": 78.929
+        },
+        {
+          "id": "c02-p08",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 8,
+          "narration": "第一，把上下文当作有限注意力预算。",
+          "headline": "1. 把上下文当作注意力预算",
+          "coreLabel": "有限资源",
+          "type": "recap",
+          "human": "idle",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 78.929,
+          "end": 81.295
+        },
+        {
+          "id": "c02-p09",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 9,
+          "narration": "第二，更多 token 不等于更强的信号。",
+          "headline": "2. 更多 token 不等于信号更强",
+          "coreLabel": "更多 ≠ 更强",
+          "type": "recap",
+          "human": "idle",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "document-stack"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 81.295,
+          "end": 83.555
+        },
+        {
+          "id": "c02-p10",
+          "chapter": "注意力预算",
+          "chapterNumber": 2,
+          "paragraphNumber": 10,
+          "narration": "第三，随着任务变化，持续刷新上下文。",
+          "headline": "3. 随任务持续刷新上下文",
+          "coreLabel": "持续更新",
+          "type": "recap",
+          "human": "idle",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "summary"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 83.555,
+          "end": 86.319
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "label": "高信号输入",
+      "scenes": [
+        {
+          "id": "c03-p01",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 1,
+          "narration": "接下来提高输入质量。这一章只讲三件最有用的事：指令、工具和示例。",
+          "headline": "第 3 章：高信号输入",
+          "coreLabel": "指令 · 工具 · 示例",
+          "type": "chapter-intro",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 86.319,
+          "end": 90.913
+        },
+        {
+          "id": "c03-p02",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 2,
+          "narration": "系统指令要明确目标、边界和判断原则。不要把所有分支写死，也不要只说“把事情做好”。",
+          "headline": "指令要落在合适的抽象层级",
+          "coreLabel": "目标 · 边界 · 判断原则",
+          "type": "list",
+          "human": "idle",
+          "agent": "reason-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "ruler"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 90.913,
+          "end": 96.821
+        },
+        {
+          "id": "c03-p03",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 3,
+          "narration": "工具是 AI 智能体与环境的契约。名称、参数、错误和返回结果都要清楚，功能重叠的工具尽量合并。",
+          "headline": "工具是 AI 智能体与环境的契约",
+          "coreLabel": "名称 · 参数 · 错误 · 返回",
+          "type": "list",
+          "human": "idle",
+          "agent": "receive-tool",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 96.821,
+          "end": 103.718
+        },
+        {
+          "id": "c03-p04",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 4,
+          "narration": "如果两个工具的边界连人都说不清，AI 智能体就更难稳定选择。",
+          "headline": "工具边界不清，AI 智能体就会犹豫",
+          "coreLabel": "减少功能重叠",
+          "type": "generic",
+          "human": "idle",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "compare"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 103.718,
+          "end": 107.975
+        },
+        {
+          "id": "c03-p05",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 5,
+          "narration": "示例不需要很多。两三个典型例子，展示主要模式和一条关键边界，通常比堆满例外更有效。",
+          "headline": "少量典型示例胜过边缘堆积",
+          "coreLabel": "主要模式 + 关键边界",
+          "type": "generic",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "skill-card"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 107.975,
+          "end": 114.142
+        },
+        {
+          "id": "c03-p06",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 6,
+          "narration": "判断一段信息是否值得保留，只看它能否改变结果、约束行为、选择工具或提供证据。",
+          "headline": "每段高信号都必须承担工作",
+          "coreLabel": "结果 · 约束 · 工具 · 证据",
+          "type": "list",
+          "human": "idle",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 114.142,
+          "end": 120.088
+        },
+        {
+          "id": "c03-p07",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 7,
+          "narration": "高信号没有固定字数。只要信息承担了明确工作，它就值得保留。",
+          "headline": "高信号没有固定字数",
+          "coreLabel": "信息必须承担明确工作",
+          "type": "generic",
+          "human": "idle",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "ruler"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 120.088,
+          "end": 124.214
+        },
+        {
+          "id": "c03-p08",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 8,
+          "narration": "第一，指令要清楚，但不要僵化。",
+          "headline": "1. 指令清楚，但不要僵化",
+          "coreLabel": "明确但不写死",
+          "type": "recap",
+          "human": "idle",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "ruler"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 124.214,
+          "end": 126.405
+        },
+        {
+          "id": "c03-p09",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 9,
+          "narration": "第二，保留职责单一的最小工具集。",
+          "headline": "2. 保留最小工具集",
+          "coreLabel": "职责单一",
+          "type": "recap",
+          "human": "idle",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 126.405,
+          "end": 128.654
+        },
+        {
+          "id": "c03-p10",
+          "chapter": "高信号输入",
+          "chapterNumber": 3,
+          "paragraphNumber": 10,
+          "narration": "第三，用少量典型示例展示真正的模式。",
+          "headline": "3. 用典型示例展示模式",
+          "coreLabel": "少量 · 多样 · 典型",
+          "type": "recap",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "skill-card"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 128.654,
+          "end": 131.551
+        }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "label": "按需检索",
+      "scenes": [
+        {
+          "id": "c04-p01",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 1,
+          "narration": "现在解决细节太多的问题。这一章会把“全部预加载”改成“需要时再打开”。",
+          "headline": "第 4 章：按需检索",
+          "coreLabel": "需要时再打开细节",
+          "type": "chapter-intro",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "search"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 131.551,
+          "end": 135.916
+        },
+        {
+          "id": "c04-p02",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 2,
+          "narration": "不要在任务开始前塞入所有文档。AI 智能体还没判断重点，注意力预算就已经被花掉了。",
+          "headline": "别在开始前塞入全部文档",
+          "coreLabel": "预算提前被花掉",
+          "type": "generic",
+          "human": "idle",
+          "agent": "blocked-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "document-stack"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 135.916,
+          "end": 141.456
+        },
+        {
+          "id": "c04-p03",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 3,
+          "narration": "上下文里先保留一张地图：文件路径、查询、链接和对象标识。真正需要证据时，再打开对应内容。",
+          "headline": "上下文里先保留一张地图",
+          "coreLabel": "路径 · 查询 · 链接 · 标识",
+          "type": "list",
+          "human": "idle",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "route"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 141.456,
+          "end": 148.519
+        },
+        {
+          "id": "c04-p04",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 4,
+          "narration": "例如处理大仓库时，先搜索文件名，再读取目标片段，不要一次打开整个目录。",
+          "headline": "先搜索，再读取目标片段",
+          "coreLabel": "不要一次打开整个目录",
+          "type": "generic",
+          "human": "idle",
+          "agent": "read-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "code-file"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 148.519,
+          "end": 153.559
+        },
+        {
+          "id": "c04-p05",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 5,
+          "narration": "这就是渐进式披露。一次搜索缩小下一次搜索，AI 智能体只让正在使用的材料进入工作窗口。",
+          "headline": "让 AI 智能体逐层建立理解",
+          "coreLabel": "渐进式披露",
+          "type": "generic",
+          "human": "idle",
+          "agent": "search",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "search"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 153.559,
+          "end": 159.457
+        },
+        {
+          "id": "c04-p06",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 6,
+          "narration": "最实用的是混合策略：稳定规则和当前目标预先加载，变化快、细节多的材料按需检索。",
+          "headline": "稳定规则预载，细节按需打开",
+          "coreLabel": "混合策略",
+          "type": "generic",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "route"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 159.457,
+          "end": 165.85
+        },
+        {
+          "id": "c04-p07",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 7,
+          "narration": "按需检索会增加探索时间，所以路径命名、搜索工具和停止条件必须清楚。",
+          "headline": "按需检索需要停止条件",
+          "coreLabel": "命名 · 搜索工具 · 停止规则",
+          "type": "list",
+          "human": "idle",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "stop"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 165.85,
+          "end": 171.394
+        },
+        {
+          "id": "c04-p08",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 8,
+          "narration": "第一，保留轻量引用，不预载全部正文。",
+          "headline": "1. 保留轻量引用",
+          "coreLabel": "不要预载全部正文",
+          "type": "recap",
+          "human": "idle",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "citation"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 171.394,
+          "end": 174.123
+        },
+        {
+          "id": "c04-p09",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 9,
+          "narration": "第二，细节真正相关时再打开。",
+          "headline": "2. 相关时再打开细节",
+          "coreLabel": "需要时打开",
+          "type": "recap",
+          "human": "idle",
+          "agent": "search",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "search"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 174.123,
+          "end": 176.295
+        },
+        {
+          "id": "c04-p10",
+          "chapter": "按需检索",
+          "chapterNumber": 4,
+          "paragraphNumber": 10,
+          "narration": "第三，在聚焦程度和检索成本之间做取舍。",
+          "headline": "3. 平衡聚焦与检索成本",
+          "coreLabel": "收益必须超过成本",
+          "type": "recap",
+          "human": "idle",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "compare"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 176.295,
+          "end": 179.333
+        }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "label": "长任务记忆",
+      "scenes": [
+        {
+          "id": "c05-p01",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 1,
+          "narration": "长期任务还需要可恢复记忆。这一章会比较压缩、笔记和专门 Agent。",
+          "headline": "第 5 章：长任务记忆",
+          "coreLabel": "压缩 · 笔记 · 专门 Agent",
+          "type": "chapter-intro",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "memory"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 179.333,
+          "end": 183.844
+        },
+        {
+          "id": "c05-p02",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 2,
+          "narration": "窗口快满时，把轨迹压缩成连续性摘要。只带上决定、约束、证据、未决问题和下一步动作。",
+          "headline": "用压缩摘要开启新窗口",
+          "coreLabel": "决定 · 约束 · 证据 · 下一步",
+          "type": "list",
+          "human": "idle",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "summary"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 183.844,
+          "end": 189.988
+        },
+        {
+          "id": "c05-p03",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 3,
+          "narration": "压缩要先保证不漏关键信息。宁可多带一点，也不要丢掉后来无法恢复的约束。",
+          "headline": "压缩先保证不漏关键信息",
+          "coreLabel": "宁可多带，不丢约束",
+          "type": "generic",
+          "human": "idle",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 189.988,
+          "end": 194.858
+        },
+        {
+          "id": "c05-p04",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 4,
+          "narration": "结构化笔记适合保存进度和工作状态。到达里程碑就更新笔记，用它替代冗长的原始历史。",
+          "headline": "把工作状态写到窗口之外",
+          "coreLabel": "结构化外部笔记",
+          "type": "generic",
+          "human": "idle",
+          "agent": "write-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "note"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 194.858,
+          "end": 200.742
+        },
+        {
+          "id": "c05-p05",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 5,
+          "narration": "一份合格的交接摘要，必须保留目标、决定、证据、未知项和下一步动作。",
+          "headline": "交接摘要必须保留五类信息",
+          "coreLabel": "目标 · 决定 · 证据 · 未知 · 下一步",
+          "type": "list",
+          "human": "idle",
+          "agent": "handoff-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "handoff"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 200.742,
+          "end": 205.779
+        },
+        {
+          "id": "c05-p06",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 6,
+          "narration": "只有独立深挖的价值超过协调成本时，才使用专门 Agent。主 Agent 只接收压缩后的结论。",
+          "headline": "专门 Agent 只用于值得并行深挖的问题",
+          "coreLabel": "价值必须超过协调成本",
+          "type": "generic",
+          "human": "idle",
+          "agent": "delegate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "parallel-agents"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 205.779,
+          "end": 211.33
+        },
+        {
+          "id": "c05-p07",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 7,
+          "narration": "持续对话适合压缩，有里程碑的工作适合笔记，独立研究才考虑专门 Agent。",
+          "headline": "根据任务形态选择记忆方法",
+          "coreLabel": "压缩 · 笔记 · 专门 Agent",
+          "type": "list",
+          "human": "idle",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "route"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 211.33,
+          "end": 215.929
+        },
+        {
+          "id": "c05-p08",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 8,
+          "narration": "第一，用高召回摘要压缩长轨迹。",
+          "headline": "1. 压缩长轨迹",
+          "coreLabel": "高召回连续性摘要",
+          "type": "recap",
+          "human": "idle",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "summary"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 215.929,
+          "end": 218.314
+        },
+        {
+          "id": "c05-p09",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 9,
+          "narration": "第二，把持久状态写进结构化笔记。",
+          "headline": "2. 写入结构化笔记",
+          "coreLabel": "持久工作状态",
+          "type": "recap",
+          "human": "idle",
+          "agent": "write-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "note"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 218.314,
+          "end": 220.735
+        },
+        {
+          "id": "c05-p10",
+          "chapter": "长任务记忆",
+          "chapterNumber": 5,
+          "paragraphNumber": 10,
+          "narration": "第三，专门 Agent 只用于值得并行深挖的问题。",
+          "headline": "3. 专门 Agent 只用于深挖",
+          "coreLabel": "收益超过成本",
+          "type": "recap",
+          "human": "idle",
+          "agent": "delegate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "parallel-agents"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 220.735,
+          "end": 223.693
+        }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "label": "上下文包",
+      "scenes": [
+        {
+          "id": "c06-p01",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 1,
+          "narration": "最后把方法装进一个可复用工具。这一章会完成六部分高信号上下文包。",
+          "headline": "第 6 章：上下文包",
+          "coreLabel": "完成六部分可复用工具",
+          "type": "chapter-intro",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "package"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 223.693,
+          "end": 228.167
+        },
+        {
+          "id": "c06-p02",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 2,
+          "narration": "第一组是结果目标和运行规则。写清交付物、验收条件、权限、风险边界和停止条件。",
+          "headline": "第一组：结果目标和运行规则",
+          "coreLabel": "交付 · 验收 · 权限 · 风险 · 停止",
+          "type": "list",
+          "human": "idle",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 228.167,
+          "end": 234.262
+        },
+        {
+          "id": "c06-p03",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 3,
+          "narration": "第二组是工具地图和典型示例。说明工具何时使用，并用少量例子展示主要模式。",
+          "headline": "第二组：工具地图和典型示例",
+          "coreLabel": "使用条件 · 主要模式",
+          "type": "list",
+          "human": "idle",
+          "agent": "receive-tool",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 234.262,
+          "end": 239.777
+        },
+        {
+          "id": "c06-p04",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 4,
+          "narration": "第三组是检索索引和工作状态。记录证据入口、当前重点、关键决定、未知项和下一步动作。",
+          "headline": "第三组：检索索引和工作状态",
+          "coreLabel": "证据入口 · 决定 · 未知 · 下一步",
+          "type": "list",
+          "human": "idle",
+          "agent": "search",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "citation"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 239.777,
+          "end": 245.963
+        },
+        {
+          "id": "c06-p05",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 5,
+          "narration": "真正执行时，每个字段都要能回答一个问题：AI 智能体下一步该做什么？",
+          "headline": "每个字段都要服务下一步动作",
+          "coreLabel": "下一步该做什么？",
+          "type": "generic",
+          "human": "idle",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "task-list"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 245.963,
+          "end": 250.561
+        },
+        {
+          "id": "c06-p06",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 6,
+          "narration": "每到一个里程碑，就更新状态并归档旧轨迹。这样长期任务不会依赖一段不断膨胀的对话。",
+          "headline": "到达里程碑就更新状态",
+          "coreLabel": "更新状态 · 归档旧轨迹",
+          "type": "generic",
+          "human": "idle",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "progress"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 250.561,
+          "end": 256.413
+        },
+        {
+          "id": "c06-p07",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 7,
+          "narration": "上下文包要足够短，方便快速检查；也要足够完整，不让 AI 智能体猜关键约束。",
+          "headline": "上下文包必须可快速检查",
+          "coreLabel": "足够短 · 足够完整",
+          "type": "generic",
+          "human": "idle",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "checklist"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 256.413,
+          "end": 261.814
+        },
+        {
+          "id": "c06-p08",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 8,
+          "narration": "第一，用目标和规则锚定 AI 智能体。",
+          "headline": "1. 用目标和规则锚定智能体",
+          "coreLabel": "结果目标 + 运行规则",
+          "type": "recap",
+          "human": "idle",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 261.814,
+          "end": 264.271
+        },
+        {
+          "id": "c06-p09",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 9,
+          "narration": "第二，用工具、示例和检索索引指导行动。",
+          "headline": "2. 用工具、示例和索引指导行动",
+          "coreLabel": "工具 · 示例 · 检索",
+          "type": "recap",
+          "human": "idle",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "route"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 264.271,
+          "end": 267.331
+        },
+        {
+          "id": "c06-p10",
+          "chapter": "上下文包",
+          "chapterNumber": 6,
+          "paragraphNumber": 10,
+          "narration": "第三，用持续更新的工作状态保持连续性。",
+          "headline": "3. 用工作状态保持连续性",
+          "coreLabel": "持续更新",
+          "type": "recap",
+          "human": "idle",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "progress"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 267.331,
+          "end": 270.328
+        }
+      ]
+    },
+    {
+      "id": "chapter-7",
+      "label": "总结",
+      "scenes": [
+        {
+          "id": "c07-p01",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 1,
+          "narration": "AI 智能体忘记重点，往往不是信息太少，而是没有区分的信息太多。",
+          "headline": "AI 智能体忘记重点，可能因为信息太多",
+          "coreLabel": "有限注意力被噪声争夺",
+          "type": "generic",
+          "human": "idle",
+          "agent": "reason-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "forget"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 270.328,
+          "end": 274.633
+        },
+        {
+          "id": "c07-p02",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 2,
+          "narration": "第一，管理完整上下文，只保留会改变下一步判断的信息。",
+          "headline": "第一，管理完整上下文状态",
+          "coreLabel": "目标 · 约束 · 工具 · 证据 · 状态",
+          "type": "list",
+          "human": "idle",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "clipboard"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 274.633,
+          "end": 278.343
+        },
+        {
+          "id": "c07-p03",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 3,
+          "narration": "第二，提高信号质量，用清楚指令、最小工具集和典型示例指导行动。",
+          "headline": "第二，提高输入的信号质量",
+          "coreLabel": "清楚指令 · 最小工具 · 典型示例",
+          "type": "list",
+          "human": "idle",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 278.343,
+          "end": 283.237
+        },
+        {
+          "id": "c07-p04",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 4,
+          "narration": "第三，细节按需检索，长任务用压缩、笔记和工作状态保持连续性。",
+          "headline": "第三，按需检索细节",
+          "coreLabel": "稳定信息在前，专业材料按需打开",
+          "type": "generic",
+          "human": "idle",
+          "agent": "search",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "search"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 283.237,
+          "end": 288.101
+        },
+        {
+          "id": "c07-p05",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 5,
+          "narration": "最后带走六部分上下文包：目标、规则、工具、示例、检索和状态。",
+          "headline": "用六部分上下文包保护长期任务",
+          "coreLabel": "保留信号 · 按需检索 · 更新状态",
+          "type": "pack",
+          "human": "idle",
+          "agent": "handoff-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "package"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 288.101,
+          "end": 293.069
+        },
+        {
+          "id": "c07-p06",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 6,
+          "narration": "下一次开始长期任务前，先花一分钟写好这六部分，再让 AI 智能体行动。",
+          "headline": "长期任务开始前，先写好六部分",
+          "coreLabel": "先整理，再行动",
+          "type": "generic",
+          "human": "idle",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "task-list"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 293.069,
+          "end": 297.773
+        },
+        {
+          "id": "c07-p07",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 7,
+          "narration": "关注 Tiny Agent，成为更擅长使用 AI 的人！",
+          "headline": "关注 Tiny Agent",
+          "coreLabel": "成为更擅长使用 AI 的人！",
+          "type": "outro",
+          "human": "idle",
+          "agent": "celebrate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "success"
+            }
+          ],
+          "renderHuman": false,
+          "coreObjectCount": 1,
+          "start": 297.773,
+          "end": 300.666667
+        }
+      ]
+    }
+  ]
+}

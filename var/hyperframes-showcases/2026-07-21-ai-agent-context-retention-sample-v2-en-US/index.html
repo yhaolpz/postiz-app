@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Agent Context Engineering Retention Sample</title>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face{font-family:TA;src:url("assets/fonts/HiraginoSansGB.ttc") format("truetype");font-weight:100 900}
+    :root{--paper:#ECECEA;--ink:#111413;--blue:#117ABD;--yellow:#F4C542;--red:#D84B3E;--muted:#C9CBC5}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--paper);font-family:TA,"Arial Black",Arial,sans-serif;color:var(--ink)}
+    .composition{position:relative;width:1920px;height:1080px;overflow:hidden;background-color:var(--paper);background-image:linear-gradient(rgba(17,20,19,.038) 2px,transparent 2px),linear-gradient(90deg,rgba(17,20,19,.038) 2px,transparent 2px);background-size:64px 64px}
+    .cover{position:absolute;inset:0;z-index:40;background:var(--paper)}.cover img{width:100%;height:100%;display:block;object-fit:cover}
+    .scene{position:absolute;inset:0;visibility:hidden;opacity:0;padding:58px 72px 188px}.scene h1{position:relative;z-index:3;margin:0 auto;width:1776px;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:92px;line-height:.99;letter-spacing:-1.5px;font-weight:900;-webkit-text-stroke:1px var(--ink);text-wrap:balance}
+    .scene-body{height:700px;display:flex;align-items:center;justify-content:center;gap:92px}.agent-right .agent-wrap{order:2}.agent-right .core-wrap{order:1}.agent-left .agent-wrap{order:1}.agent-left .core-wrap{order:2}
+    .agent-wrap{width:520px;height:640px;display:flex;align-items:flex-end;justify-content:center}.agent{width:480px;height:620px;object-fit:contain;filter:drop-shadow(0 15px 0 rgba(17,20,19,.08))}
+    .core-wrap{width:570px;height:570px;display:flex;align-items:center;justify-content:center}.core-card{position:relative;width:480px;height:480px;border:10px solid var(--ink);border-radius:42px;background:var(--paper);box-shadow:18px 18px 0 rgba(17,20,19,.12);overflow:hidden}
+    .context-stack{display:flex;align-items:center;justify-content:center;flex-direction:column}.context-stack img{width:430px;height:390px;object-fit:contain}.context-stack strong{position:absolute;bottom:28px;padding:12px 24px;border:6px solid var(--ink);border-radius:18px;background:var(--red);color:var(--paper);font-size:40px;letter-spacing:1px}
+    .source-card{display:grid;grid-template-rows:auto 1fr auto;place-items:center;padding:22px}.source-card .source-name{font-size:52px;font-weight:900;color:var(--blue);letter-spacing:2px}.source-card img{width:240px;height:240px;object-fit:contain}.source-card strong{font-size:38px;padding:8px 16px;border-top:7px solid var(--yellow);text-align:center}
+    .promise-card{display:grid;grid-template-rows:auto 152px auto auto;place-items:center;padding:12px 20px;gap:2px}.promise-source{font-size:38px;font-weight:900;color:var(--blue);letter-spacing:1px}.promise-card img{width:152px;height:152px;object-fit:contain}.promise-card>strong{font-size:34px;line-height:1.02;text-align:center}.save-label{padding:6px 14px;border:5px solid var(--ink);border-radius:16px;font-size:32px;line-height:1;font-weight:900;background:var(--paper)}
+    .pack-card{display:grid;grid-template-columns:138px 1fr;align-items:center;padding:26px}.pack-card>img{width:138px;height:138px;object-fit:contain}.pack-lines{display:flex;flex-direction:column;gap:10px}.pack-lines span{display:flex;align-items:center;gap:14px;font-size:34px;font-weight:850;line-height:1.08}.pack-lines b{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;border:4px solid var(--ink);border-radius:50%;background:var(--yellow);font-size:32px}
+    .budget-device{display:grid;place-items:center}.budget-state{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;place-items:center;padding:42px}.budget-state span{font-size:42px;font-weight:900}.budget-state strong{display:grid;place-items:center;width:300px;height:300px;border:34px solid var(--red);border-radius:50%;font-size:92px;background:var(--paper)}.budget-state i{width:320px;height:18px;border-radius:9px;background:linear-gradient(90deg,var(--red) 24%,var(--muted) 24%)}.state-focus,.state-retrieve{visibility:hidden;opacity:0}.state-focus strong{border-color:var(--yellow)}.state-focus i{background:linear-gradient(90deg,var(--yellow) 68%,var(--muted) 68%)}.state-retrieve strong{border-color:var(--blue)}.state-retrieve i{background:linear-gradient(90deg,var(--blue) 92%,var(--muted) 92%)}
+    .decision-card{display:grid;grid-template-columns:110px 1fr;grid-template-rows:1fr auto;padding:22px;gap:8px 18px}.decision-card>img{width:110px;height:110px;object-fit:contain}.decision-lines{display:flex;flex-direction:column;justify-content:center;gap:8px}.decision-lines span{font-size:36px;font-weight:900;border-bottom:5px solid var(--muted);padding-bottom:4px}.decision-ready{grid-column:1/-1;justify-self:center;padding:8px 12px;border:5px solid var(--ink);border-radius:14px;font-size:32px;text-align:center;background:var(--paper)}
+    .captions{position:absolute;z-index:30;left:100px;right:100px;bottom:28px;height:132px;display:grid;place-items:center}.caption-cue{position:absolute;visibility:hidden;opacity:0;max-width:1720px;padding:18px 32px 20px;border:6px solid var(--ink);border-radius:24px;background:rgba(236,236,234,.96);box-shadow:10px 10px 0 rgba(17,20,19,.12);font-size:46px;line-height:1.14;font-weight:800;text-align:center;text-wrap:balance}
+  </style>
+</head>
+<body>
+  <div data-hf-id="hf-root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="49.8" data-fps="30" id="composition" class="composition">
+    <section data-hf-id="hf-scene-hook" id="scene-hook" class="scene agent-right scene-first"><h1>DO YOU KNOW HOW TO GIVE AN AI AGENT HIGH-SIGNAL CONTEXT?</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/ask-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card context-stack"><img src="assets/pack/sprites/props/question.png" alt=""><strong>HIGH SIGNAL?</strong></div></div></div></section><section data-hf-id="hf-scene-promise" id="scene-promise" class="scene agent-right "><h1>ANTHROPIC'S AI AGENT CONTEXT METHOD</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/present-left.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card promise-card"><span class="promise-source">ANTHROPIC METHOD</span><img src="assets/pack/sprites/props/result-card.png" alt=""><strong>GET BETTER AT USING AI</strong><span class="save-label">FOLLOW + SAVE</span></div></div></div></section><section data-hf-id="hf-scene-authority" id="scene-authority" class="scene agent-left "><h1>AI AGENT CONTEXT IS A FINITE ATTENTION BUDGET</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/read-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card source-card"><span class="source-name">ANTHROPIC</span><img src="assets/pack/sprites/props/document.png" alt=""><strong>Attention is finite</strong></div></div></div></section><section data-hf-id="hf-scene-artifact" id="scene-artifact" class="scene agent-right "><h1>GIVE YOUR AI AGENT ONE SIX-PART SIGNAL PACK</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/handoff-left.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card pack-card"><img src="assets/pack/sprites/props/package.png" alt=""><div class="pack-lines"><span><b>1</b>Outcome</span><span><b>2</b>Rules</span><span><b>3</b>Tools</span><span><b>4</b>Examples</span><span><b>5</b>Retrieval</span><span><b>6</b>State</span></div></div></div></div></section><section data-hf-id="hf-scene-budget" id="scene-budget" class="scene agent-left "><h1>MORE INPUT DOES NOT MEAN MORE SIGNAL</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/reason-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card budget-device"><div class="budget-state state-raw"><span>RAW HISTORY</span><strong>24%</strong><i></i></div><div class="budget-state state-focus"><span>CURRENT SIGNAL</span><strong>68%</strong><i></i></div><div class="budget-state state-retrieve"><span>JUST IN TIME</span><strong>92%</strong><i></i></div></div></div></div></section><section data-hf-id="hf-scene-decision" id="scene-decision" class="scene agent-right "><h1>KEEP FOUR THINGS IN THE AI AGENT WINDOW</h1><div class="scene-body"><div class="agent-wrap"><img class="agent" src="assets/pack/sprites/agent/verify-front.png" alt="Tiny Agent"></div><div class="core-wrap"><div class="core-card decision-card"><img src="assets/pack/sprites/props/task-list.png" alt=""><div class="decision-lines"><span>Goal</span><span>Constraints</span><span>Evidence</span><span>Current state</span></div><strong class="decision-ready">READY FOR THE NEXT DECISION</strong></div></div></div></section>
+    <div data-hf-id="hf-captions" class="captions"><div data-hf-id="hf-caption-1" id="caption-1" class="caption-cue">Do you know how to give an AI Agent high-signal context?</div><div data-hf-id="hf-caption-2" id="caption-2" class="caption-cue">Next, I'll show you how Anthropic solves that problem.</div><div data-hf-id="hf-caption-3" id="caption-3" class="caption-cue">This is dense, practical material to help you get better at using AI.</div><div data-hf-id="hf-caption-4" id="caption-4" class="caption-cue">The lesson is longer, so follow and save it.</div><div data-hf-id="hf-caption-5" id="caption-5" class="caption-cue">Anthropic treats context as a finite attention budget.</div><div data-hf-id="hf-caption-6" id="caption-6" class="caption-cue">As the window grows, the next important signal can lose strength.</div><div data-hf-id="hf-caption-7" id="caption-7" class="caption-cue">Long prompts can make an AI Agent chase details.</div><div data-hf-id="hf-caption-8" id="caption-8" class="caption-cue">Use a six-part high-signal pack: outcome, rules, tools, examples, retrieval, and state.</div><div data-hf-id="hf-caption-9" id="caption-9" class="caption-cue">Watch the budget.</div><div data-hf-id="hf-caption-10" id="caption-10" class="caption-cue">Raw history fills the window and shrinks the goal.</div><div data-hf-id="hf-caption-11" id="caption-11" class="caption-cue">Keep current constraints and live evidence inside.</div><div data-hf-id="hf-caption-12" id="caption-12" class="caption-cue">Move the rest outside; nothing is deleted, and each visible token serves the action.</div><div data-hf-id="hf-caption-13" id="caption-13" class="caption-cue">Retrieve details only for the next decision.</div><div data-hf-id="hf-caption-14" id="caption-14" class="caption-cue">Each AI Agent step keeps four things visible: goal, constraints, evidence, and current state.</div><div data-hf-id="hf-caption-15" id="caption-15" class="caption-cue">Everything else stays outside until its signal matters.</div></div>
+    <div data-hf-id="hf-cover" id="cover" class="cover"><img src="assets/cover.png" alt="Give AI Agents High-Signal Context"></div>
+    <audio data-hf-id="hf-narration" id="narration" class="clip" data-start="0" data-duration="49.8" data-track-index="1" data-media-start="0" data-volume="1" src="audio/narration.en-US.mp3"></audio>
+  </div>
+  <script>
+    window.__timelines=window.__timelines||{};
+    const tl=gsap.timeline({paused:true});
+    tl.set("#scene-hook", { autoAlpha: 1 }, 0);
+    tl.fromTo("#scene-hook h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 0.800);
+    tl.fromTo("#scene-hook .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 0.800);
+    tl.fromTo("#scene-hook .core-card", { x: -34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 0.800);
+    tl.set("#scene-hook", { autoAlpha: 0 }, 3.197);
+    tl.set("#scene-promise", { autoAlpha: 1 }, 3.197);
+    tl.fromTo("#scene-promise h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 3.197);
+    tl.fromTo("#scene-promise .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 3.197);
+    tl.fromTo("#scene-promise .core-card", { x: -34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 3.197);
+    tl.set("#scene-promise", { autoAlpha: 0 }, 12.532);
+    tl.set("#scene-authority", { autoAlpha: 1 }, 12.532);
+    tl.fromTo("#scene-authority h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 12.532);
+    tl.fromTo("#scene-authority .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 12.532);
+    tl.fromTo("#scene-authority .core-card", { x: 34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 12.532);
+    tl.set("#scene-authority", { autoAlpha: 0 }, 19.087);
+    tl.set("#scene-artifact", { autoAlpha: 1 }, 19.087);
+    tl.fromTo("#scene-artifact h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 19.087);
+    tl.fromTo("#scene-artifact .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 19.087);
+    tl.fromTo("#scene-artifact .core-card", { x: -34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 19.087);
+    tl.set("#scene-artifact", { autoAlpha: 0 }, 27.793);
+    tl.set("#scene-budget", { autoAlpha: 1 }, 27.793);
+    tl.fromTo("#scene-budget h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 27.793);
+    tl.fromTo("#scene-budget .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 27.793);
+    tl.fromTo("#scene-budget .core-card", { x: 34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 27.793);
+    tl.set("#scene-budget", { autoAlpha: 0 }, 40.943);
+    tl.set("#scene-decision", { autoAlpha: 1 }, 40.943);
+    tl.fromTo("#scene-decision h1", { x: 42 }, { x: 0, duration: 0.38, ease: "power3.out" }, 40.943);
+    tl.fromTo("#scene-decision .agent", { y: 10 }, { y: 0, duration: 0.42, ease: "power2.out" }, 40.943);
+    tl.fromTo("#scene-decision .core-card", { x: -34 }, { x: 0, duration: 0.42, ease: "power2.out" }, 40.943);
+    tl.set("#cover", { autoAlpha: 0 }, 0.800);
+    tl.to("#scene-promise .save-label", { backgroundColor: "#F4C542", scale: 1.04, duration: 0.28, ease: "power2.out" }, 9.951);
+    tl.to("#scene-artifact .pack-card", { scale: 1.05, duration: 0.28, yoyo: true, repeat: 1, ease: "power2.inOut" }, 23.200);
+    tl.set("#scene-budget .state-raw", { autoAlpha: 0 }, 31.300);
+    tl.set("#scene-budget .state-focus", { autoAlpha: 1 }, 31.300);
+    tl.set("#scene-budget .state-focus", { autoAlpha: 0 }, 38.543);
+    tl.set("#scene-budget .state-retrieve", { autoAlpha: 1 }, 38.543);
+    tl.to("#scene-decision .decision-ready", { backgroundColor: "#F4C542", scale: 1.04, duration: 0.32, ease: "power2.out" }, 46.669);
+    tl.set("#caption-1", { autoAlpha: 1, y: 0 }, 0.100);
+    tl.set("#caption-1", { autoAlpha: 0 }, 3.297);
+    tl.set("#caption-2", { autoAlpha: 1, y: 0 }, 3.297);
+    tl.set("#caption-2", { autoAlpha: 0 }, 6.218);
+    tl.set("#caption-3", { autoAlpha: 1, y: 0 }, 6.218);
+    tl.set("#caption-3", { autoAlpha: 0 }, 9.951);
+    tl.set("#caption-4", { autoAlpha: 1, y: 0 }, 9.951);
+    tl.set("#caption-4", { autoAlpha: 0 }, 12.632);
+    tl.set("#caption-5", { autoAlpha: 1, y: 0 }, 12.632);
+    tl.set("#caption-5", { autoAlpha: 0 }, 15.598);
+    tl.set("#caption-6", { autoAlpha: 1, y: 0 }, 15.598);
+    tl.set("#caption-6", { autoAlpha: 0 }, 19.187);
+    tl.set("#caption-7", { autoAlpha: 1, y: 0 }, 19.187);
+    tl.set("#caption-7", { autoAlpha: 0 }, 22.000);
+    tl.set("#caption-8", { autoAlpha: 1, y: 0 }, 22.000);
+    tl.set("#caption-8", { autoAlpha: 0 }, 27.893);
+    tl.set("#caption-9", { autoAlpha: 1, y: 0 }, 27.893);
+    tl.set("#caption-9", { autoAlpha: 0 }, 28.763);
+    tl.set("#caption-10", { autoAlpha: 1, y: 0 }, 28.763);
+    tl.set("#caption-10", { autoAlpha: 0 }, 31.300);
+    tl.set("#caption-11", { autoAlpha: 1, y: 0 }, 31.300);
+    tl.set("#caption-11", { autoAlpha: 0 }, 33.932);
+    tl.set("#caption-12", { autoAlpha: 1, y: 0 }, 33.932);
+    tl.set("#caption-12", { autoAlpha: 0 }, 38.543);
+    tl.set("#caption-13", { autoAlpha: 1, y: 0 }, 38.543);
+    tl.set("#caption-13", { autoAlpha: 0 }, 41.043);
+    tl.set("#caption-14", { autoAlpha: 1, y: 0 }, 41.043);
+    tl.set("#caption-14", { autoAlpha: 0 }, 46.669);
+    tl.set("#caption-15", { autoAlpha: 1, y: 0 }, 46.669);
+    tl.set("#caption-15", { autoAlpha: 0 }, 49.800);
+    window.__timelines.main=tl;
+  </script>
+</body>
+</html>

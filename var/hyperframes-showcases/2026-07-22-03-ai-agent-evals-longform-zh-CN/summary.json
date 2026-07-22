@@ -1,0 +1,115 @@
+{
+  "title": "AI 智能体验收：验证结果，不只听完成",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-22-03-ai-agent-evals-longform-zh-CN/SCRIPT.zh-CN.md",
+  "language": "zh-CN",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "zh-CN-YunxiaNeural",
+    "rate": "+50%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 469.469396,
+    "chapters": [
+      {
+        "label": "前言",
+        "start": 0,
+        "end": 53.616,
+        "duration": 53.616
+      },
+      {
+        "label": "定义成功",
+        "start": 53.616,
+        "end": 131.952,
+        "duration": 78.336
+      },
+      {
+        "label": "验证结果",
+        "start": 131.952,
+        "end": 213.43200000000002,
+        "duration": 81.48
+      },
+      {
+        "label": "测试稳定性",
+        "start": 213.43200000000002,
+        "end": 289.34400000000005,
+        "duration": 75.912
+      },
+      {
+        "label": "检查评估",
+        "start": 289.34400000000005,
+        "end": 368.66400000000004,
+        "duration": 79.32
+      },
+      {
+        "label": "验收表",
+        "start": 368.66400000000004,
+        "end": 438.79200000000003,
+        "duration": 70.128
+      },
+      {
+        "label": "总结",
+        "start": 438.79200000000003,
+        "end": 469.469396,
+        "duration": 30.677395999999987
+      }
+    ],
+    "visualStates": 25,
+    "captions": 152
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-22-03-ai-agent-evals-longform.zh-CN.mp4",
+    "status": "pass"
+  }
+}

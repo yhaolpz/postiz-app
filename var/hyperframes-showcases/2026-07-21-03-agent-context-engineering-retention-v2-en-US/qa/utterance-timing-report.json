@@ -1,0 +1,1211 @@
+{
+  "policy": "measured-audible-bounds-v2",
+  "voice": "en-US-AnaNeural",
+  "rate": "+30%",
+  "maximumInterUtteranceGap": 0.45,
+  "chapters": [
+    {
+      "chapter": "Introduction",
+      "duration": 37.2,
+      "utterances": [
+        {
+          "id": "chapter-01-p01-u01",
+          "text": "Why does an AI Agent forget the goal halfway through a long task?",
+          "desiredGapBefore": 0,
+          "actualGapBefore": 0.152,
+          "audioStart": 0,
+          "spokenStart": 0.152,
+          "spokenEnd": 3.325
+        },
+        {
+          "id": "chapter-01-p01-u02",
+          "text": "Because information can still be present while the important signal gets buried.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 3.327,
+          "spokenStart": 3.485,
+          "spokenEnd": 7.014
+        },
+        {
+          "id": "chapter-01-p02-u01",
+          "text": "Anthropic's context-engineering work gives the cause: context is a finite attention budget.",
+          "desiredGapBefore": 0.45,
+          "actualGapBefore": 0.45,
+          "audioStart": 7.313,
+          "spokenStart": 7.464,
+          "spokenEnd": 12.141
+        },
+        {
+          "id": "chapter-01-p02-u02",
+          "text": "Old decisions and raw history weaken the next signal.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 12.149,
+          "spokenStart": 12.301,
+          "spokenEnd": 14.937
+        },
+        {
+          "id": "chapter-01-p03-u01",
+          "text": "More context can therefore make an AI Agent less reliable.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 15.005,
+          "spokenStart": 15.157,
+          "spokenEnd": 18.309
+        },
+        {
+          "id": "chapter-01-p03-u02",
+          "text": "You will learn to keep the goal visible, retrieve detail only when needed, and preserve working state across many steps.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 18.317,
+          "spokenStart": 18.469,
+          "spokenEnd": 24.4
+        },
+        {
+          "id": "chapter-01-p04-u01",
+          "text": "You will also get a six-part high-signal context pack: Outcome, Operating Rules, Tool Map, Canonical Examples, Retrieval Index, and Working State.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 24.467,
+          "spokenStart": 24.62,
+          "spokenEnd": 33.025
+        },
+        {
+          "id": "chapter-01-p04-u02",
+          "text": "Save this lesson so you can reuse it on your next long AI Agent task.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 33.041,
+          "spokenStart": 33.185,
+          "spokenEnd": 36.929
+        }
+      ]
+    },
+    {
+      "chapter": "Attention Budget",
+      "duration": 101.933333,
+      "utterances": [
+        {
+          "id": "chapter-02-p01-u01",
+          "text": "Context includes every token available when the model produces its next response: system instructions, tool definitions, examples, retrieved documents, message history, intermediate results, and the current request.",
+          "desiredGapBefore": 0.32,
+          "actualGapBefore": 0.152,
+          "audioStart": 0,
+          "spokenStart": 0.152,
+          "spokenEnd": 12.039
+        },
+        {
+          "id": "chapter-02-p01-u02",
+          "text": "Context engineering manages that whole state, not just the opening prompt.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 12.045,
+          "spokenStart": 12.199,
+          "spokenEnd": 16.061
+        },
+        {
+          "id": "chapter-02-p02-u01",
+          "text": "Anthropic describes context as finite and subject to diminishing returns.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 16.129,
+          "spokenStart": 16.281,
+          "spokenEnd": 20.238
+        },
+        {
+          "id": "chapter-02-p02-u02",
+          "text": "Research on context rot shows a recurring pattern: as the amount of material grows, models can become less reliable at recalling the relevant item hidden inside it.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 20.238,
+          "spokenStart": 20.398,
+          "spokenEnd": 28.599
+        },
+        {
+          "id": "chapter-02-p02-u03",
+          "text": "A larger window does not make attention free.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 28.604,
+          "spokenStart": 28.759,
+          "spokenEnd": 30.844
+        },
+        {
+          "id": "chapter-02-p03-u01",
+          "text": "This explains why a giant prompt can fail.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 30.903,
+          "spokenStart": 31.064,
+          "spokenEnd": 33.305
+        },
+        {
+          "id": "chapter-02-p03-u02",
+          "text": "The correct rule may be present, yet surrounded by obsolete plans, repeated explanations, raw logs, and edge cases.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 33.296,
+          "spokenStart": 33.465,
+          "spokenEnd": 40.26
+        },
+        {
+          "id": "chapter-02-p03-u03",
+          "text": "The model must infer which parts are current, authoritative, and relevant before it can even solve the task.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 40.255,
+          "spokenStart": 40.42,
+          "spokenEnd": 45.849
+        },
+        {
+          "id": "chapter-02-p04-u01",
+          "text": "Good context engineering is therefore selective.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 45.91,
+          "spokenStart": 46.069,
+          "spokenEnd": 48.569
+        },
+        {
+          "id": "chapter-02-p04-u02",
+          "text": "Before every meaningful step, ask what information changes the next decision.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 48.571,
+          "spokenStart": 48.729,
+          "spokenEnd": 52.623
+        },
+        {
+          "id": "chapter-02-p04-u03",
+          "text": "Keep the goal, necessary constraints, current evidence, and live state.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 52.638,
+          "spokenStart": 52.783,
+          "spokenEnd": 56.812
+        },
+        {
+          "id": "chapter-02-p04-u04",
+          "text": "Move reference detail behind an index when it can be fetched later.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 56.824,
+          "spokenStart": 56.972,
+          "spokenEnd": 60.145
+        },
+        {
+          "id": "chapter-02-p05-u01",
+          "text": "Selection is iterative.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 60.212,
+          "spokenStart": 60.365,
+          "spokenEnd": 61.662
+        },
+        {
+          "id": "chapter-02-p05-u02",
+          "text": "After a tool call, the Agent has new evidence.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 61.67,
+          "spokenStart": 61.822,
+          "spokenEnd": 64.406
+        },
+        {
+          "id": "chapter-02-p05-u03",
+          "text": "After an error, a new boundary becomes important.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 64.414,
+          "spokenStart": 64.566,
+          "spokenEnd": 67.203
+        },
+        {
+          "id": "chapter-02-p05-u04",
+          "text": "After a milestone, raw traces may be replaced by a compact state summary.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 67.217,
+          "spokenStart": 67.363,
+          "spokenEnd": 71.326
+        },
+        {
+          "id": "chapter-02-p05-u05",
+          "text": "The useful context at step ten is not identical to the useful context at step one.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 71.313,
+          "spokenStart": 71.486,
+          "spokenEnd": 76.174
+        },
+        {
+          "id": "chapter-02-p06-u01",
+          "text": "Minimal does not mean short.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 76.238,
+          "spokenStart": 76.394,
+          "spokenEnd": 77.769
+        },
+        {
+          "id": "chapter-02-p06-u02",
+          "text": "A complex migration may need extensive acceptance criteria, repository conventions, and risk controls.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 77.782,
+          "spokenStart": 77.929,
+          "spokenEnd": 83.86
+        },
+        {
+          "id": "chapter-02-p06-u03",
+          "text": "The standard is the smallest set that fully supports the expected behavior, not the fewest possible words.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 83.857,
+          "spokenStart": 84.02,
+          "spokenEnd": 89.334
+        },
+        {
+          "id": "chapter-02-p07-u01",
+          "text": "First, treat context as a finite attention budget rather than unlimited storage.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 89.407,
+          "spokenStart": 89.554,
+          "spokenEnd": 93.942
+        },
+        {
+          "id": "chapter-02-p08-u01",
+          "text": "Second, more tokens can dilute the instruction that matters next.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 94.01,
+          "spokenStart": 94.162,
+          "spokenEnd": 97.645
+        },
+        {
+          "id": "chapter-02-p09-u01",
+          "text": "Third, keep the smallest sufficient set and refresh it as the task changes.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 97.718,
+          "spokenStart": 97.865,
+          "spokenEnd": 101.675
+        }
+      ]
+    },
+    {
+      "chapter": "High-Signal Inputs",
+      "duration": 97.733333,
+      "utterances": [
+        {
+          "id": "chapter-03-p01-u01",
+          "text": "Start with system instructions at the right altitude.",
+          "desiredGapBefore": 0.32,
+          "actualGapBefore": 0.142,
+          "audioStart": 0,
+          "spokenStart": 0.142,
+          "spokenEnd": 2.726
+        },
+        {
+          "id": "chapter-03-p01-u02",
+          "text": "At one extreme, a prompt hard-codes every branch with brittle if-else logic.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 2.748,
+          "spokenStart": 2.886,
+          "spokenEnd": 7.046
+        },
+        {
+          "id": "chapter-03-p01-u03",
+          "text": "At the other, it says something vague like do a great job and assumes the Agent shares your unstated expectations.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 7.074,
+          "spokenStart": 7.206,
+          "spokenEnd": 12.902
+        },
+        {
+          "id": "chapter-03-p02-u01",
+          "text": "The useful middle gives clear goals, boundaries, and heuristics while leaving room to reason.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 12.952,
+          "spokenStart": 13.122,
+          "spokenEnd": 17.916
+        },
+        {
+          "id": "chapter-03-p02-u02",
+          "text": "Organize background, instructions, tool guidance, and output expectations into distinct sections.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 17.918,
+          "spokenStart": 18.076,
+          "spokenEnd": 23.813
+        },
+        {
+          "id": "chapter-03-p02-u03",
+          "text": "The formatting helps, but the decisive value is the clarity and priority of the content.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 23.813,
+          "spokenStart": 23.973,
+          "spokenEnd": 28.439
+        },
+        {
+          "id": "chapter-03-p03-u01",
+          "text": "Next, inspect the tools.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 28.499,
+          "spokenStart": 28.659,
+          "spokenEnd": 30.293
+        },
+        {
+          "id": "chapter-03-p03-u02",
+          "text": "A tool is not only an action; it is a contract between the Agent and its environment.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 30.311,
+          "spokenStart": 30.453,
+          "spokenEnd": 34.741
+        },
+        {
+          "id": "chapter-03-p03-u03",
+          "text": "Names, descriptions, parameters, error behavior, and returned data all enter context and shape which action the Agent chooses.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 34.745,
+          "spokenStart": 34.901,
+          "spokenEnd": 42.073
+        },
+        {
+          "id": "chapter-03-p04-u01",
+          "text": "Overlapping tools create ambiguous decisions and waste attention.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 42.161,
+          "spokenStart": 42.293,
+          "spokenEnd": 45.566
+        },
+        {
+          "id": "chapter-03-p04-u02",
+          "text": "If a human cannot clearly explain when to use one tool instead of another, the Agent is unlikely to resolve the ambiguity reliably.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 45.571,
+          "spokenStart": 45.726,
+          "spokenEnd": 52.492
+        },
+        {
+          "id": "chapter-03-p04-u03",
+          "text": "Keep a minimal viable set, return token-efficient results, and let each tool do one understandable job.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 52.506,
+          "spokenStart": 52.652,
+          "spokenEnd": 58.237
+        },
+        {
+          "id": "chapter-03-p05-u01",
+          "text": "Then curate examples.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 58.286,
+          "spokenStart": 58.457,
+          "spokenEnd": 59.711
+        },
+        {
+          "id": "chapter-03-p05-u02",
+          "text": "A long catalogue of edge cases feels comprehensive, but it can bury the pattern.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 59.711,
+          "spokenStart": 59.871,
+          "spokenEnd": 63.942
+        },
+        {
+          "id": "chapter-03-p05-u03",
+          "text": "Anthropic recommends a small, diverse set of canonical examples that show the expected behavior, important variation, and a meaningful boundary.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 63.951,
+          "spokenStart": 64.102,
+          "spokenEnd": 71.691
+        },
+        {
+          "id": "chapter-03-p06-u01",
+          "text": "High signal is not a fixed token count.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 71.761,
+          "spokenStart": 71.911,
+          "spokenEnd": 73.974
+        },
+        {
+          "id": "chapter-03-p06-u02",
+          "text": "It is information with a clear job: establish the outcome, constrain behavior, select a tool, demonstrate a pattern, provide evidence, or expose a stop condition.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 73.991,
+          "spokenStart": 74.134,
+          "spokenEnd": 83.047
+        },
+        {
+          "id": "chapter-03-p06-u03",
+          "text": "Remove material only when it performs none of those jobs.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 83.055,
+          "spokenStart": 83.207,
+          "spokenEnd": 86.089
+        },
+        {
+          "id": "chapter-03-p07-u01",
+          "text": "First, write instructions at the right altitude between brittle and vague.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 86.166,
+          "spokenStart": 86.309,
+          "spokenEnd": 90.003
+        },
+        {
+          "id": "chapter-03-p08-u01",
+          "text": "Second, keep tools clear, efficient, and minimally overlapping.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 90.068,
+          "spokenStart": 90.223,
+          "spokenEnd": 93.949
+        },
+        {
+          "id": "chapter-03-p09-u01",
+          "text": "Third, teach the pattern with a small set of canonical examples.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 94.011,
+          "spokenStart": 94.169,
+          "spokenEnd": 97.48
+        }
+      ]
+    },
+    {
+      "chapter": "Retrieve on Demand",
+      "duration": 92.433333,
+      "utterances": [
+        {
+          "id": "chapter-04-p01-u01",
+          "text": "Many systems preload every document that might be relevant before the Agent starts.",
+          "desiredGapBefore": 0.32,
+          "actualGapBefore": 0.147,
+          "audioStart": 0,
+          "spokenStart": 0.147,
+          "spokenEnd": 4.301
+        },
+        {
+          "id": "chapter-04-p01-u02",
+          "text": "That can be fast when the corpus is small and stable, but it also spends the attention budget before the Agent knows which detail matters.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 4.298,
+          "spokenStart": 4.461,
+          "spokenEnd": 11.095
+        },
+        {
+          "id": "chapter-04-p02-u01",
+          "text": "Just-in-time retrieval uses lightweight references instead: file paths, stored queries, links, identifiers, folder names, and timestamps.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 11.161,
+          "spokenStart": 11.315,
+          "spokenEnd": 19.831
+        },
+        {
+          "id": "chapter-04-p02-u02",
+          "text": "The Agent keeps the map in context, then opens the specific source when a decision requires it.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 19.827,
+          "spokenStart": 19.991,
+          "spokenEnd": 24.726
+        },
+        {
+          "id": "chapter-04-p03-u01",
+          "text": "This creates progressive disclosure.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 24.777,
+          "spokenStart": 24.946,
+          "spokenEnd": 26.635
+        },
+        {
+          "id": "chapter-04-p03-u02",
+          "text": "A filename suggests purpose.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 26.654,
+          "spokenStart": 26.795,
+          "spokenEnd": 28.424
+        },
+        {
+          "id": "chapter-04-p03-u03",
+          "text": "A directory reveals structure.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 28.434,
+          "spokenStart": 28.584,
+          "spokenEnd": 30.126
+        },
+        {
+          "id": "chapter-04-p03-u04",
+          "text": "A file size suggests complexity.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 30.154,
+          "spokenStart": 30.286,
+          "spokenEnd": 32.167
+        },
+        {
+          "id": "chapter-04-p03-u05",
+          "text": "One search result narrows the next query.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 32.174,
+          "spokenStart": 32.327,
+          "spokenEnd": 34.434
+        },
+        {
+          "id": "chapter-04-p03-u06",
+          "text": "The Agent assembles understanding layer by layer while keeping only the active subset in working context.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 34.429,
+          "spokenStart": 34.594,
+          "spokenEnd": 39.909
+        },
+        {
+          "id": "chapter-04-p04-u01",
+          "text": "Claude Code illustrates the pattern.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 39.976,
+          "spokenStart": 40.129,
+          "spokenEnd": 41.79
+        },
+        {
+          "id": "chapter-04-p04-u02",
+          "text": "Stable project instructions can be loaded up front, while file search, grep, head, and tail let the Agent inspect targeted parts of a large repository.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 41.8,
+          "spokenStart": 41.95,
+          "spokenEnd": 50.046
+        },
+        {
+          "id": "chapter-04-p04-u03",
+          "text": "It does not need every file body in context at once.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 50.064,
+          "spokenStart": 50.206,
+          "spokenEnd": 53.07
+        },
+        {
+          "id": "chapter-04-p05-u01",
+          "text": "The trade-off is real.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 53.127,
+          "spokenStart": 53.29,
+          "spokenEnd": 54.33
+        },
+        {
+          "id": "chapter-04-p05-u02",
+          "text": "Runtime exploration is slower than preloading, and poor navigation can waste tokens on dead ends.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 54.338,
+          "spokenStart": 54.49,
+          "spokenEnd": 59.887
+        },
+        {
+          "id": "chapter-04-p05-u03",
+          "text": "The Agent needs good search tools, informative names, and heuristics for when to stop exploring and act.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 59.884,
+          "spokenStart": 60.047,
+          "spokenEnd": 65.846
+        },
+        {
+          "id": "chapter-04-p06-u01",
+          "text": "Use a hybrid strategy.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 65.904,
+          "spokenStart": 66.066,
+          "spokenEnd": 67.304
+        },
+        {
+          "id": "chapter-04-p06-u02",
+          "text": "Preload stable rules, the current outcome, and the small facts that almost every step needs.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 67.323,
+          "spokenStart": 67.464,
+          "spokenEnd": 72.396
+        },
+        {
+          "id": "chapter-04-p06-u03",
+          "text": "Keep changing, detailed, or rarely used material behind retrieval handles.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 72.414,
+          "spokenStart": 72.556,
+          "spokenEnd": 76.684
+        },
+        {
+          "id": "chapter-04-p06-u04",
+          "text": "The right boundary depends on the task and the cost of a missed detail.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 76.683,
+          "spokenStart": 76.844,
+          "spokenEnd": 80.019
+        },
+        {
+          "id": "chapter-04-p07-u01",
+          "text": "First, keep lightweight references instead of every source body.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 80.086,
+          "spokenStart": 80.239,
+          "spokenEnd": 83.506
+        },
+        {
+          "id": "chapter-04-p08-u01",
+          "text": "Second, let the AI Agent discover detail progressively when it becomes relevant.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 83.575,
+          "spokenStart": 83.726,
+          "spokenEnd": 87.959
+        },
+        {
+          "id": "chapter-04-p09-u01",
+          "text": "Third, balance retrieval focus against the extra time and navigation cost.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 88.033,
+          "spokenStart": 88.179,
+          "spokenEnd": 92.164
+        }
+      ]
+    },
+    {
+      "chapter": "Long-Horizon Memory",
+      "duration": 98,
+      "utterances": [
+        {
+          "id": "chapter-05-p01-u01",
+          "text": "Long tasks create a second problem.",
+          "desiredGapBefore": 0.32,
+          "actualGapBefore": 0.153,
+          "audioStart": 0,
+          "spokenStart": 0.153,
+          "spokenEnd": 2.028
+        },
+        {
+          "id": "chapter-05-p01-u02",
+          "text": "Even well-curated context eventually fills as the Agent takes actions, observes results, fixes errors, and accumulates decisions.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 2.045,
+          "spokenStart": 2.188,
+          "spokenEnd": 9.598
+        },
+        {
+          "id": "chapter-05-p01-u03",
+          "text": "A task that lasts hours may exceed the usable window several times.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 9.623,
+          "spokenStart": 9.758,
+          "spokenEnd": 13.319
+        },
+        {
+          "id": "chapter-05-p02-u01",
+          "text": "Compaction is the first lever.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 13.395,
+          "spokenStart": 13.539,
+          "spokenEnd": 15.019
+        },
+        {
+          "id": "chapter-05-p02-u02",
+          "text": "Summarize the conversation or trace, start a fresh window, and carry forward the decisions, unresolved bugs, constraints, evidence, and next actions needed for continuity.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 15.029,
+          "spokenStart": 15.179,
+          "spokenEnd": 24.88
+        },
+        {
+          "id": "chapter-05-p02-u03",
+          "text": "Raw tool output that has already served its purpose can usually disappear.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 24.882,
+          "spokenStart": 25.04,
+          "spokenEnd": 28.619
+        },
+        {
+          "id": "chapter-05-p03-u01",
+          "text": "Compaction has a risk: a subtle detail that looks unimportant now may become critical later.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 28.694,
+          "spokenStart": 28.839,
+          "spokenEnd": 33.486
+        },
+        {
+          "id": "chapter-05-p03-u02",
+          "text": "Anthropic recommends tuning for high recall first, then improving precision.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 33.492,
+          "spokenStart": 33.646,
+          "spokenEnd": 37.496
+        },
+        {
+          "id": "chapter-05-p03-u03",
+          "text": "Losing a decisive constraint is more expensive than carrying a little extra context.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 37.503,
+          "spokenStart": 37.656,
+          "spokenEnd": 41.914
+        },
+        {
+          "id": "chapter-05-p04-u01",
+          "text": "Structured notes provide another layer.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 41.976,
+          "spokenStart": 42.134,
+          "spokenEnd": 43.955
+        },
+        {
+          "id": "chapter-05-p04-u02",
+          "text": "The Agent writes progress, milestones, discoveries, and open questions outside the window, then reloads the relevant note later.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 43.951,
+          "spokenStart": 44.115,
+          "spokenEnd": 51.204
+        },
+        {
+          "id": "chapter-05-p04-u03",
+          "text": "This makes working state durable without keeping the entire conversation active.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 51.2,
+          "spokenStart": 51.364,
+          "spokenEnd": 55.205
+        },
+        {
+          "id": "chapter-05-p05-u01",
+          "text": "Specialized agents can isolate deep exploration.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 55.273,
+          "spokenStart": 55.425,
+          "spokenEnd": 58.148
+        },
+        {
+          "id": "chapter-05-p05-u02",
+          "text": "A lead Agent keeps the high-level plan while focused agents investigate separate questions with clean contexts and return condensed findings.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 58.157,
+          "spokenStart": 58.308,
+          "spokenEnd": 65.252
+        },
+        {
+          "id": "chapter-05-p05-u03",
+          "text": "This pays off when parallel research value exceeds coordination cost.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 65.247,
+          "spokenStart": 65.412,
+          "spokenEnd": 69.11
+        },
+        {
+          "id": "chapter-05-p06-u01",
+          "text": "Choose by task shape.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 69.186,
+          "spokenStart": 69.33,
+          "spokenEnd": 70.479
+        },
+        {
+          "id": "chapter-05-p06-u02",
+          "text": "Use compaction for conversational continuity, notes for iterative work with clear milestones, and specialized agents for independent deep investigations.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 70.496,
+          "spokenStart": 70.639,
+          "spokenEnd": 78.759
+        },
+        {
+          "id": "chapter-05-p06-u03",
+          "text": "Whichever method you choose, the handoff must preserve outcome, decisions, evidence, unknowns, and next action.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 78.765,
+          "spokenStart": 78.919,
+          "spokenEnd": 85.297
+        },
+        {
+          "id": "chapter-05-p07-u01",
+          "text": "First, compact long traces into high-recall continuity summaries.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 85.367,
+          "spokenStart": 85.517,
+          "spokenEnd": 89.354
+        },
+        {
+          "id": "chapter-05-p08-u01",
+          "text": "Second, keep durable working state in structured external notes.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 89.432,
+          "spokenStart": 89.574,
+          "spokenEnd": 93.027
+        },
+        {
+          "id": "chapter-05-p09-u01",
+          "text": "Third, use specialized agents only when focused exploration justifies coordination.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 93.101,
+          "spokenStart": 93.247,
+          "spokenEnd": 97.742
+        }
+      ]
+    },
+    {
+      "chapter": "Context Pack",
+      "duration": 92.733333,
+      "utterances": [
+        {
+          "id": "chapter-06-p01-u01",
+          "text": "Turn the method into one Minimum High-Signal Context Pack.",
+          "desiredGapBefore": 0.32,
+          "actualGapBefore": 0.142,
+          "audioStart": 0,
+          "spokenStart": 0.142,
+          "spokenEnd": 3.082
+        },
+        {
+          "id": "chapter-06-p01-u02",
+          "text": "It has six parts: Outcome, Operating Rules, Tool Map, Canonical Examples, Retrieval Index, and Working State.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 3.098,
+          "spokenStart": 3.242,
+          "spokenEnd": 10.121
+        },
+        {
+          "id": "chapter-06-p01-u03",
+          "text": "The pack is small enough to inspect and complete enough to guide real work.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 10.115,
+          "spokenStart": 10.281,
+          "spokenEnd": 13.741
+        },
+        {
+          "id": "chapter-06-p02-u01",
+          "text": "Part one is Outcome.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 13.806,
+          "spokenStart": 13.961,
+          "spokenEnd": 15.027
+        },
+        {
+          "id": "chapter-06-p02-u02",
+          "text": "State the goal, intended user, deliverable, acceptance criteria, and the decision the result must support.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 15.044,
+          "spokenStart": 15.187,
+          "spokenEnd": 21.027
+        },
+        {
+          "id": "chapter-06-p02-u03",
+          "text": "This prevents a fluent Agent from optimizing for an attractive output that does not solve the actual problem.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 21.02,
+          "spokenStart": 21.187,
+          "spokenEnd": 26.181
+        },
+        {
+          "id": "chapter-06-p03-u01",
+          "text": "Part two is Operating Rules.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 26.244,
+          "spokenStart": 26.401,
+          "spokenEnd": 27.969
+        },
+        {
+          "id": "chapter-06-p03-u02",
+          "text": "Record hard constraints, permissions, risk boundaries, escalation points, and stop conditions.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 27.97,
+          "spokenStart": 28.129,
+          "spokenEnd": 33.71
+        },
+        {
+          "id": "chapter-06-p03-u03",
+          "text": "Separate permanent rules from temporary assumptions so an old workaround does not silently become policy.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 33.72,
+          "spokenStart": 33.87,
+          "spokenEnd": 39.04
+        },
+        {
+          "id": "chapter-06-p04-u01",
+          "text": "Part three is the Tool Map, paired with Canonical Examples.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 39.106,
+          "spokenStart": 39.26,
+          "spokenEnd": 42.407
+        },
+        {
+          "id": "chapter-06-p04-u02",
+          "text": "For each tool, explain when to use it, what input it expects, what efficient output looks like, and which nearby tool it does not replace.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 42.417,
+          "spokenStart": 42.567,
+          "spokenEnd": 49.977
+        },
+        {
+          "id": "chapter-06-p04-u03",
+          "text": "Add two or three examples that show the main pattern and an important boundary.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 49.992,
+          "spokenStart": 50.137,
+          "spokenEnd": 53.922
+        },
+        {
+          "id": "chapter-06-p05-u01",
+          "text": "Part four is the Retrieval Index.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 53.997,
+          "spokenStart": 54.142,
+          "spokenEnd": 55.939
+        },
+        {
+          "id": "chapter-06-p05-u02",
+          "text": "Store lightweight handles to source material with a short purpose label and a trigger for opening it.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 55.953,
+          "spokenStart": 56.099,
+          "spokenEnd": 60.76
+        },
+        {
+          "id": "chapter-06-p05-u03",
+          "text": "The Agent should know both where the evidence lives and when the evidence becomes necessary.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 60.756,
+          "spokenStart": 60.92,
+          "spokenEnd": 64.962
+        },
+        {
+          "id": "chapter-06-p06-u01",
+          "text": "Part five is Working State.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 65.03,
+          "spokenStart": 65.182,
+          "spokenEnd": 66.535
+        },
+        {
+          "id": "chapter-06-p06-u02",
+          "text": "Record completed work, current focus, key decisions and evidence, unresolved questions, failed approaches, and the next concrete action.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 66.547,
+          "spokenStart": 66.695,
+          "spokenEnd": 74.553
+        },
+        {
+          "id": "chapter-06-p06-u03",
+          "text": "Update this state at milestones, then compact or archive the raw trace it replaces.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 74.558,
+          "spokenStart": 74.713,
+          "spokenEnd": 79.341
+        },
+        {
+          "id": "chapter-06-p07-u01",
+          "text": "First, anchor the AI Agent with Outcome and Operating Rules.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 79.407,
+          "spokenStart": 79.561,
+          "spokenEnd": 82.941
+        },
+        {
+          "id": "chapter-06-p08-u01",
+          "text": "Second, guide action with a Tool Map, Canonical Examples, and a Retrieval Index.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 83.016,
+          "spokenStart": 83.161,
+          "spokenEnd": 88.059
+        },
+        {
+          "id": "chapter-06-p09-u01",
+          "text": "Third, preserve continuity with a compact, regularly updated Working State.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 88.124,
+          "spokenStart": 88.279,
+          "spokenEnd": 92.477
+        }
+      ]
+    },
+    {
+      "chapter": "Summary",
+      "duration": 50.3,
+      "utterances": [
+        {
+          "id": "chapter-07-p01-u01",
+          "text": "An AI Agent does not forget only because information is missing.",
+          "desiredGapBefore": 0.32,
+          "actualGapBefore": 0.149,
+          "audioStart": 0,
+          "spokenStart": 0.149,
+          "spokenEnd": 3.418
+        },
+        {
+          "id": "chapter-07-p01-u02",
+          "text": "It can also lose focus because too much undifferentiated information competes for a finite attention budget.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 3.436,
+          "spokenStart": 3.578,
+          "spokenEnd": 8.954
+        },
+        {
+          "id": "chapter-07-p02-u01",
+          "text": "First, manage the whole context state, not only the prompt.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 9.021,
+          "spokenStart": 9.174,
+          "spokenEnd": 12.596
+        },
+        {
+          "id": "chapter-07-p02-u02",
+          "text": "Keep goals, constraints, tools, evidence, and current state according to what changes the next decision.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 12.613,
+          "spokenStart": 12.756,
+          "spokenEnd": 18.49
+        },
+        {
+          "id": "chapter-07-p03-u01",
+          "text": "Second, raise signal quality.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 18.561,
+          "spokenStart": 18.71,
+          "spokenEnd": 20.392
+        },
+        {
+          "id": "chapter-07-p03-u02",
+          "text": "Use instructions at the right altitude, a minimal tool set, and a few canonical examples instead of brittle rules and edge-case piles.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 20.399,
+          "spokenStart": 20.552,
+          "spokenEnd": 27.581
+        },
+        {
+          "id": "chapter-07-p04-u01",
+          "text": "Third, retrieve detail on demand.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 27.63,
+          "spokenStart": 27.801,
+          "spokenEnd": 29.747
+        },
+        {
+          "id": "chapter-07-p04-u02",
+          "text": "Keep stable essentials up front and let the Agent progressively open changing or specialized material through clear references.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 29.761,
+          "spokenStart": 29.907,
+          "spokenEnd": 36.078
+        },
+        {
+          "id": "chapter-07-p05-u01",
+          "text": "Finally, protect long tasks with compaction, structured notes, and the six-part Minimum High-Signal Context Pack.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 36.14,
+          "spokenStart": 36.298,
+          "spokenEnd": 42.678
+        },
+        {
+          "id": "chapter-07-p05-u02",
+          "text": "Keep the signal, retrieve the detail, and preserve the working state.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 42.693,
+          "spokenStart": 42.838,
+          "spokenEnd": 46.198
+        },
+        {
+          "id": "chapter-07-p06-u01",
+          "text": "Follow Tiny Agent.",
+          "desiredGapBefore": 0.22,
+          "actualGapBefore": 0.22,
+          "audioStart": 46.255,
+          "spokenStart": 46.418,
+          "spokenEnd": 47.551
+        },
+        {
+          "id": "chapter-07-p06-u02",
+          "text": "Tiny Agent helps you get better at using AI.",
+          "desiredGapBefore": 0.16,
+          "actualGapBefore": 0.16,
+          "audioStart": 47.566,
+          "spokenStart": 47.711,
+          "spokenEnd": 50.042
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "title": "AI Agent Evaluation: Verify the Outcome",
+  "source": "/Users/bytedance/Documents/postiz-app/var/hyperframes-showcases/2026-07-22-03-ai-agent-evals-longform-en-US/SCRIPT.en-US.md",
+  "language": "en-US",
+  "speech": {
+    "provider": "edge-tts",
+    "voice": "en-US-AnaNeural",
+    "rate": "+30%",
+    "integratedLoudnessTarget": "-20 LUFS mono / approximately -17 LUFS final stereo"
+  },
+  "alignment": {
+    "timingSource": "edge-tts-vtt",
+    "scriptFirst": true,
+    "sceneBoundaries": "paragraph-to-vtt",
+    "propBeats": "semantic-trigger-v1"
+  },
+  "composition": {
+    "designVersion": "v7-transition-continuity",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 622.444521,
+    "chapters": [
+      {
+        "label": "Introduction",
+        "start": 0,
+        "end": 73.416,
+        "duration": 73.416
+      },
+      {
+        "label": "Define Success",
+        "start": 73.416,
+        "end": 174.98399999999998,
+        "duration": 101.568
+      },
+      {
+        "label": "Grade the Outcome",
+        "start": 174.98399999999998,
+        "end": 282.52799999999996,
+        "duration": 107.544
+      },
+      {
+        "label": "Test Reliability",
+        "start": 282.52799999999996,
+        "end": 382.67999999999995,
+        "duration": 100.152
+      },
+      {
+        "label": "Audit the Eval",
+        "start": 382.67999999999995,
+        "end": 486.59999999999997,
+        "duration": 103.92
+      },
+      {
+        "label": "Acceptance Sheet",
+        "start": 486.59999999999997,
+        "end": 582.312,
+        "duration": 95.712
+      },
+      {
+        "label": "Summary",
+        "start": 582.312,
+        "end": 622.444521,
+        "duration": 40.132521
+      }
+    ],
+    "visualStates": 25,
+    "captions": 199
+  },
+  "qa": {
+    "visualBalance": {
+      "method": "safe-area visible-bounds estimate plus saliency-weighted rendered-pixel centroid",
+      "safeArea": {
+        "left": 56,
+        "top": 120,
+        "right": 1864,
+        "bottom": 820
+      },
+      "target": {
+        "x": 960,
+        "y": 470
+      },
+      "sourceLimits": {
+        "offsetX": 160,
+        "offsetY": 100
+      },
+      "pixelLimits": {
+        "offsetX": 150,
+        "offsetY": 100
+      },
+      "command": "pnpm run check:balance",
+      "status": "pass"
+    },
+    "semanticBeats": {
+      "method": "explicit narration trigger to final caption timeline",
+      "report": "qa/semantic-beat-report.json",
+      "fallbackBeats": 0,
+      "status": "pass"
+    },
+    "transitionContinuity": {
+      "method": "prime hidden state before reveal, then animate monotonically to rest",
+      "command": "pnpm run check:transitions",
+      "report": "qa/transition-continuity-report.json",
+      "status": "pass"
+    },
+    "hyperframesCheck": {
+      "command": "pnpm run check",
+      "status": "pass"
+    }
+  },
+  "output": {
+    "file": "renders/2026-07-22-03-ai-agent-evals-longform.en-US.mp4",
+    "status": "pass"
+  }
+}

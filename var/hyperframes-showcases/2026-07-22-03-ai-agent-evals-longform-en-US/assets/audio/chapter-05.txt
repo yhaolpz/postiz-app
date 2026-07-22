@@ -1,0 +1,17 @@
+A low score does not always mean the AI Agent is weak. The task may be ambiguous, the environment may be broken, or the grader may reject a valid answer. Evaluation quality must be tested too.
+
+Start with failures you already see. Manual checks, support tickets, production bugs, and difficult edge cases are high-value seeds because they represent real user expectations rather than imaginary benchmark puzzles.
+
+Write each task so two qualified reviewers can reach the same verdict. Include the input, required outcome, important constraints, and everything the grader will inspect. Then create a reference solution that proves the task is solvable and that the graders can recognize a known good result.
+
+Build balanced sets and begin small. A useful early suite can contain a few dozen realistic tasks instead of hundreds of weak examples. As the product matures, add harder cases that distinguish improvements and convert solved capability tests into regression protection.
+
+Read transcripts and grades from many trials. A failed trace tells you whether the Agent made a genuine mistake, whether the harness blocked progress, or whether the grader punished a reasonable solution. If failures do not look fair, revise the evaluation before optimizing the Agent.
+
+Treat the suite as a living artifact. Models improve, products change, user behavior shifts, and once-difficult tasks saturate. Ownership, regular maintenance, production monitoring, and periodic human calibration keep the signal useful over time.
+
+First, turn real failures into unambiguous tasks with reference solutions.
+
+Second, read transcripts to tell Agent errors from grader errors.
+
+Third, keep the suite current as capabilities, products, and risks change.

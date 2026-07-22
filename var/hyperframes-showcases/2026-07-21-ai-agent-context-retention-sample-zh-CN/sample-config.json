@@ -1,0 +1,81 @@
+{
+  "locale": "zh-CN",
+  "language": "中文",
+  "voice": "zh-CN-YunxiaNeural",
+  "rate": "+50%",
+  "duration": 60,
+  "outputName": "retention-sample.zh-CN.mp4",
+  "topic": "AI 智能体上下文工程",
+  "coverAlt": "给 AI 智能体高信号上下文",
+  "segments": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 5,
+      "text": "AI 智能体读了更多上下文，反而可能更抓不住重点——问题就在这里。"
+    },
+    {
+      "id": "authority",
+      "start": 5,
+      "end": 12,
+      "text": "Anthropic 把上下文看成有限的注意力预算：窗口越满，下一步真正重要的信号越容易变弱，判断也会偏离。"
+    },
+    {
+      "id": "stakes",
+      "start": 12,
+      "end": 20,
+      "text": "结果就是，提示词更长，智能体却更自信地追着旧细节跑。接下来一分钟，你会拿到一个能直接复用的解决办法。"
+    },
+    {
+      "id": "artifact",
+      "start": 20,
+      "end": 30,
+      "text": "把上下文压成一个可复用的六部分高信号包：目标、运行规则、工具地图、标准示例、检索索引和当前状态。用它替代整段原始历史。"
+    },
+    {
+      "id": "budget",
+      "start": 30,
+      "end": 50,
+      "text": "看注意力预算。原始历史塞满窗口时，目标会被挤小，旧信息却占着最醒目的位置。换成当前约束和有效证据，目标重新变大，下一步判断也更清楚。不是把知识删掉，而是把暂时无关的内容移到窗口外。其余细节只在下一步决策真正需要时再检索，避免提前占用注意力，让当前动作排在前面。"
+    },
+    {
+      "id": "decision",
+      "start": 50,
+      "audioStart": 50.55,
+      "end": 60,
+      "text": "每一步只让 AI 智能体看见四件事：目标、约束、证据和当前状态。其他信息先留在窗口外，真正需要时再取，判断完成后再更新状态。"
+    }
+  ],
+  "headlines": {
+    "hook": "更多上下文，可能让 AI 智能体更失焦",
+    "authority": "上下文是有限的注意力预算",
+    "stakes": "旧细节会抢走下一步决策",
+    "artifact": "六部分高信号上下文包",
+    "budget": "信息更多，不等于信号更强",
+    "decision": "每一步只保留四件事"
+  },
+  "labels": {
+    "source": "ANTHROPIC",
+    "sourceConclusion": "注意力预算有限",
+    "stakes": "旧细节 > 当前目标",
+    "benefit": "筛出高信号",
+    "pack": ["目标", "运行规则", "工具地图", "标准示例", "检索索引", "当前状态"],
+    "budgetRaw": "原始历史",
+    "budgetFocused": "当前信号",
+    "budgetRetrieve": "按需检索",
+    "decision": ["目标", "约束", "证据", "当前状态"],
+    "decisionReady": "可以做下一步决策"
+  },
+  "beats": [
+    {"id": "hook-hit", "sceneId": "hook", "phrase": "AI 智能体", "visual": "封面硬切到放大的智能体与上下文堆"},
+    {"id": "authority-proof", "sceneId": "authority", "phrase": "Anthropic", "visual": "来源印章与注意力预算结论同时出现"},
+    {"id": "loss", "sceneId": "stakes", "phrase": "提示词更长", "visual": "旧细节在单张卡片中压过当前目标"},
+    {"id": "benefit", "sceneId": "stakes", "phrase": "解决办法", "visual": "收益标签获得黄色高亮"},
+    {"id": "artifact-preview", "sceneId": "artifact", "phrase": "六部分", "visual": "单个六行上下文包推入焦点"},
+    {"id": "budget-raw", "sceneId": "budget", "phrase": "看注意力预算", "visual": "注意力装置从低信号开始"},
+    {"id": "budget-focus", "sceneId": "budget", "phrase": "当前约束", "visual": "同一装置切换为当前信号"},
+    {"id": "budget-retrieve", "sceneId": "budget", "phrase": "再检索", "visual": "同一装置切换为按需检索"},
+    {"id": "decision-card", "sceneId": "decision", "phrase": "四件事", "visual": "单张决策卡显示四个保留字段"},
+    {"id": "decision-ready", "sceneId": "decision", "phrase": "其他信息", "visual": "可以决策的结论获得高亮"}
+  ]
+}

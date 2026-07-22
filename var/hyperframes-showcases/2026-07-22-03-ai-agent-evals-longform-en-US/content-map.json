@@ -1,0 +1,25 @@
+{
+  "runKey": "2026-07-22-03",
+  "source": {"publisher":"Anthropic","title":"Demystifying evals for AI agents","url":"https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents","publishedDate":"2026-01-09"},
+  "viewerQuestion": "How can you verify that an AI Agent really completed a task instead of trusting a polished completion message?",
+  "centralThesis": "Reliable AI Agent acceptance defines a fair task before execution, verifies the final environment state with the right grader mix, repeats trials to measure consistency, and audits the evaluation itself before making a release decision.",
+  "reusableArtifact": "AI Agent Acceptance Sheet: Outcome, Task Setup, Evidence, Grader Mix, Reliability, Eval Health, Exceptions, Release Decision",
+  "priorities": {
+    "P0": ["A completion message is a claim, not outcome evidence","Final-state verification and explicit success criteria are the core acceptance gate","The reusable acceptance sheet records evidence and a release decision"],
+    "P1": ["Separate task, trial, grader, transcript, outcome, and harness","Combine deterministic, model-based, and human graders by dimension","Run multiple isolated trials and choose the reliability metric by product need","Audit task ambiguity, reference solutions, graders, transcripts, and suite health"],
+    "P2": ["Capability versus regression evaluation","Balanced positive and negative cases","Partial credit and avoiding overfitting to one tool path","Real failures as initial dataset seeds","Production monitoring and human review as complementary layers"],
+    "P3Removed": ["Vendor framework catalog details","Long benchmark examples that do not change the acceptance method","Publication acknowledgements and product promotion","Repeated explanations of the same grader trade-off"]
+  },
+  "chapters": [
+    {"number":1,"label":"Introduction","promise":"See why an AI Agent completion message is only a claim"},
+    {"number":2,"label":"Define Success","promise":"Define a fair task and distinguish transcript from outcome"},
+    {"number":3,"label":"Grade the Outcome","promise":"Inspect final state with the right grader mix"},
+    {"number":4,"label":"Test Reliability","promise":"Use repeated trials to measure consistency"},
+    {"number":5,"label":"Audit the Eval","promise":"Check whether the evaluation itself is fair"},
+    {"number":6,"label":"Acceptance Sheet","promise":"Capture evidence, exceptions, and the release decision"},
+    {"number":7,"label":"Summary","promise":"Define, verify, repeat, and audit"}
+  ],
+  "visualSemantics": {"humanRole":"defines outcomes, acceptance criteria, grader boundaries, and release decisions","agentRole":"executes tasks, leaves traces, changes final state, and participates in repeated trials","artifact":"one acceptance clipboard with a result state, grader mix, trial history, and release gate"},
+  "factBoundaries": ["A correct final state does not automatically imply safe or efficient behavior","A deterministic grader can reject valid variants if the task is overspecified","Model graders require human calibration","One successful trial does not prove consistent reliability","A low score may reveal a broken task or grader rather than weak Agent capability"],
+  "contentEdit": {"status":"passed","keptEvidence":"All P0 and P1 content plus source evidence that explains mechanisms, boundaries, transfer, or credibility","removedOnly":"Framework catalogs, acknowledgements, repeated examples, and details that add no new fact, boundary, step, or understanding value"}
+}
