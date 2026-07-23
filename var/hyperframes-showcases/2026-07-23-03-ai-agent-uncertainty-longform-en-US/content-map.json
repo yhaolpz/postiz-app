@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "runKey": "2026-07-23-03",
+  "source": {
+    "publisher": "OpenAI",
+    "title": "Why language models hallucinate",
+    "canonicalUrl": "https://openai.com/index/why-language-models-hallucinate/",
+    "publishedDate": "2025-09-05",
+    "paperDate": "2025-09-04"
+  },
+  "audienceQuestion": "Why does an AI Agent confidently guess instead of saying it does not know, and how should a user verify the answer before acting?",
+  "centralThesis": "Reliable AI Agent use requires changing the decision rule from answer at all costs to answer when supported, clarify when underspecified, verify when consequential, and abstain when the truth cannot be determined.",
+  "reusableArtifact": {
+    "en": "AI Agent Uncertainty and Fact-Check Checklist",
+    "zh": "AI 智能体不确定性与事实核验清单",
+    "fields": [
+      "answerability",
+      "claim inventory",
+      "evidence standard",
+      "verification result",
+      "action risk",
+      "feedback test"
+    ]
+  },
+  "priorities": {
+    "P0": [
+      "Accuracy-only incentives reward guessing over honest uncertainty",
+      "Questions may be unavailable, ambiguous, stale, or inherently underdetermined",
+      "High-risk claims must be linked to evidence before action"
+    ],
+    "P1": [
+      "Run an answerability gate before accepting an answer",
+      "Separate confirmed facts, inferences, and unknowns",
+      "Use primary evidence and independent corroboration for consequential claims",
+      "Connect uncertainty to clarify, verify, approve, stop, or abstain"
+    ],
+    "P2": [
+      "Pretraining sees fluent positive examples without a truth label on every statement",
+      "Rare arbitrary facts are difficult to infer from patterns",
+      "SimpleQA accuracy, error, and abstention figures illustrate the incentive trade-off",
+      "Human approval remains necessary before irreversible high-impact action"
+    ],
+    "P3": [
+      "Detailed formal proofs and notation from the paper",
+      "Long related-work survey",
+      "Model-ranking discussion unrelated to the viewer workflow"
+    ]
+  },
+  "chapters": [
+    { "index": 1, "en": "Introduction", "zh": "前言", "promise": "Expose the incentive and preview the reusable checklist" },
+    { "index": 2, "en": "Guessing Incentives", "zh": "猜测激励", "promise": "Understand why accuracy can reward the wrong behavior" },
+    { "index": 3, "en": "Answerability", "zh": "可答判断", "promise": "Decide whether a reliable answer is possible" },
+    { "index": 4, "en": "Express Uncertainty", "zh": "表达不确定", "promise": "Make facts, inferences, and unknowns inspectable" },
+    { "index": 5, "en": "Verify High-Risk Facts", "zh": "高风险核验", "promise": "Spend evidence effort where errors create consequences" },
+    { "index": 6, "en": "Fact-Check Checklist", "zh": "核验清单", "promise": "Apply the six-field reusable artifact" },
+    { "index": 7, "en": "Summary", "zh": "总结", "promise": "Return to the decision rule and action boundary" }
+  ],
+  "factBoundaries": [
+    "OpenAI source findings and figures are attributed to OpenAI",
+    "The checklist is a practical synthesis, not a quoted OpenAI framework",
+    "Qualitative confidence labels do not imply calibrated numeric probabilities",
+    "The SimpleQA example is not generalized to every model or task"
+  ],
+  "roles": {
+    "human": "frames the question, checks consequence, requests evidence, and approves irreversible action",
+    "tinyAgent": "states uncertainty, asks for missing context, retrieves evidence, records verification, and stops when evidence is insufficient"
+  },
+  "contentEdit": {
+    "retained": [
+      "official source attribution",
+      "pretraining mechanism",
+      "evaluation incentive",
+      "SimpleQA figures",
+      "answerability boundaries",
+      "operational verification method"
+    ],
+    "removed": [
+      "formal theorem notation",
+      "full related-work inventory",
+      "repeated benchmark history"
+    ],
+    "reason": "Removed items do not add a new viewer decision, fact boundary, verification step, or required source context within the 5-8 minute episode."
+  }
+}

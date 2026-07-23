@@ -1,0 +1,661 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:03.529
+Do you know why an AI Agent guesses instead of saying “I don't know”?
+
+2
+00:00:03.529 --> 00:00:07.790
+OpenAI research gives a clear answer: standard training and evaluation often
+
+3
+00:00:07.790 --> 00:00:10.976
+reward a lucky guess more than an honest expression of uncertainty.
+
+4
+00:00:10.976 --> 00:00:15.452
+That incentive can turn a plausible sentence into a wrong decision, a false
+
+5
+00:00:15.452 --> 00:00:16.622
+citation, or an unsafe action.
+
+6
+00:00:16.622 --> 00:00:21.264
+You need a way to separate what the AI Agent knows, infers, and cannot
+
+7
+00:00:21.264 --> 00:00:21.340
+This video builds an AI Agent Uncertainty and Fact-Check Checklist.
+
+8
+00:00:21.340 --> 00:00:21.812
+verify.
+
+9
+00:00:25.031 --> 00:00:29.961
+It helps you test answerability, set an evidence bar, and decide whether to
+
+10
+00:00:29.961 --> 00:00:31.730
+answer, verify, clarify, or abstain.
+
+11
+00:00:31.730 --> 00:00:35.639
+The core idea is simple: do not ask only whether an answer sounds right.
+
+12
+00:00:35.639 --> 00:00:39.677
+Ask whether the question is answerable, which claims carry risk, and what
+
+13
+00:00:39.677 --> 00:00:40.933
+evidence would change the action.
+
+14
+00:00:40.933 --> 00:00:45.107
+This video is packed with practical, high-value insights to help you get
+
+15
+00:00:45.107 --> 00:00:45.617
+better at using AI.
+
+16
+00:00:45.617 --> 00:00:49.576
+It's a longer one, so follow Tiny Agent and save it so you don't lose it.
+
+17
+00:00:49.576 --> 00:00:50.885
+Start with the incentive.
+
+18
+00:00:50.885 --> 00:00:55.101
+This chapter shows why a fluent AI Agent can be rewarded for guessing even
+
+19
+00:00:55.101 --> 00:00:55.862
+when it lacks the fact.
+
+20
+00:00:55.862 --> 00:01:00.265
+During pretraining, a language model learns patterns from large collections
+
+21
+00:01:00.265 --> 00:01:00.386
+It sees fluent statements, but those statements do not arrive with a
+
+22
+00:01:00.386 --> 00:01:00.869
+of text.
+
+23
+00:01:03.981 --> 00:01:06.331
+reliable true-or-false label attached to every claim.
+
+24
+00:01:06.331 --> 00:01:08.633
+Frequent structured facts are easier to learn.
+
+25
+00:01:08.633 --> 00:01:12.680
+Rare arbitrary facts, such as an obscure birthday or document title, may
+
+26
+00:01:12.680 --> 00:01:16.239
+have no useful pattern that lets the model reconstruct the missing truth.
+
+27
+00:01:16.239 --> 00:01:20.681
+Post-training should reduce these errors, but many evaluations still score
+
+28
+00:01:20.681 --> 00:01:21.274
+only exact accuracy.
+
+29
+00:01:21.274 --> 00:01:24.759
+A correct guess earns a point, while “I don't know” receives nothing.
+
+30
+00:01:24.759 --> 00:01:28.787
+If a model guesses a birthday, it has a one-in-three-hundred-and-sixty-five
+
+31
+00:01:28.787 --> 00:01:29.305
+chance of being right.
+
+32
+00:01:29.305 --> 00:01:33.657
+Abstaining guarantees no accuracy point, even though it avoids a confident
+
+33
+00:01:33.657 --> 00:01:33.694
+falsehood.
+
+34
+00:01:33.694 --> 00:01:36.741
+OpenAI's SimpleQA example makes the trade-off visible.
+
+35
+00:01:36.741 --> 00:01:41.124
+One model reached twenty-two percent accuracy with twenty-six percent errors
+
+36
+00:01:41.124 --> 00:01:42.506
+and fifty-two percent abstentions;
+
+37
+00:01:42.506 --> 00:01:46.846
+another reached twenty-four percent accuracy but seventy-five percent errors
+
+38
+00:01:46.846 --> 00:01:47.841
+and almost never abstained.
+
+39
+00:01:47.841 --> 00:01:50.314
+So accuracy alone hides the cost of failure.
+
+40
+00:01:50.314 --> 00:01:54.577
+A reliable AI Agent score should penalize confident errors more than honest
+
+41
+00:01:54.577 --> 00:01:57.597
+uncertainty and reward appropriate clarification or abstention.
+
+42
+00:01:57.597 --> 00:01:58.476
+Chapter recap.
+
+43
+00:01:58.476 --> 00:02:02.422
+First, fluent generation does not attach a truth label to every claim.
+
+44
+00:02:02.422 --> 00:02:05.675
+Second, accuracy-only scoring rewards lucky guesses.
+
+45
+00:02:05.675 --> 00:02:09.812
+Third, reliable evaluation must price confident errors above uncertainty.
+
+46
+00:02:09.812 --> 00:02:12.146
+Before checking an answer, check the question.
+
+47
+00:02:12.146 --> 00:02:16.352
+This chapter helps the AI Agent decide whether a reliable answer is possible
+
+48
+00:02:16.352 --> 00:02:17.515
+with the available information.
+
+49
+00:02:17.515 --> 00:02:21.244
+Ask four things: is the request specific, is the required information
+
+50
+00:02:21.244 --> 00:02:25.082
+available, is the fact stable enough to answer from memory, and can the
+
+51
+00:02:25.082 --> 00:02:26.285
+result be checked before action?
+
+52
+00:02:26.285 --> 00:02:30.681
+A missing date, unclear entity, or ambiguous term is not a reasoning
+
+53
+00:02:30.681 --> 00:02:30.710
+challenge.
+
+54
+00:02:30.710 --> 00:02:34.840
+It is a clarification problem, and the AI Agent should ask for the detail
+
+55
+00:02:34.840 --> 00:02:35.644
+that changes the answer.
+
+56
+00:02:35.644 --> 00:02:39.955
+Current prices, laws, schedules, account state, and private records are
+
+57
+00:02:39.955 --> 00:02:42.521
+answerable only through live or authorized evidence.
+
+58
+00:02:42.521 --> 00:02:45.341
+Without that access, the correct state is unknown.
+
+59
+00:02:45.341 --> 00:02:47.678
+Some questions are inherently underdetermined.
+
+60
+00:02:47.678 --> 00:02:51.691
+If several answers fit the prompt, the Agent should state the ambiguity and
+
+61
+00:02:51.691 --> 00:02:54.808
+offer the smallest useful choice instead of inventing hidden intent.
+
+62
+00:02:54.808 --> 00:02:58.565
+For a low-risk brainstorming prompt, an approximate answer may be useful.
+
+63
+00:02:58.565 --> 00:03:03.096
+For a factual claim that will drive money, health, access, or publication,
+
+64
+00:03:03.096 --> 00:03:04.812
+the evidence bar must be much higher.
+
+65
+00:03:04.812 --> 00:03:08.410
+Abstention is not a failure when the requested truth cannot be determined.
+
+66
+00:03:08.410 --> 00:03:12.298
+It is a controlled result that protects the user and tells the system what
+
+67
+00:03:12.298 --> 00:03:13.411
+information or tool is missing.
+
+68
+00:03:13.411 --> 00:03:14.306
+Chapter recap.
+
+69
+00:03:14.306 --> 00:03:19.001
+First, test specificity, availability, freshness, and verifiability.
+
+70
+00:03:19.001 --> 00:03:22.522
+Second, turn missing context into a clarification request.
+
+71
+00:03:22.522 --> 00:03:26.013
+Third, treat a justified unknown as a valid controlled outcome.
+
+72
+00:03:26.013 --> 00:03:29.020
+Once the question is answerable, make uncertainty visible.
+
+73
+00:03:29.020 --> 00:03:33.249
+This chapter turns one polished response into facts, inferences, and
+
+74
+00:03:33.249 --> 00:03:34.714
+unknowns the viewer can inspect.
+
+75
+00:03:34.714 --> 00:03:38.344
+Mark direct facts as facts only when the Agent has supporting evidence.
+
+76
+00:03:38.344 --> 00:03:42.561
+Mark conclusions as inferences when they combine evidence with assumptions
+
+77
+00:03:42.561 --> 00:03:42.726
+or judgment.
+
+78
+00:03:42.726 --> 00:03:47.328
+Use explicit language such as “confirmed,” “supported but incomplete,”
+
+79
+00:03:47.328 --> 00:03:48.294
+“inferred,” or “unknown.
+
+80
+00:03:48.294 --> 00:03:52.148
+Avoid vague hedges that sound cautious without telling the user what is
+
+81
+00:03:52.148 --> 00:03:52.249
+Confidence should follow evidence coverage, not the smoothness of the prose.
+
+82
+00:03:52.249 --> 00:03:52.695
+missing.
+
+83
+00:03:55.772 --> 00:03:58.817
+A beautiful answer based on one weak source remains weak;
+
+84
+00:03:58.817 --> 00:04:01.339
+a short answer with direct records may be strong.
+
+85
+00:04:01.339 --> 00:04:05.513
+Do not invent precise confidence percentages unless the system is actually
+
+86
+00:04:05.513 --> 00:04:06.334
+calibrated for that task.
+
+87
+00:04:06.334 --> 00:04:10.501
+A number like eighty-seven percent can create false precision and hide the
+
+88
+00:04:10.501 --> 00:04:10.929
+real evidence gap.
+
+89
+00:04:10.929 --> 00:04:13.759
+Attach each important claim to the evidence that supports it.
+
+90
+00:04:13.759 --> 00:04:17.794
+If the evidence covers only part of the claim, narrow the claim instead of
+
+91
+00:04:17.794 --> 00:04:18.545
+stretching the citation.
+
+92
+00:04:18.545 --> 00:04:23.094
+End uncertainty with an action: verify one source, request one missing
+
+93
+00:04:23.094 --> 00:04:25.778
+field, run one check, or stop the high-risk action.
+
+94
+00:04:25.778 --> 00:04:28.129
+The user should know what would resolve the unknown.
+
+95
+00:04:28.129 --> 00:04:29.022
+Chapter recap.
+
+96
+00:04:29.022 --> 00:04:32.955
+First, separate confirmed facts, inferences, and unknowns.
+
+97
+00:04:32.955 --> 00:04:36.816
+Second, base confidence on evidence coverage, not fluent wording.
+
+98
+00:04:36.816 --> 00:04:40.067
+Third, pair every important unknown with a next action.
+
+99
+00:04:40.067 --> 00:04:42.162
+Not every sentence deserves the same effort.
+
+100
+00:04:42.162 --> 00:04:46.531
+This chapter shows where the AI Agent must spend verification time before a
+
+101
+00:04:46.531 --> 00:04:47.369
+claim becomes an action.
+
+102
+00:04:47.369 --> 00:04:48.705
+Start with consequence.
+
+103
+00:04:48.705 --> 00:04:53.252
+Verify claims that can move money, change access, affect safety, create
+
+104
+00:04:53.252 --> 00:04:57.070
+legal exposure, damage a reputation, or become difficult to reverse.
+
+105
+00:04:57.070 --> 00:05:01.019
+Prefer the primary source closest to the fact: the database for account
+
+106
+00:05:01.019 --> 00:05:05.189
+state, the official policy for a rule, the original paper for a result, and
+
+107
+00:05:05.189 --> 00:05:06.840
+the actual artifact for work completion.
+
+108
+00:05:06.840 --> 00:05:11.715
+Then seek independent corroboration when one source can be stale, biased,
+
+109
+00:05:11.715 --> 00:05:12.658
+incomplete, or misread.
+
+110
+00:05:12.658 --> 00:05:17.003
+Two pages repeating the same unsupported statement are not two independent
+
+111
+00:05:17.003 --> 00:05:17.064
+Match evidence to the exact claim.
+
+112
+00:05:17.064 --> 00:05:17.540
+sources.
+
+113
+00:05:18.788 --> 00:05:22.404
+A source that proves a product exists does not prove it has a specific
+
+114
+00:05:22.404 --> 00:05:26.019
+feature, and a study in one controlled setting does not prove the same
+
+115
+00:05:26.019 --> 00:05:26.409
+result everywhere.
+
+116
+00:05:26.409 --> 00:05:29.905
+Check date, scope, entity, units, and exceptions.
+
+117
+00:05:29.905 --> 00:05:34.204
+Many confident errors come from a true fact attached to the wrong time,
+
+118
+00:05:34.204 --> 00:05:35.390
+person, market, or condition.
+
+119
+00:05:35.390 --> 00:05:38.962
+Finally, place a human approval gate before irreversible action.
+
+120
+00:05:38.962 --> 00:05:43.042
+The Agent can collect evidence and propose a decision, but high-impact
+
+121
+00:05:43.042 --> 00:05:44.764
+execution needs explicit authorization.
+
+122
+00:05:44.764 --> 00:05:45.653
+Chapter recap.
+
+123
+00:05:45.653 --> 00:05:49.009
+First, spend verification effort according to consequence.
+
+124
+00:05:49.009 --> 00:05:52.566
+Second, use primary evidence and independent corroboration.
+
+125
+00:05:52.566 --> 00:05:55.935
+Third, require human approval before irreversible action.
+
+126
+00:05:55.935 --> 00:06:00.224
+Now combine the method into one reusable AI Agent Uncertainty and Fact-Check
+
+127
+00:06:00.224 --> 00:06:02.830
+Checklist you can use before accepting a factual answer.
+
+128
+00:06:02.830 --> 00:06:04.361
+Step one is Answerability.
+
+129
+00:06:04.361 --> 00:06:08.978
+Record the exact question, entity, time range, required freshness, available
+
+130
+00:06:08.978 --> 00:06:12.367
+tools, and the missing detail that would block a reliable answer.
+
+131
+00:06:12.367 --> 00:06:14.112
+Step two is Claim Inventory.
+
+132
+00:06:14.112 --> 00:06:18.702
+Split the response into consequential claims and label each one confirmed,
+
+133
+00:06:18.702 --> 00:06:19.396
+inferred, or unknown.
+
+134
+00:06:19.396 --> 00:06:23.526
+Ignore harmless style choices and focus on statements that can change a
+
+135
+00:06:23.526 --> 00:06:23.542
+Step three is Evidence Standard.
+
+136
+00:06:23.542 --> 00:06:24.067
+decision.
+
+137
+00:06:25.322 --> 00:06:29.626
+For each important claim, name the acceptable primary source, the freshness
+
+138
+00:06:29.626 --> 00:06:32.321
+limit, and whether independent corroboration is required.
+
+139
+00:06:32.321 --> 00:06:33.997
+Step four is Verification.
+
+140
+00:06:33.997 --> 00:06:38.523
+Open the evidence, match it to the claim, check scope and exceptions, and
+
+141
+00:06:38.523 --> 00:06:39.056
+record the result.
+
+142
+00:06:39.056 --> 00:06:42.968
+A citation is useful only when it supports the words you plan to rely on.
+
+143
+00:06:42.968 --> 00:06:44.599
+Step five is Action Risk.
+
+144
+00:06:44.599 --> 00:06:48.693
+Decide whether the result may proceed automatically, needs clarification,
+
+145
+00:06:48.693 --> 00:06:51.837
+requires human approval, or must stop because evidence is missing.
+
+146
+00:06:51.837 --> 00:06:53.273
+Step six is Feedback.
+
+147
+00:06:53.273 --> 00:06:57.767
+Save the failed claim, missing tool, or misleading score as a future test so
+
+148
+00:06:57.767 --> 00:07:00.114
+the AI Agent and its evaluation improve together.
+
+149
+00:07:00.114 --> 00:07:00.997
+Chapter recap.
+
+150
+00:07:00.997 --> 00:07:04.682
+First, test answerability and inventory consequential claims.
+
+151
+00:07:04.682 --> 00:07:07.530
+Second, define and verify the evidence standard.
+
+152
+00:07:07.530 --> 00:07:11.075
+Third, connect uncertainty to an action gate and a future test.
+
+153
+00:07:11.075 --> 00:07:14.288
+AI Agent hallucinations are not only a mysterious glitch.
+
+154
+00:07:14.288 --> 00:07:18.417
+They arise when uncertain generation meets incentives that reward an answer
+
+155
+00:07:18.417 --> 00:07:19.418
+more than an honest unknown.
+
+156
+00:07:19.418 --> 00:07:23.208
+First, check whether the question is answerable before judging the response.
+
+157
+00:07:23.208 --> 00:07:27.230
+Second, separate confirmed facts, inferences, and unknowns.
+
+158
+00:07:27.230 --> 00:07:31.451
+Third, verify high-risk claims with direct evidence and independent
+
+159
+00:07:31.451 --> 00:07:31.768
+corroboration.
+
+160
+00:07:31.768 --> 00:07:36.004
+Use the AI Agent Uncertainty and Fact-Check Checklist to set the evidence
+
+161
+00:07:36.004 --> 00:07:39.352
+bar, choose the action gate, and preserve failures as future tests.
+
+162
+00:07:39.352 --> 00:07:42.394
+The goal is not to make the AI Agent sound less confident.
+
+163
+00:07:42.394 --> 00:07:45.160
+It is to make confidence earn its right to drive a decision.
+
+164
+00:07:45.160 --> 00:07:46.415
+Follow Tiny Agent.
+
+165
+00:07:46.415 --> 00:07:49.100
+Tiny Agent helps you get better at using AI.

@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Tiny Agent 开头逐字动效样片</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "ZCOOL KuaiLe";
+        src: url("assets/fonts/ZCOOLKuaiLe-Regular.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #ececea;
+      }
+
+      body {
+        color: #111413;
+        font-family: "ZCOOL KuaiLe", sans-serif;
+      }
+
+      #composition {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      #world {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        transform-origin: 50% 50%;
+      }
+
+      .paper {
+        position: absolute;
+        inset: 0;
+        background-color: #ececea;
+        background-image:
+          linear-gradient(rgba(17, 20, 19, 0.045) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(17, 20, 19, 0.045) 2px, transparent 2px);
+        background-size: 64px 64px;
+      }
+
+      .paper::after {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(17, 20, 19, 0.09) 0.7px, transparent 0.7px);
+        background-size: 8px 8px;
+        content: "";
+        opacity: 0.16;
+      }
+
+      .top-rule {
+        position: absolute;
+        top: 76px;
+        left: 78px;
+        width: 282px;
+        height: 18px;
+        border-radius: 12px;
+        background: #117abd;
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+
+      .corner-note {
+        position: absolute;
+        top: 69px;
+        right: 78px;
+        color: rgba(17, 20, 19, 0.66);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 25px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+
+      .ghost-question {
+        position: absolute;
+        right: 24px;
+        top: 72px;
+        color: rgba(17, 122, 189, 0.1);
+        font-size: 520px;
+        line-height: 0.86;
+        transform-origin: 50% 50%;
+      }
+
+      #hook-copy {
+        position: absolute;
+        top: 230px;
+        left: 72px;
+        width: 1776px;
+        height: 530px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 44px;
+      }
+
+      .hook-line {
+        position: relative;
+        width: 100%;
+        min-height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .line-one {
+        font-size: 132px;
+        letter-spacing: -0.015em;
+      }
+
+      .line-two {
+        font-size: 158px;
+        letter-spacing: -0.02em;
+      }
+
+      .glyph {
+        position: relative;
+        z-index: 3;
+        display: inline-block;
+        min-width: 0.88em;
+        color: #111413;
+        opacity: 0;
+        text-align: center;
+        transform-origin: 50% 62%;
+        will-change: transform, opacity;
+      }
+
+      .glyph.latin {
+        min-width: 0.66em;
+        color: #117abd;
+        font-size: 1.13em;
+        letter-spacing: -0.09em;
+      }
+
+      .glyph.signal {
+        color: #117abd;
+      }
+
+      .word-gap {
+        display: inline-block;
+        width: 42px;
+        flex: 0 0 42px;
+      }
+
+      .keyword-group {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .marker-swash {
+        position: absolute;
+        z-index: 1;
+        left: -18px;
+        right: -20px;
+        bottom: 19px;
+        height: 54px;
+        border-radius: 20px 9px 18px 7px;
+        background: #f4c542;
+        opacity: 0.78;
+        transform: rotate(-1.4deg) scaleX(0);
+        transform-origin: left center;
+      }
+
+      .marker-swash::after {
+        position: absolute;
+        inset: 8px 10px 7px;
+        border-top: 7px solid rgba(236, 236, 234, 0.43);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .question-wrap {
+        position: relative;
+        display: inline-grid;
+        width: 1.05em;
+        height: 1.05em;
+        place-items: center;
+      }
+
+      .burst-rays {
+        position: absolute;
+        z-index: 1;
+        top: 48%;
+        left: 50%;
+        width: 0;
+        height: 0;
+      }
+
+      .burst-ray {
+        position: absolute;
+        left: -3px;
+        top: calc(-1 * var(--ray-length));
+        display: block;
+        width: 6px;
+        height: var(--ray-length);
+        border-radius: 6px;
+        background: #d84b3e;
+        opacity: 0;
+        transform-origin: bottom center;
+      }
+
+      .agent-wrap {
+        position: absolute;
+        z-index: 10;
+        right: 72px;
+        bottom: 64px;
+        width: 292px;
+        height: 390px;
+        display: grid;
+        place-items: end center;
+        transform-origin: 50% 88%;
+      }
+
+      .agent-wrap::before {
+        position: absolute;
+        right: 4px;
+        bottom: 20px;
+        left: 4px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(17, 20, 19, 0.15);
+        content: "";
+        filter: blur(10px);
+      }
+
+      #tiny-agent {
+        position: relative;
+        z-index: 2;
+        display: block;
+        width: 292px;
+        height: 390px;
+        object-fit: contain;
+        filter: drop-shadow(0 13px 0 rgba(17, 20, 19, 0.1));
+      }
+
+      .bottom-track {
+        position: absolute;
+        right: 78px;
+        bottom: 72px;
+        left: 78px;
+        height: 16px;
+        border-radius: 12px;
+        background: rgba(244, 197, 66, 0.42);
+        overflow: hidden;
+      }
+
+      #speech-progress {
+        display: block;
+        width: 100%;
+        height: 16px;
+        border-radius: 12px;
+        background: #117abd;
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="composition"
+      data-composition-id="main"
+      data-start="0"
+      data-width="1920"
+      data-height="1080"
+      data-duration="3.8"
+      data-fps="30"
+    >
+      <section id="scene" class="clip" data-start="0" data-duration="3.8" data-track-index="2">
+        <div id="world">
+          <div class="paper" data-layout-ignore></div>
+          <div id="opening-stroke" class="top-rule" data-layout-ignore></div>
+          <div class="corner-note" data-layout-ignore>VOICE-SYNCED TYPE</div>
+          <div id="ghost-question" class="ghost-question" data-layout-ignore>?</div>
+
+          <main id="hook-copy">
+            <div id="line-one" class="hook-line line-one">
+              <span id="char-ni" class="glyph">你</span>
+              <span id="char-zhi" class="glyph">知</span>
+              <span id="char-dao" class="glyph">道</span>
+              <span id="char-zen" class="glyph">怎</span>
+              <span id="char-me" class="glyph">么</span>
+              <span id="char-gei" class="glyph">给</span>
+              <span class="word-gap" aria-hidden="true"></span>
+              <span id="char-ai-a" class="glyph latin">A</span>
+              <span id="char-ai-i" class="glyph latin">I</span>
+              <span class="word-gap" aria-hidden="true"></span>
+              <span id="char-agent-zhi" class="glyph">智</span>
+              <span id="char-neng" class="glyph">能</span>
+              <span id="char-ti" class="glyph">体</span>
+            </div>
+
+            <div id="line-two" class="hook-line line-two">
+              <span class="keyword-group">
+                <span id="marker-swash" class="marker-swash" data-layout-ignore></span>
+                <span id="char-gao" class="glyph signal">高</span>
+                <span id="char-xin" class="glyph signal">信</span>
+                <span id="char-hao" class="glyph signal">号</span>
+                <span id="char-shang" class="glyph">上</span>
+                <span id="char-xia" class="glyph">下</span>
+                <span id="char-wen" class="glyph">文</span>
+              </span>
+              <span id="char-ma" class="glyph">吗</span>
+              <span class="question-wrap">
+                <span id="char-question" class="glyph signal">？</span>
+                <span id="question-burst" class="burst-rays" data-layout-ignore>
+                  <i class="burst-ray" style="--ray-angle: 0deg; --ray-length: 58px"></i>
+                  <i class="burst-ray" style="--ray-angle: 45deg; --ray-length: 44px"></i>
+                  <i class="burst-ray" style="--ray-angle: 90deg; --ray-length: 66px"></i>
+                  <i class="burst-ray" style="--ray-angle: 135deg; --ray-length: 48px"></i>
+                  <i class="burst-ray" style="--ray-angle: 180deg; --ray-length: 60px"></i>
+                  <i class="burst-ray" style="--ray-angle: 225deg; --ray-length: 46px"></i>
+                  <i class="burst-ray" style="--ray-angle: 270deg; --ray-length: 63px"></i>
+                  <i class="burst-ray" style="--ray-angle: 315deg; --ray-length: 50px"></i>
+                </span>
+              </span>
+            </div>
+          </main>
+
+          <div id="agent-wrap" class="agent-wrap" data-layout-ignore>
+            <img id="tiny-agent" src="assets/images/tiny-agent-ask.png" alt="提出问题的 Tiny Agent" />
+          </div>
+
+          <div class="bottom-track" data-layout-ignore>
+            <span id="speech-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <audio
+        id="narration"
+        src="assets/audio/hook.zh-CN.mp3"
+        data-start="0"
+        data-duration="3.408"
+        data-track-index="1"
+        data-volume="1"
+      ></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        "#world",
+        { scale: 1 },
+        { scale: 1.018, duration: 3.8, ease: "sine.inOut" },
+        0,
+      );
+      tl.fromTo(
+        "#opening-stroke",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.52, ease: "expo.out" },
+        0.08,
+      );
+      tl.fromTo(
+        "#speech-progress",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 2.56, ease: "none" },
+        0.17,
+      );
+      tl.fromTo(
+        "#ghost-question",
+        { scale: 0.86, rotation: -8, opacity: 0.04 },
+        { scale: 1.02, rotation: 3, opacity: 0.1, duration: 3.45, ease: "sine.inOut" },
+        0.18,
+      );
+
+      tl.fromTo("#char-ni", { opacity: 0, y: 58, rotation: -8, scale: 0.38, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "power4.out" }, 0.18);
+      tl.fromTo("#char-zhi", { opacity: 0, y: 46, rotation: 7, scale: 0.44, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "expo.out" }, 0.32);
+      tl.fromTo("#char-dao", { opacity: 0, y: 62, rotation: -6, scale: 0.36, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "back.out(1.35)" }, 0.46);
+      tl.fromTo("#char-zen", { opacity: 0, y: 44, rotation: 8, scale: 0.42, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "power3.out" }, 0.61);
+      tl.fromTo("#char-me", { opacity: 0, y: 58, rotation: -7, scale: 0.4, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "circ.out" }, 0.74);
+      tl.fromTo("#char-gei", { opacity: 0, y: 40, rotation: 6, scale: 0.46, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "back.out(1.25)" }, 0.86);
+      tl.fromTo("#char-ai-a", { opacity: 0, y: 0, rotation: -14, scale: 1.9, color: "#D84B3E" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#117ABD", duration: 0.26, ease: "expo.out" }, 1.06);
+      tl.fromTo("#char-ai-i", { opacity: 0, y: 0, rotation: 12, scale: 1.75, color: "#D84B3E" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#117ABD", duration: 0.26, ease: "back.out(1.45)" }, 1.18);
+      tl.fromTo("#char-agent-zhi", { opacity: 0, y: 56, rotation: -7, scale: 0.38, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "power4.out" }, 1.36);
+      tl.fromTo("#char-neng", { opacity: 0, y: 42, rotation: 6, scale: 0.44, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "circ.out" }, 1.49);
+      tl.fromTo("#char-ti", { opacity: 0, y: 60, rotation: -6, scale: 0.4, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "back.out(1.3)" }, 1.62);
+      tl.fromTo("#char-gao", { opacity: 0, y: 54, rotation: 7, scale: 0.36, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#117ABD", duration: 0.19, ease: "expo.out" }, 1.77);
+      tl.fromTo("#char-xin", { opacity: 0, y: 44, rotation: -7, scale: 0.42, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#117ABD", duration: 0.19, ease: "power4.out" }, 1.91);
+      tl.fromTo("#char-hao", { opacity: 0, y: 58, rotation: 6, scale: 0.38, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#117ABD", duration: 0.19, ease: "back.out(1.35)" }, 2.04);
+      tl.fromTo("#char-shang", { opacity: 0, y: 44, rotation: -5, scale: 0.44, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "circ.out" }, 2.18);
+      tl.fromTo("#char-xia", { opacity: 0, y: 60, rotation: 7, scale: 0.38, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "power3.out" }, 2.31);
+      tl.fromTo("#char-wen", { opacity: 0, y: 46, rotation: -6, scale: 0.42, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "expo.out" }, 2.44);
+      tl.fromTo("#char-ma", { opacity: 0, y: 56, rotation: 7, scale: 0.38, color: "#117ABD" }, { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#111413", duration: 0.19, ease: "back.out(1.3)" }, 2.59);
+      tl.set("#char-question", { opacity: 0, y: -28, rotation: 28, scale: 0.2, color: "#117ABD" }, 0);
+      tl.to(
+        "#char-question",
+        {
+          keyframes: [
+            { opacity: 1, y: -5, rotation: -7, scale: 1.12, color: "#117ABD", duration: 0.17, ease: "power4.out" },
+            { opacity: 1, y: 0, rotation: 0, scale: 1, color: "#117ABD", duration: 0.11, ease: "power2.inOut" },
+          ],
+          ease: "none",
+        },
+        2.7,
+      );
+
+      tl.fromTo(
+        "#marker-swash",
+        { scaleX: 0, rotation: -1.4 },
+        { scaleX: 1, rotation: -0.4, duration: 0.78, ease: "power3.out" },
+        1.74,
+      );
+
+      tl.fromTo(
+        "#agent-wrap",
+        { x: 170, y: 70, rotation: 9, scale: 0.72, opacity: 0 },
+        { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.35)" },
+        1.28,
+      );
+      tl.to(
+        "#tiny-agent",
+        { y: -10, duration: 0.48, ease: "sine.inOut", yoyo: true, repeat: 3 },
+        1.78,
+      );
+
+      tl.fromTo(
+        "#question-burst .burst-ray",
+        { scaleY: 0, opacity: 0, rotation: (index) => index * 45 },
+        {
+          scaleY: 1,
+          opacity: 1,
+          rotation: (index) => index * 45,
+          duration: 0.24,
+          ease: "power4.out",
+          stagger: 0.025,
+        },
+        2.72,
+      );
+      tl.to(
+        "#question-burst .burst-ray",
+        { scaleY: 0.3, opacity: 0, duration: 0.28, ease: "power2.in", stagger: 0.015 },
+        3.08,
+      );
+
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

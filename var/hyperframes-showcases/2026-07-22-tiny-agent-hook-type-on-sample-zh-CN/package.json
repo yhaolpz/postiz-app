@@ -1,0 +1,14 @@
+{
+  "name": "tiny-agent-hook-type-on-sample-zh-cn",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "pnpm dlx hyperframes@0.7.68 lint . --verbose",
+    "check": "pnpm dlx hyperframes@0.7.68 check . --snapshots --at 0.05,0.18,0.86,1.36,1.77,2.44,2.72,3.55 --frame-check",
+    "keyframes": "pnpm dlx hyperframes@0.7.68 keyframes . --selector '#char-question' --shot qa/hook-question-keyframes.png --samples 8 --layout strip --from 2.64 --to 3.12",
+    "render": "pnpm dlx hyperframes@0.7.68 render . --quality high --strict --workers 1 --video-bitrate 8M --output renders/tiny-agent-hook-type-on-sample.zh-CN.mp4"
+  },
+  "devDependencies": {
+    "hyperframes": "0.7.68"
+  }
+}

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Tiny Agent 赛博霓虹故障版</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Ma Shan Neon";
+        src: url("assets/fonts/MaShanZheng-Regular.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #050712; }
+      body { color: #f7fbff; font-family: "Ma Shan Neon", sans-serif; }
+
+      #composition { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      .clip { position: absolute; inset: 0; width: 100%; height: 100%; }
+      #world { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 50% 50%; }
+      .space-bg {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 82% 38%, rgba(255,44,190,.2), transparent 28%),
+          radial-gradient(circle at 18% 26%, rgba(0,238,255,.2), transparent 31%),
+          linear-gradient(135deg, #03040b, #07142a 55%, #060612);
+      }
+      .space-bg::after {
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(to bottom, rgba(255,255,255,.055) 0 1px, transparent 1px 6px);
+        content: "";
+        opacity: .42;
+      }
+      .grid-floor {
+        position: absolute;
+        right: -180px;
+        bottom: -340px;
+        left: -180px;
+        height: 720px;
+        background-image:
+          linear-gradient(rgba(0,238,255,.24) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(0,238,255,.24) 2px, transparent 2px);
+        background-size: 76px 76px;
+        transform: perspective(580px) rotateX(66deg);
+        transform-origin: center bottom;
+        -webkit-mask-image: linear-gradient(to top, #000 15%, transparent 82%);
+      }
+      .hud-frame { position: absolute; inset: 52px; border: 2px solid rgba(0,238,255,.55); box-shadow: inset 0 0 25px rgba(0,238,255,.14); }
+      .hud-frame::before, .hud-frame::after { position: absolute; width: 94px; height: 94px; border-color: #ff2cbe; content: ""; }
+      .hud-frame::before { top: -8px; left: -8px; border-top: 8px solid; border-left: 8px solid; }
+      .hud-frame::after { right: -8px; bottom: -8px; border-right: 8px solid; border-bottom: 8px solid; }
+
+      #scan-beam {
+        position: absolute;
+        top: 54px;
+        bottom: 54px;
+        left: -120px;
+        width: 86px;
+        background: linear-gradient(90deg, transparent, rgba(0,238,255,.32), rgba(255,255,255,.8), rgba(0,238,255,.18), transparent);
+        filter: blur(3px);
+        opacity: .7;
+      }
+      .top-hud {
+        position: absolute;
+        top: 74px;
+        left: 84px;
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        color: #00eeff;
+        font-family: monospace;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: .13em;
+      }
+      .live-dot { width: 17px; height: 17px; border-radius: 50%; background: #ff2cbe; box-shadow: 0 0 20px #ff2cbe; }
+      .top-hud strong { padding: 9px 15px; border: 2px solid #00eeff; color: #f7fbff; }
+      .coordinates { position: absolute; top: 79px; right: 88px; color: rgba(247,251,255,.65); font-family: monospace; font-size: 22px; letter-spacing: .07em; }
+
+      #neon-copy {
+        position: absolute;
+        z-index: 6;
+        top: 190px;
+        left: 75px;
+        width: 1610px;
+        height: 660px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 52px;
+        perspective: 1500px;
+      }
+      .neon-line {
+        width: 100%;
+        min-height: 210px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        white-space: nowrap;
+      }
+      .line-one { font-size: 124px; letter-spacing: -.015em; }
+      .line-two { font-size: 176px; letter-spacing: -.02em; }
+      .neon-glyph {
+        position: relative;
+        z-index: 4;
+        display: inline-grid;
+        min-width: .78em;
+        place-items: center;
+        color: #f7fbff;
+        opacity: 0;
+        text-shadow: 0 0 8px rgba(255,255,255,.9), 0 0 21px rgba(0,238,255,.78), 0 0 43px rgba(0,238,255,.38);
+        transform-style: preserve-3d;
+        transform-origin: 50% 85%;
+        will-change: transform, opacity;
+      }
+      .neon-glyph.magenta { color: #ff52cd; text-shadow: 0 0 8px #fff, 0 0 22px #ff2cbe, 0 0 52px rgba(255,44,190,.75); }
+      .neon-glyph.cyan { color: #55f7ff; text-shadow: 0 0 8px #fff, 0 0 22px #00eeff, 0 0 52px rgba(0,238,255,.75); }
+      .word-gap { display: inline-block; width: 28px; flex: 0 0 28px; }
+
+      #ai-stack {
+        position: relative;
+        display: grid;
+        margin: 0 18px;
+        padding: 0 24px 8px;
+        border: 3px solid #00eeff;
+        background: rgba(0,238,255,.08);
+        box-shadow: 0 0 28px rgba(0,238,255,.55), inset 0 0 22px rgba(0,238,255,.17);
+      }
+      .ai-layer { grid-area: 1 / 1; display: flex; align-items: center; justify-content: center; }
+      .ai-layer.ghost { position: relative; z-index: 1; font-family: monospace; font-size: 118px; font-weight: 900; letter-spacing: -.1em; opacity: 0; }
+      #ai-warm { color: #ff2cbe; mix-blend-mode: screen; }
+      #ai-cool { color: #00eeff; mix-blend-mode: screen; }
+      .ai-layer.base { position: relative; z-index: 2; }
+      .ai-layer.base .neon-glyph { min-width: .62em; color: #fff; font-family: monospace; font-size: 116px; font-weight: 900; text-shadow: 0 0 10px #fff, 0 0 31px #00eeff; }
+
+      #signal-box {
+        position: relative;
+        display: inline-flex;
+        padding: 0 18px 10px;
+        border: 4px solid #ff2cbe;
+        background: rgba(255,44,190,.1);
+        box-shadow: 0 0 25px rgba(255,44,190,.6), inset 0 0 18px rgba(255,44,190,.14);
+        transform-origin: left center;
+      }
+      #signal-box .neon-glyph { color: #ff64d5; text-shadow: 0 0 8px #fff, 0 0 24px #ff2cbe, 0 0 54px rgba(255,44,190,.72); }
+      .question-wrap { position: relative; display: inline-grid; width: 1.08em; height: 1.08em; place-items: center; }
+      #neon-question { z-index: 6; color: #f9ff4a; text-shadow: 0 0 8px #fff, 0 0 25px #f9ff4a, 0 0 58px rgba(249,255,74,.8); }
+      .question-echo { position: absolute; z-index: 2; opacity: 0; font-size: 1.08em; }
+      #echo-warm { color: #ff2cbe; }
+      #echo-cool { color: #00eeff; }
+
+      #glitch-bars { position: absolute; z-index: 5; inset: 130px 58px 128px; pointer-events: none; }
+      .glitch-bar { position: absolute; height: 7px; border-radius: 6px; opacity: 0; }
+      #bar-1 { top: 18%; left: 4%; width: 520px; background: #00eeff; }
+      #bar-2 { top: 47%; right: 2%; width: 610px; background: #ff2cbe; }
+      #bar-3 { top: 76%; left: 18%; width: 420px; background: #f9ff4a; }
+
+      #agent-zone {
+        position: absolute;
+        z-index: 10;
+        right: 64px;
+        bottom: 48px;
+        width: 336px;
+        height: 438px;
+        display: grid;
+        place-items: end center;
+        transform-origin: 50% 88%;
+      }
+      .orbit { position: absolute; top: 88px; left: 20px; width: 290px; height: 290px; border: 4px solid rgba(0,238,255,.76); border-radius: 50%; box-shadow: 0 0 28px rgba(0,238,255,.6), inset 0 0 25px rgba(0,238,255,.24); }
+      .orbit::before, .orbit::after { position: absolute; border: 3px solid; border-radius: 50%; content: ""; }
+      .orbit::before { inset: 30px -38px; border-color: rgba(255,44,190,.7); }
+      .orbit::after { inset: -42px 46px; border-color: rgba(249,255,74,.55); }
+      #tiny-agent { position: relative; z-index: 3; width: 320px; height: 425px; object-fit: contain; filter: drop-shadow(0 0 8px #fff) drop-shadow(0 0 24px rgba(0,238,255,.9)); }
+      .agent-tag { position: absolute; z-index: 5; right: 12px; bottom: 28px; padding: 9px 13px; border: 2px solid #ff2cbe; background: #050712; color: #ff64d5; font-family: monospace; font-size: 21px; letter-spacing: .08em; }
+
+      #waveform { position: absolute; z-index: 7; bottom: 73px; left: 89px; width: 1180px; height: 66px; display: flex; align-items: center; gap: 13px; }
+      .wave-bar { width: 8px; height: 46px; border-radius: 5px; background: #00eeff; box-shadow: 0 0 12px rgba(0,238,255,.85); transform-origin: center; }
+      .wave-bar:nth-child(3n) { background: #ff2cbe; box-shadow: 0 0 12px rgba(255,44,190,.85); }
+    </style>
+  </head>
+  <body>
+    <div id="composition" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="3.8" data-fps="30">
+      <section id="scene" class="clip" data-start="0" data-duration="3.8" data-track-index="2">
+        <div id="world">
+          <div class="space-bg" data-layout-ignore></div><div class="grid-floor" data-layout-ignore></div><div class="hud-frame" data-layout-ignore></div><div id="scan-beam" data-layout-ignore></div>
+          <div class="top-hud" data-layout-ignore><i class="live-dot"></i><strong>HOOK_03</strong><span>CONTEXT SIGNAL SCAN</span></div>
+          <div class="coordinates" data-layout-ignore>SYNC 30FPS / VOICE LOCK / 03.800</div>
+          <div id="glitch-bars" data-layout-ignore><i id="bar-1" class="glitch-bar"></i><i id="bar-2" class="glitch-bar"></i><i id="bar-3" class="glitch-bar"></i></div>
+
+          <main id="neon-copy">
+            <div class="neon-line line-one">
+              <span id="n-ni" class="neon-glyph cyan">你</span><span id="n-zhi" class="neon-glyph">知</span><span id="n-dao" class="neon-glyph">道</span><span id="n-zen" class="neon-glyph magenta">怎</span><span id="n-me" class="neon-glyph">么</span><span id="n-gei" class="neon-glyph">给</span><span class="word-gap"></span>
+              <span id="ai-stack"><span id="ai-warm" class="ai-layer ghost" aria-hidden="true" data-layout-ignore>AI</span><span id="ai-cool" class="ai-layer ghost" aria-hidden="true" data-layout-ignore>AI</span><span class="ai-layer base"><span id="n-ai-a" class="neon-glyph">A</span><span id="n-ai-i" class="neon-glyph">I</span></span></span>
+              <span class="word-gap"></span><span id="n-zhi2" class="neon-glyph">智</span><span id="n-neng" class="neon-glyph cyan">能</span><span id="n-ti" class="neon-glyph">体</span>
+            </div>
+            <div class="neon-line line-two">
+              <span id="signal-box"><span id="n-gao" class="neon-glyph">高</span><span id="n-xin" class="neon-glyph">信</span><span id="n-hao" class="neon-glyph">号</span></span>
+              <span id="n-shang" class="neon-glyph">上</span><span id="n-xia" class="neon-glyph cyan">下</span><span id="n-wen" class="neon-glyph">文</span><span id="n-ma" class="neon-glyph magenta">吗</span>
+              <span class="question-wrap"><span id="echo-warm" class="question-echo">？</span><span id="echo-cool" class="question-echo">？</span><span id="neon-question" class="neon-glyph">？</span></span>
+            </div>
+          </main>
+
+          <div id="agent-zone" data-layout-ignore><div id="agent-orbit" class="orbit"></div><img id="tiny-agent" src="assets/images/tiny-agent-ask.png" alt="Tiny Agent" /><span class="agent-tag">AGENT / ONLINE</span></div>
+          <div id="waveform" data-layout-ignore><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i><i class="wave-bar"></i></div>
+        </div>
+      </section>
+      <audio id="narration" src="assets/audio/hook.zh-CN.mp3" data-start="0" data-duration="3.408" data-track-index="1" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#world", { scale: 1 }, { scale: 1.016, duration: 3.8, ease: "sine.inOut" }, 0);
+      tl.fromTo("#scan-beam", { x: 0, opacity: 0 }, { x: 2080, opacity: .72, duration: 3.55, ease: "none" }, .12);
+      tl.fromTo(".live-dot", { scale: .45, opacity: .35 }, { scale: 1.35, opacity: 1, duration: .28, ease: "power3.out", yoyo: true, repeat: 9 }, .05);
+
+      tl.fromTo("#n-ni", { y: -84, rotationX: 92, rotationZ: -6, scale: .72, opacity: 0 }, { y: 0, rotationX: 0, rotationZ: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, .18);
+      tl.fromTo("#n-zhi", { y: 72, rotationX: -92, rotationZ: 5, scale: .7, opacity: 0 }, { y: 0, rotationX: 0, rotationZ: 0, scale: 1, opacity: 1, duration: .24, ease: "expo.out" }, .32);
+      tl.fromTo("#n-dao", { x: -70, rotationY: -96, scale: .72, opacity: 0 }, { x: 0, rotationY: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, .46);
+      tl.fromTo("#n-zen", { x: 72, rotationY: 96, scale: .72, opacity: 0 }, { x: 0, rotationY: 0, scale: 1, opacity: 1, duration: .24, ease: "expo.out" }, .61);
+      tl.fromTo("#n-me", { y: -78, rotationX: 94, scale: .7, opacity: 0 }, { y: 0, rotationX: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, .74);
+      tl.fromTo("#n-gei", { y: 76, rotationX: -94, scale: .7, opacity: 0 }, { y: 0, rotationX: 0, scale: 1, opacity: 1, duration: .24, ease: "expo.out" }, .86);
+
+      tl.fromTo("#n-ai-a", { z: -220, rotationX: 96, scale: 1.7, opacity: 0 }, { z: 0, rotationX: 0, scale: 1, opacity: 1, duration: .3, ease: "power4.out" }, 1.06);
+      tl.fromTo("#n-ai-i", { z: 220, rotationX: -96, scale: 1.7, opacity: 0 }, { z: 0, rotationX: 0, scale: 1, opacity: 1, duration: .3, ease: "expo.out" }, 1.18);
+      tl.fromTo("#ai-warm", { x: -24, y: 7, opacity: 0 }, { keyframes: [{ x: 18, y: -5, opacity: .84, duration: .09 }, { x: -11, y: 4, opacity: .65, duration: .09 }, { x: 0, y: 0, opacity: 0, duration: .16 }], ease: "none" }, 1.06);
+      tl.fromTo("#ai-cool", { x: 24, y: -7, opacity: 0 }, { keyframes: [{ x: -18, y: 5, opacity: .84, duration: .09 }, { x: 11, y: -4, opacity: .65, duration: .09 }, { x: 0, y: 0, opacity: 0, duration: .16 }], ease: "none" }, 1.06);
+      tl.fromTo("#ai-stack", { scaleX: 1.42 }, { scaleX: 1, duration: .36, ease: "power4.out" }, 1.06);
+
+      tl.fromTo("#n-zhi2", { x: -68, rotationY: -96, scale: .72, opacity: 0 }, { x: 0, rotationY: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, 1.36);
+      tl.fromTo("#n-neng", { y: -82, rotationX: 94, scale: .7, opacity: 0 }, { y: 0, rotationX: 0, scale: 1, opacity: 1, duration: .24, ease: "expo.out" }, 1.49);
+      tl.fromTo("#n-ti", { x: 70, rotationY: 96, scale: .72, opacity: 0 }, { x: 0, rotationY: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, 1.62);
+
+      tl.fromTo("#signal-box", { scaleX: .02, opacity: .2 }, { scaleX: 1, opacity: 1, duration: .34, ease: "expo.out" }, 1.7);
+      tl.fromTo("#n-gao", { y: 86, rotationX: -98, scale: .7, opacity: 0 }, { y: 0, rotationX: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, 1.77);
+      tl.fromTo("#n-xin", { z: -190, rotationY: -96, scale: 1.45, opacity: 0 }, { z: 0, rotationY: 0, scale: 1, opacity: 1, duration: .24, ease: "expo.out" }, 1.91);
+      tl.fromTo("#n-hao", { y: -86, rotationX: 98, scale: .7, opacity: 0 }, { y: 0, rotationX: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, 2.04);
+      tl.fromTo("#n-shang", { x: -72, rotationY: -96, scale: .72, opacity: 0 }, { x: 0, rotationY: 0, scale: 1, opacity: 1, duration: .24, ease: "expo.out" }, 2.18);
+      tl.fromTo("#n-xia", { y: 82, rotationX: -96, scale: .7, opacity: 0 }, { y: 0, rotationX: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, 2.31);
+      tl.fromTo("#n-wen", { x: 72, rotationY: 96, scale: .72, opacity: 0 }, { x: 0, rotationY: 0, scale: 1, opacity: 1, duration: .24, ease: "expo.out" }, 2.44);
+      tl.fromTo("#n-ma", { y: -86, rotationX: 98, scale: .7, opacity: 0 }, { y: 0, rotationX: 0, scale: 1, opacity: 1, duration: .24, ease: "power4.out" }, 2.59);
+
+      tl.set("#neon-question", { opacity: 0, z: -260, rotationX: 115, rotationZ: 18, scale: .25 }, 0);
+      tl.to("#neon-question", { keyframes: [
+        { opacity: 1, z: 30, rotationX: -16, rotationZ: -9, scale: 1.45, duration: .18, ease: "power4.out" },
+        { opacity: 1, z: 0, rotationX: 6, rotationZ: 4, scale: .91, duration: .1, ease: "power2.inOut" },
+        { opacity: 1, z: 0, rotationX: 0, rotationZ: 0, scale: 1, duration: .12, ease: "back.out(1.4)" }
+      ], ease: "none" }, 2.7);
+      tl.fromTo("#echo-warm", { x: -30, y: 9, scale: 1.25, opacity: 0 }, { keyframes: [{ x: 22, y: -7, scale: 1.16, opacity: .85, duration: .1 }, { x: -12, y: 5, scale: 1.07, opacity: .62, duration: .1 }, { x: 0, y: 0, scale: 1, opacity: 0, duration: .16 }], ease: "none" }, 2.72);
+      tl.fromTo("#echo-cool", { x: 30, y: -9, scale: 1.25, opacity: 0 }, { keyframes: [{ x: -22, y: 7, scale: 1.16, opacity: .85, duration: .1 }, { x: 12, y: -5, scale: 1.07, opacity: .62, duration: .1 }, { x: 0, y: 0, scale: 1, opacity: 0, duration: .16 }], ease: "none" }, 2.72);
+
+      tl.fromTo("#bar-1", { x: -340, scaleX: .25, opacity: 0 }, { x: 560, scaleX: 1, opacity: .9, duration: .16, ease: "steps(4)" }, 1.05);
+      tl.to("#bar-1", { x: 980, scaleX: .35, opacity: 0, duration: .14, ease: "steps(3)" }, 1.23);
+      tl.fromTo("#bar-2", { x: 420, scaleX: .2, opacity: 0 }, { x: -540, scaleX: 1, opacity: .9, duration: .18, ease: "steps(4)" }, 2.03);
+      tl.to("#bar-2", { x: -920, scaleX: .3, opacity: 0, duration: .14, ease: "steps(3)" }, 2.23);
+      tl.fromTo("#bar-3", { x: -260, scaleX: .2, opacity: 0 }, { x: 640, scaleX: 1, opacity: .9, duration: .17, ease: "steps(4)" }, 2.68);
+      tl.to("#bar-3", { x: 1040, scaleX: .28, opacity: 0, duration: .14, ease: "steps(3)" }, 2.87);
+
+      tl.fromTo("#agent-zone", { x: 210, y: 60, rotationY: 70, scale: .62, opacity: 0 }, { x: 0, y: 0, rotationY: 0, scale: 1, opacity: 1, duration: .52, ease: "power4.out" }, 1.28);
+      tl.fromTo("#agent-orbit", { rotation: -120, scale: .72, opacity: 0 }, { rotation: 210, scale: 1, opacity: 1, duration: 2.25, ease: "power2.out" }, 1.22);
+      tl.to("#tiny-agent", { y: -11, rotation: 1.8, duration: .46, ease: "sine.inOut", yoyo: true, repeat: 3 }, 1.72);
+      tl.fromTo(".wave-bar", { scaleY: .16, opacity: .4 }, { scaleY: 1, opacity: 1, duration: .14, ease: "power2.out", stagger: .025, yoyo: true, repeat: 3 }, .15);
+
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>

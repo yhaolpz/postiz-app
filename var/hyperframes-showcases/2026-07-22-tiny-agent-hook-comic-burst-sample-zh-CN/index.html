@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Tiny Agent 漫画贴纸爆破版</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "ZCOOL Comic";
+        src: url("assets/fonts/ZCOOLQingKeHuangYou-Regular.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #ffdb3d; }
+      body { color: #111111; font-family: "ZCOOL Comic", sans-serif; }
+
+      #composition { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      .clip { position: absolute; inset: 0; width: 100%; height: 100%; }
+      #world { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 50% 50%; }
+
+      .comic-bg {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 90% 16%, #ff4b55 0 124px, transparent 126px),
+          radial-gradient(circle at 8% 88%, #27c7d8 0 160px, transparent 162px),
+          #ffdb3d;
+      }
+      .comic-bg::before {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(17,17,17,.22) 2.6px, transparent 2.8px);
+        background-size: 18px 18px;
+        content: "";
+        opacity: .42;
+      }
+      .diagonal-band {
+        position: absolute;
+        top: -180px;
+        left: 126px;
+        width: 320px;
+        height: 1420px;
+        background: #27c7d8;
+        border-right: 12px solid #111;
+        border-left: 12px solid #111;
+        transform: rotate(18deg);
+      }
+      .frame {
+        position: absolute;
+        inset: 44px;
+        border: 12px solid #111;
+        box-shadow: 18px 18px 0 #111;
+        pointer-events: none;
+      }
+
+      .masthead {
+        position: absolute;
+        top: 66px;
+        left: 82px;
+        display: flex;
+        align-items: center;
+        gap: 22px;
+      }
+      .issue {
+        padding: 12px 25px 9px;
+        background: #111;
+        color: #fff6dd;
+        font-size: 31px;
+        letter-spacing: .09em;
+        transform: rotate(-2deg);
+      }
+      .masthead strong { font-size: 42px; letter-spacing: .055em; }
+
+      #burst-disc {
+        position: absolute;
+        top: 104px;
+        right: 94px;
+        width: 230px;
+        height: 230px;
+        display: grid;
+        place-items: center;
+        background: #ff4b55;
+        border: 9px solid #111;
+        clip-path: polygon(50% 0,61% 24%,82% 9%,80% 34%,100% 37%,82% 52%,99% 69%,76% 71%,78% 96%,57% 79%,45% 100%,37% 78%,13% 91%,22% 67%,0 59%,21% 46%,3% 27%,29% 29%,31% 4%);
+        font-size: 50px;
+        line-height: .86;
+        text-align: center;
+        transform-origin: center;
+      }
+
+      #panel {
+        position: absolute;
+        top: 170px;
+        left: 104px;
+        width: 1640px;
+        height: 710px;
+        background: #fff6dd;
+        border: 11px solid #111;
+        border-radius: 14px;
+        box-shadow: 22px 22px 0 #111;
+        overflow: hidden;
+        transform-origin: 50% 50%;
+      }
+      #panel::after {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(17,17,17,.09) 2px, transparent 2px);
+        background-size: 14px 14px;
+        content: "";
+        pointer-events: none;
+      }
+      .speed-lines {
+        position: absolute;
+        inset: -90px;
+        background: repeating-conic-gradient(from 2deg at 54% 54%, rgba(17,17,17,.15) 0deg 1deg, transparent 1.3deg 8deg);
+        opacity: .7;
+      }
+
+      #comic-copy {
+        position: absolute;
+        z-index: 4;
+        top: 82px;
+        left: 54px;
+        width: 1500px;
+        height: 560px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 48px;
+      }
+      .comic-line {
+        position: relative;
+        width: 100%;
+        min-height: 190px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        line-height: 1;
+      }
+      .line-one { font-size: 118px; letter-spacing: -.035em; }
+      .line-two { font-size: 164px; letter-spacing: -.04em; }
+      .comic-glyph {
+        position: relative;
+        z-index: 3;
+        display: inline-grid;
+        min-width: .83em;
+        place-items: center;
+        color: #111;
+        opacity: 0;
+        text-shadow: 4px 4px 0 #fff6dd;
+        transform-origin: 50% 68%;
+        will-change: transform, opacity;
+      }
+      .comic-glyph.pink { color: #ff3f50; -webkit-text-stroke: 2px #111; }
+      .comic-glyph.cyan { color: #19bfd1; -webkit-text-stroke: 2px #111; }
+      .comic-glyph.yellow { color: #ffd43b; -webkit-text-stroke: 2px #111; }
+      .word-gap { display: inline-block; width: 28px; flex: 0 0 28px; }
+      .ai-card {
+        position: relative;
+        display: inline-flex;
+        margin: 0 14px;
+        padding: 3px 18px 8px;
+        background: #111;
+        border: 6px solid #111;
+        box-shadow: 9px 9px 0 #ff4b55;
+        transform: rotate(-3deg);
+      }
+      .ai-card .comic-glyph { min-width: .62em; color: #ffdb3d; text-shadow: none; -webkit-text-stroke: 0; }
+      .keyword-card {
+        position: relative;
+        display: inline-flex;
+        padding: 0 13px 8px;
+        background: #27c7d8;
+        border: 7px solid #111;
+        box-shadow: 10px 10px 0 #ff4b55;
+        transform: rotate(-1.6deg);
+      }
+      .keyword-card .comic-glyph { color: #fff6dd; text-shadow: 4px 4px 0 #111; -webkit-text-stroke: 2px #111; }
+      .question-wrap { position: relative; display: inline-grid; width: 1.08em; height: 1.08em; place-items: center; }
+      #comic-question { z-index: 6; color: #ff3f50; font-size: 1.12em; -webkit-text-stroke: 3px #111; }
+
+      .pop-lines { position: absolute; z-index: 2; top: 50%; left: 50%; width: 0; height: 0; }
+      .pop-line {
+        position: absolute;
+        left: -5px;
+        top: calc(-1 * var(--len));
+        width: 10px;
+        height: var(--len);
+        border-radius: 6px;
+        background: #111;
+        opacity: 0;
+        transform-origin: bottom center;
+      }
+
+      #confetti { position: absolute; z-index: 2; top: 58%; left: 65%; width: 0; height: 0; }
+      .confetti-chip {
+        position: absolute;
+        width: 22px;
+        height: 44px;
+        border: 4px solid #111;
+        opacity: 0;
+      }
+      .confetti-chip:nth-child(3n+1) { background: #ff4b55; }
+      .confetti-chip:nth-child(3n+2) { background: #27c7d8; }
+      .confetti-chip:nth-child(3n) { background: #ffdb3d; }
+
+      #agent-wrap {
+        position: absolute;
+        z-index: 12;
+        right: 74px;
+        bottom: 53px;
+        width: 310px;
+        height: 410px;
+        display: grid;
+        place-items: end center;
+        transform-origin: 50% 90%;
+      }
+      #agent-wrap::before {
+        position: absolute;
+        right: 4px;
+        bottom: 20px;
+        left: 4px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(17,17,17,.28);
+        filter: blur(9px);
+        content: "";
+      }
+      #tiny-agent { position: relative; z-index: 2; width: 310px; height: 410px; object-fit: contain; filter: drop-shadow(9px 9px 0 #111); }
+      .agent-bubble {
+        position: absolute;
+        z-index: 15;
+        right: -4px;
+        bottom: 405px;
+        width: 246px;
+        padding: 18px 20px;
+        background: #fff6dd;
+        border: 7px solid #111;
+        border-radius: 50%;
+        font-size: 40px;
+        text-align: center;
+        box-shadow: 8px 8px 0 #27c7d8;
+      }
+      .agent-bubble::after {
+        position: absolute;
+        right: -28px;
+        bottom: 8px;
+        width: 56px;
+        height: 46px;
+        background: #fff6dd;
+        border-right: 7px solid #111;
+        border-bottom: 7px solid #111;
+        content: "";
+        transform: rotate(-28deg) skew(-12deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="composition" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="3.8" data-fps="30">
+      <section id="scene" class="clip" data-start="0" data-duration="3.8" data-track-index="2">
+        <div id="world">
+          <div class="comic-bg" data-layout-ignore></div>
+          <div class="diagonal-band" data-layout-ignore></div>
+          <div class="frame" data-layout-ignore></div>
+          <div class="masthead" data-layout-ignore><span class="issue">HOOK 02</span><strong>TINY AGENT / COMIC BURST</strong></div>
+          <div id="burst-disc" data-layout-ignore>别眨眼<br />!</div>
+
+          <div id="panel">
+            <div class="speed-lines" data-layout-ignore></div>
+            <main id="comic-copy">
+              <div class="comic-line line-one">
+                <span id="c-ni" class="comic-glyph pink">你</span><span id="c-zhi" class="comic-glyph">知</span><span id="c-dao" class="comic-glyph cyan">道</span><span id="c-zen" class="comic-glyph">怎</span><span id="c-me" class="comic-glyph yellow">么</span><span id="c-gei" class="comic-glyph">给</span>
+                <span class="word-gap"></span>
+                <span id="ai-card" class="ai-card"><span id="c-ai-a" class="comic-glyph">A</span><span id="c-ai-i" class="comic-glyph">I</span></span>
+                <span class="word-gap"></span>
+                <span id="c-zhi2" class="comic-glyph cyan">智</span><span id="c-neng" class="comic-glyph">能</span><span id="c-ti" class="comic-glyph pink">体</span>
+              </div>
+              <div class="comic-line line-two">
+                <span id="keyword-card" class="keyword-card"><span id="c-gao" class="comic-glyph">高</span><span id="c-xin" class="comic-glyph">信</span><span id="c-hao" class="comic-glyph">号</span></span>
+                <span id="c-shang" class="comic-glyph">上</span><span id="c-xia" class="comic-glyph yellow">下</span><span id="c-wen" class="comic-glyph">文</span><span id="c-ma" class="comic-glyph cyan">吗</span>
+                <span class="question-wrap">
+                  <span id="comic-question" class="comic-glyph">？</span>
+                  <span class="pop-lines" data-layout-ignore>
+                    <i class="pop-line" style="--len:72px"></i><i class="pop-line" style="--len:54px"></i><i class="pop-line" style="--len:76px"></i><i class="pop-line" style="--len:58px"></i><i class="pop-line" style="--len:70px"></i><i class="pop-line" style="--len:52px"></i><i class="pop-line" style="--len:74px"></i><i class="pop-line" style="--len:56px"></i>
+                  </span>
+                </span>
+              </div>
+            </main>
+            <div id="confetti" data-layout-ignore>
+              <i id="chip-1" class="confetti-chip"></i><i id="chip-2" class="confetti-chip"></i><i id="chip-3" class="confetti-chip"></i><i id="chip-4" class="confetti-chip"></i><i id="chip-5" class="confetti-chip"></i><i id="chip-6" class="confetti-chip"></i><i id="chip-7" class="confetti-chip"></i><i id="chip-8" class="confetti-chip"></i>
+            </div>
+          </div>
+
+          <div id="agent-wrap" data-layout-ignore><div id="agent-bubble" class="agent-bubble">高信号？</div><img id="tiny-agent" src="assets/images/tiny-agent-ask.png" alt="Tiny Agent" /></div>
+        </div>
+      </section>
+      <audio id="narration" src="assets/audio/hook.zh-CN.mp3" data-start="0" data-duration="3.408" data-track-index="1" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo("#world", { scale: 1 }, { scale: 1.018, duration: 3.8, ease: "sine.inOut" }, 0);
+      tl.fromTo("#panel", { x: -80, y: 18, rotation: -2.8, scale: .92, opacity: 0 }, { x: 0, y: 0, rotation: -.35, scale: 1, opacity: 1, duration: .48, ease: "back.out(1.22)" }, .02);
+      tl.fromTo("#burst-disc", { scale: 0, rotation: -38, opacity: 0 }, { scale: 1, rotation: 7, opacity: 1, duration: .56, ease: "back.out(1.8)" }, .08);
+
+      tl.fromTo("#c-ni", { x: -170, y: -60, rotation: -24, scale: 1.8, opacity: 0 }, { x: 0, y: 0, rotation: -3, scale: 1, opacity: 1, duration: .2, ease: "power4.out" }, .18);
+      tl.fromTo("#c-zhi", { y: -160, rotation: 16, scale: .45, opacity: 0 }, { y: 0, rotation: 2, scale: 1, opacity: 1, duration: .2, ease: "bounce.out" }, .32);
+      tl.fromTo("#c-dao", { x: 150, y: -90, rotation: 28, scale: 1.7, opacity: 0 }, { x: 0, y: 0, rotation: -2, scale: 1, opacity: 1, duration: .2, ease: "expo.out" }, .46);
+      tl.fromTo("#c-zen", { y: 150, rotation: -18, scale: .55, opacity: 0 }, { y: 0, rotation: 3, scale: 1, opacity: 1, duration: .2, ease: "back.out(1.6)" }, .61);
+      tl.fromTo("#c-me", { x: -130, rotation: -30, scale: 1.7, opacity: 0 }, { x: 0, rotation: -2, scale: 1, opacity: 1, duration: .2, ease: "power4.out" }, .74);
+      tl.fromTo("#c-gei", { y: -150, rotation: 20, scale: .4, opacity: 0 }, { y: 0, rotation: 2, scale: 1, opacity: 1, duration: .2, ease: "bounce.out" }, .86);
+      tl.fromTo("#c-ai-a", { x: -120, rotation: -35, scale: 2.1, opacity: 0 }, { x: 0, rotation: 0, scale: 1, opacity: 1, duration: .25, ease: "expo.out" }, 1.06);
+      tl.fromTo("#c-ai-i", { x: 120, rotation: 32, scale: 2, opacity: 0 }, { x: 0, rotation: 0, scale: 1, opacity: 1, duration: .25, ease: "back.out(1.7)" }, 1.18);
+      tl.fromTo("#ai-card", { rotation: -8, scale: .9 }, { rotation: -3, scale: 1.04, duration: .17, ease: "power3.out", yoyo: true, repeat: 1 }, 1.18);
+      tl.fromTo("#c-zhi2", { y: 150, rotation: -20, scale: .5, opacity: 0 }, { y: 0, rotation: -2, scale: 1, opacity: 1, duration: .2, ease: "back.out(1.6)" }, 1.36);
+      tl.fromTo("#c-neng", { x: 135, y: -70, rotation: 25, scale: 1.6, opacity: 0 }, { x: 0, y: 0, rotation: 2, scale: 1, opacity: 1, duration: .2, ease: "expo.out" }, 1.49);
+      tl.fromTo("#c-ti", { y: -155, rotation: -18, scale: .45, opacity: 0 }, { y: 0, rotation: -2, scale: 1, opacity: 1, duration: .2, ease: "bounce.out" }, 1.62);
+
+      tl.fromTo("#c-gao", { x: -130, y: 30, rotation: -25, scale: 2, opacity: 0 }, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: .2, ease: "power4.out" }, 1.77);
+      tl.fromTo("#c-xin", { y: -160, rotation: 20, scale: .4, opacity: 0 }, { y: 0, rotation: 0, scale: 1, opacity: 1, duration: .2, ease: "bounce.out" }, 1.91);
+      tl.fromTo("#c-hao", { x: 130, y: 40, rotation: 26, scale: 1.9, opacity: 0 }, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: .2, ease: "expo.out" }, 2.04);
+      tl.fromTo("#keyword-card", { rotation: -6, scale: .88 }, { rotation: -1.6, scale: 1.04, duration: .18, ease: "power3.out", yoyo: true, repeat: 1 }, 2.04);
+      tl.fromTo("#c-shang", { y: 150, rotation: -22, scale: .5, opacity: 0 }, { y: 0, rotation: 2, scale: 1, opacity: 1, duration: .2, ease: "back.out(1.6)" }, 2.18);
+      tl.fromTo("#c-xia", { x: -140, rotation: -30, scale: 1.8, opacity: 0 }, { x: 0, rotation: -2, scale: 1, opacity: 1, duration: .2, ease: "power4.out" }, 2.31);
+      tl.fromTo("#c-wen", { y: -160, rotation: 18, scale: .42, opacity: 0 }, { y: 0, rotation: 2, scale: 1, opacity: 1, duration: .2, ease: "bounce.out" }, 2.44);
+      tl.fromTo("#c-ma", { x: 130, y: -80, rotation: 28, scale: 1.7, opacity: 0 }, { x: 0, y: 0, rotation: -2, scale: 1, opacity: 1, duration: .2, ease: "expo.out" }, 2.59);
+
+      tl.set("#comic-question", { opacity: 0, y: -90, rotation: 35, scale: .12 }, 0);
+      tl.to("#comic-question", { keyframes: [
+        { opacity: 1, y: 12, rotation: -18, scale: 1.42, duration: .17, ease: "power4.out" },
+        { opacity: 1, y: 0, rotation: 5, scale: .92, duration: .1, ease: "power2.inOut" },
+        { opacity: 1, y: 0, rotation: -2, scale: 1, duration: .1, ease: "back.out(1.4)" }
+      ], ease: "none" }, 2.7);
+      tl.fromTo(".pop-line", { scaleY: 0, opacity: 0, rotation: (i) => i * 45 }, { scaleY: 1, opacity: 1, rotation: (i) => i * 45, duration: .24, ease: "power4.out", stagger: .018 }, 2.73);
+      tl.to(".pop-line", { scaleY: .25, opacity: 0, duration: .26, ease: "power2.in", stagger: .012 }, 3.1);
+
+      tl.fromTo("#agent-wrap", { x: 250, y: 120, rotation: 18, scale: .55, opacity: 0 }, { x: 0, y: 0, rotation: -3, scale: 1, opacity: 1, duration: .46, ease: "back.out(1.55)" }, 1.34);
+      tl.fromTo("#agent-bubble", { x: 70, y: 42, rotation: 14, scale: .25, opacity: 0 }, { x: 0, y: 0, rotation: -4, scale: 1, opacity: 1, duration: .42, ease: "back.out(1.65)" }, 1.72);
+      tl.to("#tiny-agent", { y: -13, rotation: 2, duration: .42, ease: "sine.inOut", yoyo: true, repeat: 3 }, 1.75);
+
+      tl.fromTo("#chip-1", { x: 0, y: 0, rotation: 0, scale: 0, opacity: 0 }, { x: -270, y: -180, rotation: -160, scale: 1, opacity: 1, duration: .62, ease: "power3.out" }, 2.75);
+      tl.fromTo("#chip-2", { x: 0, y: 0, rotation: 0, scale: 0, opacity: 0 }, { x: -180, y: -260, rotation: 190, scale: .8, opacity: 1, duration: .68, ease: "power3.out" }, 2.78);
+      tl.fromTo("#chip-3", { x: 0, y: 0, rotation: 0, scale: 0, opacity: 0 }, { x: -60, y: -220, rotation: -210, scale: 1.1, opacity: 1, duration: .64, ease: "power3.out" }, 2.81);
+      tl.fromTo("#chip-4", { x: 0, y: 0, rotation: 0, scale: 0, opacity: 0 }, { x: 100, y: -250, rotation: 170, scale: .85, opacity: 1, duration: .66, ease: "power3.out" }, 2.84);
+      tl.fromTo("#chip-5", { x: 0, y: 0, rotation: 0, scale: 0, opacity: 0 }, { x: 210, y: -150, rotation: -190, scale: 1, opacity: 1, duration: .63, ease: "power3.out" }, 2.87);
+      tl.fromTo("#chip-6", { x: 0, y: 0, rotation: 0, scale: 0, opacity: 0 }, { x: -230, y: 130, rotation: 150, scale: .85, opacity: 1, duration: .67, ease: "power3.out" }, 2.9);
+      tl.fromTo("#chip-7", { x: 0, y: 0, rotation: 0, scale: 0, opacity: 0 }, { x: -40, y: 170, rotation: -220, scale: 1, opacity: 1, duration: .65, ease: "power3.out" }, 2.93);
+      tl.fromTo("#chip-8", { x: 0, y: 0, rotation: 0, scale: 0, opacity: 0 }, { x: 170, y: 120, rotation: 210, scale: .9, opacity: 1, duration: .69, ease: "power3.out" }, 2.96);
+      tl.to(".confetti-chip", { scale: .12, opacity: 0, duration: .12, ease: "power2.in" }, 3.66);
+
+      window.__timelines.main = tl;
+    </script>
+  </body>
+</html>
