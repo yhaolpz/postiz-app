@@ -12,10 +12,16 @@
 - `scripts/ai-video-pipeline/content-plans/tiny-agent-longform-plan.md`
 - `scripts/ai-video-pipeline/content-plans/tiny-agent-longform-archive.md`
 - `scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md`
-- `scripts/ai-video-pipeline/style-guides/tiny-agent-deep-longform-cognitive-load.md`
+- `scripts/ai-video-pipeline/style-guides/tiny-agent-longform-active-profile.zh-CN.json`
+- `scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/manifest.json`
+- `scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/automation-prompt.txt`
+- `scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/tiny-agent-longform.md`
+- `scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/implementation-profile.zh-CN.json`
 - `$CODEX_HOME/automations/tiny-agent/memory.md`
 
-内容、视觉、封面、语音、开头、QA 和双语差异全部以两份 style guide 为事实源；本手册只规定每日状态机和发布流程。
+本手册只规定每日状态机和发布流程。中英文视频生成规则统一由 `tiny-agent-longform-active-profile.zh-CN.json` 激活的 `2026-07-23-scheduled-6m18` 冻结快照提供；当前 `tiny-agent-longform.md` 已恢复为提交 `457ba42d110d259ed03c4b008e1af2cc8b0b9935` 中的逐字副本。新选题必须重新生成事实、自然双语脚本、TTS、VTT、章节秒点、场景和动画，但内容组织、语音、时长、开头、章节结构、画面节拍、动作、生成图、逐章小结和 QA 必须执行冻结快照。
+
+`tiny-agent-deep-longform-cognitive-load.md` 及 V4/V5/V6/V7 工程均形成于 6:18 定时成片之后，不参与当前生产。不得混入后来的双语 `+10%`、`9-12 分钟`、单故事三模块、取消逐章三点口播小结、`35-45` 个稳定状态、字形提前 `0.10-0.15 秒`或完整问题停留 `1.2-1.6 秒`等规则。
 
 读取完成后先运行：
 
@@ -44,15 +50,15 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 3. 打开官方原文复核标题、日期和关键结论，建立双语共享 `content-map.json`：
    - 中心主旨与 P0/P1/P2/P3；
    - 事实边界与来源归属；
-   - 一条日常故事的因果链；
-   - 不超过三个实质模块；
-   - 最终可复用能力或工具。
-4. 英文和中文分别写自然脚本，不机械翻译。两版共享知识覆盖、故事结果、章节承诺、事实边界和最终工具。
+   - 由来源知识结构决定的实质章节；
+   - 每章的价值承诺、正文知识与三点小结；
+   - 最终可复用方法或工具。
+4. 英文和中文分别写自然脚本，不机械翻译。两版共享知识覆盖、章节顺序、事实边界和最终工具，但必须按各自语言自然表达。
 5. 保留所有增加事实、证据、机制、边界、判断、步骤或迁移价值的内容；只删除无信息增量的重复表达、客套转场和相似案例。
 
 ## 3. 双语生产
 
-1. 分别生成最终 TTS 和 VTT，再分别生成 `timing-map.json`、`scene-plan.json` 和 `animation-plan.json`；禁止跨语言复用时间戳。
+1. 分别生成最终 TTS 和 VTT，再分别生成 `timing-map.json`、`scene-plan.json` 和 `animation-plan.json`；禁止跨语言复用时间戳。中文固定 `zh-CN-YunxiaNeural +35%`，英文固定 `en-US-AnaNeural +30%`；两版成片均为 `5-8 分钟`。前 `30 秒`普通句间停顿不超过 `0.2 秒`，其余停顿按最终自然语音和章节节奏生成，不套用后来 V4 的三档停顿。
 2. 新建独立项目：
    - `var/hyperframes-showcases/<RUN_KEY>-<SLUG>-longform-en-US/`
    - `var/hyperframes-showcases/<RUN_KEY>-<SLUG>-longform-zh-CN/`
@@ -64,14 +70,14 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 
 4. 活跃资产必须来自 `tiny-agent-active.json` 中 QA 为 pass 的包。生成 HTML 前调用 `assertTinyAgentScenePlanAssets(scenePlan, pack, { requireDirectionMetadata: true })`。
 5. 以最终 VTT 编译场景、字幕、动画、章节进度和固定结束页。`scripts/ai-video-pipeline/run.mjs` 是 Shorts 入口，不用于长视频。
-6. 开头问题场景不显示语音进度、音轨圆点、`VOICE` 文案或其它播放控制式 UI。临时完整插画只使用图片生成模型输出，并按通用规范满足场景数、可见时长、不同图片数量、最大空档和语义质量门槛。
-7. 正文稳定画面内部按最终 VTT 安排每分钟 `8-10` 个有效语义动作，最长完全静止间隔不超过 `6 秒`。动作必须指出当前重点、证据、因果、步骤或状态变化；入场、字幕、进度、浮动和装饰旋转不计数。全片至少使用 `12` 种实际轨迹不同的语义动作签名和 `5` 种入场签名，单一语义动作签名占比不超过 `20%`。
-   - 生成动作前，`scene-plan.json` 为每个可动元素登记 `semanticElements.selector`、`semanticRole` 和 `supportsConcepts`。从最终 VTT 提取 `triggerConcept` 后，只能选择支持该概念且当前可见的元素；禁止按元素序号、轮询、最少使用次数或“还没动过”选择目标。
-   - 没有匹配目标时先补充、替换或重新标注场景元素；仍无法匹配则取消该动作并重编场景。不得使用无关角色、标题或道具兜底，也不得把这种动作计入密度。
-8. `animation-plan.json` 的每个有效动作都必须包含通用规范要求的完整触发、对象、动作家族、轨迹签名、方向、状态、幅度、缓动、语义目的和保持字段，并额外记录 `triggerConcept`、`targetSemanticRole` 与 `targetMatchEvidence`。一个场景内同一元素最多执行两个不同家族的动作，不得重复同一动作或动作家族；长于 `12 秒`的正文场景必须包含一次明显语义变化。
-   - 正文黄色语义强调线必须绑定精确文字范围，单行与文字实际宽度一致，多行逐行生成同宽线段；左右端点误差不超过 `4px`，宽度误差不超过 `2%`。禁止使用固定百分比、整栏宽度或标题容器宽度。
-9. 场景切换固定使用不透明 `#ECECEA` 全画布场景层：相关场景 `0.42 秒`水平推页，跨构图 `0.48 秒`纸张遮罩，章节变化 `0.55 秒`垂直推页。新旧内容包围盒不得交叠，旧场景结束后立即隐藏复位，新场景元素只能在对应区域揭示后入场。
-10. 每个项目至少输出：
+6. 两个项目都在 `summary.json` 写入对应语言的 `tiny-agent-longform-kinetic-retention-2026-07-23-<locale>` profile，并完整执行冻结快照：
+   - 使用总分总结构，按来源知识自然划分章节；每个实质章节包含章节开场、正文和可朗读的三点编号小结。章节开场与小结文字至少为字幕字号的 `130%` 且加粗。
+   - 6:18 中文参考实现包含 `63` 个场景、`7` 个章节和 `15` 个小结场景。这些数字用于效果对照，不机械复制主题文字；新视频应保持相近的信息节拍和章节密度，偏差必须在 QA 中说明。
+   - 首句按各自最终 VTT 逐字或词内字母呈现，不得早于对应语音完整显示；`earlyRevealCount=0`。首句在 `5 秒`内念完，问号稳定后按自然语音停顿切正文，不增加后来 V4 的 `1.2-1.6 秒`完整问题停留。
+   - 临时生成图占非结束页视觉状态约 `15%-20%`且不低于 `15%`；每条视频至少 `7` 类实际可见动作和 `20` 个动作节点。文字、边框、字幕、角色和道具的真实 DOM 溢出、裁切或遮挡必须为 `0`。
+7. 两种语言都必须从各自最终 VTT 生成 `animation-plan.json`，并记录动作类型、语义触发、目标、起止参数、持续时间和可读保持时间。
+8. 冻结快照不复制 6:18 参考视频的主题、事实、脚本、绝对秒点或场景文案；当期内容必须从当前来源重新生成。来源事实、安全、标题身份、固定结束页、技术编码、封面和本地交付边界继续执行当前操作规则。
+9. 每个项目至少输出：
 
    ```text
    source.md
@@ -88,6 +94,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
    captions/narration.vtt
    publish-metadata.<locale>.json
    qa/generated-art-report.json
+   qa/speech-pacing-report.json
    snapshots/
    renders/video.mp4
    ```
@@ -95,8 +102,10 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 ## 4. 封面与元数据
 
 1. 英文项目生成 `thumbnail.en-US.png` 4K 母版和两张 QA 预览；中文项目只生成 `16:9`、`4:3`、`3:4` 三张固定封面。
-2. 双语标题、片内主题标题和封面标题必须通过 AI Agent 主题身份规则。
-3. 运行：
+2. 四张封面都只允许一个大号 Tiny Agent 作为唯一角色，并配一个与主题直接相关的核心物体；禁止人物、第二个机器人、多角色群组、角色拼贴和小角色墙。生成插画不得包含文字、字母或数字，标题只做确定性叠加，并用 `#117ABD`、`#8A6500`、`#C7362F` 静态突出 `2-3` 个语义重点，其余文字使用 `#111413`。
+3. 英文 `16:9`、中文 `16:9` 和中文 `4:3` 的 Tiny Agent 可见高度不得低于画布 `50%`；中文 `3:4` 的 Tiny Agent 可见高度不得低于底部 `40%` 插画区的 `85%`。角色、天线、手脚、工具和核心物体必须完整可辨。
+4. 双语标题、片内主题标题和封面标题必须通过 AI Agent 主题身份规则。
+5. 运行：
 
    ```bash
    node scripts/ai-video-pipeline/validate-tiny-agent-title-identity.mjs \
@@ -104,17 +113,22 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
      --chinese-project <ZH_PROJECT_DIR>
    ```
 
-4. 英文简介包含三点收获、英文真实章节、固定关注句和相关 hashtag；中文简介只包含通用中文标题、精简简介、固定关注句和 hashtag。
-5. 两版简介均不包含来源段、原文标题拼接或外部链接；来源只保存在项目事实文件和结构化字段中。
+6. 两个项目的 `thumbnails/qa.json` 必须证明 `characterCount=1`、`tinyAgentCharacterCount=1`、`humanCharacterCount=0`、`secondaryAgentCharacterCount=0`、`coverCollageCount=0`、`generatedIllustrationTextCount=0`、`semanticTitleColorCount=2-3` 和 `largeAgentHeightRatioFailureCount=0`。
+7. 英文简介包含三点收获、英文真实章节、固定关注句和相关 hashtag；中文简介只包含通用中文标题、精简简介、固定关注句和 hashtag。
+8. 两版简介均不包含来源段、原文标题拼接或外部链接；来源只保存在项目事实文件和结构化字段中。
 
 ## 5. 准出
 
-1. 两种语言分别完成资产、方向、balance、semantics、transitions、DOM、highlight、internal-prop、generated-art、motion、semantic-motion-target、retention-opening、cognitive-load、narrative-transition、outro 和 title-identity 检查。
-   - `motion-report.json` 与 `semantic-motion-target-report.json` 必须证明每分钟有效语义动作数、逐场景节点数、最大静止间隔、触发绑定、字段完整性、动作与入场签名、单元素去重、目标覆盖、幅度和动作目标语义匹配全部通过；`semanticTargetMismatchCount`、`unmatchedTriggerConceptCount`、`fallbackTargetCount`、`missingSemanticRoleCount` 和 `invisibleTargetCount` 均为 `0`。
-   - `highlight-layout-report.json` 中 `underlineWidthMismatchCount`、`underlineTargetMismatchCount`、`underlineLineFragmentFailureCount` 和 `underlineOverflowCount` 均为 `0`；`transitions-report.json` 中内容交叠、旧场景残留、空白帧、层级错误和入场提前数均为 `0`。
-2. 运行 HyperFrames check、渲染与 `ffprobe`；抽查首句逐字出现、完整问题停留、正文首帧、故事转折、模块中点、自然衔接、最终工具回收和独立结束页。
+1. 两种语言分别完成冻结 profile 要求的资产、DOM、时间轴、留存开头、音频、动作、视觉状态、叙事、结束页、标题身份和技术输出检查，不得跨语言复用时间戳。
+   - 两个 `summary.json` 的 profile ID 必须分别等于 `tiny-agent-longform-kinetic-retention-2026-07-23-zh-CN` 和 `tiny-agent-longform-kinetic-retention-2026-07-23-en-US`；`video-output-report.json` 证明时长 `5-8 分钟`，`speech-pacing-report.json` 证明中文为 `zh-CN-YunxiaNeural +35%`、英文为 `en-US-AnaNeural +30%`。
+   - 两个 `retention-opening-report.json` 都证明首句在 `5 秒`内结束、`earlyRevealCount=0`、没有后来 V4 的额外完整问题停留，且字形、问号和角色无裁切或遮挡；权威来源、损失与收益、可复用产物和前 `30 秒`无关注收藏继续通过既有门槛。
+   - 两个 `recap-report.json` 都证明每个实质章节具有章节开场、正文和三点口播小结；小结文字尺寸、累计显示和旁白前缀符合冻结规范。
+   - `visual-cadence-report.json` 记录场景数、章节数、场景时长分布及其与 6:18 参考实现 `63/7/15` 的差异；不得套用 V4 的 `35-45` 个稳定状态或 `12 秒`中位时长门槛。
+   - 两个 `motion-report.json` 都证明至少 `7` 类动作和 `20` 个动作节点，并且全部动作绑定旁白语义；`visual-variation-report.json` 证明临时生成图场景占比为 `15%-20%`且不低于 `15%`。
+   - 两版观众可见的制作规则、布局名、动效名和 QA 名称数量均为 `0`；来源事实、安全、自然语言、标题身份、固定结束页和音视频技术门槛全部通过。
+2. 运行 HyperFrames check、渲染与 `ffprobe`；抽查首字出现、逐字出现中点、问号收束、正文首帧、章节开场、章节正文、三点小结、最终总结、工具回收和独立结束页。
 3. 检查 H.264/AAC、`1920x1080`、`30fps`、BT.709、字幕同步、黑帧、静音尾巴、固定 CTA 音轨和结束页首帧对齐。
-4. 四张固定封面全部通过原尺寸和缩略尺寸检查。英文发布只能提交 `thumbnail.en-US.png` 4K 母版。
+4. 四张固定封面全部通过原尺寸和缩略尺寸检查；单一大号 Tiny Agent、无人物/第二机器人/拼贴、生成插画无文字、`2-3` 个静态语义标题色和角色高度门槛的失败数均为 `0`。英文发布只能提交 `thumbnail.en-US.png` 4K 母版。
 5. 任一双语视频或固定封面失败时停止发布，修复源文件并重新准出；不得把失败项目写成完成。
 
 ## 6. 英文发布

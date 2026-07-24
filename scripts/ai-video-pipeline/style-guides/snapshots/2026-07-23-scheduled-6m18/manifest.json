@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "snapshotId": "tiny-agent-longform-scheduled-6m18-2026-07-23",
+  "status": "frozen",
+  "purpose": "Reproduce the bilingual generation rules used by the scheduled run whose Chinese render is 378.176 seconds, without copying that episode's topic facts, wording, or absolute timings.",
+  "provenance": {
+    "threadId": "019f8b33-68dd-7d02-973f-ce3273ffcebf",
+    "automationInvocation": {
+      "messageId": "msg_019f8b33-7d32-70c1-b1d5-18344a587edf",
+      "turnId": "019f8b33-7033-7142-8252-6776cec2b4fc",
+      "timestamp": "2026-07-22T19:00:35.250Z",
+      "beijingRunWindow": "2026-07-23 03:02-04:17"
+    },
+    "sourceCommit": {
+      "sha": "457ba42d110d259ed03c4b008e1af2cc8b0b9935",
+      "committedAt": "2026-07-23T11:09:21+08:00",
+      "subject": "chore: sync tiny agent publishing artifacts"
+    },
+    "firstPostRunGenerationChangeRequest": {
+      "timestamp": "2026-07-23T03:52:56.898Z",
+      "beijingTime": "2026-07-23T11:52:56.898+08:00",
+      "summary": "The user reported excessive density, fast delivery, abstract content, and missing examples."
+    },
+    "excludedLaterRuleCommit": {
+      "sha": "2caf583df2b91d7d7f6248796bae0c7ce885ccab",
+      "committedAt": "2026-07-23T16:14:49+08:00",
+      "reason": "This commit records the later 9-12 minute, +10 percent, story-driven V4 baseline and therefore postdates the 6:18 generation."
+    }
+  },
+  "frozenRuleSources": [
+    {
+      "path": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/automation-invocation.txt",
+      "sha256": "8a0c26879bc04f3c2d30754f79618365e8ad0587227c2a3d39cf711fdb571432",
+      "note": "Exact automation invocation from the referenced thread, normalized only by adding a final newline."
+    },
+    {
+      "path": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/automation-prompt.txt",
+      "sha256": "ca42a5e44c9243554d233e4f547fbd8268979045835bf4172fee55c45b960766",
+      "note": "Exact executable prompt body from the scheduled invocation."
+    },
+    {
+      "path": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/tiny-agent-longform.md",
+      "sha256": "467a8a881b09f1c05eba8ed7cc7319289b53ae140f155e6d5be24dbd18ada2af",
+      "note": "Exact style guide from source commit 457ba42."
+    },
+    {
+      "path": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/implementation-profile.zh-CN.json",
+      "sha256": "d43497e418293adff1b50eb78d4b9c1c93f46f634ff652a2f6e7014203ea48cb",
+      "note": "Exact Chinese production profile from the 6:18 project."
+    }
+  ],
+  "generationContract": {
+    "duration": "5-8 minutes",
+    "voices": {
+      "zh-CN": {
+        "voice": "zh-CN-YunxiaNeural",
+        "rate": "+35%"
+      },
+      "en-US": {
+        "voice": "en-US-AnaNeural",
+        "rate": "+30%"
+      }
+    },
+    "content": {
+      "structure": "total-part-total with content-derived substantive chapters",
+      "chapterPattern": "chapter opening, body, spoken cumulative three-point recap",
+      "editing": "retain P0 and P1, keep evidence-bearing P2 without a fixed count, remove only content with no factual, evidentiary, boundary, action, or comprehension value",
+      "bilingual": "shared content map and visual intent, separately written natural scripts and independent TTS, VTT, timing, scenes, and animation"
+    },
+    "opening": {
+      "type": "voice-synced kinetic question",
+      "questionWithinSeconds": 5,
+      "authorityWithinSeconds": 12,
+      "lossAndBenefitWithinSeconds": 20,
+      "artifactAndExplanationWithinSeconds": 30,
+      "earlyRevealCount": 0,
+      "postQuestionHold": "no added 1.2-1.6 second hold"
+    },
+    "visual": {
+      "paper": "#ECECEA",
+      "ink": "#111413",
+      "chapterBar": "full-width 52px persistent bar after the hook",
+      "temporaryGeneratedSceneRatio": "15-20 percent",
+      "motionTypeMinimum": 7,
+      "motionBeatMinimum": 20,
+      "referenceImplementationSceneCount": 63,
+      "referenceImplementationChapterCount": 7,
+      "referenceImplementationRecapSceneCount": 15
+    }
+  },
+  "implementationReference": {
+    "chinese": {
+      "project": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN",
+      "render": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/renders/2026-07-23-03-ai-agent-uncertainty-longform.zh-CN.mp4",
+      "renderSha256": "c3f3ca90f1de71caa5b4f86f3376bf2acc8a1c0e380b39cc8cdb38589b4ae4d4",
+      "durationSeconds": 378.176,
+      "summaryDurationSeconds": 378.166667,
+      "profileId": "tiny-agent-longform-kinetic-retention-2026-07-23-zh-CN",
+      "sceneCount": 63,
+      "chapterCount": 7,
+      "recapSceneCount": 15,
+      "temporaryGeneratedSceneCount": 10,
+      "temporaryGeneratedSceneRatio": 0.15873015873015872,
+      "distinctGeneratedArtCount": 5,
+      "motionTypeCount": 7,
+      "motionBeatCount": 29,
+      "openingFirstSentenceEndSeconds": 3.429,
+      "openingEarlyRevealCount": 0
+    },
+    "english": {
+      "project": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-en-US",
+      "render": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-en-US/renders/2026-07-23-03-ai-agent-uncertainty-longform.en-US.mp4",
+      "renderSha256": "ddc688cf2d531b7c24166cad8d7563bb4e4d3167ea8ca2da010b8d5b1de03d5b",
+      "durationSeconds": 469.1,
+      "profileId": "tiny-agent-longform-kinetic-retention-2026-07-23-en-US"
+    },
+    "publishedEnglishEvidence": {
+      "url": "https://www.youtube.com/watch?v=kmQos2SfsXY",
+      "privacyStatus": "public",
+      "playlistId": "PLJffvaWRvGC8",
+      "publishedAt": "2026-07-22T20:15:00Z"
+    }
+  },
+  "referenceArtifactHashes": {
+    "zh-CN": {
+      "BRIEF.md": "0687be6f50778359a37fae830f5f092b0e641d06c734aa50f6f359956823c14d",
+      "production-profile.json": "d43497e418293adff1b50eb78d4b9c1c93f46f634ff652a2f6e7014203ea48cb",
+      "episode.json": "97e4d1047000cad21bfac214cc1f71e1b741151cf90ac4fd265ba9d126fc3ef6",
+      "scene-plan.json": "7b1fb7e3982451aecea935cfe654598ca20dfbeacc8b4c6ebe7d06525626a6a2",
+      "animation-plan.json": "4d9b6bcb67851df6a8abdbec9ed9efce167736aa7f034ee3d14be5fff634d2a7",
+      "build.mjs": "b9e662c7e8f4cf3864751aaaf3d54946886d8e9a699d345286938e4c0bddfa77",
+      "qa/motion-report.json": "3de3d66b457b5d8df75fba28def7818bf88100d9df5e94825c490003f0a8ee34",
+      "qa/retention-opening-report.json": "7cb5301c4ef474eb7fa7162007ffe9bbb2fe6a18922d5ea667980f82434f7c2c"
+    },
+    "en-US": {
+      "production-profile.json": "752f2926363e7f46db437077d18840d3d678f827ceb075a70e5c6e532c58de76",
+      "episode.json": "38f9eab77b2dec3a05008f7fd0a45e398de9adaeaf0c1ef69dd91b4bc0affc6f",
+      "scene-plan.json": "83a5ec9c9f0dc451d4edf9b0153007ef878f71cb32890bf1de9e71278418e819",
+      "animation-plan.json": "4899c6e887069a160080220d2564e245b71056ae4fb7aa960b631b1fc0df6c23",
+      "build.mjs": "b9e662c7e8f4cf3864751aaaf3d54946886d8e9a699d345286938e4c0bddfa77",
+      "qa/motion-report.json": "3de3d66b457b5d8df75fba28def7818bf88100d9df5e94825c490003f0a8ee34",
+      "qa/retention-opening-report.json": "f7a51c62d0fcd24094ae19f9a64c4d83ff3facf8dcdaf560278624f8d5ef0405"
+    }
+  },
+  "excludedGenerationRules": [
+    "The later +10 percent bilingual voice rate",
+    "The later 9-12 minute target",
+    "The later single everyday story requirement",
+    "The later three-module mechanism-diagnosis-action limit",
+    "The later removal of spoken three-point chapter recaps",
+    "The later 35-45 stable-state target and 12-second median",
+    "The later 0.10-0.15 second glyph lead",
+    "The later 1.2-1.6 second complete-question hold",
+    "All V4, V5, V6, and V7 motion and transition additions created after the scheduled run"
+  ]
+}

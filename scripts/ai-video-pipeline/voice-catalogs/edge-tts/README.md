@@ -57,4 +57,4 @@ AI_VIDEO_TTS_VOICE=zh-CN-YunxiaNeural
 
 单条视频保持一个主旁白声音。更换默认声音后，需要重新检查中文断句、英文术语发音和最终语速。
 
-当前中文默认声音为 `zh-CN-YunxiaNeural`。Tiny Agent Shorts 和英文长视频默认使用 `en-US-AnaNeural`；其官方分类为 `Cartoon, Conversation`，音色标签为 `Cute`。
+当前中文默认声音为 `zh-CN-YunxiaNeural`。Tiny Agent 英文 Shorts 和英文横屏长视频均使用 `en-US-AnaNeural`；其分类为 `Cartoon, Conversation`，音色标签为 `Cute`。具体语速由对应视频规则单独指定；当前 6:18 定时成片冻结基线固定为中文 `zh-CN-YunxiaNeural +35%`、英文 `en-US-AnaNeural +30%`。

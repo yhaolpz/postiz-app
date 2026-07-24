@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 2,
+  "status": "active-frozen-snapshot",
+  "profileId": "tiny-agent-longform-scheduled-6m18-2026-07-23",
+  "locales": ["zh-CN", "en-US"],
+  "activatedAt": "2026-07-24",
+  "purpose": "Reproduce the bilingual generation rules used by the 2026-07-23 scheduled run whose Chinese render is 6:18, without copying that episode's topic facts, script, or absolute timings.",
+  "sourceSnapshot": {
+    "manifest": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/manifest.json",
+    "sourceCommit": "457ba42d110d259ed03c4b008e1af2cc8b0b9935",
+    "referenceChineseRender": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/renders/2026-07-23-03-ai-agent-uncertainty-longform.zh-CN.mp4",
+    "referenceChineseRenderSha256": "c3f3ca90f1de71caa5b4f86f3376bf2acc8a1c0e380b39cc8cdb38589b4ae4d4",
+    "referenceEnglishRender": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-en-US/renders/2026-07-23-03-ai-agent-uncertainty-longform.en-US.mp4",
+    "referenceEnglishRenderSha256": "ddc688cf2d531b7c24166cad8d7563bb4e4d3167ea8ca2da010b8d5b1de03d5b"
+  },
+  "mandatoryReadOrder": [
+    "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/manifest.json",
+    "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/automation-prompt.txt",
+    "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/tiny-agent-longform.md",
+    "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/implementation-profile.zh-CN.json"
+  ],
+  "precedence": {
+    "generationRules": "The scheduled-6m18 frozen snapshot and its hashed bilingual implementation projects are the only active sources for content organization, narration pace, duration, opening timing, chapter pattern, visual cadence, motion baseline, generated-art ratio, and recaps.",
+    "operationalOverlaysAllowed": [
+      "daily run state machine, recovery, cleanup, and deduplication",
+      "source factuality and safety",
+      "AI Agent title identity",
+      "current cover deliverables and deterministic cover text",
+      "current Tiny Agent asset manifest integrity",
+      "1920x1080 30fps H.264 AAC technical output",
+      "fixed bilingual outro copy and alignment",
+      "Chinese local-only delivery",
+      "English Postiz publication and public playlist verification"
+    ],
+    "forbiddenBlending": "Rules introduced after the 2026-07-23 03:02-04:17 scheduled run may not alter a generation dimension covered by the frozen snapshot. In particular, do not blend in the later V4 +10 percent rates, 9-12 minute target, one-story requirement, three-module limit, recap removal, 35-45-state target, opening glyph lead, complete-question hold, or later motion choreography."
+  },
+  "fixedBilingualGeneration": {
+    "duration": "5-8 minutes",
+    "zh-CN": {
+      "voice": "zh-CN-YunxiaNeural",
+      "rate": "+35%"
+    },
+    "en-US": {
+      "voice": "en-US-AnaNeural",
+      "rate": "+30%"
+    },
+    "chapterPattern": "chapter opening, body, and spoken three-point recap",
+    "opening": "voice-synced kinetic question with no early reveal and no later V4 hold",
+    "visualReference": "63 scenes, 7 chapters, 15 recap scenes, 15.873 percent temporary generated scenes, 7 motion types, and 29 motion beats in the Chinese reference implementation"
+  },
+  "perEpisodeRegeneration": [
+    "source research and factual content",
+    "shared bilingual content map",
+    "natural English and Chinese scripts",
+    "topic-specific examples and chapter names",
+    "independent TTS and VTT",
+    "timing-map.json",
+    "scene-plan.json",
+    "animation-plan.json",
+    "metadata and cover copy"
+  ],
+  "integrity": {
+    "validator": "scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs",
+    "failClosed": true,
+    "expectedSnapshotHashes": {
+      "automation-invocation.txt": "8a0c26879bc04f3c2d30754f79618365e8ad0587227c2a3d39cf711fdb571432",
+      "automation-prompt.txt": "ca42a5e44c9243554d233e4f547fbd8268979045835bf4172fee55c45b960766",
+      "tiny-agent-longform.md": "467a8a881b09f1c05eba8ed7cc7319289b53ae140f155e6d5be24dbd18ada2af",
+      "implementation-profile.zh-CN.json": "d43497e418293adff1b50eb78d4b9c1c93f46f634ff652a2f6e7014203ea48cb"
+    }
+  }
+}

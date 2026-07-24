@@ -1,8 +1,8 @@
-# Tiny Agent 横屏长视频每日两更计划
+# Tiny Agent 横屏长视频每日一次计划
 
 ## 目标
 
-每天北京时间 `03:00` 与 `15:00` 各消费一个独立选题。每次围绕该选题制作英文和中文两条横屏长视频：英文版通过 Postiz 发布到 YouTube；中文版完成相同级别的内容、音视频和画面准出后，只保留本地成片、通用中文元数据和 `16:9`、`4:3`、`3:4` 三张中文封面，不再打开或代填任何中文平台上传页。
+每天北京时间 `03:00` 消费一个独立选题。每次围绕该选题制作英文和中文两条横屏长视频：英文版通过 Postiz 发布到 YouTube；中文版完成相同级别的内容、音视频和画面准出后，只保留本地成片、通用中文元数据和 `16:9`、`4:3`、`3:4` 三张中文封面，不再打开或代填任何中文平台上传页。
 
 内容定位为“Agent 工作方法”：帮助知识工作者、创作者、产品、运营、分析师、创业者和开发者更好地选择任务、委托工作、提供上下文、验收结果、控制风险和复用经验。
 
@@ -12,23 +12,23 @@
 
 | 项目             | 规则                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 执行时间         | 每天 `03:00` 与 `15:00`，Asia/Shanghai；两个时段分别使用运行键 `<YYYY-MM-DD>-03`、`<YYYY-MM-DD>-15`                                                                                                                                                                                                                                                                                                                                                            |
-| 每次交付         | 每个时段消费一个独立选题，并交付该主题的英文版和中文版各 `1` 条；同一时段的双语版本使用相同内容地图与章节结构                                                                                                                                                                                                                                                                                                                                                  |
+| 执行时间         | 每天 `03:00`，Asia/Shanghai；运行键固定为 `<YYYY-MM-DD>-03`                                                                                                                                                                                                                                                                                                                                                                                                     |
+| 每次交付         | 每次消费一个独立选题，并交付该主题的英文版和中文版各 `1` 条；双语版本共享内容事实、中心结论、章节顺序和最终工具，但分别生成自然脚本、TTS、VTT、场景和动画。两版统一执行冻结的 `2026-07-23-scheduled-6m18` 生成基线，不复用另一语言的措辞或秒点                                                                                                                                                                                                                 |
 | 发布平台         | 仅英文版自动发布到 YouTube，`public`；中文版只生成本地素材，不自动上传、代填或发布到任何中文平台                                                                                                                                                                                                                                                                                                                                                               |
 | 中文交付边界     | 生成中文 MP4、通用中文标题/简介/hashtag，以及 `16:9`、`4:3`、`3:4` 三比例封面后结束；不生成其它中文封面，不打开浏览器上传页，不生成小红书专用标题或文案                                                                                                                                                                                                                                                                                                           |
 | 播放列表         | `AI Agents: From Chat to Done`，ID `PLJffvaWRvGC8`                                                                                                                                                                                                                                                                                                                                                                                                             |
-| 英文声音         | `edge-tts` 的 `en-US-AnaNeural`，固定语速 `+30%`                                                                                                                                                                                                                                                                                                                                                                                                               |
-| 中文声音         | `edge-tts` 的 `zh-CN-YunxiaNeural`，固定 `+50%`                                                                                                                                                                                                                                                                                                                                                                                                                |
+| 英文声音         | `edge-tts` 的 `en-US-AnaNeural`，固定语速 `+30%`；只用于英文横屏长视频，英文 Shorts 保持自己的既有声音规则                                                                                                                                                                                                                                                                                                                                                     |
+| 中文声音         | `edge-tts` 的 `zh-CN-YunxiaNeural`，固定语速 `+35%`。前 `30 秒`普通句间停顿不超过 `0.2 秒`；其余停顿按最终自然语音和章节节奏生成，不套用后来 V4 的三档停顿                                                                                                                                                                                                                                                                                                    |
 | 双语固定结束页   | 全片总结后按对应语言 CTA 的 VTT 起点硬切。英文念出并显示 `Follow Tiny Agent. Tiny Agent helps you get better at using AI.`；中文念出并显示 `关注 Tiny Agent，成为更擅长使用 AI 的人！`。两版必须使用相同笑脸/挥手 Tiny Agent 角色图、纸灰构图、配色和动效，不显示当期标题、字幕框或章节进度条                                                                                                                                                                  |
 | 章节导航         | 底部固定 `1920x52` 全宽分段条，章节按真实 VTT 时长分配宽度；标签从 `1` 开始连续显示为 `1. 前言`、`2. 方法`、`3. 总结`，英文同样使用 `1. Introduction` 格式                                                                                                                                                                                                                                                                                                         |
 | 视频规格         | `1920x1080`、`16:9`、`30fps`、H.264/AAC                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | 双语封面         | 每期固定四张：英文 4K 发布母版 `thumbnail.en-US.png`（`3840x2160`）；中文 `thumbnail.zh-CN.png`（`1280x720`）、`thumbnail.zh-CN.4x3.png`（`1200x900`）、`thumbnail.zh-CN.3x4.png`（`900x1200`）。英文另生成 `1280x720` 与 `256x144` QA 预览，但只向 Postiz 提交 4K 母版。生成前必须查看 `scripts/ai-video-pipeline/style-guides/references/tiny-agent-chinese-cover-three-ratio-reference.png`。四张都使用完整插画与确定性文字叠加，不得用不透明面板整体截断插画。中文 `4:3` 可见标题包围盒实测不低于画布 `50%`；中文 `3:4` 永久固定为顶部 `60%` 文字区、底部 `40%` 插画区，黄线位于 `y=0.60H`，标题包围盒至少占文字区 `68%`，插画 `contain` 居中完整显示且不得裁切或与文字重叠。全部为 sRGB PNG、单张小于 `2 MB`，英文随 Postiz 提交，中文仅本地交付 |
 | 中文发布文案     | 每期只生成通用中文标题、精简简介、固定关注句和相关 hashtag，写入中文项目供用户自行使用；不生成 `xiaohongshuTitle`、小红书专用简介、话题、合集或平台表单状态。中文简介不含章节标题、时间点、来源机构/原文标题、`来源：`段落或任何外站链接                                                                                                                                    |
-| 目标时长         | 优先 `7-10` 分钟，允许随内容在 `5-12` 分钟内浮动；时长是结果范围，不驱动机械删减。脚本完整保留 P0/P1，并按证据价值保留能建立来源可信度、支撑结论、解释机制、限定边界或帮助迁移使用的 P2；只删除确认不增加信息或理解价值的重复与客套内容                                                                                                                                                                                                                   |
-| 生产基线         | `scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md`                                                                                                                                                                                                                                                                                                                                                                                                |
+| 目标时长         | 中英文长视频均为 `5-8` 分钟。时长是结果范围，不驱动机械补写或删减；两版都完整保留 P0/P1，并按证据价值保留必要 P2                                                                                                                                                                                                                                                                                                                                                |
+| 生产基线         | 双语生成规则由 `scripts/ai-video-pipeline/style-guides/tiny-agent-longform-active-profile.zh-CN.json` 激活的 `scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/` 冻结快照提供。`tiny-agent-longform.md` 是来源提交 `457ba42d110d259ed03c4b008e1af2cc8b0b9935` 的逐字副本；后来的 V4/V5/V6/V7 规则不得覆盖该快照                                                                                                                   |
 | 动画素材         | 活跃包由 `scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-active.json` 指向 `tiny-agent-v2`；新项目用 `prepare-tiny-agent-assets.mjs` 写入 `assets/pack`，编排时从 manifest 读取素材并在生成 HTML 前校验全部 id                                                                                                                                                                                                                                   |
 | 中文平台发布手册 | `scripts/ai-video-pipeline/runbooks/tiny-agent-chinese-platform-publishing.md` 已停用，仅保留历史操作记录，不再作为生产依赖                                                                                                                                                                                                                                                                                                                                     |
-| 实现参考         | `var/hyperframes-showcases/building-effective-agents-longform-zh-CN/`                                                                                                                                                                                                                                                                                                                                                                                          |
+| 实现参考         | 中文固定参考 `var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/`，英文固定参考 `var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-en-US/`；只复用生成规则和体验目标，不复用其主题、事实、脚本、绝对秒点或场景文案                                                                                                                                                                                                       |
 | 结束页参考       | 英文 `var/hyperframes-showcases/tiny-agent-longform-outro-sample/`；中文 `var/hyperframes-showcases/tiny-agent-longform-outro-sample-zh-CN/`                                                                                                                                                                                                                                                                                                                   |
 | 选题归档         | `scripts/ai-video-pipeline/content-plans/tiny-agent-longform-archive.md`                                                                                                                                                                                                                                                                                                                                                                                       |
 | 本地视频保留     | 英文成功公开发布且进入目标播放列表后，中英文 MP4 保留 `48` 小时                                                                                                                                                                                                                                                                                                                                                                                                |
@@ -37,7 +37,7 @@
 
 表中的“视频方向”是内容问题，不是最终发布标题。最终标题、简介、关键词和话题必须在脚本与时间轴确定后，按照长视频生产基线生成。
 
-自 `2026-07-19` 起，未执行条目的“日期”只作为既有队列顺序，不再限制必须在该自然日发布。每天 `03:00` 与 `15:00` 分别选择表中最早一条 `待执行` 记录；前一时段未完成或阻塞时，后一时段不得抢占该选题，但可以在确认两个运行键与产物路径完全隔离后继续消费下一条。现有选题保持当前顺序，不批量改写、跳过或重新生成。
+自 `2026-07-19` 起，未执行条目的“日期”只作为既有队列顺序，不再限制必须在该自然日发布。每天 `03:00` 选择表中最早一条 `待执行` 记录；上一运行未完成或阻塞时不得抢占下一条。现有选题保持当前顺序，不批量改写、跳过或重新生成。
 
 | 日期       | 来源与发布日期                                                                                                                                                                                          | 视频方向                                          | 必须交付                   | 状态                                               |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- | -------------------------- | -------------------------------------------------- |
@@ -51,7 +51,7 @@
 | 2026-07-23 | Anthropic：[Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)，2025-09-29                                                 | 提示词写得再长，为什么 Agent 还是会忘？           | 最小高信号上下文包         | 英文已发布；中文本地成片已生成（RUN_KEY `2026-07-21-03`） |
 | 2026-07-24 | Anthropic：[Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)，2026-01-09                                                                       | AI 说完成了，怎样确认它真的完成？                 | Agent 结果验收表           | 英文已发布；中文本地成片已生成（RUN_KEY `2026-07-22-03`） |
 | 2026-07-25 | OpenAI：[Why language models hallucinate](https://openai.com/index/why-language-models-hallucinate/)，2025-09-05                                                                                        | AI 为什么宁愿猜错，也不愿说不知道？               | 不确定性与事实核验清单     | 英文已发布；中文本地成片已生成（RUN_KEY `2026-07-23-03`） |
-| 2026-07-26 | OpenAI：[Designing AI agents to resist prompt injection](https://openai.com/index/designing-agents-to-resist-prompt-injection/)，2026-03-11                                                             | 哪些操作可以自动执行，哪些必须由人批准？          | 三级行动权限矩阵           | 英文已发布；中文本地成片已生成（RUN_KEY `2026-07-24-03`） |
+| 2026-07-26 | OpenAI：[Designing AI agents to resist prompt injection](https://openai.com/index/designing-agents-to-resist-prompt-injection/)，2026-03-11                                                             | 哪些操作可以自动执行，哪些必须由人批准？          | 三级行动权限矩阵           | 英文已发布；中文新版完整成片已生成（RUN_KEY `2026-07-24-03`） |
 | 2026-07-27 | Microsoft Research：[From raw interaction to reusable knowledge](https://www.microsoft.com/en-us/research/blog/from-raw-interaction-to-reusable-knowledge-rethinking-memory-for-ai-agents/)，2026-03-10 | Agent 记得越多，为什么反而可能越笨？              | 记忆保留、提炼、遗忘表     | 待执行                                             |
 | 2026-07-28 | Anthropic：[Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)，2025-11-26                                                 | Agent 连续工作几小时，怎样避免跑偏？              | 长任务进度与交接模板       | 待执行                                             |
 | 2026-07-29 | OpenAI：[Using skills](https://openai.com/academy/skills/)，2026-04-10                                                                                                                                  | 怎样把一次成功经验变成下次还能复用的能力？        | Skill 模板                 | 待执行                                             |
@@ -61,7 +61,7 @@
 
 ### 2026-07-19 已审核补充队列
 
-用户已确认以下 `14` 个选题全部通过。选题选择顺序固定为：先按上表从上到下消费尚未完成的 `12` 个既有待执行条目，清空后再按下表从上到下消费。表中的“预计消费时段”按每天 `03:00` 与 `15:00` 均正常完成计算；如任一运行需要恢复或阻塞，后续时段随队列顺延，不跳过、不抢占，也不重新研究替换。
+用户已确认以下 `14` 个选题全部通过。选题选择顺序固定为：先按上表从上到下消费尚未完成的既有待执行条目，清空后再按下表从上到下消费。表中的“预计消费时段”是历史两更节奏下的排序标记，不再决定执行时间；当前每日 `03:00` 按表从上到下消费。如任一运行需要恢复或阻塞，后续运行顺延，不跳过、不抢占，也不重新研究替换。
 
 | 预计消费时段     | 来源与发布日期                                                                                                                                                                                               | 视频方向                                                     | 必须交付                       | 状态   |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------ | ------ |
@@ -82,10 +82,10 @@
 
 其中 CORPGEN、Sensible Agent、Project Deal 与 PaperVizAgent / ScholarPeer 属于研究或试验型来源。制作时必须明确实验样本、环境与指标边界，不得把结果泛化为所有 Agent 或所有真实工作场景的必然结论。
 
-## 每时段执行流程
+## 每日执行流程
 
 ```text
-按 Asia/Shanghai 生成运行键 `<YYYY-MM-DD>-03` 或 `<YYYY-MM-DD>-15`
+按 Asia/Shanghai 生成运行键 `<YYYY-MM-DD>-03`
 → 读取最早一条待执行排期与选题归档
 → 复核原文仍可访问、标题、日期和关键结论
 → 完整分析文章并建立内容地图
@@ -110,7 +110,7 @@
 
 ## 自动续排规则
 
-计划中已经没有任何 `待执行` 条目时，当前时段才自动研究并补充一个新选题后继续制作。新文章优先满足：
+计划中已经没有任何 `待执行` 条目时，当日运行才自动研究并补充一个新选题后继续制作。新文章优先满足：
 
 1. 发布于最近 `12` 个月，来自 OpenAI、Anthropic、Google DeepMind、Microsoft Research、Google、Microsoft WorkLab 等头部机构的官方页面。
 2. 能转化为广大 AI/Agent 使用者面对的工作问题，同时包含可验证的方法、数据、机制、边界或案例。
@@ -118,11 +118,11 @@
 4. 与计划和归档中的 canonical URL、核心问题、中心结论及可复用产物均不重复。
 5. 超过 `12` 个月的文章只有在内容仍有效且价值明显高于近期候选时使用，并在计划中写明保留原因。
 
-每次只补充当前运行时段需要的一篇，不一次性生成大量未经复核的远期选题。新条目必须先写入本计划，再开始视频制作。
+每次只补充当前运行需要的一篇，不一次性生成大量未经复核的远期选题。新条目必须先写入本计划，再开始视频制作。
 
 ## 自动清理规则
 
-每个运行时段开始新视频制作前运行：
+每次运行开始新视频制作前运行：
 
 ```bash
 node scripts/ai-video-pipeline/cleanup-published-longform.mjs --apply
