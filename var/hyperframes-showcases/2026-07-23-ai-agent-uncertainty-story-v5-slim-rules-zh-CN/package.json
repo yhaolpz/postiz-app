@@ -1,0 +1,18 @@
+{
+  "name": "tiny-agent-ai-agent-uncertainty-story-v5-slim-rules-zh-cn",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tts": "node build.mjs --tts",
+    "build": "node build.mjs --compile",
+    "check:transitions": "node qa/check-production.mjs transitions",
+    "check:semantics": "node qa/check-production.mjs semantics",
+    "check:balance": "node qa/check-production.mjs balance",
+    "check:layout": "node qa/check-dom-layout.mjs",
+    "check": "pnpm dlx hyperframes@0.7.68 check . --snapshots --frame-check=severity=error",
+    "render": "pnpm dlx hyperframes@latest render . --quality high --strict --quiet --workers 1 --low-memory-mode --video-bitrate 8M --output renders/2026-07-23-ai-agent-uncertainty-story-v5-slim-rules.zh-CN.mp4"
+  },
+  "devDependencies": {
+    "hyperframes": "0.7.68"
+  }
+}

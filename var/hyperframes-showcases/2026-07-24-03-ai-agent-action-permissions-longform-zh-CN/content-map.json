@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "runKey": "2026-07-24-03",
+  "series": "Tiny Agent",
+  "source": {
+    "publisher": "OpenAI",
+    "title": "Designing AI agents to resist prompt injection",
+    "publishedDate": "2026-03-11",
+    "canonicalUrl": "https://openai.com/index/designing-agents-to-resist-prompt-injection/"
+  },
+  "userQuestion": "Which AI agent actions can run automatically, and which require human approval?",
+  "centralThesis": "Do not rely on perfectly detecting malicious text. Limit what untrusted content can reach, and classify actions by consequence so low-risk work can run automatically, consequential actions require informed confirmation, and mismatched or high-harm actions are blocked.",
+  "knowledgePriority": {
+    "P0": [
+      "Prompt injection increasingly resembles social engineering, so input filtering alone is insufficient.",
+      "Risk appears when untrusted external content can reach a consequential capability: the source-sink path.",
+      "Sensitive transmission and dangerous actions should not happen silently.",
+      "The reusable capability is a three-tier action permission matrix: automatic, confirm, block."
+    ],
+    "P1": [
+      "Judge an action by external side effects, data sensitivity, destination, reversibility, and fit with the user's intent.",
+      "Separate read/draft capabilities from send/pay/delete/book capabilities.",
+      "Confirmation must disclose the exact payload, destination, purpose, consequence, and safer alternative.",
+      "Deterministic limits, narrow scopes, sandboxes, allowlists, dry runs, and audit logs constrain impact."
+    ],
+    "P2": [
+      "OpenAI's reported 2025 email example worked in half of tests for a specific prompt, illustrating that realistic social-engineering attacks can bypass simple filters.",
+      "OpenAI's Safe URL example can show what would be transmitted and ask for confirmation, or block the action and seek another path.",
+      "Human customer-service controls such as refund caps illustrate capability constraints that remain useful even when an agent is misled."
+    ],
+    "P3": [
+      "Long copied excerpts from the malicious email example",
+      "Product-by-product implementation details that do not change the permission model",
+      "Repeated restatements that prompt injection is dangerous"
+    ]
+  },
+  "factBoundary": {
+    "sourceAttributed": [
+      "Prompt injection is evolving toward social engineering.",
+      "Filtering inputs alone cannot fully solve contextual deception.",
+      "Source-sink analysis connects untrusted input to dangerous capability.",
+      "Safeguards may require confirmation or block sensitive transmission.",
+      "Deterministic limits constrain downside."
+    ],
+    "editorialSynthesis": [
+      "The names Automatic, Confirm, and Block.",
+      "The five decision questions used to classify an action.",
+      "The restaurant birthday story and the completed matrix template."
+    ]
+  },
+  "story": {
+    "id": "family-birthday-restaurant",
+    "setup": "A user asks an AI agent to find and help book a restaurant for a family birthday dinner.",
+    "desiredOutcome": "A useful shortlist and a safe reservation without leaking private data or allowing an unrelated action.",
+    "manipulation": "A page claims that a public verification endpoint needs the user's home address and profile details.",
+    "causalChain": [
+      "The agent reads untrusted external content.",
+      "The content imitates a legitimate instruction.",
+      "The risk becomes real only if the agent can reach a consequential tool or data sink.",
+      "A permission matrix constrains the action before damage occurs."
+    ],
+    "resolution": {
+      "automatic": "Search, compare public information, and draft a shortlist locally.",
+      "confirm": "Share the disclosed contact details with the selected restaurant and place the reservation after informed approval.",
+      "block": "Send profile or secret information to an unrelated public endpoint."
+    }
+  },
+  "modules": [
+    {
+      "id": "mechanism",
+      "titleEn": "How the risk path forms",
+      "titleZh": "风险链路怎样形成",
+      "promise": "Recognize the source-sink path instead of hunting only for suspicious wording."
+    },
+    {
+      "id": "diagnosis",
+      "titleEn": "Classify the consequence",
+      "titleZh": "按行动后果分级",
+      "promise": "Decide whether an action can run, needs confirmation, or must stop."
+    },
+    {
+      "id": "action",
+      "titleEn": "Enforce the permission matrix",
+      "titleZh": "把权限矩阵做进系统",
+      "promise": "Turn the judgment into scopes, limits, confirmations, blocks, tests, and logs."
+    }
+  ],
+  "reusableArtifact": {
+    "nameEn": "Three-Tier AI Agent Action Permission Matrix",
+    "nameZh": "AI 智能体三级行动权限矩阵",
+    "columns": [
+      "Action or tool",
+      "Data touched",
+      "Destination",
+      "External effect and reversibility",
+      "Automatic / Confirm / Block response"
+    ],
+    "tierRules": {
+      "automatic": "Low consequence, reversible, within explicit user intent, no sensitive external transfer.",
+      "confirm": "Creates an external side effect, spends money, changes state, reaches a new recipient, or transmits sensitive data for a legitimate purpose.",
+      "block": "Conflicts with user intent, lacks a legitimate need, targets an unverified destination, or creates irreversible/high-harm exposure."
+    }
+  },
+  "chapterLabels": {
+    "en-US": [
+      "1. Introduction",
+      "2. Risk Path",
+      "3. Permission Tiers",
+      "4. Controls",
+      "5. Summary"
+    ],
+    "zh-CN": [
+      "1. 前言",
+      "2. 风险链路",
+      "3. 权限分级",
+      "4. 系统控制",
+      "5. 总结"
+    ]
+  },
+  "crossLocaleContract": {
+    "shared": [
+      "Central thesis",
+      "P0/P1/P2 knowledge coverage",
+      "Restaurant story result",
+      "Three module promises",
+      "Fact boundaries",
+      "Three-tier matrix"
+    ],
+    "independent": [
+      "Natural script wording",
+      "TTS and VTT",
+      "Timing map",
+      "Scene plan",
+      "Animation plan"
+    ]
+  }
+}

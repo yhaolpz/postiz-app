@@ -1,0 +1,109 @@
+{
+  "version": 4,
+  "variant": "deep-content-story-led",
+  "source": {
+    "publisher": "OpenAI",
+    "title": "Why language models hallucinate",
+    "canonicalUrl": "https://openai.com/index/why-language-models-hallucinate/",
+    "publishedDate": "2025-09-05",
+    "paperDate": "2025-09-04"
+  },
+  "audienceQuestion": "AI 智能体为什么会自信猜错，以及怎样判断一份答案能不能支持现实行动？",
+  "centralThesis": "保留关键机制、证据和边界，用一把伞的连续故事，让观众掌握可答门、证据门和行动门。",
+  "continuousCase": {
+    "id": "umbrella-weather-decision",
+    "setup": "AI 智能体没有查询实时天气，却自信建议用户不带伞，用户下午被雨淋湿。",
+    "mechanism": "模型根据语言规律生成顺口答案，但生成能力不等于获取当前事实。",
+    "diagnosis": "地点和出行时间可以确认，季节趋势只是推断，实时降雨在查询前仍然未知。",
+    "resolution": "智能体查询气象预报和雷达，在承认未知的前提下，根据带伞的低成本给出可撤销行动建议。"
+  },
+  "reusableArtifact": {
+    "name": "AI 答案三道门",
+    "gates": [
+      "可答门：当前条件允许可靠回答吗",
+      "证据门：来源是否接近事实、相互独立并支持全部判断",
+      "行动门：判断错误的损失有多大，动作能否撤销"
+    ],
+    "operationalSteps": [
+      "可答性",
+      "判断清单",
+      "证据标准",
+      "真实核验",
+      "行动风险",
+      "反馈测试"
+    ]
+  },
+  "priorities": {
+    "P0": [
+      "只看准确率会奖励猜测而不是诚实表达未知",
+      "问题可能不可得、含糊、过期或本来就无法唯一确定",
+      "高风险判断必须在行动前连接证据"
+    ],
+    "P1": [
+      "回答前先过可答性门",
+      "区分已确认、有支持但不完整、推断和未知",
+      "高风险判断使用一手证据与真正独立的交叉核验",
+      "把不确定性连接到澄清、核验、批准、停止或拒答"
+    ],
+    "P2": [
+      "预训练看到流畅文本，但没有逐句可靠真假标签",
+      "任意低频事实难以从模式恢复",
+      "SimpleQA 是一套答案明确、可以核对的事实短问答",
+      "保留 SimpleQA 的准确率、错误率和拒答率对比",
+      "不可逆高影响行动前保留人工批准"
+    ],
+    "P3": [
+      "论文形式化证明与符号",
+      "长篇相关工作综述",
+      "与观众操作流程无关的模型排名"
+    ]
+  },
+  "modules": [
+    {
+      "index": 1,
+      "name": "流畅回答为什么不等于事实",
+      "storyQuestion": "一句顺口回答为什么可能只是猜测？",
+      "handoff": "这条判断在当前条件下，到底有没有可能被知道？"
+    },
+    {
+      "index": 2,
+      "name": "先过可答门，再谈答案质量",
+      "storyQuestion": "怎样区分难推理和当前不可答？",
+      "handoff": "能够查到，是否就代表现有证据足够？"
+    },
+    {
+      "index": 3,
+      "name": "让证据和行动各过一道门",
+      "storyQuestion": "证据怎样支持一项现实决定？",
+      "handoff": "答案最终变成一条可检查的决策链。"
+    }
+  ],
+  "cognitiveLoadPolicy": {
+    "voice": "zh-CN-YunxiaNeural",
+    "fixedRate": "+10%",
+    "targetDurationSeconds": [
+      540,
+      720
+    ],
+    "sceneCountTarget": [
+      40,
+      45
+    ],
+    "stableVisualSeconds": [
+      10,
+      20
+    ],
+    "ordinaryPauseSeconds": 0.25,
+    "knowledgeUnitPauseSeconds": 0.5,
+    "chapterBoundaryPauseSeconds": 0.8,
+    "onePrimaryJudgementPerScene": true,
+    "newConceptsBeforeExampleMaximum": 2,
+    "chapterRecap": "none; use natural story transitions"
+  },
+  "factBoundaries": [
+    "OpenAI 的发现和数字明确归属于 OpenAI",
+    "三道门和六步清单是面向 AI 智能体使用的实践综合，不冒充 OpenAI 原文框架",
+    "定性证据状态不等于校准后的数值概率",
+    "SimpleQA 数字只用于解释激励差异，不泛化成所有模型和任务的排名"
+  ]
+}

@@ -1,0 +1,693 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:04.902
+If an AI Agent reads a malicious page, should it still act for you?
+
+2
+00:00:05.278 --> 00:00:10.162
+OpenAI warns that prompt injection now looks less like an obvious command
+
+3
+00:00:10.162 --> 00:00:14.716
+and more like social engineering designed to mislead an agent in context.
+
+4
+00:00:14.716 --> 00:00:18.965
+Picture a dinner-planning agent that almost sends your home address to a
+
+5
+00:00:18.965 --> 00:00:22.785
+fake verification site while trying to reserve a table for your family.
+
+6
+00:00:22.785 --> 00:00:27.572
+By the end, you will have a three-tier AI agent action permission matrix:
+
+7
+00:00:27.572 --> 00:00:32.491
+what can run automatically, what needs informed confirmation, and what must
+
+8
+00:00:32.491 --> 00:00:32.864
+be blocked.
+
+9
+00:00:32.864 --> 00:00:37.069
+The key question is not only, “Can the agent spot the bad sentence?
+
+10
+00:00:37.069 --> 00:00:41.546
+It is, “What could this sentence make the agent do if the agent is fooled?
+
+11
+00:00:41.546 --> 00:00:46.487
+This video is packed with practical, high-value insights to help you get
+
+12
+00:00:46.487 --> 00:00:47.230
+better at using AI.
+
+13
+00:00:47.230 --> 00:00:52.481
+It's a longer one, so follow Tiny Agent and save it so you don't lose it.
+
+14
+00:00:52.481 --> 00:00:54.448
+Start with a familiar task.
+
+15
+00:00:54.448 --> 00:00:59.332
+You ask an AI agent to find a restaurant for a family birthday, compare
+
+16
+00:00:59.332 --> 00:01:02.430
+menus, and help reserve a table for Saturday night.
+
+17
+00:01:02.430 --> 00:01:07.921
+To help, the agent reads restaurant pages, reviews, maps, confirmation
+
+18
+00:01:07.921 --> 00:01:11.030
+policies, and perhaps an email from a relative.
+
+19
+00:01:11.030 --> 00:01:15.719
+Most of that information is useful, but none of it is automatically
+
+20
+00:01:15.719 --> 00:01:16.184
+trustworthy.
+
+21
+00:01:16.184 --> 00:01:20.465
+A prompt injection hides an instruction inside that outside material.
+
+22
+00:01:20.465 --> 00:01:25.126
+Instead of merely describing a restaurant, a page may tell the agent to
+
+23
+00:01:25.126 --> 00:01:27.588
+ignore the user and follow a new procedure.
+
+24
+00:01:27.588 --> 00:01:33.201
+OpenAI describes a 2025 email attack reported by external researchers.
+
+25
+00:01:33.201 --> 00:01:38.155
+In one specific test prompt, the realistic social-engineering content
+
+26
+00:01:38.155 --> 00:01:39.470
+succeeded half of the time.
+
+27
+00:01:39.470 --> 00:01:41.809
+That is not a universal failure rate;
+
+28
+00:01:41.809 --> 00:01:46.424
+it is evidence that a plausible story can sometimes defeat a simple filter.
+
+29
+00:01:46.424 --> 00:01:50.976
+This is why a detector that searches for suspicious phrases is not enough.
+
+30
+00:01:50.976 --> 00:01:55.817
+A fully developed attack may look like a normal policy, a request from a
+
+31
+00:01:55.817 --> 00:01:57.970
+colleague, or a helpful verification step.
+
+32
+00:01:57.970 --> 00:02:02.652
+Deciding whether it is a lie requires context the detector may not have.
+
+33
+00:02:02.652 --> 00:02:06.907
+OpenAI uses a useful security model called source and sink.
+
+34
+00:02:06.907 --> 00:02:11.466
+In plain language, the source is where an attacker can influence the agent.
+
+35
+00:02:11.466 --> 00:02:15.955
+The sink is a capability that becomes dangerous in the wrong context.
+
+36
+00:02:15.955 --> 00:02:20.377
+For our dinner agent, restaurant pages and email are sources.
+
+37
+00:02:20.377 --> 00:02:24.923
+Sending a message, following a link, sharing contact details, paying a
+
+38
+00:02:24.923 --> 00:02:29.859
+deposit, or confirming a reservation are sinks because they change something
+
+39
+00:02:29.859 --> 00:02:31.993
+outside the agent's private workspace.
+
+40
+00:02:31.993 --> 00:02:36.547
+Now the fake restaurant page claims that a public “compliance” endpoint
+
+41
+00:02:36.547 --> 00:02:40.338
+needs your home address and profile before showing available tables.
+
+42
+00:02:40.338 --> 00:02:44.824
+The wording sounds official, and it promises to help complete the task.
+
+43
+00:02:44.824 --> 00:02:48.880
+The damage does not come from the sentence simply existing on the page.
+
+44
+00:02:48.880 --> 00:02:53.642
+The damage becomes possible when that sentence can reach private data and a
+
+45
+00:02:53.642 --> 00:02:56.614
+send tool without an independent control in between.
+
+46
+00:02:56.614 --> 00:03:01.230
+Human organizations already use deterministic limits for the same reason.
+
+47
+00:03:01.230 --> 00:03:06.432
+A customer-service employee may issue small refunds, while larger refunds
+
+48
+00:03:06.432 --> 00:03:07.628
+require another approval.
+
+49
+00:03:07.628 --> 00:03:12.563
+Phishing filters help, but spending limits still matter when a message gets
+
+50
+00:03:12.563 --> 00:03:12.736
+through.
+
+51
+00:03:12.736 --> 00:03:17.646
+So the first lesson is simple: do not design safety around perfect
+
+52
+00:03:17.646 --> 00:03:17.815
+detection.
+
+53
+00:03:17.815 --> 00:03:22.289
+Constrain the path from untrusted information to consequential capability.
+
+54
+00:03:22.289 --> 00:03:27.322
+But once that path is visible, how do we decide which actions can proceed?
+
+55
+00:03:27.322 --> 00:03:29.105
+Return to the birthday dinner.
+
+56
+00:03:29.105 --> 00:03:34.379
+The agent can read public menus, compare travel time, draft a shortlist,
+
+57
+00:03:34.379 --> 00:03:39.924
+send your address, place a reservation, pay a deposit, or disclose a private
+
+58
+00:03:39.924 --> 00:03:39.946
+These actions do not deserve one shared permission.
+
+59
+00:03:39.946 --> 00:03:40.532
+profile.
+
+60
+00:03:43.289 --> 00:03:46.542
+Before granting a tool, ask five questions.
+
+61
+00:03:46.542 --> 00:03:49.303
+Does the action create an external side effect?
+
+62
+00:03:49.303 --> 00:03:51.093
+Does it touch sensitive data?
+
+63
+00:03:51.093 --> 00:03:53.650
+Is the destination new or unverified?
+
+64
+00:03:53.650 --> 00:03:55.329
+Can the result be reversed?
+
+65
+00:03:55.329 --> 00:03:58.195
+Does it clearly match the user's stated goal?
+
+66
+00:03:58.195 --> 00:04:00.204
+The first tier is Automatic.
+
+67
+00:04:00.204 --> 00:04:05.246
+Let the agent read public information, summarize it, calculate travel time,
+
+68
+00:04:05.246 --> 00:04:10.018
+and draft options locally when the work is low consequence, reversible,
+
+69
+00:04:10.018 --> 00:04:14.484
+inside the requested scope, and does not transmit sensitive information.
+
+70
+00:04:14.484 --> 00:04:16.777
+Automatic does not mean unlimited.
+
+71
+00:04:16.777 --> 00:04:22.576
+The agent should still use narrow read scopes, bounded search, local drafts,
+
+72
+00:04:22.576 --> 00:04:23.511
+and temporary files.
+
+73
+00:04:23.511 --> 00:04:27.997
+The point is to remove needless friction without giving outside text a
+
+74
+00:04:27.997 --> 00:04:29.829
+direct route to high-impact tools.
+
+75
+00:04:29.829 --> 00:04:31.726
+The second tier is Confirm.
+
+76
+00:04:31.726 --> 00:04:36.590
+Require informed approval when the action changes an external system, spends
+
+77
+00:04:36.590 --> 00:04:41.391
+money, sends sensitive or identifying information, reaches a new recipient,
+
+78
+00:04:41.391 --> 00:04:44.683
+or creates a commitment that the user will have to honor.
+
+79
+00:04:44.683 --> 00:04:49.399
+For the dinner, confirmation may be appropriate before sending the disclosed
+
+80
+00:04:49.399 --> 00:04:54.054
+phone number to the chosen restaurant, booking a specific time, accepting a
+
+81
+00:04:54.054 --> 00:04:55.941
+cancellation policy, or paying a deposit.
+
+82
+00:04:55.941 --> 00:04:59.287
+The purpose is legitimate, but the effect is real.
+
+83
+00:04:59.287 --> 00:05:03.824
+OpenAI describes a related safeguard for sensitive transmission: show the
+
+84
+00:05:03.824 --> 00:05:08.424
+user the information that would be sent and ask for confirmation, or block
+
+85
+00:05:08.424 --> 00:05:10.909
+the transfer and make the agent find another path.
+
+86
+00:05:10.909 --> 00:05:14.601
+The user should see the actual payload and destination.
+
+87
+00:05:14.601 --> 00:05:15.954
+A generic “Allow?
+
+88
+00:05:15.954 --> 00:05:17.703
+button is weak consent.
+
+89
+00:05:17.703 --> 00:05:22.485
+Good confirmation states what will leave the system, where it will go, why
+
+90
+00:05:22.485 --> 00:05:26.666
+the action is needed, what will change, and what safer alternative exists.
+
+91
+00:05:26.666 --> 00:05:31.295
+The user is approving a concrete consequence, not a vague category.
+
+92
+00:05:31.295 --> 00:05:33.718
+The third tier is Block or Escalate.
+
+93
+00:05:33.718 --> 00:05:38.338
+Stop when an action conflicts with the user's goal, lacks a legitimate
+
+94
+00:05:38.338 --> 00:05:42.760
+reason, exposes secrets to an unrelated destination, cannot be made
+
+95
+00:05:42.760 --> 00:05:47.116
+sufficiently reversible, or carries harm too large for an ordinary
+
+96
+00:05:47.116 --> 00:05:47.624
+confirmation.
+
+97
+00:05:47.624 --> 00:05:51.166
+In our story, searching and drafting are automatic.
+
+98
+00:05:51.166 --> 00:05:56.100
+Booking the selected table and sharing the minimum contact detail require
+
+99
+00:05:56.100 --> 00:05:56.393
+confirmation.
+
+100
+00:05:56.393 --> 00:06:01.631
+Sending a home address or hidden profile to an unrelated public endpoint is
+
+101
+00:06:01.631 --> 00:06:01.636
+The categories are clear;
+
+102
+00:06:01.636 --> 00:06:02.195
+blocked.
+
+103
+00:06:03.309 --> 00:06:06.376
+now they must be enforced by the system.
+
+104
+00:06:06.376 --> 00:06:10.021
+Build the matrix by capability, not by prompt wording.
+
+105
+00:06:10.021 --> 00:06:15.120
+List every action the agent can take, the data it can touch, the destination
+
+106
+00:06:15.120 --> 00:06:19.950
+it can reach, the external effect it creates, and the response tier that
+
+107
+00:06:19.950 --> 00:06:20.360
+controls it.
+
+108
+00:06:20.360 --> 00:06:22.290
+Separate reading from sending.
+
+109
+00:06:22.290 --> 00:06:27.030
+A tool that can inspect a calendar should not automatically be able to
+
+110
+00:06:27.030 --> 00:06:27.415
+invite guests.
+
+111
+00:06:27.415 --> 00:06:31.447
+A tool that can draft an email should not automatically transmit it.
+
+112
+00:06:31.447 --> 00:06:36.236
+A browser that can read a page should not automatically upload private
+
+113
+00:06:36.236 --> 00:06:36.320
+files.
+
+114
+00:06:36.320 --> 00:06:39.175
+Protect data before the model makes a decision.
+
+115
+00:06:39.175 --> 00:06:44.488
+Hide secrets the task does not need, expose only minimum fields, allowlist
+
+116
+00:06:44.488 --> 00:06:49.657
+known destinations, and run untrusted applications in a sandbox that can
+
+117
+00:06:49.657 --> 00:06:51.576
+detect unexpected communication.
+
+118
+00:06:51.576 --> 00:06:54.827
+Limit consequences with deterministic controls.
+
+119
+00:06:54.827 --> 00:07:00.512
+Use spending caps, refund limits, narrow OAuth scopes, one-time credentials,
+
+120
+00:07:00.512 --> 00:07:06.198
+dry runs, reversible staging, rate limits, and a second approval for actions
+
+121
+00:07:06.198 --> 00:07:08.922
+whose impact crosses a defined threshold.
+
+122
+00:07:08.922 --> 00:07:11.837
+Design confirmation as a decision surface.
+
+123
+00:07:11.837 --> 00:07:17.700
+Show the exact restaurant, time, deposit, cancellation rule, contact
+
+124
+00:07:17.700 --> 00:07:19.205
+details, and destination.
+
+125
+00:07:19.205 --> 00:07:21.761
+Put risky changes in plain language.
+
+126
+00:07:21.761 --> 00:07:26.425
+Let the user edit the payload, choose a safer scope, or cancel without
+
+127
+00:07:26.425 --> 00:07:27.958
+losing the rest of the work.
+
+128
+00:07:27.958 --> 00:07:31.068
+Define block conditions before the agent runs.
+
+129
+00:07:31.068 --> 00:07:35.741
+Secret exfiltration, a new public endpoint with no task need, destructive
+
+130
+00:07:35.741 --> 00:07:40.221
+action without recovery, and high-impact behavior that contradicts the
+
+131
+00:07:40.221 --> 00:07:44.253
+user's instruction should stop immediately with a clear explanation.
+
+132
+00:07:44.253 --> 00:07:47.180
+Log the path, not only the final result.
+
+133
+00:07:47.180 --> 00:07:51.727
+Record which external content influenced the decision, which tool was
+
+134
+00:07:51.727 --> 00:07:56.604
+requested, what data was selected, which control allowed or denied it, and
+
+135
+00:07:56.604 --> 00:07:57.575
+what the user confirmed.
+
+136
+00:07:57.575 --> 00:08:01.430
+This makes incidents explainable and policies improvable.
+
+137
+00:08:01.430 --> 00:08:06.745
+Test the controls with three kinds of material: normal content, ambiguous
+
+138
+00:08:06.745 --> 00:08:09.368
+content, and deliberately malicious content.
+
+139
+00:08:09.368 --> 00:08:13.075
+Check both the final environment state and the process trace.
+
+140
+00:08:13.075 --> 00:08:17.556
+A safe-looking answer is not enough if the agent attempted a forbidden
+
+141
+00:08:17.556 --> 00:08:18.062
+transmission.
+
+142
+00:08:18.062 --> 00:08:20.912
+Use the human-agent analogy from OpenAI.
+
+143
+00:08:20.912 --> 00:08:25.114
+Ask what a careful customer-service employee could do alone, what a
+
+144
+00:08:25.114 --> 00:08:28.434
+supervisor would review, and what no employee should do at all.
+
+145
+00:08:28.434 --> 00:08:34.528
+Then translate those boundaries into tools, scopes, limits, and confirmation
+
+146
+00:08:34.528 --> 00:08:34.663
+rules.
+
+147
+00:08:34.663 --> 00:08:39.816
+Your reusable matrix has five columns: action or tool, data touched,
+
+148
+00:08:39.816 --> 00:08:44.209
+destination, external effect and reversibility, and response tier.
+
+149
+00:08:44.209 --> 00:08:49.147
+Fill it before connecting a new tool, then update it whenever the tool gains
+
+150
+00:08:49.147 --> 00:08:49.880
+a new capability.
+
+151
+00:08:49.880 --> 00:08:52.090
+Now solve the birthday dinner again.
+
+152
+00:08:52.090 --> 00:08:55.133
+The agent automatically researches and drafts.
+
+153
+00:08:55.133 --> 00:08:59.995
+It asks before booking and before sending the minimum contact detail to the
+
+154
+00:08:59.995 --> 00:09:00.601
+chosen restaurant.
+
+155
+00:09:00.601 --> 00:09:06.260
+It blocks the fake verification endpoint, explains why, and continues with a
+
+156
+00:09:06.260 --> 00:09:07.002
+safer route.
+
+157
+00:09:07.002 --> 00:09:09.587
+The malicious sentence was only the source.
+
+158
+00:09:09.587 --> 00:09:13.759
+Risk appeared when it could reach private data and a consequential sink.
+
+159
+00:09:13.759 --> 00:09:18.702
+The safest system assumes some manipulation will get through and limits what
+
+160
+00:09:18.702 --> 00:09:19.415
+can happen next.
+
+161
+00:09:19.415 --> 00:09:24.688
+Use Automatic for low-consequence, reversible work inside the user's intent
+
+162
+00:09:24.688 --> 00:09:26.924
+with no sensitive external transmission.
+
+163
+00:09:26.924 --> 00:09:30.896
+Keep the scopes narrow even when no confirmation is needed.
+
+164
+00:09:30.896 --> 00:09:36.373
+Use Confirm for legitimate external changes, payments, commitments, new
+
+165
+00:09:36.373 --> 00:09:38.520
+recipients, or sensitive transfers.
+
+166
+00:09:38.520 --> 00:09:44.379
+Show the exact payload, destination, purpose, consequence, and safer
+
+167
+00:09:44.379 --> 00:09:45.089
+alternative.
+
+168
+00:09:45.089 --> 00:09:49.954
+Use Block for actions that conflict with the goal, lack a legitimate need,
+
+169
+00:09:49.954 --> 00:09:54.623
+expose secrets to an unrelated destination, or create irreversible harm
+
+170
+00:09:54.623 --> 00:09:55.981
+beyond the permitted boundary.
+
+171
+00:09:55.981 --> 00:09:59.388
+Build these rules into the tools, not into hope.
+
+172
+00:09:59.388 --> 00:10:01.023
+Follow Tiny Agent.
+
+173
+00:10:01.023 --> 00:10:04.167
+Tiny Agent helps you get better at using AI.

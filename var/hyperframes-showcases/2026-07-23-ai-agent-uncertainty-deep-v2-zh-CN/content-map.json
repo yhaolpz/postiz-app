@@ -1,0 +1,91 @@
+{
+  "version": 2,
+  "variant": "deep-content-easier-to-follow",
+  "source": {
+    "publisher": "OpenAI",
+    "title": "Why language models hallucinate",
+    "canonicalUrl": "https://openai.com/index/why-language-models-hallucinate/",
+    "publishedDate": "2025-09-05",
+    "paperDate": "2025-09-04"
+  },
+  "audienceQuestion": "AI 智能体为什么会自信猜错，以及怎样在它影响现实之前完成事实核验？",
+  "centralThesis": "保留全部关键知识点，但把理解路径改成机制、判断、行动三步，并通过同一个订单案例把抽象概念变成可观察的决策。",
+  "continuousCase": {
+    "id": "order-482",
+    "setup": "AI 智能体依据旧物流记录判断订单 482 将在周五送达，并准备回复客户，甚至触发退款。",
+    "mechanism": "旧预测被当成当前事实，流畅表达掩盖了证据缺口。",
+    "diagnosis": "订单存在是已确认，周五送达是推断，最新物流扫描是未知。",
+    "resolution": "承运商证据显示周六送达，回复被改写，退款停在人工审批门前，并新增回归测试。"
+  },
+  "reusableArtifact": {
+    "name": "AI 智能体事实核验清单",
+    "fields": [
+      "可答性",
+      "判断清单",
+      "证据标准",
+      "真实核验",
+      "行动风险",
+      "反馈测试"
+    ]
+  },
+  "priorities": {
+    "P0": [
+      "只看准确率会奖励猜测而不是诚实表达未知",
+      "问题可能不可得、含糊、过期或本来就无法唯一确定",
+      "高风险判断必须在行动前连接证据"
+    ],
+    "P1": [
+      "回答前先过可答性门",
+      "区分已确认、有支持但不完整、推断和未知",
+      "高风险判断使用一手证据与真正独立的交叉核验",
+      "把不确定性连接到澄清、核验、批准、停止或拒答"
+    ],
+    "P2": [
+      "预训练看到流畅文本，但没有逐句可靠真假标签",
+      "任意低频事实难以从模式恢复",
+      "保留 SimpleQA 的准确率、错误率和拒答率对比",
+      "不可逆高影响行动前保留人工批准"
+    ],
+    "P3": [
+      "论文形式化证明与符号",
+      "长篇相关工作综述",
+      "与观众操作流程无关的模型排名"
+    ]
+  },
+  "modules": [
+    {
+      "index": 1,
+      "name": "机制：为什么会猜",
+      "promise": "用一个旧物流记录案例理解流畅、准确率和错误代价的区别"
+    },
+    {
+      "index": 2,
+      "name": "判断：它到底知不知道",
+      "promise": "用可答性门和四种证据状态定位知识边界"
+    },
+    {
+      "index": 3,
+      "name": "行动：核验后再执行",
+      "promise": "用六步清单把证据、风险与行动门槛连起来"
+    }
+  ],
+  "cognitiveLoadPolicy": {
+    "voice": "zh-CN-YunxiaNeural",
+    "fixedRate": "+10%",
+    "targetDurationSeconds": [540, 720],
+    "sceneCountTarget": [35, 45],
+    "stableVisualSeconds": [10, 20],
+    "ordinaryPauseSeconds": 0.25,
+    "knowledgeUnitPauseSeconds": 0.5,
+    "chapterBoundaryPauseSeconds": 0.8,
+    "onePrimaryJudgementPerScene": true,
+    "newConceptsBeforeExampleMaximum": 2,
+    "chapterRecap": "one spoken synthesis with three visible anchors"
+  },
+  "factBoundaries": [
+    "OpenAI 的发现和数字明确归属于 OpenAI",
+    "六步清单是面向 AI 智能体使用的实践综合，不冒充 OpenAI 原文框架",
+    "定性证据状态不等于校准后的数值概率",
+    "SimpleQA 数字只用于解释激励差异，不泛化成所有模型和任务的排名"
+  ]
+}
