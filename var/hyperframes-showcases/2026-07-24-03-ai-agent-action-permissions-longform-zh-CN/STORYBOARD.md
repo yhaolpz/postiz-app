@@ -8,7 +8,7 @@ src: index.html#scene-c01-p01
 
 motion: semantic-nodes=0
 
-beat: 看到恶意网页，AI 智能体还能直接操作吗？
+beat: 查天气，能顺手把住址发出去吗？
 
 ## Frame c01-p02
 
@@ -16,7 +16,7 @@ status: outline
 
 src: index.html#scene-c01-p02
 
-motion: semantic-nodes=1
+motion: semantic-nodes=3
 
 beat: OpenAI：提示注入正在变成社会工程
 
@@ -28,7 +28,7 @@ src: index.html#scene-c01-p03
 
 motion: semantic-nodes=2
 
-beat: 订餐智能体差点泄露住址
+beat: 查天气的智能体差点泄露住址
 
 ## Frame c01-p04
 
@@ -66,7 +66,7 @@ status: outline
 
 src: index.html#scene-c02-p01
 
-motion: semantic-nodes=2
+motion: semantic-nodes=0
 
 beat: 机制：从外部内容追到行动能力
 
@@ -76,9 +76,9 @@ status: outline
 
 src: index.html#scene-c02-p02
 
-motion: semantic-nodes=2
+motion: semantic-nodes=3
 
-beat: AI 智能体开始安排家庭生日聚餐
+beat: AI 智能体开始判断要不要带伞
 
 ## Frame c02-p03
 
@@ -106,7 +106,7 @@ status: outline
 
 src: index.html#scene-c02-p05
 
-motion: semantic-nodes=2
+motion: semantic-nodes=3
 
 beat: 可疑词过滤器识别不了所有谎言
 
@@ -138,7 +138,7 @@ src: index.html#scene-c02-p08
 
 motion: semantic-nodes=2
 
-beat: 假餐厅要求提交私人资料
+beat: 假天气插件要求上传住址和日程
 
 ## Frame c02-p09
 
@@ -176,7 +176,7 @@ status: outline
 
 src: index.html#scene-c03-p01
 
-motion: semantic-nodes=3
+motion: semantic-nodes=0
 
 beat: 诊断：同一个任务包含不同后果
 
@@ -188,7 +188,7 @@ src: index.html#scene-c03-p02
 
 motion: semantic-nodes=2
 
-beat: 订餐智能体可以读、发、订、付
+beat: 查天气也包含读、发、定位和付款
 
 ## Frame c03-p03
 
@@ -228,7 +228,7 @@ src: index.html#scene-c03-p06
 
 motion: semantic-nodes=2
 
-beat: 合理订餐也会形成真实责任
+beat: 精确定位和叫车会产生真实后果
 
 ## Frame c03-p07
 
@@ -236,7 +236,7 @@ status: outline
 
 src: index.html#scene-c03-p07
 
-motion: semantic-nodes=3
+motion: semantic-nodes=4
 
 beat: 发送前展示敏感数据和接收地址
 
@@ -246,7 +246,7 @@ status: outline
 
 src: index.html#scene-c03-p08
 
-motion: semantic-nodes=2
+motion: semantic-nodes=3
 
 beat: 模糊的“允许”不等于知情同意
 
@@ -256,7 +256,7 @@ status: outline
 
 src: index.html#scene-c03-p09
 
-motion: semantic-nodes=3
+motion: semantic-nodes=2
 
 beat: 第三档：背离目标或高伤害动作阻断
 
@@ -266,9 +266,9 @@ status: outline
 
 src: index.html#scene-c03-p10
 
-motion: semantic-nodes=3
+motion: semantic-nodes=1
 
-beat: 把三级权限应用到生日聚餐
+beat: 把三级权限应用到带伞判断
 
 ## Frame c04-p01
 
@@ -276,7 +276,7 @@ status: outline
 
 src: index.html#scene-c04-p01
 
-motion: semantic-nodes=2
+motion: semantic-nodes=0
 
 beat: 行动：让权限分级变成系统控制
 
@@ -306,7 +306,7 @@ status: outline
 
 src: index.html#scene-c04-p04
 
-motion: semantic-nodes=2
+motion: semantic-nodes=4
 
 beat: 模型判断之前先保护数据
 
@@ -316,9 +316,9 @@ status: outline
 
 src: index.html#scene-c04-p05
 
-motion: semantic-nodes=3
+motion: semantic-nodes=2
 
-beat: 确认页必须展示具体后果
+beat: 用确定性控制限制行动后果
 
 ## Frame c04-p06
 
@@ -328,7 +328,7 @@ src: index.html#scene-c04-p06
 
 motion: semantic-nodes=3
 
-beat: 提前定义必须停止的条件
+beat: 确认页必须展示具体后果
 
 ## Frame c04-p07
 
@@ -338,7 +338,7 @@ src: index.html#scene-c04-p07
 
 motion: semantic-nodes=2
 
-beat: 记录完整的来源到行动路径
+beat: 提前定义必须停止的条件
 
 ## Frame c04-p08
 
@@ -346,9 +346,9 @@ status: outline
 
 src: index.html#scene-c04-p08
 
-motion: semantic-nodes=2
+motion: semantic-nodes=4
 
-beat: 用正常、含糊、恶意材料测试
+beat: 记录完整的来源到行动路径
 
 ## Frame c04-p09
 
@@ -358,7 +358,7 @@ src: index.html#scene-c04-p09
 
 motion: semantic-nodes=2
 
-beat: 给智能体配置谨慎员工需要的控制
+beat: 用正常、含糊、恶意材料测试
 
 ## Frame c04-p10
 
@@ -366,9 +366,9 @@ status: outline
 
 src: index.html#scene-c04-p10
 
-motion: semantic-nodes=2
+motion: semantic-nodes=1
 
-beat: 复用五列三级行动权限矩阵
+beat: 既检查结果，也检查尝试过程
 
 ## Frame c04-p11
 
@@ -376,9 +376,19 @@ status: outline
 
 src: index.html#scene-c04-p11
 
-motion: semantic-nodes=3
+motion: semantic-nodes=2
 
-beat: AI 智能体安全完成生日聚餐
+beat: 复用五列三级行动权限矩阵
+
+## Frame c04-p12
+
+status: outline
+
+src: index.html#scene-c04-p12
+
+motion: semantic-nodes=4
+
+beat: AI 智能体安全完成带伞判断
 
 ## Frame c05-p01
 

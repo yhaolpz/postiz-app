@@ -54,6 +54,7 @@ const requiredReports = [
   'internal-prop-style-report.json',
   'long-term-rule-source-report.json',
   'motion-report.json',
+  'narrative-engagement-report.json',
   'narrative-transition-report.json',
   'outro-alignment-report.json',
   'retention-opening-report.json',
@@ -83,10 +84,10 @@ const checks = {
     && reports['semantic-motion-target-report.json'].fallbackTargetCount === 0
     && reports['semantic-motion-target-report.json'].missingSemanticRoleCount === 0
     && reports['semantic-motion-target-report.json'].invisibleTargetCount === 0,
-  highlightLayoutStrict: reports['highlight-layout-report.json'].underlineWidthMismatchCount === 0
-    && reports['highlight-layout-report.json'].underlineTargetMismatchCount === 0
-    && reports['highlight-layout-report.json'].underlineLineFragmentFailureCount === 0
-    && reports['highlight-layout-report.json'].underlineOverflowCount === 0,
+  highlightLayoutStrict: reports['highlight-layout-report.json'].cardStyleFailureCount === 0
+    && reports['highlight-layout-report.json'].cardOverflowCount === 0
+    && reports['highlight-layout-report.json'].cardFontSizeFailureCount === 0
+    && reports['highlight-layout-report.json'].forbiddenUnderlineCount === 0,
   hyperframesCheck: true
 };
 const pass = Object.values(checks).every(Boolean);

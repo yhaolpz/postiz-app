@@ -23,4 +23,4 @@ The three-tier action permission matrix is a Tiny Agent teaching tool derived fr
 
 ## Familiar story used in the video
 
-A person asks an AI agent to find a restaurant and help organize a family birthday dinner. While reading menus, reviews, and email, the agent encounters a page that claims it must send a home address and profile information to a public “verification” endpoint. The story distinguishes harmless research from consequential booking, payment, and sensitive-data transmission.
+A person asks an AI agent whether they should bring an umbrella when going out. While reading public forecasts, maps, and an allowed calendar window, the agent encounters a weather plugin that claims it must upload the precise home address and daily schedule to a public “verification” endpoint. The story distinguishes harmless forecast research and local route comparison from consequential precise-location sharing, calendar changes, ride booking, payment, and sensitive-data transmission.

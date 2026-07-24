@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="zh-CN" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "ZCOOL KuaiLe";
+        src: url("assets/fonts/ZCOOLKuaiLe-Regular.ttf") format("truetype");
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Hiragino Sans GB";
+        src: url("assets/fonts/Hiragino-Sans-GB.ttc") format("truetype");
+        font-display: block;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; background: #ECECEA; }
+      body { font-family: "Hiragino Sans GB", Montserrat, sans-serif; color: #111413; }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #ECECEA;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: #ECECEA;
+      }
+      .grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(17,20,19,.055) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(17,20,19,.055) 2px, transparent 2px);
+        background-size: 72px 72px;
+      }
+      .header {
+        position: absolute;
+        left: 56px;
+        right: 56px;
+        top: 34px;
+        height: 58px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 12px;
+        border-bottom: 4px solid #111413;
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: .02em;
+      }
+      .header span:first-child { color: #117ABD; }
+      .eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 30px;
+        font-weight: 700;
+        color: #117ABD;
+        margin-bottom: 24px;
+      }
+      .display-copy {
+        font-size: 88px;
+        line-height: 1.2;
+        font-weight: 900;
+        letter-spacing: -.04em;
+      }
+      .display-copy.compact { font-size: 78px; }
+      .underline-target {
+        position: relative;
+        display: inline-block;
+        white-space: nowrap;
+      }
+      .semantic-underline {
+        position: absolute;
+        display: block;
+        left: 0;
+        right: 0;
+        bottom: -10px;
+        width: 100%;
+        height: 13px;
+        border-radius: 999px;
+        background: #F4C542;
+        transform: scaleX(0);
+        transform-origin: left center;
+        will-change: transform;
+      }
+      .picture-element { display: block; object-fit: contain; will-change: transform, opacity; }
+      .question {
+        background-image:
+          linear-gradient(rgba(17,20,19,.06) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(17,20,19,.06) 2px, transparent 2px);
+        background-size: 72px 72px;
+      }
+      .question-wrap {
+        position: absolute;
+        left: 56px;
+        right: 56px;
+        top: 170px;
+        height: 560px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: "ZCOOL KuaiLe", "Hiragino Sans GB", Montserrat, sans-serif;
+        font-size: 162px;
+        line-height: 1.2;
+        text-align: center;
+        letter-spacing: -.03em;
+      }
+      .question-line { white-space: nowrap; }
+      .question-agent {
+        position: absolute;
+        width: 245px;
+        height: 330px;
+        right: 92px;
+        bottom: 54px;
+      }
+      .source-layout {
+        position: absolute;
+        left: 110px;
+        top: 170px;
+        width: 1240px;
+      }
+      .source-layout .source-note {
+        margin-top: 44px;
+        font-size: 42px;
+        line-height: 1.4;
+        font-weight: 700;
+        max-width: 1110px;
+      }
+      .source-shield {
+        position: absolute;
+        width: 390px;
+        height: 520px;
+        right: 120px;
+        top: 210px;
+      }
+      .full-art {
+        position: absolute;
+        left: 0;
+        top: 92px;
+        width: 1920px;
+        height: 748px;
+        object-fit: contain;
+      }
+      .art-copy {
+        position: absolute;
+        z-index: 2;
+      }
+      .art-copy-left { left: 82px; top: 170px; width: 690px; }
+      .art-copy-top-left { left: 76px; top: 132px; width: 930px; }
+      .art-copy-right { right: 80px; top: 190px; width: 660px; }
+      .detail-list {
+        margin-top: 38px;
+        width: 920px;
+        font-size: 34px;
+        font-weight: 800;
+        line-height: 1.5;
+      }
+      .section-title {
+        position: absolute;
+        left: 90px;
+        right: 90px;
+        top: 138px;
+        text-align: center;
+        font-size: 92px;
+        line-height: 1.15;
+        font-weight: 900;
+      }
+      .small-title { font-size: 78px; }
+      .tier-grid {
+        position: absolute;
+        left: 100px;
+        right: 100px;
+        top: 320px;
+        height: 500px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 46px;
+      }
+      .tier {
+        position: relative;
+        border: 6px solid #111413;
+        border-radius: 36px;
+        padding: 24px 30px 30px;
+        display: grid;
+        grid-template-rows: 230px 96px 1fr;
+        justify-items: center;
+        align-items: center;
+        background: #ECECEA;
+      }
+      .tier-auto { box-shadow: inset 0 18px 0 #A8D8F0; }
+      .tier-confirm { box-shadow: inset 0 18px 0 #F4C542; }
+      .tier-block { box-shadow: inset 0 18px 0 #E25644; }
+      .tier-icon { width: 225px; height: 225px; }
+      .tier-name { font-size: 66px; font-weight: 900; }
+      .tier-desc { font-size: 34px; font-weight: 800; line-height: 1.3; text-align: center; }
+      .follow-copy {
+        position: absolute;
+        left: 92px;
+        top: 210px;
+        width: 1040px;
+      }
+      .follow-sub { margin-top: 52px; font-size: 44px; line-height: 1.4; font-weight: 800; }
+      .follow-characters {
+        position: absolute;
+        right: 72px;
+        top: 170px;
+        width: 650px;
+        height: 620px;
+      }
+      .follow-human { position: absolute; left: 0; bottom: 0; width: 350px; height: 560px; }
+      .follow-agent { position: absolute; right: 0; bottom: 0; width: 320px; height: 500px; }
+      .follow-bookmark { position: absolute; right: 248px; top: 4px; width: 170px; height: 170px; }
+      .auto-process {
+        position: absolute;
+        left: 120px;
+        right: 120px;
+        top: 330px;
+        height: 420px;
+        display: grid;
+        grid-template-columns: 360px 120px 340px 120px 340px;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+      .auto-agent { width: 320px; height: 420px; justify-self: center; }
+      .auto-prop { width: 310px; height: 310px; justify-self: center; }
+      .process-arrow { font-size: 88px; font-weight: 900; color: #117ABD; text-align: center; }
+      .bottom-conclusion {
+        position: absolute;
+        left: 110px;
+        right: 110px;
+        bottom: 300px;
+        font-size: 52px;
+        line-height: 1.35;
+        font-weight: 900;
+        text-align: center;
+      }
+      .bottom-conclusion .semantic-underline { bottom: -8px; }
+      .takeaway-layout {
+        position: absolute;
+        left: 90px;
+        right: 90px;
+        top: 150px;
+        bottom: 180px;
+        display: grid;
+        grid-template-columns: 1fr 430px;
+        align-items: center;
+        gap: 68px;
+      }
+      .takeaway-copy { font-size: 92px; }
+      .open-question {
+        margin-top: 72px;
+        font-size: 42px;
+        line-height: 1.5;
+        font-weight: 800;
+        color: #117ABD;
+        max-width: 1160px;
+      }
+      .loop-agent { width: 410px; height: 590px; }
+      .caption-box {
+        position: absolute;
+        left: 100px;
+        right: 100px;
+        bottom: 76px;
+        min-height: 114px;
+        padding: 18px 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border: 5px solid #111413;
+        border-radius: 24px;
+        background: #ECECEA;
+        font-size: 40px;
+        line-height: 1.35;
+        font-weight: 800;
+        z-index: 70;
+      }
+      .chapter-rail {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 52px;
+        display: grid;
+        grid-template-columns: 36.14382053880289% 1fr;
+        gap: 4px;
+        background: #ECECEA;
+        z-index: 75;
+      }
+      .rail-part {
+        position: relative;
+        height: 52px;
+        background: #DDE0DA;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 800;
+      }
+      .rail-fill {
+        position: absolute;
+        inset: 0;
+        background: #A8D8F0;
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+      .rail-label { position: relative; z-index: 2; }
+      .transition-cover {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background: #ECECEA;
+        z-index: 90;
+        will-change: transform;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="119.74"
+      data-width="1920"
+      data-height="1080"
+    >
+      
+      <section
+        id="s01-question"
+        class="clip scene question"
+        data-start="0"
+        data-duration="5.264"
+        data-track-index="1"
+        data-scene-role="hook"
+      >
+        
+        
+    <div class="question-wrap">
+      <div class="question-line">让 Agent 自动炒股，</div>
+      <div class="question-line">能<span class="underline-target " data-underline-target="u-question-money">直接动真金白银<span id="u-question-money" class="semantic-underline" aria-hidden="true"></span></span>吗？</div>
+    </div>
+    <img id="q-agent" class="picture-element question-agent" src="assets/pack/sprites/agent/ask-front.png" alt="提出问题的 Tiny Agent" data-entrance="from-bottom" />
+  
+      </section>
+    
+
+      <section
+        id="s02-source-risk"
+        class="clip scene focus"
+        data-start="5.264"
+        data-duration="6.156"
+        data-track-index="1"
+        data-scene-role="authority"
+      >
+        <div class="grid-bg"></div><div class="header"><span>Tiny Agent</span><span>AI 智能体行动权限 · 开头预览</span></div>
+        
+    <div class="source-layout">
+      <div class="eyebrow">OPENAI · 权限边界</div>
+      <div class="display-copy">真正的危险，<br />是不可信信息能不能碰到<br /><span class="underline-target " data-underline-target="u-high-risk-tools">高风险工具<span id="u-high-risk-tools" class="semantic-underline" aria-hidden="true"></span></span></div>
+      <div class="source-note">别只盯着可疑文字，要限制信息能触达的能力。</div>
+    </div>
+    <img id="source-shield" class="picture-element source-shield" src="assets/pack/sprites/props/shield.png" alt="高风险工具防护盾" data-entrance="from-top" />
+  
+      </section>
+    
+
+      <section
+        id="s03-story-loss"
+        class="clip scene generated-art-left-copy"
+        data-start="11.42"
+        data-duration="16.110"
+        data-track-index="1"
+        data-scene-role="concrete-loss"
+      >
+        <div class="grid-bg"></div><div class="header"><span>Tiny Agent</span><span>AI 智能体行动权限 · 开头预览</span></div>
+        
+    <img id="story-art" class="picture-element generated-art full-art" src="assets/generated/scene-art/owner-and-agent-simulated-portfolio.png" alt="一人公司老板和 Tiny Agent 检查模拟投资账户" data-entrance="from-right" />
+    <div class="art-copy art-copy-left">
+      <div class="eyebrow">固定母案例 · 模拟投资账户</div>
+      <div class="display-copy compact">没有权限边界，<br />错误就可能变成<br /><span class="underline-target " data-underline-target="u-real-loss">真金白银的损失<span id="u-real-loss" class="semantic-underline" aria-hidden="true"></span></span></div>
+    </div>
+  
+      </section>
+    
+
+      <section
+        id="s04-matrix-preview"
+        class="clip scene three-tier"
+        data-start="27.53"
+        data-duration="11.220"
+        data-track-index="1"
+        data-scene-role="tool-preview"
+      >
+        <div class="grid-bg"></div><div class="header"><span>Tiny Agent</span><span>AI 智能体行动权限 · 开头预览</span></div>
+        
+    <div class="section-title"><span class="underline-target " data-underline-target="u-permission-matrix">三级行动权限矩阵<span id="u-permission-matrix" class="semantic-underline" aria-hidden="true"></span></span></div>
+    <div class="tier-grid">
+      <div class="tier tier-auto">
+        <img id="matrix-auto" class="picture-element tier-icon" src="assets/pack/sprites/props/spreadsheet.png" alt="自动执行的模拟表格" data-entrance="from-left" />
+        <div class="tier-name">自动</div>
+        <div class="tier-desc">公开研究<br />模拟计算</div>
+      </div>
+      <div class="tier tier-confirm">
+        <img id="matrix-confirm" class="picture-element tier-icon" src="assets/pack/sprites/props/approval.png" alt="等待老板确认" data-entrance="from-bottom" />
+        <div class="tier-name">确认</div>
+        <div class="tier-desc">真实下单<br />敏感传输</div>
+      </div>
+      <div class="tier tier-block">
+        <img id="matrix-block" class="picture-element tier-icon" src="assets/pack/sprites/props/stop.png" alt="直接阻断危险请求" data-entrance="fade" />
+        <div class="tier-name">阻断</div>
+        <div class="tier-desc">陌生地址<br />越权请求</div>
+      </div>
+    </div>
+  
+      </section>
+    
+
+      <section
+        id="s05-follow-save"
+        class="clip scene character-cta"
+        data-start="38.75"
+        data-duration="7.890"
+        data-track-index="1"
+        data-scene-role="intro-follow-save"
+      >
+        <div class="grid-bg"></div><div class="header"><span>Tiny Agent</span><span>AI 智能体行动权限 · 开头预览</span></div>
+        
+    <div class="follow-copy">
+      <div class="display-copy compact"><span class="underline-target " data-underline-target="u-high-value">干货高价值<span id="u-high-value" class="semantic-underline" aria-hidden="true"></span></span><br />成为更擅长使用 AI 的人</div>
+      <div class="follow-sub">内容较长，点点关注收藏不迷路</div>
+    </div>
+    <div class="follow-characters">
+      <img id="follow-human" class="picture-element follow-human" src="assets/pack/sprites/human/approve.png" alt="点头认可的一人公司老板" data-entrance="from-left" />
+      <img id="follow-agent" class="picture-element follow-agent" src="assets/pack/sprites/agent/success.png" alt="成功状态的 Tiny Agent" data-entrance="from-right" />
+      <img id="follow-bookmark" class="picture-element follow-bookmark" src="assets/pack/sprites/props/book.png" alt="收藏内容的知识手册" data-entrance="from-top" />
+    </div>
+  
+      </section>
+    
+
+      <section
+        id="s06-automatic"
+        class="clip scene office-process"
+        data-start="46.64"
+        data-duration="20.510"
+        data-track-index="1"
+        data-scene-role="automatic-tier"
+      >
+        <div class="grid-bg"></div><div class="header"><span>Tiny Agent</span><span>AI 智能体行动权限 · 开头预览</span></div>
+        
+    <div class="section-title small-title">先看动作会带来什么后果</div>
+    <div class="auto-process">
+      <img id="auto-agent" class="picture-element auto-agent" src="assets/pack/sprites/agent/read-front.png" alt="读取公开信息的 Tiny Agent" data-entrance="from-bottom" />
+      <div class="process-arrow">→</div>
+      <img id="auto-sheet" class="picture-element auto-prop" src="assets/pack/sprites/props/document-stack.png" alt="公开财报和证据" data-entrance="from-left" />
+      <div class="process-arrow">→</div>
+      <img id="auto-chart" class="picture-element auto-prop" src="assets/pack/sprites/props/trend-up.png" alt="模拟计算结果" data-entrance="from-right" />
+    </div>
+    <div class="bottom-conclusion">后果小、可逆、留在本地 → <span class="underline-target conclusion-key" data-underline-target="u-auto-execute">自动执行<span id="u-auto-execute" class="semantic-underline" aria-hidden="true"></span></span></div>
+  
+      </section>
+    
+
+      <section
+        id="s07-confirm"
+        class="clip scene generated-art-top-copy"
+        data-start="67.15"
+        data-duration="17.700"
+        data-track-index="1"
+        data-scene-role="confirm-tier"
+      >
+        <div class="grid-bg"></div><div class="header"><span>Tiny Agent</span><span>AI 智能体行动权限 · 开头预览</span></div>
+        
+    <img id="confirm-art" class="picture-element generated-art full-art" src="assets/generated/scene-art/simulation-versus-real-order-gate.png" alt="模拟账户与真实订单确认门" data-entrance="from-bottom" />
+    <div class="art-copy art-copy-top-left">
+      <div class="eyebrow">确认层 · 改变真实状态</div>
+      <div class="display-copy compact"><span class="underline-target " data-underline-target="u-real-order">真实下单<span id="u-real-order" class="semantic-underline" aria-hidden="true"></span></span><br />必须看清再确认</div>
+    </div>
+  
+      </section>
+    
+
+      <section
+        id="s08-block"
+        class="clip scene generated-art-right-copy"
+        data-start="84.85"
+        data-duration="15.550"
+        data-track-index="1"
+        data-scene-role="block-tier"
+      >
+        <div class="grid-bg"></div><div class="header"><span>Tiny Agent</span><span>AI 智能体行动权限 · 开头预览</span></div>
+        
+    <img id="block-art" class="picture-element generated-art full-art" src="assets/generated/scene-art/evidence-versus-rumor.png" alt="Tiny Agent 区分公开证据和未核实消息" data-entrance="from-left" />
+    <div class="art-copy art-copy-right">
+      <div class="eyebrow">阻断层 · 目标冲突且不可逆</div>
+      <div class="display-copy compact">索取账户凭据<br />转向陌生地址<br /><span class="underline-target " data-underline-target="u-block-now">直接阻断<span id="u-block-now" class="semantic-underline" aria-hidden="true"></span></span></div>
+    </div>
+  
+      </section>
+    
+
+      <section
+        id="s09-open-loop"
+        class="clip scene takeaway"
+        data-start="100.4"
+        data-duration="19.340"
+        data-track-index="1"
+        data-scene-role="open-question"
+      >
+        <div class="grid-bg"></div><div class="header"><span>Tiny Agent</span><span>AI 智能体行动权限 · 开头预览</span></div>
+        
+    <div class="takeaway-layout">
+      <div>
+        <div class="eyebrow">第一条判断</div>
+        <div class="display-copy takeaway-copy">别先问它聪不聪明，<br />先看<span class="underline-target " data-underline-target="u-consequence">动作后果<span id="u-consequence" class="semantic-underline" aria-hidden="true"></span></span></div>
+        <div class="open-question">下一步：它怎么分清证据、观点和越权陷阱？</div>
+      </div>
+      <img id="loop-agent" class="picture-element loop-agent" src="assets/pack/sprites/agent/reason-front.png" alt="继续推理的 Tiny Agent" data-entrance="fade" />
+    </div>
+  
+      </section>
+    
+      <audio
+        id="narration"
+        src="audio/narration.zh-CN.mp3"
+        data-start="0"
+        data-duration="119.74"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+      
+      <div
+        id="caption-cue-2"
+        class="clip caption-box"
+        data-start="5.364"
+        data-duration="5.856"
+        data-track-index="20"
+      >OpenAI 提醒：真正的危险，是不可信信息能不能碰到高风险工具。</div>
+    
+
+      <div
+        id="caption-cue-3"
+        class="clip caption-box"
+        data-start="11.520"
+        data-duration="4.095"
+        data-track-index="21"
+      >假设你是一人公司老板，把模拟投资账户交给 Agent。</div>
+    
+
+      <div
+        id="caption-cue-4"
+        class="clip caption-box"
+        data-start="15.565"
+        data-duration="3.907"
+        data-track-index="22"
+      >它会读公开信息、做计算，也能在模拟盘买卖。</div>
+    
+
+      <div
+        id="caption-cue-5"
+        class="clip caption-box"
+        data-start="19.472"
+        data-duration="3.583"
+        data-track-index="23"
+      >可刚看到一条像内幕的消息，它就准备重仓。</div>
+    
+
+      <div
+        id="caption-cue-6"
+        class="clip caption-box"
+        data-start="23.055"
+        data-duration="4.250"
+        data-track-index="24"
+      >没有权限边界，错误就可能变成真金白银的损失。</div>
+    
+
+      <div
+        id="caption-cue-7"
+        class="clip caption-box"
+        data-start="27.636"
+        data-duration="5.418"
+        data-track-index="25"
+      >这期用一张三级行动权限矩阵，把操作分成自动、确认和阻断。</div>
+    
+
+      <div
+        id="caption-cue-8"
+        class="clip caption-box"
+        data-start="33.004"
+        data-duration="5.469"
+        data-track-index="26"
+      >看完你就知道，哪些能放手，哪些必须点头，哪些该立刻停下。</div>
+    
+
+      <div
+        id="caption-cue-9"
+        class="clip caption-box"
+        data-start="38.848"
+        data-duration="7.283"
+        data-track-index="27"
+      >视频全程干货高价值，让你成为更擅长使用 AI 的人，内容较长，点点关注收藏不迷路。</div>
+    
+
+      <div
+        id="caption-cue-10"
+        class="clip caption-box"
+        data-start="46.740"
+        data-duration="5.314"
+        data-track-index="28"
+      >先别问这条消息像不像真的，先问 Agent 接下来准备做什么。</div>
+    
+
+      <div
+        id="caption-cue-11"
+        class="clip caption-box"
+        data-start="52.384"
+        data-duration="11.439"
+        data-track-index="29"
+      >如果它只是读取公开财报、对比历史数据、算出几种仓位方案，结果仍留在本地，而且随时能重算，这类动作后果小、可逆，就可以自动执行。</div>
+    
+
+      <div
+        id="caption-cue-12"
+        class="clip caption-box"
+        data-start="63.773"
+        data-duration="3.063"
+        data-track-index="30"
+      >老板不用为每一次搜索都点确认。</div>
+    
+
+      <div
+        id="caption-cue-13"
+        class="clip caption-box"
+        data-start="67.250"
+        data-duration="4.377"
+        data-track-index="31"
+      >但如果它要把模拟策略变成真实订单，事情就变了。</div>
+    
+
+      <div
+        id="caption-cue-14"
+        class="clip caption-box"
+        data-start="71.577"
+        data-duration="6.708"
+        data-track-index="32"
+      >标的、方向、数量、价格、最大亏损和退出条件，必须完整摆在老板面前。</div>
+    
+
+      <div
+        id="caption-cue-15"
+        class="clip caption-box"
+        data-start="78.285"
+        data-duration="6.260"
+        data-track-index="33"
+      >老板看清并明确确认，Agent 才能继续；没有确认，真实下单就保持关闭。</div>
+    
+
+      <div
+        id="caption-cue-16"
+        class="clip caption-box"
+        data-start="84.948"
+        data-duration="10.064"
+        data-track-index="34"
+      >再往前一步，如果那条消息要求上传账户凭据，或者把资金转到一个没核实的地址，这不是“再确认一下”就够了，而是应该直接阻断。</div>
+    
+
+      <div
+        id="caption-cue-17"
+        class="clip caption-box"
+        data-start="94.962"
+        data-duration="5.094"
+        data-track-index="35"
+      >它既不符合老板的目标，又把不可逆的后果交给了不可信来源。</div>
+    
+
+      <div
+        id="caption-cue-18"
+        class="clip caption-box"
+        data-start="100.462"
+        data-duration="5.668"
+        data-track-index="36"
+      >所以第一条判断很简单：研究是在看信息，真实交易是在改状态。</div>
+    
+
+      <div
+        id="caption-cue-19"
+        class="clip caption-box"
+        data-start="106.080"
+        data-duration="6.448"
+        data-track-index="37"
+      >能自动到哪一步，不看 Agent 有多聪明，要看这个动作会不会把风险带到电脑之外。</div>
+    
+
+      <div
+        id="caption-cue-20"
+        class="clip caption-box"
+        data-start="112.928"
+        data-duration="6.804"
+        data-track-index="38"
+      >可问题来了：Agent 怎么判断一条消息究竟是证据、观点，还是诱导它越权的陷阱？</div>
+    
+      <div
+        id="chapter-rail"
+        class="clip chapter-rail"
+        data-start="5.264"
+        data-duration="114.476"
+        data-track-index="75"
+      >
+        <div class="rail-part"><span id="rail-fill-intro" class="rail-fill"></span><span class="rail-label">1. 前言</span></div>
+        <div class="rail-part"><span id="rail-fill-body" class="rail-fill"></span><span class="rail-label">2. 行动后果</span></div>
+      </div>
+      
+      <div
+        id="transition-1"
+        class="clip transition-cover"
+        data-start="5.054"
+        data-duration="0.420"
+        data-track-index="90"
+      ></div>
+    
+
+      <div
+        id="transition-2"
+        class="clip transition-cover"
+        data-start="11.210"
+        data-duration="0.420"
+        data-track-index="90"
+      ></div>
+    
+
+      <div
+        id="transition-3"
+        class="clip transition-cover"
+        data-start="27.320"
+        data-duration="0.420"
+        data-track-index="90"
+      ></div>
+    
+
+      <div
+        id="transition-4"
+        class="clip transition-cover"
+        data-start="38.540"
+        data-duration="0.420"
+        data-track-index="90"
+      ></div>
+    
+
+      <div
+        id="transition-5"
+        class="clip transition-cover"
+        data-start="46.430"
+        data-duration="0.420"
+        data-track-index="90"
+      ></div>
+    
+
+      <div
+        id="transition-6"
+        class="clip transition-cover"
+        data-start="66.940"
+        data-duration="0.420"
+        data-track-index="90"
+      ></div>
+    
+
+      <div
+        id="transition-7"
+        class="clip transition-cover"
+        data-start="84.640"
+        data-duration="0.420"
+        data-track-index="90"
+      ></div>
+    
+
+      <div
+        id="transition-8"
+        class="clip transition-cover"
+        data-start="100.190"
+        data-duration="0.420"
+        data-track-index="90"
+      ></div>
+    
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#q-agent", {"autoAlpha":0,"y":180}, {"autoAlpha":1,"y":0,"duration":0.6,"ease":"power3.out"}, 0.22);
+      tl.fromTo("#u-question-money", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.52, ease: "power2.out" }, 2.22);
+      tl.fromTo("#source-shield", {"autoAlpha":0,"y":-180}, {"autoAlpha":1,"y":0,"duration":0.58,"ease":"power3.out"}, 5.38);
+      tl.fromTo("#u-high-risk-tools", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.48, ease: "power2.out" }, 8.7);
+      tl.fromTo("#story-art", {"autoAlpha":0,"x":220}, {"autoAlpha":1,"x":0,"duration":0.68,"ease":"power3.out"}, 11.54);
+      tl.fromTo("#u-real-loss", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 23.05);
+      tl.fromTo("#matrix-auto", {"autoAlpha":0,"x":-190}, {"autoAlpha":1,"x":0,"y":0,"duration":0.64,"ease":"power3.out"}, 27.65);
+      tl.fromTo("#matrix-confirm", {"autoAlpha":0,"y":180}, {"autoAlpha":1,"x":0,"y":0,"duration":0.64,"ease":"power3.out"}, 30.2);
+      tl.fromTo("#matrix-block", {"autoAlpha":0}, {"autoAlpha":1,"x":0,"y":0,"duration":0.52,"ease":"power3.out"}, 32.8);
+      tl.fromTo("#u-permission-matrix", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.52, ease: "power2.out" }, 27.7);
+      tl.fromTo("#follow-human", {"autoAlpha":0,"x":-170}, {"autoAlpha":1,"x":0,"y":0,"duration":0.58,"ease":"power3.out"}, 38.92);
+      tl.fromTo("#follow-agent", {"autoAlpha":0,"x":180}, {"autoAlpha":1,"x":0,"y":0,"duration":0.58,"ease":"power3.out"}, 39.05);
+      tl.fromTo("#follow-bookmark", {"autoAlpha":0,"y":-160}, {"autoAlpha":1,"x":0,"y":0,"duration":0.58,"ease":"power3.out"}, 42.2);
+      tl.fromTo("#u-high-value", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.46, ease: "power2.out" }, 39.1);
+      tl.fromTo("#auto-agent", {"autoAlpha":0,"y":180}, {"autoAlpha":1,"x":0,"y":0,"duration":0.62,"ease":"power3.out"}, 46.82);
+      tl.fromTo("#auto-sheet", {"autoAlpha":0,"x":-200}, {"autoAlpha":1,"x":0,"y":0,"duration":0.62,"ease":"power3.out"}, 52.42);
+      tl.fromTo("#auto-chart", {"autoAlpha":0,"x":200}, {"autoAlpha":1,"x":0,"y":0,"duration":0.62,"ease":"power3.out"}, 56.8);
+      tl.fromTo("#u-auto-execute", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.48, ease: "power2.out" }, 60.5);
+      tl.fromTo("#confirm-art", {"autoAlpha":0,"y":220}, {"autoAlpha":1,"y":0,"duration":0.7,"ease":"power3.out"}, 67.28);
+      tl.fromTo("#u-real-order", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 80.2);
+      tl.fromTo("#block-art", {"autoAlpha":0,"x":-220}, {"autoAlpha":1,"x":0,"duration":0.68,"ease":"power3.out"}, 84.98);
+      tl.fromTo("#u-block-now", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.48, ease: "power2.out" }, 92.8);
+      tl.fromTo("#loop-agent", {"autoAlpha":0}, {"autoAlpha":1,"duration":0.56,"ease":"power3.out"}, 100.56);
+      tl.fromTo("#u-consequence", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.48, ease: "power2.out" }, 102.1);
+      tl.fromTo("#rail-fill-intro", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 41.376, ease: "none" }, 5.264);
+      tl.fromTo("#rail-fill-body", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 73.1, ease: "none" }, 46.64);
+      
+      tl.fromTo("#transition-1", { x: -1920 }, { x: 0, duration: 0.21, ease: "power2.in" }, 5.054);
+      tl.to("#transition-1", { x: 1920, duration: 0.21, ease: "power2.out" }, 5.264);
+
+      tl.fromTo("#transition-2", { x: -1920 }, { x: 0, duration: 0.21, ease: "power2.in" }, 11.209999999999999);
+      tl.to("#transition-2", { x: 1920, duration: 0.21, ease: "power2.out" }, 11.42);
+
+      tl.fromTo("#transition-3", { x: -1920 }, { x: 0, duration: 0.21, ease: "power2.in" }, 27.32);
+      tl.to("#transition-3", { x: 1920, duration: 0.21, ease: "power2.out" }, 27.53);
+
+      tl.fromTo("#transition-4", { x: -1920 }, { x: 0, duration: 0.21, ease: "power2.in" }, 38.54);
+      tl.to("#transition-4", { x: 1920, duration: 0.21, ease: "power2.out" }, 38.75);
+
+      tl.fromTo("#transition-5", { x: -1920 }, { x: 0, duration: 0.21, ease: "power2.in" }, 46.43);
+      tl.to("#transition-5", { x: 1920, duration: 0.21, ease: "power2.out" }, 46.64);
+
+      tl.fromTo("#transition-6", { x: -1920 }, { x: 0, duration: 0.21, ease: "power2.in" }, 66.94000000000001);
+      tl.to("#transition-6", { x: 1920, duration: 0.21, ease: "power2.out" }, 67.15);
+
+      tl.fromTo("#transition-7", { x: -1920 }, { x: 0, duration: 0.21, ease: "power2.in" }, 84.64);
+      tl.to("#transition-7", { x: 1920, duration: 0.21, ease: "power2.out" }, 84.85);
+
+      tl.fromTo("#transition-8", { x: -1920 }, { x: 0, duration: 0.21, ease: "power2.in" }, 100.19000000000001);
+      tl.to("#transition-8", { x: 1920, duration: 0.21, ease: "power2.out" }, 100.4);
+      window.__timelines["main"] = tl;
+      window.__hyperframesAudit = {
+        durationSeconds: 119.74,
+        fullQuestionVisibleAtZero: true,
+        questionEndsAt: 3.852,
+        questionCardEndsAt: 5.264,
+        fullQuestionHoldSeconds: 1.412,
+        voice: "zh-CN-YunxiaNeural",
+        rate: "+20%",
+        textBodyAnimationCount: 0,
+        picturePostEntranceMotionCount: 0
+      };
+    </script>
+  </body>
+</html>

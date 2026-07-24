@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="zh-CN" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Hiragino Sans GB";
+        src: url("assets/fonts/Hiragino-Sans-GB.ttc") format("truetype");
+        font-display: block;
+        font-weight: 600 900;
+      }
+      @font-face {
+        font-family: "Hiragino Sans GB W6";
+        src: url("assets/fonts/Hiragino-Sans-GB.ttc") format("truetype");
+        font-display: block;
+        font-weight: 600 900;
+      }
+      :root {
+        --ink: #111413;
+        --paper: #ECECEA;
+        --blue: #117ABD;
+        --gold: #A96F00;
+        --red: #D43C32;
+        --yellow: #F4C542;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Hiragino Sans GB W6", "Hiragino Sans GB", sans-serif;
+      }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      .clip { position: absolute; }
+      .opening-question {
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        background-color: var(--paper);
+        background-image:
+          linear-gradient(rgba(17,20,19,.055) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(17,20,19,.055) 2px, transparent 2px);
+        background-size: 72px 72px;
+        z-index: 5;
+      }
+      .question-wrap {
+        position: absolute;
+        left: 70px;
+        top: 88px;
+        width: 1780px;
+        height: 720px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 200px;
+        line-height: 1.16;
+        font-weight: 900;
+        letter-spacing: -.035em;
+        text-align: center;
+      }
+      .question-line { display: flex; justify-content: center; white-space: nowrap; }
+      .glyph { display: inline-block; opacity: 0; visibility: hidden; }
+      .glyph-ink { color: var(--ink); }
+      .glyph-blue { color: var(--blue); }
+      .glyph-gold { color: var(--gold); }
+      .glyph-red { color: var(--gold); }
+      .opening-agent {
+        position: absolute;
+        right: 82px;
+        bottom: 46px;
+        width: 184px;
+        height: 246px;
+        object-fit: contain;
+      }
+      .body-shell {
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        background-color: var(--paper);
+        background-image:
+          linear-gradient(rgba(17,20,19,.055) 2px, transparent 2px),
+          linear-gradient(90deg, rgba(17,20,19,.055) 2px, transparent 2px);
+        background-size: 72px 72px;
+        z-index: 1;
+      }
+      .masthead {
+        position: absolute;
+        left: 140px;
+        right: 140px;
+        top: 36px;
+        height: 58px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 4px solid var(--ink);
+        font-size: 28px;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: .01em;
+      }
+      .masthead-brand { color: var(--blue); }
+      .body-scene {
+        left: 0;
+        top: 94px;
+        width: 1920px;
+        height: 890px;
+        z-index: 3;
+      }
+      .content {
+        position: absolute;
+        left: 220px;
+        top: 26px;
+        width: 1480px;
+        height: 700px;
+      }
+      .pair-layout {
+        display: grid;
+        grid-template-columns: 720px 620px;
+        gap: 140px;
+        align-items: center;
+      }
+      .pair-layout.reverse { grid-template-columns: 620px 720px; }
+      .copy-block { width: 720px; }
+      .body-title {
+        font-size: 78px;
+        line-height: 1.18;
+        font-weight: 900;
+        letter-spacing: -.035em;
+        margin-bottom: 36px;
+      }
+      .body-title.centered { text-align: center; margin-bottom: 32px; }
+      .body-copy {
+        font-size: 50px;
+        line-height: 1.46;
+        font-weight: 800;
+        letter-spacing: -.02em;
+      }
+      .blue { color: var(--blue); }
+      .gold { color: var(--gold); }
+      .red { color: var(--red); }
+      .underline-target { position: relative; display: inline-block; white-space: nowrap; }
+      .semantic-underline {
+        position: absolute;
+        display: block;
+        left: 0;
+        bottom: -9px;
+        width: 100%;
+        height: 12px;
+        border-radius: 999px;
+        background: var(--yellow);
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+      .picture-element { display: block; object-fit: contain; will-change: transform, opacity; }
+      .art-slot {
+        width: 620px;
+        height: 650px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pair-layout:not(.reverse) .art-slot,
+      .pair-layout.reverse .art-slot { justify-content: center; }
+      #s02-authority .art-slot { position: relative; left: -32px; }
+      .wide-art { width: 620px; height: 600px; object-fit: contain; }
+      .pack-art { width: 460px; height: 500px; }
+      .tall-art { width: 450px; height: 540px; }
+      .square-art { width: 480px; height: 480px; }
+      .matrix-layout { display: block; }
+      .matrix-grid {
+        width: 1480px;
+        height: 510px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 56px;
+      }
+      .matrix-card {
+        height: 510px;
+        border: 6px solid var(--ink);
+        border-radius: 34px;
+        background: rgba(236,236,234,.94);
+        padding: 26px 28px;
+        display: grid;
+        grid-template-rows: 260px 94px 1fr;
+        justify-items: center;
+        align-items: center;
+      }
+      .auto-card { box-shadow: inset 0 18px 0 #A8D8F0; }
+      .confirm-card { box-shadow: inset 0 18px 0 var(--yellow); }
+      .block-card { box-shadow: inset 0 18px 0 #E25644; }
+      .matrix-icon { width: 235px; height: 235px; }
+      .matrix-name { font-size: 62px; line-height: 1; font-weight: 900; }
+      .matrix-desc { font-size: 34px; line-height: 1.3; font-weight: 800; text-align: center; }
+      .duo-art { position: relative; width: 620px; height: 650px; }
+      #s06-follow-save .duo-art { left: -100px; }
+      .duo-human { position: absolute; left: 0; bottom: 40px; width: 330px; height: 520px; }
+      .duo-agent { position: absolute; left: 296px; bottom: 40px; width: 310px; height: 500px; }
+      .risk-art { position: relative; width: 620px; height: 650px; }
+      #s09-block .copy-block { position: relative; left: 100px; }
+      .risk-prop { position: absolute; left: 0; top: 90px; width: 450px; height: 450px; }
+      .risk-stop { position: absolute; right: 0; bottom: 72px; width: 280px; height: 280px; }
+      .summary-layout {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 110px;
+        align-items: center;
+      }
+      .summary-row {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        font-size: 58px;
+        line-height: 1.25;
+        font-weight: 900;
+      }
+      .next-question {
+        margin-top: 50px;
+        color: var(--blue);
+        font-size: 38px;
+        line-height: 1.35;
+        font-weight: 900;
+      }
+      .summary-agent { width: 300px; height: 470px; }
+      .progress-rail {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 52px;
+        display: grid;
+        grid-template-columns: 42.1fr 13.005fr 29.809fr;
+        gap: 4px;
+        background: var(--paper);
+        z-index: 7;
+      }
+      .rail-part {
+        position: relative;
+        height: 52px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #DDE0DA;
+      }
+      .rail-fill {
+        position: absolute;
+        inset: 0;
+        background: #A8D8F0;
+        transform: scaleX(0);
+        transform-origin: left center;
+      }
+      .rail-label { position: relative; z-index: 2; color: var(--ink); font-size: 20px; line-height: 1; font-weight: 800; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="90.302"
+      data-width="1920"
+      data-height="1080"
+    >
+      <section
+        id="s01-question"
+        class="clip opening-question"
+        data-start="0"
+        data-duration="5.388"
+        data-track-index="5"
+        data-scene-role="hook"
+      >
+    <div class="question-wrap" aria-label="让 Agent 自动炒股，哪些动作必须由人确认？"><div class="question-line"><span class="glyph glyph-ink" data-glyph-index="0">让</span><span class="glyph glyph-ink" data-glyph-index="1"> </span><span class="glyph glyph-blue" data-glyph-index="2">A</span><span class="glyph glyph-ink" data-glyph-index="3">g</span><span class="glyph glyph-ink" data-glyph-index="4">e</span><span class="glyph glyph-ink" data-glyph-index="5">n</span><span class="glyph glyph-ink" data-glyph-index="6">t</span><span class="glyph glyph-blue" data-glyph-index="7"> </span><span class="glyph glyph-blue" data-glyph-index="8">自</span><span class="glyph glyph-blue" data-glyph-index="9">动</span><span class="glyph glyph-blue" data-glyph-index="10">炒</span><span class="glyph glyph-blue" data-glyph-index="11">股</span><span class="glyph glyph-blue" data-glyph-index="12">，</span></div><div class="question-line"><span class="glyph glyph-ink" data-glyph-index="13">哪</span><span class="glyph glyph-ink" data-glyph-index="14">些</span><span class="glyph glyph-ink" data-glyph-index="15">动</span><span class="glyph glyph-ink" data-glyph-index="16">作</span><span class="glyph glyph-red" data-glyph-index="17">必</span><span class="glyph glyph-red" data-glyph-index="18">须</span><span class="glyph glyph-ink" data-glyph-index="19">由</span><span class="glyph glyph-gold" data-glyph-index="20">人</span></div><div class="question-line"><span class="glyph glyph-gold" data-glyph-index="21">确</span><span class="glyph glyph-gold" data-glyph-index="22">认</span><span class="glyph glyph-ink" data-glyph-index="23">？</span></div></div>
+    <img id="opening-agent" class="picture-element opening-agent" src="assets/pack/sprites/agent/ask-front.png" alt="静止的 Tiny Agent" data-entrance="none" />
+  </section>
+      <div
+        id="body-shell"
+        class="clip body-shell"
+        data-start="5.388"
+        data-duration="84.914"
+        data-track-index="1"
+      >
+        <div class="masthead"><span class="masthead-brand">Tiny Agent</span><span>Agent 自动炒股：行动权限</span></div>
+      </div>
+      
+      <section
+        id="s02-authority"
+        class="clip body-scene pair"
+        data-start="5.388"
+        data-duration="6.600"
+        data-track-index="3"
+        data-scene-role="authority"
+      >
+    <div class="content pair-layout">
+      <div class="copy-block">
+        <div class="body-title"><span class="blue">危险</span>不只在信息真假</div>
+        <div class="body-copy">关键是：不可信内容<br />能不能碰到<span class="underline-target red" data-underline-target="u-high-risk">高风险工具<span id="u-high-risk" class="semantic-underline" aria-hidden="true"></span></span></div>
+      </div>
+      <div class="art-slot"><img id="authority-shield" class="picture-element pack-art tall-art" src="assets/pack/sprites/props/shield.png" alt="隔离高风险工具的盾牌" data-entrance="from-top" /></div>
+    </div>
+  </section>
+    
+
+      <section
+        id="s03-mother-case"
+        class="clip body-scene pair"
+        data-start="11.988"
+        data-duration="11.334"
+        data-track-index="3"
+        data-scene-role="mother-case"
+      >
+    <div class="content pair-layout">
+      <div class="copy-block">
+        <div class="body-title">一人公司把账户交给 <span class="blue">Agent</span></div>
+        <div class="body-copy">先读公开信息、做计算<br />再在<span class="underline-target blue" data-underline-target="u-simulation">模拟盘执行<span id="u-simulation" class="semantic-underline" aria-hidden="true"></span></span></div>
+      </div>
+      <div class="art-slot"><img id="mother-case-art" class="picture-element generated-art wide-art" src="assets/generated/scene-art/person-agent-portfolio.png" alt="人和 Tiny Agent 查看模拟投资账户" data-entrance="from-right" /></div>
+    </div>
+  </section>
+    
+
+      <section
+        id="s04-concrete-loss"
+        class="clip body-scene pair"
+        data-start="23.322"
+        data-duration="9.085"
+        data-track-index="3"
+        data-scene-role="concrete-loss"
+      >
+    <div class="content pair-layout reverse">
+      <div class="art-slot"><img id="rumor-warning" class="picture-element pack-art square-art" src="assets/pack/sprites/props/warning.png" alt="诱导重仓的警告消息" data-entrance="from-left" /></div>
+      <div class="copy-block">
+        <div class="body-title">“稳赚”消息催它<span class="red">立刻重仓</span></div>
+        <div class="body-copy">权限没分清<br />假消息就会碰到<span class="underline-target red" data-underline-target="u-real-money">真金白银<span id="u-real-money" class="semantic-underline" aria-hidden="true"></span></span></div>
+      </div>
+    </div>
+  </section>
+    
+
+      <section
+        id="s05-matrix"
+        class="clip body-scene matrix"
+        data-start="32.407"
+        data-duration="8.210"
+        data-track-index="3"
+        data-scene-role="tool-preview"
+      >
+    <div class="content matrix-layout">
+      <div class="body-title centered">只问<span class="underline-target blue" data-underline-target="u-two-questions">两个问题<span id="u-two-questions" class="semantic-underline" aria-hidden="true"></span></span>：会改什么？能撤回吗？</div>
+      <div class="matrix-grid">
+        <div class="matrix-card auto-card">
+          <img id="matrix-auto" class="picture-element matrix-icon" src="assets/pack/sprites/props/spreadsheet.png" alt="可自动执行的研究" data-entrance="from-left" />
+          <div class="matrix-name blue">自动</div>
+          <div class="matrix-desc">低风险<br />可逆</div>
+        </div>
+        <div class="matrix-card confirm-card">
+          <img id="matrix-confirm" class="picture-element matrix-icon" src="assets/pack/sprites/props/human-gate.png" alt="需要人确认的行动门" data-entrance="from-bottom" />
+          <div class="matrix-name gold">确认</div>
+          <div class="matrix-desc">真实状态<br />先暂停</div>
+        </div>
+        <div class="matrix-card block-card">
+          <img id="matrix-block" class="picture-element matrix-icon" src="assets/pack/sprites/props/error.png" alt="直接阻断的危险动作" data-entrance="fade" />
+          <div class="matrix-name red">阻断</div>
+          <div class="matrix-desc">越权<br />不可逆</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    
+
+      <section
+        id="s06-follow-save"
+        class="clip body-scene pair"
+        data-start="40.617"
+        data-duration="6.871"
+        data-track-index="3"
+        data-scene-role="intro-follow-save"
+      >
+    <div class="content pair-layout">
+      <div class="copy-block">
+        <div class="body-title"><span class="underline-target blue" data-underline-target="u-high-value">干货高价值<span id="u-high-value" class="semantic-underline" aria-hidden="true"></span></span></div>
+        <div class="body-copy">成为更擅长使用 <span class="blue">AI</span> 的人<br /><span class="gold">关注收藏</span>不迷路</div>
+      </div>
+      <div class="duo-art">
+        <img id="follow-person" class="picture-element duo-human" src="assets/pack/sprites/human/approve.png" alt="认可内容的人" data-entrance="from-left" />
+        <img id="follow-agent" class="picture-element duo-agent" src="assets/pack/sprites/agent/success.png" alt="成功状态的 Tiny Agent" data-entrance="from-right" />
+      </div>
+    </div>
+  </section>
+    
+
+      <section
+        id="s07-automatic"
+        class="clip body-scene pair"
+        data-start="47.488"
+        data-duration="13.005"
+        data-track-index="3"
+        data-scene-role="automatic-tier"
+      >
+    <div class="content pair-layout reverse">
+      <div class="art-slot"><img id="research-art" class="picture-element generated-art wide-art" src="assets/generated/scene-art/agent-safe-research.png" alt="Tiny Agent 阅读财报并进行模拟计算" data-entrance="from-top" /></div>
+      <div class="copy-block">
+        <div class="body-title"><span class="blue">读取、比较、计算</span></div>
+        <div class="body-copy">结果留在本地，随时能重算<br />低风险、可逆 → <span class="underline-target blue" data-underline-target="u-auto">自动执行<span id="u-auto" class="semantic-underline" aria-hidden="true"></span></span></div>
+      </div>
+    </div>
+  </section>
+    
+
+      <section
+        id="s08-confirm"
+        class="clip body-scene pair"
+        data-start="60.493"
+        data-duration="14.376"
+        data-track-index="3"
+        data-scene-role="confirm-tier"
+      >
+    <div class="content pair-layout">
+      <div class="copy-block">
+        <div class="body-title"><span class="red">真实订单</span>必须暂停</div>
+        <div class="body-copy">标的、方向、数量、价格、风险<br />完整摆在人面前<br /><span class="underline-target gold" data-underline-target="u-human-confirm">人明确确认<span id="u-human-confirm" class="semantic-underline" aria-hidden="true"></span></span>，Agent 才能继续</div>
+      </div>
+      <div class="art-slot"><img id="confirm-art" class="picture-element generated-art wide-art" src="assets/generated/scene-art/real-order-approval-gate.png" alt="Tiny Agent 停在真实订单的人类确认门前" data-entrance="from-bottom" /></div>
+    </div>
+  </section>
+    
+
+      <section
+        id="s09-block"
+        class="clip body-scene pair"
+        data-start="74.869"
+        data-duration="7.217"
+        data-track-index="3"
+        data-scene-role="block-tier"
+      >
+    <div class="content pair-layout reverse">
+      <div class="risk-art">
+        <img id="credential-risk" class="picture-element risk-prop" src="assets/pack/sprites/props/prompt-injection.png" alt="索取账户凭据的越权请求" data-entrance="from-right" />
+        <img id="block-stop" class="picture-element risk-stop" src="assets/pack/sprites/props/stop.png" alt="直接阻断危险请求" data-entrance="fade" />
+      </div>
+      <div class="copy-block">
+        <div class="body-title"><span class="red">凭据</span>与<span class="red">陌生转账</span></div>
+        <div class="body-copy">不要送进确认流程<br />而要<span class="underline-target red" data-underline-target="u-block">直接阻断<span id="u-block" class="semantic-underline" aria-hidden="true"></span></span></div>
+      </div>
+    </div>
+  </section>
+    
+
+      <section
+        id="s10-summary"
+        class="clip body-scene summary"
+        data-start="82.086"
+        data-duration="8.216"
+        data-track-index="3"
+        data-scene-role="open-loop"
+      >
+    <div class="content summary-layout">
+      <div>
+        <div class="body-title">三级权限，一句话记住</div>
+        <div class="summary-row"><span class="blue">可逆研究自动做</span><span>真实交易<span class="underline-target gold" data-underline-target="u-summary-confirm">由人确认<span id="u-summary-confirm" class="semantic-underline" aria-hidden="true"></span></span></span><span class="red">越权转账直接阻断</span></div>
+        <div class="next-question">下一步：越权怎么识别？</div>
+      </div>
+      <img id="summary-agent" class="picture-element summary-agent" src="assets/pack/sprites/agent/reason-front.png" alt="思考下一问题的 Tiny Agent" data-entrance="from-bottom" />
+    </div>
+  </section>
+    
+      <div
+        id="progress-rail"
+        class="clip progress-rail"
+        data-start="5.388"
+        data-duration="84.914"
+        data-track-index="7"
+      >
+        <div class="rail-part"><span id="rail-fill-1" class="rail-fill"></span><span class="rail-label">判断动作</span></div>
+        <div class="rail-part"><span id="rail-fill-2" class="rail-fill"></span><span class="rail-label">自动执行</span></div>
+        <div class="rail-part"><span id="rail-fill-3" class="rail-fill"></span><span class="rail-label">确认与阻断</span></div>
+      </div>
+      <audio
+        id="narration"
+        src="audio/narration.zh-CN.mp3"
+        data-start="0"
+        data-duration="90.302"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      gsap.set(".glyph", { autoAlpha: 0 });
+      tl.set('[data-glyph-index="0"]', { autoAlpha: 1 }, 0);
+      tl.set('[data-glyph-index="1"]', { autoAlpha: 1 }, 0.169);
+      tl.set('[data-glyph-index="2"]', { autoAlpha: 1 }, 0.337);
+      tl.set('[data-glyph-index="3"]', { autoAlpha: 1 }, 0.506);
+      tl.set('[data-glyph-index="4"]', { autoAlpha: 1 }, 0.675);
+      tl.set('[data-glyph-index="5"]', { autoAlpha: 1 }, 0.843);
+      tl.set('[data-glyph-index="6"]', { autoAlpha: 1 }, 1.012);
+      tl.set('[data-glyph-index="7"]', { autoAlpha: 1 }, 1.181);
+      tl.set('[data-glyph-index="8"]', { autoAlpha: 1 }, 1.35);
+      tl.set('[data-glyph-index="9"]', { autoAlpha: 1 }, 1.518);
+      tl.set('[data-glyph-index="10"]', { autoAlpha: 1 }, 1.687);
+      tl.set('[data-glyph-index="11"]', { autoAlpha: 1 }, 1.856);
+      tl.set('[data-glyph-index="12"]', { autoAlpha: 1 }, 2.024);
+      tl.set('[data-glyph-index="13"]', { autoAlpha: 1 }, 2.193);
+      tl.set('[data-glyph-index="14"]', { autoAlpha: 1 }, 2.362);
+      tl.set('[data-glyph-index="15"]', { autoAlpha: 1 }, 2.53);
+      tl.set('[data-glyph-index="16"]', { autoAlpha: 1 }, 2.699);
+      tl.set('[data-glyph-index="17"]', { autoAlpha: 1 }, 2.868);
+      tl.set('[data-glyph-index="18"]', { autoAlpha: 1 }, 3.037);
+      tl.set('[data-glyph-index="19"]', { autoAlpha: 1 }, 3.205);
+      tl.set('[data-glyph-index="20"]', { autoAlpha: 1 }, 3.374);
+      tl.set('[data-glyph-index="21"]', { autoAlpha: 1 }, 3.543);
+      tl.set('[data-glyph-index="22"]', { autoAlpha: 1 }, 3.711);
+      tl.set('[data-glyph-index="23"]', { autoAlpha: 1 }, 3.88);
+      tl.fromTo("#authority-shield", {"autoAlpha":0,"y":-180}, {"autoAlpha":1,"y":0,"duration":0.62,"ease":"power3.out"}, 5.548);
+      tl.fromTo("#u-high-risk", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 5.568);
+      tl.fromTo("#mother-case-art", {"autoAlpha":0,"x":200}, {"autoAlpha":1,"x":0,"duration":0.62,"ease":"power3.out"}, 12.148);
+      tl.fromTo("#u-simulation", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 15.823);
+      tl.fromTo("#rumor-warning", {"autoAlpha":0,"x":-200}, {"autoAlpha":1,"x":0,"duration":0.62,"ease":"power3.out"}, 23.482);
+      tl.fromTo("#u-real-money", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 27.099);
+      tl.fromTo("#matrix-auto", {"autoAlpha":0,"x":-200}, {"autoAlpha":1,"x":0,"duration":0.62,"ease":"power3.out"}, 32.567);
+      tl.fromTo("#matrix-confirm", {"autoAlpha":0,"y":180}, {"autoAlpha":1,"y":0,"duration":0.62,"ease":"power3.out"}, 33.657);
+      tl.fromTo("#matrix-block", {"autoAlpha":0}, {"autoAlpha":1,"duration":0.54,"ease":"power3.out"}, 37.317);
+      tl.fromTo("#u-two-questions", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 33.267);
+      tl.fromTo("#follow-person", {"autoAlpha":0,"x":-200}, {"autoAlpha":1,"x":0,"duration":0.62,"ease":"power3.out"}, 40.777);
+      tl.fromTo("#follow-agent", {"autoAlpha":0,"x":200}, {"autoAlpha":1,"x":0,"duration":0.62,"ease":"power3.out"}, 41.717);
+      tl.fromTo("#u-high-value", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 40.797);
+      tl.fromTo("#research-art", {"autoAlpha":0,"y":-180}, {"autoAlpha":1,"y":0,"duration":0.62,"ease":"power3.out"}, 47.648);
+      tl.fromTo("#u-auto", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 52.494);
+      tl.fromTo("#confirm-art", {"autoAlpha":0,"y":180}, {"autoAlpha":1,"y":0,"duration":0.62,"ease":"power3.out"}, 60.653);
+      tl.fromTo("#u-human-confirm", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 69.474);
+      tl.fromTo("#credential-risk", {"autoAlpha":0,"x":200}, {"autoAlpha":1,"x":0,"duration":0.62,"ease":"power3.out"}, 75.029);
+      tl.fromTo("#block-stop", {"autoAlpha":0}, {"autoAlpha":1,"duration":0.52,"ease":"power3.out"}, 76.469);
+      tl.fromTo("#u-block", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 75.049);
+      tl.fromTo("#summary-agent", {"autoAlpha":0,"y":180}, {"autoAlpha":1,"y":0,"duration":0.62,"ease":"power3.out"}, 82.246);
+      tl.fromTo("#u-summary-confirm", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 0.5, ease: "power2.out" }, 82.266);
+      tl.fromTo("#rail-fill-1", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 42.1, ease: "none" }, 5.388);
+      tl.fromTo("#rail-fill-2", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 13.005, ease: "none" }, 47.48831349999999);
+      tl.fromTo("#rail-fill-3", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, transformOrigin: "left center", duration: 29.809, ease: "none" }, 60.49339699999997);
+      window.__timelines.main = tl;
+      window.__hyperframesAudit = {
+        durationSeconds: 90.302,
+        voice: "zh-CN-YunxiaNeural",
+        rate: "+25%",
+        question: "让 Agent 自动炒股，哪些动作必须由人确认？",
+        questionGlyphCount: 24,
+        firstGlyphRevealAt: 0,
+        lastGlyphRevealAt: 3.88,
+        questionNarrationStart: 0.1,
+        questionNarrationEnd: 3.88,
+        fullQuestionHoldSeconds: 1.508,
+        openingAgentStatic: true,
+        bodyMastheadPersistent: true,
+        bodyProgressPersistent: true,
+        bodySceneTransitionEffectCount: 0,
+        textBodyAnimationCount: 0,
+        picturePostEntranceMotionCount: 0
+      };
+    </script>
+  </body>
+</html>

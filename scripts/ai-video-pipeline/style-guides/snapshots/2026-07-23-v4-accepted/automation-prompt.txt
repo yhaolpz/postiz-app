@@ -1,0 +1,108 @@
+在 /Users/bytedance/Documents/postiz-app 每天按北京时间 03:00 运行一次；每次运行消费一个独立选题并制作英文和中文两条 Tiny Agent 横屏长视频。英文版通过本地 Postiz 正式发布到 YouTube；中文版只生成本地成片、通用中文元数据和三张中文封面，不打开或代填任何中文平台上传页。
+
+首先读取并严格执行：
+- scripts/ai-video-pipeline/content-plans/tiny-agent-longform-plan.md
+- scripts/ai-video-pipeline/content-plans/tiny-agent-longform-archive.md
+- scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md
+- scripts/ai-video-pipeline/style-guides/tiny-agent-deep-longform-cognitive-load.md
+- 已确认双语开头动效参考 var/hyperframes-showcases/2026-07-22-tiny-agent-hook-type-on-sample-zh-CN/（中英文都复用纸灰手绘、花式字体层级、语音同步逐字弹入、关键词标记、Tiny Agent 入场和问号收束；每种语言按自己的最终 TTS/VTT 独立重算字级时间，不复用中文秒点）
+- 已确认实现参考 var/hyperframes-showcases/building-effective-agents-longform-zh-CN/
+- 最新已确认留存成品与实现参考 var/hyperframes-showcases/2026-07-22-agent-context-production-v5-zh-CN/（复用章节结构、构图、动作、QA 方法和 `promise` 关注收藏场景的视觉语义；不得复用其首帧封面时序、关注收藏场景的原开头位置或中文时间戳，关注收藏场景必须移到前言最后）
+- 已确认英文结束页参考 var/hyperframes-showcases/tiny-agent-longform-outro-sample/
+- 已确认中文结束页参考 var/hyperframes-showcases/tiny-agent-longform-outro-sample-zh-CN/
+- 活跃资产 scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-v2/
+- 资产注册表 scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-active.json
+- 素材准备与编排入口 scripts/ai-video-pipeline/hyperframes/prepare-tiny-agent-assets.mjs 和 scripts/ai-video-pipeline/hyperframes/tiny-agent-assets.mjs
+
+最新已确认深度内容易懂化规则（中英文统一，优先级高于本提示中历史的 5-8 分钟、+30%/+35% 语速、逐章三点口播小结和首句念完即切规则）：
+- 必须完整读取并严格执行 scripts/ai-video-pipeline/style-guides/tiny-agent-deep-longform-cognitive-load.md。
+- 已确认中文成品与实现参考 var/hyperframes-showcases/2026-07-23-ai-agent-uncertainty-story-v4-zh-CN/；英文复用同一故事化、认知负担、稳定画面和开头铺满规则，但按英文最终脚本、TTS/VTT 独立编排。
+- 双语固定 rate +10%；深度视频 9-12 分钟；一条所有人熟悉的日常故事贯穿不超过三个实质模块，按机制→诊断→行动递进；术语首次出现先用一句通俗话解释；每个案例必须抽取机制、证据、边界和行动知识；最终交付一个能让观众立即使用的判断工具。
+- 不做固定三点章节口播小结，不朗读“本章小节”或 Chapter recap；模块间用因果收束或尚未解决的问题自然承接，完整知识回收只放在全片总结。
+- 全片约 35-45 个稳定视觉状态，通常 10-20 秒，中位时长不低于 12 秒；同一状态用渐进揭示承载 2-4 句相关旁白，不逐句换场。
+- 首句问题使用安全区内最大字号铺满主画面，Tiny Agent 主动缩小或移位避让；中文字符和英文词内字母比对应声音提前 0.10-0.15 秒开始出现，问句念完后完整问题保持 1.2-1.6 秒再硬切正文；两版分别执行 DOM、retention-opening、cognitive-load 和 recap QA。
+
+AI Agent 标题身份硬门槛（中英文统一，优先级高于宽泛标题建议）：
+- Tiny Agent 横屏长视频的封面标题、平台发布/本地元数据标题和视频内主题标题都必须让陌生观众在脱离频道上下文时立即识别 AI Agent / 智能体主题，并同时看懂当期具体问题、行动或收益。
+- 英文 3 个标题候选、英文最终 YouTube 标题、英文视频内主题标题和英文封面标题必须自然包含 `AI Agent` 或 `AI Agents`；中文通用标题、中文视频内主题标题和三张中文封面标题必须自然包含 `AI Agent` 或 `智能体`。
+- 不得使用“越顺眼越要检查”“别只收集资料，要支持决策”这类单独看不出 AI / Agent 主题的孤立口号。应改为“AI 智能体输出越顺眼越要检查”“AI Agent 调研要支持决策”“交给智能体前先写清六件事”这类同时交代对象与主题的表达。
+- 封面文案与平台标题可以互补、无需逐字重复，但两者都不能省略 AI Agent / 智能体身份词。关键词必须属于自然句义，不得缩成角标、小标签、无关前后缀或机械堆词。
+- 在生成封面、元数据和片内标题前先执行标题身份检查；在最终 QA 再次检查全部中英文标题。任一必检标题缺少对应身份词，或脱离上下文后看不出当期讲什么，立即返工，不得准出或发布。
+
+最新视觉准则（优先级高于历史参考工程）：
+英文 YouTube 封面永久规则（优先级高于历史参考与旧封面模板）：
+- 英文 YouTube 16:9 封面固定使用“大标题 + 单一大主体 + 少信息”的 title-hero 构图；禁止四分图、等分网格、缩小流程图和多卡片信息墙。
+- “少信息”只表示每张封面只表达一个中心判断，不限制成三个单词。英文标题优先使用自然完整的 4-8 词短句，必要时允许 2-9 词，按 2-4 行排版；不得为追求极少字数压缩成含义模糊的口号。
+- 标题字体按长度在约 96-160px 间自适应，关键词优先保持 124-160px；通过字号层级突出重点，其余词仍须清晰可读。生成插画不得包含文字，标题必须确定性叠加。
+- 每期从零生成一幅完整插画，只保留一个 Agent 与一个核心物体。文字是第一主体，获得约 60%-70% 的视觉预算；右侧插画的实际可见包围盒只占整张画面约 30%-40%，不得达到或超过半幅。可缩小、右移并裁掉非核心留白；即使正文有四个以上并列模块，也必须压缩成一个选择器、技能轮、判断表或核心结果物体，不得拆成多个面板。
+- 生成时引用活跃 tiny-agent-v2 角色图或 contact sheet 作为身份参考；允许调整姿势、比例、线条和局部细节，但保留白色圆润机器人、黑色脸屏、蓝色眼睛与天线、棕色工具腰带、红蓝工具等识别锚点。
+- 英文 YouTube 发布母版固定为 3840x2160 sRGB PNG、单张小于 2 MB；必须通过 3840x2160 原尺寸、1280x720 和 256x144 三档检查。统一使用 scripts/ai-video-pipeline/render-tiny-agent-youtube-thumbnail.mjs 从无面板 SVG 渲染母版和预览；标题、Agent 与核心物体不能一眼识别，或存在裁切、重叠时立即返工，不得发布。
+- 生成任何封面、编写封面规格和执行 QA 前，必须查看 scripts/ai-video-pipeline/style-guides/references/tiny-agent-chinese-cover-three-ratio-reference.png，并以当前 style guide 的尺寸、占比和准出规则为准。
+
+- 长视频固定采用 C - 中性纸灰：基础画布、卡片/面板、字幕框、角色浅色部分与无语义道具主体使用 #ECECEA，主墨色使用 #111413，不得回退纯白或近白层级。
+- 章节导航固定贴住画面最底部并占满 1920px，整体和各段高度均为 52px；章节标签固定按最终顺序显示连续编号与名称，例如 `1. 前言`、`2. 方法`、`3. 总结`，英文同样使用 `1. Introduction` 格式；使用 20px 黑色文字并置于色块上层，当前章节加粗。
+- 章节宽度按最终旁白与 VTT 的真实时长分配，章节间隔为 4px；已播放区域固定浅蓝 #A8D8F0，未播放区域固定 #DDE0DA，两者都占满轨道高度。
+- 禁止蓝色章节文字、蓝色细线轨道、轨道上方标签、底部留白和等宽假进度；浅蓝只允许作为已播放区域的满高填充。
+- 每次生成 HTML、封面与准出检查前重新读取 scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md；若实现参考与规范冲突，以规范当前内容为准。
+- 全片总结结束后固定硬切到独立关注结束页：隐藏内容标题、常驻页眉、总结条目、字幕框和章节进度条；使用 #ECECEA 纸灰底、一个大幅笑脸/挥手 Tiny Agent 图片。英文版必须完整显示 Follow Tiny Agent 与 Tiny Agent helps you get better at using AI.；中文版必须在同样式、同构图、同角色图和同动效下完整显示关注 Tiny Agent 与成为更擅长使用 AI 的人！两版只替换对应语言的文案与音轨。
+
+已确认留存生产基线（中英文统一，优先级高于历史参考、旧模板和宽泛视觉建议）：
+- 0 秒直接进入已确认样片 `var/hyperframes-showcases/2026-07-22-tiny-agent-hook-type-on-sample-zh-CN/renders/tiny-agent-hook-type-on-sample.zh-CN.mp4` 的纸灰手绘逐字动效场景；正式封面不得进入开头。不得回退为首帧一次性展示完整问句的静态大字卡，也不得改用漫画爆破、赛博霓虹或其它候选样片方向。
+- 中英文都必须先基于各自最终 TTS/VTT 建立首句字级时间表。中文每个汉字和标点在语音读到该位置时单独弹入；英文按单词朗读起点触发该词，词内字母快速连续弹入，不提前显示后续单词。两种语言不得复用秒点。
+- 视觉固定复用确认样片的 #ECECEA 纸灰网格、#111413 主墨、蓝黄红语义强调、花式展示字体、相邻字形交替位移/旋转/缩放回弹、Tiny Agent 入场、语音进度线和句末问号爆发收束。中文优先使用 ZCOOL KuaiLe；英文使用可嵌入、粗重、略带手绘不规则感且易读的展示字体，不得退化成普通无衬线静态字幕。
+- 问题场景期间隐藏正式字幕框、常驻页眉和章节进度条；句末问号稳定后按真实语音自然停顿切正文并立即显示底部进度条，不额外插入长静音或黑帧。
+- 第一句必须在 5 秒内念完，是从观众角度直接呼应发布标题和本期核心问题的问句。中文自然包含 AI 智能体 或 AI Agent，英文自然包含 AI Agent 或 AI Agents；不得先介绍频道或使用脱离主题的泛化口号。
+- 首句问题排版优先 2 行，英文过长时最多 3 行；按语义短语断行并使用安全区内可容纳的最大字号。中文不得出现单字或标点孤行，英文不得拆词或让冠词、介词单独成行。必须用真实浏览器 DOM 包围盒确认每个字形、强调标记、问号爆发线和 Tiny Agent 无裁切、溢出或非预期遮挡。首句问题卡和紧随其后的内容不加入关注收藏引导，第一句问完后直接进入权威背书与本期结论；原关注收藏画面和文本不删除，固定移到前言最后一个场景、进入第一个实质章节之前。中文完整念出“视频全程干货高价值，让你成为更擅长使用 AI 的人，内容较长，点点关注收藏不迷路。”；英文完整念出“This video is packed with practical, high-value insights to help you get better at using AI. It's a longer one, so follow Tiny Agent and save it so you don't lose it.”。画面复用 v5 `promise` 场景的纸灰背景、人物与 Tiny Agent、收藏/保存语义道具和大号粗体价值文案，并标记为 `intro-follow-save`。该场景仍属于 `1. 前言`，进度条保持前言状态，不新增 CTA 章节标签。
+- 12 秒前自然说出当期权威来源和明确结论；20 秒前说清具体损失与观众收益；30 秒前预览最终可复用产物并开始实质解释。开头留存段通常为 30-45 秒，普通句间停顿不得超过 0.2 秒。
+- 每个实质章节必须先有章节开场，再以同一日常故事承载正文知识，并用一句因果收束或一个尚未解决的问题自然进入下一章。章节开场展示章节名与一句价值承诺，文字至少为字幕字号的 130% 且加粗。
+- 中文和英文都不设置固定三点章节口播小结，不朗读“本章小节”或“Chapter recap”。完整知识回收只放在全片总结，并用最终可复用工具重新解决开头故事。
+- 底部章节进度条在全屏问题卡结束后立即出现，固定全宽 1920px、高 52px、段间距 4px；已播放区域 #A8D8F0，未播放区域 #DDE0DA，20px #111413 章节文字始终位于色块上层，当前章节加粗。
+- 正文主标题 72-96px，字幕默认 46px，辅助标签至少 32px；单独人物或 Tiny Agent 可见高度至少 380px并上移避开字幕，核心道具通常为 360-480px。
+- 每个画面只表达一个主判断并有一个明确视觉重心，但全片不得固定为“Agent + 道具”的单一左右构图。人物、Tiny Agent、一个或两个道具、大号结论文字按内容独立或组合出现；同一构图最多连续两次。
+- 每条视频让临时图片生成的新场景素材占非结束页视觉状态约 15%-20%，不得低于 15%。中英文共享临时素材的语义意图，但可根据各自文案重新构图；临时素材必须符合 Tiny Agent 纸灰白板风格。
+- 普通内部道具与临时生成图都直接融入 #ECECEA 背景，不增加外层卡片、黑色边框、圆角容器或阴影。只有开头承载权威背书的完整信息卡允许保留结构性描边。
+- 临时生成图与黄色高亮文本同时出现时必须分处两侧，图片在左则文字在右、图片在右则文字在左，并在全片交替左右轴线，不得固定在同一侧。
+- 黄色高亮文本优先保持完整短句单行；必须换行时按语义接近对半拆分，不出现单字、单词或标点孤行。中文固定宽度框单行默认不超过 11 个非空白字符；英文按完整单词断行。最终必须用真实浏览器 DOM 包围盒检查每一行均在黄色容器内，任何越框、裁切或与图片重叠都立即阻塞。
+- 每条视频至少包含 7 种实际可见动作类型和 20 个动作节点，可使用画外飞入、短推、放大聚焦、按压回弹、跳动、轻摆、旋转进入、浮动和逐项高亮；动作必须绑定旁白语义并记录在 animation-plan.json。
+- 中英文必须分别生成最终 TTS/VTT、timing-map.json、scene-plan.json 和 animation-plan.json；英文完整执行上述留存、构图、临时素材、动作和防溢出规则，不得把中文秒点直接复用到英文。
+- 双语发布前必须生成并通过 qa/retention-opening-report.json、qa/highlight-layout-report.json、qa/dom-layout-report.json、qa/internal-prop-style-report.json 和 qa/motion-report.json。retention-opening-report 必须证明 firstFrameType=voice-synced-kinetic-question、coverAssetUsedInOpening=false、fullSentenceVisibleAtFirstFrame=false、参考样片路径正确、首句最终文字与旁白一致、中文逐字/英文词内字母触发点与各自 TTS 对齐、earlyRevealCount=0、花式字体已嵌入、问号关键帧和 DOM 边界通过；同时证明前 30 秒没有关注收藏引导、`intro-follow-save` 是前言最后一个场景、固定双语文案完整、场景结束下一帧进入第一个实质章节。抽查首句首字、AI / AI Agent 关键词、句末问号、首句结束下一帧、12/20/30 秒、前言末尾关注收藏场景及其下一帧、全部临时图场景、全部黄色高亮场景、章节开场、章节总结和结束页。
+
+清理先行：
+1. 每次开始制作前运行 node scripts/ai-video-pipeline/cleanup-published-longform.mjs --apply。
+2. 清理脚本只允许删除本任务清理清单中明确记录、英文公开发布已满 48 小时且再次确认仍为 public 并属于播放列表 PLJffvaWRvGC8 的中英文 MP4。不得手工扩大删除范围，不得删除项目目录、脚本、字幕、时间轴、元数据、QA、短视频、生产基线、固定资产、未发布或阻塞产物。
+3. 读取清理报告，把已删除记录的 deletedAt 和状态同步到选题归档的“本地视频清理记录”。单个旧清单清理失败时记录原因并继续当天生产，不绕过安全校验。
+
+每日一次生产：
+4. 按 Asia/Shanghai 确定当前日期，并生成运行键 RUN_KEY=<YYYY-MM-DD>-03。检查计划、归档及该运行键对应的英文和中文本地产物：同一 RUN_KEY 英文已发布且中文已生成则停止重复生产；双语已生成但英文未发布则优先补投原英文视频；任一语言阻塞则从现有产物恢复。
+5. 使用 var/ai-video-pipeline/longform/<RUN_KEY>.in-progress 防并发。RUN_KEY 固定含 03；同一 RUN_KEY 在 6 小时内存在 marker 则停止，过期 marker 检查产物后恢复。若发现上一日仍有未完成产物，先按归档和产物状态恢复，绝不重复发布。
+6. 每次运行优先恢复计划中已经进入制作但未完成的最早条目；没有待恢复条目时，从现有计划中选择最早一条“待执行”选题，并在开始制作前立即写入 RUN_KEY 与“来源已确认”状态，防止重复领取。现有排期日期只作为队列顺序，不要求在原自然日发布。只有计划中没有待恢复或待执行条目时，才按自动续排规则从最近 12 个月的头部 AI 公司或研究机构官方文章中补充一个新主题；先对计划和归档检查 canonical URL、用户问题、中心结论和可复用产物，写入计划后再制作。
+7. 打开官方原文复核标题、日期和关键结论。完整分析后建立共享 content map：英文和中文共享中心主旨、P0/P1/P2/P3、章节顺序、事实边界、角色任务和可复用产物。原文只作为事实与方法来源，不逐段复述，不以“文章/论文解读”为卖点。
+8. 基于共享内容地图分别编写自然英文和自然中文脚本，不机械逐句翻译。章节承诺、关键结论、案例边界和最终工具必须一致。输出脚本前执行独立的内容编辑检查，目标是提高信息密度和表达质量，不是为了命中时长而机械删减。P0/P1 必须保留；P2 按证据价值判断，凡是能建立来源可信度、支撑结论、解释机制、限定边界或帮助观众迁移使用的内容都应保留，不设置固定数量上限。权威机构、原文或研究的明确归属是内容证据，不得默认视为低价值背景；脚本可以在能增强可信度的位置自然说明来源。只删除确认没有增加新事实、证据、判断、边界、步骤、必要例证或理解帮助的重复表达、客套转场和相似案例。英文和中文分别按自然表达精简，不保留机械翻译产生的赘词。
+9. 英文使用 edge-tts en-US-AnaNeural、rate +10%；中文使用 edge-tts zh-CN-YunxiaNeural、rate +10%。先分别生成最终 TTS/VTT，再分别建立 timing-map.json 和 animation-plan.json，禁止跨语言复用时间戳。
+10. 开头留存段通常为 30-45 秒并严格执行语音同步逐字弹入问题卡、5 秒问句和 12/20/30 秒门槛；关注收藏画面和固定双语文案只放在前言最后一个 `intro-follow-save` 场景，随后进入第一个实质章节。每个实质章节有章节开场，并用因果收束或尚未解决的问题自然进入下一章，不设置固定三点口播小结；结尾先复述正文关键点，再使用对应语言的固定关注引导并硬切到独立结束页，不承诺下一期。中文必须逐字念出“关注 Tiny Agent，成为更擅长使用 AI 的人！”；英文必须逐字念出“Follow Tiny Agent. Tiny Agent helps you get better at using AI.”。英文不得省略第一句，也不得在第二句后追加内容；中文不得拆成两句或追加其它内容。结束页首帧必须与对应语言固定 CTA 的 VTT 起点误差不超过 1/30 秒；固定句同时用于对应语言旁白结尾和发布简介，不得按当期主题改写。
+11. 分别新建 var/hyperframes-showcases/<RUN_KEY>-<SLUG>-longform-en-US/ 和 var/hyperframes-showcases/<RUN_KEY>-<SLUG>-longform-zh-CN/，不得覆盖参考工程。两个版本共享视觉语义和构图意图，但根据各自旁白时间轴独立编译场景与动画。
+11A. 两个新项目都先执行 node scripts/ai-video-pipeline/hyperframes/prepare-tiny-agent-assets.mjs --project <PROJECT_DIR>，从 tiny-agent-active.json 准备已通过 QA 的 tiny-agent-v2 到 assets/pack。只能引用三个 manifest 中的单张 PNG 路径和锚点；不得维护角色或道具硬编码白名单，不得依赖 sprite sheet 行列位置，不得运行时镜像角色。v2 缺失或 QA 非 pass 时才允许回退 tiny-agent-v1，并必须在报告中明确记录。
+11B. 场景先按语义动作和观看者视角选择角色：内容在左用 left，内容在右用 right，无方向语义用 front；有方向动作必须在 scene-plan.json 写入匹配的 humanDirection 或 agentDirection。生成 HTML 前必须调用 assertTinyAgentScenePlanAssets(scenePlan, pack, { requireDirectionMetadata: true })，方向冲突或任一素材 id 不存在时立即阻塞。
+11C. 新增道具必须与 v1 的填色白板风格高度一致：黑色圆角轮廓、#ECECEA 中性纸灰主体、蓝/黄/红语义填色和轻微明暗层次。统一粗线图标、只剩圆点或下划线的占位图、无语义装饰底纹均不得进入视频；资产 QA 必须包含 icon-body 检查。
+12. 两个版本都严格执行深度长视频基线：1920x1080、30fps、H.264/AAC、固定控制在 9-12 分钟；时长是内容编辑后的结果范围，不得反过来驱动删除权威来源、必要证据、边界或案例。不足 9 分钟不得靠重复解释补时；超过 12 分钟时先删除确认无信息价值的重复内容，仍超出则拆成两个独立主题；角色参与叙事、低文字密度、构图多样、章节进度条占满宽度、语义道具节拍、标题带隔离、视觉重心平衡、连线止于图标边界、转场和角色无跳变。
+13. 两个语言项目都必须产出 source.md、content-map.json、对应语言脚本、STORYBOARD.md、scene-plan.json、animation-plan.json、timing-map.json、summary.json、音频、VTT、快照和 MP4。英文生成 publish-metadata.en-US.json；中文生成 publish-metadata.zh-CN.json。
+13A. 每期只生成四张固定封面：英文 YouTube 4K 发布母版 `thumbnails/thumbnail.en-US.png`（3840x2160），并生成 `thumbnail.en-US.1280x720.png` 与 `thumbnail.en-US.256x144.png` 两张 QA 预览；中文 `thumbnails/thumbnail.zh-CN.png`（1280x720）、`thumbnail.zh-CN.4x3.png`（1200x900）、`thumbnail.zh-CN.3x4.png`（900x1200）。不生成 `thumbnail.zh-CN.youtube-style.png` 或其它中文备选封面。全部为 sRGB PNG、单张小于 2 MB，并使用完整插画与确定性文字叠加，禁止不透明面板截断插画。英文必须通过 3840x2160 原尺寸、1280x720 与 256x144 三档检查，且只能向 Postiz 提交 4K 母版；中文 16:9 与 4:3 使用文字左、完整插画右构图；中文 3:4 固定为顶部 60% 文字区、底部 40% 插画区，黄线位于 y=0.60H，标题包围盒至少占文字区 68%，插画 contain 居中完整显示。中文 16:9 通过 256x144，4:3 通过 240x180，3:4 通过 180x240。中文继续生成通用元数据与文案，但不得生成小红书专用内容或平台表单状态。
+14. 分别运行资产、balance、semantics、transitions、HyperFrames check、渲染与 ffprobe 检查；双语元数据、片内标题和四张封面规格完成后，必须运行 `node scripts/ai-video-pipeline/validate-tiny-agent-title-identity.mjs --english-project <EN_PROJECT_DIR> --chinese-project <ZH_PROJECT_DIR>`，并确认两个项目的 `qa/title-identity-report.json` 都是 `pass: true`。随后抽查开头、各章节中点、转场、全片总结与独立关注结束页；验证各语言固定关注语音、结束页 VTT 对齐、角色图片、完整文案和无静音尾巴。两个版本都通过内容、语音、字幕、布局、动画和音视频准出后才进入英文发布；任一版本失败时不得写成完成。
+
+中文本地产物边界：
+14A. 中文版完成脚本、TTS、VTT、时间轴、动画、成片、通用中文元数据和三张中文封面后即结束自动化工作。
+14B. 不打开哔哩哔哩、抖音、小红书或其它中文平台上传页；不上传 MP4 或封面，不填写标题、简介、话题、标签、合集、原创声明或其它表单字段。历史 `tiny-agent-chinese-platform-publishing.md` 仅作过往记录，不再读取或执行。
+14C. 不生成 `xiaohongshuTitle` 或任何小红书专用内容。最终报告只列出中文本地产物、通用中文文案、三张中文封面路径与 QA，不报告中文平台准备状态。
+
+英文发布：
+15. 按基线生成 3 个英文标题候选、最终英文标题、英文缩略图文案、唯一英文简介、1 个主关键词、3-5 个次关键词、4-6 个相关 hashtag 和 5-10 个拼写/同义 tags。3 个候选、最终标题、英文片内主题标题和英文封面标题都必须自然包含 `AI Agent` 或 `AI Agents`；中文通用标题、中文片内主题标题和三张中文封面标题都必须自然包含 `AI Agent` 或 `智能体`，且全部标题都要同时说明当期具体问题或收益。简介包含三点收获、英文 timing map 的真实章节、固定英文关注句和相关 hashtag；禁止加入 Source/来源段、来源机构/原文标题拼接及任何 http://、https:// 外站链接。来源只保留在 source.md、content-map.json 和结构化 source 字段中，不得进入 description。
+15A. 英文发布前必须确认 `thumbnail.en-US.png` 为已通过准出的 3840x2160 4K 母版，并作为 Postiz 的 YouTube thumbnail 媒体随英文视频一并提交；不得提交 1280x720 或 256x144 QA 预览。缺少 4K 英文封面或封面上传失败时不得发布。三张中文封面只做本地准出与路径报告，不进入 Postiz、浏览器或任何平台上传流程。
+16. 仅将英文 MP4 通过本地 Postiz 发布到已连接的 IndieSeek YouTube。必须 public、selfDeclaredMadeForKids=no，并传 playlistId=PLJffvaWRvGC8、playlistTitle=AI Agents: From Chat to Done、playlistPrivacyStatus=public。中文 MP4、中文文案和中文封面只保留本地，不通过 Postiz、接口或浏览器自动上传到任何平台。
+17. scripts/ai-video-pipeline/run.mjs 是 Shorts 竖屏生成器，不得用其竖屏和短时长准出验证长视频。使用现有长视频发布 helper；若缺失，可依据 run.mjs 的 Postiz upload/posts/Temporal/wait 逻辑建立可复用 helper，但发布必须经过 Postiz，不得绕过 Postiz直接上传 YouTube。
+18. 发布前按项目现有方式恢复 Postiz backend、Temporal、orchestrator 和可刷新的 OAuth。只有密码、验证码、2FA、CAPTCHA 或平台明确拒绝授权才列为人工项。
+19. Postiz 返回后，通过 YouTube API 或公开页面确认英文视频为 public、release URL 可访问、视频属于播放列表 PLJffvaWRvGC8。三项齐全才能标记英文已发布。
+20. 双语 QA 和英文发布验证全部成功后，写入 var/ai-video-pipeline/longform/published/<RUN_KEY>-<SLUG>.json。清单必须包含实际 publishedAt、YouTube videoId/URL/privacyStatus/playlistId、英文 MP4 和中文 MP4 的仓库相对路径，以及 cleanup.retentionHours=48、status=pending、eligibleAt=publishedAt 加 48 小时。没有完整成功证据不得创建清理清单。
+21. 实时更新计划和归档，记录 RUN_KEY，并分别记录英文 MP4/YouTube URL、中文 MP4、通用中文元数据和三张中文封面。英文发布失败时保留双语产物并优先补投，不重新制作；中文平台页面不属于状态机或恢复项。
+22. 不回滚用户改动，不做 git reset/checkout，不提交代码，不泄露凭据。
+
+最终用中文简短报告：执行时间、来源、英文最终标题、可复用产物、双语 MP4 路径和时长、英文 `thumbnail.en-US.png`、中文 `thumbnail.zh-CN.png`、`thumbnail.zh-CN.4x3.png`、`thumbnail.zh-CN.3x4.png`、双语视频 QA、四张封面 QA（英文含 4K 母版与两档预览）、英文 YouTube URL、播放列表验证、清理结果和计划/归档更新；同时汇总通用中文标题、精简中文简介与 hashtag。中文简介不含来源、外部链接或章节。不要报告任何中文平台表单状态。只有双语成片、四张固定封面全部通过准出、英文封面随 Postiz 提交且英文 public 发布与播放列表验证完整时，才能声称本时段生产成功。

@@ -1,0 +1,618 @@
+{
+  "version": 1,
+  "durationSeconds": 119.74,
+  "effects": [
+    {
+      "id": "fx-q-agent",
+      "sceneId": "s01-question",
+      "at": 0.22,
+      "triggerCueId": "cue-1",
+      "triggerText": "让 Agent 自动炒股，能直接动真金白银吗？",
+      "triggerConcept": "Agent 自动炒股",
+      "targetSelector": "#q-agent",
+      "targetSemanticRole": "tiny-agent",
+      "targetMatchEvidence": "首句正在引入 Agent 主体",
+      "effectType": "picture-entrance",
+      "entranceType": "from-bottom",
+      "direction": "bottom-to-top",
+      "distance": 180,
+      "fromState": {
+        "autoAlpha": 0,
+        "y": 180
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.6,
+      "holdUntil": 5.264
+    },
+    {
+      "id": "fx-q-underline",
+      "sceneId": "s01-question",
+      "at": 2.22,
+      "triggerCueId": "cue-1",
+      "triggerText": "直接动真金白银",
+      "triggerConcept": "真实资金风险",
+      "targetSelector": "#u-question-money",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注首句最关键的真实资金风险",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.52,
+      "holdUntil": 5.264
+    },
+    {
+      "id": "fx-source-shield",
+      "sceneId": "s02-source-risk",
+      "at": 5.38,
+      "triggerCueId": "cue-2",
+      "triggerText": "OpenAI 提醒：真正的危险，是不可信信息能不能碰到高风险工具。",
+      "triggerConcept": "高风险工具",
+      "targetSelector": "#source-shield",
+      "targetSemanticRole": "risk-control",
+      "targetMatchEvidence": "旁白首次引入高风险工具",
+      "effectType": "picture-entrance",
+      "entranceType": "from-top",
+      "direction": "top-to-bottom",
+      "distance": 180,
+      "fromState": {
+        "autoAlpha": 0,
+        "y": -180
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.58,
+      "holdUntil": 11.42
+    },
+    {
+      "id": "fx-source-underline",
+      "sceneId": "s02-source-risk",
+      "at": 8.7,
+      "triggerCueId": "cue-2",
+      "triggerText": "高风险工具",
+      "triggerConcept": "高风险工具",
+      "targetSelector": "#u-high-risk-tools",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注来源结论中的限制对象",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.48,
+      "holdUntil": 11.42
+    },
+    {
+      "id": "fx-story-art",
+      "sceneId": "s03-story-loss",
+      "at": 11.54,
+      "triggerCueId": "cue-3",
+      "triggerText": "假设你是一人公司老板，把模拟投资账户交给 Agent。",
+      "triggerConcept": "一人公司老板与模拟投资账户",
+      "targetSelector": "#story-art",
+      "targetSemanticRole": "generated-story-illustration",
+      "targetMatchEvidence": "旁白首次引入固定母案例",
+      "effectType": "picture-entrance",
+      "entranceType": "from-right",
+      "direction": "right-to-left",
+      "distance": 220,
+      "fromState": {
+        "autoAlpha": 0,
+        "x": 220
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.68,
+      "holdUntil": 27.53
+    },
+    {
+      "id": "fx-loss-underline",
+      "sceneId": "s03-story-loss",
+      "at": 23.05,
+      "triggerCueId": "cue-6",
+      "triggerText": "真金白银的损失",
+      "triggerConcept": "真实损失",
+      "targetSelector": "#u-real-loss",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注母案例的具体损失",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.5,
+      "holdUntil": 27.53
+    },
+    {
+      "id": "fx-matrix-auto",
+      "sceneId": "s04-matrix-preview",
+      "at": 27.65,
+      "triggerCueId": "cue-7",
+      "triggerText": "这期用一张三级行动权限矩阵，把操作分成自动、确认和阻断。",
+      "triggerConcept": "matrix-auto",
+      "targetSelector": "#matrix-auto",
+      "targetSemanticRole": "automatic-tier",
+      "targetMatchEvidence": "旁白正在逐项介绍三级权限矩阵",
+      "effectType": "picture-entrance",
+      "entranceType": "from-left",
+      "direction": "left-to-right",
+      "distance": 190,
+      "fromState": {
+        "autoAlpha": 0,
+        "x": -190
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.64,
+      "holdUntil": 38.75
+    },
+    {
+      "id": "fx-matrix-confirm",
+      "sceneId": "s04-matrix-preview",
+      "at": 30.2,
+      "triggerCueId": "cue-8",
+      "triggerText": "看完你就知道，哪些能放手，哪些必须点头，哪些该立刻停下。",
+      "triggerConcept": "matrix-confirm",
+      "targetSelector": "#matrix-confirm",
+      "targetSemanticRole": "confirm-tier",
+      "targetMatchEvidence": "旁白正在逐项介绍三级权限矩阵",
+      "effectType": "picture-entrance",
+      "entranceType": "from-bottom",
+      "direction": "bottom-to-top",
+      "distance": 180,
+      "fromState": {
+        "autoAlpha": 0,
+        "y": 180
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.64,
+      "holdUntil": 38.75
+    },
+    {
+      "id": "fx-matrix-block",
+      "sceneId": "s04-matrix-preview",
+      "at": 32.8,
+      "triggerCueId": "cue-8",
+      "triggerText": "看完你就知道，哪些能放手，哪些必须点头，哪些该立刻停下。",
+      "triggerConcept": "matrix-block",
+      "targetSelector": "#matrix-block",
+      "targetSemanticRole": "block-tier",
+      "targetMatchEvidence": "旁白正在逐项介绍三级权限矩阵",
+      "effectType": "picture-entrance",
+      "entranceType": "fade",
+      "direction": "none",
+      "distance": 0,
+      "fromState": {
+        "autoAlpha": 0
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.52,
+      "holdUntil": 38.75
+    },
+    {
+      "id": "fx-matrix-underline",
+      "sceneId": "s04-matrix-preview",
+      "at": 27.7,
+      "triggerCueId": "cue-7",
+      "triggerText": "三级行动权限矩阵",
+      "triggerConcept": "permission-matrix",
+      "targetSelector": "#u-permission-matrix",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注本期可复用工具",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.52,
+      "holdUntil": 38.75
+    },
+    {
+      "id": "fx-follow-human",
+      "sceneId": "s05-follow-save",
+      "at": 38.92,
+      "triggerCueId": "cue-9",
+      "triggerText": "视频全程干货高价值，让你成为更擅长使用 AI 的人，内容较长，点点关注收藏不迷路。",
+      "triggerConcept": "关注与学习",
+      "targetSelector": "#follow-human",
+      "targetSemanticRole": "owner",
+      "targetMatchEvidence": "固定关注收藏旁白正在引入对应主体",
+      "effectType": "picture-entrance",
+      "entranceType": "from-left",
+      "direction": "left-to-right",
+      "distance": 170,
+      "fromState": {
+        "autoAlpha": 0,
+        "x": -170
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.58,
+      "holdUntil": 46.64
+    },
+    {
+      "id": "fx-follow-agent",
+      "sceneId": "s05-follow-save",
+      "at": 39.05,
+      "triggerCueId": "cue-9",
+      "triggerText": "视频全程干货高价值，让你成为更擅长使用 AI 的人，内容较长，点点关注收藏不迷路。",
+      "triggerConcept": "关注与学习",
+      "targetSelector": "#follow-agent",
+      "targetSemanticRole": "tiny-agent",
+      "targetMatchEvidence": "固定关注收藏旁白正在引入对应主体",
+      "effectType": "picture-entrance",
+      "entranceType": "from-right",
+      "direction": "right-to-left",
+      "distance": 180,
+      "fromState": {
+        "autoAlpha": 0,
+        "x": 180
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.58,
+      "holdUntil": 46.64
+    },
+    {
+      "id": "fx-follow-bookmark",
+      "sceneId": "s05-follow-save",
+      "at": 42.2,
+      "triggerCueId": "cue-9",
+      "triggerText": "视频全程干货高价值，让你成为更擅长使用 AI 的人，内容较长，点点关注收藏不迷路。",
+      "triggerConcept": "收藏",
+      "targetSelector": "#follow-bookmark",
+      "targetSemanticRole": "save-prop",
+      "targetMatchEvidence": "固定关注收藏旁白正在引入对应主体",
+      "effectType": "picture-entrance",
+      "entranceType": "from-top",
+      "direction": "top-to-bottom",
+      "distance": 160,
+      "fromState": {
+        "autoAlpha": 0,
+        "y": -160
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.58,
+      "holdUntil": 46.64
+    },
+    {
+      "id": "fx-follow-underline",
+      "sceneId": "s05-follow-save",
+      "at": 39.1,
+      "triggerCueId": "cue-9",
+      "triggerText": "干货高价值",
+      "triggerConcept": "高价值内容",
+      "targetSelector": "#u-high-value",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注固定关注收藏文案中的价值承诺",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.46,
+      "holdUntil": 46.64
+    },
+    {
+      "id": "fx-auto-agent",
+      "sceneId": "s06-automatic",
+      "at": 46.82,
+      "triggerCueId": "cue-10",
+      "triggerText": "先别问这条消息像不像真的，先问 Agent 接下来准备做什么。",
+      "triggerConcept": "tiny-agent",
+      "targetSelector": "#auto-agent",
+      "targetSemanticRole": "tiny-agent",
+      "targetMatchEvidence": "旁白正在引入公开研究或模拟计算",
+      "effectType": "picture-entrance",
+      "entranceType": "from-bottom",
+      "direction": "bottom-to-top",
+      "distance": 180,
+      "fromState": {
+        "autoAlpha": 0,
+        "y": 180
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.62,
+      "holdUntil": 67.15
+    },
+    {
+      "id": "fx-auto-sheet",
+      "sceneId": "s06-automatic",
+      "at": 52.42,
+      "triggerCueId": "cue-11",
+      "triggerText": "如果它只是读取公开财报、对比历史数据、算出几种仓位方案，结果仍留在本地，而且随时能重算，这类动作后果小、可逆，就可以自动执行。",
+      "triggerConcept": "public-evidence",
+      "targetSelector": "#auto-sheet",
+      "targetSemanticRole": "public-evidence",
+      "targetMatchEvidence": "旁白正在引入公开研究或模拟计算",
+      "effectType": "picture-entrance",
+      "entranceType": "from-left",
+      "direction": "left-to-right",
+      "distance": 200,
+      "fromState": {
+        "autoAlpha": 0,
+        "x": -200
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.62,
+      "holdUntil": 67.15
+    },
+    {
+      "id": "fx-auto-chart",
+      "sceneId": "s06-automatic",
+      "at": 56.8,
+      "triggerCueId": "cue-11",
+      "triggerText": "如果它只是读取公开财报、对比历史数据、算出几种仓位方案，结果仍留在本地，而且随时能重算，这类动作后果小、可逆，就可以自动执行。",
+      "triggerConcept": "simulation-result",
+      "targetSelector": "#auto-chart",
+      "targetSemanticRole": "simulation-result",
+      "targetMatchEvidence": "旁白正在引入公开研究或模拟计算",
+      "effectType": "picture-entrance",
+      "entranceType": "from-right",
+      "direction": "right-to-left",
+      "distance": 200,
+      "fromState": {
+        "autoAlpha": 0,
+        "x": 200
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.62,
+      "holdUntil": 67.15
+    },
+    {
+      "id": "fx-auto-underline",
+      "sceneId": "s06-automatic",
+      "at": 60.5,
+      "triggerCueId": "cue-11",
+      "triggerText": "自动执行",
+      "triggerConcept": "automatic-tier",
+      "targetSelector": "#u-auto-execute",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注低后果可逆动作的权限结论",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.48,
+      "holdUntil": 67.15
+    },
+    {
+      "id": "fx-confirm-art",
+      "sceneId": "s07-confirm",
+      "at": 67.28,
+      "triggerCueId": "cue-13",
+      "triggerText": "但如果它要把模拟策略变成真实订单，事情就变了。",
+      "triggerConcept": "真实订单确认",
+      "targetSelector": "#confirm-art",
+      "targetSemanticRole": "generated-confirmation-illustration",
+      "targetMatchEvidence": "旁白从模拟策略切换到真实订单",
+      "effectType": "picture-entrance",
+      "entranceType": "from-bottom",
+      "direction": "bottom-to-top",
+      "distance": 220,
+      "fromState": {
+        "autoAlpha": 0,
+        "y": 220
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "y": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.7,
+      "holdUntil": 84.85
+    },
+    {
+      "id": "fx-confirm-underline",
+      "sceneId": "s07-confirm",
+      "at": 80.2,
+      "triggerCueId": "cue-15",
+      "triggerText": "真实下单",
+      "triggerConcept": "owner-confirmation",
+      "targetSelector": "#u-real-order",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注必须由老板确认的真实状态改变",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.5,
+      "holdUntil": 84.85
+    },
+    {
+      "id": "fx-block-art",
+      "sceneId": "s08-block",
+      "at": 84.98,
+      "triggerCueId": "cue-16",
+      "triggerText": "再往前一步，如果那条消息要求上传账户凭据，或者把资金转到一个没核实的地址，这不是“再确认一下”就够了，而是应该直接阻断。",
+      "triggerConcept": "凭据与陌生地址",
+      "targetSelector": "#block-art",
+      "targetSemanticRole": "generated-risk-illustration",
+      "targetMatchEvidence": "旁白引入来源不明的凭据和资金请求",
+      "effectType": "picture-entrance",
+      "entranceType": "from-left",
+      "direction": "left-to-right",
+      "distance": 220,
+      "fromState": {
+        "autoAlpha": 0,
+        "x": -220
+      },
+      "toState": {
+        "autoAlpha": 1,
+        "x": 0
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.68,
+      "holdUntil": 100.4
+    },
+    {
+      "id": "fx-block-underline",
+      "sceneId": "s08-block",
+      "at": 92.8,
+      "triggerCueId": "cue-16",
+      "triggerText": "直接阻断",
+      "triggerConcept": "block-tier",
+      "targetSelector": "#u-block-now",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注与目标冲突且不可逆的权限结论",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.48,
+      "holdUntil": 100.4
+    },
+    {
+      "id": "fx-loop-agent",
+      "sceneId": "s09-open-loop",
+      "at": 100.56,
+      "triggerCueId": "cue-18",
+      "triggerText": "所以第一条判断很简单：研究是在看信息，真实交易是在改状态。",
+      "triggerConcept": "判断动作后果",
+      "targetSelector": "#loop-agent",
+      "targetSemanticRole": "tiny-agent-question",
+      "targetMatchEvidence": "旁白回收权限判断并提出下一问题",
+      "effectType": "picture-entrance",
+      "entranceType": "fade",
+      "direction": "none",
+      "distance": 0,
+      "fromState": {
+        "autoAlpha": 0
+      },
+      "toState": {
+        "autoAlpha": 1
+      },
+      "semanticPurpose": "introduce-new-information",
+      "duration": 0.56,
+      "holdUntil": 119.74
+    },
+    {
+      "id": "fx-loop-underline",
+      "sceneId": "s09-open-loop",
+      "at": 102.1,
+      "triggerCueId": "cue-18",
+      "triggerText": "动作后果",
+      "triggerConcept": "consequence-first",
+      "targetSelector": "#u-consequence",
+      "targetSemanticRole": "key-text-underline",
+      "targetMatchEvidence": "标注第一条可迁移判断",
+      "effectType": "text-underline",
+      "direction": "left-to-right",
+      "fromState": {
+        "scaleX": 0,
+        "transformOrigin": "left center"
+      },
+      "toState": {
+        "scaleX": 1,
+        "transformOrigin": "left center"
+      },
+      "semanticPurpose": "mark-key-emphasis",
+      "duration": 0.48,
+      "holdUntil": 119.74
+    }
+  ]
+}

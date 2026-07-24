@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "snapshotId": "tiny-agent-deep-longform-v4-accepted-2026-07-23",
+  "status": "frozen",
+  "scope": "bilingual-video-generation",
+  "acceptedVersion": {
+    "threadId": "019f8b33-68dd-7d02-973f-ce3273ffcebf",
+    "sessionPath": "/Users/bytedance/.codex/sessions/2026/07/23/rollout-2026-07-23T03-00-30-019f8b33-68dd-7d02-973f-ce3273ffcebf.jsonl",
+    "generationRequest": {
+      "timestamp": "2026-07-23T07:01:28.643Z",
+      "messageId": "msg_019f8dc7-7bc3-7e00-bdd8-603ebfcb5acd"
+    },
+    "acceptance": {
+      "timestamp": "2026-07-23T08:02:19.689Z",
+      "messageId": "msg_019f8dff-31a9-7f33-83e4-bfa75d2667ed",
+      "text": "可以这个效果不错，把这个规则长期记录下来，下次生成视频时要生效，中文和英文版本都要生效。"
+    },
+    "protectedCommit": "2caf583df2b91d7d7f6248796bae0c7ce885ccab"
+  },
+  "frozenRuleSources": [
+    {
+      "path": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-v4-accepted/automation-prompt.txt",
+      "sha256": "d53dcfd20d0399c7ab587009515eeed1fe1d3e692ea141c86e4e5d1a1657de12",
+      "characterCount": 13945,
+      "provenance": "Exact historical automation prompt produced by the logged update at 2026-07-23T08:06:10.014Z from the exact 13126-character pre-update prompt."
+    },
+    {
+      "path": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-v4-accepted/tiny-agent-longform.md",
+      "sha256": "b84a3db6a1b566b1d857412621afbeadd035afa9aa97c4a726ad0588a736c468",
+      "gitBlob": "86e844d554532bbaf90decdca2428b8b111f1de2",
+      "gitSource": "2caf583df2b91d7d7f6248796bae0c7ce885ccab:scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md"
+    },
+    {
+      "path": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-v4-accepted/tiny-agent-deep-longform-cognitive-load.md",
+      "sha256": "a031f6935d3376905cafd008d285485401c58c3e6ff0b0f2fb898f93d836ab51",
+      "gitBlob": "4576fa5c54a800c72fb7fe511af0e2079a8c9e21",
+      "gitSource": "2caf583df2b91d7d7f6248796bae0c7ce885ccab:scripts/ai-video-pipeline/style-guides/tiny-agent-deep-longform-cognitive-load.md"
+    }
+  ],
+  "implementationReference": {
+    "project": "var/hyperframes-showcases/2026-07-23-ai-agent-uncertainty-story-v4-zh-CN",
+    "render": {
+      "path": "var/hyperframes-showcases/2026-07-23-ai-agent-uncertainty-story-v4-zh-CN/renders/2026-07-23-ai-agent-uncertainty-story-v4.zh-CN.mp4",
+      "sha256": "250c5bbb380599881b3b6b819d1d4b07ae5ac596dc31b376eee46192436dad24",
+      "durationSeconds": 621.205333
+    },
+    "files": {
+      "SCRIPT.zh-CN.md": "a23106b54a249207d6dfce5b080397e08854aea81894b0825f93f6c35d60d861",
+      "STORYBOARD.md": "1328ff96a7d1655585472acd636891d854ec456758dec82b2eeeb72aca616d2b",
+      "scene-plan.json": "950946c1788b718b3fc597fa93325ba8fcc3c6122708bb31b56b19d153495342",
+      "animation-plan.json": "f99c2d4758bed90553ee4b5a14fd2798bc2f5ad3a3a8c8aa1d482198abbf3df8",
+      "timing-map.json": "8cda85b2806edc7c4e7e8eb62d83f53e68b2581153de38cd654bf800f526ff70",
+      "summary.json": "e4339c77579ccc0f1faf4d5fc14fa740ef2b9aca061c80d26c8a7207d2918246",
+      "build.mjs": "c3b3ad617f42a4b4223f62e6a0d3fe1eb7967b59fe8d8f2ae85b8485fe6d0426",
+      "index.html": "e91c8950aacdb7de7a877f68f04aaf1fc804d45d564b9b176b337d38ca6cd0a7",
+      "audio/narration.mp3": "4cf6de4c91c0a705b321f9de78f9bf2a6651943282b08299ff9ea43e51f7755c",
+      "captions/narration.vtt": "59c5ad969f8385a41479df5fc417a58782569b2a6553e7d4d3500dd1219ebb38"
+    }
+  },
+  "activation": {
+    "readOrder": [
+      "automation-prompt.txt",
+      "tiny-agent-longform.md",
+      "tiny-agent-deep-longform-cognitive-load.md"
+    ],
+    "precedence": "The frozen deep guide overrides the frozen longform guide for deep-content generation. Both frozen guides override any later content, narration, pacing, opening, scene-cadence, motion, generated-art, recap, or transition rules.",
+    "regeneratePerEpisode": [
+      "topic facts and sources",
+      "natural English and Chinese scripts",
+      "story details appropriate to the topic",
+      "TTS and VTT",
+      "timing-map.json",
+      "scene-plan.json",
+      "animation-plan.json",
+      "cover copy and metadata"
+    ],
+    "doNotCopy": [
+      "the V4 topic",
+      "the rain and umbrella wording unless it is naturally useful",
+      "V4 facts",
+      "V4 absolute timestamps",
+      "V4 scene text"
+    ]
+  }
+}

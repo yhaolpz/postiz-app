@@ -27,37 +27,39 @@ const result = await page.evaluate(() => {
     return { left: round(value.left), top: round(value.top), right: round(value.right), bottom: round(value.bottom), width: round(value.width), height: round(value.height) };
   };
   const within = (inner, outer, tolerance = 1) => inner.left >= outer.left - tolerance && inner.right <= outer.right + tolerance && inner.top >= outer.top - tolerance && inner.bottom <= outer.bottom + tolerance;
-  const highlights = [...document.querySelectorAll('.yellow-highlight')].map((element) => {
+  const cards = [...document.querySelectorAll('.semantic-label-card')].map((element) => {
     const box = rect(element);
+    const sceneBox = rect(element.closest('.scene'));
     const lines = [...element.querySelectorAll('.label-line')].map((line) => ({ text: line.textContent.trim(), rect: rect(line) }));
-    return { sceneId: element.closest('.scene')?.id?.replace('scene-', ''), className: element.className, box, lines, pass: lines.length > 0 && lines.every((line) => within(line.rect, box)) };
-  });
-  const underlines = [...document.querySelectorAll('.semantic-underline-target')].map((target) => {
-    const textElement = target.querySelector('.label-text');
-    const segment = target.querySelector('.semantic-underline-segment');
-    const targetRect = rect(target);
-    const textRect = rect(textElement);
-    const segmentRect = rect(segment);
-    const leftError = round(Math.abs(segmentRect.left - textRect.left));
-    const rightError = round(Math.abs(segmentRect.right - textRect.right));
-    const widthErrorRatio = textRect.width > 0 ? round(Math.abs(segmentRect.width - textRect.width) / textRect.width) : 1;
-    const sceneRect = rect(target.closest('.scene'));
-    const pass = leftError <= 4
-      && rightError <= 4
-      && widthErrorRatio <= 0.02
-      && within(segmentRect, sceneRect, 1);
+    const style = getComputedStyle(element);
+    const expectedFontPx = element.closest('.intro-copy') ? 120 : element.closest('.emphasis-sub') ? 84 : 68;
+    const stylePass = style.backgroundColor === 'rgb(244, 197, 66)'
+      && parseFloat(style.borderTopWidth) >= 7
+      && style.borderTopColor === 'rgb(17, 20, 19)'
+      && parseFloat(style.borderRadius) >= 28
+      && parseFloat(style.fontSize) >= expectedFontPx
+      && style.color === 'rgb(17, 20, 19)';
+    const geometryPass = within(box, sceneBox, 1) && lines.length > 0 && lines.every((line) => within(line.rect, box));
     return {
-      sceneId: target.closest('.scene')?.id?.replace('scene-', ''),
-      text: textElement.textContent.trim(),
-      targetRect,
-      textRect,
-      segmentRect,
-      leftError,
-      rightError,
-      widthErrorRatio,
-      pass
+      sceneId: element.closest('.scene')?.id?.replace('scene-', ''),
+      className: element.parentElement?.className || '',
+      box,
+      lines,
+      expectedFontPx,
+      computed: {
+        backgroundColor: style.backgroundColor,
+        borderTopWidth: style.borderTopWidth,
+        borderTopColor: style.borderTopColor,
+        borderRadius: style.borderRadius,
+        fontSize: style.fontSize,
+        color: style.color
+      },
+      stylePass,
+      geometryPass,
+      pass: stylePass && geometryPass
     };
   });
+  const forbiddenUnderlines = document.querySelectorAll('.semantic-underline-target,.semantic-underline-segment').length;
   const generated = [...document.querySelectorAll('.generated-stage')].map((stage) => {
     const art = rect(stage.querySelector('.generated-art'));
     const label = rect(stage.querySelector('.generated-label'));
@@ -115,10 +117,10 @@ const result = await page.evaluate(() => {
   };
   return {
     viewport: { width: innerWidth, height: innerHeight },
-    pass: hook.pass && highlights.every((item) => item.pass) && underlines.every((item) => item.pass) && generated.every((item) => item.pass) && props.every((item) => item.pass) && generatedArt.every((item) => item.pass),
+    pass: hook.pass && cards.length > 0 && cards.every((item) => item.pass) && forbiddenUnderlines === 0 && generated.every((item) => item.pass) && props.every((item) => item.pass) && generatedArt.every((item) => item.pass),
     hook,
-    highlights,
-    underlines,
+    cards,
+    forbiddenUnderlines,
     generated,
     internalProps: props,
     generatedArt
@@ -127,10 +129,10 @@ const result = await page.evaluate(() => {
 
 await browser.close();
 writeFileSync(path.join(qaDir, 'dom-layout-report.json'), `${JSON.stringify(result, null, 2)}\n`);
-const underlineWidthMismatchCount = result.underlines.filter((item) => item.widthErrorRatio > 0.02 || item.leftError > 4 || item.rightError > 4).length;
-const underlineTargetMismatchCount = result.underlines.filter((item) => !item.text).length;
-const underlineLineFragmentFailureCount = result.highlights.reduce((sum, item) => sum + Math.max(0, item.lines.length - result.underlines.filter((underline) => underline.sceneId === item.sceneId).length), 0);
-const underlineOverflowCount = result.underlines.filter((item) => !item.pass && item.widthErrorRatio <= 0.02 && item.leftError <= 4 && item.rightError <= 4).length;
+const cardStyleFailureCount = result.cards.filter((item) => !item.stylePass).length;
+const cardOverflowCount = result.cards.filter((item) => !item.geometryPass).length;
+const cardFontSizeFailureCount = result.cards.filter((item) => parseFloat(item.computed.fontSize) < item.expectedFontPx).length;
+const forbiddenUnderlineCount = result.forbiddenUnderlines;
 const existingHighlight = JSON.parse(readFileSync(path.join(qaDir, 'highlight-layout-report.json'), 'utf8'));
 const generatedPolicyPass = existingHighlight.generatedLayouts.every((item) => item.oppositeSides && item.maxMeasuredCharsPerLine <= existingHighlight.policy.generatedHighlightMaxMeasuredCharsPerLine)
   && new Set(existingHighlight.generatedLayouts.map((item) => item.artSide)).size === 2
@@ -139,18 +141,18 @@ const generatedPolicyPass = existingHighlight.generatedLayouts.every((item) => i
 writeFileSync(path.join(qaDir, 'highlight-layout-report.json'), `${JSON.stringify({
   ...existingHighlight,
   pass: generatedPolicyPass
-    && underlineWidthMismatchCount === 0
-    && underlineTargetMismatchCount === 0
-    && underlineLineFragmentFailureCount === 0
-    && underlineOverflowCount === 0,
-  underlineWidthMismatchCount,
-  underlineTargetMismatchCount,
-  underlineLineFragmentFailureCount,
-  underlineOverflowCount,
-  renderedUnderlines: result.underlines
+    && cardStyleFailureCount === 0
+    && cardOverflowCount === 0
+    && cardFontSizeFailureCount === 0
+    && forbiddenUnderlineCount === 0,
+  cardStyleFailureCount,
+  cardOverflowCount,
+  cardFontSizeFailureCount,
+  forbiddenUnderlineCount,
+  renderedCards: result.cards
 }, null, 2)}\n`);
 if (!result.pass) {
   process.stderr.write(`${JSON.stringify(result, null, 2)}\n`);
   process.exit(1);
 }
-process.stdout.write(`dom-layout: pass (${result.highlights.length} highlights, ${result.generated.length} generated layouts, ${result.internalProps.length} internal props)\n`);
+process.stdout.write(`dom-layout: pass (${result.cards.length} semantic cards, ${result.generated.length} generated layouts, ${result.internalProps.length} internal props)\n`);

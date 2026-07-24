@@ -17,6 +17,7 @@ const generatedArtReport = JSON.parse(readFileSync(path.join(qaDir, 'generated-a
 const longTermRuleSourceReport = JSON.parse(readFileSync(path.join(qaDir, 'long-term-rule-source-report.json'), 'utf8'));
 const progressReport = JSON.parse(readFileSync(path.join(qaDir, 'progress-report.json'), 'utf8'));
 const narrativeTransitionReport = JSON.parse(readFileSync(path.join(qaDir, 'narrative-transition-report.json'), 'utf8'));
+const narrativeEngagementReport = JSON.parse(readFileSync(path.join(qaDir, 'narrative-engagement-report.json'), 'utf8'));
 const highlightReport = JSON.parse(readFileSync(path.join(qaDir, 'highlight-layout-report.json'), 'utf8'));
 const internalPropReport = JSON.parse(readFileSync(path.join(qaDir, 'internal-prop-style-report.json'), 'utf8'));
 const cognitiveLoadReport = JSON.parse(readFileSync(path.join(qaDir, 'cognitive-load-report.json'), 'utf8'));
@@ -84,6 +85,9 @@ const checks = {
       || motionReport.fallbackTargetCount
       || motionReport.missingSemanticRoleCount
       || motionReport.invisibleTargetCount
+      || motionReport.titleGrowShrinkNodeCount < 1
+      || motionReport.titleGrowShrinkFailureCount
+      || motionReport.oneElementMultipleAnimationFailureCount
       || motionReport.maximumConsecutiveEntranceSignature > profile.visual.maximumConsecutiveEntranceSignature) failures.push('semantic motion density, binding, signature diversity, target uniqueness, or amplitude gate failed');
     if (!semanticTargetReport.pass
       || semanticTargetReport.semanticTargetMismatchCount
@@ -93,7 +97,12 @@ const checks = {
       || semanticTargetReport.invisibleTargetCount) failures.push('semantic motion target matching report failed');
     if (!longTermRuleSourceReport.pass || longTermRuleSourceReport.conversationContextUsed !== false || longTermRuleSourceReport.productionMode !== 'long-term-rules-only') failures.push('long-term-only source verification failed');
     if (!narrativeTransitionReport.pass || narrativeTransitionReport.mode !== profile.cognitiveLoad.requiredTransitionMode) failures.push('narrative transition report failed');
-    if (!highlightReport.pass) failures.push('generated-art side alternation or highlight line-fit report failed');
+    if (!narrativeEngagementReport.pass) failures.push('narrative continuity, concision, or engagement report failed');
+    if (!highlightReport.pass
+      || highlightReport.cardStyleFailureCount
+      || highlightReport.cardOverflowCount
+      || highlightReport.cardFontSizeFailureCount
+      || highlightReport.forbiddenUnderlineCount) failures.push('generated-art side alternation or semantic-card layout report failed');
     if (!internalPropReport.pass) failures.push('internal prop frame removal report failed');
     if (!cognitiveLoadReport.pass) failures.push('cognitive-load report failed');
   },
@@ -106,9 +115,10 @@ const checks = {
       '--paper:#ECECEA',
       '--ink:#111413',
       'background:var(--blue)',
-      'font-size:60px',
+      'font-size:120px',
       'font-weight:900',
-      '.label-line{position:relative;display:block;width:max-content;max-width:100%;margin:0 auto 18px;white-space:nowrap}',
+      '.semantic-label-card{display:inline-block;box-sizing:border-box;max-width:100%;padding:20px 30px 22px;background:#F4C542;border:7px solid var(--ink);border-radius:28px',
+      '.label-line{display:block;width:max-content;max-width:100%;margin:0 auto;white-space:nowrap}',
       '.solo-stage .actor-wrap{position:relative;top:-72px',
       '.featured-object{width:600px;min-height:500px;display:grid;grid-template-rows:390px auto;place-items:center;padding:0 14px 10px;border:0;border-radius:0;background:transparent;box-shadow:none}',
       '.generated-stage.art-left{grid-template-columns:minmax(0,1fr) 660px;grid-template-areas:"art label"}',
@@ -118,6 +128,7 @@ const checks = {
       '.yellow-highlight{box-sizing:border-box;min-width:0;max-width:100%}'
     ];
     tokens.forEach((token) => { if (!html.includes(token)) failures.push(`missing visual token ${token}`); });
+    if (html.includes('semantic-underline')) failures.push('forbidden semantic underline remains in the composition');
     if (!domLayoutReport.hook?.pass || !domLayoutReport.hook?.fullFrameTypography) failures.push('opening question does not use the enlarged full-frame typography');
     if (!html.includes('height:52px') || !html.includes('--played:#A8D8F0') || !html.includes('--rest:#DDE0DA')) failures.push('chapter bar tokens missing');
     if (!progressReport.pass || progressReport.visibleAt !== timing.checkpoints.hookTimelineCutAt || progressReport.playedColor !== '#A8D8F0' || progressReport.unplayedColor !== '#DDE0DA') failures.push('chapter rail does not appear at the hook cut with correct played and unplayed colors');

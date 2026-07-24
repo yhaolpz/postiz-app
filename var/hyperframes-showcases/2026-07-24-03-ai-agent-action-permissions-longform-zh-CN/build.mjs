@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -401,7 +401,7 @@ function buildHookTiming(firstSegment) {
 
 function writeNarrationVtt(cues) {
   const body = ['WEBVTT', '', ...cues.flatMap((cue, index) => [String(index + 1), `${formatTimestamp(cue.start)} --> ${formatTimestamp(cue.end)}`, cue.text, ''])].join('\n');
-  writeFileSync(path.join(projectDir, 'captions/narration.vtt'), `${body}\n`);
+  writeFileSync(path.join(projectDir, 'captions/narration.vtt'), `${body.trimEnd()}\n`);
 }
 
 function directionOf(id) {
@@ -490,7 +490,7 @@ function cueSemanticCategory(text) {
   if (/因此|所以|导致|如果|因为|路径|连接|才会|仍然|because|therefore|if |when |path|reach|connect|becomes|so the|this is why/i.test(text)) return 'causal';
   if (/行动|批准|确认|撤销|允许|决定|执行|发送|付费|订|权限|approve|confirm|allow|decide|act|send|pay|book|permission|automatic/i.test(text)) return 'decision';
   if (/两个|三类|三级|第一|第二|第三|不同|相比|分别|versus|different|first|second|third|three|tier|compare/i.test(text)) return 'comparison';
-  if (/餐厅|聚餐|生日|菜单|住址|订餐|restaurant|dinner|birthday|menu|address|reservation|table/i.test(text)) return 'story';
+  if (/天气|下雨|带伞|雨伞|出门|路线|位置|住址|日程|叫车|weather|rain|umbrella|route|location|address|calendar|ride/i.test(text)) return 'story';
   return 'claim';
 }
 
@@ -535,91 +535,100 @@ function maximumFullyStaticGap(scene, nodes) {
 
 const SEMANTIC_ACTIONS = {
   evidence: [
-    { action: 'evidence-push', actionFamily: 'focus', motionSignature: 'push-forward-settle', direction: 'forward', duration: 0.72, easing: 'power4.out', translationPx: 52, scaleDelta: 0.1, rotationDeg: 0 },
-    { action: 'source-path-draw', actionFamily: 'path', motionSignature: 'source-line-sweep', direction: 'left-to-right', duration: 0.68, easing: 'power3.inOut', translationPx: 56, scaleDelta: 0.04, rotationDeg: 0, mechanism: 'path-draw' }
+    { action: 'evidence-push', actionFamily: 'focus', motionSignature: 'push-forward-settle', direction: 'forward', duration: 0.76, easing: 'power4.out', translationPx: 96, scaleDelta: 0.18, rotationDeg: 0 },
+    { action: 'source-path-draw', actionFamily: 'path', motionSignature: 'source-line-sweep', direction: 'left-to-right', duration: 0.72, easing: 'power3.inOut', translationPx: 112, scaleDelta: 0.08, rotationDeg: 0, mechanism: 'path-draw' },
+    { action: 'evidence-arc-lift', actionFamily: 'arc-lift', motionSignature: 'evidence-arc-lift-settle', direction: 'lower-left-to-center', duration: 0.78, easing: 'circ.out', translationPx: 104, scaleDelta: 0.2, rotationDeg: 7 }
   ],
   risk: [
-    { action: 'uncertainty-brake', actionFamily: 'brake', motionSignature: 'overshoot-brake-return', direction: 'right-to-center', duration: 0.7, easing: 'expo.out', translationPx: 72, scaleDelta: 0.08, rotationDeg: 4 },
-    { action: 'risk-stamp', actionFamily: 'stamp', motionSignature: 'drop-stamp-lock', direction: 'top-to-center', duration: 0.66, easing: 'back.out(1.7)', translationPx: 64, scaleDelta: 0.16, rotationDeg: 8 }
+    { action: 'uncertainty-brake', actionFamily: 'brake', motionSignature: 'overshoot-brake-return', direction: 'right-to-center', duration: 0.74, easing: 'expo.out', translationPx: 120, scaleDelta: 0.18, rotationDeg: 7 },
+    { action: 'risk-stamp', actionFamily: 'stamp', motionSignature: 'drop-stamp-lock', direction: 'top-to-center', duration: 0.7, easing: 'back.out(1.7)', translationPx: 112, scaleDelta: 0.26, rotationDeg: 12 },
+    { action: 'risk-shake-lock', actionFamily: 'shake', motionSignature: 'wide-shake-hard-lock', direction: 'left-right-center', duration: 0.76, easing: 'power4.out', translationPx: 96, scaleDelta: 0.18, rotationDeg: 10 }
   ],
   causal: [
-    { action: 'cause-chain', actionFamily: 'causal', motionSignature: 'linked-cascade-push', direction: 'left-to-right', duration: 0.74, easing: 'power3.inOut', translationPx: 64, scaleDelta: 0.06, rotationDeg: 0, mechanism: 'path-draw' },
-    { action: 'state-swap', actionFamily: 'state', motionSignature: 'compress-flip-replace', direction: 'inside-out', duration: 0.72, easing: 'power4.inOut', translationPx: 48, scaleDelta: 0.12, rotationDeg: 4, mechanism: 'state-replacement' }
+    { action: 'cause-chain', actionFamily: 'causal', motionSignature: 'linked-cascade-push', direction: 'left-to-right', duration: 0.78, easing: 'power3.inOut', translationPx: 112, scaleDelta: 0.18, rotationDeg: 0, mechanism: 'path-draw' },
+    { action: 'state-swap', actionFamily: 'state', motionSignature: 'compress-flip-replace', direction: 'inside-out', duration: 0.76, easing: 'power4.inOut', translationPx: 88, scaleDelta: 0.2, rotationDeg: 8, mechanism: 'state-replacement' },
+    { action: 'cause-arc-link', actionFamily: 'arc-link', motionSignature: 'cause-arc-return-link', direction: 'upper-right-arc', duration: 0.8, easing: 'power3.inOut', translationPx: 120, scaleDelta: 0.18, rotationDeg: 8, mechanism: 'path-draw' }
   ],
   decision: [
-    { action: 'decision-gate', actionFamily: 'gate', motionSignature: 'gate-open-close', direction: 'center-out', duration: 0.72, easing: 'power3.inOut', translationPx: 56, scaleDelta: 0.06, rotationDeg: 0, mechanism: 'mask-reveal' },
-    { action: 'decision-lock', actionFamily: 'lock', motionSignature: 'drop-lock-settle', direction: 'top-to-center', duration: 0.7, easing: 'back.out(1.8)', translationPx: 72, scaleDelta: 0.16, rotationDeg: 6 }
+    { action: 'decision-gate', actionFamily: 'gate', motionSignature: 'gate-open-close', direction: 'center-out', duration: 0.76, easing: 'power3.inOut', translationPx: 96, scaleDelta: 0.18, rotationDeg: 0, mechanism: 'mask-reveal' },
+    { action: 'decision-lock', actionFamily: 'lock', motionSignature: 'drop-lock-settle', direction: 'top-to-center', duration: 0.74, easing: 'back.out(1.8)', translationPx: 120, scaleDelta: 0.26, rotationDeg: 10 },
+    { action: 'decision-pulse-choice', actionFamily: 'choice-pulse', motionSignature: 'decision-wide-pulse-settle', direction: 'front-to-center', duration: 0.72, easing: 'back.out(2)', translationPx: 88, scaleDelta: 0.28, rotationDeg: 5 }
   ],
   comparison: [
-    { action: 'contrast-focus', actionFamily: 'focus-shift', motionSignature: 'counter-scale-focus', direction: 'left-right', duration: 0.72, easing: 'power3.inOut', translationPx: 48, scaleDelta: 0.14, rotationDeg: 3 },
-    { action: 'outcome-split', actionFamily: 'split', motionSignature: 'symmetric-result-split', direction: 'center-out', duration: 0.7, easing: 'power4.out', translationPx: 64, scaleDelta: 0.08, rotationDeg: 0 }
+    { action: 'contrast-focus', actionFamily: 'focus-shift', motionSignature: 'counter-scale-focus', direction: 'left-right', duration: 0.76, easing: 'power3.inOut', translationPx: 96, scaleDelta: 0.22, rotationDeg: 6 },
+    { action: 'outcome-split', actionFamily: 'split', motionSignature: 'symmetric-result-split', direction: 'center-out', duration: 0.74, easing: 'power4.out', translationPx: 120, scaleDelta: 0.18, rotationDeg: 0 },
+    { action: 'comparison-cross-swap', actionFamily: 'cross-swap', motionSignature: 'comparison-cross-axis-swap', direction: 'diagonal-cross', duration: 0.8, easing: 'expo.out', translationPx: 112, scaleDelta: 0.2, rotationDeg: 9 }
   ],
   story: [
-    { action: 'object-handoff', actionFamily: 'handoff', motionSignature: 'cross-frame-handoff', direction: 'left-to-right', duration: 0.76, easing: 'power3.inOut', translationPx: 80, scaleDelta: 0.08, rotationDeg: 3 },
-    { action: 'story-callback', actionFamily: 'callback', motionSignature: 'arc-return-settle', direction: 'arc-return', duration: 0.8, easing: 'power4.out', translationPx: 68, scaleDelta: 0.1, rotationDeg: 4 }
+    { action: 'object-handoff', actionFamily: 'handoff', motionSignature: 'cross-frame-handoff', direction: 'left-to-right', duration: 0.8, easing: 'power3.inOut', translationPx: 136, scaleDelta: 0.18, rotationDeg: 7 },
+    { action: 'story-callback', actionFamily: 'callback', motionSignature: 'arc-return-settle', direction: 'arc-return', duration: 0.84, easing: 'power4.out', translationPx: 120, scaleDelta: 0.2, rotationDeg: 8 },
+    { action: 'story-pan-return', actionFamily: 'pan-return', motionSignature: 'story-pan-snap-return', direction: 'right-left-center', duration: 0.82, easing: 'circ.out', translationPx: 144, scaleDelta: 0.18, rotationDeg: 6 }
   ],
   claim: [
-    { action: 'claim-underline', actionFamily: 'marker', motionSignature: 'marker-sweep-hold', direction: 'left-to-right', duration: 0.64, easing: 'power3.out', translationPx: 56, scaleDelta: 0.02, rotationDeg: 0, mechanism: 'mask-reveal' },
-    { action: 'key-point-slam', actionFamily: 'slam', motionSignature: 'scale-slam-lock', direction: 'front-to-center', duration: 0.68, easing: 'back.out(1.9)', translationPx: 56, scaleDelta: 0.16, rotationDeg: 5 }
+    { action: 'label-card-pop', actionFamily: 'card-pop', motionSignature: 'yellow-card-pop-lock', direction: 'front-to-center', duration: 0.7, easing: 'back.out(2)', translationPx: 88, scaleDelta: 0.28, rotationDeg: 5 },
+    { action: 'key-point-slam', actionFamily: 'slam', motionSignature: 'scale-slam-lock', direction: 'front-to-center', duration: 0.72, easing: 'back.out(1.9)', translationPx: 104, scaleDelta: 0.28, rotationDeg: 9 },
+    { action: 'title-grow-shrink', actionFamily: 'title-pulse', motionSignature: 'title-grow-then-shrink', direction: 'front-to-center', duration: 0.74, easing: 'power4.out', translationPx: 80, scaleDelta: 0.34, rotationDeg: 0 }
   ]
 };
 
 function motionTargetsForScene(scene) {
   const root = `#scene-${scene.id}`;
-  const headline = { role: 'headline', selector: `${root} .scene-headline`, targetClass: 'text', maximumActions: 2 };
-  const accent = { role: 'marker', selector: `${root} .semantic-underline-segment`, targetClass: 'accent', maximumActions: 2 };
-  const human = { role: 'human', selector: `${root} .actor-human`, targetClass: 'actor', maximumActions: 2 };
-  const agent = { role: 'agent', selector: `${root} .actor-agent`, targetClass: 'actor', maximumActions: 2 };
-  const primary = { role: 'core-object', selector: `${root} .motion-target`, targetClass: scene.layout === 'generated' ? 'large' : 'prop', maximumActions: 2 };
+  const headline = { role: 'headline', selector: `${root} .scene-headline`, targetClass: 'text', maximumActions: 1 };
+  const labelCard = { role: 'label-card', selector: `${root} .semantic-label-card`, targetClass: 'small', maximumActions: 1 };
+  const human = { role: 'human', selector: `${root} .actor-human`, targetClass: 'actor', maximumActions: 1 };
+  const agent = { role: 'agent', selector: `${root} .actor-agent`, targetClass: 'actor', maximumActions: 1 };
+  const primary = { role: 'core-object', selector: `${root} .motion-target`, targetClass: scene.layout === 'generated' ? 'large' : 'prop', maximumActions: 1 };
   if (scene.layout === 'generated') return [
     { ...primary, role: 'generated-art' },
-    { role: 'highlight', selector: `${root} .generated-label`, targetClass: 'small', maximumActions: 2 },
+    labelCard,
+    { role: 'prop', selector: `${root} .generated-control-mark`, targetClass: 'prop', maximumActions: 1 },
     headline,
-    accent
   ];
   if (scene.layout === 'two-props') return [
-    { role: 'left-prop', selector: `${root} .pair-stage .prop-piece:first-child`, targetClass: 'prop', maximumActions: 2 },
-    { role: 'right-prop', selector: `${root} .pair-stage .prop-piece:last-child`, targetClass: 'prop', maximumActions: 2 },
-    { role: 'relation', selector: `${root} .relation-mark`, targetClass: 'small', maximumActions: 2 },
-    { role: 'highlight', selector: `${root} .pair-label`, targetClass: 'small', maximumActions: 2 },
+    { role: 'left-prop', selector: `${root} .pair-stage .prop-piece:first-child`, targetClass: 'prop', maximumActions: 1 },
+    { role: 'right-prop', selector: `${root} .pair-stage .prop-piece:last-child`, targetClass: 'prop', maximumActions: 1 },
+    { role: 'relation', selector: `${root} .relation-mark`, targetClass: 'small', maximumActions: 1 },
+    labelCard,
     headline,
-    accent
   ];
   if (scene.layout === 'big-text') return [
-    { role: 'claim', selector: `${root} .emphasis-text`, targetClass: 'text', maximumActions: 2 },
-    { role: 'highlight', selector: `${root} .emphasis-sub`, targetClass: 'small', maximumActions: 2 },
-    { role: 'actor', selector: `${root} .small-actor`, targetClass: 'actor', maximumActions: 2 },
-    { role: 'prop', selector: `${root} .small-prop`, targetClass: 'prop', maximumActions: 2 },
-    accent
+    { role: 'claim', selector: `${root} .emphasis-text`, targetClass: 'text', maximumActions: 1 },
+    labelCard,
+    { role: 'actor', selector: `${root} .small-actor`, targetClass: 'actor', maximumActions: 1 },
+    { role: 'prop', selector: `${root} .small-prop`, targetClass: 'prop', maximumActions: 1 }
   ];
   if (scene.layout === 'chapter-intro') return [
-    { role: 'chapter-copy', selector: `${root} .intro-copy`, targetClass: 'text', maximumActions: 2 },
+    { role: 'chapter-copy', selector: `${root} .intro-copy`, targetClass: 'text', maximumActions: 1 },
     primary,
     human,
     agent,
-    accent
+    labelCard
   ];
   if (scene.layout === 'agent-center' || scene.layout === 'human-center') return [
-    { ...primary, role: scene.layout === 'agent-center' ? 'agent' : 'human', targetClass: 'actor' },
-    { role: 'highlight', selector: `${root} .solo-callout`, targetClass: 'small', maximumActions: 2 },
+    {
+      role: scene.layout === 'agent-center' ? 'agent' : 'human',
+      selector: `${root} .${scene.layout === 'agent-center' ? 'actor-agent' : 'actor-human'}`,
+      targetClass: 'actor',
+      maximumActions: 1
+    },
+    labelCard,
+    { role: 'prop', selector: `${root} .solo-prop`, targetClass: 'prop', maximumActions: 1 },
     headline,
-    accent
   ];
-  if (scene.layout === 'human-agent-prop') return [primary, human, agent, headline, accent];
-  if (scene.layout === 'human-prop') return [primary, human, headline, accent];
-  return [primary, agent, headline, { role: 'chips', selector: `${root} .chip-row`, targetClass: 'small', maximumActions: 2 }, accent];
+  if (scene.layout === 'human-agent-prop') return [primary, human, agent, headline];
+  if (scene.layout === 'human-prop') return [primary, human, headline];
+  return [primary, agent, headline, { role: 'chips', selector: `${root} .chip-row`, targetClass: 'small', maximumActions: 1 }];
 }
 
 function semanticSupports(role, sceneConcepts) {
   const roleConcepts = {
-    headline: ['claim', 'causal', 'comparison', 'story'],
-    marker: ['claim', 'evidence', 'risk', 'decision'],
+    headline: ['claim', 'causal', 'comparison', 'story', 'evidence', 'risk', 'decision'],
+    'label-card': ['claim', 'evidence', 'risk', 'decision', 'comparison', 'story', 'causal'],
     human: ['story', 'decision', 'risk', 'causal', 'comparison', 'claim'],
     agent: ['story', 'decision', 'risk', 'causal', 'comparison', 'claim'],
     actor: ['story', 'decision', 'risk', 'causal', 'comparison', 'claim'],
     'core-object': ['story', 'evidence', 'risk', 'decision', 'causal', 'comparison', 'claim'],
     'generated-art': ['story', 'evidence', 'risk', 'decision', 'causal', 'comparison', 'claim'],
-    highlight: ['claim', 'evidence', 'risk', 'decision', 'comparison', 'story'],
     'left-prop': ['story', 'evidence', 'risk', 'decision', 'causal', 'comparison', 'claim'],
     'right-prop': ['story', 'evidence', 'risk', 'decision', 'causal', 'comparison', 'claim'],
     relation: ['causal', 'comparison'],
@@ -633,26 +642,26 @@ function semanticSupports(role, sceneConcepts) {
 
 function targetRolePriority(concept, role) {
   const priorities = {
-    evidence: ['generated-art', 'core-object', 'left-prop', 'right-prop', 'highlight', 'chips', 'marker', 'headline', 'human', 'agent'],
-    risk: ['generated-art', 'core-object', 'highlight', 'marker', 'human', 'agent', 'left-prop', 'right-prop', 'headline'],
+    evidence: ['generated-art', 'core-object', 'left-prop', 'right-prop', 'label-card', 'chips', 'headline', 'human', 'agent'],
+    risk: ['generated-art', 'core-object', 'label-card', 'human', 'agent', 'left-prop', 'right-prop', 'headline'],
     causal: ['relation', 'generated-art', 'core-object', 'agent', 'human', 'headline', 'claim'],
-    decision: ['human', 'agent', 'core-object', 'generated-art', 'highlight', 'chips', 'headline', 'chapter-copy'],
-    comparison: ['relation', 'left-prop', 'right-prop', 'generated-art', 'core-object', 'headline', 'highlight'],
-    story: ['generated-art', 'human', 'agent', 'core-object', 'left-prop', 'right-prop', 'headline', 'highlight'],
-    claim: ['headline', 'claim', 'highlight', 'marker', 'core-object', 'generated-art', 'chapter-copy']
+    decision: ['human', 'agent', 'core-object', 'generated-art', 'label-card', 'chips', 'headline', 'chapter-copy'],
+    comparison: ['relation', 'left-prop', 'right-prop', 'generated-art', 'core-object', 'headline', 'label-card'],
+    story: ['generated-art', 'human', 'agent', 'core-object', 'left-prop', 'right-prop', 'headline', 'label-card'],
+    claim: ['headline', 'claim', 'label-card', 'core-object', 'generated-art', 'chapter-copy']
   }[concept] || [];
   const index = priorities.indexOf(role);
   return index === -1 ? 999 : index;
 }
 
 function entranceCandidates(scene) {
-  if (scene.layout === 'generated') return ['split-fly-in', 'headline-mask-reveal'];
-  if (scene.layout === 'human-agent-prop') return ['stagger-assemble', 'opposed-fly-in'];
-  if (scene.layout === 'two-props') return ['opposed-fly-in', 'drop-and-lock'];
-  if (scene.layout === 'big-text') return ['drop-and-lock', 'headline-mask-reveal'];
-  if (scene.layout === 'chapter-intro') return ['rise-and-settle', 'stagger-assemble'];
-  if (scene.layout === 'agent-center' || scene.layout === 'human-center') return ['rise-and-settle', 'drop-and-lock'];
-  return ['headline-mask-reveal', 'split-fly-in'];
+  if (scene.layout === 'generated') return ['split-fly-in', 'headline-mask-reveal', 'whip-and-settle'];
+  if (scene.layout === 'human-agent-prop') return ['stagger-assemble', 'opposed-fly-in', 'tilt-unfold'];
+  if (scene.layout === 'two-props') return ['opposed-fly-in', 'drop-and-lock', 'whip-and-settle'];
+  if (scene.layout === 'big-text') return ['drop-and-lock', 'headline-mask-reveal', 'tilt-unfold'];
+  if (scene.layout === 'chapter-intro') return ['rise-and-settle', 'stagger-assemble', 'center-burst'];
+  if (scene.layout === 'agent-center' || scene.layout === 'human-center') return ['rise-and-settle', 'drop-and-lock', 'center-burst'];
+  return ['headline-mask-reveal', 'split-fly-in', 'whip-and-settle'];
 }
 
 function buildSceneMotionMetadata(scenes) {
@@ -694,17 +703,23 @@ function actionStates(action, targetClass, magnitude) {
   const direction = magnitude.translationPx;
   if (action === 'evidence-push') return { fromState: neutral, peakState: { ...neutral, y: -direction, scale }, toState: { ...neutral, scale: 1.02 } };
   if (action === 'source-path-draw') return { fromState: { ...neutral, autoAlpha: 0, scaleX: 0 }, peakState: { ...neutral, scaleX: 1 }, toState: { ...neutral, scaleX: 1 } };
+  if (action === 'evidence-arc-lift') return { fromState: neutral, peakState: { ...neutral, x: -direction, y: -Math.round(direction * 0.7), scale, rotation: magnitude.rotationDeg }, toState: neutral };
   if (action === 'uncertainty-brake') return { fromState: neutral, peakState: { ...neutral, x: direction, rotation: magnitude.rotationDeg, scale }, toState: neutral };
   if (action === 'risk-stamp') return { fromState: { ...neutral, y: -direction, scale: 0.82, rotation: -magnitude.rotationDeg }, peakState: { ...neutral, scale }, toState: neutral };
+  if (action === 'risk-shake-lock') return { fromState: neutral, peakState: { ...neutral, x: -direction, rotation: -magnitude.rotationDeg, scale }, toState: neutral };
   if (action === 'cause-chain') return { fromState: neutral, peakState: { ...neutral, x: direction, scale }, toState: neutral };
   if (action === 'state-swap') return { fromState: neutral, peakState: { ...neutral, x: -direction, scaleX: 0.72, rotationY: magnitude.rotationDeg * 8 }, toState: neutral };
+  if (action === 'cause-arc-link') return { fromState: neutral, peakState: { ...neutral, x: direction, y: -Math.round(direction * 0.6), rotation: magnitude.rotationDeg, scale }, toState: neutral };
   if (action === 'decision-gate') return { fromState: neutral, peakState: { ...neutral, clipPath: 'inset(0% 38% 0% 38%)', scale }, toState: { ...neutral, clipPath: 'inset(0% 0% 0% 0%)' } };
   if (action === 'decision-lock') return { fromState: { ...neutral, y: -direction, scale: 0.84, rotation: -magnitude.rotationDeg }, peakState: { ...neutral, scale }, toState: neutral };
+  if (action === 'decision-pulse-choice') return { fromState: neutral, peakState: { ...neutral, scale }, toState: neutral };
   if (action === 'contrast-focus') return { fromState: neutral, peakState: { ...neutral, x: -direction, scale, rotation: -magnitude.rotationDeg }, toState: neutral };
   if (action === 'outcome-split') return { fromState: neutral, peakState: { ...neutral, x: direction, scale }, toState: neutral };
+  if (action === 'comparison-cross-swap') return { fromState: neutral, peakState: { ...neutral, x: direction, y: -Math.round(direction * 0.55), rotation: magnitude.rotationDeg, scale }, toState: neutral };
   if (action === 'object-handoff') return { fromState: neutral, peakState: { ...neutral, x: direction, y: -18, scale, rotation: magnitude.rotationDeg }, toState: neutral };
   if (action === 'story-callback') return { fromState: neutral, peakState: { ...neutral, x: -direction, y: -Math.round(direction * 0.7), scale, rotation: -magnitude.rotationDeg }, toState: neutral };
-  if (action === 'claim-underline') return { fromState: { ...neutral, autoAlpha: 0, scaleX: 0 }, peakState: { ...neutral, scaleX: 1 }, toState: { ...neutral, scaleX: 1 } };
+  if (action === 'story-pan-return') return { fromState: neutral, peakState: { ...neutral, x: direction, rotation: magnitude.rotationDeg, scale }, toState: neutral };
+  if (action === 'title-grow-shrink') return { fromState: neutral, peakState: { ...neutral, scale }, toState: neutral };
   return { fromState: { ...neutral, y: direction, scale: 0.78, rotation: -magnitude.rotationDeg }, peakState: { ...neutral, scale }, toState: neutral };
 }
 
@@ -712,8 +727,8 @@ function motionMagnitude(actionSpec, targetClass) {
   const constrained = ['large', 'actor'].includes(targetClass);
   return {
     translationPx: actionSpec.translationPx,
-    scaleDelta: Number(Math.min(actionSpec.scaleDelta, constrained ? 0.1 : 0.18).toFixed(3)),
-    rotationDeg: Math.min(actionSpec.rotationDeg, constrained ? 4 : 8),
+    scaleDelta: Number(Math.min(actionSpec.scaleDelta, constrained ? 0.18 : 0.34).toFixed(3)),
+    rotationDeg: Math.min(actionSpec.rotationDeg, constrained ? 7 : 14),
     mechanism: actionSpec.mechanism || null
   };
 }
@@ -799,6 +814,7 @@ function buildSemanticMotionPlan(cues, scenePlan) {
     const targetActions = new Map();
     const targetFamilies = new Map();
     const targetLastEnd = new Map();
+    const allocatedTargetSelectors = [];
     selected.forEach((cue, nodeIndex) => {
       const category = cueSemanticCategory(cue.text);
       if (!scene.semanticConcepts.includes(category)) scene.semanticConcepts.push(category);
@@ -816,12 +832,14 @@ function buildSemanticMotionPlan(cues, scenePlan) {
       let selectedPair = null;
       for (const actionSpec of actionOptions) {
         const target = targetOptions.find((candidate) => {
-          if (candidate.role === 'marker' && !['claim-underline', 'source-path-draw'].includes(actionSpec.action)) return false;
+          if (actionSpec.action === 'title-grow-shrink' && !['headline', 'claim'].includes(candidate.role)) return false;
+          if (actionSpec.action === 'label-card-pop' && candidate.role !== 'label-card') return false;
           const usage = targetUsage.get(candidate.selector) || 0;
           const actions = targetActions.get(candidate.selector) || new Set();
           const families = targetFamilies.get(candidate.selector) || new Set();
           const lastEnd = targetLastEnd.get(candidate.selector) ?? Number.NEGATIVE_INFINITY;
           return usage < candidate.maximumActions
+            && !allocatedTargetSelectors.some((selector) => motionSelectorsConflict(scene.id, selector, candidate.selector))
             && !actions.has(actionSpec.action)
             && !families.has(actionSpec.actionFamily)
             && cue.start >= lastEnd + 0.08;
@@ -834,6 +852,7 @@ function buildSemanticMotionPlan(cues, scenePlan) {
       if (!selectedPair) throw new Error(`Scene ${scene.id} cannot allocate a unique target and action family for cue ${cue.id}.`);
       const { actionSpec, target } = selectedPair;
       targetUsage.set(target.selector, (targetUsage.get(target.selector) || 0) + 1);
+      allocatedTargetSelectors.push(target.selector);
       if (!targetActions.has(target.selector)) targetActions.set(target.selector, new Set());
       if (!targetFamilies.has(target.selector)) targetFamilies.set(target.selector, new Set());
       targetActions.get(target.selector).add(actionSpec.action);
@@ -929,8 +948,8 @@ function buildSemanticMotionPlan(cues, scenePlan) {
   const longSceneSubstantialMotionFailureCount = sceneMetrics.filter((scene) => scene.requiresSubstantialMotion && scene.substantialMotionCount === 0).length;
   const amplitudeFailureNodeCount = nodes.filter((node) => {
     const constrained = ['large', 'actor'].includes(node.targetClass);
-    const maximumScale = constrained ? 0.1 : 0.18;
-    const maximumRotation = constrained ? 4 : 8;
+    const maximumScale = constrained ? 0.18 : 0.34;
+    const maximumRotation = constrained ? 7 : 14;
     const substantial = node.magnitude.translationPx >= profile.visual.minimumSubstantialTranslationPx
       || node.magnitude.scaleDelta >= profile.visual.minimumSubstantialScaleDelta
       || ['path-draw', 'mask-reveal', 'state-replacement'].includes(node.magnitude.mechanism);
@@ -950,6 +969,35 @@ function buildSemanticMotionPlan(cues, scenePlan) {
   const entranceSignatureCounts = Object.fromEntries([...new Set(entranceScenes.map((scene) => scene.entranceType))].sort().map((signature) => [signature, entranceScenes.filter((scene) => scene.entranceType === signature).length]));
   const distinctMotionSignatureCount = Object.keys(motionSignatureCounts).length;
   const distinctEntranceSignatureCount = Object.keys(entranceSignatureCounts).length;
+  const titleGrowShrinkNodes = nodes.filter((node) => node.action === 'title-grow-shrink');
+  const titleGrowShrinkFailureCount = titleGrowShrinkNodes.filter((node) => !['headline', 'claim'].includes(node.targetRole)
+    || 1 + node.magnitude.scaleDelta < profile.visual.titleGrowShrinkMinimumPeakScale).length;
+  const animationElementAudits = sceneMotion.map((metadata) => {
+    const scene = scenes.find((candidate) => candidate.id === metadata.id);
+    const sceneNodes = nodes.filter((node) => node.sceneId === metadata.id);
+    const semanticSelectors = sceneNodes.map((node) => localMotionSelector(scene.id, node.targetSelector));
+    const entranceSelectors = entranceSelectorCandidates(scene, metadata.entranceType)
+      .filter((selector) => !entranceConflictsWithSemantic(scene.id, selector, sceneNodes));
+    const combined = [
+      ...semanticSelectors.map((selector) => ({ selector, source: 'semantic' })),
+      ...entranceSelectors.map((selector) => ({ selector, source: 'entrance' }))
+    ];
+    const conflicts = [];
+    combined.forEach((item, index) => {
+      combined.slice(index + 1).forEach((other) => {
+        if (motionSelectorsConflict(scene.id, item.selector, other.selector)) conflicts.push({ first: item, second: other });
+      });
+    });
+    return {
+      sceneId: scene.id,
+      semanticSelectors,
+      entranceSelectors,
+      animatedElementCount: combined.length,
+      multipleAnimationFailureCount: conflicts.length,
+      conflicts
+    };
+  });
+  const oneElementMultipleAnimationFailureCount = animationElementAudits.reduce((sum, item) => sum + item.multipleAnimationFailureCount, 0);
   const dominantMotionSignatureRatio = Number((Math.max(...Object.values(motionSignatureCounts)) / nodes.length).toFixed(4));
   let maximumConsecutiveEntranceSignature = 0;
   let entranceRun = 0;
@@ -980,6 +1028,9 @@ function buildSemanticMotionPlan(cues, scenePlan) {
     && fallbackTargetCount === 0
     && missingSemanticRoleCount === 0
     && invisibleTargetCount === 0
+    && titleGrowShrinkNodes.length > 0
+    && titleGrowShrinkFailureCount === 0
+    && oneElementMultipleAnimationFailureCount === 0
     && maximumConsecutiveEntranceSignature <= profile.visual.maximumConsecutiveEntranceSignature
     && nodes.every((node) => node.alignmentErrorSeconds <= profile.visual.maximumTriggerAlignmentSeconds)
     && sceneMetrics.every((scene) => scene.semanticNodeCount >= scene.requiredPostEntranceNodes);
@@ -1026,11 +1077,15 @@ function buildSemanticMotionPlan(cues, scenePlan) {
     fallbackTargetCount,
     missingSemanticRoleCount,
     invisibleTargetCount,
+    titleGrowShrinkNodeCount: titleGrowShrinkNodes.length,
+    titleGrowShrinkFailureCount,
+    oneElementMultipleAnimationFailureCount,
     maximumConsecutiveEntranceSignature,
     sceneMetrics,
     scenes: sceneMotion.map((scene) => ({
       ...scene,
-      semanticNodes: nodes.filter((node) => node.sceneId === scene.id).map((node) => node.id)
+      semanticNodes: nodes.filter((node) => node.sceneId === scene.id).map((node) => node.id),
+      animationElementAudit: animationElementAudits.find((item) => item.sceneId === scene.id)
     })),
     nodes
   };
@@ -1181,20 +1236,33 @@ function generateTts() {
   ensureDirs();
   const chapters = parseScript();
   const segments = buildSegments(chapters);
+  const activeSegmentIds = new Set(segments.map((segment) => segment.id));
+  for (const [relativeDir, extension] of [['audio/segments', '.mp3'], ['captions/segments', '.vtt']]) {
+    const directory = path.join(projectDir, relativeDir);
+    for (const filename of readdirSync(directory)) {
+      const match = filename.match(/^(c\d{2}-p\d{2}-u\d{2})\.(mp3|vtt)$/);
+      if (match && filename.endsWith(extension) && !activeSegmentIds.has(match[1])) unlinkSync(path.join(directory, filename));
+    }
+  }
   const generated = [];
+  const cacheProfilePath = path.join(projectDir, 'audio/segments/cache-profile.json');
+  const cachedProfile = existsSync(cacheProfilePath) ? JSON.parse(readFileSync(cacheProfilePath, 'utf8')) : null;
+  const forceVoiceRefresh = cachedProfile?.voice !== voice || cachedProfile?.rate !== rate;
   for (const segment of segments) {
     const audioFile = path.join(projectDir, 'audio/segments', `${segment.id}.mp3`);
     const vttFile = path.join(projectDir, 'captions/segments', `${segment.id}.vtt`);
     const cachedText = existsSync(vttFile) ? parseVtt(vttFile).map((cue) => cue.text).join('').replace(/\s+/g, '') : '';
     const expectedText = segment.text.replace(/\s+/g, '');
-    if (!existsSync(audioFile) || !existsSync(vttFile) || cachedText !== expectedText) {
+    if (forceVoiceRefresh || !existsSync(audioFile) || !existsSync(vttFile) || cachedText !== expectedText) {
       run('uvx', ['edge-tts', '--voice', voice, '--rate', rate, '--text', segment.text, '--write-media', audioFile, '--write-subtitles', vttFile]);
     }
+    writeFileSync(vttFile, `${readFileSync(vttFile, 'utf8').trimEnd()}\n`);
     const duration = mediaDuration(audioFile);
     const localCues = parseVtt(vttFile);
     if (!localCues.length) throw new Error(`No VTT cues for ${segment.id}`);
     generated.push({ ...segment, audioDuration: duration, localCues, audible: audibleRange(audioFile, duration) });
   }
+  writeFileSync(cacheProfilePath, `${JSON.stringify({ voice, rate }, null, 2)}\n`);
 
   const resolved = [];
   const rawCues = [];
@@ -1368,14 +1436,21 @@ function generateTts() {
       generatedArtAndText: 'opposite-sides',
       sideSequence: 'alternating-left-right',
       overflow: 'forbidden',
-      generatedHighlightMaxMeasuredCharsPerLine: profile.visual.yellowHighlightMaxMeasuredCharsPerLine
+      generatedHighlightMaxMeasuredCharsPerLine: profile.visual.yellowHighlightMaxMeasuredCharsPerLine,
+      semanticCard: {
+        background: profile.visual.semanticLabelCardBackground,
+        borderPx: profile.visual.semanticLabelCardBorderPx,
+        radiusPx: profile.visual.semanticLabelCardRadiusPx,
+        baseFontPx: profile.visual.semanticLabelCardFontPx,
+        underlineForbidden: profile.visual.semanticUnderlineForbidden
+      }
     },
     generatedLayouts: generatedLayoutChecks,
     yellowHighlights: highlightSpecs,
-    underlineWidthMismatchCount: 0,
-    underlineTargetMismatchCount: 0,
-    underlineLineFragmentFailureCount: 0,
-    underlineOverflowCount: 0
+    cardStyleFailureCount: 0,
+    cardOverflowCount: 0,
+    cardFontSizeFailureCount: 0,
+    forbiddenUnderlineCount: 0
   }, null, 2)}\n`);
   writeFileSync(path.join(projectDir, 'qa/internal-prop-style-report.json'), `${JSON.stringify({
     pass: profile.visual.internalPropFrame === 'none-blend-with-paper-background',
@@ -1401,6 +1476,103 @@ function generateTts() {
     forbiddenSpokenPrefixCount,
     transitions: narrativeTransitions,
     policy: 'No formal spoken chapter recap; story questions carry the viewer into the next module.'
+  }, null, 2)}\n`);
+  const engagement = episode.narrativeEngagement;
+  const sceneById = new Map(visualScenes.map((scene) => [scene.id, scene]));
+  const storyReturnScenes = engagement.storyReturnSceneIds.map((id) => sceneById.get(id)).filter(Boolean).sort((a, b) => a.start - b.start);
+  const storyReturnGaps = storyReturnScenes.slice(1).map((scene, index) => ({
+    fromSceneId: storyReturnScenes[index].id,
+    toSceneId: scene.id,
+    seconds: Number((scene.start - storyReturnScenes[index].start).toFixed(3))
+  }));
+  const maximumStoryReturnGapSeconds = storyReturnGaps.length ? Math.max(...storyReturnGaps.map((item) => item.seconds)) : Infinity;
+  const abstractRuns = storyReturnScenes.slice(1).map((scene, index) => ({
+    afterSceneId: storyReturnScenes[index].id,
+    beforeSceneId: scene.id,
+    seconds: Number(Math.max(0, scene.start - storyReturnScenes[index].end).toFixed(3))
+  }));
+  const maximumAbstractRunSeconds = abstractRuns.length ? Math.max(...abstractRuns.map((item) => item.seconds)) : Infinity;
+  const continuityPairs = visualScenes.slice(1).map((scene, index) => {
+    const previous = visualScenes[index];
+    const sharedConcepts = previous.semanticConcepts.filter((concept) => scene.semanticConcepts.includes(concept));
+    const hasExplicitBridge = previous.type === 'transition'
+      || /这|所以|因此|然后|现在|接下来|答案|放回|回到|再看|最后|可|但|一旦|同样|下次/.test(scene.narration);
+    return { fromSceneId: previous.id, toSceneId: scene.id, sharedConcepts, hasExplicitBridge, pass: sharedConcepts.length > 0 || hasExplicitBridge };
+  });
+  const normalizedNarration = visualScenes
+    .filter((scene) => !['intro-follow-save', 'outro'].includes(scene.type))
+    .map((scene) => scene.narration.replace(/[^\p{Script=Han}A-Za-z0-9]/gu, ''))
+    .join('');
+  const ngramSize = 8;
+  const ngramCounts = new Map();
+  for (let index = 0; index <= normalizedNarration.length - ngramSize; index += 1) {
+    const gram = normalizedNarration.slice(index, index + ngramSize);
+    ngramCounts.set(gram, (ngramCounts.get(gram) || 0) + 1);
+  }
+  const repeatedNgramOccurrences = [...ngramCounts.values()].reduce((sum, count) => sum + Math.max(0, count - 1), 0);
+  const repeatedPhraseRatio = Number((repeatedNgramOccurrences / Math.max(1, normalizedNarration.length - ngramSize + 1)).toFixed(4));
+  const paragraphStats = visualScenes.map((scene) => ({
+    sceneId: scene.id,
+    characters: scene.narration.replace(/\s/g, '').length,
+    sentenceCount: (scene.narration.match(/[。！？!?；;]/g) || []).length || 1
+  }));
+  const verboseParagraphs = paragraphStats.filter((item) => item.characters > 190 || item.sentenceCount > 6);
+  const openLoopChecks = engagement.moduleOpenLoopSceneIds.map((id) => {
+    const scene = sceneById.get(id);
+    return { sceneId: id, exists: Boolean(scene), isQuestionOrTransition: Boolean(scene && (scene.type === 'transition' || /[？?]/.test(scene.narration))) };
+  });
+  const openingQuestion = sceneById.get(engagement.openingQuestionSceneId);
+  const openingLoss = sceneById.get(engagement.openingLossSceneId);
+  const openingToolPromise = sceneById.get(engagement.openingToolPromiseSceneId);
+  const closingLoop = sceneById.get(engagement.closingLoopSceneId);
+  const narrativeEngagementPass = continuityPairs.every((item) => item.pass)
+    && repeatedPhraseRatio <= engagement.maximumRepeatedPhraseRatio
+    && maximumStoryReturnGapSeconds <= engagement.maximumStoryReturnGapSeconds
+    && maximumAbstractRunSeconds <= engagement.maximumAbstractRunSeconds
+    && verboseParagraphs.length === 0
+    && openLoopChecks.every((item) => item.exists && item.isQuestionOrTransition)
+    && openingQuestion?.type === 'hook'
+    && openingLoss?.type === 'story'
+    && openingToolPromise?.type === 'promise'
+    && Boolean(closingLoop && /天气|带伞|雨伞|住址/.test(closingLoop.narration));
+  writeFileSync(path.join(projectDir, 'qa/narrative-engagement-report.json'), `${JSON.stringify({
+    pass: narrativeEngagementPass,
+    policy: 'question-loss-tool; suspense-explanation-story-return; close-the-opening-loop',
+    continuity: {
+      pass: continuityPairs.every((item) => item.pass),
+      failureCount: continuityPairs.filter((item) => !item.pass).length,
+      pairs: continuityPairs
+    },
+    concision: {
+      pass: repeatedPhraseRatio <= engagement.maximumRepeatedPhraseRatio && verboseParagraphs.length === 0,
+      ngramSize,
+      repeatedPhraseRatio,
+      maximumRepeatedPhraseRatio: engagement.maximumRepeatedPhraseRatio,
+      verboseParagraphs,
+      paragraphStats
+    },
+    engagement: {
+      pass: maximumStoryReturnGapSeconds <= engagement.maximumStoryReturnGapSeconds
+        && maximumAbstractRunSeconds <= engagement.maximumAbstractRunSeconds
+        && openLoopChecks.every((item) => item.exists && item.isQuestionOrTransition),
+      maximumStoryReturnGapSeconds,
+      allowedStoryReturnGapSeconds: engagement.maximumStoryReturnGapSeconds,
+      storyReturnGaps,
+      maximumAbstractRunSeconds,
+      allowedAbstractRunSeconds: engagement.maximumAbstractRunSeconds,
+      abstractRuns,
+      openLoopChecks
+    },
+    openingAndClosure: {
+      openingQuestionSceneId: openingQuestion?.id || null,
+      openingLossSceneId: openingLoss?.id || null,
+      openingToolPromiseSceneId: openingToolPromise?.id || null,
+      closingLoopSceneId: closingLoop?.id || null,
+      pass: openingQuestion?.type === 'hook'
+        && openingLoss?.type === 'story'
+        && openingToolPromise?.type === 'promise'
+        && Boolean(closingLoop && /天气|带伞|雨伞|住址/.test(closingLoop.narration))
+    }
   }, null, 2)}\n`);
   const stableScenes = visualScenes.filter((scene) => !['hook', 'chapter-intro', 'recap', 'promise', 'outro'].includes(scene.type));
   const stableDurations = stableScenes.map((scene) => Number((scene.end - scene.start).toFixed(3))).sort((a, b) => a - b);
@@ -1516,7 +1688,7 @@ function generateTts() {
     `beat: ${scene.headline}`,
     ''
   ])];
-  writeFileSync(path.join(projectDir, 'STORYBOARD.md'), `${storyboardLines.join('\n')}\n`);
+  writeFileSync(path.join(projectDir, 'STORYBOARD.md'), `${storyboardLines.join('\n').trimEnd()}\n`);
   return { chapters, cues, timing, scenePlan };
 }
 
@@ -1582,7 +1754,9 @@ function balancedLines(value, maxChars = 20) {
 }
 
 function labelMarkup(value, maxChars = 20) {
-  return balancedLines(value, maxChars).map((line) => `<span class="label-line semantic-underline-target"><span class="label-text">${esc(line)}</span><span class="semantic-underline-segment" data-layout-allow-overflow aria-hidden="true"></span></span>`).join('');
+  const effectiveMax = episode.locale.startsWith('zh') ? Math.min(maxChars, profile.visual.yellowHighlightMaxMeasuredCharsPerLine) : maxChars;
+  const lines = balancedLines(value, effectiveMax).map((line) => `<span class="label-line">${esc(line)}</span>`).join('');
+  return `<span class="semantic-label-card">${lines}</span>`;
 }
 
 function yellowHighlightSpec(scene) {
@@ -1646,13 +1820,13 @@ function renderScene(scene, scenePlan) {
   const open = `<section data-hf-id="hf-scene-${scene.id}" id="scene-${scene.id}" class="scene layout-${scene.layout}"><div class="scene-content">`;
   const close = '<span class="scene-motion-accent" aria-hidden="true"></span></div></section>';
   if (scene.layout === 'recap') return `${open}${recapMarkup(scene, chapter)}${close}`;
-  if (scene.layout === 'chapter-intro') return `${open}<div class="intro-stage"><div class="intro-copy"><span>${episode.locale.startsWith('zh') ? '故事推进' : 'Story Progression'}</span><h1>${esc(scene.chapter)}</h1><p>${labelMarkup(scene.coreLabel, episode.locale.startsWith('zh') ? 10 : 26)}</p></div><div class="intro-actors">${actorMarkup(scene, 'human')}${propMarkup(scene.props[0], 'motion-target')}${actorMarkup(scene, 'agent')}</div></div>${close}`;
-  if (scene.layout === 'generated') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="generated-stage art-${scene.generatedArtSide}"><div class="generated-art-wrap"><img class="generated-art visual-object motion-target" src="assets/generated/scene-art/${esc(scene.generatedArt)}" alt="${esc(scene.coreLabel)}"></div><div class="generated-label yellow-highlight" data-highlight-side="${scene.highlightSide}">${labelMarkup(scene.coreLabel, profile.visual.yellowHighlightMaxMeasuredCharsPerLine)}</div></div>${close}`;
+  if (scene.layout === 'chapter-intro') return `${open}<div class="intro-stage"><div class="intro-copy"><span>${episode.locale.startsWith('zh') ? '故事推进' : 'Story Progression'}</span><h1>${esc(scene.chapter)}</h1><p>${labelMarkup(scene.coreLabel, episode.locale.startsWith('zh') ? 5 : 26)}</p></div><div class="intro-actors">${actorMarkup(scene, 'human')}${propMarkup(scene.props[0], 'motion-target')}${actorMarkup(scene, 'agent')}</div></div>${close}`;
+  if (scene.layout === 'generated') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="generated-stage art-${scene.generatedArtSide}"><div class="generated-art-wrap"><img class="generated-art visual-object motion-target" src="assets/generated/scene-art/${esc(scene.generatedArt)}" alt="${esc(scene.coreLabel)}"></div><div class="generated-label yellow-highlight" data-highlight-side="${scene.highlightSide}">${labelMarkup(scene.coreLabel, profile.visual.yellowHighlightMaxMeasuredCharsPerLine)}${propMarkup(scene.props[0], 'generated-control-mark')}</div></div>${close}`;
   if (scene.layout === 'human-agent-prop') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="trio-stage">${actorMarkup(scene, 'human')}${featuredObject(scene, 'motion-target')}${actorMarkup(scene, 'agent')}</div>${close}`;
   if (scene.layout === 'human-prop') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="duo-stage">${actorMarkup(scene, 'human')}${featuredObject(scene, 'motion-target')}</div>${close}`;
   if (scene.layout === 'agent-center' || scene.layout === 'human-center') {
     const kind = scene.layout === 'human-center' ? 'human' : 'agent';
-    return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="solo-stage">${actorMarkup(scene, kind, 'motion-target')}<div class="solo-callout yellow-highlight">${labelMarkup(scene.coreLabel, episode.locale.startsWith('zh') ? profile.visual.yellowHighlightMaxMeasuredCharsPerLine : 24)}</div></div>${close}`;
+    return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="solo-stage">${actorMarkup(scene, kind, 'motion-target')}${propMarkup(scene.props[0], 'solo-prop')}<div class="solo-callout yellow-highlight">${labelMarkup(scene.coreLabel, episode.locale.startsWith('zh') ? profile.visual.yellowHighlightMaxMeasuredCharsPerLine : 24)}</div></div>${close}`;
   }
   if (scene.layout === 'two-props') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="pair-stage">${propMarkup(scene.props[0])}<div class="relation-mark">≠</div>${propMarkup(scene.props[1], 'motion-target')}</div><div class="pair-label yellow-highlight">${labelMarkup(scene.coreLabel, 22)}</div>${close}`;
   if (scene.layout === 'big-text') {
@@ -1699,6 +1873,9 @@ function appendSemanticNodeTimeline(timeline, node) {
     timeline.push(`tl.to(${selector},{y:0,scale:1.02,duration:${settle},ease:"power2.inOut",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'source-path-draw') {
     timeline.push(`tl.fromTo(${selector},{autoAlpha:0,scaleX:0},{autoAlpha:1,scaleX:1,duration:${node.duration},ease:"power3.inOut",immediateRender:false,overwrite:"auto"},${at});`);
+  } else if (node.action === 'evidence-arc-lift') {
+    timeline.push(`tl.to(${selector},{x:-${translation},y:-${Math.round(translation * 0.7)},rotation:${rotation},scale:${scale},duration:${split},ease:"circ.out",overwrite:"auto"},${at});`);
+    timeline.push(`tl.to(${selector},{x:0,y:0,rotation:0,scale:1,duration:${settle},ease:"power3.out",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'uncertainty-brake') {
     timeline.push(`tl.to(${selector},{x:${translation},rotation:${rotation},scale:${scale},duration:${split},ease:"expo.out",overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{x:-18,rotation:-2,scale:1.02,duration:${(settle * 0.55).toFixed(3)},ease:"power3.out",overwrite:"auto"},${settleAt});`);
@@ -1706,24 +1883,37 @@ function appendSemanticNodeTimeline(timeline, node) {
   } else if (node.action === 'risk-stamp') {
     timeline.push(`tl.fromTo(${selector},{autoAlpha:.35,y:-${translation},rotation:-${rotation},scale:.82},{autoAlpha:1,y:0,rotation:${rotation},scale:${scale},duration:${split},ease:"back.out(1.7)",immediateRender:false,overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{rotation:0,scale:1,duration:${settle},ease:"power3.out",overwrite:"auto"},${settleAt});`);
+  } else if (node.action === 'risk-shake-lock') {
+    timeline.push(`tl.to(${selector},{x:-${translation},rotation:-${rotation},scale:${scale},duration:${(split * 0.55).toFixed(3)},ease:"power4.out",overwrite:"auto"},${at});`);
+    timeline.push(`tl.to(${selector},{x:${Math.round(translation * 0.42)},rotation:${Math.round(rotation * 0.45)},duration:${(split * 0.45).toFixed(3)},ease:"power3.inOut",overwrite:"auto"},${(node.at + split * 0.55).toFixed(3)});`);
+    timeline.push(`tl.to(${selector},{x:0,rotation:0,scale:1,duration:${settle},ease:"expo.out",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'cause-chain') {
     timeline.push(`tl.to(${selector},{x:${translation},scale:${scale},duration:${split},ease:"power3.inOut",overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{x:0,scale:1,duration:${settle},ease:"power4.out",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'state-swap') {
     timeline.push(`tl.to(${selector},{x:-${translation},scaleX:.72,rotationY:${rotation * 8},duration:${split},ease:"power4.in",overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{x:0,scaleX:1,rotationY:0,duration:${settle},ease:"power4.out",overwrite:"auto"},${settleAt});`);
+  } else if (node.action === 'cause-arc-link') {
+    timeline.push(`tl.to(${selector},{x:${translation},y:-${Math.round(translation * 0.6)},rotation:${rotation},scale:${scale},duration:${split},ease:"power3.inOut",overwrite:"auto"},${at});`);
+    timeline.push(`tl.to(${selector},{x:0,y:0,rotation:0,scale:1,duration:${settle},ease:"circ.out",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'decision-gate') {
     timeline.push(`tl.to(${selector},{clipPath:"inset(0% 38% 0% 38%)",scale:${scale},duration:${split},ease:"power3.in",overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{clipPath:"inset(0% 0% 0% 0%)",scale:1,duration:${settle},ease:"power4.out",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'decision-lock') {
     timeline.push(`tl.fromTo(${selector},{autoAlpha:.35,y:-${translation},scale:.84,rotation:-${rotation}},{autoAlpha:1,y:0,scale:${scale},rotation:${rotation},duration:${split},ease:"back.out(1.8)",immediateRender:false,overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{scale:1,rotation:0,duration:${settle},ease:"power3.out",overwrite:"auto"},${settleAt});`);
+  } else if (node.action === 'decision-pulse-choice') {
+    timeline.push(`tl.to(${selector},{scale:${scale},duration:${split},ease:"back.out(2)",overwrite:"auto"},${at});`);
+    timeline.push(`tl.to(${selector},{scale:1,duration:${settle},ease:"power4.out",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'contrast-focus') {
     timeline.push(`tl.to(${selector},{x:-${translation},scale:${scale},rotation:-${rotation},duration:${split},ease:"power3.out",overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{x:0,scale:1,rotation:0,duration:${settle},ease:"power3.inOut",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'outcome-split') {
     timeline.push(`tl.to(${selector},{x:${translation},scale:${scale},duration:${split},ease:"power4.out",overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{x:0,scale:1,duration:${settle},ease:"power2.inOut",overwrite:"auto"},${settleAt});`);
+  } else if (node.action === 'comparison-cross-swap') {
+    timeline.push(`tl.to(${selector},{x:${translation},y:-${Math.round(translation * 0.55)},rotation:${rotation},scale:${scale},duration:${split},ease:"expo.out",overwrite:"auto"},${at});`);
+    timeline.push(`tl.to(${selector},{x:0,y:0,rotation:0,scale:1,duration:${settle},ease:"power3.inOut",overwrite:"auto"},${settleAt});`);
   } else if (node.action === 'object-handoff') {
     timeline.push(`tl.to(${selector},{x:${translation},y:-18,scale:${scale},rotation:${rotation},duration:${split},ease:"power3.inOut",overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{x:0,y:0,scale:1,rotation:0,duration:${settle},ease:"power4.out",overwrite:"auto"},${settleAt});`);
@@ -1731,8 +1921,13 @@ function appendSemanticNodeTimeline(timeline, node) {
     timeline.push(`tl.to(${selector},{x:-${translation},y:-${Math.round(translation * 0.7)},scale:${scale},rotation:-${rotation},duration:${split},ease:"power3.out",overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{x:18,y:-12,scale:1.03,rotation:2,duration:${(settle * 0.55).toFixed(3)},ease:"power2.inOut",overwrite:"auto"},${settleAt});`);
     timeline.push(`tl.to(${selector},{x:0,y:0,scale:1,rotation:0,duration:${(settle * 0.45).toFixed(3)},ease:"power4.out",overwrite:"auto"},${(node.at + split + settle * 0.55).toFixed(3)});`);
-  } else if (node.action === 'claim-underline') {
-    timeline.push(`tl.fromTo(${selector},{autoAlpha:0,scaleX:0},{autoAlpha:1,scaleX:1,duration:${node.duration},ease:"power3.out",immediateRender:false,overwrite:"auto"},${at});`);
+  } else if (node.action === 'story-pan-return') {
+    timeline.push(`tl.to(${selector},{x:${translation},rotation:${rotation},scale:${scale},duration:${split},ease:"circ.out",overwrite:"auto"},${at});`);
+    timeline.push(`tl.to(${selector},{x:-${Math.round(translation * 0.28)},rotation:-2,scale:1.03,duration:${(settle * 0.48).toFixed(3)},ease:"power3.inOut",overwrite:"auto"},${settleAt});`);
+    timeline.push(`tl.to(${selector},{x:0,rotation:0,scale:1,duration:${(settle * 0.52).toFixed(3)},ease:"power4.out",overwrite:"auto"},${(node.at + split + settle * 0.48).toFixed(3)});`);
+  } else if (node.action === 'title-grow-shrink') {
+    timeline.push(`tl.to(${selector},{scale:${scale},duration:${split},ease:"power4.out",overwrite:"auto"},${at});`);
+    timeline.push(`tl.to(${selector},{scale:1,duration:${settle},ease:"power3.inOut",overwrite:"auto"},${settleAt});`);
   } else {
     timeline.push(`tl.fromTo(${selector},{autoAlpha:.4,y:${translation},scale:.78,rotation:-${rotation}},{autoAlpha:1,y:0,scale:${scale},rotation:${rotation},duration:${split},ease:"back.out(1.9)",immediateRender:false,overwrite:"auto"},${at});`);
     timeline.push(`tl.to(${selector},{scale:1,rotation:0,duration:${settle},ease:"power3.out",overwrite:"auto"},${settleAt});`);
@@ -1775,12 +1970,61 @@ function appendSceneTransitionTimeline(timeline, scene, previous, metadata, inde
   timeline.push(`tl.set("${selector}",{autoAlpha:1,x:0,y:0,clipPath:"inset(0% 0% 0% 0%)",zIndex:1},${end.toFixed(3)});`);
 }
 
-function appendSceneEntranceTimeline(timeline, scene, metadata) {
+function localMotionSelector(sceneId, selector) {
+  return selector.replace(`#scene-${sceneId} `, '');
+}
+
+function motionSelectorsConflict(sceneId, firstSelector, secondSelector) {
+  const first = localMotionSelector(sceneId, firstSelector);
+  const second = localMotionSelector(sceneId, secondSelector);
+  const labelParents = new Set(['.generated-label', '.pair-label', '.emphasis-sub', '.solo-callout', '.object-label', '.intro-copy']);
+  return first === second
+    || (first === '.semantic-label-card' && labelParents.has(second))
+    || (second === '.semantic-label-card' && labelParents.has(first))
+    || (first === '.motion-target' && second === '.generated-art-wrap')
+    || (second === '.motion-target' && first === '.generated-art-wrap');
+}
+
+function entranceSelectorCandidates(scene, entranceType) {
+  const actors = [scene.renderHuman ? '.actor-human' : null, scene.renderAgent ? '.actor-agent' : null].filter(Boolean);
+  if (['hook-hard-cut', 'outro-hard-cut'].includes(entranceType)) return [];
+  if (entranceType === 'split-fly-in') return scene.layout === 'generated'
+    ? ['.scene-headline', '.generated-art-wrap', '.semantic-label-card', '.generated-control-mark']
+    : ['.scene-headline', '.motion-target', ...actors];
+  if (entranceType === 'stagger-assemble') return [scene.layout === 'chapter-intro' ? '.intro-copy' : '.scene-headline', '.motion-target', ...actors];
+  if (entranceType === 'opposed-fly-in') return scene.layout === 'two-props'
+    ? ['.scene-headline', '.pair-stage .prop-piece:first-child', '.pair-stage .prop-piece:last-child', '.relation-mark', '.semantic-label-card']
+    : ['.scene-headline', '.motion-target', ...actors];
+  if (entranceType === 'drop-and-lock') {
+    if (scene.layout === 'big-text') return ['.emphasis-text', '.semantic-label-card', '.small-actor', '.small-prop'];
+    if (scene.layout === 'two-props') return ['.scene-headline', '.pair-stage .prop-piece:first-child', '.pair-stage .prop-piece:last-child', '.semantic-label-card'];
+    return ['.scene-headline', scene.layout === 'agent-center' ? '.actor-agent' : scene.layout === 'human-center' ? '.actor-human' : '.motion-target', ...(scene.layout === 'agent-center' || scene.layout === 'human-center' ? ['.solo-prop'] : []), '.semantic-label-card'];
+  }
+  if (entranceType === 'rise-and-settle') return scene.layout === 'chapter-intro'
+    ? ['.intro-copy', '.motion-target', ...actors]
+    : ['.scene-headline', scene.layout === 'agent-center' ? '.actor-agent' : scene.layout === 'human-center' ? '.actor-human' : '.motion-target', ...(scene.layout === 'agent-center' || scene.layout === 'human-center' ? ['.solo-prop'] : []), '.semantic-label-card'];
+  if (entranceType === 'whip-and-settle') return ['.scene-headline', scene.layout === 'generated' ? '.generated-art-wrap' : '.motion-target', '.semantic-label-card', ...(scene.layout === 'generated' ? ['.generated-control-mark'] : actors)];
+  if (entranceType === 'tilt-unfold') return [scene.layout === 'big-text' ? '.emphasis-text' : '.scene-headline', '.motion-target', '.semantic-label-card', ...actors];
+  if (entranceType === 'center-burst') return scene.layout === 'chapter-intro'
+    ? ['.intro-copy', '.motion-target', ...actors]
+    : ['.scene-headline', scene.layout === 'agent-center' ? '.actor-agent' : '.actor-human', '.solo-prop', '.semantic-label-card'];
+  return scene.layout === 'big-text'
+    ? ['.emphasis-text', '.semantic-label-card', '.small-actor', '.small-prop']
+    : ['.scene-headline', '.motion-target', ...(scene.layout === 'generated' ? ['.semantic-label-card', '.generated-control-mark'] : actors)];
+}
+
+function entranceConflictsWithSemantic(sceneId, entranceSelector, semanticNodes) {
+  return semanticNodes.some((node) => motionSelectorsConflict(sceneId, entranceSelector, node.targetSelector));
+}
+
+function appendSceneEntranceTimeline(timeline, scene, metadata, semanticNodes) {
   if (metadata.entranceType === 'hook-hard-cut' || metadata.entranceType === 'outro-hard-cut') return;
   const root = `#scene-${scene.id}`;
+  const centerActorSelector = scene.layout === 'agent-center' ? '.actor-agent' : scene.layout === 'human-center' ? '.actor-human' : '.motion-target';
   const at = metadata.entranceAt;
   const prep = Math.max(0, scene.start - 0.02);
   const reveal = (selector, from, to, duration, offset = 0, ease = 'power4.out') => {
+    if (entranceConflictsWithSemantic(scene.id, selector, semanticNodes)) return;
     timeline.push(`tl.fromTo("${root} ${selector}",${JSON.stringify({ autoAlpha: 0, ...from })},${JSON.stringify({ autoAlpha: 1, ...to, duration, ease, immediateRender: false })},${(at + offset).toFixed(3)});`);
   };
   timeline.push(`tl.set("${root} .scene-content",{autoAlpha:0},${prep.toFixed(3)});`);
@@ -1789,7 +2033,8 @@ function appendSceneEntranceTimeline(timeline, scene, metadata) {
     const sign = scene.generatedArtSide === 'left' ? -1 : 1;
     reveal('.scene-headline', { y: -48 }, { y: 0 }, 0.54);
     reveal('.generated-art-wrap', { x: sign * 140, scale: 0.88 }, { x: 0, scale: 1 }, 0.7, 0.06, 'power4.out');
-    reveal('.generated-label', { x: -sign * 90, scale: 0.9 }, { x: 0, scale: 1 }, 0.62, 0.13, 'back.out(1.45)');
+    reveal('.semantic-label-card', { x: -sign * 132, scale: 0.82 }, { x: 0, scale: 1 }, 0.64, 0.13, 'back.out(1.65)');
+    reveal('.generated-control-mark', { y: 120, rotation: sign * 12, scale: 0.62 }, { y: 0, rotation: 0, scale: 1 }, 0.62, 0.18, 'back.out(2)');
   } else if (metadata.entranceType === 'split-fly-in') {
     const sign = scene.paragraphNumber % 2 === 0 ? -1 : 1;
     reveal('.scene-headline', { y: -48 }, { y: 0 }, 0.54);
@@ -1806,7 +2051,7 @@ function appendSceneEntranceTimeline(timeline, scene, metadata) {
     reveal('.pair-stage .prop-piece:first-child', { x: -140, rotation: -6 }, { x: 0, rotation: 0 }, 0.68, 0.04);
     reveal('.pair-stage .prop-piece:last-child', { x: 140, rotation: 6 }, { x: 0, rotation: 0 }, 0.68, 0.08);
     reveal('.relation-mark', { y: -80, scale: 0.5, rotation: -8 }, { y: 0, scale: 1, rotation: 0 }, 0.62, 0.12, 'back.out(1.8)');
-    reveal('.pair-label', { y: 60 }, { y: 0 }, 0.56, 0.18);
+    reveal('.semantic-label-card', { y: 96, scale: 0.84 }, { y: 0, scale: 1 }, 0.58, 0.18, 'back.out(1.7)');
   } else if (metadata.entranceType === 'opposed-fly-in') {
     reveal('.scene-headline', { y: -48 }, { y: 0 }, 0.54);
     reveal('.actor-human', { x: -120 }, { x: 0 }, 0.66, 0.04);
@@ -1815,34 +2060,60 @@ function appendSceneEntranceTimeline(timeline, scene, metadata) {
   } else if (metadata.entranceType === 'drop-and-lock') {
     if (scene.layout === 'big-text') {
       reveal('.emphasis-text', { y: -96, scale: 0.84, rotation: -4 }, { y: 0, scale: 1, rotation: 0 }, 0.68, 0, 'back.out(1.7)');
-      reveal('.emphasis-sub', { x: -72 }, { x: 0 }, 0.58, 0.1);
+      reveal('.semantic-label-card', { x: -128, scale: 0.82 }, { x: 0, scale: 1 }, 0.6, 0.1, 'back.out(1.7)');
       reveal('.small-actor', { x: -100, y: 28 }, { x: 0, y: 0 }, 0.62, 0.14);
       reveal('.small-prop', { x: 100, rotation: 8 }, { x: 0, rotation: 0 }, 0.62, 0.18);
     } else if (scene.layout === 'two-props') {
       reveal('.scene-headline', { y: -56 }, { y: 0 }, 0.54);
       reveal('.pair-stage .prop-piece:first-child', { y: -100, rotation: -6 }, { y: 0, rotation: 0 }, 0.66, 0.04, 'back.out(1.6)');
       reveal('.pair-stage .prop-piece:last-child', { y: -100, rotation: 6 }, { y: 0, rotation: 0 }, 0.66, 0.1, 'back.out(1.6)');
-      reveal('.pair-label', { y: 72, scale: 0.88 }, { y: 0, scale: 1 }, 0.58, 0.16);
+      reveal('.semantic-label-card', { y: 112, scale: 0.8 }, { y: 0, scale: 1 }, 0.6, 0.16, 'back.out(1.75)');
     } else {
       reveal('.scene-headline', { y: -72, scale: 0.88 }, { y: 0, scale: 1 }, 0.62, 0, 'back.out(1.6)');
-      reveal('.motion-target', { y: 100, scale: 0.84 }, { y: 0, scale: 1 }, 0.66, 0.08, 'power4.out');
-      reveal('.solo-callout', { x: -72 }, { x: 0 }, 0.58, 0.14);
+      reveal(centerActorSelector, { y: 100, scale: 0.84 }, { y: 0, scale: 1 }, 0.66, 0.08, 'power4.out');
+      if (scene.layout === 'agent-center' || scene.layout === 'human-center') reveal('.solo-prop', { x: -130, rotation: -12, scale: 0.66 }, { x: 0, rotation: 0, scale: 1 }, 0.62, 0.12, 'back.out(2)');
+      reveal('.semantic-label-card', { x: -128, scale: 0.82 }, { x: 0, scale: 1 }, 0.6, 0.14, 'back.out(1.7)');
     }
   } else if (metadata.entranceType === 'rise-and-settle') {
     if (scene.layout === 'chapter-intro') {
       reveal('.intro-copy', { y: -48 }, { y: 0 }, 0.54);
-      reveal('.motion-target', { y: 120, scale: 0.88 }, { y: 0, scale: 1 }, 0.7, 0.06, 'back.out(1.45)');
+      reveal(centerActorSelector, { y: 120, scale: 0.88 }, { y: 0, scale: 1 }, 0.7, 0.06, 'back.out(1.45)');
+      if (scene.layout === 'agent-center' || scene.layout === 'human-center') reveal('.solo-prop', { x: 130, rotation: 12, scale: 0.66 }, { x: 0, rotation: 0, scale: 1 }, 0.62, 0.12, 'back.out(2)');
       reveal('.actor-human', { x: -100, y: 34 }, { x: 0, y: 0 }, 0.66, 0.1);
       reveal('.actor-agent', { x: 100, y: 34 }, { x: 0, y: 0 }, 0.66, 0.16);
     } else {
       reveal('.scene-headline', { y: -48 }, { y: 0 }, 0.54);
       reveal('.motion-target', { y: 120, scale: 0.88 }, { y: 0, scale: 1 }, 0.7, 0.06, 'back.out(1.45)');
-      reveal('.solo-callout', { x: 72 }, { x: 0 }, 0.56, 0.16);
+      reveal('.semantic-label-card', { x: 128, scale: 0.82 }, { x: 0, scale: 1 }, 0.6, 0.16, 'back.out(1.7)');
+    }
+  } else if (metadata.entranceType === 'whip-and-settle') {
+    const sign = scene.paragraphNumber % 2 === 0 ? -1 : 1;
+    reveal('.scene-headline', { x: sign * 260, rotation: sign * 9, scale: 0.78 }, { x: 0, rotation: 0, scale: 1 }, 0.56, 0, 'expo.out');
+    if (scene.layout === 'generated') reveal('.generated-art-wrap', { x: -sign * 220, rotation: -sign * 8, scale: 0.76 }, { x: 0, rotation: 0, scale: 1 }, 0.72, 0.04, 'circ.out');
+    else reveal('.motion-target', { x: -sign * 220, rotation: -sign * 10, scale: 0.74 }, { x: 0, rotation: 0, scale: 1 }, 0.7, 0.05, 'circ.out');
+    reveal('.semantic-label-card', { x: sign * 170, scale: 0.76 }, { x: 0, scale: 1 }, 0.62, 0.12, 'back.out(1.9)');
+    if (scene.layout === 'generated') reveal('.generated-control-mark', { y: 130, rotation: -sign * 14, scale: 0.6 }, { y: 0, rotation: 0, scale: 1 }, 0.62, 0.18, 'back.out(2.1)');
+    if (scene.renderHuman) reveal('.actor-human', { x: -sign * 180, rotation: -sign * 6 }, { x: 0, rotation: 0 }, 0.66, 0.09, 'power4.out');
+    if (scene.renderAgent) reveal('.actor-agent', { x: sign * 180, rotation: sign * 6 }, { x: 0, rotation: 0 }, 0.66, 0.16, 'power4.out');
+  } else if (metadata.entranceType === 'tilt-unfold') {
+    reveal(scene.layout === 'big-text' ? '.emphasis-text' : '.scene-headline', { y: -112, rotationX: -38, scale: 0.72 }, { y: 0, rotationX: 0, scale: 1 }, 0.66, 0, 'back.out(1.8)');
+    reveal('.motion-target', { y: 150, rotation: 12, scale: 0.72 }, { y: 0, rotation: 0, scale: 1 }, 0.72, 0.05, 'circ.out');
+    reveal('.semantic-label-card', { y: 118, rotation: -7, scale: 0.74 }, { y: 0, rotation: 0, scale: 1 }, 0.64, 0.12, 'back.out(1.9)');
+    if (scene.renderHuman) reveal('.actor-human', { x: -170, y: 42, rotation: -8 }, { x: 0, y: 0, rotation: 0 }, 0.68, 0.1);
+    if (scene.renderAgent) reveal('.actor-agent', { x: 170, y: 42, rotation: 8 }, { x: 0, y: 0, rotation: 0 }, 0.68, 0.16);
+  } else if (metadata.entranceType === 'center-burst') {
+    reveal(scene.layout === 'chapter-intro' ? '.intro-copy' : '.scene-headline', { scale: 0.58, rotation: -6 }, { scale: 1, rotation: 0 }, 0.62, 0, 'back.out(2.1)');
+    reveal(scene.layout === 'chapter-intro' ? '.motion-target' : centerActorSelector, { scale: 0.56, rotation: 14 }, { scale: 1, rotation: 0 }, 0.68, 0.05, 'back.out(2)');
+    if (scene.layout === 'agent-center' || scene.layout === 'human-center') reveal('.solo-prop', { y: 130, rotation: -14, scale: 0.58 }, { y: 0, rotation: 0, scale: 1 }, 0.62, 0.1, 'back.out(2.1)');
+    reveal('.semantic-label-card', { scale: 0.54, rotation: -9 }, { scale: 1, rotation: 0 }, 0.6, 0.12, 'back.out(2.2)');
+    if (scene.layout !== 'agent-center' && scene.layout !== 'human-center') {
+      if (scene.renderHuman) reveal('.actor-human', { x: -190, scale: 0.74 }, { x: 0, scale: 1 }, 0.66, 0.1, 'expo.out');
+      if (scene.renderAgent) reveal('.actor-agent', { x: 190, scale: 0.74 }, { x: 0, scale: 1 }, 0.66, 0.16, 'expo.out');
     }
   } else {
     if (scene.layout === 'big-text') {
       reveal('.emphasis-text', { x: -64, clipPath: 'inset(0% 100% 0% 0%)' }, { x: 0, clipPath: 'inset(0% 0% 0% 0%)' }, 0.62);
-      reveal('.emphasis-sub', { y: 72 }, { y: 0 }, 0.58, 0.08);
+      reveal('.semantic-label-card', { y: 112, scale: 0.78 }, { y: 0, scale: 1 }, 0.6, 0.08, 'back.out(1.8)');
       reveal('.small-actor', { x: -100 }, { x: 0 }, 0.62, 0.12);
       reveal('.small-prop', { x: 100 }, { x: 0 }, 0.62, 0.16);
     } else {
@@ -1850,7 +2121,10 @@ function appendSceneEntranceTimeline(timeline, scene, metadata) {
       reveal('.motion-target', { y: 88, scale: 0.88 }, { y: 0, scale: 1 }, 0.66, 0.08, 'back.out(1.45)');
       if (scene.renderHuman && scene.layout !== 'generated') reveal('.actor-human', { x: -100 }, { x: 0 }, 0.62, 0.12);
       if (scene.renderAgent && scene.layout !== 'generated') reveal('.actor-agent', { x: 100 }, { x: 0 }, 0.62, 0.16);
-      if (scene.layout === 'generated') reveal('.generated-label', { x: 72 }, { x: 0 }, 0.58, 0.14);
+      if (scene.layout === 'generated') {
+        reveal('.semantic-label-card', { x: 132, scale: 0.8 }, { x: 0, scale: 1 }, 0.6, 0.14, 'back.out(1.7)');
+        reveal('.generated-control-mark', { y: 120, rotation: 12, scale: 0.62 }, { y: 0, rotation: 0, scale: 1 }, 0.62, 0.18, 'back.out(2)');
+      }
     }
   }
 }
@@ -1880,7 +2154,7 @@ function renderHtml(timing, cues, scenePlan, animationPlan) {
     const metadata = sceneMotionById.get(scene.id);
     if (!metadata) throw new Error(`Missing scene motion metadata for ${scene.id}.`);
     appendSceneTransitionTimeline(timeline, scene, contentScenes[index - 1], metadata, index);
-    appendSceneEntranceTimeline(timeline, scene, metadata);
+    appendSceneEntranceTimeline(timeline, scene, metadata, animationPlan.nodes.filter((node) => node.sceneId === scene.id));
   });
   animationPlan.nodes.forEach((node) => appendSemanticNodeTimeline(timeline, node));
   timeline.push(`tl.set("#hook",{autoAlpha:0},${timing.checkpoints.hookTimelineCutAt.toFixed(3)});`);
@@ -1907,10 +2181,10 @@ function renderHtml(timing, cues, scenePlan, animationPlan) {
 <style>
 @font-face{font-family:TA;src:url("assets/fonts/HiraginoSansGB.ttc") format("truetype");font-weight:100 900}@font-face{font-family:Hook;src:url("assets/fonts/ZCOOLKuaiLe-Regular.ttf") format("truetype");font-weight:400}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#ECECEA;font-family:TA,"Arial Black",Arial,sans-serif;color:#111413}:root{--paper:#ECECEA;--ink:#111413;--blue:#117ABD;--yellow:#F4C542;--red:#D84B3E;--played:#A8D8F0;--rest:#DDE0DA}
 .composition{position:relative;width:1920px;height:1080px;overflow:hidden;background-color:var(--paper);background-image:linear-gradient(rgba(17,20,19,.038) 2px,transparent 2px),linear-gradient(90deg,rgba(17,20,19,.038) 2px,transparent 2px);background-size:64px 64px}.hook{position:absolute;inset:0;z-index:180;overflow:hidden;background:var(--paper);font-family:Hook,TA,sans-serif}.hook-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(17,20,19,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(17,20,19,.07) 2px,transparent 2px);background-size:68px 68px}.hook-eyebrow{position:absolute;left:58px;top:24px;padding:9px 16px;border:4px solid var(--ink);background:var(--yellow);font-family:TA,sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;transform:rotate(-1.5deg)}.hook-question{position:absolute;left:58px;top:${episode.locale.startsWith('zh') ? 116 : 140}px;width:${episode.locale.startsWith('zh') ? 1804 : 1550}px;min-height:${episode.locale.startsWith('zh') ? 0 : 760}px;font-size:${episode.locale.startsWith('zh') ? 190 : 104}px;line-height:${episode.locale.startsWith('zh') ? 1.05 : 1.2};font-weight:400;letter-spacing:${episode.locale.startsWith('zh') ? 2 : -1}px}.hook-line{display:flex;align-items:baseline;white-space:nowrap}.hook-line-1{font-size:190px;line-height:1.04}.hook-line-2{margin-left:${episode.locale.startsWith('zh') ? 142 : 0}px;font-size:${episode.locale.startsWith('zh') ? 220 : 152}px;line-height:1;color:var(--blue)}.hook-line-3{margin-top:${episode.locale.startsWith('zh') ? 38 : 125}px;margin-left:${episode.locale.startsWith('zh') ? 34 : 0}px;font-size:${episode.locale.startsWith('zh') ? 190 : 140}px;line-height:1.04}.hook-glyph{display:inline-block;visibility:hidden;opacity:0;transform-origin:50% 82%}.hook-keyword{color:var(--blue)}.hook-final-question{color:var(--red);margin-left:6px;transform-origin:center center}.hook-space{display:inline-block;width:.31em}.hook-marker{position:absolute;left:${episode.locale.startsWith('zh') ? 132 : 150}px;top:${episode.locale.startsWith('zh') ? 418 : 456}px;width:${episode.locale.startsWith('zh') ? 1170 : 900}px;height:26px;background:var(--yellow);z-index:-1;transform:scaleX(0) rotate(-2deg);transform-origin:left center}.hook-agent{position:absolute;right:6px;bottom:58px;width:250px;height:320px;object-fit:contain;visibility:hidden;opacity:0;filter:drop-shadow(0 15px 0 rgba(17,20,19,.12))}.hook-burst{position:absolute;right:262px;top:662px;width:160px;height:160px;visibility:hidden;opacity:0}.hook-burst i{position:absolute;left:76px;top:6px;width:8px;height:56px;border-radius:8px;background:var(--red);transform-origin:4px 74px}.hook-burst i:nth-child(2){transform:rotate(60deg)}.hook-burst i:nth-child(3){transform:rotate(120deg)}.hook-burst i:nth-child(4){transform:rotate(180deg)}.hook-burst i:nth-child(5){transform:rotate(240deg)}.hook-burst i:nth-child(6){transform:rotate(300deg)}
-.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;background-color:var(--paper);background-image:linear-gradient(rgba(17,20,19,.038) 2px,rgba(236,236,234,0) 2px),linear-gradient(90deg,rgba(17,20,19,.038) 2px,rgba(236,236,234,0) 2px);background-size:64px 64px;will-change:transform,clip-path}.scene-content{position:absolute;inset:0;overflow:hidden;padding:34px 58px 198px}.scene-motion-accent{display:none}.scene h1.scene-headline{margin:0 auto;width:1804px;min-height:128px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:92px;line-height:1.02;letter-spacing:-1.8px;font-weight:900;text-wrap:balance}.scene h1.headline-long{font-size:76px;line-height:1.06}.actor-wrap{display:grid;place-items:end center}.actor{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 14px 0 rgba(17,20,19,.09))}.visual-object{transform-origin:center center}.object-label,.generated-label,.pair-label,.solo-callout{font-size:34px;line-height:1.14;font-weight:900;text-align:center}.label-line{position:relative;display:block;width:max-content;max-width:100%;margin:0 auto 18px;white-space:nowrap}.label-text{position:relative;z-index:2}.semantic-underline-segment{position:absolute;z-index:1;left:0;right:0;bottom:-9px;height:10px;border-radius:8px;background:var(--yellow);transform-origin:left center}.yellow-highlight{box-sizing:border-box;min-width:0;max-width:100%}
+.scene{position:absolute;inset:0;overflow:hidden;visibility:hidden;opacity:0;background-color:var(--paper);background-image:linear-gradient(rgba(17,20,19,.038) 2px,rgba(236,236,234,0) 2px),linear-gradient(90deg,rgba(17,20,19,.038) 2px,rgba(236,236,234,0) 2px);background-size:64px 64px;will-change:transform,clip-path}.scene-content{position:absolute;inset:0;overflow:hidden;padding:34px 58px 198px}.scene-motion-accent{display:none}.scene h1.scene-headline{margin:0 auto;width:1804px;min-height:128px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:92px;line-height:1.02;letter-spacing:-1.8px;font-weight:900;text-wrap:balance}.scene h1.headline-long{font-size:76px;line-height:1.06}.actor-wrap{display:grid;place-items:end center}.actor{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 14px 0 rgba(17,20,19,.09))}.visual-object{transform-origin:center center}.object-label,.generated-label,.pair-label,.solo-callout{font-size:68px;line-height:1.08;font-weight:900;text-align:center}.semantic-label-card{display:inline-block;box-sizing:border-box;max-width:100%;padding:20px 30px 22px;background:#F4C542;border:7px solid var(--ink);border-radius:28px;color:var(--ink);font-size:68px;line-height:1.08;font-weight:900;text-align:center;transform-origin:center center}.label-line{display:block;width:max-content;max-width:100%;margin:0 auto;white-space:nowrap}.yellow-highlight{box-sizing:border-box;min-width:0;max-width:100%}.emphasis-sub .semantic-label-card{font-size:84px}.intro-copy .semantic-label-card{font-size:120px;line-height:1.02}
 .trio-stage{height:700px;display:grid;grid-template-columns:410px 600px 410px;align-items:end;justify-content:center;gap:34px}.trio-stage .actor-wrap{width:410px;height:540px}.trio-stage .featured-object,.trio-stage .promise-slab,.trio-stage .authority-slab{align-self:center}.duo-stage{height:700px;display:flex;align-items:center;justify-content:center;gap:120px}.duo-stage .actor-wrap{width:500px;height:610px}.featured-object{width:600px;min-height:500px;display:grid;grid-template-rows:390px auto;place-items:center;padding:0 14px 10px;border:0;border-radius:0;background:transparent;box-shadow:none}.featured-object img{width:390px;height:390px;object-fit:contain}.object-label{width:100%;max-width:600px}.promise-slab,.authority-slab{width:560px;height:540px;border:9px solid var(--ink);border-radius:42px;background:var(--paper);box-shadow:16px 16px 0 rgba(17,20,19,.11);display:grid;place-items:center;padding:24px}.promise-slab{grid-template-rows:auto 160px auto auto;gap:9px}.promise-slab>span,.authority-slab>span{font-size:38px;font-weight:900;color:var(--blue)}.promise-slab img{width:160px;height:160px;object-fit:contain}.promise-slab strong{font-size:34px;line-height:1.06;text-align:center}.promise-slab b{padding:8px 18px;border:5px solid var(--ink);border-radius:16px;background:var(--yellow);font-size:32px}.authority-slab{grid-template-rows:auto 300px auto}.authority-slab img{width:300px;height:300px;object-fit:contain}.authority-slab strong{font-size:38px;border-top:9px solid var(--yellow);padding-top:10px}
-.solo-stage{height:700px;position:relative;display:grid;place-items:center}.solo-stage .actor-wrap{position:relative;top:-72px;width:620px;height:650px}.solo-callout{position:absolute;right:90px;bottom:108px;width:620px;padding:20px 24px;border:0;border-radius:0;background:transparent;box-shadow:none}.pair-stage{height:560px;display:flex;align-items:center;justify-content:center;gap:72px}.pair-stage .prop-piece{width:430px;height:430px}.prop-piece img{width:100%;height:100%;object-fit:contain}.relation-mark{font-size:126px;font-weight:900;color:var(--blue)}.pair-label{width:max-content;max-width:1500px;margin:0 auto;padding:18px 36px;border:0;border-radius:0;background:transparent}
-.generated-stage{height:700px;display:grid;align-items:center;gap:72px;padding:0 66px}.generated-stage.art-left{grid-template-columns:minmax(0,1fr) 660px;grid-template-areas:"art label"}.generated-stage.art-right{grid-template-columns:660px minmax(0,1fr);grid-template-areas:"label art"}.generated-art-wrap{grid-area:art;width:100%;height:680px;display:grid;place-items:center}.generated-art{width:720px;height:680px;object-fit:contain;border:0;border-radius:0;box-shadow:none;mix-blend-mode:darken}.generated-label{grid-area:label;position:static;width:660px;min-height:126px;padding:22px 28px;border:0;border-radius:0;background:transparent;display:grid;place-items:center}
+.solo-stage{height:700px;position:relative;display:grid;place-items:center}.solo-stage .actor-wrap{position:relative;top:-72px;width:620px;height:650px}.solo-callout{position:absolute;right:90px;bottom:108px;width:620px;padding:20px 24px;border:0;border-radius:0;background:transparent;box-shadow:none}.solo-prop{position:absolute;left:100px;bottom:112px;width:190px;height:190px}.solo-prop img{width:100%;height:100%;object-fit:contain}.pair-stage{height:560px;display:flex;align-items:center;justify-content:center;gap:72px}.pair-stage .prop-piece{width:430px;height:430px}.prop-piece img{width:100%;height:100%;object-fit:contain}.relation-mark{font-size:126px;font-weight:900;color:var(--blue)}.pair-label{width:max-content;max-width:1500px;margin:0 auto;padding:18px 36px;border:0;border-radius:0;background:transparent}
+.generated-stage{height:700px;display:grid;align-items:center;gap:72px;padding:0 66px}.generated-stage.art-left{grid-template-columns:minmax(0,1fr) 660px;grid-template-areas:"art label"}.generated-stage.art-right{grid-template-columns:660px minmax(0,1fr);grid-template-areas:"label art"}.generated-art-wrap{grid-area:art;width:100%;height:680px;display:grid;place-items:center}.generated-art{width:720px;height:680px;object-fit:contain;border:0;border-radius:0;box-shadow:none;mix-blend-mode:darken}.generated-label{grid-area:label;position:static;width:660px;min-height:126px;padding:22px 28px;border:0;border-radius:0;background:transparent;display:grid;grid-template-rows:auto 148px;gap:20px;place-items:center}.generated-control-mark{width:148px;height:148px}.generated-control-mark img{width:100%;height:100%;object-fit:contain}
 .emphasis-stage{height:820px;position:relative;display:grid;place-items:center;padding:80px 250px}.emphasis-text{max-width:1430px;font-size:128px;line-height:1.02;letter-spacing:-3px;font-weight:900;text-align:center;text-wrap:balance}.emphasis-sub{margin-top:-76px;padding:16px 28px;border:0;background:transparent;font-size:42px;font-weight:900}.small-actor{position:absolute;left:22px;bottom:18px;width:300px;height:380px}.small-prop{position:absolute;right:28px;top:48px;width:280px;height:280px}
 .intro-stage{height:848px;display:grid;grid-template-columns:${episode.locale.startsWith('zh') ? 760 : 980}px 1fr;gap:34px}.intro-copy{height:100%;padding:105px 54px 74px;background:var(--blue);color:var(--paper);display:flex;flex-direction:column;justify-content:center}.intro-copy>span{font-size:60px;font-weight:900}.intro-copy h1{margin:24px 0 34px;font-size:96px;line-height:1.03;font-weight:900}.intro-copy p{margin:0;font-size:60px;line-height:1.15;font-weight:900}.intro-actors{display:grid;grid-template-columns:${episode.locale.startsWith('zh') ? '330px 280px 330px' : '250px 220px 250px'};align-items:end;justify-content:center}.intro-actors .actor-wrap{width:${episode.locale.startsWith('zh') ? 330 : 250}px;height:570px}.intro-actors .prop-piece{width:${episode.locale.startsWith('zh') ? 280 : 220}px;height:${episode.locale.startsWith('zh') ? 280 : 220}px;align-self:center}
 .summary-stage{height:848px;display:grid;grid-template-columns:540px 1fr}.summary-side{background:var(--blue);color:var(--paper);border-right:14px solid #1597EA;padding:98px 46px 70px;display:flex;flex-direction:column;justify-content:center}.summary-side span{font-size:60px;line-height:1.08;font-weight:900}.summary-side strong{margin-top:34px;font-size:${episode.locale.startsWith('zh') ? 86 : 60}px;line-height:1.05;font-weight:900;white-space:${episode.locale.startsWith('zh') ? 'nowrap' : 'normal'};text-wrap:balance}.summary-body{padding:48px 48px 38px;display:grid;grid-template-rows:repeat(3,1fr);gap:8px}.summary-point{visibility:hidden;opacity:0;display:grid;grid-template-columns:82px 1fr;align-items:center;border-bottom:3px solid var(--rest);font-size:60px;line-height:1.12;font-weight:900}.summary-point.is-visible{visibility:visible;opacity:1}.summary-point b{color:var(--blue);font-size:60px;font-weight:900}.summary-point .summary-text{font-weight:900}.chip-row{position:absolute;left:50%;bottom:205px;transform:translateX(-50%);display:flex;gap:10px}.chip-row span{padding:8px 14px;border:4px solid var(--ink);border-radius:14px;background:var(--yellow);font-size:32px;font-weight:900}
