@@ -21,7 +21,7 @@
 
 本手册只规定每日状态机和发布流程。中英文视频生成规则统一由 `tiny-agent-longform-active-profile.zh-CN.json` 激活的 `2026-07-23-scheduled-6m18` 冻结快照提供；当前 `tiny-agent-longform.md` 已恢复为提交 `457ba42d110d259ed03c4b008e1af2cc8b0b9935` 中的逐字副本。新选题必须重新生成事实、自然双语脚本、TTS、VTT、章节秒点、场景和动画，但内容组织、语音、时长、开头、章节结构、画面节拍、动作、生成图、逐章小结和 QA 必须执行冻结快照。
 
-`tiny-agent-deep-longform-cognitive-load.md` 及 V4/V5/V6/V7 工程均形成于 6:18 定时成片之后，不参与当前生产。不得混入后来的双语 `+10%`、`9-12 分钟`、单故事三模块、取消逐章三点口播小结、`35-45` 个稳定状态、字形提前 `0.10-0.15 秒`或完整问题停留 `1.2-1.6 秒`等规则。
+`tiny-agent-deep-longform-cognitive-load.md` 及 V4/V5/V6/V7 工程均形成于 6:18 定时成片之后，不参与当前生产。不得混入后来的双语 `+10%`、`9-12 分钟`、单故事三模块、取消逐章三点口播小结、`35-45` 个稳定状态或完整问题停留 `1.2-1.6 秒`等规则。仅以 active profile 中具名、窄范围的 `postSnapshotUserOverrides` 替换相冲突的冻结措辞。
 
 读取完成后先运行：
 
@@ -73,11 +73,19 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 6. 两个项目都在 `summary.json` 写入对应语言的 `tiny-agent-longform-kinetic-retention-2026-07-23-<locale>` profile，并完整执行冻结快照：
    - 使用总分总结构，按来源知识自然划分章节；每个实质章节包含章节开场、正文和可朗读的三点编号小结。章节开场与小结文字至少为字幕字号的 `130%` 且加粗。
    - 6:18 中文参考实现包含 `63` 个场景、`7` 个章节和 `15` 个小结场景。这些数字用于效果对照，不机械复制主题文字；新视频应保持相近的信息节拍和章节密度，偏差必须在 QA 中说明。
-   - 首句按各自最终 VTT 呈现，并执行 active profile 的 `openingQuestionReadability` 覆盖规则：首字/首词从语音起点出现，后续字或词以轻微加速的累计节奏上屏；完整问句必须在旁白结束前 `0.35-0.55 秒`完整稳定可读，随后直接硬切正文，不增加单独的长停留。最终字体加载后，问句可见字形包围盒占可用画面宽度 `84%-90%`、高度 `68%-76%`，任何字形、强调符、问号或 Tiny Agent 均不得裁切、重叠或越界。
-   - 临时生成图占非结束页视觉状态约 `15%-20%`且不低于 `15%`；每条视频至少 `7` 类实际可见动作和 `20` 个动作节点。文字、边框、字幕、角色和道具的真实 DOM 溢出、裁切或遮挡必须为 `0`。
+   - 首句按各自最终 VTT 呈现，并完整执行 active profile 的 `openingQuestionReadability`：以 profile 的测量区间让问题文字先于声音轻微出现、在声音结束前获得稳定阅读窗口、放大至画布级的视觉主角；右下角的批准 Tiny Agent 从开场第一帧完整可见。开场 DOM 中不得出现独立进度条、左侧蓝色圆点或 `VOICE` 标签；正文硬切后才可开始普通章节进度。
+   - 三点小结必须保留口播前缀和编号，但画面严格执行 active profile 的 `chapterRecapNarration.screenCopy`：只显示可读的实质结论，绝不显示小结标签、第一/第二/第三、First/Second/Third 或数字编号。
+   - 临时生成图占非结束页视觉状态约 `15%-20%`且不低于 `15%`；全部实际引用的临时生成图严格执行 active profile 的 `generatedArtTransparency`，只以真实透明主体叠加到原有纸质网格底图。每条视频至少 `7` 类实际可见动作和 `20` 个动作节点。文字、边框、字幕、角色和道具的真实 DOM 溢出、裁切或遮挡必须为 `0`。
 7. 两种语言都必须从各自最终 VTT 生成 `animation-plan.json`，并记录动作类型、语义触发、目标、起止参数、持续时间和可读保持时间。
-8. 冻结快照不复制 6:18 参考视频的主题、事实、脚本、绝对秒点或场景文案；当期内容必须从当前来源重新生成。来源事实、安全、标题身份、固定结束页、技术编码、封面和本地交付边界继续执行当前操作规则。
-9. 每个项目至少输出：
+8. 两个项目生成全部 QA 证据后，分别运行：
+
+   ```bash
+   node scripts/ai-video-pipeline/validate-tiny-agent-longform-output.mjs --project <PROJECT_DIR>
+   ```
+
+   此检查把 active profile 的开场、小结画面文案和临时图透明交付规则作为硬门槛；任一项目失败时不得渲染、发布或报告成功。
+9. 冻结快照不复制 6:18 参考视频的主题、事实、脚本、绝对秒点或场景文案；当期内容必须从当前来源重新生成。来源事实、安全、标题身份、固定结束页、技术编码、封面和本地交付边界继续执行当前操作规则。
+10. 每个项目至少输出：
 
    ```text
    source.md
@@ -94,6 +102,9 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
    captions/narration.vtt
    publish-metadata.<locale>.json
    qa/generated-art-report.json
+   qa/generated-art-alpha-report.json
+   qa/recap-visual-copy-report.json
+   qa/retention-opening-report.json
    qa/speech-pacing-report.json
    snapshots/
    renders/video.mp4
@@ -111,6 +122,9 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
    node scripts/ai-video-pipeline/validate-tiny-agent-title-identity.mjs \
      --english-project <EN_PROJECT_DIR> \
      --chinese-project <ZH_PROJECT_DIR>
+
+   node scripts/ai-video-pipeline/validate-tiny-agent-zh-cover-reference.mjs \
+     --project <ZH_PROJECT_DIR>
    ```
 
 6. 两个项目的 `thumbnails/qa.json` 必须证明 `characterCount=1`、`tinyAgentCharacterCount=1`、`humanCharacterCount=0`、`secondaryAgentCharacterCount=0`、`coverCollageCount=0`、`generatedIllustrationTextCount=0`、`blueBlackTitleHierarchy=true`、`yellowRuleIsNotTitleUnderline=true` 和 `largeAgentHeightRatioFailureCount=0`。
@@ -121,10 +135,10 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 
 1. 两种语言分别完成冻结 profile 要求的资产、DOM、时间轴、留存开头、音频、动作、视觉状态、叙事、结束页、标题身份和技术输出检查，不得跨语言复用时间戳。
    - 两个 `summary.json` 的 profile ID 必须分别等于 `tiny-agent-longform-kinetic-retention-2026-07-23-zh-CN` 和 `tiny-agent-longform-kinetic-retention-2026-07-23-en-US`；`video-output-report.json` 证明时长 `5-8 分钟`，`speech-pacing-report.json` 证明中文为 `zh-CN-YunxiaNeural +35%`、英文为 `en-US-AnaNeural +30%`。
-   - 两个 `retention-opening-report.json` 都证明首句在 `5 秒`内结束、`earlyRevealCount=0`、没有后来 V4 的额外完整问题停留，且字形、问号和角色无裁切或遮挡；权威来源、损失与收益、可复用产物和前 `30 秒`无关注收藏继续通过既有门槛。
-   - 两个 `recap-report.json` 都证明每个实质章节具有章节开场、正文和三点口播小结；小结文字尺寸、累计显示和旁白前缀符合冻结规范。
+   - 两个 `retention-opening-report.json` 都证明首句在 `5 秒`内结束，且完整记录并通过 active profile 的首字提前、每字最大提前、完整问题阅读窗口、画布文字覆盖率、右下角 Tiny Agent 首帧可见和开场 UI 缺失门槛；没有声音结束后的额外完整问题停留，且字形、问号和角色无裁切或遮挡；权威来源、损失与收益、可复用产物和前 `30 秒`无关注收藏继续通过既有门槛。
+   - 两个 `recap-report.json` 和 `recap-visual-copy-report.json` 都证明每个实质章节具有章节开场、正文和三点口播小结；旁白前缀完整，而画面小结只显示实质结论、没有任何小结标签或编号。
    - `visual-cadence-report.json` 记录场景数、章节数、场景时长分布及其与 6:18 参考实现 `63/7/15` 的差异；不得套用 V4 的 `35-45` 个稳定状态或 `12 秒`中位时长门槛。
-   - 两个 `motion-report.json` 都证明至少 `7` 类动作和 `20` 个动作节点，并且全部动作绑定旁白语义；`visual-variation-report.json` 证明临时生成图场景占比为 `15%-20%`且不低于 `15%`。
+   - 两个 `motion-report.json` 都证明至少 `7` 类动作和 `20` 个动作节点，并且全部动作绑定旁白语义；`visual-variation-report.json` 证明临时生成图场景占比为 `15%-20%`且不低于 `15%`，`generated-art-alpha-report.json` 证明每个引用的临时图都是真实透明主体、没有自带背景并直接叠加到纸质网格。
    - 两版观众可见的制作规则、布局名、动效名和 QA 名称数量均为 `0`；来源事实、安全、自然语言、标题身份、固定结束页和音视频技术门槛全部通过。
 2. 运行 HyperFrames check、渲染与 `ffprobe`；抽查首字出现、逐字出现中点、问号收束、正文首帧、章节开场、章节正文、三点小结、最终总结、工具回收和独立结束页。
 3. 检查 H.264/AAC、`1920x1080`、`30fps`、BT.709、字幕同步、黑帧、静音尾巴、固定 CTA 音轨和结束页首帧对齐。

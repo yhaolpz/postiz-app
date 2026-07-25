@@ -39,7 +39,7 @@
     "chapterRecapNarration": {
       "status": "active",
       "scope": ["zh-CN", "en-US"],
-      "purpose": "Remove redundant repeated recap labels while retaining the spoken three-point recap structure.",
+      "purpose": "Retain the spoken three-point recap structure while separating spoken ordinal markers from the semantic text shown on screen.",
       "zh-CN": {
         "firstPointPrefix": "本章小节。第一，",
         "followingPointPrefixes": ["第二，", "第三，"],
@@ -50,17 +50,41 @@
         "followingPointPrefixes": ["Second, ", "Third, "],
         "forbiddenInFollowingPoints": "Chapter recap"
       },
-      "qa": "For every three-scene recap group, the first narration must start with the locale's firstPointPrefix; the second and third narrations must not contain the locale's recap label. Fail production if this check fails."
+      "screenCopy": {
+        "displayField": "recapDisplayText",
+        "rule": "Every recap scene must carry two independently authored values: narration preserves the locale's required spoken recap and ordinal prefix; recapDisplayText contains only the concise substantive claim. The rendered recap must use recapDisplayText, not narration or headline. Do not render a recap label, chapter-recap label, ordinal word, ordinal number, numbered bullet, or marker such as 本章小节、第一、第二、第三、Chapter recap、First、Second、Third、1.、2.、3. on the screen. A chapter name may appear only when it is itself a substantive topic label and contains none of those markers.",
+        "zh-CN": "The visible Chinese line is only the claim after stripping the spoken prefix and any leading numeric/ordinal marker. It is not a transcript.",
+        "en-US": "The visible English line is only the claim after stripping the spoken prefix and any leading numeric/ordinal marker. It is not a transcript."
+      },
+      "qa": "Generate qa/recap-visual-copy-report.json with pass=true, renderedMarkerScanPass=true, and one recaps[] entry per scene containing sceneId, narration, recapDisplayText, forbiddenMarkerCount=0, and numberedBulletPresent=false. Confirm the required narration prefixes, assert the rendered DOM contains no recap label or ordinal marker, and assert no numbered-bullet element is rendered. Fail production on any mismatch."
     },
     "openingQuestionReadability": {
       "status": "active",
       "scope": ["zh-CN", "en-US"],
-      "purpose": "Let viewers read the full first-sentence question without delaying the opening or breaking the language-specific voice alignment.",
-      "layout": "The visible first-question glyph bounds must occupy 84%-90% of the usable frame width and 68%-76% of the usable frame height after final-font layout. Use the largest safe size and semantic 2-4-line breaks; a small Tiny Agent may sit at the edge but may not reduce the question below this coverage or overlap it. No glyph, question mark, emphasis mark, or Agent may clip or overflow.",
-      "timing": "The first glyph starts at the final VTT audible onset. Subsequent glyphs/words use a VTT-derived accelerated cumulative schedule so the final glyph is fully visible 0.35-0.55 seconds before the first-sentence audible end; the complete question stays stable for that measured 0.35-0.55-second reading window, then hard-cuts directly to the body. Do not add a separate extended hold.",
-      "zh-CN": "Reveal each Han character and punctuation in order. Compress only the cumulative display schedule; do not show the first glyph before speech begins.",
-      "en-US": "Reveal words in speaking order, with letters resolving quickly within each word. A word may lead its spoken onset only by the small cumulative acceleration required to meet the measured completion window; do not reveal unrelated future phrases or create an extended static hold.",
-      "qa": "From final VTT plus final-font DOM measurement, record usable-frame glyph coverage, first-glyph onset, final-glyph fully-visible time, first-sentence audible end, and hard-cut time. Fail if coverage is outside the stated range, final-glyph lead is outside 0.35-0.55 seconds, the full-question reading window is missing, or any opening element clips, overlaps, or exceeds its safe area."
+      "purpose": "Make the opening question immediately arresting and comfortably readable while keeping the measured final VTT as the timing authority.",
+      "firstGlyphLeadMilliseconds": {"min": 120, "max": 180},
+      "earlyRevealCount": 1,
+      "maximumPerGlyphLeadMilliseconds": 280,
+      "fullQuestionReadLeadMilliseconds": {"min": 650, "max": 850},
+      "canvasGlyphCoveragePercent": {"width": {"min": 86, "max": 92}, "height": {"min": 68, "max": 78}},
+      "agentReservation": {"visibleAtFirstFrame": true, "position": "bottom-right", "reservedBoundsPx": {"left": 1480, "top": 620, "right": 1880, "bottom": 1032}, "minimumVisibleHeightPx": 420},
+      "forbiddenOpeningUi": ["opening progress rail", "left blue circle", "VOICE label"],
+      "layout": "After final-font layout, use semantic 2-4-line breaks and the largest safe type. Visible first-question glyph bounds must occupy 86%-92% of canvas width and 68%-78% of canvas height. Reserve the lower-right agent box named by agentReservation: the question may use the rest of the canvas but may not overlap the Agent, question mark, emphasis marks, or outer safe margin. No opening glyph, punctuation, Agent, or accent may clip or overflow.",
+      "timing": "The first glyph/word becomes visible 120-180 milliseconds before the final VTT audible onset. Subsequent glyphs/words follow an accelerated VTT-derived cumulative schedule; no glyph/word may lead its own audible onset by more than 280 milliseconds. The final glyph is fully visible 650-850 milliseconds before the first-sentence audible end. Hard-cut directly to the body at the measured speech boundary; do not add a static hold after the speech ends.",
+      "zh-CN": "Reveal each Han character and punctuation in order. Only the permitted measured lead may precede the matching speech; do not reveal unrelated future characters.",
+      "en-US": "Reveal words in speaking order, with letters resolving quickly within each word. Only the permitted measured lead may precede the matching speech; do not reveal unrelated future phrases.",
+      "agent": "The approved Tiny Agent is fully visible in the lower-right reserved box from the very first rendered opening frame. It has no delayed entrance, opacity fade-in, or reveal animation.",
+      "openingUi": "The opening contains no dedicated progress rail, blue circular progress marker, or VOICE label. Delete those elements from the opening DOM and timeline; the normal chapter progress may begin only after the opening hard cut.",
+      "qa": "Generate qa/retention-opening-report.json from final VTT, final-font DOM measurement, and rendered first-frame inspection. Record earlyRevealCount, firstGlyphLeadMilliseconds, maximumPerGlyphLeadMilliseconds, fullQuestionReadLeadMilliseconds, canvas glyph coverage, Agent first-frame visibility and bounds, hard-cut time, and an opening-ui absence scan. Fail if any value is outside this profile, the Agent is absent at frame zero, a forbidden opening UI element is present, or any opening element clips, overlaps, or exceeds its safe area."
+    },
+    "generatedArtTransparency": {
+      "status": "active",
+      "scope": ["zh-CN", "en-US"],
+      "purpose": "Keep temporary generated-art scenes visually native to the shared paper-grid composition.",
+      "deliveryAsset": "Every temporary generated-art asset actually referenced by a scene must be a PNG or WebP with a real alpha channel. Its four corner pixels must be fully transparent and it must contain no opaque, full-canvas, solid-color, gradient, paper, panel, or grid background.",
+      "generationAndCleanup": "Request a transparent background at generation time. If a generation tool cannot emit alpha, remove the temporary key/flat background deterministically before composition; a backgrounded source is never an acceptable delivered scene asset.",
+      "composition": "Place only the isolated subject directly over the video composition's existing paper-grid background. Do not add a source-image background plate, opaque wrapper, or replacement grid behind it.",
+      "qa": "Generate qa/generated-art-alpha-report.json with pass=true, sharedGridComposition=true, and one assets[] entry per referenced temporary generated-art file. Each entry records file, hasAlpha=true, four cornerAlpha values of 0, canvasEdgeBackgroundDetected=false, opaque-bounds versus canvas bounds, and sceneIds. Fail if any file lacks alpha, has a non-transparent corner, retains a canvas-edge background, or is not composed directly over the shared grid."
     },
     "coverPrimaryTitleOnly": {
       "status": "active",
@@ -75,7 +99,7 @@
       "layout": "Use the reference title-hero system: neutral paper-grid background; a short blue rule at the top; title-led left/top zone; one complete Tiny Agent plus one topic object; and a single yellow rule at the bottom or the portrait 60/40 divider. The yellow rule is decorative only and never underlines title text.",
       "titleColors": "Use exactly two title colors: #117ABD only for the AI Agent identity phrase, and #111413 for every remaining title glyph. #F4C542 is reserved for the decorative rule; #8A6500 and #C7362F are forbidden in title text.",
       "character": "The Tiny Agent must be composed from the approved stable character/reference asset family, preserving the approved white rounded body, black face screen, blue eyes and antenna, brown tool belt, and hand-drawn outline. Do not invent a replacement Agent with image generation; only the topic object and the pose/placement may change.",
-      "qa": "Before approval, compare all ratios against the reference SVG and verify the blue rule, blue-plus-black title hierarchy, bottom yellow rule, single approved Tiny Agent, complete topic object, no title underline, no auxiliary copy, and no generated text."
+      "qa": "Before approval, compare all ratios against the reference SVG and verify the blue rule, blue-plus-black title hierarchy, bottom yellow rule, single approved Tiny Agent, complete topic object, no title underline, no auxiliary copy, and no generated text. The cover SVG must reference exactly one approved `assets/pack/sprites/agent/` asset and one `assets/pack/sprites/props/` topic asset; it must not reference `cover-illustration`, `assets/generated`, or any regenerated Agent image. Run `validate-tiny-agent-zh-cover-reference.mjs` and fail the run on any ratio mismatch."
     },
     "publishingMetadata": {
       "status": "active",

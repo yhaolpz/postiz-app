@@ -30,13 +30,13 @@ const files = {
     root,
     'scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md'
   ),
-  historicalDeepGuide: path.join(
-    root,
-    'scripts/ai-video-pipeline/style-guides/tiny-agent-deep-longform-cognitive-load.md'
-  ),
   activeProfile: path.join(
     root,
     'scripts/ai-video-pipeline/style-guides/tiny-agent-longform-active-profile.zh-CN.json'
+  ),
+  outputValidator: path.join(
+    root,
+    'scripts/ai-video-pipeline/validate-tiny-agent-longform-output.mjs'
   ),
   manifest: path.join(snapshotDir, 'manifest.json'),
   invocation: path.join(snapshotDir, 'automation-invocation.txt'),
@@ -154,11 +154,8 @@ const text = {
   contentPlan: readText('contentPlan', files.contentPlan),
   runbook: readText('runbook', files.runbook),
   commonGuide: readText('commonGuide', files.commonGuide),
-  historicalDeepGuide: readText(
-    'historicalDeepGuide',
-    files.historicalDeepGuide
-  ),
   activeProfile: readText('activeProfile', files.activeProfile),
+  outputValidator: readText('outputValidator', files.outputValidator),
   manifest: readText('manifest', files.manifest),
   invocation: readText('invocation', files.invocation),
   prompt: readText('prompt', files.prompt),
@@ -261,25 +258,126 @@ requireEqual(
   'Chapter recap'
 );
 requireEqual(
+  'activeProfile.chapterRecapOverride.screenCopy.displayField',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.screenCopy?.displayField,
+  'recapDisplayText'
+);
+requireMatch(
+  'activeProfile.chapterRecapOverride.screenCopy.rule',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.screenCopy?.rule ?? '',
+  /not narration or headline/
+);
+requireMatch(
+  'activeProfile.chapterRecapOverride.screenCopy.rule',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.screenCopy?.rule ?? '',
+  /本章小节、第一、第二、第三、Chapter recap、First、Second、Third、1\.、2\.、3\./
+);
+requireEqual(
   'activeProfile.openingQuestionReadability.status',
   profile.postSnapshotUserOverrides?.openingQuestionReadability?.status,
   'active'
 );
-requireMatch(
-  'activeProfile.openingQuestionReadability.layout',
-  profile.postSnapshotUserOverrides?.openingQuestionReadability?.layout ?? '',
-  /84%-90% of the usable frame width and 68%-76% of the usable frame height/
+const openingOverride = profile.postSnapshotUserOverrides?.openingQuestionReadability;
+requireEqual(
+  'activeProfile.openingQuestionReadability.firstGlyphLead.min',
+  openingOverride?.firstGlyphLeadMilliseconds?.min,
+  120
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.firstGlyphLead.max',
+  openingOverride?.firstGlyphLeadMilliseconds?.max,
+  180
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.earlyRevealCount',
+  openingOverride?.earlyRevealCount,
+  1
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.maximumPerGlyphLeadMilliseconds',
+  openingOverride?.maximumPerGlyphLeadMilliseconds,
+  280
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.fullQuestionReadLead.min',
+  openingOverride?.fullQuestionReadLeadMilliseconds?.min,
+  650
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.fullQuestionReadLead.max',
+  openingOverride?.fullQuestionReadLeadMilliseconds?.max,
+  850
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.canvasCoverage.width.min',
+  openingOverride?.canvasGlyphCoveragePercent?.width?.min,
+  86
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.canvasCoverage.width.max',
+  openingOverride?.canvasGlyphCoveragePercent?.width?.max,
+  92
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.canvasCoverage.height.min',
+  openingOverride?.canvasGlyphCoveragePercent?.height?.min,
+  68
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.canvasCoverage.height.max',
+  openingOverride?.canvasGlyphCoveragePercent?.height?.max,
+  78
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.agentFirstFrame',
+  openingOverride?.agentReservation?.visibleAtFirstFrame,
+  true
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.agentPosition',
+  openingOverride?.agentReservation?.position,
+  'bottom-right'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.forbiddenOpeningUi',
+  JSON.stringify(openingOverride?.forbiddenOpeningUi),
+  JSON.stringify(['opening progress rail', 'left blue circle', 'VOICE label'])
 );
 requireMatch(
   'activeProfile.openingQuestionReadability.timing',
-  profile.postSnapshotUserOverrides?.openingQuestionReadability?.timing ?? '',
-  /0\.35-0\.55 seconds before the first-sentence audible end/
+  openingOverride?.timing ?? '',
+  /120-180 milliseconds before the final VTT audible onset/
 );
 requireMatch(
-  'activeProfile.openingQuestionReadability.qa',
-  profile.postSnapshotUserOverrides?.openingQuestionReadability?.qa ?? '',
-  /final-glyph lead is outside 0\.35-0\.55 seconds/
+  'activeProfile.openingQuestionReadability.openingUi',
+  openingOverride?.openingUi ?? '',
+  /Delete those elements from the opening DOM and timeline/
 );
+requireEqual(
+  'activeProfile.generatedArtTransparency.status',
+  profile.postSnapshotUserOverrides?.generatedArtTransparency?.status,
+  'active'
+);
+requireMatch(
+  'activeProfile.generatedArtTransparency.deliveryAsset',
+  profile.postSnapshotUserOverrides?.generatedArtTransparency?.deliveryAsset ?? '',
+  /real alpha channel/
+);
+requireMatch(
+  'activeProfile.generatedArtTransparency.qa',
+  profile.postSnapshotUserOverrides?.generatedArtTransparency?.qa ?? '',
+  /qa\/generated-art-alpha-report\.json/
+);
+for (const [label, pattern] of [
+  ['recap display field', /recapDisplayText/],
+  ['recap rendered scan', /renderedMarkerScanPass/],
+  ['opening early reveal', /earlyRevealCount/],
+  ['opening UI absence', /voiceLabelPresent/],
+  ['generated alpha report', /generated-art-alpha-report\.json/],
+  ['source alpha inspection', /sips/],
+]) {
+  requireMatch(`outputValidator.${label}`, text.outputValidator, pattern);
+}
 requireEqual(
   'activeProfile.coverPrimaryTitleOnly.status',
   profile.postSnapshotUserOverrides?.coverPrimaryTitleOnly?.status,
@@ -447,12 +545,6 @@ forbidMatch(
   'V4 implementation reference'
 );
 
-requireMatch(
-  'historicalDeepGuide',
-  text.historicalDeepGuide,
-  /历史规则，当前不参与生产/
-);
-
 const runbookChecks = [
   /2026-07-23-scheduled-6m18/,
   /zh-CN-YunxiaNeural \+35%/,
@@ -460,8 +552,11 @@ const runbookChecks = [
   /两版成片均为 `5-8 分钟`/,
   /章节开场、正文和可朗读的三点编号小结/,
   /openingQuestionReadability/,
-  /旁白结束前 `0\.35-0\.55 秒`完整稳定可读/,
-  /宽度 `84%-90%`、高度 `68%-76%`/,
+  /chapterRecapNarration\.screenCopy/,
+  /generatedArtTransparency/,
+  /validate-tiny-agent-longform-output\.mjs --project <PROJECT_DIR>/,
+  /右下角的批准 Tiny Agent 从开场第一帧完整可见/,
+  /不得出现独立进度条、左侧蓝色圆点或 `VOICE` 标签/,
   /蓝色 `AI Agent` 身份词、黑色其余标题文字、黄色底部\/纵向分区线/,
   /blueBlackTitleHierarchy=true/,
   /关注 Tiny Agent，成为更擅长使用 AI 的人！/,
@@ -520,7 +615,10 @@ const memoryChecks = [
   /5-8 minutes/,
   /63` scenes, `7` chapters, and `15` recap scenes/,
   /Active bilingual opening readability override/,
-  /full question is completely visible `0\.35-0\.55s` before the first sentence ends/,
+  /first glyph is visible `120-180ms` before final VTT audible onset/,
+  /full question is completely visible `650-850ms` before the first sentence ends/,
+  /recap narration is separate from recapDisplayText/,
+  /temporary generated art must have verified alpha/,
   /2caf583df2b91d7d7f6248796bae0c7ce885ccab` is explicitly excluded/,
 ];
 for (const pattern of memoryChecks) {
