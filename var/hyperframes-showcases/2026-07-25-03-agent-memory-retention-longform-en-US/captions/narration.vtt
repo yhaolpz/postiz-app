@@ -1,0 +1,433 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:03.849
+Do you know why an AI Agent can become less useful after it remembers more?
+
+2
+00:00:03.849 --> 00:00:08.243
+Microsoft Research calls this the raw-history problem: long interaction logs
+
+3
+00:00:08.243 --> 00:00:10.964
+mix useful experience with details that no longer matter.
+
+4
+00:00:10.964 --> 00:00:15.265
+Then the Agent searches a larger pile, spends context on noise, and can miss
+
+5
+00:00:15.265 --> 00:00:17.983
+the fact or constraint that should change its next action.
+
+6
+00:00:17.983 --> 00:00:22.187
+This episode gives you an AI Agent retain–distill–forget table: a simple way
+
+7
+00:00:22.187 --> 00:00:26.115
+to decide what stays available, what becomes a compact lesson, and what
+
+8
+00:00:26.115 --> 00:00:27.546
+should stop competing for attention.
+
+9
+00:00:27.546 --> 00:00:29.237
+The goal is not perfect memory.
+
+10
+00:00:29.237 --> 00:00:33.570
+It is decision-ready memory: the smallest set of facts and skills that helps
+
+11
+00:00:33.570 --> 00:00:34.554
+an Agent act correctly now.
+
+12
+00:00:34.554 --> 00:00:38.728
+This video is packed with practical, high-value insights to help you get
+
+13
+00:00:38.728 --> 00:00:39.238
+better at using AI.
+
+14
+00:00:39.238 --> 00:00:43.193
+It's a longer one, so follow Tiny Agent and save it so you don't lose it.
+
+15
+00:00:43.193 --> 00:00:44.809
+Chapter two: Raw History.
+
+16
+00:00:44.809 --> 00:00:48.055
+Learn why a complete log is not automatically a useful memory.
+
+17
+00:00:48.055 --> 00:00:52.812
+An interaction record can contain a decision, a failed search, copied text,
+
+18
+00:00:52.812 --> 00:00:55.894
+an obsolete plan, and a temporary tool error all at once.
+
+19
+00:00:55.894 --> 00:00:58.655
+Keeping that record is valuable for audit and recovery.
+
+20
+00:00:58.655 --> 00:01:01.867
+Sending all of it back into every new task is a different decision.
+
+21
+00:01:01.867 --> 00:01:05.673
+The more irrelevant detail the Agent retrieves, the harder it becomes to
+
+22
+00:01:05.673 --> 00:01:08.488
+identify the condition that actually changes the current answer.
+
+23
+00:01:08.488 --> 00:01:12.375
+That is why larger memory can feel like better recall while producing
+
+24
+00:01:12.375 --> 00:01:13.633
+slower, less reliable reasoning.
+
+25
+00:01:13.633 --> 00:01:18.054
+Treat history as a source to process, not a bag that must be poured into the
+
+26
+00:01:18.054 --> 00:01:18.673
+next context window.
+
+27
+00:01:18.673 --> 00:01:19.551
+Chapter recap.
+
+28
+00:01:19.551 --> 00:01:23.405
+First, keep raw history for traceability, not as the default prompt.
+
+29
+00:01:23.405 --> 00:01:27.739
+Second, separate the value of storing an event from the value of retrieving
+
+30
+00:01:27.739 --> 00:01:27.862
+Third, judge memory by whether it improves the next decision.
+
+31
+00:01:27.862 --> 00:01:28.278
+it now.
+
+32
+00:01:30.934 --> 00:01:32.822
+Chapter three: Useful Units.
+
+33
+00:01:32.822 --> 00:01:35.844
+Turn experience into things an AI Agent can reuse.
+
+34
+00:01:35.844 --> 00:01:39.922
+The Microsoft Research article describes a shift from storing text chunks
+
+35
+00:01:39.922 --> 00:01:40.948
+toward structured knowledge.
+
+36
+00:01:40.948 --> 00:01:45.331
+One useful unit is a fact: a verified constraint, a current setting, or a
+
+37
+00:01:45.331 --> 00:01:47.718
+result that narrows what the Agent can safely do.
+
+38
+00:01:47.718 --> 00:01:52.020
+Another is a reusable skill: a compact procedure that says when to take an
+
+39
+00:01:52.020 --> 00:01:54.472
+action, what evidence to collect, and when to stop.
+
+40
+00:01:54.472 --> 00:01:56.860
+Facts answer what is true enough for this task.
+
+41
+00:01:56.860 --> 00:01:59.987
+Skills answer how to proceed when the same pattern appears again.
+
+42
+00:01:59.987 --> 00:02:03.736
+This transformation removes repeated narration without throwing away the
+
+43
+00:02:03.736 --> 00:02:05.057
+lesson contained in the interaction.
+
+44
+00:02:05.057 --> 00:02:05.950
+Chapter recap.
+
+45
+00:02:05.950 --> 00:02:09.224
+First, promote verified facts out of raw transcripts.
+
+46
+00:02:09.224 --> 00:02:13.076
+Second, capture repeatable procedures as skills, not anecdotes.
+
+47
+00:02:13.076 --> 00:02:16.551
+Third, keep each unit small enough to guide one future decision.
+
+48
+00:02:16.551 --> 00:02:18.289
+Chapter four: Task Routing.
+
+49
+00:02:18.289 --> 00:02:21.359
+Retrieve only the knowledge that belongs to the task in front of you.
+
+50
+00:02:21.359 --> 00:02:25.617
+PlugMem uses high-level concepts and inferred intent as routing signals
+
+51
+00:02:25.617 --> 00:02:27.841
+instead of returning long passages by default.
+
+52
+00:02:27.841 --> 00:02:32.246
+In practical terms, start with the current goal, the entity, the risk, and
+
+53
+00:02:32.246 --> 00:02:33.736
+the next action that needs support.
+
+54
+00:02:33.736 --> 00:02:36.849
+Use those cues to select a few relevant facts and skills.
+
+55
+00:02:36.849 --> 00:02:39.701
+Do not retrieve every record that shares a broad keyword.
+
+56
+00:02:39.701 --> 00:02:43.870
+Before the selected memory reaches the base Agent, distill it into concise
+
+57
+00:02:43.870 --> 00:02:47.279
+guidance: what is known, what matters, and what must still be checked.
+
+58
+00:02:47.279 --> 00:02:50.773
+If the answer depends on live information, retrieval is not enough.
+
+59
+00:02:50.773 --> 00:02:53.866
+The Agent still needs fresh evidence from the appropriate source.
+
+60
+00:02:53.866 --> 00:02:54.743
+Chapter recap.
+
+61
+00:02:54.743 --> 00:02:58.782
+First, route memory from the current decision, not from a vague topic match.
+
+62
+00:02:58.782 --> 00:03:02.023
+Second, pass compact guidance instead of a transcript.
+
+63
+00:03:02.023 --> 00:03:05.592
+Third, use fresh evidence whenever the task can change over time.
+
+64
+00:03:05.592 --> 00:03:07.591
+Chapter five: Memory Lifecycle.
+
+65
+00:03:07.591 --> 00:03:11.307
+Decide whether each item should remain, shrink, or leave the working set.
+
+66
+00:03:11.307 --> 00:03:15.783
+Retain an item when it is verified, likely to affect future decisions, and
+
+67
+00:03:15.783 --> 00:03:17.145
+still has a clear retrieval cue.
+
+68
+00:03:17.145 --> 00:03:21.635
+Distill an item when the event is long but its lesson can be expressed as a
+
+69
+00:03:21.635 --> 00:03:23.361
+fact, rule, checklist, or handoff note.
+
+70
+00:03:23.361 --> 00:03:27.457
+Forget an item from active memory when it is obsolete, duplicated,
+
+71
+00:03:27.457 --> 00:03:29.862
+low-confidence, or only useful as audit history.
+
+72
+00:03:29.862 --> 00:03:32.599
+Forgetting from the working set is not deleting evidence.
+
+73
+00:03:32.599 --> 00:03:35.762
+Keep the original trace where governance or debugging requires it.
+
+74
+00:03:35.762 --> 00:03:39.918
+Review dates matter because a once-correct policy, tool result, or customer
+
+75
+00:03:39.918 --> 00:03:42.545
+preference can become misleading after conditions change.
+
+76
+00:03:42.545 --> 00:03:43.425
+Chapter recap.
+
+77
+00:03:43.425 --> 00:03:46.656
+First, retain durable facts with future decision value.
+
+78
+00:03:46.656 --> 00:03:50.303
+Second, distill long experience into a reusable rule or skill.
+
+79
+00:03:50.303 --> 00:03:54.509
+Third, remove stale or duplicate material from active retrieval without
+
+80
+00:03:54.509 --> 00:03:55.337
+losing the audit trail.
+
+81
+00:03:55.337 --> 00:03:57.156
+Chapter six: Memory Table.
+
+82
+00:03:57.156 --> 00:04:01.341
+Apply the retain–distill–forget decision before your Agent's next long task.
+
+83
+00:04:01.341 --> 00:04:06.033
+Give every candidate item six fields: the item, its next-task value, its
+
+84
+00:04:06.033 --> 00:04:09.598
+state, its compact form, its retrieval cue, and its review date.
+
+85
+00:04:09.598 --> 00:04:13.107
+If a deployment constraint changes permissions, retain the verified
+
+86
+00:04:13.107 --> 00:04:15.203
+constraint with the system and action that need it.
+
+87
+00:04:15.203 --> 00:04:19.188
+If a troubleshooting session reveals a repeatable fix, distill it into a
+
+88
+00:04:19.188 --> 00:04:22.402
+short skill with a trigger, steps, evidence, and stopping condition.
+
+89
+00:04:22.402 --> 00:04:26.712
+If five transcripts repeat the same discovery, keep one traceable source and
+
+90
+00:04:26.712 --> 00:04:28.651
+retire the duplicates from active retrieval.
+
+91
+00:04:28.651 --> 00:04:32.513
+If you cannot name the next decision an item could improve, it probably does
+
+92
+00:04:32.513 --> 00:04:35.014
+not deserve a permanent place in the Agent's working memory.
+
+93
+00:04:35.014 --> 00:04:35.904
+Chapter recap.
+
+94
+00:04:35.904 --> 00:04:38.876
+First, write the decision value before saving memory.
+
+95
+00:04:38.876 --> 00:04:42.293
+Second, choose retain, distill, or forget deliberately.
+
+96
+00:04:42.293 --> 00:04:46.395
+Third, attach a retrieval cue and review date so memory can stay useful.
+
+97
+00:04:46.395 --> 00:04:51.101
+An AI Agent does not become wiser by carrying every past message into every
+
+98
+00:04:51.101 --> 00:04:51.300
+future task.
+
+99
+00:04:51.300 --> 00:04:55.624
+Raw history remains useful for audit, but reusable facts and skills are
+
+100
+00:04:55.624 --> 00:04:57.083
+usually better inputs for action.
+
+101
+00:04:57.083 --> 00:05:00.784
+Route memory from the current decision, then distill the result until the
+
+102
+00:05:00.784 --> 00:05:03.182
+Agent can see what matters without reading the whole past.
+
+103
+00:05:03.182 --> 00:05:07.294
+Use the retain–distill–forget table to make storage, retrieval, and
+
+104
+00:05:07.294 --> 00:05:09.305
+retirement explicit instead of accidental.
+
+105
+00:05:09.305 --> 00:05:13.180
+The research result is encouraging, but treat it as evidence for testing
+
+106
+00:05:13.180 --> 00:05:16.124
+your own memory design, not as a universal performance guarantee.
+
+107
+00:05:16.124 --> 00:05:17.379
+Follow Tiny Agent.
+
+108
+00:05:17.379 --> 00:05:20.067
+Tiny Agent helps you get better at using AI.

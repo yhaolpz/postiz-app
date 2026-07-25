@@ -225,6 +225,106 @@ requireEqual(
   JSON.stringify(expectedHashes)
 );
 requireEqual('activeProfile.failClosed', profile.integrity?.failClosed, true);
+requireEqual(
+  'activeProfile.chapterRecapOverride.status',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.zh.firstPointPrefix',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.['zh-CN']?.firstPointPrefix,
+  '本章小节。第一，'
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.zh.secondPrefix',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.['zh-CN']?.followingPointPrefixes?.[0],
+  '第二，'
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.zh.thirdPrefix',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.['zh-CN']?.followingPointPrefixes?.[1],
+  '第三，'
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.zh.followingPointsForbiddenLabel',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.['zh-CN']?.forbiddenInFollowingPoints,
+  '本章小节'
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.en.firstPointPrefix',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.['en-US']?.firstPointPrefix,
+  'Chapter recap. First, '
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.en.followingPointsForbiddenLabel',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.['en-US']?.forbiddenInFollowingPoints,
+  'Chapter recap'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.status',
+  profile.postSnapshotUserOverrides?.openingQuestionReadability?.status,
+  'active'
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.layout',
+  profile.postSnapshotUserOverrides?.openingQuestionReadability?.layout ?? '',
+  /84%-90% of the usable frame width and 68%-76% of the usable frame height/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.timing',
+  profile.postSnapshotUserOverrides?.openingQuestionReadability?.timing ?? '',
+  /0\.35-0\.55 seconds before the first-sentence audible end/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.qa',
+  profile.postSnapshotUserOverrides?.openingQuestionReadability?.qa ?? '',
+  /final-glyph lead is outside 0\.35-0\.55 seconds/
+);
+requireEqual(
+  'activeProfile.coverPrimaryTitleOnly.status',
+  profile.postSnapshotUserOverrides?.coverPrimaryTitleOnly?.status,
+  'active'
+);
+requireMatch(
+  'activeProfile.coverPrimaryTitleOnly.rule',
+  profile.postSnapshotUserOverrides?.coverPrimaryTitleOnly?.rule ?? '',
+  /only its deterministic primary title/
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.status',
+  profile.postSnapshotUserOverrides?.coverReferenceAlignment?.status,
+  'active'
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.reference',
+  profile.postSnapshotUserOverrides?.coverReferenceAlignment?.reference ?? '',
+  /2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.titleColors',
+  profile.postSnapshotUserOverrides?.coverReferenceAlignment?.titleColors ?? '',
+  /exactly two title colors/
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.character',
+  profile.postSnapshotUserOverrides?.coverReferenceAlignment?.character ?? '',
+  /Do not invent a replacement Agent/
+);
+requireEqual(
+  'activeProfile.publishingMetadata.status',
+  profile.postSnapshotUserOverrides?.publishingMetadata?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.publishingMetadata.zh.fixedFollowSentence',
+  profile.postSnapshotUserOverrides?.publishingMetadata?.['zh-CN']?.fixedFollowSentence,
+  '关注 Tiny Agent，成为更擅长使用 AI 的人！'
+);
+requireEqual(
+  'activeProfile.publishingMetadata.en.fixedFollowSentence',
+  profile.postSnapshotUserOverrides?.publishingMetadata?.['en-US']?.fixedFollowSentence,
+  'Follow Tiny Agent. Tiny Agent helps you get better at using AI.'
+);
 
 requireEqual('manifest.schemaVersion', manifest.schemaVersion, 1);
 requireEqual('manifest.snapshotId', manifest.snapshotId, profileId);
@@ -359,7 +459,13 @@ const runbookChecks = [
   /en-US-AnaNeural \+30%/,
   /两版成片均为 `5-8 分钟`/,
   /章节开场、正文和可朗读的三点编号小结/,
-  /earlyRevealCount=0/,
+  /openingQuestionReadability/,
+  /旁白结束前 `0\.35-0\.55 秒`完整稳定可读/,
+  /宽度 `84%-90%`、高度 `68%-76%`/,
+  /蓝色 `AI Agent` 身份词、黑色其余标题文字、黄色底部\/纵向分区线/,
+  /blueBlackTitleHierarchy=true/,
+  /关注 Tiny Agent，成为更擅长使用 AI 的人！/,
+  /Follow Tiny Agent\. Tiny Agent helps you get better at using AI\./,
 ];
 for (const pattern of runbookChecks) {
   requireMatch('runbook', text.runbook, pattern);
@@ -413,7 +519,8 @@ const memoryChecks = [
   /en-US-AnaNeural \+30%/,
   /5-8 minutes/,
   /63` scenes, `7` chapters, and `15` recap scenes/,
-  /earlyRevealCount=0/,
+  /Active bilingual opening readability override/,
+  /full question is completely visible `0\.35-0\.55s` before the first sentence ends/,
   /2caf583df2b91d7d7f6248796bae0c7ce885ccab` is explicitly excluded/,
 ];
 for (const pattern of memoryChecks) {

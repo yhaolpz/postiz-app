@@ -21,6 +21,7 @@
   ],
   "precedence": {
     "generationRules": "The scheduled-6m18 frozen snapshot and its hashed bilingual implementation projects are the only active sources for content organization, narration pace, duration, opening timing, chapter pattern, visual cadence, motion baseline, generated-art ratio, and recaps.",
+    "explicitUserOverrides": "Explicit user-approved overrides recorded in postSnapshotUserOverrides are active production rules for their named scope. They take precedence over a contradictory frozen-snapshot wording, but do not otherwise change the frozen baseline.",
     "operationalOverlaysAllowed": [
       "daily run state machine, recovery, cleanup, and deduplication",
       "source factuality and safety",
@@ -32,7 +33,63 @@
       "Chinese local-only delivery",
       "English Postiz publication and public playlist verification"
     ],
-    "forbiddenBlending": "Rules introduced after the 2026-07-23 03:02-04:17 scheduled run may not alter a generation dimension covered by the frozen snapshot. In particular, do not blend in the later V4 +10 percent rates, 9-12 minute target, one-story requirement, three-module limit, recap removal, 35-45-state target, opening glyph lead, complete-question hold, or later motion choreography."
+    "forbiddenBlending": "Rules introduced after the 2026-07-23 03:02-04:17 scheduled run may not alter a generation dimension covered by the frozen snapshot. In particular, do not blend in the later V4 +10 percent rates, 9-12 minute target, one-story requirement, three-module limit, recap removal, 35-45-state target, opening glyph lead, complete-question hold, or later motion choreography, except where an explicit active postSnapshotUserOverrides rule names a narrower replacement."
+  },
+  "postSnapshotUserOverrides": {
+    "chapterRecapNarration": {
+      "status": "active",
+      "scope": ["zh-CN", "en-US"],
+      "purpose": "Remove redundant repeated recap labels while retaining the spoken three-point recap structure.",
+      "zh-CN": {
+        "firstPointPrefix": "本章小节。第一，",
+        "followingPointPrefixes": ["第二，", "第三，"],
+        "forbiddenInFollowingPoints": "本章小节"
+      },
+      "en-US": {
+        "firstPointPrefix": "Chapter recap. First, ",
+        "followingPointPrefixes": ["Second, ", "Third, "],
+        "forbiddenInFollowingPoints": "Chapter recap"
+      },
+      "qa": "For every three-scene recap group, the first narration must start with the locale's firstPointPrefix; the second and third narrations must not contain the locale's recap label. Fail production if this check fails."
+    },
+    "openingQuestionReadability": {
+      "status": "active",
+      "scope": ["zh-CN", "en-US"],
+      "purpose": "Let viewers read the full first-sentence question without delaying the opening or breaking the language-specific voice alignment.",
+      "layout": "The visible first-question glyph bounds must occupy 84%-90% of the usable frame width and 68%-76% of the usable frame height after final-font layout. Use the largest safe size and semantic 2-4-line breaks; a small Tiny Agent may sit at the edge but may not reduce the question below this coverage or overlap it. No glyph, question mark, emphasis mark, or Agent may clip or overflow.",
+      "timing": "The first glyph starts at the final VTT audible onset. Subsequent glyphs/words use a VTT-derived accelerated cumulative schedule so the final glyph is fully visible 0.35-0.55 seconds before the first-sentence audible end; the complete question stays stable for that measured 0.35-0.55-second reading window, then hard-cuts directly to the body. Do not add a separate extended hold.",
+      "zh-CN": "Reveal each Han character and punctuation in order. Compress only the cumulative display schedule; do not show the first glyph before speech begins.",
+      "en-US": "Reveal words in speaking order, with letters resolving quickly within each word. A word may lead its spoken onset only by the small cumulative acceleration required to meet the measured completion window; do not reveal unrelated future phrases or create an extended static hold.",
+      "qa": "From final VTT plus final-font DOM measurement, record usable-frame glyph coverage, first-glyph onset, final-glyph fully-visible time, first-sentence audible end, and hard-cut time. Fail if coverage is outside the stated range, final-glyph lead is outside 0.35-0.55 seconds, the full-question reading window is missing, or any opening element clips, overlaps, or exceeds its safe area."
+    },
+    "coverPrimaryTitleOnly": {
+      "status": "active",
+      "scope": ["zh-CN", "en-US"],
+      "rule": "A cover may contain only its deterministic primary title. Auxiliary short phrases, subtitles, taglines, benefit copy, chapter labels, CTA text, and explanatory microcopy are forbidden.",
+      "qa": "Fail cover QA when any text other than the approved primary title is present."
+    },
+    "coverReferenceAlignment": {
+      "status": "active",
+      "scope": ["zh-CN", "en-US"],
+      "reference": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/thumbnails/thumbnail.zh-CN.svg and its three-ratio siblings",
+      "layout": "Use the reference title-hero system: neutral paper-grid background; a short blue rule at the top; title-led left/top zone; one complete Tiny Agent plus one topic object; and a single yellow rule at the bottom or the portrait 60/40 divider. The yellow rule is decorative only and never underlines title text.",
+      "titleColors": "Use exactly two title colors: #117ABD only for the AI Agent identity phrase, and #111413 for every remaining title glyph. #F4C542 is reserved for the decorative rule; #8A6500 and #C7362F are forbidden in title text.",
+      "character": "The Tiny Agent must be composed from the approved stable character/reference asset family, preserving the approved white rounded body, black face screen, blue eyes and antenna, brown tool belt, and hand-drawn outline. Do not invent a replacement Agent with image generation; only the topic object and the pose/placement may change.",
+      "qa": "Before approval, compare all ratios against the reference SVG and verify the blue rule, blue-plus-black title hierarchy, bottom yellow rule, single approved Tiny Agent, complete topic object, no title underline, no auxiliary copy, and no generated text."
+    },
+    "publishingMetadata": {
+      "status": "active",
+      "scope": ["zh-CN", "en-US"],
+      "titleIdentity": "Every platform/local metadata title, in-video topic title, and cover title must naturally identify AI Agent(s) or 智能体 and state the concrete topic, question, action, or benefit. Prefer the literal AI Agent wording whenever it reads naturally; never use a detached slogan that loses the Agent topic.",
+      "description": "Put the episode keyword and viewer benefit in the first two lines. Include exactly three topic-specific learning gains, then finish the final non-hashtag line with the locale's fixed follow sentence. Do not include source blocks, source-title stitching, or external links.",
+      "zh-CN": {
+        "fixedFollowSentence": "关注 Tiny Agent，成为更擅长使用 AI 的人！"
+      },
+      "en-US": {
+        "fixedFollowSentence": "Follow Tiny Agent. Tiny Agent helps you get better at using AI."
+      },
+      "qa": "Run the title-identity metadata validator. It must reject a title without Agent identity or a description whose final non-hashtag line is not the locale's fixed follow sentence."
+    }
   },
   "fixedBilingualGeneration": {
     "duration": "5-8 minutes",
@@ -45,7 +102,7 @@
       "rate": "+30%"
     },
     "chapterPattern": "chapter opening, body, and spoken three-point recap",
-    "opening": "voice-synced kinetic question with no early reveal and no later V4 hold",
+    "opening": "voice-synced kinetic question using the active readable-full-question coverage and accelerated completion override; no extended later-V4 hold",
     "visualReference": "63 scenes, 7 chapters, 15 recap scenes, 15.873 percent temporary generated scenes, 7 motion types, and 29 motion beats in the Chinese reference implementation"
   },
   "perEpisodeRegeneration": [

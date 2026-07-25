@@ -73,7 +73,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 6. 两个项目都在 `summary.json` 写入对应语言的 `tiny-agent-longform-kinetic-retention-2026-07-23-<locale>` profile，并完整执行冻结快照：
    - 使用总分总结构，按来源知识自然划分章节；每个实质章节包含章节开场、正文和可朗读的三点编号小结。章节开场与小结文字至少为字幕字号的 `130%` 且加粗。
    - 6:18 中文参考实现包含 `63` 个场景、`7` 个章节和 `15` 个小结场景。这些数字用于效果对照，不机械复制主题文字；新视频应保持相近的信息节拍和章节密度，偏差必须在 QA 中说明。
-   - 首句按各自最终 VTT 逐字或词内字母呈现，不得早于对应语音完整显示；`earlyRevealCount=0`。首句在 `5 秒`内念完，问号稳定后按自然语音停顿切正文，不增加后来 V4 的 `1.2-1.6 秒`完整问题停留。
+   - 首句按各自最终 VTT 呈现，并执行 active profile 的 `openingQuestionReadability` 覆盖规则：首字/首词从语音起点出现，后续字或词以轻微加速的累计节奏上屏；完整问句必须在旁白结束前 `0.35-0.55 秒`完整稳定可读，随后直接硬切正文，不增加单独的长停留。最终字体加载后，问句可见字形包围盒占可用画面宽度 `84%-90%`、高度 `68%-76%`，任何字形、强调符、问号或 Tiny Agent 均不得裁切、重叠或越界。
    - 临时生成图占非结束页视觉状态约 `15%-20%`且不低于 `15%`；每条视频至少 `7` 类实际可见动作和 `20` 个动作节点。文字、边框、字幕、角色和道具的真实 DOM 溢出、裁切或遮挡必须为 `0`。
 7. 两种语言都必须从各自最终 VTT 生成 `animation-plan.json`，并记录动作类型、语义触发、目标、起止参数、持续时间和可读保持时间。
 8. 冻结快照不复制 6:18 参考视频的主题、事实、脚本、绝对秒点或场景文案；当期内容必须从当前来源重新生成。来源事实、安全、标题身份、固定结束页、技术编码、封面和本地交付边界继续执行当前操作规则。
@@ -102,7 +102,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 ## 4. 封面与元数据
 
 1. 英文项目生成 `thumbnail.en-US.png` 4K 母版和两张 QA 预览；中文项目只生成 `16:9`、`4:3`、`3:4` 三张固定封面。
-2. 四张封面都只允许一个大号 Tiny Agent 作为唯一角色，并配一个与主题直接相关的核心物体；禁止人物、第二个机器人、多角色群组、角色拼贴和小角色墙。生成插画不得包含文字、字母或数字，标题只做确定性叠加，并用 `#117ABD`、`#8A6500`、`#C7362F` 静态突出 `2-3` 个语义重点，其余文字使用 `#111413`。
+2. 四张封面都只允许一个大号 Tiny Agent 作为唯一角色，并配一个与主题直接相关的核心物体；禁止人物、第二个机器人、多角色群组、角色拼贴和小角色墙。封面必须对齐 `2026-07-23-03-ai-agent-uncertainty-longform-zh-CN` 的 title-hero 参考：短蓝色顶线、蓝色 `AI Agent` 身份词、黑色其余标题文字、黄色底部/纵向分区线。生成插画不得包含文字、字母或数字；角色使用已批准的稳定 Tiny Agent 参考资产族，禁止通过生成图重造角色。标题只做确定性叠加，禁止金色/红色标题字、标题下划线和辅助封面文案。
 3. 英文 `16:9`、中文 `16:9` 和中文 `4:3` 的 Tiny Agent 可见高度不得低于画布 `50%`；中文 `3:4` 的 Tiny Agent 可见高度不得低于底部 `40%` 插画区的 `85%`。角色、天线、手脚、工具和核心物体必须完整可辨。
 4. 双语标题、片内主题标题和封面标题必须通过 AI Agent 主题身份规则。
 5. 运行：
@@ -113,8 +113,8 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
      --chinese-project <ZH_PROJECT_DIR>
    ```
 
-6. 两个项目的 `thumbnails/qa.json` 必须证明 `characterCount=1`、`tinyAgentCharacterCount=1`、`humanCharacterCount=0`、`secondaryAgentCharacterCount=0`、`coverCollageCount=0`、`generatedIllustrationTextCount=0`、`semanticTitleColorCount=2-3` 和 `largeAgentHeightRatioFailureCount=0`。
-7. 英文简介包含三点收获、英文真实章节、固定关注句和相关 hashtag；中文简介只包含通用中文标题、精简简介、固定关注句和 hashtag。
+6. 两个项目的 `thumbnails/qa.json` 必须证明 `characterCount=1`、`tinyAgentCharacterCount=1`、`humanCharacterCount=0`、`secondaryAgentCharacterCount=0`、`coverCollageCount=0`、`generatedIllustrationTextCount=0`、`blueBlackTitleHierarchy=true`、`yellowRuleIsNotTitleUnderline=true` 和 `largeAgentHeightRatioFailureCount=0`。
+7. 英文简介包含三点收获、英文真实章节、相关 hashtag，并以 `Follow Tiny Agent. Tiny Agent helps you get better at using AI.` 作为 hashtag 前最后一句；中文简介只包含通用中文标题、精简简介、三点收获、相关 hashtag，并以 `关注 Tiny Agent，成为更擅长使用 AI 的人！` 作为 hashtag 前最后一句。
 8. 两版简介均不包含来源段、原文标题拼接或外部链接；来源只保存在项目事实文件和结构化字段中。
 
 ## 5. 准出

@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "runKey": "2026-07-24-03-regenerated-zh-CN",
+  "source": {
+    "publisher": "OpenAI",
+    "title": "Designing AI agents to resist prompt injection",
+    "canonicalUrl": "https://openai.com/index/designing-agents-to-resist-prompt-injection/",
+    "publishedDate": "2026-03-11"
+  },
+  "audienceQuestion": "当办公 AI Agent 读取邮件、网页和文档时，哪些动作可以自动完成，哪些必须让人先确认？",
+  "centralThesis": "不要试图假定外部内容永远安全；把不可信来源、敏感数据出口和高影响动作拆开管理，才能让 Agent 在被操纵时仍然难以造成损失。",
+  "reusableArtifact": {
+    "zh": "办公 AI Agent 三档动作边界表",
+    "fields": ["自动执行", "先确认", "直接阻断"]
+  },
+  "priorities": {
+    "P0": [
+      "外部内容可能携带与用户目标冲突的隐藏指令",
+      "不可信来源加上信息传出、链接访问或工具调用，才是要重点控制的组合",
+      "敏感操作不能静默执行，必须展示对象、数据和后果后由人确认"
+    ],
+    "P1": [
+      "把读取、推理和执行拆成不同权限",
+      "让 Agent 在高风险出口前停住并给出可审查的预览",
+      "用最小权限、允许清单、日志与恢复能力降低一次失误的影响"
+    ],
+    "P2": [
+      "一人公司客户运营 Agent 用来解释边界",
+      "自动、确认、阻断是本视频的实践综合，不是 OpenAI 的固定命名"
+    ],
+    "P3": ["文章中未直接影响办公 Agent 决策的实现细节"]
+  },
+  "factBoundaries": [
+    "关于提示注入、源—出口组合和确认机制的事实归因于 OpenAI 文章",
+    "三档动作边界表是本视频的实践综合",
+    "示例只描述合理的安全设计，不构成任何产品安全承诺"
+  ],
+  "chapters": [
+    {"index":1,"zh":"前言","promise":"看清静默执行为何比答错更危险"},
+    {"index":2,"zh":"风险从哪里进来","promise":"识别不可信外部内容"},
+    {"index":3,"zh":"先找动作出口","promise":"找到真正有后果的组合"},
+    {"index":4,"zh":"三档动作边界","promise":"分清自动、确认和阻断"},
+    {"index":5,"zh":"确认要让人看懂","promise":"把确认框做成决策工具"},
+    {"index":6,"zh":"让失误可以收住","promise":"用最小权限和记录减少损失"},
+    {"index":7,"zh":"总结","promise":"把边界表落到每个 Agent 工作流"}
+  ]
+}

@@ -1,0 +1,758 @@
+[
+  {
+    "start": 0.1,
+    "end": 3.849,
+    "text": "Do you know why an AI Agent can become less useful after it remembers more?",
+    "segmentId": "c01-p01-u01",
+    "sceneId": "c01-p01"
+  },
+  {
+    "start": 3.849,
+    "end": 8.243,
+    "text": "Microsoft Research calls this the raw-history problem: long interaction logs",
+    "segmentId": "c01-p02-u01",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 8.243,
+    "end": 10.964,
+    "text": "mix useful experience with details that no longer matter.",
+    "segmentId": "c01-p02-u01",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 10.964,
+    "end": 15.265,
+    "text": "Then the Agent searches a larger pile, spends context on noise, and can miss",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 15.265,
+    "end": 17.983,
+    "text": "the fact or constraint that should change its next action.",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 17.983,
+    "end": 22.187,
+    "text": "This episode gives you an AI Agent retain–distill–forget table: a simple way",
+    "segmentId": "c01-p04-u01",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 22.187,
+    "end": 26.115,
+    "text": "to decide what stays available, what becomes a compact lesson, and what",
+    "segmentId": "c01-p04-u01",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 26.115,
+    "end": 27.546,
+    "text": "should stop competing for attention.",
+    "segmentId": "c01-p04-u01",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 27.546,
+    "end": 29.237,
+    "text": "The goal is not perfect memory.",
+    "segmentId": "c01-p05-u01",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 29.237,
+    "end": 33.57,
+    "text": "It is decision-ready memory: the smallest set of facts and skills that helps",
+    "segmentId": "c01-p05-u02",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 33.57,
+    "end": 34.554,
+    "text": "an Agent act correctly now.",
+    "segmentId": "c01-p05-u02",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 34.554,
+    "end": 38.728,
+    "text": "This video is packed with practical, high-value insights to help you get",
+    "segmentId": "c01-p06-u01",
+    "sceneId": "c01-p06"
+  },
+  {
+    "start": 38.728,
+    "end": 39.238,
+    "text": "better at using AI.",
+    "segmentId": "c01-p06-u01",
+    "sceneId": "c01-p06"
+  },
+  {
+    "start": 39.238,
+    "end": 43.193,
+    "text": "It's a longer one, so follow Tiny Agent and save it so you don't lose it.",
+    "segmentId": "c01-p06-u02",
+    "sceneId": "c01-p06"
+  },
+  {
+    "start": 43.193,
+    "end": 44.809,
+    "text": "Chapter two: Raw History.",
+    "segmentId": "c02-p01-u01",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 44.809,
+    "end": 48.055,
+    "text": "Learn why a complete log is not automatically a useful memory.",
+    "segmentId": "c02-p01-u02",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 48.055,
+    "end": 52.812,
+    "text": "An interaction record can contain a decision, a failed search, copied text,",
+    "segmentId": "c02-p02-u01",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 52.812,
+    "end": 55.894,
+    "text": "an obsolete plan, and a temporary tool error all at once.",
+    "segmentId": "c02-p02-u01",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 55.894,
+    "end": 58.655,
+    "text": "Keeping that record is valuable for audit and recovery.",
+    "segmentId": "c02-p03-u01",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 58.655,
+    "end": 61.867,
+    "text": "Sending all of it back into every new task is a different decision.",
+    "segmentId": "c02-p03-u02",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 61.867,
+    "end": 65.673,
+    "text": "The more irrelevant detail the Agent retrieves, the harder it becomes to",
+    "segmentId": "c02-p04-u01",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 65.673,
+    "end": 68.488,
+    "text": "identify the condition that actually changes the current answer.",
+    "segmentId": "c02-p04-u01",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 68.488,
+    "end": 72.375,
+    "text": "That is why larger memory can feel like better recall while producing",
+    "segmentId": "c02-p05-u01",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 72.375,
+    "end": 73.633,
+    "text": "slower, less reliable reasoning.",
+    "segmentId": "c02-p05-u01",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 73.633,
+    "end": 78.054,
+    "text": "Treat history as a source to process, not a bag that must be poured into the",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 78.054,
+    "end": 78.673,
+    "text": "next context window.",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 78.673,
+    "end": 79.551,
+    "text": "Chapter recap.",
+    "segmentId": "c02-p07-u01",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 79.551,
+    "end": 83.405,
+    "text": "First, keep raw history for traceability, not as the default prompt.",
+    "segmentId": "c02-p07-u02",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 83.405,
+    "end": 87.739,
+    "text": "Second, separate the value of storing an event from the value of retrieving",
+    "segmentId": "c02-p08-u01",
+    "sceneId": "c02-p08"
+  },
+  {
+    "start": 87.739,
+    "end": 87.862,
+    "text": "Third, judge memory by whether it improves the next decision.",
+    "segmentId": "c02-p09-u01",
+    "sceneId": "c02-p09"
+  },
+  {
+    "start": 87.862,
+    "end": 88.278,
+    "text": "it now.",
+    "segmentId": "c02-p08-u01",
+    "sceneId": "c02-p08"
+  },
+  {
+    "start": 90.934,
+    "end": 92.822,
+    "text": "Chapter three: Useful Units.",
+    "segmentId": "c03-p01-u01",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 92.822,
+    "end": 95.844,
+    "text": "Turn experience into things an AI Agent can reuse.",
+    "segmentId": "c03-p01-u02",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 95.844,
+    "end": 99.922,
+    "text": "The Microsoft Research article describes a shift from storing text chunks",
+    "segmentId": "c03-p02-u01",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 99.922,
+    "end": 100.948,
+    "text": "toward structured knowledge.",
+    "segmentId": "c03-p02-u01",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 100.948,
+    "end": 105.331,
+    "text": "One useful unit is a fact: a verified constraint, a current setting, or a",
+    "segmentId": "c03-p03-u01",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 105.331,
+    "end": 107.718,
+    "text": "result that narrows what the Agent can safely do.",
+    "segmentId": "c03-p03-u01",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 107.718,
+    "end": 112.02,
+    "text": "Another is a reusable skill: a compact procedure that says when to take an",
+    "segmentId": "c03-p04-u01",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 112.02,
+    "end": 114.472,
+    "text": "action, what evidence to collect, and when to stop.",
+    "segmentId": "c03-p04-u01",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 114.472,
+    "end": 116.86,
+    "text": "Facts answer what is true enough for this task.",
+    "segmentId": "c03-p05-u01",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 116.86,
+    "end": 119.987,
+    "text": "Skills answer how to proceed when the same pattern appears again.",
+    "segmentId": "c03-p05-u02",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 119.987,
+    "end": 123.736,
+    "text": "This transformation removes repeated narration without throwing away the",
+    "segmentId": "c03-p06-u01",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 123.736,
+    "end": 125.057,
+    "text": "lesson contained in the interaction.",
+    "segmentId": "c03-p06-u01",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 125.057,
+    "end": 125.95,
+    "text": "Chapter recap.",
+    "segmentId": "c03-p07-u01",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 125.95,
+    "end": 129.224,
+    "text": "First, promote verified facts out of raw transcripts.",
+    "segmentId": "c03-p07-u02",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 129.224,
+    "end": 133.076,
+    "text": "Second, capture repeatable procedures as skills, not anecdotes.",
+    "segmentId": "c03-p08-u01",
+    "sceneId": "c03-p08"
+  },
+  {
+    "start": 133.076,
+    "end": 136.551,
+    "text": "Third, keep each unit small enough to guide one future decision.",
+    "segmentId": "c03-p09-u01",
+    "sceneId": "c03-p09"
+  },
+  {
+    "start": 136.551,
+    "end": 138.289,
+    "text": "Chapter four: Task Routing.",
+    "segmentId": "c04-p01-u01",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 138.289,
+    "end": 141.359,
+    "text": "Retrieve only the knowledge that belongs to the task in front of you.",
+    "segmentId": "c04-p01-u02",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 141.359,
+    "end": 145.617,
+    "text": "PlugMem uses high-level concepts and inferred intent as routing signals",
+    "segmentId": "c04-p02-u01",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 145.617,
+    "end": 147.841,
+    "text": "instead of returning long passages by default.",
+    "segmentId": "c04-p02-u01",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 147.841,
+    "end": 152.246,
+    "text": "In practical terms, start with the current goal, the entity, the risk, and",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 152.246,
+    "end": 153.736,
+    "text": "the next action that needs support.",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 153.736,
+    "end": 156.849,
+    "text": "Use those cues to select a few relevant facts and skills.",
+    "segmentId": "c04-p04-u01",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 156.849,
+    "end": 159.701,
+    "text": "Do not retrieve every record that shares a broad keyword.",
+    "segmentId": "c04-p04-u02",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 159.701,
+    "end": 163.87,
+    "text": "Before the selected memory reaches the base Agent, distill it into concise",
+    "segmentId": "c04-p05-u01",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 163.87,
+    "end": 167.279,
+    "text": "guidance: what is known, what matters, and what must still be checked.",
+    "segmentId": "c04-p05-u01",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 167.279,
+    "end": 170.773,
+    "text": "If the answer depends on live information, retrieval is not enough.",
+    "segmentId": "c04-p06-u01",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 170.773,
+    "end": 173.866,
+    "text": "The Agent still needs fresh evidence from the appropriate source.",
+    "segmentId": "c04-p06-u02",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 173.866,
+    "end": 174.743,
+    "text": "Chapter recap.",
+    "segmentId": "c04-p07-u01",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 174.743,
+    "end": 178.782,
+    "text": "First, route memory from the current decision, not from a vague topic match.",
+    "segmentId": "c04-p07-u02",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 178.782,
+    "end": 182.023,
+    "text": "Second, pass compact guidance instead of a transcript.",
+    "segmentId": "c04-p08-u01",
+    "sceneId": "c04-p08"
+  },
+  {
+    "start": 182.023,
+    "end": 185.592,
+    "text": "Third, use fresh evidence whenever the task can change over time.",
+    "segmentId": "c04-p09-u01",
+    "sceneId": "c04-p09"
+  },
+  {
+    "start": 185.592,
+    "end": 187.591,
+    "text": "Chapter five: Memory Lifecycle.",
+    "segmentId": "c05-p01-u01",
+    "sceneId": "c05-p01"
+  },
+  {
+    "start": 187.591,
+    "end": 191.307,
+    "text": "Decide whether each item should remain, shrink, or leave the working set.",
+    "segmentId": "c05-p01-u02",
+    "sceneId": "c05-p01"
+  },
+  {
+    "start": 191.307,
+    "end": 195.783,
+    "text": "Retain an item when it is verified, likely to affect future decisions, and",
+    "segmentId": "c05-p02-u01",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 195.783,
+    "end": 197.145,
+    "text": "still has a clear retrieval cue.",
+    "segmentId": "c05-p02-u01",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 197.145,
+    "end": 201.635,
+    "text": "Distill an item when the event is long but its lesson can be expressed as a",
+    "segmentId": "c05-p03-u01",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 201.635,
+    "end": 203.361,
+    "text": "fact, rule, checklist, or handoff note.",
+    "segmentId": "c05-p03-u01",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 203.361,
+    "end": 207.457,
+    "text": "Forget an item from active memory when it is obsolete, duplicated,",
+    "segmentId": "c05-p04-u01",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 207.457,
+    "end": 209.862,
+    "text": "low-confidence, or only useful as audit history.",
+    "segmentId": "c05-p04-u01",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 209.862,
+    "end": 212.599,
+    "text": "Forgetting from the working set is not deleting evidence.",
+    "segmentId": "c05-p05-u01",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 212.599,
+    "end": 215.762,
+    "text": "Keep the original trace where governance or debugging requires it.",
+    "segmentId": "c05-p05-u02",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 215.762,
+    "end": 219.918,
+    "text": "Review dates matter because a once-correct policy, tool result, or customer",
+    "segmentId": "c05-p06-u01",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 219.918,
+    "end": 222.545,
+    "text": "preference can become misleading after conditions change.",
+    "segmentId": "c05-p06-u01",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 222.545,
+    "end": 223.425,
+    "text": "Chapter recap.",
+    "segmentId": "c05-p07-u01",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 223.425,
+    "end": 226.656,
+    "text": "First, retain durable facts with future decision value.",
+    "segmentId": "c05-p07-u02",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 226.656,
+    "end": 230.303,
+    "text": "Second, distill long experience into a reusable rule or skill.",
+    "segmentId": "c05-p08-u01",
+    "sceneId": "c05-p08"
+  },
+  {
+    "start": 230.303,
+    "end": 234.509,
+    "text": "Third, remove stale or duplicate material from active retrieval without",
+    "segmentId": "c05-p09-u01",
+    "sceneId": "c05-p09"
+  },
+  {
+    "start": 234.509,
+    "end": 235.337,
+    "text": "losing the audit trail.",
+    "segmentId": "c05-p09-u01",
+    "sceneId": "c05-p09"
+  },
+  {
+    "start": 235.337,
+    "end": 237.156,
+    "text": "Chapter six: Memory Table.",
+    "segmentId": "c06-p01-u01",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 237.156,
+    "end": 241.341,
+    "text": "Apply the retain–distill–forget decision before your Agent's next long task.",
+    "segmentId": "c06-p01-u02",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 241.341,
+    "end": 246.033,
+    "text": "Give every candidate item six fields: the item, its next-task value, its",
+    "segmentId": "c06-p02-u01",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 246.033,
+    "end": 249.598,
+    "text": "state, its compact form, its retrieval cue, and its review date.",
+    "segmentId": "c06-p02-u01",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 249.598,
+    "end": 253.107,
+    "text": "If a deployment constraint changes permissions, retain the verified",
+    "segmentId": "c06-p03-u01",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 253.107,
+    "end": 255.203,
+    "text": "constraint with the system and action that need it.",
+    "segmentId": "c06-p03-u01",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 255.203,
+    "end": 259.188,
+    "text": "If a troubleshooting session reveals a repeatable fix, distill it into a",
+    "segmentId": "c06-p04-u01",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 259.188,
+    "end": 262.402,
+    "text": "short skill with a trigger, steps, evidence, and stopping condition.",
+    "segmentId": "c06-p04-u01",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 262.402,
+    "end": 266.712,
+    "text": "If five transcripts repeat the same discovery, keep one traceable source and",
+    "segmentId": "c06-p05-u01",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 266.712,
+    "end": 268.651,
+    "text": "retire the duplicates from active retrieval.",
+    "segmentId": "c06-p05-u01",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 268.651,
+    "end": 272.513,
+    "text": "If you cannot name the next decision an item could improve, it probably does",
+    "segmentId": "c06-p06-u01",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 272.513,
+    "end": 275.014,
+    "text": "not deserve a permanent place in the Agent's working memory.",
+    "segmentId": "c06-p06-u01",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 275.014,
+    "end": 275.904,
+    "text": "Chapter recap.",
+    "segmentId": "c06-p07-u01",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 275.904,
+    "end": 278.876,
+    "text": "First, write the decision value before saving memory.",
+    "segmentId": "c06-p07-u02",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 278.876,
+    "end": 282.293,
+    "text": "Second, choose retain, distill, or forget deliberately.",
+    "segmentId": "c06-p08-u01",
+    "sceneId": "c06-p08"
+  },
+  {
+    "start": 282.293,
+    "end": 286.395,
+    "text": "Third, attach a retrieval cue and review date so memory can stay useful.",
+    "segmentId": "c06-p09-u01",
+    "sceneId": "c06-p09"
+  },
+  {
+    "start": 286.395,
+    "end": 291.101,
+    "text": "An AI Agent does not become wiser by carrying every past message into every",
+    "segmentId": "c07-p01-u01",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 291.101,
+    "end": 291.3,
+    "text": "future task.",
+    "segmentId": "c07-p01-u01",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 291.3,
+    "end": 295.624,
+    "text": "Raw history remains useful for audit, but reusable facts and skills are",
+    "segmentId": "c07-p02-u01",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 295.624,
+    "end": 297.083,
+    "text": "usually better inputs for action.",
+    "segmentId": "c07-p02-u01",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 297.083,
+    "end": 300.784,
+    "text": "Route memory from the current decision, then distill the result until the",
+    "segmentId": "c07-p03-u01",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 300.784,
+    "end": 303.182,
+    "text": "Agent can see what matters without reading the whole past.",
+    "segmentId": "c07-p03-u01",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 303.182,
+    "end": 307.294,
+    "text": "Use the retain–distill–forget table to make storage, retrieval, and",
+    "segmentId": "c07-p04-u01",
+    "sceneId": "c07-p04"
+  },
+  {
+    "start": 307.294,
+    "end": 309.305,
+    "text": "retirement explicit instead of accidental.",
+    "segmentId": "c07-p04-u01",
+    "sceneId": "c07-p04"
+  },
+  {
+    "start": 309.305,
+    "end": 313.18,
+    "text": "The research result is encouraging, but treat it as evidence for testing",
+    "segmentId": "c07-p05-u01",
+    "sceneId": "c07-p05"
+  },
+  {
+    "start": 313.18,
+    "end": 316.124,
+    "text": "your own memory design, not as a universal performance guarantee.",
+    "segmentId": "c07-p05-u01",
+    "sceneId": "c07-p05"
+  },
+  {
+    "start": 316.124,
+    "end": 317.379,
+    "text": "Follow Tiny Agent.",
+    "segmentId": "c07-p06-u01",
+    "sceneId": "c07-p06"
+  },
+  {
+    "start": 317.379,
+    "end": 320.067,
+    "text": "Tiny Agent helps you get better at using AI.",
+    "segmentId": "c07-p06-u02",
+    "sceneId": "c07-p06"
+  }
+]

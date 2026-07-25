@@ -7,6 +7,10 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const englishIdentityPattern = /\bAI[\s-]+Agents?\b/i;
 const chineseIdentityPattern = /AI[\s-]*Agents?|智能体/i;
+const fixedFollowSentences = {
+  'en-US': 'Follow Tiny Agent. Tiny Agent helps you get better at using AI.',
+  'zh-CN': '关注 Tiny Agent，成为更擅长使用 AI 的人！',
+};
 
 function parseArgs(argv) {
   const args = {};
@@ -64,6 +68,21 @@ function coverText(spec) {
   return normalizeText(spec.headline || spec.titleLines?.join(' '));
 }
 
+function checkDescriptionFollowSentence(value, locale, scope) {
+  const lines = String(value || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const finalNonHashtagLine = [...lines].reverse().find((line) => !line.startsWith('#')) || '';
+  const expected = fixedFollowSentences[locale];
+  return {
+    scope,
+    expected,
+    finalNonHashtagLine,
+    pass: finalNonHashtagLine === expected,
+  };
+}
+
 async function writeReport(projectDir, report) {
   const qaDir = path.join(projectDir, 'qa');
   await fs.mkdir(qaDir, { recursive: true });
@@ -103,10 +122,22 @@ export async function validateProjects(englishProject, chineseProject) {
       checkChineseTitle(coverText(spec), `Chinese ${chineseCoverRatios[index]} rendered cover title`)
     )),
   ];
-  const checks = [...englishChecks, ...chineseChecks];
+  const metadataChecks = [
+    checkDescriptionFollowSentence(
+      englishMetadata.description,
+      'en-US',
+      'English description final non-hashtag line',
+    ),
+    checkDescriptionFollowSentence(
+      chineseMetadata.description,
+      'zh-CN',
+      'Chinese description final non-hashtag line',
+    ),
+  ];
+  const checks = [...englishChecks, ...chineseChecks, ...metadataChecks];
   const report = {
-    version: 1,
-    rule: 'Every audience-facing title identifies AI Agent(s) or 智能体 and states a concrete topic.',
+    version: 2,
+    rule: 'Every audience-facing title identifies AI Agent(s) or 智能体 and states a concrete topic; each publishing description ends with the locale fixed follow sentence before hashtags.',
     pass: checks.every((check) => check.pass),
     checks,
   };

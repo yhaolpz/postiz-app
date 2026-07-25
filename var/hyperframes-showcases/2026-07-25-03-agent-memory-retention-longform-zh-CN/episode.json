@@ -1,0 +1,99 @@
+{
+  "locale": "zh-CN",
+  "scriptFile": "SCRIPT.zh-CN.md",
+  "voice": "zh-CN-YunxiaNeural",
+  "rate": "+35%",
+  "outputName": "2026-07-25-03-agent-memory-retention-longform.zh-CN.mp4",
+  "firstSentence": "你知道 AI 智能体记得越多，为什么反而可能越笨吗？",
+  "fixedValueSentence": "视频全程干货高价值，让你成为更擅长使用 AI 的人，内容较长，点点关注收藏不迷路。",
+  "fixedOutroCta": "关注 Tiny Agent，成为更擅长使用 AI 的人！",
+  "projectTitle": "AI 智能体记忆：保留重点，提炼经验，遗忘噪声",
+  "coverAlt": "AI 智能体记忆：留下真正有用的",
+  "promise": { "label": "AI 智能体实用方法", "strong": "让记忆服务决策", "action": "关注 + 收藏" },
+  "outro": { "title": "关注 Tiny Agent", "lines": ["成为更擅长", "使用 AI 的人！"] },
+  "checkpoints": { "authoritySceneIndex": 1, "benefitSceneIndex": 2, "explanationSceneIndex": 3, "followSaveSceneIndex": 5 },
+  "generatedArt": {
+    "c01-p05": "memory-overload.png",
+    "c02-p04": "history-noise.png",
+    "c03-p04": "facts-and-skills.png",
+    "c04-p04": "task-routing.png",
+    "c05-p04": "memory-lifecycle.png",
+    "c06-p02": "retain-distill-forget-table.png",
+    "c06-p05": "deduplicate-traces.png",
+    "c07-p02": "decision-ready-memory.png",
+    "c07-p04": "memory-review.png"
+  },
+  "visuals": {
+    "前言": [
+      ["你知道 AI 智能体记得越多，为什么反而可能越笨吗？", "question", "ask-front", "记得更多？", "hook"],
+      ["Microsoft Research：原始历史会埋没有用经验", "evidence", "present-left", "日志混入信号与噪声", "authority"],
+      ["AI 智能体可能错过会改变下一步的约束", "warning", "alert-front", "更多上下文 · 更少聚焦", "loss"],
+      ["使用 AI 智能体保留、提炼、遗忘表", "checklist", "verify-front", "保留 · 提炼 · 退出", "artifact"],
+      ["能支持决策的记忆，比更大的档案更重要", "memory", "reason-front", "当前有用", "method"],
+      ["高价值 AI 智能体方法", "result-card", "present-left", "让决策更好", "promise"]
+    ],
+    "原始历史": [
+      ["第 2 章：原始历史", "document-stack", "present-left", "完整日志不等于有用提示词", "chapter-intro"],
+      ["一条记录可混入决策、搜索、计划和报错", "document-stack", "read-front", "不同价值 · 同一日志", "list"],
+      ["历史用于追溯，不必默认进入每个任务", "archive", "read-front", "可追溯不等于要检索", "generic"],
+      ["噪声会挡住此刻真正重要的条件", "warning", "alert-front", "找到决策信号", "generic"],
+      ["更大的检索可能让推理更慢更弱", "timer", "reason-front", "更多文字 · 更低精度", "generic"],
+      ["先加工历史，再送进上下文窗口", "loop", "evaluate-front", "事件变知识", "generic"],
+      ["本章小节。第一，原始历史用于追溯。", "archive", "plan-front", "保存不等于提示词", "recap"],
+      ["第二，分开判断保存价值与检索价值。", "compare", "evaluate-front", "两个决定", "recap"],
+      ["第三，用下一步决策衡量记忆。", "target", "verify-front", "决策效用", "recap"]
+    ],
+    "有用单元": [
+      ["第 3 章：有用单元", "memory", "present-left", "建立可复用知识", "chapter-intro"],
+      ["从文本片段转向结构化知识", "document", "read-front", "经验变单元", "generic"],
+      ["事实保存已核实的约束和结果", "evidence", "verify-front", "什么足够可信？", "list"],
+      ["技能保存可重复的行动模式", "skill-card", "present-left", "何时 · 步骤 · 停止", "generic"],
+      ["事实缩小选择，技能指导推进", "compare", "evaluate-front", "事实加过程", "list"],
+      ["去掉重复叙述，不丢失经验教训", "summary", "store-memory", "紧凑复用", "generic"],
+      ["本章小节。第一，提取已核实事实。", "evidence", "plan-front", "事实", "recap"],
+      ["第二，把重复过程写成技能。", "skill-card", "write-front", "技能", "recap"],
+      ["第三，让每个单元只服务一个判断。", "target", "verify-front", "一个目的", "recap"]
+    ],
+    "任务路由": [
+      ["第 4 章：任务路由", "route", "present-left", "为当前任务检索", "chapter-intro"],
+      ["用目标、对象、风险和下一步做路由", "target", "plan-front", "四个线索", "list"],
+      ["不要因为宽泛关键词拿回所有记录", "search", "blocked-front", "话题匹配太粗", "generic"],
+      ["只挑会改变当前判断的事实和技能", "route", "reason-front", "任务对齐检索", "generic"],
+      ["把检索结果压缩成行动指引", "summary", "write-front", "已知 · 重要 · 待查", "generic"],
+      ["实时问题仍要补充新证据", "search", "verify-front", "记忆不是实时证明", "generic"],
+      ["本章小节。第一，从当前决策开始路由。", "route", "plan-front", "决策优先", "recap"],
+      ["第二，交付行动指引，不交付整段记录。", "summary", "present-left", "紧凑上下文", "recap"],
+      ["第三，变化事实必须刷新来源。", "evidence", "verify-front", "新证据", "recap"]
+    ],
+    "记忆周期": [
+      ["第 5 章：记忆周期", "loop", "present-left", "保留、提炼或退出", "chapter-intro"],
+      ["保留可靠且有未来决策价值的内容", "checklist", "verify-front", "可靠加可复用", "list"],
+      ["把长事件提炼成事实、规则或交接", "summary", "store-memory", "留下经验", "generic"],
+      ["让过期、重复和低置信内容退出主动记忆", "forget", "blocked-front", "不再抢注意力", "generic"],
+      ["退出工作记忆，不等于删除审计证据", "archive", "read-front", "轨迹仍在", "generic"],
+      ["用复查日期防止旧记忆误导人", "calendar", "alert-front", "环境会改变", "generic"],
+      ["本章小节。第一，保留持久可靠的事实。", "memory", "plan-front", "未来价值", "recap"],
+      ["第二，把长经验提炼成可复用教训。", "summary", "write-front", "经验规则", "recap"],
+      ["第三，让噪声退出，但保留轨迹。", "archive", "verify-front", "主动不等于删除", "recap"]
+    ],
+    "记忆表": [
+      ["第 6 章：记忆表", "checklist", "present-left", "应用 AI 智能体记忆工具", "chapter-intro"],
+      ["每条候选记忆写六个字段", "spreadsheet", "read-front", "项 · 价值 · 状态 · 形式 · 线索 · 日期", "list"],
+      ["保留会改变权限的已核实约束", "permission-key", "verify-front", "系统加动作", "generic"],
+      ["把重复修复提炼成技能", "skill-card", "write-front", "触发 · 步骤 · 证据 · 停止", "generic"],
+      ["保留一个可追溯来源，让重复记录退出", "merge", "evaluate-front", "一条证据路径", "generic"],
+      ["说不出下一步价值，就不该永久占位", "target", "blocked-front", "先说清决策", "generic"],
+      ["本章小节。第一，先写决策价值。", "target", "plan-front", "为何保存？", "recap"],
+      ["第二，有意识选择保留、提炼或遗忘。", "compare", "evaluate-front", "三个状态", "recap"],
+      ["第三，补上检索线索和复查日期。", "calendar", "verify-front", "持续有用", "recap"]
+    ],
+    "总结": [
+      ["AI 智能体不会因带上每条旧消息而变聪明", "warning", "reason-front", "记忆不等于智慧", "generic"],
+      ["用事实和技能做行动输入", "memory", "present-left", "有用单元", "generic"],
+      ["从决策路由，再压缩结果", "route", "plan-front", "看清重点", "generic"],
+      ["明确选择保留、提炼和遗忘", "checklist", "verify-front", "可复查系统", "artifact"],
+      ["在自己的 AI 智能体工作流中验证", "experiment", "evaluate-front", "证据不是保证", "generic"],
+      ["关注 Tiny Agent", "success", "celebrate-front", "成为更擅长使用 AI 的人！", "outro"]
+    ]
+  }
+}
