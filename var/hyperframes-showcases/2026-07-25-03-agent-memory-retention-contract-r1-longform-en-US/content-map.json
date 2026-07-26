@@ -1,0 +1,30 @@
+{
+  "source": {
+    "publisher": "Microsoft Research",
+    "title": "PlugMem: Transforming raw agent interactions into reusable knowledge",
+    "url": "https://www.microsoft.com/en-us/research/blog/from-raw-interaction-to-reusable-knowledge-rethinking-memory-for-ai-agents/",
+    "publishedDate": "2026-03-10"
+  },
+  "centralThesis": "An AI Agent becomes less useful when it retrieves raw history as if every past interaction mattered; preserve decision-relevant facts and reusable skills, retrieve them for the current task, and retire the rest without losing auditability.",
+  "priorities": {
+    "P0": ["More history can increase irrelevant context and weaken retrieval.", "Memory should be measured by decision utility, not stored volume."],
+    "P1": ["Transform raw interactions into facts and reusable skills.", "Route retrieval by the current task and distill it into action guidance.", "Use a retain-distill-forget table to keep a practical memory system small and accountable."],
+    "P2": ["The blog reports cross-benchmark results with lower memory-token use.", "PlugMem complements rather than replaces task-specific adaptations."],
+    "P3": ["Implementation-specific graph details that do not change the viewer's decision process."]
+  },
+  "chapters": [
+    "Introduction",
+    "Raw History",
+    "Useful Units",
+    "Task Routing",
+    "Memory Lifecycle",
+    "Memory Table",
+    "Summary"
+  ],
+  "reusableArtifact": {
+    "name": "AI Agent Retain–Distill–Forget Table",
+    "fields": ["item", "next-task value", "state", "compact form", "retrieval cue", "review date"],
+    "states": ["retain", "distill", "forget"]
+  },
+  "episodeBoundary": "The practical table is an applied workflow derived from the source's knowledge-centric memory idea. It does not claim that PlugMem is required, or that benchmark results automatically transfer to every agent."
+}

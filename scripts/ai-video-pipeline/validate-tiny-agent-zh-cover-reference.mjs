@@ -46,6 +46,7 @@ function imagePixelHash(filePath, trim = false) {
 
 async function validate(projectDir) {
   const thumbnailsDir = path.join(projectDir, 'thumbnails');
+  const metadata = JSON.parse(await fs.readFile(path.join(projectDir, 'publish-metadata.zh-CN.json'), 'utf8'));
   const checks = [];
   const outputs = [];
   for (const [ratio, expected] of Object.entries(ratios)) {
@@ -65,7 +66,9 @@ async function validate(projectDir) {
     const ratioChecks = {
       referenceLayout: spec.referenceLayout === '2026-07-23-approved-title-hero',
       referenceSvg: /2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/.test(spec.referenceSvg || ''),
-      deterministicPrimaryTitle: spec.headline === 'AI Agent 记忆怎么才有用？',
+      deterministicPrimaryTitle: typeof spec.headline === 'string'
+        && spec.headline === metadata.thumbnailText
+        && /AI\s*Agent|智能体/.test(spec.headline),
       blueBlackTitleOnly: spec.titlePalette?.agentIdentity === '#117ABD' && spec.titlePalette?.remainingTitle === '#111413',
       decorativeYellowRule: spec.titlePalette?.decorativeRule === '#F4C542',
       noAuxiliaryCopy: spec.auxiliaryCoverCopy === false,
@@ -94,7 +97,7 @@ async function validate(projectDir) {
   const png16x9 = await fs.readFile(path.join(thumbnailsDir, 'thumbnail.zh-CN.png'));
   const expected16x9 = await fs.readFile(path.join(thumbnailsDir, 'thumbnail.zh-CN.16x9.png'));
   const report = {
-    version: 1,
+    version: 2,
     reference: '2026-07-23-approved-title-hero',
     pass: checks.every((check) => check.pass),
     checks,

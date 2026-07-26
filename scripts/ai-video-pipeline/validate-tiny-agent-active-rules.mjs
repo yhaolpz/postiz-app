@@ -270,7 +270,27 @@ requireMatch(
 requireMatch(
   'activeProfile.chapterRecapOverride.screenCopy.rule',
   profile.postSnapshotUserOverrides?.chapterRecapNarration?.screenCopy?.rule ?? '',
-  /本章小节、第一、第二、第三、Chapter recap、First、Second、Third、1\.、2\.、3\./
+  /left-aligned/
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.screenCopy.bodyNumbering.visible',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.screenCopy?.bodyNumbering?.visible,
+  true
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.screenCopy.bodyNumbering.style',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.screenCopy?.bodyNumbering?.style,
+  'arabic-dot'
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.screenCopy.bodyNumbering.values',
+  JSON.stringify(profile.postSnapshotUserOverrides?.chapterRecapNarration?.screenCopy?.bodyNumbering?.values),
+  JSON.stringify(['1.', '2.', '3.'])
+);
+requireEqual(
+  'activeProfile.chapterRecapOverride.screenCopy.bodyTextAlignment',
+  profile.postSnapshotUserOverrides?.chapterRecapNarration?.screenCopy?.bodyTextAlignment,
+  'left'
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.status',
@@ -309,6 +329,21 @@ requireEqual(
   850
 );
 requireEqual(
+  'activeProfile.openingQuestionReadability.spokenBridge.min',
+  openingOverride?.spokenBridge?.durationMilliseconds?.min,
+  650
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.spokenBridge.max',
+  openingOverride?.spokenBridge?.durationMilliseconds?.max,
+  850
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.spokenBridge.rule',
+  openingOverride?.spokenBridge?.rule ?? '',
+  /literal visible-question VTT prefix/
+);
+requireEqual(
   'activeProfile.openingQuestionReadability.canvasCoverage.width.min',
   openingOverride?.canvasGlyphCoveragePercent?.width?.min,
   86
@@ -339,6 +374,81 @@ requireEqual(
   'bottom-right'
 );
 requireEqual(
+  'activeProfile.openingQuestionReadability.kineticGlyphEntrance.questionMarkGapPx',
+  openingOverride?.kineticGlyphEntrance?.questionMarkGapPx,
+  24
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.kineticGlyphEntrance.regularGlyph.durationMilliseconds',
+  openingOverride?.kineticGlyphEntrance?.regularGlyph?.durationMilliseconds,
+  240
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.kineticGlyphEntrance.regularGlyph.ease',
+  openingOverride?.kineticGlyphEntrance?.regularGlyph?.ease,
+  'power3.out'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.kineticGlyphEntrance.regularGlyph.entryVectorsPx',
+  openingOverride?.kineticGlyphEntrance?.regularGlyph?.entryVectorsPx?.length,
+  4
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.kineticGlyphEntrance.finalQuestionGlyph.durationMilliseconds',
+  openingOverride?.kineticGlyphEntrance?.finalQuestionGlyph?.durationMilliseconds,
+  250
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.kineticGlyphEntrance.finalQuestionGlyph.ease',
+  openingOverride?.kineticGlyphEntrance?.finalQuestionGlyph?.ease,
+  'back.out(1.8)'
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.kineticGlyphEntrance.purpose',
+  openingOverride?.kineticGlyphEntrance?.purpose ?? '',
+  /deterministic four-direction kinetic entrance/
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.status',
+  openingOverride?.hookQuestionQuality?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.allowedIntents',
+  JSON.stringify(openingOverride?.hookQuestionQuality?.allowedIntents),
+  JSON.stringify(['causal-diagnosis', 'mechanism', 'trade-off', 'trigger', 'actionable-path'])
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.requireTopicIdentity',
+  openingOverride?.hookQuestionQuality?.requireTopicIdentity,
+  true
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.requireAudiencePainPoint',
+  openingOverride?.hookQuestionQuality?.requireAudiencePainPoint,
+  true
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.requireUnresolvedCuriosity',
+  openingOverride?.hookQuestionQuality?.requireUnresolvedCuriosity,
+  true
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.forbiddenQuestionForms',
+  JSON.stringify(openingOverride?.hookQuestionQuality?.forbiddenQuestionForms ?? []),
+  /obvious yes-or-no validation question/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.semanticLineBreak',
+  openingOverride?.hookQuestionQuality?.semanticLineBreak ?? '',
+  /causal clause together/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.qa',
+  openingOverride?.hookQuestionQuality?.qa ?? '',
+  /opening-hook-quality-report\.json/
+);
+requireEqual(
   'activeProfile.openingQuestionReadability.forbiddenOpeningUi',
   JSON.stringify(openingOverride?.forbiddenOpeningUi),
   JSON.stringify(['opening progress rail', 'left blue circle', 'VOICE label'])
@@ -357,6 +467,46 @@ requireEqual(
   'activeProfile.generatedArtTransparency.status',
   profile.postSnapshotUserOverrides?.generatedArtTransparency?.status,
   'active'
+);
+requireEqual(
+  'activeProfile.englishAdultNarration.status',
+  profile.postSnapshotUserOverrides?.englishAdultNarration?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.englishAdultNarration.voice',
+  profile.postSnapshotUserOverrides?.englishAdultNarration?.voice,
+  'en-US-ChristopherNeural'
+);
+requireEqual(
+  'activeProfile.englishAdultNarration.rate',
+  profile.postSnapshotUserOverrides?.englishAdultNarration?.rate,
+  '+30%'
+);
+requireEqual(
+  'activeProfile.englishAdultNarration.forbiddenVoice',
+  profile.postSnapshotUserOverrides?.englishAdultNarration?.forbiddenVoice,
+  'en-US-AnaNeural'
+);
+requireMatch(
+  'activeProfile.englishAdultNarration.selection',
+  profile.postSnapshotUserOverrides?.englishAdultNarration?.selection ?? '',
+  /mainstream adult US-English Christopher voice/
+);
+requireEqual(
+  'activeProfile.fixedBilingualGeneration.durationSeconds',
+  JSON.stringify(profile.fixedBilingualGeneration?.durationSeconds),
+  JSON.stringify({ min: 300, max: 480 })
+);
+requireEqual(
+  'activeProfile.fixedBilingualGeneration.en-US.voice',
+  profile.fixedBilingualGeneration?.['en-US']?.voice,
+  'en-US-ChristopherNeural'
+);
+requireEqual(
+  'activeProfile.fixedBilingualGeneration.en-US.rate',
+  profile.fixedBilingualGeneration?.['en-US']?.rate,
+  '+30%'
 );
 requireMatch(
   'activeProfile.generatedArtTransparency.deliveryAsset',
@@ -523,7 +673,7 @@ for (const pattern of exactGuideChecks) {
 
 const contentPlanChecks = [
   /2026-07-23-scheduled-6m18/,
-  /en-US-AnaNeural`，固定语速 `\+30%`/,
+  /en-US-ChristopherNeural`，固定语速 `\+30%`/,
   /zh-CN-YunxiaNeural`，固定语速 `\+35%`/,
   /中英文长视频均为 `5-8` 分钟/,
   /2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/,
@@ -547,9 +697,7 @@ forbidMatch(
 
 const runbookChecks = [
   /2026-07-23-scheduled-6m18/,
-  /zh-CN-YunxiaNeural \+35%/,
-  /en-US-AnaNeural \+30%/,
-  /两版成片均为 `5-8 分钟`/,
+  /只读取 active profile 的 `fixedBilingualGeneration` 与具名覆盖项/,
   /章节开场、正文和可朗读的三点编号小结/,
   /openingQuestionReadability/,
   /chapterRecapNarration\.screenCopy/,
@@ -591,11 +739,9 @@ if (!automationPromptMatch) {
 }
 const automationChecks = [
   /2026-07-23-scheduled-6m18/,
-  /457ba42d110d259ed03c4b008e1af2cc8b0b9935/,
-  /中文 zh-CN-YunxiaNeural \+35%/,
-  /英文 en-US-AnaNeural \+30%/,
-  /5-8 分钟/,
-  /earlyRevealCount=0/,
+  /active profile 是唯一当前行为契约/,
+  /fixedBilingualGeneration 和具名 postSnapshotUserOverrides/,
+  /validate-tiny-agent-longform-output\.mjs --project <PROJECT_DIR>/,
 ];
 for (const pattern of automationChecks) {
   requireMatch('automationPrompt', automationPrompt, pattern);
@@ -606,12 +752,24 @@ forbidMatch(
   /snapshots\/2026-07-23-v4-accepted/,
   'V4 snapshot path'
 );
+forbidMatch(
+  'automationPrompt',
+  automationPrompt,
+  /en-US-AnaNeural/,
+  'former English longform voice'
+);
+forbidMatch(
+  'automationPrompt',
+  automationPrompt,
+  /earlyRevealCount=0/,
+  'former opening timing value'
+);
 
 const memoryActive = text.memory.split('\n## Formal automation state')[0] ?? '';
 const memoryChecks = [
   /tiny-agent-longform-scheduled-6m18-2026-07-23/,
   /zh-CN-YunxiaNeural \+35%/,
-  /en-US-AnaNeural \+30%/,
+  /en-US-ChristopherNeural \+30%/,
   /5-8 minutes/,
   /63` scenes, `7` chapters, and `15` recap scenes/,
   /Active bilingual opening readability override/,
@@ -628,7 +786,7 @@ for (const pattern of memoryChecks) {
 requireMatch(
   'voiceReadme',
   text.voiceReadme,
-  /6:18 定时成片冻结基线固定为中文 `zh-CN-YunxiaNeural \+35%`、英文 `en-US-AnaNeural \+30%`/
+  /当前活跃长视频 contract 固定为中文 `zh-CN-YunxiaNeural \+35%`、英文 `en-US-ChristopherNeural \+30%`/
 );
 
 for (const [relativePath, expected] of Object.entries(referenceArtifacts)) {
@@ -672,5 +830,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Tiny Agent active-rule validation passed: ${profileId}; exact scheduled prompt, commit-time guide, implementation profile, and reference artifact hashes are intact.`
+  `Tiny Agent active-rule validation passed: ${profileId}; frozen evidence hashes and the sole current active contract are intact.`
 );

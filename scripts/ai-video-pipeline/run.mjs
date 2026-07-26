@@ -131,6 +131,7 @@ const VIDEO_WIDTH = 1080;
 const VIDEO_HEIGHT = 1920;
 const VIDEO_FPS = 30;
 const TINY_AGENT_LAYOUT_STANDARD = 'cross-platform-balanced-v1';
+const TINY_AGENT_DEFAULT_TTS_VOICE = 'en-US-ChristopherNeural';
 const TINY_AGENT_DEFAULT_TTS_RATE = '+30%';
 const TINY_AGENT_DEFAULT_CAPTION_MODE = 'realtime';
 const TINY_AGENT_CTA_OPENING = 'Follow Tiny Agent.';
@@ -1220,7 +1221,12 @@ function resolveSpeechConfig(args, content) {
     return {
       provider: 'edge-tts',
       model: null,
-      voice: args.voice || process.env.AI_VIDEO_TTS_VOICE || 'en-US-AnaNeural',
+      voice:
+        args.voice ||
+        process.env.AI_VIDEO_TTS_VOICE ||
+        (usesTinyAgentLayout(content)
+          ? TINY_AGENT_DEFAULT_TTS_VOICE
+          : 'en-US-AnaNeural'),
       rate: String(
         args.rate ||
           process.env.AI_VIDEO_TTS_RATE ||
@@ -1833,14 +1839,14 @@ async function verifyReusableVideo(videoPath, args = {}, content = null) {
   if (
     usesTinyAgentLayout(content) &&
     (sourceSummary?.speech?.provider !== 'edge-tts' ||
-      sourceSummary?.speech?.voice !== 'en-US-AnaNeural' ||
+      sourceSummary?.speech?.voice !== TINY_AGENT_DEFAULT_TTS_VOICE ||
       sourceSummary?.speech?.rate !== TINY_AGENT_DEFAULT_TTS_RATE ||
       sourceSummary?.captions?.mode !== 'realtime-vtt' ||
       sourceSummary?.cta !== TINY_AGENT_FIXED_CTA ||
       sourceSummary?.theme?.background !== TINY_AGENT_THEME_BACKGROUND)
   ) {
     throw new Error(
-      `Reusable Tiny Agent video must use the fixed CTA, ${TINY_AGENT_THEME_BACKGROUND} theme, en-US-AnaNeural at ${TINY_AGENT_DEFAULT_TTS_RATE}, and realtime VTT captions.`
+      `Reusable Tiny Agent video must use the fixed CTA, ${TINY_AGENT_THEME_BACKGROUND} theme, ${TINY_AGENT_DEFAULT_TTS_VOICE} at ${TINY_AGENT_DEFAULT_TTS_RATE}, and realtime VTT captions.`
     );
   }
 

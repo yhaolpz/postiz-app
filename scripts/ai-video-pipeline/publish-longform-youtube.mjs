@@ -162,7 +162,7 @@ function validateInputs(videoPath, metadata) {
   assert(Math.abs(probe.fps - 30) < 0.01, `Expected 30fps, got ${probe.fps}.`);
   assert(probe.videoCodec === 'h264', `Expected H.264, got ${probe.videoCodec}.`);
   assert(probe.audioCodec === 'aac', `Expected AAC, got ${probe.audioCodec}.`);
-  assert(probe.durationSeconds >= 300 && probe.durationSeconds <= 720, `Duration ${probe.durationSeconds}s is outside 5-12 minutes.`);
+  assert(probe.durationSeconds >= 300 && probe.durationSeconds <= 480, `Duration ${probe.durationSeconds}s is outside 5-8 minutes.`);
   return probe;
 }
 

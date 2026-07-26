@@ -203,7 +203,7 @@ characters, miniature engineer, miniature robot, excessive empty space.
 
 - 来源驱动长版为默认发布格式：目标 `50-60s`，准出范围 `45-65s`。
 - 英文旁白：约 `115-145` 个英文词；中文旁白按当前语速建议约 `190-240` 个汉字，最终以 TTS 实际时长为准。
-- 英文短视频固定使用 `edge-tts` 的 `en-US-AnaNeural`，并显式传入 `--rate '+30%'`；不得回退到旧 `+20%` 或其它英文声音。
+- 英文短视频固定使用与英文长视频相同的成人旁白 `edge-tts` `en-US-ChristopherNeural`，并显式传入 `--rate '+30%'`；不得回退到 Ana、旧 `+20%` 或其它英文声音。
 - 每集使用 `8-10` 个语义镜头，默认 `9` 个；镜头仍保留唯一 `Subtitle blocks` 作为语义审核稿，但成片字幕不再整段静态展示。
 - 旧 `20-30s / 3-4` 镜头格式只作为历史微短版兼容，不再作为新内容默认值。
 - 屏幕上除顶部 `Tiny Agent` 和底部字幕外，尽量少放文字。
@@ -276,7 +276,7 @@ Agent = model
 当前可复刻基线：
 
 - TTS：`edge-tts`
-- Voice：`en-US-AnaNeural`
+- Voice：`en-US-ChristopherNeural`
 - Rate：`+30%`
 - Language：English
 - 口吻：清楚、轻松、像短视频讲解，不要企业培训感
@@ -347,7 +347,7 @@ node scripts/ai-video-pipeline/run.mjs \
   --plan-file var/ai-video-pipeline/publish-plans/YYYY-MM-DD-source-led.en.md \
   --date YYYY-MM-DD \
   --tts edge-tts \
-  --voice en-US-AnaNeural \
+  --voice en-US-ChristopherNeural \
   --rate '+30%' \
   --caption-mode realtime \
   --platform all \

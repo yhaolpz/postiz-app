@@ -1,0 +1,1505 @@
+{
+  "schemaVersion": 2,
+  "id": "agent",
+  "label": "Tiny Agent",
+  "canvas": {
+    "width": 384,
+    "height": 512
+  },
+  "registration": {
+    "kind": "feet",
+    "x": 192,
+    "y": 456
+  },
+  "sheet": {
+    "path": "sprites/agent-sprite.png",
+    "width": 1920,
+    "height": 4096,
+    "columns": 5,
+    "rows": 8,
+    "cellWidth": 384,
+    "cellHeight": 512
+  },
+  "assets": [
+    {
+      "id": "idle",
+      "zhName": "正面待机",
+      "description": "neutral ready state",
+      "direction": "front",
+      "category": "baseline",
+      "source": "v1",
+      "path": "sprites/agent/idle.png",
+      "cell": {
+        "index": 0,
+        "row": 0,
+        "column": 0,
+        "x": 0,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 94,
+        "y": 95,
+        "width": 195,
+        "height": 361,
+        "right": 95,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "search",
+      "zhName": "搜索",
+      "description": "leaning forward and scanning for information",
+      "direction": "front",
+      "category": "knowledge",
+      "source": "v1",
+      "path": "sprites/agent/search.png",
+      "cell": {
+        "index": 1,
+        "row": 0,
+        "column": 1,
+        "x": 384,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 69,
+        "y": 111,
+        "width": 246,
+        "height": 345,
+        "right": 69,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "receive-tool",
+      "zhName": "接收工具",
+      "description": "open hand ready to receive a tool",
+      "direction": "front",
+      "category": "tools",
+      "source": "v1",
+      "path": "sprites/agent/receive-tool.png",
+      "cell": {
+        "index": 2,
+        "row": 0,
+        "column": 2,
+        "x": 768,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 78,
+        "y": 98,
+        "width": 227,
+        "height": 358,
+        "right": 79,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "execute",
+      "zhName": "正面执行",
+      "description": "pressing an imaginary control to execute",
+      "direction": "front",
+      "category": "execution",
+      "source": "v1",
+      "path": "sprites/agent/execute.png",
+      "cell": {
+        "index": 3,
+        "row": 0,
+        "column": 3,
+        "x": 1152,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 101,
+        "y": 101,
+        "width": 182,
+        "height": 355,
+        "right": 101,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "store-memory",
+      "zhName": "存储记忆",
+      "description": "moving information toward the tool-belt memory",
+      "direction": "front",
+      "category": "memory",
+      "source": "v1",
+      "path": "sprites/agent/store-memory.png",
+      "cell": {
+        "index": 4,
+        "row": 0,
+        "column": 4,
+        "x": 1536,
+        "y": 0,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 101,
+        "y": 100,
+        "width": 181,
+        "height": 356,
+        "right": 102,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "recall-memory",
+      "zhName": "读取记忆",
+      "description": "retrieving information from the tool belt",
+      "direction": "front",
+      "category": "memory",
+      "source": "v1",
+      "path": "sprites/agent/recall-memory.png",
+      "cell": {
+        "index": 5,
+        "row": 1,
+        "column": 0,
+        "x": 0,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 76,
+        "y": 101,
+        "width": 231,
+        "height": 355,
+        "right": 77,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "success",
+      "zhName": "成功",
+      "description": "confident thumbs-up success state",
+      "direction": "front",
+      "category": "result",
+      "source": "v1",
+      "path": "sprites/agent/success.png",
+      "cell": {
+        "index": 6,
+        "row": 1,
+        "column": 1,
+        "x": 384,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 90,
+        "y": 103,
+        "width": 204,
+        "height": 353,
+        "right": 90,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "failure",
+      "zhName": "失败",
+      "description": "slumped failure state with a sad face",
+      "direction": "front",
+      "category": "result",
+      "source": "v1",
+      "path": "sprites/agent/failure.png",
+      "cell": {
+        "index": 7,
+        "row": 1,
+        "column": 2,
+        "x": 768,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 102,
+        "y": 115,
+        "width": 179,
+        "height": 341,
+        "right": 103,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "point-right",
+      "zhName": "指向右侧",
+      "description": "pointing clearly toward content on the right",
+      "direction": "right",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/point-right.png",
+      "cell": {
+        "index": 8,
+        "row": 1,
+        "column": 3,
+        "x": 1152,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 64,
+        "y": 96,
+        "width": 256,
+        "height": 360,
+        "right": 64,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "point-left",
+      "zhName": "指向左侧",
+      "description": "pointing clearly toward content on the left",
+      "direction": "left",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/point-left.png",
+      "cell": {
+        "index": 9,
+        "row": 1,
+        "column": 4,
+        "x": 1536,
+        "y": 512,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 62,
+        "y": 96,
+        "width": 261,
+        "height": 360,
+        "right": 61,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "look-right",
+      "zhName": "观察右侧",
+      "description": "turning the face screen and body to inspect content on the right",
+      "direction": "right",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/look-right.png",
+      "cell": {
+        "index": 10,
+        "row": 2,
+        "column": 0,
+        "x": 0,
+        "y": 1024,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 97,
+        "y": 96,
+        "width": 191,
+        "height": 360,
+        "right": 96,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "look-left",
+      "zhName": "观察左侧",
+      "description": "turning the face screen and body to inspect content on the left",
+      "direction": "left",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/look-left.png",
+      "cell": {
+        "index": 11,
+        "row": 2,
+        "column": 1,
+        "x": 384,
+        "y": 1024,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 100,
+        "y": 96,
+        "width": 184,
+        "height": 360,
+        "right": 100,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "present-right",
+      "zhName": "展示右侧",
+      "description": "open-palm presentation gesture toward content on the right",
+      "direction": "right",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/present-right.png",
+      "cell": {
+        "index": 12,
+        "row": 2,
+        "column": 2,
+        "x": 768,
+        "y": 1024,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 61,
+        "y": 96,
+        "width": 262,
+        "height": 360,
+        "right": 61,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "present-left",
+      "zhName": "展示左侧",
+      "description": "open-palm presentation gesture toward content on the left",
+      "direction": "left",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/present-left.png",
+      "cell": {
+        "index": 13,
+        "row": 2,
+        "column": 3,
+        "x": 1152,
+        "y": 1024,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 64,
+        "y": 96,
+        "width": 256,
+        "height": 360,
+        "right": 64,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "receive-right",
+      "zhName": "从右接收",
+      "description": "receiving an imaginary tool or task from the right with open hands, holding no external object",
+      "direction": "right",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/receive-right.png",
+      "cell": {
+        "index": 14,
+        "row": 2,
+        "column": 4,
+        "x": 1536,
+        "y": 1024,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 80,
+        "y": 96,
+        "width": 224,
+        "height": 360,
+        "right": 80,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "receive-left",
+      "zhName": "从左接收",
+      "description": "receiving an imaginary tool or task from the left with open hands, holding no external object",
+      "direction": "left",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/receive-left.png",
+      "cell": {
+        "index": 15,
+        "row": 3,
+        "column": 0,
+        "x": 0,
+        "y": 1536,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 73,
+        "y": 96,
+        "width": 238,
+        "height": 360,
+        "right": 73,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "execute-right",
+      "zhName": "执行右侧",
+      "description": "pressing an imaginary control positioned on the right",
+      "direction": "right",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/execute-right.png",
+      "cell": {
+        "index": 16,
+        "row": 3,
+        "column": 1,
+        "x": 384,
+        "y": 1536,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 71,
+        "y": 96,
+        "width": 243,
+        "height": 360,
+        "right": 70,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "execute-left",
+      "zhName": "执行左侧",
+      "description": "pressing an imaginary control positioned on the left",
+      "direction": "left",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/execute-left.png",
+      "cell": {
+        "index": 17,
+        "row": 3,
+        "column": 2,
+        "x": 768,
+        "y": 1536,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 70,
+        "y": 96,
+        "width": 245,
+        "height": 360,
+        "right": 69,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "handoff-right",
+      "zhName": "向右交付",
+      "description": "handing an imaginary completed artifact toward the right, holding no external object",
+      "direction": "right",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/handoff-right.png",
+      "cell": {
+        "index": 18,
+        "row": 3,
+        "column": 3,
+        "x": 1152,
+        "y": 1536,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 71,
+        "y": 96,
+        "width": 242,
+        "height": 360,
+        "right": 71,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "handoff-left",
+      "zhName": "向左交付",
+      "description": "handing an imaginary completed artifact toward the left, holding no external object",
+      "direction": "left",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/handoff-left.png",
+      "cell": {
+        "index": 19,
+        "row": 3,
+        "column": 4,
+        "x": 1536,
+        "y": 1536,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 75,
+        "y": 96,
+        "width": 235,
+        "height": 360,
+        "right": 74,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "move-right",
+      "zhName": "向右推进",
+      "description": "walking or advancing purposefully toward the right",
+      "direction": "right",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/move-right.png",
+      "cell": {
+        "index": 20,
+        "row": 4,
+        "column": 0,
+        "x": 0,
+        "y": 2048,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 78,
+        "y": 96,
+        "width": 228,
+        "height": 360,
+        "right": 78,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "move-left",
+      "zhName": "向左推进",
+      "description": "walking or advancing purposefully toward the left",
+      "direction": "left",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/move-left.png",
+      "cell": {
+        "index": 21,
+        "row": 4,
+        "column": 1,
+        "x": 384,
+        "y": 2048,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 85,
+        "y": 96,
+        "width": 214,
+        "height": 360,
+        "right": 85,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "monitor-right",
+      "zhName": "监控右侧",
+      "description": "watching an imaginary status display on the right with an attentive face screen",
+      "direction": "right",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/monitor-right.png",
+      "cell": {
+        "index": 22,
+        "row": 4,
+        "column": 2,
+        "x": 768,
+        "y": 2048,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 98,
+        "y": 96,
+        "width": 188,
+        "height": 360,
+        "right": 98,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "monitor-left",
+      "zhName": "监控左侧",
+      "description": "watching an imaginary status display on the left with an attentive face screen",
+      "direction": "left",
+      "category": "directional",
+      "source": "generated",
+      "path": "sprites/agent/monitor-left.png",
+      "cell": {
+        "index": 23,
+        "row": 4,
+        "column": 3,
+        "x": 1152,
+        "y": 2048,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 95,
+        "y": 96,
+        "width": 195,
+        "height": 360,
+        "right": 94,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "ask-front",
+      "zhName": "正面提问",
+      "description": "front-facing questioning pose with one palm raised and a curious face screen",
+      "direction": "front",
+      "category": "communication",
+      "source": "generated",
+      "path": "sprites/agent/ask-front.png",
+      "cell": {
+        "index": 24,
+        "row": 4,
+        "column": 4,
+        "x": 1536,
+        "y": 2048,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 77,
+        "y": 96,
+        "width": 231,
+        "height": 360,
+        "right": 76,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "listen-front",
+      "zhName": "正面倾听",
+      "description": "front-facing attentive listening pose",
+      "direction": "front",
+      "category": "communication",
+      "source": "generated",
+      "path": "sprites/agent/listen-front.png",
+      "cell": {
+        "index": 25,
+        "row": 5,
+        "column": 0,
+        "x": 0,
+        "y": 2560,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 94,
+        "y": 96,
+        "width": 196,
+        "height": 360,
+        "right": 94,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "plan-front",
+      "zhName": "正面规划",
+      "description": "front-facing planning pose arranging imaginary steps with both hands, no external objects",
+      "direction": "front",
+      "category": "reasoning",
+      "source": "generated",
+      "path": "sprites/agent/plan-front.png",
+      "cell": {
+        "index": 26,
+        "row": 5,
+        "column": 1,
+        "x": 384,
+        "y": 2560,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 103,
+        "y": 96,
+        "width": 179,
+        "height": 360,
+        "right": 102,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "reason-front",
+      "zhName": "正面推理",
+      "description": "front-facing thoughtful reasoning pose with one hand near the face screen",
+      "direction": "front",
+      "category": "reasoning",
+      "source": "generated",
+      "path": "sprites/agent/reason-front.png",
+      "cell": {
+        "index": 27,
+        "row": 5,
+        "column": 2,
+        "x": 768,
+        "y": 2560,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 100,
+        "y": 96,
+        "width": 185,
+        "height": 360,
+        "right": 99,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "read-front",
+      "zhName": "正面阅读",
+      "description": "front-facing reading pose looking down at an imaginary document, holding no object",
+      "direction": "front",
+      "category": "knowledge",
+      "source": "generated",
+      "path": "sprites/agent/read-front.png",
+      "cell": {
+        "index": 28,
+        "row": 5,
+        "column": 3,
+        "x": 1152,
+        "y": 2560,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 102,
+        "y": 96,
+        "width": 181,
+        "height": 360,
+        "right": 101,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "write-front",
+      "zhName": "正面记录",
+      "description": "front-facing note-taking gesture over an imaginary surface, holding no object",
+      "direction": "front",
+      "category": "knowledge",
+      "source": "generated",
+      "path": "sprites/agent/write-front.png",
+      "cell": {
+        "index": 29,
+        "row": 5,
+        "column": 4,
+        "x": 1536,
+        "y": 2560,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 102,
+        "y": 96,
+        "width": 180,
+        "height": 360,
+        "right": 102,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "compare-front",
+      "zhName": "正面对比",
+      "description": "front-facing comparison pose with both palms open like weighing two options",
+      "direction": "front",
+      "category": "evaluation",
+      "source": "generated",
+      "path": "sprites/agent/compare-front.png",
+      "cell": {
+        "index": 30,
+        "row": 6,
+        "column": 0,
+        "x": 0,
+        "y": 3072,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 49,
+        "y": 96,
+        "width": 287,
+        "height": 360,
+        "right": 48,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "verify-front",
+      "zhName": "正面核验",
+      "description": "front-facing verification pose with one confident check gesture and focused face screen",
+      "direction": "front",
+      "category": "evaluation",
+      "source": "generated",
+      "path": "sprites/agent/verify-front.png",
+      "cell": {
+        "index": 31,
+        "row": 6,
+        "column": 1,
+        "x": 384,
+        "y": 3072,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 90,
+        "y": 96,
+        "width": 205,
+        "height": 360,
+        "right": 89,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "evaluate-front",
+      "zhName": "正面评估",
+      "description": "front-facing evaluation pose inspecting an imaginary result with both hands",
+      "direction": "front",
+      "category": "evaluation",
+      "source": "generated",
+      "path": "sprites/agent/evaluate-front.png",
+      "cell": {
+        "index": 32,
+        "row": 6,
+        "column": 2,
+        "x": 768,
+        "y": 3072,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 101,
+        "y": 96,
+        "width": 183,
+        "height": 360,
+        "right": 100,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "alert-front",
+      "zhName": "正面告警",
+      "description": "front-facing alert pose with raised hands and a warning expression on the face screen",
+      "direction": "front",
+      "category": "risk",
+      "source": "generated",
+      "path": "sprites/agent/alert-front.png",
+      "cell": {
+        "index": 33,
+        "row": 6,
+        "column": 3,
+        "x": 1152,
+        "y": 3072,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 65,
+        "y": 96,
+        "width": 255,
+        "height": 360,
+        "right": 64,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "blocked-front",
+      "zhName": "正面受阻",
+      "description": "front-facing blocked state with hands lowered and a frustrated but readable face screen",
+      "direction": "front",
+      "category": "risk",
+      "source": "generated",
+      "path": "sprites/agent/blocked-front.png",
+      "cell": {
+        "index": 34,
+        "row": 6,
+        "column": 4,
+        "x": 1536,
+        "y": 3072,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 100,
+        "y": 96,
+        "width": 185,
+        "height": 360,
+        "right": 99,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "retry-front",
+      "zhName": "正面重试",
+      "description": "front-facing retry pose with one hand making a circular again gesture",
+      "direction": "front",
+      "category": "recovery",
+      "source": "generated",
+      "path": "sprites/agent/retry-front.png",
+      "cell": {
+        "index": 35,
+        "row": 7,
+        "column": 0,
+        "x": 0,
+        "y": 3584,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 89,
+        "y": 96,
+        "width": 206,
+        "height": 360,
+        "right": 89,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "wait-front",
+      "zhName": "正面等待",
+      "description": "front-facing patient waiting pose with hands together",
+      "direction": "front",
+      "category": "recovery",
+      "source": "generated",
+      "path": "sprites/agent/wait-front.png",
+      "cell": {
+        "index": 36,
+        "row": 7,
+        "column": 1,
+        "x": 384,
+        "y": 3584,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 106,
+        "y": 96,
+        "width": 173,
+        "height": 360,
+        "right": 105,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "collaborate-front",
+      "zhName": "正面协作",
+      "description": "front-facing collaboration invitation with both open palms",
+      "direction": "front",
+      "category": "coordination",
+      "source": "generated",
+      "path": "sprites/agent/collaborate-front.png",
+      "cell": {
+        "index": 37,
+        "row": 7,
+        "column": 2,
+        "x": 768,
+        "y": 3584,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 60,
+        "y": 96,
+        "width": 264,
+        "height": 360,
+        "right": 60,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "delegate-front",
+      "zhName": "正面委派",
+      "description": "front-facing delegation pose assigning an imaginary task outward with one hand",
+      "direction": "front",
+      "category": "coordination",
+      "source": "generated",
+      "path": "sprites/agent/delegate-front.png",
+      "cell": {
+        "index": 38,
+        "row": 7,
+        "column": 3,
+        "x": 1152,
+        "y": 3584,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 80,
+        "y": 96,
+        "width": 224,
+        "height": 360,
+        "right": 80,
+        "bottom": 56
+      }
+    },
+    {
+      "id": "celebrate-front",
+      "zhName": "正面庆祝",
+      "description": "front-facing celebration with both hands raised and a joyful face screen",
+      "direction": "front",
+      "category": "result",
+      "source": "generated",
+      "path": "sprites/agent/celebrate-front.png",
+      "cell": {
+        "index": 39,
+        "row": 7,
+        "column": 4,
+        "x": 1536,
+        "y": 3584,
+        "width": 384,
+        "height": 512
+      },
+      "anchors": {
+        "registration": {
+          "kind": "feet",
+          "x": 192,
+          "y": 456
+        },
+        "center": {
+          "x": 192,
+          "y": 256
+        }
+      },
+      "bounds": {
+        "x": 46,
+        "y": 96,
+        "width": 293,
+        "height": 360,
+        "right": 45,
+        "bottom": 56
+      }
+    }
+  ]
+}

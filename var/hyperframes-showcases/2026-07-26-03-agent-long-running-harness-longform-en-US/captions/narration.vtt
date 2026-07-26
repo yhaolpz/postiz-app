@@ -1,0 +1,521 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:03.375
+Can an AI Agent stay on track across context windows?
+
+2
+00:00:03.375 --> 00:00:04.380
+Use a handoff.
+
+3
+00:00:04.380 --> 00:00:06.956
+Anthropic studied this problem in a long-running coding setup.
+
+4
+00:00:06.956 --> 00:00:10.489
+Their useful conclusion is simple: do not ask a fresh session to rediscover
+
+5
+00:00:10.489 --> 00:00:11.709
+the whole project before it can help.
+
+6
+00:00:11.709 --> 00:00:14.988
+Without a working floor, an Agent can restart by guessing, repeat
+
+7
+00:00:14.988 --> 00:00:18.236
+already-finished work, or mistake a half-built feature for a completed task.
+
+8
+00:00:18.236 --> 00:00:20.307
+That burns time and quietly raises risk.
+
+9
+00:00:20.307 --> 00:00:24.149
+The reusable tool in this episode is a Long-Running AI Agent Progress &
+
+10
+00:00:24.149 --> 00:00:24.257
+Handoff Card.
+
+11
+00:00:24.257 --> 00:00:27.915
+It turns a vague continuation request into a small, inspectable next move.
+
+12
+00:00:27.915 --> 00:00:31.598
+We will separate the reset problem, the minimum starting state, the size of
+
+13
+00:00:31.598 --> 00:00:35.036
+a good next move, the handoff itself, and the evidence required before
+
+14
+00:00:35.036 --> 00:00:35.470
+progress is claimed.
+
+15
+00:00:35.470 --> 00:00:39.097
+This video is packed with practical, high-value insights to help you get
+
+16
+00:00:39.097 --> 00:00:39.451
+better at using AI.
+
+17
+00:00:39.451 --> 00:00:42.820
+It's a longer one, so follow Tiny Agent and save it so you don't lose it.
+
+18
+00:00:42.820 --> 00:00:45.902
+A long task does not become continuous just because the Agent has a loop.
+
+19
+00:00:45.902 --> 00:00:49.480
+Each context window is a new session with incomplete memory of what happened
+
+20
+00:00:49.480 --> 00:00:49.677
+That reset creates two costly failure modes.
+
+21
+00:00:49.677 --> 00:00:50.025
+before.
+
+22
+00:00:51.771 --> 00:00:55.394
+The Agent can attempt too much at once, or it can see partial progress and
+
+23
+00:00:55.394 --> 00:00:56.439
+declare the entire job finished.
+
+24
+00:00:56.439 --> 00:00:59.999
+Compaction can preserve some context, but it is not a substitute for a
+
+25
+00:00:59.999 --> 00:01:00.382
+durable work state.
+
+26
+00:01:00.382 --> 00:01:02.614
+A new session still needs to know what matters now.
+
+27
+00:01:02.614 --> 00:01:04.978
+Treat the handoff as an interface, not as a diary.
+
+28
+00:01:04.978 --> 00:01:08.428
+It should help the next Agent choose a safe next action without rereading
+
+29
+00:01:08.428 --> 00:01:09.020
+every past conversation.
+
+30
+00:01:09.020 --> 00:01:10.878
+Do not ask what the last session discussed.
+
+31
+00:01:10.878 --> 00:01:14.614
+Ask what is true in the environment, what remains unproven, and what should
+
+32
+00:01:14.614 --> 00:01:14.676
+happen next.
+
+33
+00:01:14.676 --> 00:01:18.226
+A reset becomes manageable when the project keeps a small source of truth
+
+34
+00:01:18.226 --> 00:01:19.002
+outside the context window.
+
+35
+00:01:19.002 --> 00:01:19.870
+Chapter recap.
+
+36
+00:01:19.870 --> 00:01:23.080
+First, a context window reset can erase practical working state.
+
+37
+00:01:23.080 --> 00:01:26.637
+Second, partial work can trigger either repeated effort or premature
+
+38
+00:01:26.637 --> 00:01:26.667
+completion.
+
+39
+00:01:26.667 --> 00:01:29.883
+Third, the next session needs an actionable state, not a transcript.
+
+40
+00:01:29.883 --> 00:01:33.123
+Start with a working floor before asking an AI Agent to add a feature.
+
+41
+00:01:33.123 --> 00:01:36.122
+The floor is the smallest verified state from which new work is safe.
+
+42
+00:01:36.122 --> 00:01:39.923
+For software work, that usually includes a runnable environment, a feature
+
+43
+00:01:39.923 --> 00:01:42.100
+list, a progress record, and a quick end-to-end check.
+
+44
+00:01:42.100 --> 00:01:43.849
+Other domains need equivalent anchors.
+
+45
+00:01:43.849 --> 00:01:47.617
+The initializer has a distinct job: make future sessions less dependent on
+
+46
+00:01:47.617 --> 00:01:47.693
+It prepares the map before anyone starts driving.
+
+47
+00:01:47.693 --> 00:01:48.212
+inference.
+
+48
+00:01:49.848 --> 00:01:52.254
+Keep requirements in a structure that makes completion visible.
+
+49
+00:01:52.254 --> 00:01:54.426
+A feature is not complete because it sounds finished;
+
+50
+00:01:54.426 --> 00:01:56.726
+it is complete when its observable behavior passes.
+
+51
+00:01:56.726 --> 00:02:00.527
+Also record the current constraints: accepted inputs, forbidden changes,
+
+52
+00:02:00.527 --> 00:02:02.850
+known failures, and the evidence a reviewer will need.
+
+53
+00:02:02.850 --> 00:02:06.481
+A stable floor reduces the temptation to rebuild the foundation in every
+
+54
+00:02:06.481 --> 00:02:06.612
+Chapter recap.
+
+55
+00:02:06.612 --> 00:02:07.030
+session.
+
+56
+00:02:07.337 --> 00:02:09.913
+First, create a minimal verified starting environment.
+
+57
+00:02:09.913 --> 00:02:12.952
+Second, make requirements and current constraints easy to inspect.
+
+58
+00:02:12.952 --> 00:02:17.058
+Third, treat the initializer as setup for future sessions, not as one-shot
+
+59
+00:02:17.058 --> 00:02:17.065
+Once the floor exists, shrink the next move.
+
+60
+00:02:17.065 --> 00:02:17.565
+delivery.
+
+61
+00:02:19.307 --> 00:02:22.865
+A long-running AI Agent should advance one meaningful unit instead of trying
+
+62
+00:02:22.865 --> 00:02:24.217
+to finish the whole project in one pass.
+
+63
+00:02:24.217 --> 00:02:27.897
+Choose a unit that has a clear boundary: one feature, one failure to
+
+64
+00:02:27.897 --> 00:02:30.225
+reproduce, one data check, or one reviewable decision.
+
+65
+00:02:30.225 --> 00:02:32.262
+It should fit inside the available context.
+
+66
+00:02:32.262 --> 00:02:33.875
+A small move still needs a result.
+
+67
+00:02:33.875 --> 00:02:37.497
+The Agent should change a real state, run the relevant verification, and say
+
+68
+00:02:37.497 --> 00:02:39.120
+what that verification did and did not prove.
+
+69
+00:02:39.120 --> 00:02:40.775
+This is not slow for its own sake.
+
+70
+00:02:40.775 --> 00:02:44.566
+Small completed units avoid the expensive recovery work caused by abandoned
+
+71
+00:02:44.566 --> 00:02:45.069
+half-implementations.
+
+72
+00:02:45.069 --> 00:02:48.936
+When a request is too large, split by a user-observable outcome rather than
+
+73
+00:02:48.936 --> 00:02:50.217
+by arbitrary files or token counts.
+
+74
+00:02:50.217 --> 00:02:53.971
+The progress card should name one next move, its success signal, and its
+
+75
+00:02:53.971 --> 00:02:54.204
+stop condition.
+
+76
+00:02:54.204 --> 00:02:55.060
+Chapter recap.
+
+77
+00:02:55.060 --> 00:02:57.831
+First, give each session one bounded meaningful objective.
+
+78
+00:02:57.831 --> 00:03:00.736
+Second, connect that objective to a real verification signal.
+
+79
+00:03:00.736 --> 00:03:04.535
+Third, split oversized work by observable outcome, not by convenience.
+
+80
+00:03:04.535 --> 00:03:08.026
+A useful handoff answers four questions fast: what changed, what is
+
+81
+00:03:08.026 --> 00:03:11.170
+verified, what is uncertain, and what is the next smallest safe action.
+
+82
+00:03:11.170 --> 00:03:13.131
+Write decisions and evidence beside each other.
+
+83
+00:03:13.131 --> 00:03:16.429
+A choice is usable when it names the browser evidence that passed and the
+
+84
+00:03:16.429 --> 00:03:16.975
+alternative that failed.
+
+85
+00:03:16.975 --> 00:03:20.111
+Leave paths to the source of truth, not a copied wall of context.
+
+86
+00:03:20.111 --> 00:03:23.993
+The next Agent can inspect the feature list, progress note, tests, or
+
+87
+00:03:23.993 --> 00:03:24.588
+artifacts on demand.
+
+88
+00:03:24.588 --> 00:03:27.749
+Keep the environment clean enough for another person or Agent to begin
+
+89
+00:03:27.749 --> 00:03:27.811
+Hidden breakage is not progress merely because a diff exists.
+
+90
+00:03:27.811 --> 00:03:28.364
+immediately.
+
+91
+00:03:30.473 --> 00:03:34.367
+A good handoff also names a boundary: do not change this integration, do not
+
+92
+00:03:34.367 --> 00:03:36.574
+claim this metric, or wait for this external approval.
+
+93
+00:03:36.574 --> 00:03:39.945
+That boundary is how you preserve human judgment when the Agent continues
+
+94
+00:03:39.945 --> 00:03:40.068
+independently.
+
+95
+00:03:40.068 --> 00:03:40.932
+Chapter recap.
+
+96
+00:03:40.932 --> 00:03:44.636
+First, record changes, evidence, uncertainty, and the next move.
+
+97
+00:03:44.636 --> 00:03:48.095
+Second, link to inspectable sources instead of copying all context.
+
+98
+00:03:48.095 --> 00:03:51.312
+Third, make constraints explicit so the next Agent does not overreach.
+
+99
+00:03:51.312 --> 00:03:55.080
+Before an AI Agent marks progress complete, verify the claimed outcome at
+
+100
+00:03:55.080 --> 00:03:56.296
+the level the user will experience.
+
+101
+00:03:56.296 --> 00:03:59.138
+A unit test alone may not prove an end-to-end feature works.
+
+102
+00:03:59.138 --> 00:04:02.181
+The source article describes better results when Agents were explicitly
+
+103
+00:04:02.181 --> 00:04:04.935
+prompted to use browser automation for end-to-end checks in a web-app
+
+104
+00:04:04.935 --> 00:04:05.139
+Use the narrowest sufficient check first, then add a realistic workflow
+
+105
+00:04:05.139 --> 00:04:05.482
+setting.
+
+106
+00:04:08.288 --> 00:04:10.937
+check when the claim affects an interface, integration, or delivery.
+
+107
+00:04:10.937 --> 00:04:13.503
+Update the progress card only after the evidence exists.
+
+108
+00:04:13.503 --> 00:04:16.720
+A pass flag is an output of verification, not a substitute for it.
+
+109
+00:04:16.720 --> 00:04:20.700
+When verification fails, preserve the failure, the reproduction path, and
+
+110
+00:04:20.700 --> 00:04:21.961
+the smallest next diagnostic step.
+
+111
+00:04:21.961 --> 00:04:24.275
+That turns a reset into a focused continuation.
+
+112
+00:04:24.275 --> 00:04:27.687
+This is also the human gate: people decide whether the evidence is enough
+
+113
+00:04:27.687 --> 00:04:28.522
+for the consequence at stake.
+
+114
+00:04:28.522 --> 00:04:29.381
+Chapter recap.
+
+115
+00:04:29.381 --> 00:04:32.597
+First, verify outcomes at the level users actually experience.
+
+116
+00:04:32.597 --> 00:04:35.434
+Second, record evidence before changing a task to complete.
+
+117
+00:04:35.434 --> 00:04:39.358
+Third, turn failures into precise next diagnostics rather than vague
+
+118
+00:04:39.358 --> 00:04:39.398
+Long-running AI Agents need continuity by design, not by optimism.
+
+119
+00:04:39.398 --> 00:04:39.864
+retries.
+
+120
+00:04:42.939 --> 00:04:46.469
+First, establish a working floor with a runnable environment, clear
+
+121
+00:04:46.469 --> 00:04:47.972
+requirements, and a fast reality check.
+
+122
+00:04:47.972 --> 00:04:51.557
+Second, make one bounded move at a time and verify its observable result.
+
+123
+00:04:51.557 --> 00:04:55.370
+Third, leave a handoff that states changes, evidence, uncertainty,
+
+124
+00:04:55.370 --> 00:04:56.977
+boundaries, and the next safe action.
+
+125
+00:04:56.977 --> 00:05:00.864
+Use the Long-Running AI Agent Progress & Handoff Card whenever work must
+
+126
+00:05:00.864 --> 00:05:02.663
+cross sessions, people, or context windows.
+
+127
+00:05:02.663 --> 00:05:06.147
+The practical test is simple: could a fresh Agent begin useful work without
+
+128
+00:05:06.147 --> 00:05:07.146
+guessing what the last one meant?
+
+129
+00:05:07.146 --> 00:05:08.277
+Follow Tiny Agent.
+
+130
+00:05:08.277 --> 00:05:10.533
+Tiny Agent helps you get better at using AI.

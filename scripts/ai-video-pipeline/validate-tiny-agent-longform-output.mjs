@@ -66,19 +66,49 @@ const profile = JSON.parse(
 const overrides = profile.postSnapshotUserOverrides ?? {};
 const opening = overrides.openingQuestionReadability ?? {};
 const recapRule = overrides.chapterRecapNarration?.screenCopy ?? {};
-const alphaRule = overrides.generatedArtTransparency ?? {};
+const episode = readJson('episode.json');
+const summary = readJson('summary.json');
 const scenePlan = readJson('scene-plan.json');
 const timingMap = readJson('timing-map.json');
 const openingReport = readJson('qa/retention-opening-report.json');
+const hookQualityReport = readJson('qa/opening-hook-quality-report.json');
 const recapReport = readJson('qa/recap-visual-copy-report.json');
 const alphaReport = readJson('qa/generated-art-alpha-report.json');
 const scenes = sceneList(scenePlan);
 const recaps = scenes.filter((scene) => scene.type === 'recap');
 const generated = scenes.filter((scene) => scene.temporaryGenerated || scene.generatedArt);
 const forbiddenRecapMarker = /本章小节|Chapter\s+recap|^(?:第?[一二三]|First|Second|Third)[，、.:：]|^\s*[123][.、]/i;
+const locale = episode.locale;
+const expectedAudio = profile.fixedBilingualGeneration?.[locale];
+const durationRange = profile.fixedBilingualGeneration?.durationSeconds;
+
+if (!['zh-CN', 'en-US'].includes(locale)) {
+  fail(`episode.json locale: unsupported ${JSON.stringify(locale)}`);
+}
+if (!expectedAudio?.voice || !expectedAudio?.rate) {
+  fail(`active profile: missing audio contract for ${JSON.stringify(locale)}`);
+} else {
+  for (const [source, record] of Object.entries({
+    'episode.json': episode,
+    'timing-map.json': timingMap,
+    'summary.json': summary,
+  })) {
+    if (record.locale !== locale) fail(`${source} locale: expected ${locale}, received ${JSON.stringify(record.locale)}`);
+    if (record.voice !== expectedAudio.voice) fail(`${source} voice: expected ${expectedAudio.voice}, received ${JSON.stringify(record.voice)}`);
+    if (record.rate !== expectedAudio.rate) fail(`${source} rate: expected ${expectedAudio.rate}, received ${JSON.stringify(record.rate)}`);
+  }
+}
+inRange(timingMap.duration, durationRange ?? {}, 'timing-map.json duration');
+inRange(summary.duration, durationRange ?? {}, 'summary.json duration');
 
 if (recapRule.displayField !== 'recapDisplayText') {
   fail('active profile: recap screen-copy display field is not recapDisplayText');
+}
+if (recapRule.bodyNumbering?.visible !== true
+  || recapRule.bodyNumbering?.style !== 'arabic-dot'
+  || JSON.stringify(recapRule.bodyNumbering?.values) !== JSON.stringify(['1.', '2.', '3.'])
+  || recapRule.bodyTextAlignment !== 'left') {
+  fail('active profile: recap body must use left-aligned visible 1./2./3. numbering');
 }
 if (recaps.length === 0) fail('scene-plan.json: no recap scenes');
 for (const scene of recaps) {
@@ -105,12 +135,68 @@ for (const scene of recaps) {
   if (evidence.recapDisplayText !== scene.recapDisplayText) {
     fail(`recap evidence ${scene.id}: recapDisplayText does not match scene plan`);
   }
-  if (evidence.forbiddenMarkerCount !== 0 || evidence.numberedBulletPresent !== false) {
-    fail(`recap evidence ${scene.id}: rendered marker or numbered bullet detected`);
+  if (evidence.forbiddenMarkerCount !== 0 || evidence.numberedBulletPresent !== true
+    || evidence.bodyTextAlignment !== 'left' || evidence.bodyUsesOnlyRecapDisplayText !== true) {
+    fail(`recap evidence ${scene.id}: numbered, left-aligned recap body is missing or contains spoken ordinal copy`);
+  }
+  const chapterRecaps = scenes.filter((candidate) => candidate.type === 'recap' && candidate.chapterNumber === scene.chapterNumber);
+  const revealCount = chapterRecaps.findIndex((candidate) => candidate.id === scene.id) + 1;
+  const expectedBodyNumbers = ['1.', '2.', '3.'].slice(0, revealCount);
+  if (JSON.stringify(evidence.visibleBodyNumbers) !== JSON.stringify(expectedBodyNumbers)) {
+    fail(`recap evidence ${scene.id}: visible body numbers must be ${expectedBodyNumbers.join(', ')}`);
+  }
+  const expectedSectionLabel = locale === 'zh-CN' ? `第 ${scene.chapterNumber} 章小节` : `Chapter ${scene.chapterNumber} recap`;
+  if (evidence.sidebar?.visible !== true
+    || evidence.sidebar?.sectionLabel !== expectedSectionLabel
+    || evidence.sidebar?.chapterTitle !== scene.chapter) {
+    fail(`recap evidence ${scene.id}: missing or incorrect chapter-recap sidebar`);
+  }
+  if (evidence.captionTranscript !== true || evidence.captionOrdinalMarkerPresent !== true) {
+    fail(`recap evidence ${scene.id}: captions must preserve the spoken recap and ordinal prefix`);
+  }
+  const renderedCaptionTexts = evidence.renderedCaptionTexts;
+  if (!Array.isArray(renderedCaptionTexts) || renderedCaptionTexts.length === 0) {
+    fail(`recap evidence ${scene.id}: missing rendered caption text`);
+  } else {
+    for (const text of renderedCaptionTexts) {
+      if (!scene.narration.includes(text)) {
+        fail(`recap evidence ${scene.id}: rendered caption is not a final-VTT narration transcript: ${text}`);
+      }
+    }
   }
 }
 
 const hookTiming = timingMap.hookTiming ?? {};
+const hookQualityRule = opening.hookQuestionQuality ?? {};
+if (hookQualityRule.status !== 'active' || !Array.isArray(hookQualityRule.allowedIntents)) {
+  fail('active profile: opening hook-quality rule is missing or inactive');
+} else {
+  isTrue(hookQualityReport.pass, 'qa/opening-hook-quality-report.json pass');
+  if (hookQualityReport.visibleQuestion !== hookTiming.visibleQuestion) {
+    fail(`opening hook quality: visibleQuestion must match final VTT hook; expected ${JSON.stringify(hookTiming.visibleQuestion)}, received ${JSON.stringify(hookQualityReport.visibleQuestion)}`);
+  }
+  if (!hookQualityRule.allowedIntents.includes(hookQualityReport.intent)) {
+    fail(`opening hook quality: unsupported intent ${JSON.stringify(hookQualityReport.intent)}`);
+  }
+  if (hookQualityRule.requireTopicIdentity && hookQualityReport.checks?.topicIdentityPresent !== true) {
+    fail('opening hook quality: topic identity is missing');
+  }
+  if (hookQualityRule.requireAudiencePainPoint && hookQualityReport.checks?.audiencePainPointPresent !== true) {
+    fail('opening hook quality: audience pain point is missing');
+  }
+  if (hookQualityRule.requireUnresolvedCuriosity && hookQualityReport.checks?.unresolvedCuriosity !== true) {
+    fail('opening hook quality: unresolved curiosity is missing');
+  }
+  if (hookQualityReport.checks?.causalOrDiscoveryForm !== true || hookQualityReport.checks?.noObviousYesNoForm !== true) {
+    fail('opening hook quality: question must use a causal/discovery form and cannot be an obvious yes-or-no question');
+  }
+  if (hookQualityReport.obviousAnswerRisk !== 'none') {
+    fail(`opening hook quality: obviousAnswerRisk must be none, received ${JSON.stringify(hookQualityReport.obviousAnswerRisk)}`);
+  }
+  if (!hookQualityReport.rejectedObviousQuestion || hookQualityReport.rejectedObviousQuestion === hookQualityReport.visibleQuestion) {
+    fail('opening hook quality: a distinct rejected obvious question is required');
+  }
+}
 if (hookTiming.earlyRevealCount !== opening.earlyRevealCount) {
   fail(`timing-map.json hookTiming.earlyRevealCount: expected ${opening.earlyRevealCount}, received ${JSON.stringify(hookTiming.earlyRevealCount)}`);
 }
@@ -160,6 +246,11 @@ for (const scene of generated) {
     continue;
   }
   isTrue(evidence.hasAlpha, `generated art ${name} hasAlpha`);
+  const opaqueBounds = evidence.opaqueBounds;
+  if (!Number.isFinite(opaqueBounds?.width) || !Number.isFinite(opaqueBounds?.height)
+    || opaqueBounds.width < 2 || opaqueBounds.height < 2) {
+    fail(`generated art ${name}: alpha evidence has no visible subject bounds`);
+  }
   for (const corner of ['topLeft', 'topRight', 'bottomLeft', 'bottomRight']) {
     if (evidence.cornerAlpha?.[corner] !== 0) {
       fail(`generated art ${name} ${corner} alpha: expected 0, received ${JSON.stringify(evidence.cornerAlpha?.[corner])}`);

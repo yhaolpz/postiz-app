@@ -57,6 +57,7 @@ if (!['zh-CN', 'en-US'].includes(episode.locale)) throw new Error(`Unsupported l
 run('node', ['scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs']);
 run('pnpm', ['run', 'tts'], { cwd: projectDir });
 run('pnpm', ['run', 'build'], { cwd: projectDir });
+run('node', ['scripts/ai-video-pipeline/validate-tiny-agent-longform-output.mjs', '--project', relativeProject]);
 for (const script of ['check:transitions', 'check:semantics', 'check:balance', 'check:layout', 'check']) {
   run('pnpm', ['run', script], { cwd: projectDir });
 }

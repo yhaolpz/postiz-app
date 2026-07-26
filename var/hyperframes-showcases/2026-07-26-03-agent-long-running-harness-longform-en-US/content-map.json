@@ -1,0 +1,45 @@
+{
+  "source": {
+    "publisher": "Anthropic",
+    "title": "Effective harnesses for long-running agents",
+    "url": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+    "publishedDate": "2025-11-26",
+    "facts": [
+      "Long-running agents must bridge discrete context windows, because a fresh session does not automatically remember prior work.",
+      "Anthropic describes a two-part harness: an initializer that prepares the environment and a coding agent that advances one feature at a time while leaving structured updates.",
+      "Their web-app experiment treats a clean handoff as merge-ready code, documented state, and a clear next step.",
+      "The article presents one practical approach for long-running coding agents; it does not establish that this is the best design for every agent, domain, or multi-agent system."
+    ]
+  },
+  "centralThesis": "A long-running AI Agent stays useful when each session starts from an explicit working floor, finishes one small verified move, and leaves a handoff another session can trust.",
+  "priorities": {
+    "P0": [
+      "continuity requires an explicit state",
+      "incremental verified progress",
+      "structured handoff"
+    ],
+    "P1": [
+      "working floor",
+      "bounded next move",
+      "handoff fields",
+      "user-visible verification"
+    ],
+    "P2": [
+      "Anthropic web-app experiment and its limits"
+    ],
+    "P3Removed": [
+      "company history and article-by-article retelling"
+    ]
+  },
+  "chapters": [
+    "Introduction",
+    "The Reset Problem",
+    "Build a Working Floor",
+    "Shrink the Next Move",
+    "Write the Handoff",
+    "Verify Before Advance",
+    "Summary"
+  ],
+  "reusableArtifact": "Long-Running AI Agent Progress & Handoff Card",
+  "factBoundary": "The episode treats Anthropic's article as a coding-agent case study and does not generalize its setup as a universal best design."
+}

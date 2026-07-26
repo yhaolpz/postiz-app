@@ -20,8 +20,8 @@
     "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/implementation-profile.zh-CN.json"
   ],
   "precedence": {
-    "generationRules": "The scheduled-6m18 frozen snapshot and its hashed bilingual implementation projects are the only active sources for content organization, narration pace, duration, opening timing, chapter pattern, visual cadence, motion baseline, generated-art ratio, and recaps.",
-    "explicitUserOverrides": "Explicit user-approved overrides recorded in postSnapshotUserOverrides are active production rules for their named scope. They take precedence over a contradictory frozen-snapshot wording, but do not otherwise change the frozen baseline.",
+    "generationRules": "The scheduled-6m18 frozen snapshot supplies the baseline. This active profile is the sole current behavior contract: its fixedBilingualGeneration values and named postSnapshotUserOverrides replace any contradictory snapshot wording. The snapshot files remain immutable evidence and are never copied verbatim into a new project's behavior.",
+    "explicitUserOverrides": "A named active override is the only allowed replacement for a contradictory frozen baseline rule. No operational prompt, plan, archive entry, memory note, historical project, or generated QA report may introduce a second behavior rule.",
     "operationalOverlaysAllowed": [
       "daily run state machine, recovery, cleanup, and deduplication",
       "source factuality and safety",
@@ -39,7 +39,7 @@
     "chapterRecapNarration": {
       "status": "active",
       "scope": ["zh-CN", "en-US"],
-      "purpose": "Retain the spoken three-point recap structure while separating spoken ordinal markers from the semantic text shown on screen.",
+        "purpose": "Retain the spoken three-point recap structure, restore the blue chapter-recap sidebar, and render a numbered left-aligned three-point body.",
       "zh-CN": {
         "firstPointPrefix": "本章小节。第一，",
         "followingPointPrefixes": ["第二，", "第三，"],
@@ -52,11 +52,18 @@
       },
       "screenCopy": {
         "displayField": "recapDisplayText",
-        "rule": "Every recap scene must carry two independently authored values: narration preserves the locale's required spoken recap and ordinal prefix; recapDisplayText contains only the concise substantive claim. The rendered recap must use recapDisplayText, not narration or headline. Do not render a recap label, chapter-recap label, ordinal word, ordinal number, numbered bullet, or marker such as 本章小节、第一、第二、第三、Chapter recap、First、Second、Third、1.、2.、3. on the screen. A chapter name may appear only when it is itself a substantive topic label and contains none of those markers.",
-        "zh-CN": "The visible Chinese line is only the claim after stripping the spoken prefix and any leading numeric/ordinal marker. It is not a transcript.",
-        "en-US": "The visible English line is only the claim after stripping the spoken prefix and any leading numeric/ordinal marker. It is not a transcript."
+        "bodyNumbering": {
+          "visible": true,
+          "style": "arabic-dot",
+          "values": ["1.", "2.", "3."],
+          "color": "#117ABD"
+        },
+        "bodyTextAlignment": "left",
+        "rule": "Every recap scene must carry two independently authored values: narration preserves the locale's required spoken recap and ordinal prefix; recapDisplayText contains only the concise substantive claim, not narration or headline. Render a blue left sidebar containing the chapter-recap label and that chapter's title. Render the three substantive body points left-aligned from recapDisplayText, with visible blue Arabic-dot labels 1., 2., 3. in a dedicated number column. Do not place spoken ordinal words inside recapDisplayText or the substantive claim text. On-screen subtitles are a faithful final-VTT transcript and may show the spoken recap and ordinal prefixes.",
+        "zh-CN": "The sidebar shows 第 N 章小节 and the current chapter title. The three visible body rows are left-aligned and show blue 1.、2.、3. labels beside claims stripped of their spoken prefixes. Captions retain the final VTT, including 本章小节、第一、第二、第三.",
+        "en-US": "The sidebar shows Chapter N recap and the current chapter title. The three visible body rows are left-aligned and show blue 1., 2., 3. labels beside claims stripped of their spoken prefixes. Captions retain the final VTT, including Chapter recap, First, Second, and Third."
       },
-      "qa": "Generate qa/recap-visual-copy-report.json with pass=true, renderedMarkerScanPass=true, and one recaps[] entry per scene containing sceneId, narration, recapDisplayText, forbiddenMarkerCount=0, and numberedBulletPresent=false. Confirm the required narration prefixes, assert the rendered DOM contains no recap label or ordinal marker, and assert no numbered-bullet element is rendered. Fail production on any mismatch."
+      "qa": "Generate qa/recap-visual-copy-report.json with pass=true, renderedMarkerScanPass=true, and one recaps[] entry per scene containing sceneId, narration, recapDisplayText, sidebar, visibleBodyNumbers, bodyTextAlignment=left, bodyUsesOnlyRecapDisplayText=true, forbiddenMarkerCount=0, and numberedBulletPresent=true. Confirm the required narration prefixes, the blue sidebar and chapter title, cumulative visible 1./2./3. labels, left-aligned substantive body copy, and final-VTT captions. Fail production on any mismatch."
     },
     "openingQuestionReadability": {
       "status": "active",
@@ -66,14 +73,51 @@
       "earlyRevealCount": 1,
       "maximumPerGlyphLeadMilliseconds": 280,
       "fullQuestionReadLeadMilliseconds": {"min": 650, "max": 850},
+      "spokenBridge": {
+        "durationMilliseconds": {"min": 650, "max": 850},
+        "rule": "To make the full visible question readable without leading any glyph beyond its own audible onset limit, the opening utterance may end with one short, natural, non-displayed spoken bridge after the literal visible-question VTT prefix. The bridge is part of the final opening VTT and audio, never a frozen hold. The visible question must remain an exact ordered prefix of that VTT; its final glyph completes 650-850ms before the opening utterance audible end while the bridge is spoken."
+      },
       "canvasGlyphCoveragePercent": {"width": {"min": 86, "max": 92}, "height": {"min": 68, "max": 78}},
       "agentReservation": {"visibleAtFirstFrame": true, "position": "bottom-right", "reservedBoundsPx": {"left": 1480, "top": 620, "right": 1880, "bottom": 1032}, "minimumVisibleHeightPx": 420},
       "forbiddenOpeningUi": ["opening progress rail", "left blue circle", "VOICE label"],
       "layout": "After final-font layout, use semantic 2-4-line breaks and the largest safe type. Visible first-question glyph bounds must occupy 86%-92% of canvas width and 68%-78% of canvas height. Reserve the lower-right agent box named by agentReservation: the question may use the rest of the canvas but may not overlap the Agent, question mark, emphasis marks, or outer safe margin. No opening glyph, punctuation, Agent, or accent may clip or overflow.",
-      "timing": "The first glyph/word becomes visible 120-180 milliseconds before the final VTT audible onset. Subsequent glyphs/words follow an accelerated VTT-derived cumulative schedule; no glyph/word may lead its own audible onset by more than 280 milliseconds. The final glyph is fully visible 650-850 milliseconds before the first-sentence audible end. Hard-cut directly to the body at the measured speech boundary; do not add a static hold after the speech ends.",
+      "timing": "The first glyph/word becomes visible 120-180 milliseconds before the final VTT audible onset. Subsequent glyphs/words follow an accelerated VTT-derived cumulative schedule; no glyph/word may lead its own audible onset by more than 280 milliseconds. The final visible-question glyph is fully visible 650-850 milliseconds before the opening-utterance audible end, using only the permitted spokenBridge when needed. Hard-cut directly to the body at the measured speech boundary; do not add a static hold after the speech ends.",
       "zh-CN": "Reveal each Han character and punctuation in order. Only the permitted measured lead may precede the matching speech; do not reveal unrelated future characters.",
       "en-US": "Reveal words in speaking order, with letters resolving quickly within each word. Only the permitted measured lead may precede the matching speech; do not reveal unrelated future phrases.",
       "agent": "The approved Tiny Agent is fully visible in the lower-right reserved box from the very first rendered opening frame. It has no delayed entrance, opacity fade-in, or reveal animation.",
+      "kineticGlyphEntrance": {
+        "questionMarkGapPx": 24,
+        "regularGlyph": {
+          "durationMilliseconds": 240,
+          "ease": "power3.out",
+          "entryVectorsPx": [
+            {"x": -180, "y": -112, "rotation": -12},
+            {"x": 176, "y": -108, "rotation": 11},
+            {"x": -172, "y": 118, "rotation": -10},
+            {"x": 184, "y": 114, "rotation": 12}
+          ],
+          "settledPose": "Every glyph must finish at x=0, y=0, rotation=0, scale=1. The ordered VTT-derived reveal schedule remains authoritative; direction changes may not reveal a later glyph early."
+        },
+        "finalQuestionGlyph": {
+          "durationMilliseconds": 250,
+          "entryVectorPx": {"x": 170, "y": -116, "rotation": 13},
+          "ease": "back.out(1.8)",
+          "settledPose": "The red question mark finishes upright at x=0, y=0, rotation=0, scale=1.12, with questionMarkGapPx clear space from the preceding glyph."
+        },
+        "purpose": "Use a deterministic four-direction kinetic entrance for the opening text: each ordered glyph travels in from a different diagonal direction, then settles cleanly into the final readable layout. Do not use random motion, a fade-only reveal, or a delayed Agent entrance."
+      },
+      "hookQuestionQuality": {
+        "status": "active",
+        "scope": ["zh-CN", "en-US"],
+        "purpose": "Make the first visible question earn attention by naming the audience's real pain and opening a useful unknown. It must invite the viewer to understand causes, mechanisms, trade-offs, triggers, or an actionable path; it must never spend the opening on an obvious yes-or-no proposition whose answer is already common knowledge to the intended audience.",
+        "allowedIntents": ["causal-diagnosis", "mechanism", "trade-off", "trigger", "actionable-path"],
+        "requireTopicIdentity": true,
+        "requireAudiencePainPoint": true,
+        "requireUnresolvedCuriosity": true,
+        "forbiddenQuestionForms": ["obvious yes-or-no validation question", "restatement of a commonly known problem as a question", "question whose visible wording already supplies its own answer"],
+        "semanticLineBreak": "Keep the AI Agent identity and the concrete task/topic intact. When a Chinese causal marker such as 为什么、如何 or 怎么 begins the interrogative clause, keep that complete causal clause together on its own lower line rather than splitting it mid-phrase.",
+        "qa": "Before rendering, write qa/opening-hook-quality-report.json. It must record the exact visibleQuestion, the audiencePainPoint, the knowledgeGap, the rejectedObviousQuestion, the selected allowed intent, and pass=true only when the question is topic-specific, uses an allowed intent, creates unresolved curiosity, and is not an obvious yes-or-no or self-answering question. The longform output validator must fail closed when this evidence is missing or does not match the final VTT hook."
+      },
       "openingUi": "The opening contains no dedicated progress rail, blue circular progress marker, or VOICE label. Delete those elements from the opening DOM and timeline; the normal chapter progress may begin only after the opening hard cut.",
       "qa": "Generate qa/retention-opening-report.json from final VTT, final-font DOM measurement, and rendered first-frame inspection. Record earlyRevealCount, firstGlyphLeadMilliseconds, maximumPerGlyphLeadMilliseconds, fullQuestionReadLeadMilliseconds, canvas glyph coverage, Agent first-frame visibility and bounds, hard-cut time, and an opening-ui absence scan. Fail if any value is outside this profile, the Agent is absent at frame zero, a forbidden opening UI element is present, or any opening element clips, overlaps, or exceeds its safe area."
     },
@@ -85,6 +129,16 @@
       "generationAndCleanup": "Request a transparent background at generation time. If a generation tool cannot emit alpha, remove the temporary key/flat background deterministically before composition; a backgrounded source is never an acceptable delivered scene asset.",
       "composition": "Place only the isolated subject directly over the video composition's existing paper-grid background. Do not add a source-image background plate, opaque wrapper, or replacement grid behind it.",
       "qa": "Generate qa/generated-art-alpha-report.json with pass=true, sharedGridComposition=true, and one assets[] entry per referenced temporary generated-art file. Each entry records file, hasAlpha=true, four cornerAlpha values of 0, canvasEdgeBackgroundDetected=false, opaque-bounds versus canvas bounds, and sceneIds. Fail if any file lacks alpha, has a non-transparent corner, retains a canvas-edge background, or is not composed directly over the shared grid."
+    },
+    "englishAdultNarration": {
+      "status": "active",
+      "scope": ["en-US"],
+      "voice": "en-US-ChristopherNeural",
+      "rate": "+30%",
+      "forbiddenVoice": "en-US-AnaNeural",
+      "selection": "Use the mainstream adult US-English Christopher voice: news/narration oriented, reliable and authoritative. It is the only permitted English longform narrator.",
+      "purpose": "Use a clearly adult, reliable, authoritative English narration instead of the former cute/conversational voice.",
+      "qa": "The final English episode.json, summary.json, timing-map.json, TTS command evidence, and speech-pacing report must all name en-US-ChristopherNeural at +30%. Reject en-US-AnaNeural and every other English longform voice."
     },
     "coverPrimaryTitleOnly": {
       "status": "active",
@@ -117,12 +171,13 @@
   },
   "fixedBilingualGeneration": {
     "duration": "5-8 minutes",
+    "durationSeconds": {"min": 300, "max": 480},
     "zh-CN": {
       "voice": "zh-CN-YunxiaNeural",
       "rate": "+35%"
     },
     "en-US": {
-      "voice": "en-US-AnaNeural",
+      "voice": "en-US-ChristopherNeural",
       "rate": "+30%"
     },
     "chapterPattern": "chapter opening, body, and spoken three-point recap",

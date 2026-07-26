@@ -1,0 +1,912 @@
+[
+  {
+    "start": 0.1,
+    "end": 3.375,
+    "text": "Can an AI Agent stay on track across context windows?",
+    "segmentId": "c01-p01-u01",
+    "sceneId": "c01-p01"
+  },
+  {
+    "start": 3.375,
+    "end": 4.38,
+    "text": "Use a handoff.",
+    "segmentId": "c01-p01-u01",
+    "sceneId": "c01-p01"
+  },
+  {
+    "start": 4.38,
+    "end": 6.956,
+    "text": "Anthropic studied this problem in a long-running coding setup.",
+    "segmentId": "c01-p02-u01",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 6.956,
+    "end": 10.489,
+    "text": "Their useful conclusion is simple: do not ask a fresh session to rediscover",
+    "segmentId": "c01-p02-u02",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 10.489,
+    "end": 11.709,
+    "text": "the whole project before it can help.",
+    "segmentId": "c01-p02-u02",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 11.709,
+    "end": 14.988,
+    "text": "Without a working floor, an Agent can restart by guessing, repeat",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 14.988,
+    "end": 18.236,
+    "text": "already-finished work, or mistake a half-built feature for a completed task.",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 18.236,
+    "end": 20.307,
+    "text": "That burns time and quietly raises risk.",
+    "segmentId": "c01-p03-u02",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 20.307,
+    "end": 24.149,
+    "text": "The reusable tool in this episode is a Long-Running AI Agent Progress &",
+    "segmentId": "c01-p04-u01",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 24.149,
+    "end": 24.257,
+    "text": "Handoff Card.",
+    "segmentId": "c01-p04-u01",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 24.257,
+    "end": 27.915,
+    "text": "It turns a vague continuation request into a small, inspectable next move.",
+    "segmentId": "c01-p04-u02",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 27.915,
+    "end": 31.598,
+    "text": "We will separate the reset problem, the minimum starting state, the size of",
+    "segmentId": "c01-p05-u01",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 31.598,
+    "end": 35.036,
+    "text": "a good next move, the handoff itself, and the evidence required before",
+    "segmentId": "c01-p05-u01",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 35.036,
+    "end": 35.47,
+    "text": "progress is claimed.",
+    "segmentId": "c01-p05-u01",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 35.47,
+    "end": 39.097,
+    "text": "This video is packed with practical, high-value insights to help you get",
+    "segmentId": "c01-p06-u01",
+    "sceneId": "c01-p06"
+  },
+  {
+    "start": 39.097,
+    "end": 39.451,
+    "text": "better at using AI.",
+    "segmentId": "c01-p06-u01",
+    "sceneId": "c01-p06"
+  },
+  {
+    "start": 39.451,
+    "end": 42.82,
+    "text": "It's a longer one, so follow Tiny Agent and save it so you don't lose it.",
+    "segmentId": "c01-p06-u02",
+    "sceneId": "c01-p06"
+  },
+  {
+    "start": 42.82,
+    "end": 45.902,
+    "text": "A long task does not become continuous just because the Agent has a loop.",
+    "segmentId": "c02-p01-u01",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 45.902,
+    "end": 49.48,
+    "text": "Each context window is a new session with incomplete memory of what happened",
+    "segmentId": "c02-p01-u02",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 49.48,
+    "end": 49.677,
+    "text": "That reset creates two costly failure modes.",
+    "segmentId": "c02-p02-u01",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 49.677,
+    "end": 50.025,
+    "text": "before.",
+    "segmentId": "c02-p01-u02",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 51.771,
+    "end": 55.394,
+    "text": "The Agent can attempt too much at once, or it can see partial progress and",
+    "segmentId": "c02-p02-u02",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 55.394,
+    "end": 56.439,
+    "text": "declare the entire job finished.",
+    "segmentId": "c02-p02-u02",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 56.439,
+    "end": 59.999,
+    "text": "Compaction can preserve some context, but it is not a substitute for a",
+    "segmentId": "c02-p03-u01",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 59.999,
+    "end": 60.382,
+    "text": "durable work state.",
+    "segmentId": "c02-p03-u01",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 60.382,
+    "end": 62.614,
+    "text": "A new session still needs to know what matters now.",
+    "segmentId": "c02-p03-u02",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 62.614,
+    "end": 64.978,
+    "text": "Treat the handoff as an interface, not as a diary.",
+    "segmentId": "c02-p04-u01",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 64.978,
+    "end": 68.428,
+    "text": "It should help the next Agent choose a safe next action without rereading",
+    "segmentId": "c02-p04-u02",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 68.428,
+    "end": 69.02,
+    "text": "every past conversation.",
+    "segmentId": "c02-p04-u02",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 69.02,
+    "end": 70.878,
+    "text": "Do not ask what the last session discussed.",
+    "segmentId": "c02-p05-u01",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 70.878,
+    "end": 74.614,
+    "text": "Ask what is true in the environment, what remains unproven, and what should",
+    "segmentId": "c02-p05-u02",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 74.614,
+    "end": 74.676,
+    "text": "happen next.",
+    "segmentId": "c02-p05-u02",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 74.676,
+    "end": 78.226,
+    "text": "A reset becomes manageable when the project keeps a small source of truth",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 78.226,
+    "end": 79.002,
+    "text": "outside the context window.",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 79.002,
+    "end": 79.87,
+    "text": "Chapter recap.",
+    "segmentId": "c02-p07-u01",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 79.87,
+    "end": 83.08,
+    "text": "First, a context window reset can erase practical working state.",
+    "segmentId": "c02-p07-u02",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 83.08,
+    "end": 86.637,
+    "text": "Second, partial work can trigger either repeated effort or premature",
+    "segmentId": "c02-p08-u01",
+    "sceneId": "c02-p08"
+  },
+  {
+    "start": 86.637,
+    "end": 86.667,
+    "text": "completion.",
+    "segmentId": "c02-p08-u01",
+    "sceneId": "c02-p08"
+  },
+  {
+    "start": 86.667,
+    "end": 89.883,
+    "text": "Third, the next session needs an actionable state, not a transcript.",
+    "segmentId": "c02-p09-u01",
+    "sceneId": "c02-p09"
+  },
+  {
+    "start": 89.883,
+    "end": 93.123,
+    "text": "Start with a working floor before asking an AI Agent to add a feature.",
+    "segmentId": "c03-p01-u01",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 93.123,
+    "end": 96.122,
+    "text": "The floor is the smallest verified state from which new work is safe.",
+    "segmentId": "c03-p01-u02",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 96.122,
+    "end": 99.923,
+    "text": "For software work, that usually includes a runnable environment, a feature",
+    "segmentId": "c03-p02-u01",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 99.923,
+    "end": 102.1,
+    "text": "list, a progress record, and a quick end-to-end check.",
+    "segmentId": "c03-p02-u01",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 102.1,
+    "end": 103.849,
+    "text": "Other domains need equivalent anchors.",
+    "segmentId": "c03-p02-u02",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 103.849,
+    "end": 107.617,
+    "text": "The initializer has a distinct job: make future sessions less dependent on",
+    "segmentId": "c03-p03-u01",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 107.617,
+    "end": 107.693,
+    "text": "It prepares the map before anyone starts driving.",
+    "segmentId": "c03-p03-u02",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 107.693,
+    "end": 108.212,
+    "text": "inference.",
+    "segmentId": "c03-p03-u01",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 109.848,
+    "end": 112.254,
+    "text": "Keep requirements in a structure that makes completion visible.",
+    "segmentId": "c03-p04-u01",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 112.254,
+    "end": 114.426,
+    "text": "A feature is not complete because it sounds finished;",
+    "segmentId": "c03-p04-u02",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 114.426,
+    "end": 116.726,
+    "text": "it is complete when its observable behavior passes.",
+    "segmentId": "c03-p04-u03",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 116.726,
+    "end": 120.527,
+    "text": "Also record the current constraints: accepted inputs, forbidden changes,",
+    "segmentId": "c03-p05-u01",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 120.527,
+    "end": 122.85,
+    "text": "known failures, and the evidence a reviewer will need.",
+    "segmentId": "c03-p05-u01",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 122.85,
+    "end": 126.481,
+    "text": "A stable floor reduces the temptation to rebuild the foundation in every",
+    "segmentId": "c03-p06-u01",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 126.481,
+    "end": 126.612,
+    "text": "Chapter recap.",
+    "segmentId": "c03-p07-u01",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 126.612,
+    "end": 127.03,
+    "text": "session.",
+    "segmentId": "c03-p06-u01",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 127.337,
+    "end": 129.913,
+    "text": "First, create a minimal verified starting environment.",
+    "segmentId": "c03-p07-u02",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 129.913,
+    "end": 132.952,
+    "text": "Second, make requirements and current constraints easy to inspect.",
+    "segmentId": "c03-p08-u01",
+    "sceneId": "c03-p08"
+  },
+  {
+    "start": 132.952,
+    "end": 137.058,
+    "text": "Third, treat the initializer as setup for future sessions, not as one-shot",
+    "segmentId": "c03-p09-u01",
+    "sceneId": "c03-p09"
+  },
+  {
+    "start": 137.058,
+    "end": 137.065,
+    "text": "Once the floor exists, shrink the next move.",
+    "segmentId": "c04-p01-u01",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 137.065,
+    "end": 137.565,
+    "text": "delivery.",
+    "segmentId": "c03-p09-u01",
+    "sceneId": "c03-p09"
+  },
+  {
+    "start": 139.307,
+    "end": 142.865,
+    "text": "A long-running AI Agent should advance one meaningful unit instead of trying",
+    "segmentId": "c04-p01-u02",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 142.865,
+    "end": 144.217,
+    "text": "to finish the whole project in one pass.",
+    "segmentId": "c04-p01-u02",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 144.217,
+    "end": 147.897,
+    "text": "Choose a unit that has a clear boundary: one feature, one failure to",
+    "segmentId": "c04-p02-u01",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 147.897,
+    "end": 150.225,
+    "text": "reproduce, one data check, or one reviewable decision.",
+    "segmentId": "c04-p02-u01",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 150.225,
+    "end": 152.262,
+    "text": "It should fit inside the available context.",
+    "segmentId": "c04-p02-u02",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 152.262,
+    "end": 153.875,
+    "text": "A small move still needs a result.",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 153.875,
+    "end": 157.497,
+    "text": "The Agent should change a real state, run the relevant verification, and say",
+    "segmentId": "c04-p03-u02",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 157.497,
+    "end": 159.12,
+    "text": "what that verification did and did not prove.",
+    "segmentId": "c04-p03-u02",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 159.12,
+    "end": 160.775,
+    "text": "This is not slow for its own sake.",
+    "segmentId": "c04-p04-u01",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 160.775,
+    "end": 164.566,
+    "text": "Small completed units avoid the expensive recovery work caused by abandoned",
+    "segmentId": "c04-p04-u02",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 164.566,
+    "end": 165.069,
+    "text": "half-implementations.",
+    "segmentId": "c04-p04-u02",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 165.069,
+    "end": 168.936,
+    "text": "When a request is too large, split by a user-observable outcome rather than",
+    "segmentId": "c04-p05-u01",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 168.936,
+    "end": 170.217,
+    "text": "by arbitrary files or token counts.",
+    "segmentId": "c04-p05-u01",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 170.217,
+    "end": 173.971,
+    "text": "The progress card should name one next move, its success signal, and its",
+    "segmentId": "c04-p06-u01",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 173.971,
+    "end": 174.204,
+    "text": "stop condition.",
+    "segmentId": "c04-p06-u01",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 174.204,
+    "end": 175.06,
+    "text": "Chapter recap.",
+    "segmentId": "c04-p07-u01",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 175.06,
+    "end": 177.831,
+    "text": "First, give each session one bounded meaningful objective.",
+    "segmentId": "c04-p07-u02",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 177.831,
+    "end": 180.736,
+    "text": "Second, connect that objective to a real verification signal.",
+    "segmentId": "c04-p08-u01",
+    "sceneId": "c04-p08"
+  },
+  {
+    "start": 180.736,
+    "end": 184.535,
+    "text": "Third, split oversized work by observable outcome, not by convenience.",
+    "segmentId": "c04-p09-u01",
+    "sceneId": "c04-p09"
+  },
+  {
+    "start": 184.535,
+    "end": 188.026,
+    "text": "A useful handoff answers four questions fast: what changed, what is",
+    "segmentId": "c05-p01-u01",
+    "sceneId": "c05-p01"
+  },
+  {
+    "start": 188.026,
+    "end": 191.17,
+    "text": "verified, what is uncertain, and what is the next smallest safe action.",
+    "segmentId": "c05-p01-u01",
+    "sceneId": "c05-p01"
+  },
+  {
+    "start": 191.17,
+    "end": 193.131,
+    "text": "Write decisions and evidence beside each other.",
+    "segmentId": "c05-p02-u01",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 193.131,
+    "end": 196.429,
+    "text": "A choice is usable when it names the browser evidence that passed and the",
+    "segmentId": "c05-p02-u02",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 196.429,
+    "end": 196.975,
+    "text": "alternative that failed.",
+    "segmentId": "c05-p02-u02",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 196.975,
+    "end": 200.111,
+    "text": "Leave paths to the source of truth, not a copied wall of context.",
+    "segmentId": "c05-p03-u01",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 200.111,
+    "end": 203.993,
+    "text": "The next Agent can inspect the feature list, progress note, tests, or",
+    "segmentId": "c05-p03-u02",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 203.993,
+    "end": 204.588,
+    "text": "artifacts on demand.",
+    "segmentId": "c05-p03-u02",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 204.588,
+    "end": 207.749,
+    "text": "Keep the environment clean enough for another person or Agent to begin",
+    "segmentId": "c05-p04-u01",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 207.749,
+    "end": 207.811,
+    "text": "Hidden breakage is not progress merely because a diff exists.",
+    "segmentId": "c05-p04-u02",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 207.811,
+    "end": 208.364,
+    "text": "immediately.",
+    "segmentId": "c05-p04-u01",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 210.473,
+    "end": 214.367,
+    "text": "A good handoff also names a boundary: do not change this integration, do not",
+    "segmentId": "c05-p05-u01",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 214.367,
+    "end": 216.574,
+    "text": "claim this metric, or wait for this external approval.",
+    "segmentId": "c05-p05-u01",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 216.574,
+    "end": 219.945,
+    "text": "That boundary is how you preserve human judgment when the Agent continues",
+    "segmentId": "c05-p06-u01",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 219.945,
+    "end": 220.068,
+    "text": "independently.",
+    "segmentId": "c05-p06-u01",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 220.068,
+    "end": 220.932,
+    "text": "Chapter recap.",
+    "segmentId": "c05-p07-u01",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 220.932,
+    "end": 224.636,
+    "text": "First, record changes, evidence, uncertainty, and the next move.",
+    "segmentId": "c05-p07-u02",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 224.636,
+    "end": 228.095,
+    "text": "Second, link to inspectable sources instead of copying all context.",
+    "segmentId": "c05-p08-u01",
+    "sceneId": "c05-p08"
+  },
+  {
+    "start": 228.095,
+    "end": 231.312,
+    "text": "Third, make constraints explicit so the next Agent does not overreach.",
+    "segmentId": "c05-p09-u01",
+    "sceneId": "c05-p09"
+  },
+  {
+    "start": 231.312,
+    "end": 235.08,
+    "text": "Before an AI Agent marks progress complete, verify the claimed outcome at",
+    "segmentId": "c06-p01-u01",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 235.08,
+    "end": 236.296,
+    "text": "the level the user will experience.",
+    "segmentId": "c06-p01-u01",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 236.296,
+    "end": 239.138,
+    "text": "A unit test alone may not prove an end-to-end feature works.",
+    "segmentId": "c06-p01-u02",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 239.138,
+    "end": 242.181,
+    "text": "The source article describes better results when Agents were explicitly",
+    "segmentId": "c06-p02-u01",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 242.181,
+    "end": 244.935,
+    "text": "prompted to use browser automation for end-to-end checks in a web-app",
+    "segmentId": "c06-p02-u01",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 244.935,
+    "end": 245.139,
+    "text": "Use the narrowest sufficient check first, then add a realistic workflow",
+    "segmentId": "c06-p03-u01",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 245.139,
+    "end": 245.482,
+    "text": "setting.",
+    "segmentId": "c06-p02-u01",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 248.288,
+    "end": 250.937,
+    "text": "check when the claim affects an interface, integration, or delivery.",
+    "segmentId": "c06-p03-u01",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 250.937,
+    "end": 253.503,
+    "text": "Update the progress card only after the evidence exists.",
+    "segmentId": "c06-p04-u01",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 253.503,
+    "end": 256.72,
+    "text": "A pass flag is an output of verification, not a substitute for it.",
+    "segmentId": "c06-p04-u02",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 256.72,
+    "end": 260.7,
+    "text": "When verification fails, preserve the failure, the reproduction path, and",
+    "segmentId": "c06-p05-u01",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 260.7,
+    "end": 261.961,
+    "text": "the smallest next diagnostic step.",
+    "segmentId": "c06-p05-u01",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 261.961,
+    "end": 264.275,
+    "text": "That turns a reset into a focused continuation.",
+    "segmentId": "c06-p05-u02",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 264.275,
+    "end": 267.687,
+    "text": "This is also the human gate: people decide whether the evidence is enough",
+    "segmentId": "c06-p06-u01",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 267.687,
+    "end": 268.522,
+    "text": "for the consequence at stake.",
+    "segmentId": "c06-p06-u01",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 268.522,
+    "end": 269.381,
+    "text": "Chapter recap.",
+    "segmentId": "c06-p07-u01",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 269.381,
+    "end": 272.597,
+    "text": "First, verify outcomes at the level users actually experience.",
+    "segmentId": "c06-p07-u02",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 272.597,
+    "end": 275.434,
+    "text": "Second, record evidence before changing a task to complete.",
+    "segmentId": "c06-p08-u01",
+    "sceneId": "c06-p08"
+  },
+  {
+    "start": 275.434,
+    "end": 279.358,
+    "text": "Third, turn failures into precise next diagnostics rather than vague",
+    "segmentId": "c06-p09-u01",
+    "sceneId": "c06-p09"
+  },
+  {
+    "start": 279.358,
+    "end": 279.398,
+    "text": "Long-running AI Agents need continuity by design, not by optimism.",
+    "segmentId": "c07-p01-u01",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 279.398,
+    "end": 279.864,
+    "text": "retries.",
+    "segmentId": "c06-p09-u01",
+    "sceneId": "c06-p09"
+  },
+  {
+    "start": 282.939,
+    "end": 286.469,
+    "text": "First, establish a working floor with a runnable environment, clear",
+    "segmentId": "c07-p02-u01",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 286.469,
+    "end": 287.972,
+    "text": "requirements, and a fast reality check.",
+    "segmentId": "c07-p02-u01",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 287.972,
+    "end": 291.557,
+    "text": "Second, make one bounded move at a time and verify its observable result.",
+    "segmentId": "c07-p03-u01",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 291.557,
+    "end": 295.37,
+    "text": "Third, leave a handoff that states changes, evidence, uncertainty,",
+    "segmentId": "c07-p04-u01",
+    "sceneId": "c07-p04"
+  },
+  {
+    "start": 295.37,
+    "end": 296.977,
+    "text": "boundaries, and the next safe action.",
+    "segmentId": "c07-p04-u01",
+    "sceneId": "c07-p04"
+  },
+  {
+    "start": 296.977,
+    "end": 300.864,
+    "text": "Use the Long-Running AI Agent Progress & Handoff Card whenever work must",
+    "segmentId": "c07-p05-u01",
+    "sceneId": "c07-p05"
+  },
+  {
+    "start": 300.864,
+    "end": 302.663,
+    "text": "cross sessions, people, or context windows.",
+    "segmentId": "c07-p05-u01",
+    "sceneId": "c07-p05"
+  },
+  {
+    "start": 302.663,
+    "end": 306.147,
+    "text": "The practical test is simple: could a fresh Agent begin useful work without",
+    "segmentId": "c07-p06-u01",
+    "sceneId": "c07-p06"
+  },
+  {
+    "start": 306.147,
+    "end": 307.146,
+    "text": "guessing what the last one meant?",
+    "segmentId": "c07-p06-u01",
+    "sceneId": "c07-p06"
+  },
+  {
+    "start": 307.146,
+    "end": 308.277,
+    "text": "Follow Tiny Agent.",
+    "segmentId": "c07-p07-u01",
+    "sceneId": "c07-p07"
+  },
+  {
+    "start": 308.277,
+    "end": 310.533,
+    "text": "Tiny Agent helps you get better at using AI.",
+    "segmentId": "c07-p07-u02",
+    "sceneId": "c07-p07"
+  }
+]

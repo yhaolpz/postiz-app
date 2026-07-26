@@ -58,7 +58,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 
 ## 3. 双语生产
 
-1. 分别生成最终 TTS 和 VTT，再分别生成 `timing-map.json`、`scene-plan.json` 和 `animation-plan.json`；禁止跨语言复用时间戳。中文固定 `zh-CN-YunxiaNeural +35%`，英文固定 `en-US-AnaNeural +30%`；两版成片均为 `5-8 分钟`。前 `30 秒`普通句间停顿不超过 `0.2 秒`，其余停顿按最终自然语音和章节节奏生成，不套用后来 V4 的三档停顿。
+1. 分别生成最终 TTS 和 VTT，再分别生成 `timing-map.json`、`scene-plan.json` 和 `animation-plan.json`；禁止跨语言复用时间戳。声音、语速、时长和开场数值只读取 active profile 的 `fixedBilingualGeneration` 与具名覆盖项，不在本手册、自动化 Prompt 或 memory 中复写。前 `30 秒`普通句间停顿不超过 `0.2 秒`，其余停顿按最终自然语音和章节节奏生成，不套用后来 V4 的三档停顿。
 2. 新建独立项目：
    - `var/hyperframes-showcases/<RUN_KEY>-<SLUG>-longform-en-US/`
    - `var/hyperframes-showcases/<RUN_KEY>-<SLUG>-longform-zh-CN/`
@@ -74,7 +74,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
    - 使用总分总结构，按来源知识自然划分章节；每个实质章节包含章节开场、正文和可朗读的三点编号小结。章节开场与小结文字至少为字幕字号的 `130%` 且加粗。
    - 6:18 中文参考实现包含 `63` 个场景、`7` 个章节和 `15` 个小结场景。这些数字用于效果对照，不机械复制主题文字；新视频应保持相近的信息节拍和章节密度，偏差必须在 QA 中说明。
    - 首句按各自最终 VTT 呈现，并完整执行 active profile 的 `openingQuestionReadability`：以 profile 的测量区间让问题文字先于声音轻微出现、在声音结束前获得稳定阅读窗口、放大至画布级的视觉主角；右下角的批准 Tiny Agent 从开场第一帧完整可见。开场 DOM 中不得出现独立进度条、左侧蓝色圆点或 `VOICE` 标签；正文硬切后才可开始普通章节进度。
-   - 三点小结必须保留口播前缀和编号，但画面严格执行 active profile 的 `chapterRecapNarration.screenCopy`：只显示可读的实质结论，绝不显示小结标签、第一/第二/第三、First/Second/Third 或数字编号。
+   - 三点小结必须保留口播前缀和编号，画面严格执行 active profile 的 `chapterRecapNarration.screenCopy`：保留蓝色章节小结侧栏与章节标题；右侧三行以蓝色 `1.` / `2.` / `3.` 编号和左对齐的实质结论呈现。实质结论只取 `recapDisplayText`，不得混入“第一/第二/第三”或 `First/Second/Third` 等口播序数词；字幕仍逐字使用最终 VTT。
    - 临时生成图占非结束页视觉状态约 `15%-20%`且不低于 `15%`；全部实际引用的临时生成图严格执行 active profile 的 `generatedArtTransparency`，只以真实透明主体叠加到原有纸质网格底图。每条视频至少 `7` 类实际可见动作和 `20` 个动作节点。文字、边框、字幕、角色和道具的真实 DOM 溢出、裁切或遮挡必须为 `0`。
 7. 两种语言都必须从各自最终 VTT 生成 `animation-plan.json`，并记录动作类型、语义触发、目标、起止参数、持续时间和可读保持时间。
 8. 两个项目生成全部 QA 证据后，分别运行：
@@ -134,9 +134,9 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 ## 5. 准出
 
 1. 两种语言分别完成冻结 profile 要求的资产、DOM、时间轴、留存开头、音频、动作、视觉状态、叙事、结束页、标题身份和技术输出检查，不得跨语言复用时间戳。
-   - 两个 `summary.json` 的 profile ID 必须分别等于 `tiny-agent-longform-kinetic-retention-2026-07-23-zh-CN` 和 `tiny-agent-longform-kinetic-retention-2026-07-23-en-US`；`video-output-report.json` 证明时长 `5-8 分钟`，`speech-pacing-report.json` 证明中文为 `zh-CN-YunxiaNeural +35%`、英文为 `en-US-AnaNeural +30%`。
+   - 两个 `summary.json` 的 profile ID 必须分别等于 `tiny-agent-longform-kinetic-retention-2026-07-23-zh-CN` 和 `tiny-agent-longform-kinetic-retention-2026-07-23-en-US`；`video-output-report.json` 与 `speech-pacing-report.json` 必须逐项匹配 active profile 的时长、中文声音和英文成人声音配置。
    - 两个 `retention-opening-report.json` 都证明首句在 `5 秒`内结束，且完整记录并通过 active profile 的首字提前、每字最大提前、完整问题阅读窗口、画布文字覆盖率、右下角 Tiny Agent 首帧可见和开场 UI 缺失门槛；没有声音结束后的额外完整问题停留，且字形、问号和角色无裁切或遮挡；权威来源、损失与收益、可复用产物和前 `30 秒`无关注收藏继续通过既有门槛。
-   - 两个 `recap-report.json` 和 `recap-visual-copy-report.json` 都证明每个实质章节具有章节开场、正文和三点口播小结；旁白前缀完整，而画面小结只显示实质结论、没有任何小结标签或编号。
+   - 两个 `recap-report.json` 和 `recap-visual-copy-report.json` 都证明每个实质章节具有章节开场、正文和三点口播小结；旁白前缀完整，画面有蓝色章节侧栏和章节标题，三行正文按 `1.` / `2.` / `3.` 累积显示并左对齐，正文只显示实质结论，字幕逐字保留最终 VTT。
    - `visual-cadence-report.json` 记录场景数、章节数、场景时长分布及其与 6:18 参考实现 `63/7/15` 的差异；不得套用 V4 的 `35-45` 个稳定状态或 `12 秒`中位时长门槛。
    - 两个 `motion-report.json` 都证明至少 `7` 类动作和 `20` 个动作节点，并且全部动作绑定旁白语义；`visual-variation-report.json` 证明临时生成图场景占比为 `15%-20%`且不低于 `15%`，`generated-art-alpha-report.json` 证明每个引用的临时图都是真实透明主体、没有自带背景并直接叠加到纸质网格。
    - 两版观众可见的制作规则、布局名、动效名和 QA 名称数量均为 `0`；来源事实、安全、自然语言、标题身份、固定结束页和音视频技术门槛全部通过。
@@ -166,5 +166,5 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 
 1. 双语 QA 和英文发布验证成功后，创建 `var/ai-video-pipeline/longform/published/<RUN_KEY>-<SLUG>.json`，记录实际发布时间、YouTube 证据、双语 MP4 相对路径和 `48` 小时清理状态。
 2. 实时更新计划、归档和 automation memory。英文发布失败时保留完整双语产物并标记为优先补投。
-3. 最终用中文简短报告：执行时间、来源、英文标题、可复用产物、双语 MP4 与时长、四张固定封面、双语视频和封面 QA、英文 YouTube URL、播放列表验证、清理结果、计划/归档更新，以及通用中文标题、简介和 hashtag。
+3. 最终用中文简短报告：执行时间、来源、英文标题、可复用产物、双语 MP4 与时长、四张固定封面、双语视频和封面 QA、英文 YouTube URL、播放列表验证、清理结果、计划/归档更新，以及通用中文标题、简介、hashtag 和关键词。中文交付段必须列出可本地保存的中文母版路径、三张固定封面路径与尺寸；另固定给出恰好三条“作者互动评论建议”。三条评论必须根据当期视频主题分别采用开放问题、可执行取舍或个人观点/经验邀请等不同互动角度，自然简短、可由作者直接发布、鼓励真实回复；不得伪造来源、成果或互动数据，不自动发布到任何平台。
 4. 只有双语成片、四张封面、英文 4K 封面提交、英文 public 状态和播放列表验证全部成功，才能声称当次生产成功。

@@ -348,17 +348,16 @@ node scripts/ai-video-pipeline/run.mjs \
   --date <YYYY-MM-DD> \
   --keyframes-dir var/ai-video-pipeline/provided-keyframes/<YYYY-MM-DD-slug> \
   --tts edge-tts \
-  --voice en-US-AnaNeural \
-  --rate '+20%' \
+  --voice en-US-ChristopherNeural \
+  --rate '+30%' \
   --caption-mode realtime \
-  --platform all \
+  --platform youtube,tiktok \
   --skip-missing-platforms \
   --post \
   --visibility private \
   --youtube-visibility public \
   --tiktok-method DIRECT_POST \
   --tiktok-privacy PUBLIC_TO_EVERYONE \
-  --facebook-reel-state PUBLISHED \
   --media-mode serve \
   --wait
 ```
