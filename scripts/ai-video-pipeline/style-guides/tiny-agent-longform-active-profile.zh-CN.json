@@ -72,18 +72,47 @@
       "firstGlyphLeadMilliseconds": {"min": 120, "max": 180},
       "earlyRevealCount": 1,
       "maximumPerGlyphLeadMilliseconds": 280,
-      "fullQuestionReadLeadMilliseconds": {"min": 650, "max": 850},
+      "perGlyphAudibleLeadMilliseconds": {"min": 120, "max": 180},
+      "literalQuestionCompletionLeadMilliseconds": {"min": 40, "max": 180},
+      "fullQuestionReadLeadMilliseconds": {"min": 1100, "max": 1650},
       "spokenBridge": {
-        "durationMilliseconds": {"min": 650, "max": 850},
-        "rule": "To make the full visible question readable without leading any glyph beyond its own audible onset limit, the opening utterance may end with one short, natural, non-displayed spoken bridge after the literal visible-question VTT prefix. The bridge is part of the final opening VTT and audio, never a frozen hold. The visible question must remain an exact ordered prefix of that VTT; its final glyph completes 650-850ms before the opening utterance audible end while the bridge is spoken."
+        "durationMilliseconds": {"min": 1100, "max": 1650},
+        "rule": "To give the viewer time to read the complete visible question, the opening utterance may end with one short, natural, non-displayed spoken bridge after the literal visible-question VTT prefix. The bridge is part of the final opening VTT and audio, never a frozen hold. The visible question must remain an exact ordered prefix of that VTT; its final glyph must settle 40-180ms before the literal question cue ends, then remain completely readable for 1100-1650ms before the opening utterance audible end while the bridge is spoken."
       },
-      "canvasGlyphCoveragePercent": {"width": {"min": 86, "max": 92}, "height": {"min": 68, "max": 78}},
+      "canvasGlyphCoveragePercent": {"width": {"min": 64, "max": 92}, "height": {"min": 90, "max": 98}},
+      "compactTextBlock": {
+        "status": "active",
+        "semanticLineCount": {"min": 2, "max": 4},
+        "maxInterlineGapPx": 24,
+        "glyphMassHeightPercent": {"min": 86, "max": 94},
+        "purpose": "Treat the opening question as actual visible text mass, not a tall outer box. Sum final-font glyph-row heights and permit only the measured adjacent line gaps. Never spread two lines into distant bands or count a blank interline area toward coverage.",
+        "layout": "Use the largest safe semantic 2-4-line stack. If two lines cannot meet the glyph-mass height and width targets while clearing the Agent, add a semantic line instead of inserting vertical whitespace. Consecutive final glyph rows must remain within maxInterlineGapPx.",
+        "qa": "qa/retention-opening-report.json must record final-font per-line glyph bounds, consecutive interline gaps, glyphMassHeightPercent, and compactTextBlockPass. Fail when a gap exceeds maxInterlineGapPx, the line count is outside semanticLineCount, or glyph-mass height is outside glyphMassHeightPercent."
+      },
+      "uniformAdaptiveTypography": {
+        "status": "active",
+        "scope": ["zh-CN"],
+        "fontFamily": "Hiragino Sans GB",
+        "fontFile": "assets/fonts/HiraginoSansGB.ttc",
+        "fontWeight": 700,
+        "uniformFontSize": true,
+        "layout": "Use the bundled ordinary Hiragino Sans GB UI sans, not a decorative display face. Compute one largest safe final font size for the complete opening stack. Every visible question line uses that exact font size; when the Agent box or a canvas edge constrains the stack, reduce the single shared size for every line together. Never compensate by assigning a smaller size to a short line or a larger size to a long line.",
+        "accentTokens": {
+          "zh-CN": [
+            {"token": "AI Agent", "tone": "identity"},
+            {"token": "长期任务", "tone": "topic"},
+            {"token": "跑偏", "tone": "risk"}
+          ]
+        },
+        "accentColors": {"identity": "#117ABD", "topic": "#117ABD", "risk": "#D84B3E"},
+        "qa": "qa/retention-opening-report.json must record final computed font family, font weight, every line font size, uniformFontSizePass, accent runs, and accentTokenPass. Fail when active scoped opening lines do not use one exact final size, the embedded font contract is missing, or a configured keyword accent is absent or uses the wrong tone."
+      },
       "agentReservation": {"visibleAtFirstFrame": true, "position": "bottom-right", "reservedBoundsPx": {"left": 1480, "top": 620, "right": 1880, "bottom": 1032}, "minimumVisibleHeightPx": 420},
       "forbiddenOpeningUi": ["opening progress rail", "left blue circle", "VOICE label"],
-      "layout": "After final-font layout, use semantic 2-4-line breaks and the largest safe type. Visible first-question glyph bounds must occupy 86%-92% of canvas width and 68%-78% of canvas height. Reserve the lower-right agent box named by agentReservation: the question may use the rest of the canvas but may not overlap the Agent, question mark, emphasis marks, or outer safe margin. No opening glyph, punctuation, Agent, or accent may clip or overflow.",
-      "timing": "The first glyph/word becomes visible 120-180 milliseconds before the final VTT audible onset. Subsequent glyphs/words follow an accelerated VTT-derived cumulative schedule; no glyph/word may lead its own audible onset by more than 280 milliseconds. The final visible-question glyph is fully visible 650-850 milliseconds before the opening-utterance audible end, using only the permitted spokenBridge when needed. Hard-cut directly to the body at the measured speech boundary; do not add a static hold after the speech ends.",
-      "zh-CN": "Reveal each Han character and punctuation in order. Only the permitted measured lead may precede the matching speech; do not reveal unrelated future characters.",
-      "en-US": "Reveal words in speaking order, with letters resolving quickly within each word. Only the permitted measured lead may precede the matching speech; do not reveal unrelated future phrases.",
+      "layout": "After final-font layout, use semantic 2-4-line breaks and the largest safe type. Actual first-question text mass must occupy 64%-92% of canvas width and 86%-94% of canvas height under compactTextBlock; its compact outer bounds must occupy 90%-98% of canvas height. Empty space between remote line bands never counts as text: whenever a safe area remains, enlarge the adjacent glyphs before considering another line. In any locale covered by uniformAdaptiveTypography, all question lines use its one shared adaptive size. Reserve the lower-right agent box named by agentReservation: the question may use the rest of the canvas but may not overlap the Agent, question mark, emphasis marks, or outer safe margin. No opening glyph, punctuation, Agent, or accent may clip or overflow.",
+      "timing": "The first glyph/word becomes visible 120-180 milliseconds before the final VTT audible onset. Every later visible unit must also begin 120-180 milliseconds before its own VTT-derived audible onset; a declared maximum is not proof. Derive and record each unit's audible onset from the literal visible-question cue, compare it with the actual timeline start, and fail closed unless every measured lead is in range. The final visible-question glyph must settle 40-180 milliseconds before the literal question cue ends, then remain fully readable 1100-1650 milliseconds before the opening-utterance audible end, using only the permitted spokenBridge when needed. Hard-cut directly to the body at the measured speech boundary; do not add a static hold after the speech ends.",
+      "zh-CN": "Reveal each Han character and punctuation in order. Each character and punctuation must begin 120-180ms before its own VTT-derived audible onset, then settle before the literal question cue ends; do not reveal unrelated future characters.",
+      "en-US": "Reveal words in speaking order, with letters resolving quickly within each word. Every visible word must begin 120-180ms before its own VTT-derived audible onset and settle before the literal question cue ends; do not reveal unrelated future phrases.",
       "agent": "The approved Tiny Agent is fully visible in the lower-right reserved box from the very first rendered opening frame. It has no delayed entrance, opacity fade-in, or reveal animation.",
       "kineticGlyphEntrance": {
         "questionMarkGapPx": 24,
@@ -115,11 +144,11 @@
         "requireAudiencePainPoint": true,
         "requireUnresolvedCuriosity": true,
         "forbiddenQuestionForms": ["obvious yes-or-no validation question", "restatement of a commonly known problem as a question", "question whose visible wording already supplies its own answer"],
-        "semanticLineBreak": "Keep the AI Agent identity and the concrete task/topic intact. When a Chinese causal marker such as 为什么、如何 or 怎么 begins the interrogative clause, keep that complete causal clause together on its own lower line rather than splitting it mid-phrase.",
+        "semanticLineBreak": "Keep the AI Agent identity and the concrete task/topic intact. When a Chinese causal marker such as 为什么、如何 or 怎么 begins the interrogative clause, keep the causal clause together as a compact adjacent lower stack; if it needs two lines to reach the required glyph mass, break only between whole Chinese words and never separate the causal marker from its immediate predicate.",
         "qa": "Before rendering, write qa/opening-hook-quality-report.json. It must record the exact visibleQuestion, the audiencePainPoint, the knowledgeGap, the rejectedObviousQuestion, the selected allowed intent, and pass=true only when the question is topic-specific, uses an allowed intent, creates unresolved curiosity, and is not an obvious yes-or-no or self-answering question. The longform output validator must fail closed when this evidence is missing or does not match the final VTT hook."
       },
       "openingUi": "The opening contains no dedicated progress rail, blue circular progress marker, or VOICE label. Delete those elements from the opening DOM and timeline; the normal chapter progress may begin only after the opening hard cut.",
-      "qa": "Generate qa/retention-opening-report.json from final VTT, final-font DOM measurement, and rendered first-frame inspection. Record earlyRevealCount, firstGlyphLeadMilliseconds, maximumPerGlyphLeadMilliseconds, fullQuestionReadLeadMilliseconds, canvas glyph coverage, Agent first-frame visibility and bounds, hard-cut time, and an opening-ui absence scan. Fail if any value is outside this profile, the Agent is absent at frame zero, a forbidden opening UI element is present, or any opening element clips, overlaps, or exceeds its safe area."
+      "qa": "Generate qa/retention-opening-report.json from final VTT, final-font DOM measurement, and rendered first-frame inspection. Record each visible unit's VTT-derived audible onset, actual visual start, measured perGlyphAudibleLeadMilliseconds, literalQuestionCompletionLeadMilliseconds, firstGlyphLeadMilliseconds, fullQuestionReadLeadMilliseconds, canvas glyph coverage, Agent first-frame visibility and bounds, hard-cut time, and an opening-ui absence scan. Fail if any unit lead is outside the active perGlyphAudibleLeadMilliseconds range, the final unit does not settle before the literal question cue ends, any value is outside this profile, the Agent is absent at frame zero, a forbidden opening UI element is present, or any opening element clips, overlaps, or exceeds its safe area."
     },
     "generatedArtTransparency": {
       "status": "active",
@@ -140,11 +169,49 @@
       "purpose": "Use a clearly adult, reliable, authoritative English narration instead of the former cute/conversational voice.",
       "qa": "The final English episode.json, summary.json, timing-map.json, TTS command evidence, and speech-pacing report must all name en-US-ChristopherNeural at +30%. Reject en-US-AnaNeural and every other English longform voice."
     },
+    "chinesePronunciation": {
+      "status": "active",
+      "scope": ["zh-CN"],
+      "purpose": "Make every viewer-facing Chinese narration use the intended reading of content-bearing polyphonic terms. A visually correct Chinese script is not sufficient when its TTS reading is ambiguous or wrong.",
+      "authoring": "Before TTS, identify every content-bearing polyphonic term whose reading can change the meaning in the final Chinese narration. For each such term, record the intended Hanyu Pinyin and choose a natural spoken phrase that makes that reading unambiguous to zh-CN-YunxiaNeural. Prefer a lexical rewrite or a grammatical context that preserves the meaning, for example use 长期任务 for a long-duration task instead of submitting the ambiguous bare phrase 长任务. Never put raw pinyin, parenthetical pronunciation notes, markup, or a spelling-out instruction into viewer-visible narration or captions.",
+      "evidence": "episode.json must contain chinesePronunciationReview.entries[]. Each entry records ambiguousForm, intendedPinyin, approvedTtsText, strategy, and the final TTS segmentIds that use it. The approvedTtsText must be a natural phrase in the final script/VTT; the ambiguousForm must not be sent as the unqualified TTS phrase when a safer equivalent is used.",
+      "qa": "Before rendering any Chinese project, generate qa/chinese-pronunciation-report.json from the final TTS segments. It must record pass=true only after every declared term has intendedPinyin, an approved natural TTS phrase, matching final segment evidence, and a deliberate lexical or grammatical disambiguation. The longform output validator must fail closed if this report is absent, stale, or incomplete. The reviewer must audition the opening and any changed pronunciation before approving a review render or a master."
+    },
+    "chineseMandarinProsody": {
+      "status": "active",
+      "scope": ["zh-CN"],
+      "purpose": "Make Chinese narration and its readable subtitle timing follow natural Putonghua thought groups, rather than cutting at arbitrary written fragments.",
+      "authoring": "Write the final Chinese script in complete natural sentences. Mark an intended ordinary pause with Chinese punctuation inside the sentence, and make punctuation, phrase order, and named entities readable by zh-CN-YunxiaNeural. Do not use a comma, enumeration comma, colon, or semicolon as an artificial TTS-segment boundary; preserve it inside the complete sentence so the voice can make the ordinary brief pause. Do not begin a sentence with continuation punctuation or leave a sentence as a dangling modifier, connector, or half clause.",
+      "ttsSegmentation": {
+        "sentenceTerminators": ["。", "！", "？", "!", "?"],
+        "forbiddenBoundaryPunctuation": ["，", "、", "：", "；", ",", ":", ";"],
+        "rule": "Each Chinese TTS segment must be one complete sentence ending in a configured sentence terminator. Internal commas, enumeration commas, colons, and semicolons remain within that segment. Never split the audio merely because a visual scene, card, or caption changes."
+      },
+      "captions": {
+        "partialSentenceException": "Only the final bottom VTT caption may be a partial spoken sentence. It must stay contiguous with the narration and, when a long cue must split, use a natural Mandarin punctuation boundary; it may never be copied into a headline, card, prop label, yellow highlight, chapter panel, recap, or outro.",
+        "rule": "Keep final VTT cue order and wording faithful to the final audio. Do not create a cue that begins with continuation punctuation or ends in an unclosed quotation, bracket, or dangling punctuation fragment."
+      },
+      "qa": "Before rendering a Chinese project, generate qa/chinese-mandarin-prosody-report.json from the final TTS segment list and final narration VTT. Record every segment and cue, its boundary punctuation, and its pass. Fail production when a segment ends at forbidden boundary punctuation, lacks a complete sentence terminator, begins with continuation punctuation, is not contiguous with final script text, or when a caption cue has an invalid natural-pause boundary. The output validator must reject a missing, stale, or failing report."
+    },
+    "onScreenTextCompleteness": {
+      "status": "active",
+      "scope": ["zh-CN", "en-US"],
+      "purpose": "Ensure every visible non-caption text unit is a finished reader-facing thought, not a clipped prefix copied from the narration.",
+      "captionsOnlyException": "Only final bottom VTT captions may show a partial spoken sentence. Captions are not visual-summary copy and must remain subject to the Mandarin/locale caption rule.",
+      "authoring": "Independently author every scene headline, object or prop label, authority card, yellow highlight, chapter intro, recap body, promise copy, and outro as a complete sentence, question, imperative, or concise self-contained noun phrase. Never take an arbitrary leading slice of narration, leave a dangling punctuation or clause, or use line wrapping to hide an incomplete thought. If an authority/source name is visible, take it from the current episode's source attribution and never hard-code an unrelated product or publisher.",
+      "qa": "Before rendering, generate qa/on-screen-text-completeness-report.json from the final scene plan and rendered DOM. Include every non-caption visible text unit with its id, kind, text, source binding, narration comparison, and pass. Reject a strict narration-prefix fragment, dangling terminal punctuation or unmatched quotation/bracket, absent source-backed authority label, a rendered-DOM/report mismatch, or any failing unit. The longform output validator must fail closed when this report is missing, stale, or failing."
+    },
     "coverPrimaryTitleOnly": {
       "status": "active",
       "scope": ["zh-CN", "en-US"],
       "rule": "A cover may contain only its deterministic primary title. Auxiliary short phrases, subtitles, taglines, benefit copy, chapter labels, CTA text, and explanatory microcopy are forbidden.",
       "qa": "Fail cover QA when any text other than the approved primary title is present."
+    },
+    "coverTitleTopicAlignment": {
+      "status": "active",
+      "scope": ["zh-CN", "en-US"],
+      "rule": "Every cover primary title must be a concise, natural expression of the same concrete topic as its local publishing title. Before cover authoring, declare a per-episode `coverTitleContract` in that locale's `publish-metadata.<locale>.json`: its core cover keywords, the title-term equivalents that prove each keyword is present in the publishing title, and the concrete topic action shown by the hero. Every normal delivered cover headline must contain every declared core cover keyword literally; choose the words that state the episode's actual pain point or action, not a vague slogan. For the current Chinese long-running-agent episode, the required literal cover keywords are `长任务` and `交接`, while `长期任务` is the approved publishing-title equivalent of `长任务`. The English counterpart uses the same intent: the English cover must carry the episode's concrete long-running-task and handoff keywords, not a detached generic Agent slogan.",
+      "qa": "Run `validate-tiny-agent-zh-cover-reference.mjs` for zh-CN and `validate-tiny-agent-en-cover-reference.mjs` for en-US. They must reject a missing or malformed coverTitleContract, a publishing title that does not contain an approved equivalent for every core cover keyword, a normal delivered cover that omits a required keyword, or a cover whose generated hero action differs from the declared topic action. A ratio may omit a newly introduced keyword only when its spec records a concrete owner-requested revision-scope exemption; the exemption is not a reusable production rule."
     },
     "coverReferenceAlignment": {
       "status": "active",
@@ -152,8 +219,8 @@
       "reference": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/thumbnails/thumbnail.zh-CN.svg and its three-ratio siblings",
       "layout": "Use the reference title-hero system: neutral paper-grid background; a short blue rule at the top; title-led left/top zone; one complete Tiny Agent plus one topic object; and a single yellow rule at the bottom or the portrait 60/40 divider. The yellow rule is decorative only and never underlines title text.",
       "titleColors": "Use exactly two title colors: #117ABD only for the AI Agent identity phrase, and #111413 for every remaining title glyph. #F4C542 is reserved for the decorative rule; #8A6500 and #C7362F are forbidden in title text.",
-      "character": "The Tiny Agent must be composed from the approved stable character/reference asset family, preserving the approved white rounded body, black face screen, blue eyes and antenna, brown tool belt, and hand-drawn outline. Do not invent a replacement Agent with image generation; only the topic object and the pose/placement may change.",
-      "qa": "Before approval, compare all ratios against the reference SVG and verify the blue rule, blue-plus-black title hierarchy, bottom yellow rule, single approved Tiny Agent, complete topic object, no title underline, no auxiliary copy, and no generated text. The cover SVG must reference exactly one approved `assets/pack/sprites/agent/` asset and one `assets/pack/sprites/props/` topic asset; it must not reference `cover-illustration`, `assets/generated`, or any regenerated Agent image. Run `validate-tiny-agent-zh-cover-reference.mjs` and fail the run on any ratio mismatch."
+      "character": "For every Chinese episode, the 4:3 right-side hero and 3:4 lower hero must each be newly generated as a temporary, current-topic illustration; for every English episode, the delivered 16:9 hero must likewise be newly generated as a temporary, current-topic illustration. Do not reuse a previous episode's hero, a stable Agent-plus-prop pairing, or a decorative prop. Each generated hero may include exactly one complete Tiny Agent only, preserve the approved white rounded body, black face screen, blue eyes and antenna, brown tool belt, and hand-drawn outline, and actively perform the `coverTitleContract` concrete topic action with its integrated topic object. It never permits a second character, collage, generated text, or an unrelated decorative prop. A ratio may remain in the older reference system only when its own spec records a concrete owner-requested revision-scope exemption; the exemption is not a reusable production rule.",
+      "qa": "Before approval, compare all ratios against the reference title-hero system and verify the blue rule, blue-plus-black title hierarchy, bottom yellow rule, one complete Tiny Agent, one complete topic action, no title underline, no auxiliary copy, and no generated text. Every normal zh-CN 4:3/3:4 SVG and every normal en-US 16:9 SVG must reference exactly one current-episode alpha PNG generated for that ratio, with a verified transparent corner; its ratio spec must record `characterCount=1`, the required Tiny Agent identity anchors, an integrated topic action matching `coverTitleContract`, chroma-key alpha removal, and `generatedIllustrationText=false`. Run the locale's cover-reference validator and fail the run on any ratio mismatch."
     },
     "publishingMetadata": {
       "status": "active",

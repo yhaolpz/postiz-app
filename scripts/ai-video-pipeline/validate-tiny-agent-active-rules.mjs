@@ -319,24 +319,44 @@ requireEqual(
   280
 );
 requireEqual(
+  'activeProfile.openingQuestionReadability.perGlyphAudibleLead.min',
+  openingOverride?.perGlyphAudibleLeadMilliseconds?.min,
+  120
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.perGlyphAudibleLead.max',
+  openingOverride?.perGlyphAudibleLeadMilliseconds?.max,
+  180
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.literalQuestionCompletionLead.min',
+  openingOverride?.literalQuestionCompletionLeadMilliseconds?.min,
+  40
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.literalQuestionCompletionLead.max',
+  openingOverride?.literalQuestionCompletionLeadMilliseconds?.max,
+  180
+);
+requireEqual(
   'activeProfile.openingQuestionReadability.fullQuestionReadLead.min',
   openingOverride?.fullQuestionReadLeadMilliseconds?.min,
-  650
+  1100
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.fullQuestionReadLead.max',
   openingOverride?.fullQuestionReadLeadMilliseconds?.max,
-  850
+  1650
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.spokenBridge.min',
   openingOverride?.spokenBridge?.durationMilliseconds?.min,
-  650
+  1100
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.spokenBridge.max',
   openingOverride?.spokenBridge?.durationMilliseconds?.max,
-  850
+  1650
 );
 requireMatch(
   'activeProfile.openingQuestionReadability.spokenBridge.rule',
@@ -346,7 +366,7 @@ requireMatch(
 requireEqual(
   'activeProfile.openingQuestionReadability.canvasCoverage.width.min',
   openingOverride?.canvasGlyphCoveragePercent?.width?.min,
-  86
+  64
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.canvasCoverage.width.max',
@@ -356,12 +376,111 @@ requireEqual(
 requireEqual(
   'activeProfile.openingQuestionReadability.canvasCoverage.height.min',
   openingOverride?.canvasGlyphCoveragePercent?.height?.min,
-  68
+  90
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.canvasCoverage.height.max',
   openingOverride?.canvasGlyphCoveragePercent?.height?.max,
-  78
+  98
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.compactTextBlock.status',
+  openingOverride?.compactTextBlock?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.compactTextBlock.semanticLineCount.min',
+  openingOverride?.compactTextBlock?.semanticLineCount?.min,
+  2
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.compactTextBlock.semanticLineCount.max',
+  openingOverride?.compactTextBlock?.semanticLineCount?.max,
+  4
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.compactTextBlock.maxInterlineGapPx',
+  openingOverride?.compactTextBlock?.maxInterlineGapPx,
+  24
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.compactTextBlock.glyphMassHeightPercent.min',
+  openingOverride?.compactTextBlock?.glyphMassHeightPercent?.min,
+  86
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.compactTextBlock.glyphMassHeightPercent.max',
+  openingOverride?.compactTextBlock?.glyphMassHeightPercent?.max,
+  94
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.compactTextBlock.purpose',
+  openingOverride?.compactTextBlock?.purpose ?? '',
+  /actual visible text mass/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.compactTextBlock.layout',
+  openingOverride?.compactTextBlock?.layout ?? '',
+  /add a semantic line/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.compactTextBlock.qa',
+  openingOverride?.compactTextBlock?.qa ?? '',
+  /glyphMassHeightPercent/
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.status',
+  openingOverride?.uniformAdaptiveTypography?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.scope',
+  JSON.stringify(openingOverride?.uniformAdaptiveTypography?.scope),
+  JSON.stringify(['zh-CN'])
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.fontFamily',
+  openingOverride?.uniformAdaptiveTypography?.fontFamily,
+  'Hiragino Sans GB'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.fontFile',
+  openingOverride?.uniformAdaptiveTypography?.fontFile,
+  'assets/fonts/HiraginoSansGB.ttc'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.fontWeight',
+  openingOverride?.uniformAdaptiveTypography?.fontWeight,
+  700
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.uniformFontSize',
+  openingOverride?.uniformAdaptiveTypography?.uniformFontSize,
+  true
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.layout',
+  openingOverride?.uniformAdaptiveTypography?.layout ?? '',
+  /one largest safe final font size/
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.accentTokens.zh-CN',
+  JSON.stringify(openingOverride?.uniformAdaptiveTypography?.accentTokens?.['zh-CN']),
+  JSON.stringify([
+    { token: 'AI Agent', tone: 'identity' },
+    { token: '长期任务', tone: 'topic' },
+    { token: '跑偏', tone: 'risk' },
+  ])
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.accentColors',
+  JSON.stringify(openingOverride?.uniformAdaptiveTypography?.accentColors),
+  JSON.stringify({ identity: '#117ABD', topic: '#117ABD', risk: '#D84B3E' })
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.qa',
+  openingOverride?.uniformAdaptiveTypography?.qa ?? '',
+  /uniformFontSizePass/
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.agentFirstFrame',
@@ -448,6 +567,104 @@ requireMatch(
   openingOverride?.hookQuestionQuality?.qa ?? '',
   /opening-hook-quality-report\.json/
 );
+const chinesePronunciationOverride = profile.postSnapshotUserOverrides?.chinesePronunciation;
+requireEqual(
+  'activeProfile.chinesePronunciation.status',
+  chinesePronunciationOverride?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.chinesePronunciation.scope',
+  JSON.stringify(chinesePronunciationOverride?.scope),
+  JSON.stringify(['zh-CN'])
+);
+requireMatch(
+  'activeProfile.chinesePronunciation.authoring',
+  chinesePronunciationOverride?.authoring ?? '',
+  /content-bearing polyphonic term/
+);
+requireMatch(
+  'activeProfile.chinesePronunciation.authoring',
+  chinesePronunciationOverride?.authoring ?? '',
+  /长期任务/
+);
+requireMatch(
+  'activeProfile.chinesePronunciation.evidence',
+  chinesePronunciationOverride?.evidence ?? '',
+  /chinesePronunciationReview\.entries/
+);
+requireMatch(
+  'activeProfile.chinesePronunciation.qa',
+  chinesePronunciationOverride?.qa ?? '',
+  /qa\/chinese-pronunciation-report\.json/
+);
+const chineseMandarinProsodyOverride = profile.postSnapshotUserOverrides?.chineseMandarinProsody;
+requireEqual(
+  'activeProfile.chineseMandarinProsody.status',
+  chineseMandarinProsodyOverride?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.chineseMandarinProsody.scope',
+  JSON.stringify(chineseMandarinProsodyOverride?.scope),
+  JSON.stringify(['zh-CN'])
+);
+requireEqual(
+  'activeProfile.chineseMandarinProsody.sentenceTerminators',
+  JSON.stringify(chineseMandarinProsodyOverride?.ttsSegmentation?.sentenceTerminators),
+  JSON.stringify(['。', '！', '？', '!', '?'])
+);
+requireMatch(
+  'activeProfile.chineseMandarinProsody.authoring',
+  chineseMandarinProsodyOverride?.authoring ?? '',
+  /Do not use a comma, enumeration comma, colon, or semicolon as an artificial TTS-segment boundary/
+);
+requireMatch(
+  'activeProfile.chineseMandarinProsody.ttsSegmentation.rule',
+  chineseMandarinProsodyOverride?.ttsSegmentation?.rule ?? '',
+  /Each Chinese TTS segment must be one complete sentence/
+);
+requireMatch(
+  'activeProfile.chineseMandarinProsody.captions.partialSentenceException',
+  chineseMandarinProsodyOverride?.captions?.partialSentenceException ?? '',
+  /Only the final bottom VTT caption may be a partial spoken sentence/
+);
+requireMatch(
+  'activeProfile.chineseMandarinProsody.qa',
+  chineseMandarinProsodyOverride?.qa ?? '',
+  /qa\/chinese-mandarin-prosody-report\.json/
+);
+const onScreenTextCompletenessOverride = profile.postSnapshotUserOverrides?.onScreenTextCompleteness;
+requireEqual(
+  'activeProfile.onScreenTextCompleteness.status',
+  onScreenTextCompletenessOverride?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.onScreenTextCompleteness.scope',
+  JSON.stringify(onScreenTextCompletenessOverride?.scope),
+  JSON.stringify(['zh-CN', 'en-US'])
+);
+requireMatch(
+  'activeProfile.onScreenTextCompleteness.captionsOnlyException',
+  onScreenTextCompletenessOverride?.captionsOnlyException ?? '',
+  /Only final bottom VTT captions may show a partial spoken sentence/
+);
+requireMatch(
+  'activeProfile.onScreenTextCompleteness.authoring',
+  onScreenTextCompletenessOverride?.authoring ?? '',
+  /Never take an arbitrary leading slice of narration/
+);
+requireMatch(
+  'activeProfile.onScreenTextCompleteness.authoring',
+  onScreenTextCompletenessOverride?.authoring ?? '',
+  /never hard-code an unrelated product or publisher/
+);
+requireMatch(
+  'activeProfile.onScreenTextCompleteness.qa',
+  onScreenTextCompletenessOverride?.qa ?? '',
+  /qa\/on-screen-text-completeness-report\.json/
+);
 requireEqual(
   'activeProfile.openingQuestionReadability.forbiddenOpeningUi',
   JSON.stringify(openingOverride?.forbiddenOpeningUi),
@@ -457,6 +674,16 @@ requireMatch(
   'activeProfile.openingQuestionReadability.timing',
   openingOverride?.timing ?? '',
   /120-180 milliseconds before the final VTT audible onset/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.timing',
+  openingOverride?.timing ?? '',
+  /Every later visible unit must also begin 120-180 milliseconds before its own VTT-derived audible onset/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.timing',
+  openingOverride?.timing ?? '',
+  /fail closed unless every measured lead is in range/
 );
 requireMatch(
   'activeProfile.openingQuestionReadability.openingUi',
@@ -523,6 +750,9 @@ for (const [label, pattern] of [
   ['recap rendered scan', /renderedMarkerScanPass/],
   ['opening early reveal', /earlyRevealCount/],
   ['opening UI absence', /voiceLabelPresent/],
+  ['Chinese pronunciation report', /chinese-pronunciation-report\.json/],
+  ['Chinese Mandarin prosody report', /chinese-mandarin-prosody-report\.json/],
+  ['on-screen text completeness report', /on-screen-text-completeness-report\.json/],
   ['generated alpha report', /generated-art-alpha-report\.json/],
   ['source alpha inspection', /sips/],
 ]) {
@@ -537,6 +767,26 @@ requireMatch(
   'activeProfile.coverPrimaryTitleOnly.rule',
   profile.postSnapshotUserOverrides?.coverPrimaryTitleOnly?.rule ?? '',
   /only its deterministic primary title/
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.status',
+  profile.postSnapshotUserOverrides?.coverTitleTopicAlignment?.status,
+  'active'
+);
+requireMatch(
+  'activeProfile.coverTitleTopicAlignment.rule',
+  profile.postSnapshotUserOverrides?.coverTitleTopicAlignment?.rule ?? '',
+  /coverTitleContract/
+);
+requireMatch(
+  'activeProfile.coverTitleTopicAlignment.qa',
+  profile.postSnapshotUserOverrides?.coverTitleTopicAlignment?.qa ?? '',
+  /validate-tiny-agent-zh-cover-reference\.mjs/
+);
+requireMatch(
+  'activeProfile.coverTitleTopicAlignment.qa.en',
+  profile.postSnapshotUserOverrides?.coverTitleTopicAlignment?.qa ?? '',
+  /validate-tiny-agent-en-cover-reference\.mjs/
 );
 requireEqual(
   'activeProfile.coverReferenceAlignment.status',
@@ -556,7 +806,7 @@ requireMatch(
 requireMatch(
   'activeProfile.coverReferenceAlignment.character',
   profile.postSnapshotUserOverrides?.coverReferenceAlignment?.character ?? '',
-  /Do not invent a replacement Agent/
+  /4:3 right-side hero and 3:4 lower hero must each be newly generated[\s\S]*English episode, the delivered 16:9 hero must likewise be newly generated/
 );
 requireEqual(
   'activeProfile.publishingMetadata.status',

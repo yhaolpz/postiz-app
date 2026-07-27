@@ -8,7 +8,7 @@ src: index.html#scene-c01-p01
 
 motion: hard-cut
 
-beat: AI Agent 长任务会跑偏吗？
+beat: AI Agent 做长期任务时为什么容易跑偏？
 
 ## Frame c01-p02
 
@@ -18,7 +18,7 @@ src: index.html#scene-c01-p02
 
 motion: press-pulse
 
-beat: 它给出的实用方向是：别让新会话先
+beat: 让新会话从事实开始
 
 ## Frame c01-p03
 
@@ -38,7 +38,7 @@ src: index.html#scene-c01-p04
 
 motion: nudge
 
-beat: 它把“继续做”变成一个可检查的小
+beat: 把“继续做”变成可检查的步骤
 
 ## Frame c01-p05
 
@@ -88,7 +88,7 @@ src: index.html#scene-c02-p03
 
 motion: press-pulse
 
-beat: 新会话仍要知道现在最重要的是什么
+beat: 新会话要先找到当前重点
 
 ## Frame c02-p04
 
@@ -98,7 +98,7 @@ src: index.html#scene-c02-p04
 
 motion: spring-pop
 
-beat: 它要让下一位智能体不用重读全部历
+beat: 让下一位智能体直接选对下一步
 
 ## Frame c02-p05
 
@@ -168,7 +168,7 @@ src: index.html#scene-c03-p02
 
 motion: spin-in
 
-beat: 别的工作也要有等价锚点。
+beat: 给每种工作设置等价锚点
 
 ## Frame c03-p03
 
@@ -188,7 +188,7 @@ src: index.html#scene-c03-p04
 
 motion: press-pulse
 
-beat: 不是写着“完成”就算完成，而是可
+beat: 完成必须经由可观察行为验证
 
 ## Frame c03-p05
 
@@ -268,7 +268,7 @@ src: index.html#scene-c04-p03
 
 motion: spin-in
 
-beat: 智能体要改变真实状态，跑相关检查
+beat: 改变真实状态并跑相关检查
 
 ## Frame c04-p04
 
@@ -348,7 +348,7 @@ src: index.html#scene-c05-p02
 
 motion: split-tilt
 
-beat: “选 B”不够；“B 通过了这个
+beat: 让每个决定都附带验证证据
 
 ## Frame c05-p03
 
@@ -358,7 +358,7 @@ src: index.html#scene-c05-p03
 
 motion: fly-in
 
-beat: 下一轮按需打开功能清单、进度记录
+beat: 下一轮按需打开事实源
 
 ## Frame c05-p04
 
@@ -368,7 +368,7 @@ src: index.html#scene-c05-p04
 
 motion: spin-in
 
-beat: 存在隐藏破损的改动不能算有效进展
+beat: 隐藏破损不算有效进展
 
 ## Frame c05-p05
 
@@ -458,7 +458,7 @@ src: index.html#scene-c06-p04
 
 motion: fly-in
 
-beat: 通过标记是验收的结果，不能代替验
+beat: 完成标记不能代替验收证据
 
 ## Frame c06-p05
 

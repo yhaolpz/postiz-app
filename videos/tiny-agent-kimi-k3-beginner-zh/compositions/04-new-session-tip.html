@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          color: #f5f4ef;
+          font-family: sans-serif;
+        }
+        #root,
+        #root * {
+          box-sizing: border-box;
+        }
+        .ground {
+          position: absolute;
+          inset: 0;
+          background: #101010;
+        }
+        .tip-layer,
+        .cta-layer {
+          position: absolute;
+          inset: 0;
+        }
+        .headline {
+          position: absolute;
+          top: 115px;
+          left: 70px;
+          width: 940px;
+          font-size: 108px;
+          line-height: 1.04;
+          font-weight: 900;
+          letter-spacing: -0.06em;
+        }
+        .headline strong {
+          color: #f4c542;
+          font-weight: 900;
+        }
+        .screenshot-wrap {
+          position: absolute;
+          top: 405px;
+          left: 70px;
+          width: 940px;
+          height: 830px;
+          overflow: hidden;
+          border-radius: 34px;
+          background: #1e1e1e;
+          box-shadow: 0 28px 70px rgba(16, 16, 16, 0.48);
+          will-change: transform, opacity;
+        }
+        .screenshot {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: 56% 68%;
+          will-change: transform;
+        }
+        .cta-layer {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding-bottom: 180px;
+          opacity: 0;
+        }
+        .cta-title {
+          width: 900px;
+          display: flex;
+          flex-direction: column;
+          gap: 34px;
+          text-align: left;
+          font-size: 88px;
+          line-height: 1.06;
+          font-weight: 900;
+          letter-spacing: -0.06em;
+        }
+        .cta-title strong,
+        .cta-title .accent {
+          color: #8b7cff;
+          font-weight: 900;
+        }
+        .agent {
+          width: 180px;
+          height: auto;
+          margin-top: 76px;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="new-session-tip"
+        data-duration="13.464"
+        data-width="1080"
+        data-height="1920"
+      >
+        <div class="ground"></div>
+        <div id="new-session-tip-layer" class="tip-layer">
+          <div
+            id="new-session-tip-headline"
+            class="headline"
+            data-primary-role="headline"
+            data-primary-phase="tip"
+          >
+            切 <strong>K3</strong> 前，先开新会话
+          </div>
+          <div
+            id="new-session-tip-screenshot-wrap"
+            class="screenshot-wrap"
+            data-primary-role="real-screenshot"
+            data-primary-phase="tip"
+          >
+            <img
+              id="new-session-tip-screenshot"
+              class="screenshot"
+              data-asset-kind="product-screenshot"
+              data-layout-allow-overflow
+              src=".media/images/image_005.png"
+              alt="Kimi K3 official usage tip"
+            />
+          </div>
+        </div>
+
+        <div id="new-session-cta-layer" class="cta-layer">
+          <div
+            class="cta-title"
+            data-primary-role="headline"
+            data-primary-phase="cta"
+          >
+            <div>轻任务　<span class="accent">快速</span></div>
+            <div>复杂任务　<span class="accent">K3</span></div>
+            <div>批量任务　<span class="accent">集群</span></div>
+          </div>
+          <img
+            class="agent"
+            data-primary-role="tiny-agent"
+            data-primary-phase="cta"
+            src=".media/images/image_004.png"
+            alt="Tiny Agent"
+          />
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        tl.fromTo(
+          "#new-session-tip-headline",
+          { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: 0.42, ease: "power4.out" },
+          0.15
+        );
+        tl.fromTo(
+          "#new-session-tip-screenshot-wrap",
+          { opacity: 0, y: 34 },
+          { opacity: 1, y: 0, duration: 0.55, ease: "expo.out" },
+          0.3
+        );
+        tl.fromTo(
+          "#new-session-tip-screenshot",
+          { scale: 1 },
+          { scale: 1.055, duration: 7.65, ease: "none" },
+          0.4
+        );
+        tl.to(
+          "#new-session-tip-layer",
+          { opacity: 0, duration: 0.24, ease: "power2.in" },
+          8.05
+        );
+        tl.fromTo(
+          "#new-session-cta-layer",
+          { opacity: 0, scale: 0.98 },
+          { opacity: 1, scale: 1, duration: 0.4, ease: "power4.out" },
+          8.25
+        );
+        window.__timelines["new-session-tip"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

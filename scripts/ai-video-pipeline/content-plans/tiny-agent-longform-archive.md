@@ -69,6 +69,6 @@
 | 2026-07-21-03 | 2026-07-20T19:56:25Z | `var/ai-video-pipeline/longform/published/2026-07-21-03-agent-context-engineering.json` | 2026-07-22T19:56:25Z | 已清理 | 2026-07-23T19:04:03Z |
 | 2026-07-22-03 | 2026-07-21T20:06:30Z | `var/ai-video-pipeline/longform/published/2026-07-22-03-ai-agent-evals.json` | 2026-07-23T20:06:30Z | 已清理 | 2026-07-24T19:03:02.161Z |
 | 2026-07-23-03 | 2026-07-22T20:15:00Z | `var/ai-video-pipeline/longform/published/2026-07-23-03-ai-agent-uncertainty.json` | 2026-07-24T20:15:00Z | 已清理 | 2026-07-26T03:02:48+08:00 |
-| 2026-07-24-03 | 2026-07-23T20:30:00Z | `var/ai-video-pipeline/longform/published/2026-07-24-03-ai-agent-action-permissions.json` | 2026-07-25T20:30:00Z | 待清理 |           |
+| 2026-07-24-03 | 2026-07-23T20:30:00Z | `var/ai-video-pipeline/longform/published/2026-07-24-03-ai-agent-action-permissions.json` | 2026-07-25T20:30:00Z | 已清理 | 2026-07-26T19:03:50.536Z |
 | 2026-07-25-03 | 2026-07-24T19:38:46Z | `var/ai-video-pipeline/longform/published/2026-07-25-03-agent-memory-retention.json` | 2026-07-26T19:38:46Z | 待清理 |           |
 | 2026-07-26-03 | 2026-07-25T19:57:17Z | `var/ai-video-pipeline/longform/published/2026-07-26-03-agent-long-running-harness.json` | 2026-07-27T19:57:17Z | 待清理 |           |

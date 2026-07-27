@@ -72,6 +72,10 @@ const scenePlan = readJson('scene-plan.json');
 const timingMap = readJson('timing-map.json');
 const openingReport = readJson('qa/retention-opening-report.json');
 const hookQualityReport = readJson('qa/opening-hook-quality-report.json');
+const chinesePronunciationReport = readJson('qa/chinese-pronunciation-report.json');
+const chineseMandarinProsodyReport = readJson('qa/chinese-mandarin-prosody-report.json');
+const onScreenTextCompletenessReport = readJson('qa/on-screen-text-completeness-report.json');
+const finalCaptionCues = readJson('captions/cues.json');
 const recapReport = readJson('qa/recap-visual-copy-report.json');
 const alphaReport = readJson('qa/generated-art-alpha-report.json');
 const scenes = sceneList(scenePlan);
@@ -100,6 +104,116 @@ if (!expectedAudio?.voice || !expectedAudio?.rate) {
 }
 inRange(timingMap.duration, durationRange ?? {}, 'timing-map.json duration');
 inRange(summary.duration, durationRange ?? {}, 'summary.json duration');
+
+const chinesePronunciationRule = overrides.chinesePronunciation ?? {};
+const chineseMandarinProsodyRule = overrides.chineseMandarinProsody ?? {};
+const onScreenTextCompletenessRule = overrides.onScreenTextCompleteness ?? {};
+if (locale === 'zh-CN') {
+  if (chinesePronunciationRule.status !== 'active') {
+    fail('active profile: Chinese pronunciation rule is missing or inactive');
+  } else {
+    isTrue(chinesePronunciationReport.pass, 'qa/chinese-pronunciation-report.json pass');
+    if (chinesePronunciationReport.locale !== 'zh-CN') {
+      fail(`Chinese pronunciation report locale: expected zh-CN, received ${JSON.stringify(chinesePronunciationReport.locale)}`);
+    }
+    if (chinesePronunciationReport.scriptFile !== episode.scriptFile) {
+      fail(`Chinese pronunciation report scriptFile: expected ${JSON.stringify(episode.scriptFile)}, received ${JSON.stringify(chinesePronunciationReport.scriptFile)}`);
+    }
+    if (chinesePronunciationReport.allDeclaredTermsResolved !== true) {
+      fail('Chinese pronunciation report: allDeclaredTermsResolved must be true');
+    }
+    const entries = chinesePronunciationReport.entries;
+    if (!Array.isArray(entries)) {
+      fail('Chinese pronunciation report: entries must be an array');
+    } else {
+      for (const entry of entries) {
+        required(entry.ambiguousForm, 'Chinese pronunciation entry ambiguousForm');
+        required(entry.intendedPinyin, 'Chinese pronunciation entry intendedPinyin');
+        required(entry.approvedTtsText, 'Chinese pronunciation entry approvedTtsText');
+        if (!['lexical-rewrite', 'grammatical-context'].includes(entry.strategy)) {
+          fail(`Chinese pronunciation entry ${JSON.stringify(entry.ambiguousForm)}: unsupported strategy ${JSON.stringify(entry.strategy)}`);
+        }
+        if (!Array.isArray(entry.segmentIds) || entry.segmentIds.length === 0) {
+          fail(`Chinese pronunciation entry ${JSON.stringify(entry.ambiguousForm)}: segmentIds are required`);
+          continue;
+        }
+        for (const segmentId of entry.segmentIds) {
+          const segment = (timingMap.segments ?? []).find((candidate) => candidate.id === segmentId);
+          if (!segment || !String(segment.text ?? '').includes(entry.approvedTtsText)) {
+            fail(`Chinese pronunciation entry ${JSON.stringify(entry.ambiguousForm)}: final TTS evidence is missing for ${segmentId}`);
+          }
+        }
+        if (entry.strategy === 'lexical-rewrite' && entry.ambiguousForm === entry.approvedTtsText) {
+          fail(`Chinese pronunciation entry ${JSON.stringify(entry.ambiguousForm)}: lexical rewrite must replace the ambiguous bare phrase`);
+        }
+      }
+    }
+  }
+  if (chineseMandarinProsodyRule.status !== 'active') {
+    fail('active profile: Chinese Mandarin prosody rule is missing or inactive');
+  } else {
+    isTrue(chineseMandarinProsodyReport.pass, 'qa/chinese-mandarin-prosody-report.json pass');
+    if (chineseMandarinProsodyReport.locale !== 'zh-CN') {
+      fail(`Chinese Mandarin prosody report locale: expected zh-CN, received ${JSON.stringify(chineseMandarinProsodyReport.locale)}`);
+    }
+    if (JSON.stringify(chineseMandarinProsodyReport.sentenceTerminators) !== JSON.stringify(chineseMandarinProsodyRule.ttsSegmentation?.sentenceTerminators)) {
+      fail('Chinese Mandarin prosody report: sentence terminators do not match the active profile');
+    }
+    if (JSON.stringify(chineseMandarinProsodyReport.forbiddenTtsSegmentBoundaryPunctuation) !== JSON.stringify(chineseMandarinProsodyRule.ttsSegmentation?.forbiddenBoundaryPunctuation)) {
+      fail('Chinese Mandarin prosody report: forbidden TTS boundaries do not match the active profile');
+    }
+    const prosodySegments = chineseMandarinProsodyReport.ttsSegments;
+    if (!Array.isArray(prosodySegments) || prosodySegments.length !== (timingMap.segments ?? []).length) {
+      fail('Chinese Mandarin prosody report: final TTS segment evidence is missing or stale');
+    } else {
+      for (const finalSegment of timingMap.segments ?? []) {
+        const evidence = prosodySegments.find((entry) => entry.id === finalSegment.id);
+        if (!evidence || evidence.pass !== true || evidence.text !== finalSegment.text) {
+          fail(`Chinese Mandarin prosody report: invalid final TTS evidence for ${finalSegment.id}`);
+        }
+      }
+    }
+    const prosodyCues = chineseMandarinProsodyReport.captionCues;
+    if (!Array.isArray(prosodyCues) || prosodyCues.length !== (Array.isArray(finalCaptionCues) ? finalCaptionCues.length : 0)) {
+      fail('Chinese Mandarin prosody report: final VTT evidence is missing or stale');
+    } else {
+      for (const cue of Array.isArray(finalCaptionCues) ? finalCaptionCues : []) {
+        const evidence = prosodyCues.find((entry) => entry.segmentId === cue.segmentId && entry.text === cue.text);
+        if (!evidence || evidence.pass !== true) {
+          fail(`Chinese Mandarin prosody report: invalid final VTT evidence for ${cue.segmentId}`);
+        }
+      }
+    }
+  }
+}
+
+if (onScreenTextCompletenessRule.status !== 'active') {
+  fail('active profile: on-screen text completeness rule is missing or inactive');
+} else {
+  isTrue(onScreenTextCompletenessReport.pass, 'qa/on-screen-text-completeness-report.json pass');
+  isTrue(onScreenTextCompletenessReport.renderedDomScanPass, 'qa/on-screen-text-completeness-report.json renderedDomScanPass');
+  isTrue(onScreenTextCompletenessReport.authority?.sourceBacked, 'on-screen authority sourceBacked');
+  required(onScreenTextCompletenessReport.authority?.publisher, 'on-screen authority publisher');
+  const screenEntries = onScreenTextCompletenessReport.entries;
+  if (!Array.isArray(screenEntries) || screenEntries.length === 0) {
+    fail('on-screen text completeness report: entries are required');
+  } else {
+    for (const entry of screenEntries) {
+      required(entry.id, 'on-screen text entry id');
+      required(entry.kind, `on-screen text entry ${entry.id ?? 'unknown'} kind`);
+      required(entry.text, `on-screen text entry ${entry.id ?? 'unknown'} text`);
+      required(entry.sourceBinding, `on-screen text entry ${entry.id ?? 'unknown'} sourceBinding`);
+      if (entry.pass !== true || entry.strictNarrationPrefixFragment === true || entry.danglingEnding === true) {
+        fail(`on-screen text entry ${entry.id}: incomplete visual copy evidence`);
+      }
+    }
+  }
+  const authorityScene = scenes.find((scene) => scene.type === 'authority');
+  const authorityEntry = screenEntries?.find((entry) => entry.kind === 'authority-source');
+  if (!authorityScene || !authorityEntry || !authorityScene.narration?.includes(authorityEntry.text)) {
+    fail('on-screen authority label: must be sourced from the current authority narration');
+  }
+}
 
 if (recapRule.displayField !== 'recapDisplayText') {
   fail('active profile: recap screen-copy display field is not recapDisplayText');
@@ -208,9 +322,89 @@ inRange(openingReport.firstGlyphLeadMilliseconds, opening.firstGlyphLeadMillisec
 if (typeof openingReport.maximumPerGlyphLeadMilliseconds !== 'number' || openingReport.maximumPerGlyphLeadMilliseconds > opening.maximumPerGlyphLeadMilliseconds) {
   fail(`opening report maximumPerGlyphLeadMilliseconds: expected <= ${opening.maximumPerGlyphLeadMilliseconds}, received ${JSON.stringify(openingReport.maximumPerGlyphLeadMilliseconds)}`);
 }
+const perGlyphLeadRule = opening.perGlyphAudibleLeadMilliseconds ?? {};
+const measuredOpeningUnits = hookTiming.audibleUnits;
+const reportedPerGlyphLeads = openingReport.perGlyphAudibleLeadMilliseconds;
+if (!Array.isArray(measuredOpeningUnits) || measuredOpeningUnits.length === 0) {
+  fail('timing-map.json hookTiming.audibleUnits: final VTT-derived per-unit timing is required');
+}
+if (!Array.isArray(reportedPerGlyphLeads?.values) || reportedPerGlyphLeads.values.length === 0) {
+  fail('opening report perGlyphAudibleLeadMilliseconds.values: measured evidence is required');
+}
+if (Array.isArray(measuredOpeningUnits) && Array.isArray(reportedPerGlyphLeads?.values)) {
+  if (measuredOpeningUnits.length !== reportedPerGlyphLeads.values.length) {
+    fail(`opening per-unit timing: expected ${measuredOpeningUnits.length} measured units, received ${reportedPerGlyphLeads.values.length}`);
+  }
+  for (const unit of measuredOpeningUnits) {
+    const measuredLead = Math.round((unit.audibleAt - unit.at) * 1000);
+    inRange(measuredLead, perGlyphLeadRule, `timing-map.json ${unit.id} measured audible lead`);
+    const reported = reportedPerGlyphLeads.values.find((candidate) => candidate.id === unit.id);
+    if (!reported) {
+      fail(`opening report per-unit timing: missing ${unit.id}`);
+      continue;
+    }
+    if (reported.leadMilliseconds !== measuredLead
+      || reported.audibleOnsetSeconds !== unit.audibleAt
+      || reported.visualStartSeconds !== unit.at
+      || reported.visualSettleSeconds !== unit.settleAt) {
+      fail(`opening report per-unit timing: stale or mismatched evidence for ${unit.id}`);
+    }
+  }
+}
+inRange(openingReport.perGlyphAudibleLeadMilliseconds?.min, perGlyphLeadRule, 'opening report perGlyphAudibleLeadMilliseconds.min');
+inRange(openingReport.perGlyphAudibleLeadMilliseconds?.max, perGlyphLeadRule, 'opening report perGlyphAudibleLeadMilliseconds.max');
+inRange(openingReport.literalQuestionCompletionLeadMilliseconds, opening.literalQuestionCompletionLeadMilliseconds ?? {}, 'opening report literalQuestionCompletionLeadMilliseconds');
+if (typeof hookTiming.literalQuestionCueEnd !== 'number' || typeof hookTiming.literalQuestionCueStart !== 'number') {
+  fail('timing-map.json hookTiming: literal question cue bounds are required');
+}
 inRange(openingReport.fullQuestionReadLeadMilliseconds, opening.fullQuestionReadLeadMilliseconds ?? {}, 'opening report fullQuestionReadLeadMilliseconds');
 inRange(openingReport.canvasGlyphCoveragePercent?.width, opening.canvasGlyphCoveragePercent?.width ?? {}, 'opening report canvasGlyphCoveragePercent.width');
 inRange(openingReport.canvasGlyphCoveragePercent?.height, opening.canvasGlyphCoveragePercent?.height ?? {}, 'opening report canvasGlyphCoveragePercent.height');
+const compactTextBlock = opening.compactTextBlock ?? {};
+if (compactTextBlock.status !== 'active') {
+  fail('active profile: opening compact-text-block rule is missing or inactive');
+} else {
+  const compactMeasurement = openingReport.domMeasurement ?? {};
+  const lineBounds = compactMeasurement.lineGlyphBounds;
+  if (!Array.isArray(lineBounds)
+    || lineBounds.length < compactTextBlock.semanticLineCount?.min
+    || lineBounds.length > compactTextBlock.semanticLineCount?.max) {
+    fail(`opening compact text: expected ${compactTextBlock.semanticLineCount?.min}-${compactTextBlock.semanticLineCount?.max} final glyph rows, received ${Array.isArray(lineBounds) ? lineBounds.length : JSON.stringify(lineBounds)}`);
+  }
+  inRange(compactMeasurement.glyphMassHeightPercent, compactTextBlock.glyphMassHeightPercent ?? {}, 'opening compact text glyphMassHeightPercent');
+  if (typeof compactMeasurement.maxInterlineGapPx !== 'number'
+    || compactMeasurement.maxInterlineGapPx > compactTextBlock.maxInterlineGapPx) {
+    fail(`opening compact text maxInterlineGapPx: expected <= ${compactTextBlock.maxInterlineGapPx}, received ${JSON.stringify(compactMeasurement.maxInterlineGapPx)}`);
+  }
+  isTrue(compactMeasurement.compactTextBlockPass, 'opening compact text compactTextBlockPass');
+}
+const uniformTypography = opening.uniformAdaptiveTypography ?? {};
+if (uniformTypography.status !== 'active') {
+  fail('active profile: opening uniform-adaptive-typography rule is missing or inactive');
+} else if (uniformTypography.scope?.includes(locale)) {
+  const typographyMeasurement = openingReport.domMeasurement?.typography ?? {};
+  isTrue(typographyMeasurement.uniformFontSizePass, 'opening typography uniformFontSizePass');
+  isTrue(typographyMeasurement.fontFamilyPass, 'opening typography fontFamilyPass');
+  isTrue(typographyMeasurement.fontWeightPass, 'opening typography fontWeightPass');
+  isTrue(typographyMeasurement.accentTokenPass, 'opening typography accentTokenPass');
+  if (!Array.isArray(typographyMeasurement.lineFontSizesPx) || typographyMeasurement.lineFontSizesPx.length === 0) {
+    fail('opening typography lineFontSizesPx: missing');
+  }
+  if (typographyMeasurement.fontFamily !== uniformTypography.fontFamily) {
+    fail(`opening typography fontFamily: expected ${uniformTypography.fontFamily}, received ${JSON.stringify(typographyMeasurement.fontFamily)}`);
+  }
+  if (typographyMeasurement.fontWeight !== String(uniformTypography.fontWeight)) {
+    fail(`opening typography fontWeight: expected ${uniformTypography.fontWeight}, received ${JSON.stringify(typographyMeasurement.fontWeight)}`);
+  }
+  const expectedAccentTokens = uniformTypography.accentTokens?.[locale] ?? [];
+  const accentRuns = typographyMeasurement.accentRuns ?? [];
+  for (const expectedAccent of expectedAccentTokens) {
+    const normalizedExpected = String(expectedAccent.token).replace(/\s+/g, '');
+    if (!accentRuns.some((run) => run.tone === expectedAccent.tone && String(run.text).replace(/\s+/g, '').includes(normalizedExpected))) {
+      fail(`opening typography accent: missing ${expectedAccent.tone} token ${expectedAccent.token}`);
+    }
+  }
+}
 isTrue(openingReport.agentFirstFrame?.visible, 'opening report agentFirstFrame.visible');
 if (openingReport.agentFirstFrame?.position !== opening.agentReservation?.position) {
   fail(`opening report agentFirstFrame.position: expected ${opening.agentReservation?.position}, received ${JSON.stringify(openingReport.agentFirstFrame?.position)}`);

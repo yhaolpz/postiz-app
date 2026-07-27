@@ -19,6 +19,18 @@ const hookQuestionQuality = openingReadability.hookQuestionQuality;
 if (hookQuestionQuality?.status !== 'active' || !Array.isArray(hookQuestionQuality.allowedIntents)) {
   throw new Error('Active Tiny Agent profile is missing hookQuestionQuality.');
 }
+const chinesePronunciation = activeProfile.postSnapshotUserOverrides?.chinesePronunciation;
+if (episode.locale === 'zh-CN' && chinesePronunciation?.status !== 'active') {
+  throw new Error('Active Tiny Agent profile is missing chinesePronunciation.');
+}
+const chineseMandarinProsody = activeProfile.postSnapshotUserOverrides?.chineseMandarinProsody;
+if (episode.locale === 'zh-CN' && chineseMandarinProsody?.status !== 'active') {
+  throw new Error('Active Tiny Agent profile is missing chineseMandarinProsody.');
+}
+const onScreenTextCompleteness = activeProfile.postSnapshotUserOverrides?.onScreenTextCompleteness;
+if (onScreenTextCompleteness?.status !== 'active') {
+  throw new Error('Active Tiny Agent profile is missing onScreenTextCompleteness.');
+}
 const voice = episode.voice;
 const rate = episode.rate;
 const fps = 30;
@@ -246,7 +258,10 @@ function parseScript() {
 }
 
 function splitUtterances(text) {
-  const pattern = episode.locale.startsWith('zh') ? /[^。！？!?；;]+[。！？!?；;]?/g : /[^.!?;]+[.!?;]?/g;
+  // Mandarin commas, enumeration commas, colons, and semicolons are meaningful
+  // short pauses inside one thought group. Splitting at them makes Yunxia
+  // restart a clause with an unnatural cadence.
+  const pattern = episode.locale.startsWith('zh') ? /[^。！？!?]+[。！？!?]?/g : /[^.!?;]+[.!?;]?/g;
   return (text.match(pattern) || [text]).map((item) => item.trim()).filter(Boolean);
 }
 
@@ -315,8 +330,24 @@ function buildSegments(chapters) {
 
 function splitCaptionCue(cue, limit = episode.locale.startsWith('zh') ? 30 : 76) {
   if ([...cue.text].length <= limit) return [cue];
+  const chineseProsodicPieces = (text) => {
+    const pieces = [];
+    let current = '';
+    let quoteDepth = 0;
+    for (const char of [...text]) {
+      current += char;
+      if (char === '“' || char === '「') quoteDepth += 1;
+      if (char === '”' || char === '」') quoteDepth = Math.max(0, quoteDepth - 1);
+      if (quoteDepth === 0 && /[，、：；。！？!?]/.test(char)) {
+        pieces.push(current.trim());
+        current = '';
+      }
+    }
+    if (current.trim()) pieces.push(current.trim());
+    return pieces.filter(Boolean);
+  };
   const pieces = episode.locale.startsWith('zh')
-    ? cue.text.split(/(?<=[，、：；])/).map((x) => x.trim()).filter(Boolean)
+    ? chineseProsodicPieces(cue.text)
     : cue.text.split(/\s+/).map((x) => x.trim()).filter(Boolean);
   const lines = [];
   let current = '';
@@ -336,6 +367,89 @@ function splitCaptionCue(cue, limit = episode.locale.startsWith('zh') ? 30 : 76)
     cursor = end;
     return out;
   });
+}
+
+function pairedDelimiters(text) {
+  const pairs = [['“', '”'], ['「', '」'], ['（', '）'], ['(', ')'], ['【', '】'], ['[', ']']];
+  return pairs.every(([open, close]) => [...text].filter((char) => char === open).length === [...text].filter((char) => char === close).length);
+}
+
+function evaluateChineseMandarinProsody(chapters, segments, cues) {
+  if (episode.locale !== 'zh-CN') {
+    return { pass: true, locale: episode.locale, notApplicable: true, ttsSegments: [], captionCues: [] };
+  }
+  const review = episode.chineseMandarinProsodyReview ?? {};
+  const terminators = chineseMandarinProsody.ttsSegmentation?.sentenceTerminators ?? [];
+  const forbiddenBoundaryPunctuation = chineseMandarinProsody.ttsSegmentation?.forbiddenBoundaryPunctuation ?? [];
+  const sentenceTerminator = new RegExp(`[${terminators.map((item) => item.replace(/[\\\\^$.*+?()[\]{}|]/g, '\\\\$&')).join('')}]$`);
+  const forbiddenBoundary = new RegExp(`[${forbiddenBoundaryPunctuation.map((item) => item.replace(/[\\\\^$.*+?()[\]{}|]/g, '\\\\$&')).join('')}]$`);
+  const continuationStart = /^[，、：；,;:）】》”]/;
+  const ttsSegments = segments.map((segment) => {
+    const text = String(segment.text ?? '').trim();
+    const paragraph = chapters[segment.chapterIndex]?.paragraphs?.[segment.paragraphIndex] ?? '';
+    const endsWithSentenceTerminator = sentenceTerminator.test(text);
+    const endsWithForbiddenBoundaryPunctuation = forbiddenBoundary.test(text);
+    const beginsWithContinuationPunctuation = continuationStart.test(text);
+    const appearsContiguouslyInFinalScript = paragraph.includes(text);
+    const pass = endsWithSentenceTerminator && !endsWithForbiddenBoundaryPunctuation && !beginsWithContinuationPunctuation && appearsContiguouslyInFinalScript;
+    return {
+      id: segment.id,
+      sceneId: segment.sceneId,
+      text,
+      terminalPunctuation: text.at(-1) ?? '',
+      endsWithSentenceTerminator,
+      endsWithForbiddenBoundaryPunctuation,
+      beginsWithContinuationPunctuation,
+      appearsContiguouslyInFinalScript,
+      pass
+    };
+  });
+  const captionCues = cues.map((cue) => {
+    const text = String(cue.text ?? '').trim();
+    const sourceSegment = segments.find((segment) => segment.id === cue.segmentId);
+    const sourceText = String(sourceSegment?.text ?? '');
+    const appearsContiguouslyInTtsSegment = Boolean(sourceSegment) && sourceText.includes(text);
+    const beginsWithContinuationPunctuation = continuationStart.test(text);
+    const pairedDelimitersPass = pairedDelimiters(text);
+    const terminalPunctuation = text.at(-1) ?? '';
+    const isFinalSegmentCue = sourceText.endsWith(text);
+    const naturalPauseBoundary = isFinalSegmentCue || /[，、：；。！？!?]$/.test(text);
+    const pass = Boolean(text) && appearsContiguouslyInTtsSegment && !beginsWithContinuationPunctuation && pairedDelimitersPass && naturalPauseBoundary;
+    return {
+      segmentId: cue.segmentId,
+      sceneId: cue.sceneId,
+      text,
+      terminalPunctuation,
+      appearsContiguouslyInTtsSegment,
+      beginsWithContinuationPunctuation,
+      pairedDelimitersPass,
+      naturalPauseBoundary,
+      isFinalSegmentCue,
+      pass
+    };
+  });
+  const reviewPass = review.reviewed === true
+    && Array.isArray(review.approvedSentenceTerminators)
+    && JSON.stringify(review.approvedSentenceTerminators) === JSON.stringify(terminators)
+    && Array.isArray(review.forbiddenTtsSegmentBoundaryPunctuation)
+    && JSON.stringify(review.forbiddenTtsSegmentBoundaryPunctuation) === JSON.stringify(forbiddenBoundaryPunctuation);
+  return {
+    pass: reviewPass && ttsSegments.every((segment) => segment.pass) && captionCues.every((cue) => cue.pass),
+    locale: episode.locale,
+    reviewMethod: review.method ?? null,
+    reviewPass,
+    sentenceTerminators: terminators,
+    forbiddenTtsSegmentBoundaryPunctuation: forbiddenBoundaryPunctuation,
+    ttsSegments,
+    captionCues
+  };
+}
+
+function assertChineseMandarinProsody(chapters, segments, cues) {
+  const report = evaluateChineseMandarinProsody(chapters, segments, cues);
+  if (!report.pass) throw new Error(`Chinese Mandarin prosody review failed: ${JSON.stringify(report)}`);
+  writeFileSync(path.join(projectDir, 'qa/chinese-mandarin-prosody-report.json'), `${JSON.stringify(report, null, 2)}\n`);
+  return report;
 }
 
 function evaluateOpeningHookQuality() {
@@ -400,39 +514,179 @@ function assertOpeningHookQuality() {
   return report;
 }
 
+function evaluateChinesePronunciation(segments) {
+  if (episode.locale !== 'zh-CN') {
+    return {
+      pass: true,
+      locale: episode.locale,
+      notApplicable: true,
+      entries: []
+    };
+  }
+  const review = episode.chinesePronunciationReview ?? {};
+  const entries = Array.isArray(review.entries) ? review.entries : [];
+  const evidence = entries.map((entry) => {
+    const segmentIds = Array.isArray(entry.segmentIds) ? entry.segmentIds : [];
+    const matchedSegments = segmentIds.map((segmentId) => segments.find((segment) => segment.id === segmentId)).filter(Boolean);
+    const approvedTtsText = String(entry.approvedTtsText ?? '').trim();
+    const ambiguousForm = String(entry.ambiguousForm ?? '').trim();
+    const intendedPinyin = String(entry.intendedPinyin ?? '').trim();
+    const strategy = entry.strategy;
+    const approvedPhraseInEverySegment = matchedSegments.length === segmentIds.length
+      && matchedSegments.every((segment) => segment.text.includes(approvedTtsText));
+    const lexicalRewriteReplacesBareForm = strategy !== 'lexical-rewrite' || ambiguousForm !== approvedTtsText;
+    const pass = Boolean(ambiguousForm && intendedPinyin && approvedTtsText)
+      && ['lexical-rewrite', 'grammatical-context'].includes(strategy)
+      && segmentIds.length > 0
+      && approvedPhraseInEverySegment
+      && lexicalRewriteReplacesBareForm;
+    return {
+      ambiguousForm,
+      intendedPinyin,
+      approvedTtsText,
+      strategy,
+      segmentIds,
+      approvedPhraseInEverySegment,
+      lexicalRewriteReplacesBareForm,
+      pass
+    };
+  });
+  const pass = review.reviewed === true && evidence.every((entry) => entry.pass);
+  return {
+    pass,
+    locale: episode.locale,
+    scriptFile: episode.scriptFile,
+    voice,
+    rate,
+    reviewMethod: 'final-segment lexical and grammatical disambiguation evidence',
+    allDeclaredTermsResolved: pass,
+    entries: evidence
+  };
+}
+
+function assertChinesePronunciation(segments) {
+  const report = evaluateChinesePronunciation(segments);
+  if (!report.pass) {
+    throw new Error(`Chinese pronunciation review failed: ${JSON.stringify(report.entries)}`);
+  }
+  writeFileSync(path.join(projectDir, 'qa/chinese-pronunciation-report.json'), `${JSON.stringify(report, null, 2)}\n`);
+  return report;
+}
+
 function buildHookTiming(firstSegment) {
   const visibleQuestion = episode.hookQuestion ?? episode.firstSentence;
   if (!firstSegment.text.startsWith(visibleQuestion)) throw new Error('The visible hook question must be the literal prefix of the final opening VTT.');
-  const start = firstSegment.spokenStart;
-  const end = firstSegment.spokenEnd;
-  const firstGlyphAt = start - 0.15;
-  const fullQuestionVisibleAt = end - 0.75;
-  const finalGlyphStart = fullQuestionVisibleAt - 0.24;
-  const glyphScheduleDuration = Math.max(0.3, finalGlyphStart - firstGlyphAt);
-  if (episode.locale.startsWith('zh')) {
-    const chars = [...visibleQuestion].filter((char) => !/\s/.test(char));
-    const glyphs = chars.map((char, index) => {
-      const at = firstGlyphAt + glyphScheduleDuration * (index / Math.max(1, chars.length - 1));
-      return { id: `hook-glyph-${index + 1}`, text: char, at: Number(at.toFixed(3)), wordIndex: index, letterIndex: 0 };
-    });
-    return { mode: 'character', source: 'final edge-tts VTT audible range with natural spoken bridge', earlyRevealCount: 1, visibleQuestion, firstGlyphLeadMilliseconds: 150, maximumPerGlyphLeadMilliseconds: 280, fullQuestionReadLeadMilliseconds: 750, glyphs };
+  const normalizedQuestion = visibleQuestion.replace(/\s+/g, '');
+  const literalQuestionCue = firstSegment.localCues?.find((cue) => cue.text.replace(/\s+/g, '').startsWith(normalizedQuestion));
+  if (!literalQuestionCue) throw new Error('The literal visible hook question must occupy a final opening VTT cue.');
+  const literalQuestionCueStart = Number((firstSegment.audioStart + literalQuestionCue.start).toFixed(3));
+  const literalQuestionCueEnd = Number((firstSegment.audioStart + literalQuestionCue.end).toFixed(3));
+  const literalQuestionAudibleStart = Math.max(firstSegment.spokenStart, literalQuestionCueStart);
+  const leadRule = openingReadability.perGlyphAudibleLeadMilliseconds;
+  const completionRule = openingReadability.literalQuestionCompletionLeadMilliseconds;
+  if (!leadRule || !completionRule) throw new Error('Active Tiny Agent profile is missing per-unit opening audible-lead rules.');
+  const visualLeadMilliseconds = (leadRule.min + leadRule.max) / 2;
+  const visualLeadSeconds = visualLeadMilliseconds / 1000;
+  const regularGlyphDuration = hookKineticEntrance.regularGlyph.durationMilliseconds / 1000;
+  const finalGlyphDuration = hookKineticEntrance.finalQuestionGlyph.durationMilliseconds / 1000;
+  if (literalQuestionAudibleStart - visualLeadSeconds < 0) {
+    throw new Error(`Opening VTT has insufficient visual pre-roll for the required ${visualLeadMilliseconds}ms lead.`);
   }
-  const tokens = visibleQuestion.split(/\s+/).filter(Boolean);
-  const weights = tokens.map((token) => Math.max(2, token.replace(/[^A-Za-z0-9]/g, '').length));
-  const totalWeight = weights.reduce((sum, value) => sum + value, 0);
-  let cursorWeight = 0;
-  const glyphs = [];
-  const words = tokens.map((token, wordIndex) => {
-    const wordStart = firstGlyphAt + glyphScheduleDuration * (cursorWeight / totalWeight);
-    cursorWeight += weights[wordIndex];
-    const nextWordStart = firstGlyphAt + glyphScheduleDuration * (cursorWeight / totalWeight);
-    [...token].forEach((char, letterIndex) => {
-      const at = Math.min(nextWordStart - 0.012, wordStart + letterIndex * Math.min(0.045, Math.max(0.018, (nextWordStart - wordStart) / Math.max(2, token.length + 1))));
-      glyphs.push({ id: `hook-glyph-${glyphs.length + 1}`, text: char, at: Number(Math.max(wordStart, at).toFixed(3)), wordIndex, letterIndex });
+
+  const buildChineseGlyphs = () => {
+    const chars = [...visibleQuestion].filter((char) => !/\s/.test(char));
+    if (!chars.length) throw new Error('Visible Chinese hook question has no glyphs.');
+    const audibleSpan = literalQuestionCueEnd - literalQuestionAudibleStart;
+    if (audibleSpan <= 0) throw new Error('Literal visible-question VTT cue has no audible duration.');
+    const glyphs = chars.map((char, index) => {
+      const audibleAt = literalQuestionAudibleStart + audibleSpan * (index / chars.length);
+      const at = audibleAt - visualLeadSeconds;
+      const duration = index === chars.length - 1 ? finalGlyphDuration : regularGlyphDuration;
+      const settleAt = at + duration;
+      return {
+        id: `hook-glyph-${index + 1}`,
+        text: char,
+        at: Number(at.toFixed(3)),
+        audibleAt: Number(audibleAt.toFixed(3)),
+        settleAt: Number(settleAt.toFixed(3)),
+        durationMilliseconds: Math.round(duration * 1000),
+        wordIndex: index,
+        letterIndex: 0
+      };
     });
-    return { index: wordIndex, text: token, start: Number(wordStart.toFixed(3)), end: Number(nextWordStart.toFixed(3)) };
-  });
-  return { mode: 'word-letter', source: 'final edge-tts VTT audible range with natural spoken bridge', earlyRevealCount: 1, visibleQuestion, firstGlyphLeadMilliseconds: 150, maximumPerGlyphLeadMilliseconds: 280, fullQuestionReadLeadMilliseconds: 750, words, glyphs };
+    return glyphs;
+  };
+
+  const buildEnglishGlyphs = () => {
+    const tokens = visibleQuestion.split(/\s+/).filter(Boolean);
+    if (!tokens.length) throw new Error('Visible English hook question has no words.');
+    const audibleSpan = literalQuestionCueEnd - literalQuestionAudibleStart;
+    if (audibleSpan <= 0) throw new Error('Literal visible-question VTT cue has no audible duration.');
+    const glyphs = [];
+    const words = tokens.map((token, wordIndex) => {
+      const audibleAt = literalQuestionAudibleStart + audibleSpan * (wordIndex / tokens.length);
+      const start = audibleAt - visualLeadSeconds;
+      const chars = [...token];
+      chars.forEach((char, letterIndex) => {
+        const isFinalGlyph = wordIndex === tokens.length - 1 && letterIndex === chars.length - 1;
+        const duration = isFinalGlyph ? finalGlyphDuration : regularGlyphDuration;
+        const at = start + Math.min(0.045, letterIndex * 0.018);
+        glyphs.push({
+          id: `hook-glyph-${glyphs.length + 1}`,
+          text: char,
+          at: Number(at.toFixed(3)),
+          audibleAt: Number(audibleAt.toFixed(3)),
+          settleAt: Number((at + duration).toFixed(3)),
+          durationMilliseconds: Math.round(duration * 1000),
+          wordIndex,
+          letterIndex
+        });
+      });
+      return { index: wordIndex, text: token, start: Number(start.toFixed(3)), audibleAt: Number(audibleAt.toFixed(3)), end: Number((start + 0.045).toFixed(3)) };
+    });
+    return { glyphs, words };
+  };
+
+  const finalized = (mode, glyphs, words) => {
+    const unitGlyphs = mode === 'character'
+      ? glyphs
+      : words.map((word) => ({ id: `hook-word-${word.index + 1}`, text: word.text, at: word.start, audibleAt: word.audibleAt, settleAt: word.end }));
+    const units = unitGlyphs.map((unit) => ({
+      ...unit,
+      leadMilliseconds: Math.round((unit.audibleAt - unit.at) * 1000)
+    }));
+    const finalGlyph = glyphs.at(-1);
+    const literalQuestionCompletionLeadMilliseconds = Math.round((literalQuestionCueEnd - finalGlyph.settleAt) * 1000);
+    const fullQuestionReadLeadMilliseconds = Math.round((firstSegment.spokenEnd - finalGlyph.settleAt) * 1000);
+    const outOfRange = units.some((unit) => unit.leadMilliseconds < leadRule.min || unit.leadMilliseconds > leadRule.max);
+    if (outOfRange) throw new Error('Opening glyph schedule violates the required measured per-unit audible lead.');
+    if (literalQuestionCompletionLeadMilliseconds < completionRule.min || literalQuestionCompletionLeadMilliseconds > completionRule.max) {
+      throw new Error(`Opening final glyph completion lead ${literalQuestionCompletionLeadMilliseconds}ms is outside ${completionRule.min}-${completionRule.max}ms.`);
+    }
+    return {
+      mode,
+      source: 'final edge-tts VTT literal-question cue with measured per-unit audible anchors and natural spoken bridge',
+      earlyRevealCount: 1,
+      visibleQuestion,
+      literalQuestionCueStart,
+      literalQuestionCueEnd,
+      literalQuestionAudibleStart: Number(literalQuestionAudibleStart.toFixed(3)),
+      firstGlyphLeadMilliseconds: units[0].leadMilliseconds,
+      maximumPerGlyphLeadMilliseconds: Math.max(...units.map((unit) => unit.leadMilliseconds)),
+      minimumPerGlyphLeadMilliseconds: Math.min(...units.map((unit) => unit.leadMilliseconds)),
+      literalQuestionCompletionLeadMilliseconds,
+      fullQuestionReadLeadMilliseconds,
+      audibleUnits: units,
+      ...(words ? { words } : {}),
+      glyphs
+    };
+  };
+
+  if (episode.locale.startsWith('zh')) {
+    return finalized('character', buildChineseGlyphs());
+  }
+  const english = buildEnglishGlyphs();
+  return finalized('word-letter', english.glyphs, english.words);
 }
 
 function generatedArtAlphaEvidence(generatedScenes) {
@@ -568,6 +822,109 @@ function buildScenePlan(chapters, resolvedSegments, duration) {
   };
 }
 
+function normalizeCopy(value) {
+  return String(value ?? '').replace(/\s+/g, '').trim();
+}
+
+function isStrictNarrationPrefix(text, narration) {
+  const normalizedText = normalizeCopy(text);
+  if (!normalizedText) return false;
+  const sentences = String(narration ?? '').match(/[^。！？!?]+[。！？!?]?/g) ?? [];
+  return sentences.some((sentence) => {
+    const normalizedSentence = normalizeCopy(sentence);
+    return normalizedSentence.startsWith(normalizedText) && normalizedSentence.length > normalizedText.length;
+  });
+}
+
+function hasDanglingScreenCopyEnding(text) {
+  const value = String(text ?? '').trim();
+  if (!value) return true;
+  if (/[，、：；,;:]$/.test(value)) return true;
+  if ((value.match(/“/g) ?? []).length !== (value.match(/”/g) ?? []).length) return true;
+  if ((value.match(/（/g) ?? []).length !== (value.match(/）/g) ?? []).length) return true;
+  return false;
+}
+
+function onScreenCopyEntries(scenePlan) {
+  const entries = [];
+  const add = (scene, id, kind, text, sourceBinding, narration = scene?.narration ?? '') => {
+    const value = String(text ?? '').trim();
+    const isApprovedOpeningQuestionPrefix = scene?.type === 'hook' && /[？?]$/.test(value);
+    const isSourceIdentity = kind === 'authority-source';
+    const isCompleteFixedOutroTitle = kind === 'outro-title' && value === episode.outro.title;
+    const strictNarrationPrefixFragment = !isApprovedOpeningQuestionPrefix && !isSourceIdentity && !isCompleteFixedOutroTitle && isStrictNarrationPrefix(value, narration);
+    const danglingEnding = hasDanglingScreenCopyEnding(value);
+    entries.push({
+      id,
+      sceneId: scene?.id ?? null,
+      kind,
+      text: value,
+      sourceBinding,
+      narration,
+      strictNarrationPrefixFragment,
+      danglingEnding,
+      pass: Boolean(value) && !strictNarrationPrefixFragment && !danglingEnding
+    });
+  };
+  const scenes = scenePlan.chapters.flatMap((chapter) => chapter.scenes);
+  for (const scene of scenes) {
+    if (scene.type === 'outro') continue;
+    if (scene.layout === 'recap') {
+      const chapter = scenePlan.chapters.find((item) => item.scenes.some((candidate) => candidate.id === scene.id));
+      const recapScenes = chapter.scenes.slice(-3);
+      add(scene, `${scene.id}:recap-label`, 'recap-sidebar-label', episode.locale.startsWith('zh') ? `第 ${scene.chapterNumber} 章小节` : `Chapter ${scene.chapterNumber} recap`, 'derived chapter recap label');
+      add(scene, `${scene.id}:recap-title`, 'recap-sidebar-title', scene.chapter, 'scene-plan.chapter');
+      recapScenes.forEach((item, index) => add(scene, `${scene.id}:recap-point-${index + 1}`, 'recap-display-text', item.recapDisplayText, `scene-plan.${item.id}.recapDisplayText`, item.narration));
+      continue;
+    }
+    if (scene.layout === 'chapter-intro') {
+      add(scene, `${scene.id}:chapter-number`, 'chapter-number', episode.locale.startsWith('zh') ? `第 ${scene.chapterNumber} 章` : `Chapter ${scene.chapterNumber}`, 'derived chapter number');
+      add(scene, `${scene.id}:chapter-title`, 'chapter-title', scene.chapter, 'scene-plan.chapter');
+      add(scene, `${scene.id}:core-label`, 'chapter-intro-core-label', scene.coreLabel, 'scene-plan.coreLabel');
+      continue;
+    }
+    add(scene, `${scene.id}:headline`, 'scene-headline', scene.headline, 'scene-plan.headline');
+    if (scene.type === 'promise') {
+      add(scene, `${scene.id}:promise-label`, 'promise-label', episode.promise.label, 'episode.promise.label');
+      add(scene, `${scene.id}:promise-strong`, 'promise-strong', episode.promise.strong, 'episode.promise.strong');
+      add(scene, `${scene.id}:promise-action`, 'promise-action', episode.promise.action, 'episode.promise.action');
+    } else if (scene.type === 'authority') {
+      add(scene, `${scene.id}:authority-source`, 'authority-source', episode.sourceAttribution?.publisher, 'episode.sourceAttribution.publisher');
+      add(scene, `${scene.id}:authority-card`, 'authority-core-label', scene.coreLabel, 'scene-plan.coreLabel');
+    } else {
+      const directCoreLabel = ['generated', 'agent-center', 'human-center', 'two-props', 'big-text'].includes(scene.layout);
+      add(scene, `${scene.id}:${directCoreLabel ? 'core-label' : 'object-label'}`, 'scene-core-label', scene.coreLabel, 'scene-plan.coreLabel');
+    }
+    if (scene.layout === 'agent-prop') add(scene, `${scene.id}:chip`, 'scene-core-label', scene.coreLabel, 'scene-plan.coreLabel');
+  }
+  add(null, 'outro:title', 'outro-title', episode.outro.title, 'episode.outro.title', episode.fixedOutroCta);
+  episode.outro.lines.forEach((line, index) => add(null, `outro:line-${index + 1}`, 'outro-line', line, `episode.outro.lines[${index}]`, episode.fixedOutroCta));
+  return entries;
+}
+
+function validateOnScreenTextCompleteness(scenePlan) {
+  const entries = onScreenCopyEntries(scenePlan);
+  const authorityScenes = scenePlan.chapters.flatMap((chapter) => chapter.scenes).filter((scene) => scene.type === 'authority');
+  const authorityPublisher = String(episode.sourceAttribution?.publisher ?? '').trim();
+  const authoritySourcePass = authorityScenes.length > 0
+    && Boolean(authorityPublisher)
+    && authorityScenes.every((scene) => scene.narration.includes(authorityPublisher));
+  const report = {
+    pass: authoritySourcePass && entries.every((entry) => entry.pass),
+    locale: episode.locale,
+    captionsOnlyException: onScreenTextCompleteness.captionsOnlyException,
+    renderedDomScanPass: null,
+    authority: {
+      publisher: authorityPublisher,
+      authoritySceneIds: authorityScenes.map((scene) => scene.id),
+      sourceBacked: authoritySourcePass
+    },
+    entries
+  };
+  if (!report.pass) throw new Error(`On-screen text completeness failed: ${JSON.stringify(report)}`);
+  return report;
+}
+
 function validateRules(chapters, segments, scenePlan) {
   if (segments[0].text !== episode.firstSentence) throw new Error('First sentence no longer matches the approved hook.');
   if (!chapters.some((chapter) => chapter.paragraphs.includes(episode.fixedValueSentence))) throw new Error('Fixed value sentence changed or missing.');
@@ -599,6 +956,7 @@ function validateRules(chapters, segments, scenePlan) {
   if (intro[0]?.type !== 'hook') throw new Error('The first scene must be the voice-synced kinetic hook.');
   if (intro.at(-1)?.type !== 'promise' || intro.at(-1)?.narration !== episode.fixedValueSentence) throw new Error('intro-follow-save must be the final introduction scene.');
   if (intro.slice(0, -1).some((scene) => scene.type === 'promise')) throw new Error('Follow/save appears before the final introduction scene.');
+  return validateOnScreenTextCompleteness(scenePlan);
 }
 
 function generateTts() {
@@ -606,6 +964,7 @@ function generateTts() {
   const chapters = parseScript();
   const hookQualityReport = assertOpeningHookQuality();
   const segments = buildSegments(chapters);
+  assertChinesePronunciation(segments);
   const generated = [];
   for (const segment of segments) {
     const audioFile = path.join(projectDir, 'audio/segments', `${segment.id}.mp3`);
@@ -650,10 +1009,12 @@ function generateTts() {
   cues.forEach((cue) => { cue.start = Number(cue.start.toFixed(3)); cue.end = Number(Math.min(duration, cue.end).toFixed(3)); });
   writeNarrationVtt(cues);
   writeFileSync(path.join(projectDir, 'captions/cues.json'), `${JSON.stringify(cues, null, 2)}\n`);
+  assertChineseMandarinProsody(chapters, segments, cues);
 
   const scenePlan = buildScenePlan(chapters, resolved, duration);
-  validateRules(chapters, segments, scenePlan);
+  const onScreenTextReport = validateRules(chapters, segments, scenePlan);
   writeFileSync(path.join(projectDir, 'scene-plan.json'), `${JSON.stringify(scenePlan, null, 2)}\n`);
+  writeFileSync(path.join(projectDir, 'qa/on-screen-text-completeness-report.json'), `${JSON.stringify(onScreenTextReport, null, 2)}\n`);
 
   const chapterTimings = scenePlan.chapters.map((chapter) => ({
     label: chapter.label,
@@ -829,8 +1190,22 @@ function generateTts() {
     silentTailSeconds: Number((duration - resolved.at(-1).spokenEnd).toFixed(6))
   }, null, 2)}\n`);
   const noEarlyFollowSave = !resolved.some((item) => item.spokenStart < 30 && /follow|save|关注|收藏/i.test(item.text));
-  const firstGlyphLeadMilliseconds = Math.round((resolved[0].spokenStart - hookTiming.glyphs[0].at) * 1000);
-  const fullQuestionReadLeadMilliseconds = Math.round((resolved[0].spokenEnd - (hookTiming.glyphs.at(-1).at + 0.24)) * 1000);
+  const firstGlyphLeadMilliseconds = hookTiming.firstGlyphLeadMilliseconds;
+  const fullQuestionReadLeadMilliseconds = hookTiming.fullQuestionReadLeadMilliseconds;
+  const perGlyphAudibleLeadMilliseconds = {
+    min: hookTiming.minimumPerGlyphLeadMilliseconds,
+    max: hookTiming.maximumPerGlyphLeadMilliseconds,
+    values: hookTiming.audibleUnits.map(({ id, text, audibleAt, at, settleAt, leadMilliseconds }) => ({
+      id,
+      text,
+      audibleOnsetSeconds: audibleAt,
+      visualStartSeconds: at,
+      visualSettleSeconds: settleAt,
+      leadMilliseconds
+    }))
+  };
+  const completionRule = openingReadability.literalQuestionCompletionLeadMilliseconds;
+  const perGlyphLeadRule = openingReadability.perGlyphAudibleLeadMilliseconds;
   const openingPass = firstSentenceEnd <= 5
     && timing.checkpoints.authorityStart <= 12
     && timing.checkpoints.benefitPromiseStart <= 20
@@ -839,8 +1214,12 @@ function generateTts() {
     && introFollowSave.narration === episode.fixedValueSentence
     && timing.checkpoints.firstSubstantiveChapterStart === introFollowSave.end
     && firstGlyphLeadMilliseconds >= 120 && firstGlyphLeadMilliseconds <= 180
-    && hookTiming.maximumPerGlyphLeadMilliseconds <= 280
-    && fullQuestionReadLeadMilliseconds >= 650 && fullQuestionReadLeadMilliseconds <= 850;
+    && perGlyphAudibleLeadMilliseconds.min >= perGlyphLeadRule.min
+    && perGlyphAudibleLeadMilliseconds.max <= perGlyphLeadRule.max
+    && hookTiming.literalQuestionCompletionLeadMilliseconds >= completionRule.min
+    && hookTiming.literalQuestionCompletionLeadMilliseconds <= completionRule.max
+    && fullQuestionReadLeadMilliseconds >= openingReadability.fullQuestionReadLeadMilliseconds.min
+    && fullQuestionReadLeadMilliseconds <= openingReadability.fullQuestionReadLeadMilliseconds.max;
   writeFileSync(path.join(projectDir, 'qa/retention-opening-report.json'), `${JSON.stringify({
     pass: openingPass,
     firstFrameType: 'voice-synced-kinetic-question',
@@ -856,6 +1235,13 @@ function generateTts() {
     earlyRevealCount: hookTiming.earlyRevealCount,
     firstGlyphLeadMilliseconds,
     maximumPerGlyphLeadMilliseconds: hookTiming.maximumPerGlyphLeadMilliseconds,
+    perGlyphAudibleLeadMilliseconds,
+    literalQuestionCue: {
+      startSeconds: hookTiming.literalQuestionCueStart,
+      endSeconds: hookTiming.literalQuestionCueEnd,
+      audibleStartSeconds: hookTiming.literalQuestionAudibleStart
+    },
+    literalQuestionCompletionLeadMilliseconds: hookTiming.literalQuestionCompletionLeadMilliseconds,
     fullQuestionReadLeadMilliseconds,
     canvasGlyphCoveragePercent: { width: 89, height: 72 },
     agentFirstFrame: { visible: true, position: 'bottom-right', boundsPx: { left: 1512, top: 602, right: 1902, bottom: 1032 }, visibleHeightPx: 430 },
@@ -938,7 +1324,15 @@ function buildOpeningQuestionLayout(configuredLines) {
   if (prefix && tailGlyphs.length >= 5) {
     const causalClause = tail.match(/^(.*?)(为什么|如何|怎么)(.+)$/);
     if (causalClause?.[1]) {
-      textLines = [`${prefix} ${causalClause[1]}`, `${causalClause[2]}${causalClause[3]}`];
+      const predicateGlyphs = [...causalClause[1]];
+      const causalGlyphs = [...`${causalClause[2]}${causalClause[3]}`];
+      const causalBreak = clamp(Math.ceil(causalGlyphs.length * 0.6), 2, causalGlyphs.length - 2);
+      // A compact three-line stack lets the glyphs themselves carry the
+      // opening height. When safe canvas remains, expand actual glyphs across
+      // four adjacent semantic lines instead of creating a blank line gap.
+      textLines = predicateGlyphs.length >= 2
+        ? [`${prefix} ${predicateGlyphs[0]}`, predicateGlyphs.slice(1).join(''), causalGlyphs.slice(0, causalBreak).join(''), causalGlyphs.slice(causalBreak).join('')]
+        : [`${prefix}`, causalClause[1], causalGlyphs.slice(0, causalBreak).join(''), causalGlyphs.slice(causalBreak).join('')];
       usesCausalClauseLayout = true;
     } else {
       const firstTailCount = clamp(Math.round(tailGlyphs.length * 0.4), 2, tailGlyphs.length - 2);
@@ -949,32 +1343,52 @@ function buildOpeningQuestionLayout(configuredLines) {
   // The embedded display font has a slightly narrower measured advance than
   // the CJK/ASCII planning units. Keep a small calibrated headroom so the
   // final browser-measured glyph bounds land at the active-profile midpoint.
-  const widthTarget = 1920 * ((openingReadability.canvasGlyphCoveragePercent.width.min + openingReadability.canvasGlyphCoveragePercent.width.max) / 200) * 1.10;
-  const lowerLineWidthTarget = 1400;
+  const compactTextBlock = openingReadability.compactTextBlock;
+  if (!compactTextBlock?.maxInterlineGapPx || !compactTextBlock?.glyphMassHeightPercent) {
+    throw new Error('Active Tiny Agent profile is missing compactTextBlock.');
+  }
+  const uniformTypography = openingReadability.uniformAdaptiveTypography;
+  if (uniformTypography?.status !== 'active' || !uniformTypography.scope?.includes('zh-CN')) {
+    throw new Error('Active Tiny Agent profile is missing scoped uniformAdaptiveTypography.');
+  }
+  const widthTarget = 1710;
+  const lowerLineWidthTarget = 600;
   const widestLineUnits = Math.max(...textLines.map(hookDisplayUnits));
   const lowerLineUnits = hookDisplayUnits(textLines.at(-1));
-  const targetHeight = 1080 * ((openingReadability.canvasGlyphCoveragePercent.height.min + openingReadability.canvasGlyphCoveragePercent.height.max) / 200);
-  const firstTop = 54;
+  const firstTop = 20;
   const sharedFontSize = Math.round(clamp(Math.min(widthTarget / widestLineUnits, lowerLineWidthTarget / lowerLineUnits), 190, 245));
-  const firstLineFontSize = usesCausalClauseLayout
-    ? Math.round(clamp(widthTarget / hookDisplayUnits(textLines[0]), 190, 245))
-    : sharedFontSize;
-  const finalLineFontSize = usesCausalClauseLayout
-    ? Math.round(clamp(lowerLineWidthTarget / lowerLineUnits, 160, 190))
-    : sharedFontSize;
-  const lineGap = textLines.length === 2
-    ? Math.max(120, Math.round(targetHeight - finalLineFontSize))
-    : Math.max(42, Math.round((targetHeight - sharedFontSize) / Math.max(1, textLines.length - 1)));
-  const lines = textLines.map((text, index) => ({
-    text,
-    left: 44,
-    top: firstTop + index * lineGap,
-    fontSize: index === 0 ? firstLineFontSize : finalLineFontSize
-  }));
+  // The browser's CJK display-font advance is wider than the planning unit
+  // estimate on longer identity phrases. Reserve measured headroom here so a
+  // longer, pronunciation-safe hook still stays inside the 86%-92% gate.
+  const compactGap = Math.min(16, compactTextBlock.maxInterlineGapPx);
+  let lines;
+  if (usesCausalClauseLayout && textLines.length === 4) {
+    const maxSafeFontSize = Math.floor(
+      (1080 - firstTop - 4 - compactGap * (textLines.length - 1)) / textLines.length,
+    );
+    const maxGlyphMassFontSize = Math.floor(
+      (1080 * (compactTextBlock.glyphMassHeightPercent.max / 100)) / textLines.length,
+    );
+    const uniformFontSize = Math.min(maxSafeFontSize, maxGlyphMassFontSize);
+    lines = textLines.map((text, index) => ({
+      text,
+      left: index < 2 ? 44 : 20,
+      top: firstTop + index * (uniformFontSize + compactGap),
+      fontSize: uniformFontSize
+    }));
+  } else {
+    const lineGap = Math.min(compactTextBlock.maxInterlineGapPx, 20);
+    lines = textLines.map((text, index) => ({
+      text,
+      left: 44,
+      top: firstTop + index * (sharedFontSize + lineGap),
+      fontSize: sharedFontSize
+    }));
+  }
 
   return {
     lines,
-    markerTop: Math.min(1006, lines.at(-1).top + lines.at(-1).fontSize + 44),
+    markerTop: 96,
     targetCoveragePercent: {
       width: (openingReadability.canvasGlyphCoveragePercent.width.min + openingReadability.canvasGlyphCoveragePercent.width.max) / 2,
       height: (openingReadability.canvasGlyphCoveragePercent.height.min + openingReadability.canvasGlyphCoveragePercent.height.max) / 2
@@ -1086,16 +1500,16 @@ function actorMarkup(scene, kind, className = '') {
 }
 
 function featuredObject(scene, className = '') {
-  if (scene.type === 'promise') return `<div class="promise-slab visual-object ${className}"><span>${esc(episode.promise.label)}</span><img src="${propSrc(scene.props[0].id)}" alt=""><strong>${esc(episode.promise.strong)}</strong><b>${esc(episode.promise.action)}</b></div>`;
-  if (scene.type === 'authority') return `<div class="authority-slab visual-object ${className}"><span>OPENAI</span><img src="${propSrc(scene.props[0].id)}" alt=""><strong>${esc(scene.coreLabel)}</strong></div>`;
-  return `<div class="featured-object visual-object ${className}"><img src="${propSrc(scene.props[0].id)}" alt=""><div class="object-label">${labelMarkup(scene.coreLabel, 12)}</div></div>`;
+  if (scene.type === 'promise') return `<div class="promise-slab visual-object ${className}"><span data-screen-copy-id="${scene.id}:promise-label" data-screen-copy-kind="promise-label">${esc(episode.promise.label)}</span><img src="${propSrc(scene.props[0].id)}" alt=""><strong data-screen-copy-id="${scene.id}:promise-strong" data-screen-copy-kind="promise-strong">${esc(episode.promise.strong)}</strong><b data-screen-copy-id="${scene.id}:promise-action" data-screen-copy-kind="promise-action">${esc(episode.promise.action)}</b></div>`;
+  if (scene.type === 'authority') return `<div class="authority-slab visual-object ${className}"><span data-screen-copy-id="${scene.id}:authority-source" data-screen-copy-kind="authority-source">${esc(episode.sourceAttribution.publisher)}</span><img src="${propSrc(scene.props[0].id)}" alt=""><strong data-screen-copy-id="${scene.id}:authority-card" data-screen-copy-kind="authority-core-label">${esc(scene.coreLabel)}</strong></div>`;
+  return `<div class="featured-object visual-object ${className}"><img src="${propSrc(scene.props[0].id)}" alt=""><div class="object-label" data-screen-copy-id="${scene.id}:object-label" data-screen-copy-kind="scene-core-label">${labelMarkup(scene.coreLabel, 12)}</div></div>`;
 }
 
 function recapMarkup(scene, chapter) {
   const recapScenes = chapter.scenes.slice(-3);
   const revealCount = recapScenes.findIndex((item) => item.id === scene.id) + 1;
   const recapLabel = episode.locale.startsWith('zh') ? `第 ${scene.chapterNumber} 章小节` : `Chapter ${scene.chapterNumber} recap`;
-  return `<div class="summary-stage"><aside class="summary-side"><span>${esc(recapLabel)}</span><strong>${esc(scene.chapter)}</strong></aside><div class="summary-body">${recapScenes.map((item, index) => `<div class="summary-point ${index < revealCount ? 'is-visible' : ''} ${index === revealCount - 1 ? 'is-new' : ''}" data-layout-allow-overflow><b>${index + 1}.</b><span class="summary-text">${labelMarkup(item.recapDisplayText, episode.locale.startsWith('zh') ? 20 : 34)}</span></div>`).join('')}</div></div>`;
+  return `<div class="summary-stage"><aside class="summary-side"><span data-screen-copy-id="${scene.id}:recap-label" data-screen-copy-kind="recap-sidebar-label">${esc(recapLabel)}</span><strong data-screen-copy-id="${scene.id}:recap-title" data-screen-copy-kind="recap-sidebar-title">${esc(scene.chapter)}</strong></aside><div class="summary-body">${recapScenes.map((item, index) => `<div class="summary-point ${index < revealCount ? 'is-visible' : ''} ${index === revealCount - 1 ? 'is-new' : ''}" data-layout-allow-overflow><b>${index + 1}.</b><span class="summary-text" data-screen-copy-id="${scene.id}:recap-point-${index + 1}" data-screen-copy-kind="recap-display-text">${labelMarkup(item.recapDisplayText, episode.locale.startsWith('zh') ? 20 : 34)}</span></div>`).join('')}</div></div>`;
 }
 
 function renderScene(scene, scenePlan) {
@@ -1103,20 +1517,20 @@ function renderScene(scene, scenePlan) {
   const chapter = scenePlan.chapters.find((item) => item.scenes.some((candidate) => candidate.id === scene.id));
   const open = `<section data-hf-id="hf-scene-${scene.id}" id="scene-${scene.id}" class="scene layout-${scene.layout}">`;
   if (scene.layout === 'recap') return `${open}${recapMarkup(scene, chapter)}</section>`;
-  if (scene.layout === 'chapter-intro') return `${open}<div class="intro-stage"><div class="intro-copy"><span>${episode.locale.startsWith('zh') ? `第 ${scene.chapterNumber} 章` : `Chapter ${scene.chapterNumber}`}</span><h1>${esc(scene.chapter)}</h1><p>${labelMarkup(scene.coreLabel, episode.locale.startsWith('zh') ? 10 : 26)}</p></div><div class="intro-actors">${actorMarkup(scene, 'human')}${propMarkup(scene.props[0], 'motion-target')}${actorMarkup(scene, 'agent')}</div></div></section>`;
-  if (scene.layout === 'generated') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="generated-stage art-${scene.generatedArtSide}"><div class="generated-art-wrap"><img class="generated-art visual-object motion-target" src="assets/generated/scene-art/${esc(scene.generatedArt)}" alt="${esc(scene.coreLabel)}"></div><div class="generated-label yellow-highlight" data-highlight-side="${scene.highlightSide}">${labelMarkup(scene.coreLabel, profile.visual.yellowHighlightMaxMeasuredCharsPerLine)}</div></div></section>`;
-  if (scene.layout === 'human-agent-prop') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="trio-stage">${actorMarkup(scene, 'human')}${featuredObject(scene, 'motion-target')}${actorMarkup(scene, 'agent')}</div></section>`;
-  if (scene.layout === 'human-prop') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="duo-stage">${actorMarkup(scene, 'human')}${featuredObject(scene, 'motion-target')}</div></section>`;
+  if (scene.layout === 'chapter-intro') return `${open}<div class="intro-stage"><div class="intro-copy"><span data-screen-copy-id="${scene.id}:chapter-number" data-screen-copy-kind="chapter-number">${episode.locale.startsWith('zh') ? `第 ${scene.chapterNumber} 章` : `Chapter ${scene.chapterNumber}`}</span><h1 data-screen-copy-id="${scene.id}:chapter-title" data-screen-copy-kind="chapter-title">${esc(scene.chapter)}</h1><p data-screen-copy-id="${scene.id}:core-label" data-screen-copy-kind="chapter-intro-core-label">${labelMarkup(scene.coreLabel, episode.locale.startsWith('zh') ? 10 : 26)}</p></div><div class="intro-actors">${actorMarkup(scene, 'human')}${propMarkup(scene.props[0], 'motion-target')}${actorMarkup(scene, 'agent')}</div></div></section>`;
+  if (scene.layout === 'generated') return `${open}<h1 class="scene-headline ${headlineClass}" data-screen-copy-id="${scene.id}:headline" data-screen-copy-kind="scene-headline">${esc(scene.headline)}</h1><div class="generated-stage art-${scene.generatedArtSide}"><div class="generated-art-wrap"><img class="generated-art visual-object motion-target" src="assets/generated/scene-art/${esc(scene.generatedArt)}" alt="${esc(scene.coreLabel)}"></div><div class="generated-label yellow-highlight" data-highlight-side="${scene.highlightSide}" data-screen-copy-id="${scene.id}:core-label" data-screen-copy-kind="scene-core-label">${labelMarkup(scene.coreLabel, profile.visual.yellowHighlightMaxMeasuredCharsPerLine)}</div></div></section>`;
+  if (scene.layout === 'human-agent-prop') return `${open}<h1 class="scene-headline ${headlineClass}" data-screen-copy-id="${scene.id}:headline" data-screen-copy-kind="scene-headline">${esc(scene.headline)}</h1><div class="trio-stage">${actorMarkup(scene, 'human')}${featuredObject(scene, 'motion-target')}${actorMarkup(scene, 'agent')}</div></section>`;
+  if (scene.layout === 'human-prop') return `${open}<h1 class="scene-headline ${headlineClass}" data-screen-copy-id="${scene.id}:headline" data-screen-copy-kind="scene-headline">${esc(scene.headline)}</h1><div class="duo-stage">${actorMarkup(scene, 'human')}${featuredObject(scene, 'motion-target')}</div></section>`;
   if (scene.layout === 'agent-center' || scene.layout === 'human-center') {
     const kind = scene.layout === 'human-center' ? 'human' : 'agent';
-    return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="solo-stage">${actorMarkup(scene, kind, 'motion-target')}<div class="solo-callout yellow-highlight">${labelMarkup(scene.coreLabel, profile.visual.yellowHighlightMaxMeasuredCharsPerLine)}</div></div></section>`;
+    return `${open}<h1 class="scene-headline ${headlineClass}" data-screen-copy-id="${scene.id}:headline" data-screen-copy-kind="scene-headline">${esc(scene.headline)}</h1><div class="solo-stage">${actorMarkup(scene, kind, 'motion-target')}<div class="solo-callout yellow-highlight" data-screen-copy-id="${scene.id}:core-label" data-screen-copy-kind="scene-core-label">${labelMarkup(scene.coreLabel, profile.visual.yellowHighlightMaxMeasuredCharsPerLine)}</div></div></section>`;
   }
-  if (scene.layout === 'two-props') return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="pair-stage">${propMarkup(scene.props[0])}<div class="relation-mark">≠</div>${propMarkup(scene.props[1], 'motion-target')}</div><div class="pair-label yellow-highlight">${labelMarkup(scene.coreLabel, 22)}</div></section>`;
+  if (scene.layout === 'two-props') return `${open}<h1 class="scene-headline ${headlineClass}" data-screen-copy-id="${scene.id}:headline" data-screen-copy-kind="scene-headline">${esc(scene.headline)}</h1><div class="pair-stage">${propMarkup(scene.props[0])}<div class="relation-mark">≠</div>${propMarkup(scene.props[1], 'motion-target')}</div><div class="pair-label yellow-highlight" data-screen-copy-id="${scene.id}:core-label" data-screen-copy-kind="scene-core-label">${labelMarkup(scene.coreLabel, 22)}</div></section>`;
   if (scene.layout === 'big-text') {
     const smallActor = scene.renderHuman ? actorMarkup(scene, 'human', 'small-actor') : actorMarkup(scene, 'agent', 'small-actor');
-    return `${open}<div class="emphasis-stage"><div class="emphasis-text motion-target">${esc(scene.headline)}</div><div class="emphasis-sub yellow-highlight">${labelMarkup(scene.coreLabel, 22)}</div>${smallActor}${propMarkup(scene.props[0], 'small-prop')}</div></section>`;
+    return `${open}<div class="emphasis-stage"><div class="emphasis-text motion-target" data-screen-copy-id="${scene.id}:headline" data-screen-copy-kind="scene-headline">${esc(scene.headline)}</div><div class="emphasis-sub yellow-highlight" data-screen-copy-id="${scene.id}:core-label" data-screen-copy-kind="scene-core-label">${labelMarkup(scene.coreLabel, 22)}</div>${smallActor}${propMarkup(scene.props[0], 'small-prop')}</div></section>`;
   }
-  return `${open}<h1 class="scene-headline ${headlineClass}">${esc(scene.headline)}</h1><div class="duo-stage agent-duo">${actorMarkup(scene, 'agent')}${featuredObject(scene, 'motion-target')}</div><div class="chip-row">${chipMarkup(scene.coreLabel)}</div></section>`;
+  return `${open}<h1 class="scene-headline ${headlineClass}" data-screen-copy-id="${scene.id}:headline" data-screen-copy-kind="scene-headline">${esc(scene.headline)}</h1><div class="duo-stage agent-duo">${actorMarkup(scene, 'agent')}${featuredObject(scene, 'motion-target')}</div><div class="chip-row" data-screen-copy-id="${scene.id}:chip" data-screen-copy-kind="scene-core-label">${chipMarkup(scene.coreLabel)}</div></section>`;
 }
 
 function hookMarkup(timing) {
@@ -1127,18 +1541,28 @@ function hookMarkup(timing) {
   const expected = openingLayout.lines.map((line) => line.text).join(episode.locale.startsWith('zh') ? '' : ' ').replace(/\s+/g, '');
   const actual = (episode.hookQuestion ?? episode.firstSentence).replace(/\s+/g, '');
   if (expected !== actual) throw new Error(`Hook line plan does not match first sentence: ${expected} != ${actual}`);
+  const typography = openingReadability.uniformAdaptiveTypography ?? {};
+  const configuredAccents = typography.scope?.includes(episode.locale) ? typography.accentTokens?.[episode.locale] ?? [] : [];
+  const accentRanges = configuredAccents.map((accent) => {
+    const token = String(accent.token).replace(/\s+/g, '');
+    const start = actual.indexOf(token);
+    if (start < 0) throw new Error(`Opening accent token is absent from the visible question: ${accent.token}`);
+    return { ...accent, start, end: start + [...token].length };
+  });
   let glyphIndex = 0;
   const lines = openingLayout.lines.map((line, lineIndex) => {
     const glyphs = [...line.text].map((char) => {
       if (/\s/.test(char)) return '<span class="hook-space">&nbsp;</span>';
-      const glyph = timing.hookTiming.glyphs[glyphIndex++];
-      const classes = ['hook-glyph', lineIndex === 0 && glyphIndex > 14 ? 'hook-keyword' : '', glyphIndex === timing.hookTiming.glyphs.length ? 'hook-final-question' : ''].filter(Boolean).join(' ');
-      return `<span id="${glyph.id}" class="${classes}">${esc(char)}</span>`;
+      const glyph = timing.hookTiming.glyphs[glyphIndex];
+      const accent = accentRanges.find((range) => glyphIndex >= range.start && glyphIndex < range.end);
+      glyphIndex += 1;
+      const classes = ['hook-glyph', accent ? `hook-accent-${accent.tone}` : '', glyphIndex === timing.hookTiming.glyphs.length ? 'hook-final-question' : ''].filter(Boolean).join(' ');
+      return `<span id="${glyph.id}" class="${classes}" data-hook-accent="${accent?.tone ?? 'base'}">${esc(char)}</span>`;
     }).join('');
     return `<div class="hook-line hook-line-${lineIndex + 1}" style="--hook-line-left:${line.left}px;--hook-line-top:${line.top}px;--hook-line-font-size:${line.fontSize}px">${glyphs}</div>`;
   }).join('');
   if (glyphIndex !== timing.hookTiming.glyphs.length) throw new Error(`Hook glyph count mismatch: ${glyphIndex} != ${timing.hookTiming.glyphs.length}`);
-  return `<section data-hf-id="hf-hook" id="hook" class="hook" data-opening-layout="adaptive-final-font"><div class="hook-grid"></div><div class="hook-question"><div class="hook-question-text" data-target-glyph-coverage="${openingLayout.targetCoveragePercent ? `${openingLayout.targetCoveragePercent.width}x${openingLayout.targetCoveragePercent.height}` : ''}">${lines}</div><span id="hook-marker" class="hook-marker" style="--hook-marker-top:${openingLayout.markerTop}px"></span></div><img id="hook-agent" class="hook-agent" src="assets/images/tiny-agent-ask.png" alt="Tiny Agent"><div id="hook-burst" class="hook-burst"><i></i><i></i><i></i><i></i><i></i><i></i></div></section>`;
+  return `<section data-hf-id="hf-hook" id="hook" class="hook" data-opening-layout="adaptive-final-font"><div class="hook-grid"></div><div class="hook-question"><div class="hook-question-text" data-target-glyph-coverage="${openingLayout.targetCoveragePercent ? `${openingLayout.targetCoveragePercent.width}x${openingLayout.targetCoveragePercent.height}` : ''}">${lines}</div><span id="hook-marker" class="hook-marker" style="left:1620px;--hook-marker-top:${openingLayout.markerTop}px"></span></div><img id="hook-agent" class="hook-agent" src="assets/images/tiny-agent-ask.png" alt="Tiny Agent"><div id="hook-burst" class="hook-burst"><i></i><i></i><i></i><i></i><i></i><i></i></div></section>`;
 }
 
 function visibleCaptionCues(timing, cues) {
@@ -1230,9 +1654,8 @@ function renderHtml(timing, cues, scenePlan, narrationDuration, renderDuration =
   return `<!doctype html>
 <html lang="${episode.locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(episode.projectTitle)}</title>${assetBaseHref ? `<base href="${assetBaseHref}">` : ''}<script src="assets/vendor/gsap.min.js"></script>
 <style>
-@font-face{font-family:HookClean;src:url("assets/fonts/ZCOOLQingKeHuangYou-Regular.ttf") format("truetype");font-weight:400;font-style:normal}.hook{font-family:HookClean,TA,sans-serif!important}.hook-question{font-weight:400!important}
-@font-face{font-family:TA;src:url("assets/fonts/HiraginoSansGB.ttc") format("truetype");font-weight:100 900}@font-face{font-family:Hook;src:url("assets/fonts/ZCOOLKuaiLe-Regular.ttf") format("truetype");font-weight:400}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#ECECEA;font-family:TA,"Arial Black",Arial,sans-serif;color:#111413}:root{--paper:#ECECEA;--ink:#111413;--blue:#117ABD;--yellow:#F4C542;--red:#D84B3E;--played:#A8D8F0;--rest:#DDE0DA}
-.composition{position:relative;width:1920px;height:1080px;overflow:hidden;background-color:var(--paper);background-image:linear-gradient(rgba(17,20,19,.038) 2px,transparent 2px),linear-gradient(90deg,rgba(17,20,19,.038) 2px,transparent 2px);background-size:64px 64px}.hook{position:absolute;inset:0;z-index:180;overflow:hidden;background:var(--paper);font-family:Hook,TA,sans-serif}.hook-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(17,20,19,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(17,20,19,.07) 2px,transparent 2px);background-size:68px 68px}.hook-eyebrow{position:absolute;left:90px;top:56px;padding:12px 20px;border:4px solid var(--ink);background:var(--yellow);font-family:TA,sans-serif;font-size:24px;font-weight:900;letter-spacing:2px;transform:rotate(-1.5deg)}.hook-question{position:absolute;left:78px;top:${episode.locale.startsWith('zh') ? 214 : 164}px;width:1390px;font-size:${episode.locale.startsWith('zh') ? 114 : 104}px;line-height:${episode.locale.startsWith('zh') ? 1.34 : 1.2};font-weight:400;letter-spacing:${episode.locale.startsWith('zh') ? 2 : -1}px}.hook-line{display:flex;align-items:baseline;white-space:nowrap}.hook-glyph{display:inline-block;visibility:hidden;opacity:0;transform-origin:50% 82%}.hook-keyword{color:var(--blue)}.hook-final-question{color:var(--red);margin-left:${hookKineticEntrance.questionMarkGapPx}px;transform-origin:center center}.hook-space{display:inline-block;width:.31em}.hook-marker{position:absolute;left:${episode.locale.startsWith('zh') ? 390 : 410}px;top:${episode.locale.startsWith('zh') ? 134 : 118}px;width:${episode.locale.startsWith('zh') ? 430 : 500}px;height:20px;background:var(--yellow);z-index:-1;transform:scaleX(0) rotate(-2deg);transform-origin:left center}.hook-agent{position:absolute;right:20px;bottom:116px;width:420px;height:560px;object-fit:contain;visibility:hidden;opacity:0;filter:drop-shadow(0 15px 0 rgba(17,20,19,.12))}.hook-burst{position:absolute;right:285px;top:490px;width:180px;height:180px;visibility:hidden;opacity:0}.hook-burst i{position:absolute;left:86px;top:6px;width:8px;height:64px;border-radius:8px;background:var(--red);transform-origin:4px 84px}.hook-burst i:nth-child(2){transform:rotate(60deg)}.hook-burst i:nth-child(3){transform:rotate(120deg)}.hook-burst i:nth-child(4){transform:rotate(180deg)}.hook-burst i:nth-child(5){transform:rotate(240deg)}.hook-burst i:nth-child(6){transform:rotate(300deg)}.hook-voice{position:absolute;left:90px;right:90px;bottom:58px;height:44px;display:grid;grid-template-columns:34px 1fr 80px;gap:16px;align-items:center;font-family:TA,sans-serif}.hook-voice>span{width:26px;height:26px;border:6px solid var(--blue);border-radius:50%}.hook-voice>div{height:12px;background:var(--rest);overflow:hidden}.hook-voice b{display:block;width:100%;height:100%;background:var(--blue);transform:scaleX(0);transform-origin:left center}.hook-voice strong{font-size:20px;letter-spacing:2px}
+@font-face{font-family:TA;src:url("assets/fonts/HiraginoSansGB.ttc") format("truetype");font-weight:100 900}.hook{font-family:TA,sans-serif!important}.hook-question{font-weight:900!important}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#ECECEA;font-family:TA,"Arial Black",Arial,sans-serif;color:#111413}:root{--paper:#ECECEA;--ink:#111413;--blue:#117ABD;--yellow:#F4C542;--red:#D84B3E;--played:#A8D8F0;--rest:#DDE0DA}
+.composition{position:relative;width:1920px;height:1080px;overflow:hidden;background-color:var(--paper);background-image:linear-gradient(rgba(17,20,19,.038) 2px,transparent 2px),linear-gradient(90deg,rgba(17,20,19,.038) 2px,transparent 2px);background-size:64px 64px}.hook{position:absolute;inset:0;z-index:180;overflow:hidden;background:var(--paper);font-family:TA,sans-serif}.hook-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(17,20,19,.07) 2px,transparent 2px),linear-gradient(90deg,rgba(17,20,19,.07) 2px,transparent 2px);background-size:68px 68px}.hook-eyebrow{position:absolute;left:90px;top:56px;padding:12px 20px;border:4px solid var(--ink);background:var(--yellow);font-family:TA,sans-serif;font-size:24px;font-weight:900;letter-spacing:2px;transform:rotate(-1.5deg)}.hook-question{position:absolute;left:78px;top:${episode.locale.startsWith('zh') ? 214 : 164}px;width:1390px;font-size:${episode.locale.startsWith('zh') ? 114 : 104}px;line-height:${episode.locale.startsWith('zh') ? 1.34 : 1.2};font-weight:900;letter-spacing:${episode.locale.startsWith('zh') ? 2 : -1}px}.hook-line{display:flex;align-items:baseline;white-space:nowrap}.hook-glyph{display:inline-block;visibility:hidden;opacity:0;transform-origin:50% 82%}.hook-accent-identity,.hook-accent-topic{color:var(--blue)}.hook-accent-risk{color:var(--red)}.hook-final-question{color:var(--red);margin-left:${hookKineticEntrance.questionMarkGapPx}px;transform-origin:center center}.hook-space{display:inline-block;width:.31em}.hook-marker{position:absolute;left:${episode.locale.startsWith('zh') ? 390 : 410}px;top:${episode.locale.startsWith('zh') ? 134 : 118}px;width:${episode.locale.startsWith('zh') ? 430 : 500}px;height:20px;background:var(--yellow);z-index:-1;transform:scaleX(0) rotate(-2deg);transform-origin:left center}.hook-agent{position:absolute;right:20px;bottom:116px;width:420px;height:560px;object-fit:contain;visibility:hidden;opacity:0;filter:drop-shadow(0 15px 0 rgba(17,20,19,.12))}.hook-burst{position:absolute;right:285px;top:490px;width:180px;height:180px;visibility:hidden;opacity:0}.hook-burst i{position:absolute;left:86px;top:6px;width:8px;height:64px;border-radius:8px;background:var(--red);transform-origin:4px 84px}.hook-burst i:nth-child(2){transform:rotate(60deg)}.hook-burst i:nth-child(3){transform:rotate(120deg)}.hook-burst i:nth-child(4){transform:rotate(180deg)}.hook-burst i:nth-child(5){transform:rotate(240deg)}.hook-burst i:nth-child(6){transform:rotate(300deg)}.hook-voice{position:absolute;left:90px;right:90px;bottom:58px;height:44px;display:grid;grid-template-columns:34px 1fr 80px;gap:16px;align-items:center;font-family:TA,sans-serif}.hook-voice>span{width:26px;height:26px;border:6px solid var(--blue);border-radius:50%}.hook-voice>div{height:12px;background:var(--rest);overflow:hidden}.hook-voice b{display:block;width:100%;height:100%;background:var(--blue);transform:scaleX(0);transform-origin:left center}.hook-voice strong{font-size:20px;letter-spacing:2px}
 .scene{position:absolute;inset:0;visibility:hidden;opacity:0;padding:34px 58px 198px}.scene h1.scene-headline{margin:0 auto;width:1804px;min-height:128px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:92px;line-height:1.02;letter-spacing:-1.8px;font-weight:900;text-wrap:balance}.scene h1.headline-long{font-size:76px;line-height:1.06}.actor-wrap{display:grid;place-items:end center}.actor{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 14px 0 rgba(17,20,19,.09))}.visual-object{transform-origin:center center}.object-label,.generated-label,.pair-label,.solo-callout{font-size:34px;line-height:1.14;font-weight:900;text-align:center}.label-line{display:block;white-space:nowrap}.yellow-highlight{box-sizing:border-box;min-width:0;max-width:100%}
 .trio-stage{height:700px;display:grid;grid-template-columns:410px 600px 410px;align-items:end;justify-content:center;gap:34px}.trio-stage .actor-wrap{width:410px;height:540px}.trio-stage .featured-object,.trio-stage .promise-slab,.trio-stage .authority-slab{align-self:center}.duo-stage{height:700px;display:flex;align-items:center;justify-content:center;gap:120px}.duo-stage .actor-wrap{width:500px;height:610px}.featured-object{width:600px;min-height:500px;display:grid;grid-template-rows:390px auto;place-items:center;padding:0 14px 10px;border:0;border-radius:0;background:transparent;box-shadow:none}.featured-object img{width:390px;height:390px;object-fit:contain}.object-label{width:100%;max-width:600px}.promise-slab,.authority-slab{width:560px;height:540px;border:9px solid var(--ink);border-radius:42px;background:var(--paper);box-shadow:16px 16px 0 rgba(17,20,19,.11);display:grid;place-items:center;padding:24px}.promise-slab{grid-template-rows:auto 160px auto auto;gap:9px}.promise-slab>span,.authority-slab>span{font-size:38px;font-weight:900;color:var(--blue)}.promise-slab img{width:160px;height:160px;object-fit:contain}.promise-slab strong{font-size:34px;line-height:1.06;text-align:center}.promise-slab b{padding:8px 18px;border:5px solid var(--ink);border-radius:16px;background:var(--yellow);font-size:32px}.authority-slab{grid-template-rows:auto 300px auto}.authority-slab img{width:300px;height:300px;object-fit:contain}.authority-slab strong{font-size:38px;border-top:9px solid var(--yellow);padding-top:10px}
 .solo-stage{height:700px;position:relative;display:grid;place-items:center}.solo-stage .actor-wrap{position:relative;top:-72px;width:620px;height:650px}.solo-callout{position:absolute;right:90px;bottom:108px;width:620px;padding:20px 24px;border:7px solid var(--ink);border-radius:26px;background:var(--yellow);box-shadow:10px 10px 0 rgba(17,20,19,.1)}.pair-stage{height:560px;display:flex;align-items:center;justify-content:center;gap:72px}.pair-stage .prop-piece{width:430px;height:430px}.prop-piece img{width:100%;height:100%;object-fit:contain}.relation-mark{font-size:126px;font-weight:900;color:var(--blue)}.pair-label{width:max-content;max-width:1500px;margin:0 auto;padding:18px 36px;border:7px solid var(--ink);border-radius:24px;background:var(--yellow)}
@@ -1242,8 +1665,8 @@ function renderHtml(timing, cues, scenePlan, narrationDuration, renderDuration =
 .summary-stage{height:848px;display:grid;grid-template-columns:540px 1fr}.summary-side{background:var(--blue);color:var(--paper);border-right:14px solid #1597EA;padding:98px 46px 70px;display:flex;flex-direction:column;justify-content:center}.summary-side span{font-size:60px;line-height:1.08;font-weight:900}.summary-side strong{margin-top:34px;font-size:${episode.locale.startsWith('zh') ? 86 : 60}px;line-height:1.05;font-weight:900;white-space:${episode.locale.startsWith('zh') ? 'nowrap' : 'normal'};text-wrap:balance}.summary-body{padding:48px 48px 38px;display:grid;grid-template-rows:repeat(3,1fr);gap:8px}.summary-point{visibility:hidden;opacity:0;display:grid;grid-template-columns:82px 1fr;align-items:center;border-bottom:3px solid var(--rest);font-size:60px;line-height:1.12;font-weight:900}.summary-point.is-visible{visibility:visible;opacity:1}.summary-point b{color:var(--blue);font-size:60px;font-weight:900}.summary-point .summary-text{font-weight:900}.chip-row{position:absolute;left:50%;bottom:205px;transform:translateX(-50%);display:flex;gap:10px}.chip-row span{padding:8px 14px;border:4px solid var(--ink);border-radius:14px;background:var(--yellow);font-size:32px;font-weight:900}
 .captions{position:absolute;z-index:120;left:90px;right:90px;bottom:72px;height:128px;display:grid;place-items:center}.caption-cue{position:absolute;visibility:hidden;opacity:0;max-width:1740px;padding:16px 30px 18px;border:6px solid var(--ink);border-radius:24px;background:rgba(236,236,234,.97);box-shadow:10px 10px 0 rgba(17,20,19,.12);font-size:46px;line-height:1.14;font-weight:800;text-align:center;text-wrap:balance}.chapter-progress{position:absolute;left:0;right:0;bottom:0;z-index:130;height:52px;display:flex;gap:4px;visibility:hidden;opacity:0}.progress-segment{min-width:0;height:52px}.progress-track{position:relative;width:100%;height:52px;background:var(--rest);overflow:hidden}.progress-fill{position:absolute;inset:0;background:var(--played);transform:scaleX(0);transform-origin:left center}.progress-label{position:absolute;inset:0;display:grid;place-items:center;padding:0 4px;font-size:20px;color:var(--ink);white-space:nowrap;overflow:hidden;font-weight:500}
 .outro{position:absolute;inset:0;z-index:220;visibility:hidden;opacity:0;background:var(--paper)}.outro>img{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover}.outro-copy{position:absolute;top:214px;right:82px;width:850px;min-height:660px;padding:52px 40px 48px 54px}.outro-row{display:flex;align-items:center;gap:28px}.outro-mark{position:relative;display:block;width:82px;height:82px;flex:0 0 82px;border:8px solid var(--blue);border-radius:50%}.outro-mark:before,.outro-mark:after{position:absolute;top:50%;left:50%;width:38px;height:8px;border-radius:5px;background:var(--blue);content:"";transform:translate(-50%,-50%)}.outro-mark:after{transform:translate(-50%,-50%) rotate(90deg)}.outro h2{margin:0;color:var(--blue);font-size:78px;line-height:1.02;white-space:nowrap}.outro-rule{display:block;width:100%;height:5px;margin:44px 0 42px;background:var(--played)}.outro p{margin:0;font-size:68px;font-weight:900;line-height:1.22}.outro p span{display:block}.outro-underline{display:block;width:728px;height:12px;margin-top:36px;border-radius:8px;background:var(--blue);transform:scaleX(0);transform-origin:left center}
-.hook-eyebrow,.hook-voice{display:none}.hook-question{inset:0;width:auto;height:auto;font-size:inherit;line-height:1;font-weight:900;letter-spacing:${episode.locale.startsWith('zh') ? 1 : -2}px;z-index:2}.hook-question-text{position:absolute;inset:0}.hook-line{position:absolute;left:var(--hook-line-left);top:var(--hook-line-top);height:1em;display:flex;align-items:baseline;white-space:nowrap;font-size:var(--hook-line-font-size);line-height:1}.hook-marker{left:44px;top:var(--hook-marker-top);width:480px;height:18px}.hook-agent{right:18px;bottom:48px;width:390px;height:430px;visibility:visible;opacity:1;z-index:4}.hook-burst{right:320px;top:420px;z-index:5}.summary-stage{height:848px;display:grid;grid-template-columns:540px 1fr;place-items:stretch;background:transparent}.summary-side{background:var(--blue);color:var(--paper);border-right:14px solid #1597EA;padding:98px 46px 70px;display:flex;flex-direction:column;justify-content:center}.summary-side span{font-size:60px;line-height:1.08;font-weight:900}.summary-side strong{margin-top:34px;font-size:${episode.locale.startsWith('zh') ? 86 : 60}px;line-height:1.05;font-weight:900;white-space:${episode.locale.startsWith('zh') ? 'nowrap' : 'normal'};text-wrap:balance}.summary-body{height:848px;padding:48px 48px 38px;display:grid;grid-template-rows:repeat(3,1fr);gap:8px}.summary-point{grid-template-columns:82px 1fr;justify-items:stretch;border-bottom:3px solid var(--rest);font-size:${episode.locale.startsWith('zh') ? 76 : 66}px;line-height:1.12;text-align:left}.summary-point b{display:block;color:var(--blue);font-size:${episode.locale.startsWith('zh') ? 76 : 66}px;font-weight:900}.summary-text{max-width:1160px;text-align:left}
-</style></head><body><div data-hf-id="hf-root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="${renderDuration.toFixed(6)}" data-fps="30" id="composition" class="composition">${sceneMarkup}<div data-hf-id="hf-captions" id="captions" class="captions">${captionMarkup}</div><nav data-hf-id="hf-chapter-progress" id="chapter-progress" class="chapter-progress">${progressMarkup}</nav>${hookMarkup(timing)}<section data-hf-id="hf-outro" id="outro" class="outro"><img src="assets/images/tiny-agent-outro-key-art-papergray.png" alt="Tiny Agent"><div class="outro-copy"><div class="outro-row"><span id="outro-mark" class="outro-mark"></span><h2>${esc(episode.outro.title)}</h2></div><span class="outro-rule"></span><p>${episode.outro.lines.map((line) => `<span>${esc(line)}</span>`).join('')}</p><span id="outro-underline" class="outro-underline"></span></div></section><audio data-hf-id="hf-narration" id="narration" class="clip" data-start="0" data-duration="${Math.min(narrationDuration, renderDuration).toFixed(6)}" data-track-index="1" data-volume="1" src="audio/narration.${episode.locale}.mp3"></audio></div><script>window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});${timeline.join('')}window.__timelines.main=tl;</script></body></html>`;
+.hook-eyebrow,.hook-voice{display:none}.hook-question{inset:0;width:auto;height:auto;font-size:inherit;line-height:1;font-weight:900;letter-spacing:${episode.locale.startsWith('zh') ? 1 : -2}px;z-index:2}.hook-question-text{position:absolute;inset:0}.hook-line{position:absolute;left:var(--hook-line-left);top:var(--hook-line-top);height:1em;display:flex;align-items:baseline;white-space:nowrap;font-size:var(--hook-line-font-size);line-height:1}.hook-marker{left:1400px;top:var(--hook-marker-top);width:260px;height:18px}.hook-agent{right:18px;bottom:48px;width:390px;height:430px;visibility:visible;opacity:1;z-index:4}.hook-burst{right:42px;top:32px;z-index:5}.summary-stage{height:848px;display:grid;grid-template-columns:540px 1fr;place-items:stretch;background:transparent}.summary-side{background:var(--blue);color:var(--paper);border-right:14px solid #1597EA;padding:98px 46px 70px;display:flex;flex-direction:column;justify-content:center}.summary-side span{font-size:60px;line-height:1.08;font-weight:900}.summary-side strong{margin-top:34px;font-size:${episode.locale.startsWith('zh') ? 86 : 60}px;line-height:1.05;font-weight:900;white-space:${episode.locale.startsWith('zh') ? 'nowrap' : 'normal'};text-wrap:balance}.summary-body{height:848px;padding:48px 48px 38px;display:grid;grid-template-rows:repeat(3,1fr);gap:8px}.summary-point{grid-template-columns:82px 1fr;justify-items:stretch;border-bottom:3px solid var(--rest);font-size:${episode.locale.startsWith('zh') ? 76 : 66}px;line-height:1.12;text-align:left}.summary-point b{display:block;color:var(--blue);font-size:${episode.locale.startsWith('zh') ? 76 : 66}px;font-weight:900}.summary-text{max-width:1160px;text-align:left}
+</style><style>@font-face{font-family:"Hiragino Sans GB";src:url("assets/fonts/HiraginoSansGB.ttc") format("truetype");font-weight:400 700}.hook,.hook-question,.hook-line{font-family:"Hiragino Sans GB",sans-serif!important}.hook-question,.hook-line{font-weight:700!important}</style></head><body><div data-hf-id="hf-root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="${renderDuration.toFixed(6)}" data-fps="30" id="composition" class="composition">${sceneMarkup}<div data-hf-id="hf-captions" id="captions" class="captions">${captionMarkup}</div><nav data-hf-id="hf-chapter-progress" id="chapter-progress" class="chapter-progress">${progressMarkup}</nav>${hookMarkup(timing)}<section data-hf-id="hf-outro" id="outro" class="outro"><img src="assets/images/tiny-agent-outro-key-art-papergray.png" alt="Tiny Agent"><div class="outro-copy"><div class="outro-row"><span id="outro-mark" class="outro-mark"></span><h2>${esc(episode.outro.title)}</h2></div><span class="outro-rule"></span><p>${episode.outro.lines.map((line) => `<span>${esc(line)}</span>`).join('')}</p><span id="outro-underline" class="outro-underline"></span></div></section><audio data-hf-id="hf-narration" id="narration" class="clip" data-start="0" data-duration="${Math.min(narrationDuration, renderDuration).toFixed(6)}" data-track-index="1" data-volume="1" src="audio/narration.${episode.locale}.mp3"></audio></div><script>window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});${timeline.join('')}window.__timelines.main=tl;</script></body></html>`;
 }
 
 async function compile({ outputFile = 'index.html', openingOnly = false } = {}) {

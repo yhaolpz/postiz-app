@@ -1,0 +1,990 @@
+<template>
+  <style>
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      isolation: isolate;
+      container-type: size;
+      color: #111111;
+    }
+
+    #root * {
+      box-sizing: border-box;
+    }
+
+    [id="02-router-ground"] {
+      position: absolute;
+      inset: 0;
+      background-color: #ececea;
+      background-image:
+        linear-gradient(rgba(10, 132, 255, 0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10, 132, 255, 0.10) 1px, transparent 1px);
+      background-size: 2cqw 2cqw;
+    }
+
+    [id="02-router-chrome"] {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    [data-r02-part="hairline"] {
+      position: absolute;
+      left: 4cqw;
+      right: 4cqw;
+      height: 2px;
+      background: #111111;
+    }
+
+    [id="02-router-hairline-top"] {
+      top: 60px;
+    }
+
+    [id="02-router-hairline-bottom"] {
+      top: 1390px;
+    }
+
+    [id="02-router-meta"] {
+      position: absolute;
+      top: 88px;
+      left: 4cqw;
+      font-family: monospace;
+      font-size: 19px;
+      line-height: 1;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    [id="02-router-page"] {
+      position: absolute;
+      top: 1340px;
+      right: 4cqw;
+      font-family: monospace;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: 0.08em;
+    }
+
+    [id="02-router-glitch"] {
+      position: absolute;
+      top: 185px;
+      right: 46px;
+      width: 66px;
+      height: 1080px;
+      opacity: 0.24;
+      background-color: #ececea;
+      background-image: repeating-linear-gradient(
+        90deg,
+        #0a84ff 0 3px,
+        transparent 3px 11px
+      );
+      clip-path: polygon(
+        32% 0,
+        100% 0,
+        100% 18%,
+        72% 18%,
+        72% 40%,
+        100% 40%,
+        100% 63%,
+        54% 63%,
+        54% 82%,
+        82% 82%,
+        82% 100%,
+        0 100%,
+        0 72%,
+        24% 72%,
+        24% 48%,
+        0 48%,
+        0 24%,
+        32% 24%
+      );
+    }
+
+    [id="02-router-qr"] {
+      position: absolute;
+      top: 92px;
+      right: 48px;
+      width: 72px;
+      height: 72px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 4px;
+      padding: 5px;
+      background: #ececea;
+      border: 2px solid #111111;
+    }
+
+    [id="02-router-qr"] i {
+      display: block;
+      background: rgba(10, 132, 255, 0.18);
+    }
+
+    [id="02-router-qr"] i:nth-child(1),
+    [id="02-router-qr"] i:nth-child(2),
+    [id="02-router-qr"] i:nth-child(4),
+    [id="02-router-qr"] i:nth-child(6),
+    [id="02-router-qr"] i:nth-child(7),
+    [id="02-router-qr"] i:nth-child(9),
+    [id="02-router-qr"] i:nth-child(11),
+    [id="02-router-qr"] i:nth-child(12),
+    [id="02-router-qr"] i:nth-child(14),
+    [id="02-router-qr"] i:nth-child(16) {
+      background: #111111;
+    }
+
+    [id="02-router-stage-layer"] {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      overflow: hidden;
+      transform-origin: 50% 42%;
+    }
+
+    [id="02-router-stage"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3000px;
+      height: 1390px;
+      will-change: transform;
+    }
+
+    [data-r02-part="station"] {
+      position: absolute;
+      width: 390px;
+      color: #111111;
+    }
+
+    [data-r02-part="station-index"] {
+      margin-bottom: 14px;
+      font-family: monospace;
+      font-size: 17px;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      color: #0a84ff;
+    }
+
+    [data-r02-part="station-title"] {
+      font-family: sans-serif;
+      font-size: 38px;
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+    }
+
+    [data-r02-part="marker"] {
+      position: absolute;
+      top: 820px;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #111111;
+      background: #ececea;
+      z-index: 5;
+    }
+
+    [data-r02-part="route"] {
+      position: absolute;
+      top: 838px;
+      height: 5px;
+      background: #0a84ff;
+      transform-origin: 0 50%;
+      z-index: 2;
+    }
+
+    [id="02-router-route-input"] {
+      left: 420px;
+      width: 680px;
+      transform-origin: 100% 50%;
+    }
+
+    [id="02-router-route-forward"] {
+      left: 1100px;
+      width: 1520px;
+    }
+
+    [data-r02-part="route-arrow"] {
+      position: absolute;
+      top: 826px;
+      width: 28px;
+      height: 28px;
+      border-top: 5px solid #0a84ff;
+      border-right: 5px solid #0a84ff;
+      rotate: 45deg;
+      z-index: 3;
+    }
+
+    [id="02-router-arrow-a"] {
+      left: 1320px;
+    }
+
+    [id="02-router-arrow-b"] {
+      left: 1840px;
+    }
+
+    [id="02-router-arrow-c"] {
+      left: 2310px;
+    }
+
+    [id="02-router-router-station"] {
+      left: 885px;
+      top: 290px;
+      width: 430px;
+      text-align: center;
+    }
+
+    [id="02-router-router-kicker"] {
+      display: inline-block;
+      padding: 12px 18px 10px;
+      border: 3px solid #111111;
+      font-family: monospace;
+      font-size: 19px;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: #ececea;
+    }
+
+    [id="02-router-router-title"] {
+      margin-top: 30px;
+      font-family: serif;
+      font-size: 72px;
+      line-height: 0.94;
+      letter-spacing: -0.025em;
+    }
+
+    [id="02-router-router-cn"] {
+      margin-top: 44px;
+      font-family: serif;
+      font-size: 112px;
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.045em;
+      color: #0a84ff;
+      white-space: nowrap;
+    }
+
+    [id="02-router-router-gate"] {
+      position: absolute;
+      left: 1054px;
+      top: 748px;
+      width: 92px;
+      height: 132px;
+      border: 5px solid #111111;
+      background: #ececea;
+      z-index: 6;
+    }
+
+    [id="02-router-router-gate"]::before,
+    [id="02-router-router-gate"]::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      height: 7px;
+      background: #0a84ff;
+    }
+
+    [id="02-router-router-gate"]::before {
+      top: 32px;
+    }
+
+    [id="02-router-router-gate"]::after {
+      bottom: 32px;
+    }
+
+    [id="02-router-task-station"] {
+      left: 225px;
+      top: 930px;
+    }
+
+    [id="02-router-task-marker"] {
+      left: 400px;
+    }
+
+    [id="02-router-judge-station"] {
+      left: 1405px;
+      top: 930px;
+    }
+
+    [id="02-router-judge-marker"] {
+      left: 1580px;
+    }
+
+    [id="02-router-complexity-station"] {
+      left: 1855px;
+      top: 930px;
+    }
+
+    [id="02-router-complexity-marker"] {
+      left: 2030px;
+    }
+
+    [id="02-router-model-station"] {
+      left: 2405px;
+      top: 930px;
+    }
+
+    [id="02-router-model-marker"] {
+      left: 2580px;
+      border-color: #0a84ff;
+      border-width: 6px;
+    }
+
+    [id="02-router-task-card"] {
+      position: absolute;
+      left: 235px;
+      top: 690px;
+      width: 330px;
+      height: 178px;
+      padding: 28px 30px;
+      border: 4px solid #0a84ff;
+      background: #ececea;
+      z-index: 9;
+    }
+
+    [id="02-router-task-card"]::after {
+      content: "";
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 25px;
+      height: 2px;
+      background: rgba(10, 132, 255, 0.18);
+    }
+
+    [id="02-router-task-label"] {
+      font-family: monospace;
+      font-size: 15px;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      color: #0a84ff;
+    }
+
+    [id="02-router-task-copy"] {
+      margin-top: 20px;
+      font-family: sans-serif;
+      font-size: 38px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
+    [id="02-router-agent"] {
+      position: absolute;
+      left: 650px;
+      top: 665px;
+      width: 285px;
+      height: 380px;
+      object-fit: contain;
+      z-index: 7;
+    }
+
+    [id="02-router-check-panel"] {
+      position: absolute;
+      left: 1370px;
+      top: 470px;
+      width: 460px;
+      height: 270px;
+      padding: 34px 38px;
+      border-top: 4px solid #111111;
+      border-bottom: 2px solid rgba(10, 132, 255, 0.18);
+      background: #ececea;
+      z-index: 4;
+    }
+
+    [data-r02-part="check-row"] {
+      display: grid;
+      grid-template-columns: 44px 1fr 46px;
+      align-items: center;
+      min-height: 84px;
+      border-bottom: 1px solid rgba(10, 132, 255, 0.18);
+      font-family: sans-serif;
+      font-size: 30px;
+    }
+
+    [data-r02-part="check-row"]:last-child {
+      border-bottom: 0;
+    }
+
+    [data-r02-part="check-box"] {
+      width: 24px;
+      height: 24px;
+      border: 3px solid #0a84ff;
+      background: #0a84ff;
+    }
+
+    [data-r02-part="check-code"] {
+      font-family: monospace;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      color: #0a84ff;
+      text-align: right;
+    }
+
+    [id="02-router-complexity-meter"] {
+      position: absolute;
+      left: 1850px;
+      top: 500px;
+      width: 420px;
+      height: 230px;
+      padding: 34px;
+      border: 3px solid #111111;
+      background: #ececea;
+      z-index: 4;
+    }
+
+    [id="02-router-meter-label"] {
+      font-family: monospace;
+      font-size: 16px;
+      letter-spacing: 0.13em;
+      color: #0a84ff;
+    }
+
+    [id="02-router-meter-cells"] {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      height: 82px;
+      margin-top: 34px;
+      align-items: end;
+    }
+
+    [id="02-router-meter-cells"] i {
+      display: block;
+      height: 100%;
+      border: 2px solid rgba(10, 132, 255, 0.18);
+      background: rgba(10, 132, 255, 0.18);
+    }
+
+    [id="02-router-meter-cells"] i:nth-child(-n + 5) {
+      background: #0a84ff;
+      border-color: #0a84ff;
+    }
+
+    [id="02-router-model-card"] {
+      position: absolute;
+      left: 2410px;
+      top: 420px;
+      width: 440px;
+      height: 330px;
+      padding: 40px;
+      border: 5px solid #0a84ff;
+      background: #ececea;
+      z-index: 6;
+    }
+
+    [id="02-router-model-code"] {
+      font-family: monospace;
+      font-size: 16px;
+      line-height: 1;
+      letter-spacing: 0.14em;
+      color: #0a84ff;
+    }
+
+    [id="02-router-model-title"] {
+      margin-top: 34px;
+      font-family: serif;
+      font-size: 70px;
+      line-height: 0.95;
+      letter-spacing: -0.025em;
+    }
+
+    [id="02-router-model-rule"] {
+      width: 100%;
+      height: 4px;
+      margin-top: 34px;
+      background: #111111;
+    }
+
+    [id="02-router-model-meta"] {
+      margin-top: 20px;
+      font-family: monospace;
+      font-size: 15px;
+      letter-spacing: 0.1em;
+    }
+
+    [id="02-router-summary"] {
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+      transform-origin: 50% 42%;
+    }
+
+    [id="02-router-summary-kicker"] {
+      position: absolute;
+      top: 300px;
+      left: 80px;
+      font-family: monospace;
+      font-size: 18px;
+      letter-spacing: 0.16em;
+      color: #0a84ff;
+    }
+
+    [id="02-router-summary-title"] {
+      position: absolute;
+      top: 348px;
+      left: 80px;
+      font-family: serif;
+      font-size: 74px;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+
+    [id="02-router-summary-path"] {
+      position: absolute;
+      top: 585px;
+      left: 65px;
+      width: 950px;
+      display: grid;
+      grid-template-columns: 270px 70px 270px 70px 270px;
+      align-items: center;
+    }
+
+    [data-r02-part="summary-card"] {
+      height: 258px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      border: 3px solid #111111;
+      background: #ececea;
+    }
+
+    [data-r02-part="summary-card-code"] {
+      font-family: monospace;
+      font-size: 15px;
+      letter-spacing: 0.13em;
+      color: #0a84ff;
+    }
+
+    [data-r02-part="summary-card-title"] {
+      font-family: sans-serif;
+      font-size: 39px;
+      line-height: 1.05;
+    }
+
+    [data-r02-part="summary-arrow"] {
+      position: relative;
+      height: 4px;
+      background: #0a84ff;
+    }
+
+    [data-r02-part="summary-arrow"]::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: -9px;
+      width: 20px;
+      height: 20px;
+      border-top: 4px solid #0a84ff;
+      border-right: 4px solid #0a84ff;
+      rotate: 45deg;
+    }
+
+    [id="02-router-summary-model"] {
+      border: 2px solid rgba(10, 132, 255, 0.32);
+    }
+
+    [id="02-router-summary-baseline"] {
+      position: absolute;
+      top: 965px;
+      left: 80px;
+      width: 920px;
+      height: 5px;
+      background: #0a84ff;
+    }
+
+    [id="02-router-summary-note"] {
+      position: absolute;
+      top: 1000px;
+      left: 80px;
+      width: 920px;
+      display: flex;
+      justify-content: space-between;
+      font-family: monospace;
+      font-size: 16px;
+      letter-spacing: 0.12em;
+    }
+  </style>
+
+  <div id="root" data-composition-id="02-router" data-width="1080" data-height="1920" data-start="0" data-duration="9.956">
+    <div
+      id="02-router-ground"
+      class="clip"
+      data-start="0"
+      data-duration="9.956"
+      data-track-index="0"
+    ></div>
+
+    <div
+      id="02-router-chrome"
+      class="clip"
+      data-start="0"
+      data-duration="9.956"
+      data-track-index="3"
+    >
+      <div id="02-router-hairline-top" data-r02-part="hairline"></div>
+      <div id="02-router-hairline-bottom" data-r02-part="hairline"></div>
+      <div id="02-router-meta">AUTO / ROUTE 02</div>
+      <div id="02-router-page">02</div>
+      <div id="02-router-glitch"></div>
+      <div id="02-router-qr" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+
+    <div
+      id="02-router-stage-layer"
+      class="clip"
+      data-start="0"
+      data-duration="9.956"
+      data-track-index="1"
+    >
+      <div id="02-router-stage">
+        <div id="02-router-route-input" data-r02-part="route"></div>
+        <div id="02-router-route-forward" data-r02-part="route"></div>
+        <div id="02-router-arrow-a" data-r02-part="route-arrow"></div>
+        <div id="02-router-arrow-b" data-r02-part="route-arrow"></div>
+        <div id="02-router-arrow-c" data-r02-part="route-arrow"></div>
+
+        <section id="02-router-router-station" data-r02-part="station">
+          <div id="02-router-router-kicker">Cursor Router</div>
+          <div id="02-router-router-title">Cursor Router</div>
+          <div id="02-router-router-cn">自动分流器</div>
+        </section>
+        <div id="02-router-router-gate" aria-hidden="true"></div>
+
+        <div id="02-router-task-marker" data-r02-part="marker"></div>
+        <section id="02-router-task-station" data-r02-part="station">
+          <div data-r02-part="station-index">INPUT / 01</div>
+          <div data-r02-part="station-title">你的任务</div>
+        </section>
+
+        <div id="02-router-judge-marker" data-r02-part="marker"></div>
+        <section id="02-router-judge-station" data-r02-part="station">
+          <div data-r02-part="station-index">ANALYZE / 02</div>
+          <div data-r02-part="station-title">判断任务</div>
+        </section>
+
+        <div id="02-router-complexity-marker" data-r02-part="marker"></div>
+        <section id="02-router-complexity-station" data-r02-part="station">
+          <div data-r02-part="station-index">COMPLEXITY / 03</div>
+          <div data-r02-part="station-title">看复杂度</div>
+        </section>
+
+        <div id="02-router-model-marker" data-r02-part="marker"></div>
+        <section id="02-router-model-station" data-r02-part="station">
+          <div data-r02-part="station-index">BEST FIT / 04</div>
+          <div data-r02-part="station-title">合适模型</div>
+        </section>
+
+        <article id="02-router-task-card">
+          <div id="02-router-task-label">AUTO / TASK</div>
+          <div id="02-router-task-copy">帮我改代码</div>
+        </article>
+
+        <img
+          id="02-router-agent"
+          src="capture/assets/image_003.png"
+          alt="Tiny Agent 托住任务卡"
+        />
+
+        <div id="02-router-check-panel">
+          <div data-r02-part="check-row">
+            <span data-r02-part="check-box"></span>
+            <span>判断任务</span>
+            <span data-r02-part="check-code">TYPE</span>
+          </div>
+          <div data-r02-part="check-row">
+            <span data-r02-part="check-box"></span>
+            <span>看复杂度</span>
+            <span data-r02-part="check-code">LEVEL</span>
+          </div>
+        </div>
+
+        <div id="02-router-complexity-meter">
+          <div id="02-router-meter-label">COMPLEXITY SCAN</div>
+          <div id="02-router-meter-cells" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+
+        <article id="02-router-model-card">
+          <div id="02-router-model-code">MODEL / MATCHED</div>
+          <div id="02-router-model-title">合适模型</div>
+          <div id="02-router-model-rule"></div>
+          <div id="02-router-model-meta">AUTO ROUTED</div>
+        </article>
+      </div>
+    </div>
+
+    <div
+      id="02-router-summary"
+      class="clip"
+      data-start="8.250"
+      data-duration="1.706"
+      data-track-index="2"
+    >
+      <div id="02-router-summary-kicker">AUTO ROUTER / RESULT</div>
+      <div id="02-router-summary-title">一条清楚的路径</div>
+      <div id="02-router-summary-path">
+        <div data-r02-part="summary-card">
+          <span data-r02-part="summary-card-code">01 / INPUT</span>
+          <span data-r02-part="summary-card-title">任务</span>
+        </div>
+        <div data-r02-part="summary-arrow" aria-hidden="true"></div>
+        <div data-r02-part="summary-card">
+          <span data-r02-part="summary-card-code">02 / CHECK</span>
+          <span data-r02-part="summary-card-title">判断</span>
+        </div>
+        <div data-r02-part="summary-arrow" aria-hidden="true"></div>
+        <div id="02-router-summary-model" data-r02-part="summary-card">
+          <span data-r02-part="summary-card-code">03 / BEST FIT</span>
+          <span data-r02-part="summary-card-title">合适模型</span>
+        </div>
+      </div>
+      <div id="02-router-summary-baseline"></div>
+      <div id="02-router-summary-note">
+        <span>TASK</span>
+        <span>ROUTE COMPLETE</span>
+        <span>MODEL</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const frameId = "02-router";
+      const root = document.querySelector('[data-composition-id="02-router"]');
+      const byId = (id) => document.getElementById(id);
+
+      const stageLayer = byId("02-router-stage-layer");
+      const stage = byId("02-router-stage");
+      const routerStation = byId("02-router-router-station");
+      const routerGate = byId("02-router-router-gate");
+      const routeInput = byId("02-router-route-input");
+      const routeForward = byId("02-router-route-forward");
+      const taskStation = byId("02-router-task-station");
+      const taskMarker = byId("02-router-task-marker");
+      const taskCard = byId("02-router-task-card");
+      const agent = byId("02-router-agent");
+      const judgeStation = byId("02-router-judge-station");
+      const judgeMarker = byId("02-router-judge-marker");
+      const checkPanel = byId("02-router-check-panel");
+      const complexityStation = byId("02-router-complexity-station");
+      const complexityMarker = byId("02-router-complexity-marker");
+      const complexityMeter = byId("02-router-complexity-meter");
+      const modelStation = byId("02-router-model-station");
+      const modelMarker = byId("02-router-model-marker");
+      const modelCard = byId("02-router-model-card");
+      const summary = byId("02-router-summary");
+      const summaryModel = byId("02-router-summary-model");
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines[frameId] = tl;
+
+      tl.set(stage, { x: -560 }, 0);
+      tl.set(summary, { opacity: 0 }, 0);
+
+      tl.fromTo(
+        routerGate,
+        { opacity: 0.35, scale: 0.84 },
+        { opacity: 1, scale: 1, duration: 0.42, ease: "expo.out" },
+        0.06
+      );
+      tl.fromTo(
+        routerStation,
+        { opacity: 0.2, y: 48 },
+        { opacity: 1, y: 0, duration: 0.72, ease: "expo.out" },
+        0.16
+      );
+      tl.fromTo(
+        routeForward,
+        { scaleX: 0, opacity: 0.3 },
+        { scaleX: 1, opacity: 1, duration: 1.35, ease: "power3.out" },
+        0.72
+      );
+      tl.fromTo(
+        byId("02-router-arrow-a"),
+        { opacity: 0, x: -42 },
+        { opacity: 1, x: 0, duration: 0.38, ease: "power4.out" },
+        1.46
+      );
+      tl.fromTo(
+        byId("02-router-arrow-b"),
+        { opacity: 0, x: -42 },
+        { opacity: 1, x: 0, duration: 0.38, ease: "power4.out" },
+        1.82
+      );
+      tl.fromTo(
+        byId("02-router-arrow-c"),
+        { opacity: 0, x: -42 },
+        { opacity: 1, x: 0, duration: 0.38, ease: "power4.out" },
+        2.12
+      );
+
+      tl.to(
+        stage,
+        { x: 120, duration: 0.68, ease: "power4.inOut" },
+        2.5
+      );
+      tl.fromTo(
+        [taskStation, taskMarker],
+        { opacity: 0.35, x: -230 },
+        { opacity: 1, x: 0, duration: 0.34, ease: "power4.out" },
+        2.66
+      );
+      tl.fromTo(
+        routeInput,
+        { scaleX: 0, opacity: 0.25 },
+        { scaleX: 1, opacity: 1, duration: 0.62, ease: "power3.out" },
+        2.82
+      );
+      tl.fromTo(
+        agent,
+        { opacity: 0, y: 56 },
+        { opacity: 1, y: 0, duration: 0.68, ease: "expo.out" },
+        2.9
+      );
+      tl.fromTo(
+        taskCard,
+        { opacity: 0.35, x: -300 },
+        { opacity: 1, x: 0, duration: 0.82, ease: "power4.out" },
+        3.18
+      );
+      tl.fromTo(
+        taskCard,
+        { y: 16 },
+        { y: 0, duration: 0.45, ease: "expo.out" },
+        4.4
+      );
+
+      tl.to(
+        stage,
+        { x: -1060, duration: 0.78, ease: "power4.inOut" },
+        5.5
+      );
+      tl.to(
+        taskCard,
+        { x: 1180, duration: 0.78, ease: "power4.inOut" },
+        5.5
+      );
+      tl.fromTo(
+        [judgeStation, judgeMarker],
+        { opacity: 0.25, y: 68 },
+        { opacity: 1, y: 0, duration: 0.46, ease: "power4.out" },
+        5.76
+      );
+      tl.fromTo(
+        checkPanel,
+        { opacity: 0.15, x: 230 },
+        { opacity: 1, x: 0, duration: 0.52, ease: "power4.out" },
+        5.94
+      );
+
+      tl.to(
+        stage,
+        { x: -1510, duration: 0.72, ease: "power4.inOut" },
+        6.42
+      );
+      tl.to(
+        taskCard,
+        { x: 1630, duration: 0.72, ease: "power4.inOut" },
+        6.42
+      );
+      tl.fromTo(
+        [complexityStation, complexityMarker],
+        { opacity: 0.25, y: 68 },
+        { opacity: 1, y: 0, duration: 0.44, ease: "power4.out" },
+        6.66
+      );
+      tl.fromTo(
+        complexityMeter,
+        { opacity: 0.15, x: 230 },
+        { opacity: 1, x: 0, duration: 0.52, ease: "power4.out" },
+        6.8
+      );
+
+      tl.to(
+        stage,
+        { x: -2060, duration: 0.82, ease: "power4.inOut" },
+        7.28
+      );
+      tl.to(
+        taskCard,
+        { x: 2180, duration: 0.82, ease: "power4.inOut" },
+        7.28
+      );
+      tl.fromTo(
+        [modelStation, modelMarker],
+        { opacity: 0.25, y: 68 },
+        { opacity: 1, y: 0, duration: 0.46, ease: "power4.out" },
+        7.52
+      );
+      tl.fromTo(
+        modelCard,
+        { opacity: 0.15, x: 230 },
+        { opacity: 1, x: 0, duration: 0.64, ease: "power4.out" },
+        7.62
+      );
+      tl.fromTo(
+        modelMarker,
+        { borderWidth: 3, borderColor: "rgba(10, 132, 255, 0.28)" },
+        {
+          borderWidth: 7,
+          borderColor: "#0a84ff",
+          duration: 0.34,
+          ease: "power2.out"
+        },
+        8.05
+      );
+
+      tl.to(
+        stageLayer,
+        {
+          scale: 0.8,
+          filter: "blur(10px)",
+          duration: 0.2,
+          ease: "power3.in"
+        },
+        8.5
+      );
+      tl.to(
+        stageLayer,
+        { opacity: 0.15, duration: 0.2, ease: "none" },
+        8.5
+      );
+      tl.set(stageLayer, { opacity: 0 }, 8.7);
+      tl.fromTo(
+        summary,
+        { opacity: 0.15, scale: 1.25, filter: "blur(10px)" },
+        {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 0.5,
+          ease: "expo.out",
+          immediateRender: false
+        },
+        8.7
+      );
+      tl.fromTo(
+        summaryModel,
+        { borderWidth: 2, borderColor: "rgba(10, 132, 255, 0.32)" },
+        {
+          borderWidth: 8,
+          borderColor: "#0a84ff",
+          duration: 0.25,
+          ease: "power2.out"
+        },
+        9.1
+      );
+    })();
+  </script>
+</template>

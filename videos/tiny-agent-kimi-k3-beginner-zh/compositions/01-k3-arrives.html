@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          color: #f5f4ef;
+          font-family: sans-serif;
+        }
+        #root,
+        #root * {
+          box-sizing: border-box;
+        }
+        .ground {
+          position: absolute;
+          inset: 0;
+          background: #101010;
+        }
+        .headline {
+          position: absolute;
+          top: 130px;
+          left: 70px;
+          width: 940px;
+          font-size: 118px;
+          line-height: 1.05;
+          font-weight: 900;
+          letter-spacing: -0.06em;
+          color: #f5f4ef;
+        }
+        .headline strong {
+          color: #8b7cff;
+          font-weight: 900;
+        }
+        .screenshot-wrap {
+          position: absolute;
+          top: 350px;
+          left: 70px;
+          width: 940px;
+          height: 860px;
+          overflow: hidden;
+          border-radius: 34px;
+          background: #1e1e1e;
+          box-shadow: 0 28px 70px rgba(16, 16, 16, 0.48);
+          will-change: transform, opacity;
+        }
+        .screenshot {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: 65% 50%;
+          will-change: transform;
+        }
+        .agent {
+          position: absolute;
+          right: 78px;
+          top: 1250px;
+          width: 150px;
+          height: auto;
+          will-change: transform, opacity;
+        }
+      </style>
+
+      <div
+        id="root"
+        data-composition-id="k3-arrives"
+        data-duration="5.112"
+        data-width="1080"
+        data-height="1920"
+      >
+        <div class="ground"></div>
+        <div id="k3-arrives-headline" class="headline" data-primary-role="headline">
+          <strong>K3</strong> 上线，别乱选
+        </div>
+        <div
+          id="k3-arrives-screenshot-wrap"
+          class="screenshot-wrap"
+          data-primary-role="real-screenshot"
+        >
+          <img
+            id="k3-arrives-screenshot"
+            class="screenshot"
+            data-asset-kind="product-screenshot"
+            data-layout-allow-overflow
+            src=".media/images/image_001.png"
+            alt="Kimi K3 model picker"
+          />
+        </div>
+        <img
+          id="k3-arrives-agent"
+          class="agent"
+          data-primary-role="tiny-agent"
+          src=".media/images/image_004.png"
+          alt="Tiny Agent"
+        />
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        var tl = gsap.timeline({ paused: true });
+        tl.fromTo(
+          "#k3-arrives-headline",
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.42, ease: "power4.out" },
+          0.15
+        );
+        tl.fromTo(
+          "#k3-arrives-screenshot-wrap",
+          { opacity: 0, y: 36 },
+          { opacity: 1, y: 0, duration: 0.55, ease: "expo.out" },
+          0.28
+        );
+        tl.fromTo(
+          "#k3-arrives-screenshot",
+          { scale: 1 },
+          { scale: 1.045, duration: 4.55, ease: "none" },
+          0.4
+        );
+        tl.fromTo(
+          "#k3-arrives-agent",
+          { opacity: 0, x: 24 },
+          { opacity: 1, x: 0, duration: 0.36, ease: "power3.out" },
+          0.65
+        );
+        window.__timelines["k3-arrives"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

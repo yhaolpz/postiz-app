@@ -1,0 +1,483 @@
+<template>
+  <style>
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      container-type: size;
+      color: #111111;
+    }
+
+    #root,
+    #root * {
+      box-sizing: border-box;
+    }
+
+    #root [data-el="01-hook-ground"] {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background-color: #ececea;
+      background-image:
+        linear-gradient(rgba(10, 132, 255, 0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10, 132, 255, 0.10) 1px, transparent 1px);
+      background-size: 2cqw 2cqw;
+    }
+
+    #root [data-el="01-hook-hairline-top"],
+    #root [data-el="01-hook-hairline-bottom"] {
+      position: absolute;
+      left: 4cqw;
+      right: 4cqw;
+      height: 0.14cqw;
+      background: #111111;
+    }
+
+    #root [data-el="01-hook-hairline-top"] {
+      top: 3cqh;
+    }
+
+    #root [data-el="01-hook-hairline-bottom"] {
+      top: 72.2cqh;
+    }
+
+    #root [data-el="01-hook-glitch"] {
+      position: absolute;
+      top: 10.5cqh;
+      right: 0;
+      width: 9cqw;
+      height: 56cqh;
+      opacity: 0.18;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #0a84ff 0 0.55cqw,
+          transparent 0.55cqw 1.45cqw
+        );
+      clip-path: polygon(
+        38% 0,
+        100% 0,
+        100% 15%,
+        72% 15%,
+        72% 29%,
+        100% 29%,
+        100% 48%,
+        52% 48%,
+        52% 66%,
+        100% 66%,
+        100% 82%,
+        68% 82%,
+        68% 100%,
+        16% 100%,
+        16% 72%,
+        38% 72%
+      );
+    }
+
+    #root [data-el="01-hook-qr"] {
+      position: absolute;
+      left: 5cqw;
+      top: 60.5cqh;
+      z-index: 2;
+      display: grid;
+      width: 10cqw;
+      height: 10cqw;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 0.5cqw;
+      padding: 0.8cqw;
+      background: #ececea;
+      outline: 0.14cqw solid #ececea;
+    }
+
+    #root [data-el="01-hook-qr"] span {
+      background: rgba(10, 132, 255, 0.18);
+    }
+
+    #root [data-el="01-hook-qr"] span:nth-child(1),
+    #root [data-el="01-hook-qr"] span:nth-child(2),
+    #root [data-el="01-hook-qr"] span:nth-child(4),
+    #root [data-el="01-hook-qr"] span:nth-child(5),
+    #root [data-el="01-hook-qr"] span:nth-child(8),
+    #root [data-el="01-hook-qr"] span:nth-child(10),
+    #root [data-el="01-hook-qr"] span:nth-child(11),
+    #root [data-el="01-hook-qr"] span:nth-child(13),
+    #root [data-el="01-hook-qr"] span:nth-child(15),
+    #root [data-el="01-hook-qr"] span:nth-child(16) {
+      background: #0a84ff;
+    }
+
+    #root [data-el="01-hook-chrome"] {
+      position: absolute;
+      left: 18cqw;
+      top: 68.2cqh;
+      z-index: 3;
+      color: #111111;
+      font-family: monospace;
+      font-size: 2.3cqw;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    #root [data-el="01-hook-scene"] {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    #root [data-el="01-hook-slip"] {
+      position: absolute;
+      z-index: 5;
+      display: grid;
+      width: 23cqw;
+      height: 6.2cqh;
+      place-items: center;
+      border: 0.35cqw solid #111111;
+      background: #ececea;
+      color: #111111;
+      font-family: monospace;
+      font-size: 4.1cqw;
+      line-height: 1;
+      letter-spacing: 0.03em;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+
+    #root [data-slot="gpt"] {
+      top: 7.2cqh;
+      left: 4.5cqw;
+    }
+
+    #root [data-slot="claude"] {
+      top: 13.5cqh;
+      left: 26cqw;
+    }
+
+    #root [data-slot="gemini"] {
+      top: 6.5cqh;
+      left: 51cqw;
+    }
+
+    #root [data-slot="auto"] {
+      top: 14.4cqh;
+      left: 73cqw;
+    }
+
+    #root [data-el="01-hook-title"] {
+      position: absolute;
+      top: 22.4cqh;
+      left: 5cqw;
+      z-index: 4;
+      width: 75cqw;
+      color: #111111;
+      font-family: serif;
+      font-size: 10.4cqw;
+      font-weight: 400;
+      line-height: 0.94;
+      letter-spacing: -0.008em;
+      transform-origin: 0 50%;
+      will-change: transform, opacity;
+    }
+
+    #root [data-el="01-hook-agent"] {
+      position: absolute;
+      top: 36.5cqh;
+      right: 3.5cqw;
+      z-index: 4;
+      display: block;
+      width: 43cqw;
+      height: auto;
+      object-fit: contain;
+      transform-origin: 50% 100%;
+      will-change: transform, opacity;
+    }
+
+    #root [data-el="01-hook-phrase"] {
+      position: absolute;
+      top: 27.2cqh;
+      left: 6cqw;
+      z-index: 6;
+      width: 88cqw;
+      color: #111111;
+      font-family: serif;
+      font-size: 10.4cqw;
+      font-weight: 400;
+      line-height: 0.98;
+      letter-spacing: -0.008em;
+      text-align: center;
+      white-space: nowrap;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity, filter;
+    }
+
+    #root [data-el="01-hook-answer"] {
+      position: absolute;
+      top: 24.2cqh;
+      left: 5cqw;
+      z-index: 8;
+      width: 90cqw;
+      color: #111111;
+      font-family: serif;
+      font-size: 17.4cqw;
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.012em;
+      text-align: center;
+      white-space: nowrap;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity, filter;
+    }
+
+    #root [data-el="01-hook-underline"] {
+      position: absolute;
+      top: 37.2cqh;
+      left: 14cqw;
+      z-index: 8;
+      width: 72cqw;
+      height: 1.2cqw;
+      background: #0a84ff;
+      transform-origin: 0 50%;
+      will-change: transform, opacity;
+    }
+  </style>
+
+  <div id="root" data-composition-id="01-hook" data-width="1080" data-height="1920" data-start="0" data-duration="7.124">
+    <div
+      id="01-hook-ground"
+      class="clip"
+      data-el="01-hook-ground"
+      data-start="0"
+      data-duration="7.124"
+      data-track-index="0"
+    >
+      <div data-el="01-hook-hairline-top"></div>
+      <div data-el="01-hook-hairline-bottom"></div>
+      <div data-el="01-hook-glitch"></div>
+      <div data-el="01-hook-qr" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div data-el="01-hook-chrome">CURSOR / 01</div>
+    </div>
+
+    <div
+      id="01-hook-scene"
+      class="clip"
+      data-el="01-hook-scene"
+      data-start="0"
+      data-duration="7.124"
+      data-track-index="1"
+    >
+      <div id="01-hook-slip-gpt" data-el="01-hook-slip" data-slot="gpt">GPT</div>
+      <div id="01-hook-slip-claude" data-el="01-hook-slip" data-slot="claude">Claude</div>
+      <div id="01-hook-slip-gemini" data-el="01-hook-slip" data-slot="gemini">Gemini</div>
+      <div id="01-hook-slip-auto" data-el="01-hook-slip" data-slot="auto">Auto</div>
+
+      <div id="01-hook-title" data-el="01-hook-title">模型这么多？</div>
+
+      <img
+        id="01-hook-agent"
+        data-el="01-hook-agent"
+        src="capture/assets/image_002.png"
+        alt=""
+      />
+
+      <div id="01-hook-phrase-a" data-el="01-hook-phrase">写代码之前</div>
+      <div id="01-hook-phrase-b" data-el="01-hook-phrase">还要先学会</div>
+      <div id="01-hook-phrase-c" data-el="01-hook-phrase">每个模型？</div>
+
+      <div id="01-hook-answer" data-el="01-hook-answer">不用先背</div>
+      <div id="01-hook-underline" data-el="01-hook-underline"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+    (() => {
+      const root = document.querySelector('[data-composition-id="01-hook"]');
+      const title = root.querySelector('[data-el="01-hook-title"]');
+      const agent = root.querySelector('[data-el="01-hook-agent"]');
+      const slips = Array.from(root.querySelectorAll('[data-el="01-hook-slip"]'));
+      const phraseA = document.getElementById("01-hook-phrase-a");
+      const phraseB = document.getElementById("01-hook-phrase-b");
+      const phraseC = document.getElementById("01-hook-phrase-c");
+      const answer = root.querySelector('[data-el="01-hook-answer"]');
+      const underline = root.querySelector('[data-el="01-hook-underline"]');
+
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines = window.__timelines || {};
+      window.__timelines["01-hook"] = tl;
+
+      gsap.set([phraseA, phraseB, phraseC], { opacity: 0, x: 230 });
+      gsap.set(answer, { opacity: 0, scale: 1.25, filter: "blur(10px)" });
+      gsap.set(underline, { opacity: 0, scaleX: 0 });
+
+      const slipRotations = [-4, 3, -2, 5];
+      slips.forEach((slip, index) => {
+        tl.fromTo(
+          slip,
+          { y: -150, opacity: 0, rotation: slipRotations[index] * 1.8 },
+          {
+            y: 0,
+            opacity: 1,
+            rotation: slipRotations[index],
+            duration: 0.5,
+            ease: "power3.out",
+          },
+          0.04 + index * 0.11,
+        );
+      });
+
+      tl.fromTo(
+        title,
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.58, ease: "power3.out" },
+        0.18,
+      );
+
+      tl.fromTo(
+        agent,
+        { x: 120, y: 34, scale: 0.88, opacity: 0 },
+        { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.62, ease: "power3.out" },
+        0.2,
+      );
+
+      tl.to(
+        title,
+        { x: -230, duration: 0.3, ease: "power4.in" },
+        1.72,
+      );
+      tl.to(
+        title,
+        { opacity: 0, duration: 0.28, ease: "power1.in" },
+        1.72,
+      );
+
+      slips.forEach((slip, index) => {
+        tl.to(
+          slip,
+          {
+            x: index < 2 ? -390 : 390,
+            opacity: 0,
+            duration: 0.34,
+            ease: "power4.in",
+          },
+          1.8 + index * 0.055,
+        );
+      });
+
+      tl.to(
+        agent,
+        { x: -44, rotation: -2, duration: 0.36, ease: "power3.inOut" },
+        1.78,
+      );
+
+      tl.fromTo(
+        phraseA,
+        { x: 230, opacity: 0.35 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.34,
+          ease: "power4.out",
+          immediateRender: false,
+        },
+        2.02,
+      );
+
+      tl.to(
+        phraseA,
+        { x: -230, duration: 0.34, ease: "power4.in" },
+        2.92,
+      );
+      tl.to(
+        phraseA,
+        { opacity: 0, duration: 0.3, ease: "power1.in" },
+        2.94,
+      );
+      tl.set(phraseA, { opacity: 0 }, 3.26);
+      tl.fromTo(
+        phraseB,
+        { x: 230, opacity: 0.35 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.34,
+          ease: "power4.out",
+          immediateRender: false,
+        },
+        3.26,
+      );
+
+      tl.to(
+        phraseB,
+        { x: -230, duration: 0.34, ease: "power4.in" },
+        4.15,
+      );
+      tl.to(
+        phraseB,
+        { opacity: 0, duration: 0.3, ease: "power1.in" },
+        4.17,
+      );
+      tl.set(phraseB, { opacity: 0 }, 4.49);
+      tl.fromTo(
+        phraseC,
+        { x: 230, opacity: 0.35 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.34,
+          ease: "power4.out",
+          immediateRender: false,
+        },
+        4.49,
+      );
+
+      tl.to(
+        agent,
+        { x: -230, opacity: 0, duration: 0.3, ease: "power4.in" },
+        5.25,
+      );
+      tl.to(
+        phraseC,
+        { scale: 0.8, filter: "blur(10px)", duration: 0.2, ease: "power3.in" },
+        5.35,
+      );
+      tl.to(
+        phraseC,
+        { opacity: 0.15, duration: 0.2, ease: "none" },
+        5.35,
+      );
+      tl.set(phraseC, { opacity: 0 }, 5.55);
+
+      tl.fromTo(
+        answer,
+        { opacity: 0.15, scale: 1.25, filter: "blur(10px)" },
+        {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 0.5,
+          ease: "expo.out",
+          immediateRender: false,
+        },
+        5.55,
+      );
+      tl.fromTo(
+        underline,
+        { opacity: 1, scaleX: 0 },
+        {
+          opacity: 1,
+          scaleX: 1,
+          duration: 0.42,
+          ease: "power3.out",
+          immediateRender: false,
+        },
+        5.93,
+      );
+    })();
+  </script>
+</template>

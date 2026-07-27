@@ -1,0 +1,639 @@
+<template>
+  <style>
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      container-type: size;
+      perspective: 1400px;
+      color: #111111;
+    }
+
+    [id="04-boundary-ground"] {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background-color: #ececea;
+      background-image:
+        linear-gradient(rgba(10, 132, 255, 0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10, 132, 255, 0.10) 1px, transparent 1px);
+      background-size: 22px 22px;
+    }
+
+    [id="04-boundary-top-rule"],
+    [id="04-boundary-bottom-rule"] {
+      position: absolute;
+      left: 44px;
+      width: 992px;
+      height: 2px;
+      background: #0a84ff;
+    }
+
+    [id="04-boundary-top-rule"] {
+      top: 60px;
+    }
+
+    [id="04-boundary-bottom-rule"] {
+      top: 1392px;
+    }
+
+    [id="04-boundary-grid-index"] {
+      position: absolute;
+      top: 84px;
+      left: 50px;
+      font: 600 18px/1 sans-serif;
+      letter-spacing: 0.18em;
+      color: #0a84ff;
+    }
+
+    [id="04-boundary-page-index"] {
+      position: absolute;
+      top: 1354px;
+      right: 48px;
+      font: 400 18px/1 monospace;
+      letter-spacing: 0.08em;
+      color: #0a84ff;
+    }
+
+    [id="04-boundary-glitch"] {
+      position: absolute;
+      top: 84px;
+      right: 0;
+      width: 168px;
+      height: 1250px;
+      opacity: 0.18;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #0a84ff 0 3px,
+          transparent 3px 10px
+        );
+      clip-path: polygon(
+        38% 0,
+        100% 0,
+        100% 16%,
+        74% 16%,
+        74% 31%,
+        94% 31%,
+        94% 49%,
+        56% 49%,
+        56% 67%,
+        84% 67%,
+        84% 83%,
+        44% 83%,
+        44% 100%,
+        0 100%,
+        0 79%,
+        22% 79%,
+        22% 58%,
+        8% 58%,
+        8% 36%,
+        28% 36%,
+        28% 18%,
+        38% 18%
+      );
+    }
+
+    [id="04-boundary-stage"] {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+    }
+
+    [id="04-boundary-top-card"],
+    [id="04-boundary-bottom-card"] {
+      position: absolute;
+      width: 860px;
+      height: 350px;
+      box-sizing: border-box;
+      overflow: hidden;
+      border: 2px solid #111111;
+      background: #ececea;
+      transform-style: preserve-3d;
+    }
+
+    [id="04-boundary-top-card"] {
+      top: 206px;
+      left: 76px;
+    }
+
+    [id="04-boundary-bottom-card"] {
+      top: 760px;
+      left: 144px;
+    }
+
+    [id="04-boundary-top-card"]::before,
+    [id="04-boundary-bottom-card"]::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-top: 1px solid rgba(10, 132, 255, 0.32);
+      border-bottom: 1px solid rgba(10, 132, 255, 0.32);
+      pointer-events: none;
+    }
+
+    [id="04-boundary-top-card"]::after,
+    [id="04-boundary-bottom-card"]::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 54px;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #0a84ff 0 3px,
+          transparent 3px 9px
+        );
+      opacity: 0.3;
+    }
+
+    [id="04-boundary-top-card"]::after {
+      right: 0;
+    }
+
+    [id="04-boundary-bottom-card"]::after {
+      left: 0;
+    }
+
+    [id="04-boundary-top-kicker"],
+    [id="04-boundary-bottom-kicker"] {
+      position: absolute;
+      top: 46px;
+      font: 600 18px/1 sans-serif;
+      letter-spacing: 0.18em;
+      color: #0a84ff;
+    }
+
+    [id="04-boundary-top-kicker"] {
+      left: 46px;
+    }
+
+    [id="04-boundary-bottom-kicker"] {
+      right: 46px;
+      text-align: right;
+    }
+
+    [id="04-boundary-top-hero"],
+    [id="04-boundary-bottom-hero"] {
+      position: absolute;
+      margin: 0;
+      font-family: serif;
+      font-weight: 400;
+      line-height: 0.86;
+      letter-spacing: -0.018em;
+      color: #111111;
+    }
+
+    [id="04-boundary-top-hero"] {
+      left: 44px;
+      top: 100px;
+      width: 590px;
+      font-size: 92px;
+    }
+
+    [id="04-boundary-bottom-hero"] {
+      right: 44px;
+      top: 104px;
+      width: 650px;
+      font-size: 82px;
+      text-align: right;
+    }
+
+    [id="04-boundary-top-number"],
+    [id="04-boundary-bottom-number"] {
+      position: absolute;
+      bottom: 42px;
+      font: 400 18px/1 monospace;
+      letter-spacing: 0.08em;
+      color: #0a84ff;
+    }
+
+    [id="04-boundary-top-number"] {
+      left: 46px;
+    }
+
+    [id="04-boundary-bottom-number"] {
+      right: 46px;
+    }
+
+    [id="04-boundary-agent"] {
+      position: absolute;
+      top: 432px;
+      left: 744px;
+      width: 276px;
+      height: 368px;
+      object-fit: contain;
+      z-index: 5;
+      filter: saturate(0.92) contrast(1.04);
+    }
+
+    [id="04-boundary-route-map"] {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1430px;
+      overflow: visible;
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    [id="04-boundary-route-light"],
+    [id="04-boundary-route-strong"] {
+      fill: none;
+      stroke: #0a84ff;
+      stroke-width: 7;
+      stroke-linecap: square;
+      stroke-linejoin: miter;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 0;
+    }
+
+    [id="04-boundary-arrow-light"],
+    [id="04-boundary-arrow-strong"] {
+      fill: #0a84ff;
+    }
+
+    [id="04-boundary-light-label"],
+    [id="04-boundary-strong-label"] {
+      position: absolute;
+      z-index: 7;
+      box-sizing: border-box;
+      min-width: 220px;
+      padding: 15px 18px 13px;
+      border: 2px solid #0a84ff;
+      background: #ececea;
+      font: 600 22px/1 sans-serif;
+      letter-spacing: 0.15em;
+      color: #0a84ff;
+      text-align: center;
+    }
+
+    [id="04-boundary-light-label"] {
+      top: 565px;
+      left: 532px;
+    }
+
+    [id="04-boundary-strong-label"] {
+      top: 1134px;
+      left: 310px;
+    }
+
+    [id="04-boundary-stamp-best"],
+    [id="04-boundary-stamp-free"] {
+      position: absolute;
+      z-index: 10;
+      box-sizing: border-box;
+      display: grid;
+      place-items: center;
+      width: 252px;
+      height: 252px;
+      padding: 24px;
+      border: 9px double #ff5a4f;
+      background: rgba(236, 236, 234, 0.94);
+      color: #ff5a4f;
+      font: 600 30px/1.12 sans-serif;
+      letter-spacing: 0.08em;
+      text-align: center;
+      transform-origin: center center;
+    }
+
+    [id="04-boundary-stamp-best"] {
+      top: 250px;
+      left: 654px;
+    }
+
+    [id="04-boundary-stamp-free"] {
+      top: 898px;
+      left: 180px;
+    }
+
+    [id="04-boundary-stamp-best"]::before,
+    [id="04-boundary-stamp-free"]::before {
+      content: "";
+      position: absolute;
+      inset: 11px;
+      border: 2px solid #ff5a4f;
+    }
+
+    [id="04-boundary-stamp-best"] span,
+    [id="04-boundary-stamp-free"] span {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+
+  <div id="root" data-composition-id="04-boundary" data-width="1080" data-height="1920" data-start="0" data-duration="10.988">
+    <div
+      id="04-boundary-ground"
+      class="clip"
+      data-start="0"
+      data-duration="10.988"
+      data-track-index="0"
+    >
+      <div id="04-boundary-top-rule"></div>
+      <div id="04-boundary-bottom-rule"></div>
+      <div id="04-boundary-grid-index">ROUTER / BOUNDARY</div>
+      <div id="04-boundary-page-index">04 / 05</div>
+      <div id="04-boundary-glitch"></div>
+    </div>
+
+    <div
+      id="04-boundary-stage"
+      class="clip"
+      data-start="0"
+      data-duration="10.988"
+      data-track-index="1"
+    >
+      <section id="04-boundary-top-card">
+        <div id="04-boundary-top-kicker">小改动</div>
+        <h1 id="04-boundary-top-hero">改一句<br />文案</h1>
+        <div id="04-boundary-top-number">TASK 001</div>
+      </section>
+
+      <section id="04-boundary-bottom-card">
+        <div id="04-boundary-bottom-kicker">复杂任务</div>
+        <h2 id="04-boundary-bottom-hero">复杂<br />重构</h2>
+        <div id="04-boundary-bottom-number">TASK 002</div>
+      </section>
+
+      <img
+        id="04-boundary-agent"
+        src="capture/assets/image_002.png"
+        loading="eager"
+        decoding="sync"
+        alt=""
+      />
+
+      <svg
+        id="04-boundary-route-map"
+        viewBox="0 0 1080 1430"
+        aria-hidden="true"
+      >
+        <path
+          id="04-boundary-route-light"
+          pathLength="1"
+          d="M 284 620 C 392 620 430 604 516 604"
+        />
+        <path
+          id="04-boundary-arrow-light"
+          d="M 516 604 L 482 582 L 482 626 Z"
+        />
+        <path
+          id="04-boundary-route-strong"
+          pathLength="1"
+          d="M 820 1188 C 694 1188 620 1173 540 1173"
+        />
+        <path
+          id="04-boundary-arrow-strong"
+          d="M 540 1173 L 574 1151 L 574 1195 Z"
+        />
+      </svg>
+
+      <div id="04-boundary-light-label">轻量选择</div>
+      <div id="04-boundary-strong-label">更强模型</div>
+
+      <div id="04-boundary-stamp-best">
+        <span>不保证<br />永远最好</span>
+      </div>
+      <div id="04-boundary-stamp-free">
+        <span>成本模式<br />≠ 免费</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines = window.__timelines || {};
+      window.__timelines["04-boundary"] = tl;
+
+      const byId = (id) => document.getElementById(id);
+      const ground = byId("04-boundary-ground");
+      const topCard = byId("04-boundary-top-card");
+      const topKicker = byId("04-boundary-top-kicker");
+      const topHero = byId("04-boundary-top-hero");
+      const topNumber = byId("04-boundary-top-number");
+      const bottomCard = byId("04-boundary-bottom-card");
+      const bottomKicker = byId("04-boundary-bottom-kicker");
+      const bottomHero = byId("04-boundary-bottom-hero");
+      const bottomNumber = byId("04-boundary-bottom-number");
+      const agent = byId("04-boundary-agent");
+      const lightRoute = byId("04-boundary-route-light");
+      const strongRoute = byId("04-boundary-route-strong");
+      const lightArrow = byId("04-boundary-arrow-light");
+      const strongArrow = byId("04-boundary-arrow-strong");
+      const lightLabel = byId("04-boundary-light-label");
+      const strongLabel = byId("04-boundary-strong-label");
+      const stampBest = byId("04-boundary-stamp-best");
+      const stampFree = byId("04-boundary-stamp-free");
+      const stage = byId("04-boundary-stage");
+
+      tl.fromTo(
+        ground,
+        { scale: 1.018, transformOrigin: "center top" },
+        { scale: 1, duration: 10.488, ease: "none" },
+        0
+      );
+
+      tl.fromTo(
+        topCard,
+        {
+          x: -360,
+          rotationY: 18,
+          opacity: 0.18,
+          transformOrigin: "left center"
+        },
+        {
+          x: 0,
+          rotationY: 0,
+          opacity: 1,
+          duration: 0.5,
+          ease: "power4.out"
+        },
+        0
+      );
+      tl.fromTo(
+        topKicker,
+        { x: -64, opacity: 0.12 },
+        { x: 0, opacity: 1, duration: 0.34, ease: "power4.out" },
+        0.32
+      );
+      tl.fromTo(
+        topHero,
+        { y: 86, opacity: 0.12 },
+        { y: 0, opacity: 1, duration: 0.58, ease: "expo.out" },
+        0.58
+      );
+      tl.fromTo(
+        topNumber,
+        { x: -42, opacity: 0.12 },
+        { x: 0, opacity: 1, duration: 0.35, ease: "power4.out" },
+        0.98
+      );
+      tl.fromTo(
+        agent,
+        { x: 110, y: 34, scale: 0.82, rotation: 7, opacity: 0.12 },
+        {
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotation: 0,
+          opacity: 1,
+          duration: 0.72,
+          ease: "expo.out"
+        },
+        1.28
+      );
+
+      tl.fromTo(
+        bottomCard,
+        {
+          x: 360,
+          rotationY: -18,
+          opacity: 0.14,
+          transformOrigin: "right center"
+        },
+        {
+          x: 0,
+          rotationY: 0,
+          opacity: 1,
+          duration: 0.56,
+          ease: "power4.out"
+        },
+        2.5
+      );
+      tl.fromTo(
+        bottomKicker,
+        { x: 64, opacity: 0.12 },
+        { x: 0, opacity: 1, duration: 0.36, ease: "power4.out" },
+        2.86
+      );
+      tl.fromTo(
+        bottomHero,
+        { y: 90, opacity: 0.12 },
+        { y: 0, opacity: 1, duration: 0.62, ease: "expo.out" },
+        3.18
+      );
+      tl.fromTo(
+        bottomNumber,
+        { x: 46, opacity: 0.12 },
+        { x: 0, opacity: 1, duration: 0.38, ease: "power4.out" },
+        3.72
+      );
+
+      tl.fromTo(
+        lightRoute,
+        { strokeDashoffset: 1 },
+        { strokeDashoffset: 0, duration: 0.72, ease: "power2.inOut" },
+        5.2
+      );
+      tl.fromTo(
+        lightArrow,
+        { x: -36, scale: 0.7, opacity: 0, transformOrigin: "center center" },
+        {
+          x: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.3,
+          ease: "power4.out"
+        },
+        5.74
+      );
+      tl.fromTo(
+        lightLabel,
+        { x: 230, opacity: 0.35 },
+        { x: 0, opacity: 1, duration: 0.34, ease: "power4.out" },
+        5.93
+      );
+
+      tl.fromTo(
+        strongRoute,
+        { strokeDashoffset: 1 },
+        { strokeDashoffset: 0, duration: 0.78, ease: "power2.inOut" },
+        6.1
+      );
+      tl.fromTo(
+        strongArrow,
+        { x: 36, scale: 0.7, opacity: 0, transformOrigin: "center center" },
+        {
+          x: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.3,
+          ease: "power4.out"
+        },
+        6.72
+      );
+      tl.fromTo(
+        strongLabel,
+        { x: -230, opacity: 0.35 },
+        { x: 0, opacity: 1, duration: 0.36, ease: "power4.out" },
+        6.9
+      );
+      tl.fromTo(
+        agent,
+        { rotation: 0, y: 0 },
+        { rotation: -4, y: -10, duration: 0.24, ease: "power2.out" },
+        7.2
+      );
+      tl.to(
+        agent,
+        { rotation: 0, y: 0, duration: 0.28, ease: "power2.inOut" },
+        7.44
+      );
+
+      tl.fromTo(
+        stampBest,
+        { y: -140, scale: 1.2, rotation: -12, opacity: 0.15 },
+        {
+          y: 0,
+          scale: 1,
+          rotation: -4,
+          opacity: 1,
+          duration: 0.28,
+          ease: "power4.in"
+        },
+        7.7
+      );
+      tl.to(
+        stampBest,
+        { scale: 1.06, duration: 0.08, ease: "power2.out" },
+        7.98
+      );
+      tl.to(
+        stampBest,
+        { scale: 1, duration: 0.12, ease: "power2.inOut" },
+        8.06
+      );
+
+      tl.fromTo(
+        stampFree,
+        { y: -140, scale: 1.2, rotation: 12, opacity: 0.15 },
+        {
+          y: 0,
+          scale: 1,
+          rotation: 4,
+          opacity: 1,
+          duration: 0.28,
+          ease: "power4.in"
+        },
+        8.82
+      );
+      tl.to(
+        stampFree,
+        { scale: 1.06, duration: 0.08, ease: "power2.out" },
+        9.1
+      );
+      tl.to(
+        stampFree,
+        { scale: 1, duration: 0.12, ease: "power2.inOut" },
+        9.18
+      );
+
+      tl.set(stage, { opacity: 1 }, 10.488);
+    })();
+  </script>
+</template>

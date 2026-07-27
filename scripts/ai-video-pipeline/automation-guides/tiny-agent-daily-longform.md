@@ -123,6 +123,9 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
      --english-project <EN_PROJECT_DIR> \
      --chinese-project <ZH_PROJECT_DIR>
 
+   node scripts/ai-video-pipeline/validate-tiny-agent-en-cover-reference.mjs \
+     --project <EN_PROJECT_DIR>
+
    node scripts/ai-video-pipeline/validate-tiny-agent-zh-cover-reference.mjs \
      --project <ZH_PROJECT_DIR>
    ```
