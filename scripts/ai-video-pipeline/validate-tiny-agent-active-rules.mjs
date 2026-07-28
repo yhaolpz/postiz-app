@@ -46,6 +46,18 @@ const files = {
     root,
     'scripts/ai-video-pipeline/validate-tiny-agent-zh-cover-reference.mjs'
   ),
+  enCoverValidator: path.join(
+    root,
+    'scripts/ai-video-pipeline/validate-tiny-agent-en-cover-reference.mjs'
+  ),
+  publishingMaterialsValidator: path.join(
+    root,
+    'scripts/ai-video-pipeline/validate-tiny-agent-bilingual-publishing-materials.mjs'
+  ),
+  generatedIdentityValidator: path.join(
+    root,
+    'scripts/ai-video-pipeline/validate-tiny-agent-generated-identity.mjs'
+  ),
   manifest: path.join(snapshotDir, 'manifest.json'),
   invocation: path.join(snapshotDir, 'automation-invocation.txt'),
   prompt: path.join(snapshotDir, 'automation-prompt.txt'),
@@ -169,6 +181,15 @@ const text = {
     files.bilingualParityValidator
   ),
   zhCoverValidator: readText('zhCoverValidator', files.zhCoverValidator),
+  enCoverValidator: readText('enCoverValidator', files.enCoverValidator),
+  publishingMaterialsValidator: readText(
+    'publishingMaterialsValidator',
+    files.publishingMaterialsValidator
+  ),
+  generatedIdentityValidator: readText(
+    'generatedIdentityValidator',
+    files.generatedIdentityValidator
+  ),
   manifest: readText('manifest', files.manifest),
   invocation: readText('invocation', files.invocation),
   prompt: readText('prompt', files.prompt),
@@ -324,52 +345,124 @@ requireEqual(
   bilingualParity?.pacing?.maximumNormalizedSceneShareDifference,
   0.025
 );
+const bilingualCoverSet = bilingualParity?.coverSet;
 requireEqual(
-  'activeProfile.englishChineseProductionParity.cover16x9.geometryProfileId',
-  bilingualParity?.cover16x9?.geometryProfileId,
+  'activeProfile.englishChineseProductionParity.coverSet.status',
+  bilingualCoverSet?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.coverSet.coverSetProfileId',
+  bilingualCoverSet?.coverSetProfileId,
+  'tiny-agent-bilingual-cover-set-2026-07-29'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.coverSet.effectiveFromRunKey',
+  bilingualCoverSet?.effectiveFromRunKey,
+  '2026-07-29-03'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.coverSet.requiredRatios',
+  JSON.stringify(bilingualCoverSet?.requiredRatios),
+  JSON.stringify({
+    'en-US': ['16x9', '4x3', '3x4'],
+    'zh-CN': ['4x3', '3x4'],
+  })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.coverSet.forbiddenRatios',
+  JSON.stringify(bilingualCoverSet?.forbiddenRatios),
+  JSON.stringify({ 'zh-CN': ['16x9'] })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.coverSet.sharedLocalizedRatios',
+  JSON.stringify(bilingualCoverSet?.sharedLocalizedRatios),
+  JSON.stringify(['4x3', '3x4'])
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.coverSet.legacy16x9ParityBeforeEffectiveRun.geometryProfileId',
+  bilingualCoverSet?.legacy16x9ParityBeforeEffectiveRun?.geometryProfileId,
   'tiny-agent-bilingual-cover-16x9-parity-2026-07-27'
 );
 requireEqual(
-  'activeProfile.englishChineseProductionParity.cover16x9.baseCanvas',
-  JSON.stringify(bilingualParity?.cover16x9?.baseCanvas),
-  JSON.stringify({ width: 1280, height: 720 })
-);
-requireEqual(
-  'activeProfile.englishChineseProductionParity.cover16x9.paperGrid',
-  JSON.stringify(bilingualParity?.cover16x9?.paperGrid),
+  'activeProfile.englishChineseProductionParity.coverSet.outputs.en-US.16x9',
+  JSON.stringify(bilingualCoverSet?.outputs?.['en-US']?.['16x9']),
   JSON.stringify({
-    cellWidthPx: 44,
-    cellHeightPx: 44,
-    stroke: '#111413',
-    strokeWidthPx: 1,
-    opacity: 0.09,
+    png: 'thumbnails/thumbnail.en-US.png',
+    svg: 'thumbnails/thumbnail.en-US.svg',
+    spec: 'thumbnails/thumbnail-spec.en-US.16x9.json',
+    width: 3840,
+    height: 2160,
+    qaPreviews: [
+      'thumbnails/thumbnail.en-US.1280x720.png',
+      'thumbnails/thumbnail.en-US.256x144.png',
+    ],
   })
 );
 requireEqual(
-  'activeProfile.englishChineseProductionParity.cover16x9.blueRule',
-  JSON.stringify(bilingualParity?.cover16x9?.blueRule),
-  JSON.stringify({ x: 44, y: 42, width: 118, height: 10 })
-);
-requireEqual(
-  'activeProfile.englishChineseProductionParity.cover16x9.titleZone',
-  JSON.stringify(bilingualParity?.cover16x9?.titleZone),
+  'activeProfile.englishChineseProductionParity.coverSet.outputs.en-US.4x3',
+  JSON.stringify(bilingualCoverSet?.outputs?.['en-US']?.['4x3']),
   JSON.stringify({
-    x: 74,
-    y: 130,
-    width: 520,
-    height: 280,
-    lineCount: { min: 1, max: 3 },
+    png: 'thumbnails/thumbnail.en-US.4x3.png',
+    svg: 'thumbnails/thumbnail.en-US.4x3.svg',
+    spec: 'thumbnails/thumbnail-spec.en-US.4x3.json',
+    width: 1200,
+    height: 900,
+    qaPreview: 'thumbnails/thumbnail.en-US.4x3.240x180.png',
   })
 );
 requireEqual(
-  'activeProfile.englishChineseProductionParity.cover16x9.heroBox',
-  JSON.stringify(bilingualParity?.cover16x9?.heroBox),
-  JSON.stringify({ x: 620, y: 82, width: 600, height: 560 })
+  'activeProfile.englishChineseProductionParity.coverSet.outputs.en-US.3x4',
+  JSON.stringify(bilingualCoverSet?.outputs?.['en-US']?.['3x4']),
+  JSON.stringify({
+    png: 'thumbnails/thumbnail.en-US.3x4.png',
+    svg: 'thumbnails/thumbnail.en-US.3x4.svg',
+    spec: 'thumbnails/thumbnail-spec.en-US.3x4.json',
+    width: 900,
+    height: 1200,
+    qaPreview: 'thumbnails/thumbnail.en-US.3x4.180x240.png',
+  })
 );
 requireEqual(
-  'activeProfile.englishChineseProductionParity.cover16x9.yellowRule',
-  JSON.stringify(bilingualParity?.cover16x9?.yellowRule),
-  JSON.stringify({ x: 44, y: 652, width: 1192, height: 12 })
+  'activeProfile.englishChineseProductionParity.coverSet.outputs.zh-CN',
+  JSON.stringify(bilingualCoverSet?.outputs?.['zh-CN']),
+  JSON.stringify({
+    '4x3': {
+      png: 'thumbnails/thumbnail.zh-CN.4x3.png',
+      svg: 'thumbnails/thumbnail.zh-CN.4x3.svg',
+      spec: 'thumbnails/thumbnail-spec.zh-CN.4x3.json',
+      width: 1200,
+      height: 900,
+      qaPreview: 'thumbnails/thumbnail.zh-CN.4x3.240x180.png',
+    },
+    '3x4': {
+      png: 'thumbnails/thumbnail.zh-CN.3x4.png',
+      svg: 'thumbnails/thumbnail.zh-CN.3x4.svg',
+      spec: 'thumbnails/thumbnail-spec.zh-CN.3x4.json',
+      width: 900,
+      height: 1200,
+      qaPreview: 'thumbnails/thumbnail.zh-CN.3x4.180x240.png',
+    },
+  })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.coverSet.englishPublication',
+  JSON.stringify(bilingualCoverSet?.englishPublication),
+  JSON.stringify({
+    ratio: '16x9',
+    file: 'thumbnails/thumbnail.en-US.png',
+    postizOnlyThisCover: true,
+  })
+);
+requireMatch(
+  'activeProfile.englishChineseProductionParity.coverSet.rule',
+  bilingualCoverSet?.rule ?? '',
+  /generate five delivered covers[\s\S]*Do not generate or restore a Chinese 16:9 cover/
+);
+requireMatch(
+  'activeProfile.englishChineseProductionParity.coverSet.qa',
+  bilingualCoverSet?.qa ?? '',
+  /compares the final English and Chinese 4:3\/3:4 SVG geometry/
 );
 requireEqual(
   'activeProfile.englishChineseProductionParity.qa.validator',
@@ -950,10 +1043,106 @@ requireMatch(
   profile.postSnapshotUserOverrides?.generatedArtTransparency?.qa ?? '',
   /qa\/generated-art-alpha-report\.json/
 );
+const generatedIdentity = profile.postSnapshotUserOverrides
+  ?.tinyAgentGeneratedIdentityConsistency;
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.status',
+  generatedIdentity?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.effectiveFromRunKey',
+  generatedIdentity?.effectiveFromRunKey,
+  '2026-07-29-03'
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.identityProfileId',
+  generatedIdentity?.identityProfileId,
+  'tiny-agent-generated-identity-near-match-2026-07-29'
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.fixedReference.requiredPackId',
+  generatedIdentity?.fixedReference?.requiredPackId,
+  'tiny-agent-v2'
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.fixedReference.referenceImageConditioningRequired',
+  generatedIdentity?.fixedReference?.referenceImageConditioningRequired,
+  true
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.fixedReference.canonicalReferenceImages',
+  JSON.stringify(generatedIdentity?.fixedReference?.canonicalReferenceImages),
+  JSON.stringify([
+    'scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-v2/sprites/agent/idle.png',
+    'scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-v2/sprites/agent/plan-front.png',
+    'scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-v2/sprites/agent/execute.png',
+  ])
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.hardIdentityAnchors',
+  JSON.stringify((generatedIdentity?.hardIdentityAnchors ?? []).map(({ id }) => id)),
+  JSON.stringify([
+    'rounded-white-compact-silhouette',
+    'rounded-black-face-screen',
+    'two-cyan-blue-eyes',
+    'single-round-tip-antenna',
+    'white-black-blue-palette',
+    'friendly-cute-proportions',
+  ])
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.secondaryIdentityAnchors',
+  JSON.stringify((generatedIdentity?.secondaryIdentityAnchors ?? []).map(({ id }) => id)),
+  JSON.stringify([
+    'round-side-ear-modules',
+    'utility-belt-or-waist-tool-motif',
+    'rounded-white-hands-and-boots',
+    'approved-finish-without-mecha-detail',
+  ])
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.minimumSecondaryAnchorMatches',
+  generatedIdentity?.minimumSecondaryAnchorMatches,
+  2
+);
+requireMatch(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.purpose',
+  generatedIdentity?.purpose ?? '',
+  /Exact reuse is allowed[\s\S]*2026-07-28 episode is allowed[\s\S]*character redesign is not/
+);
+requireMatch(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.allowedVariation',
+  JSON.stringify(generatedIdentity?.allowedVariation),
+  /minor-soft-3D|restrained soft-3D finish comparable to the 2026-07-28/
+);
+requireMatch(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.forbiddenVariation',
+  JSON.stringify(generatedIdentity?.forbiddenVariation),
+  /tall human-like[\s\S]*armored mecha[\s\S]*animal[\s\S]*realistic humanoid/
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.evidence.reportFile',
+  generatedIdentity?.evidence?.reportFile,
+  'qa/tiny-agent-identity-consistency-report.json'
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.qa.validator',
+  generatedIdentity?.qa?.validator,
+  'scripts/ai-video-pipeline/validate-tiny-agent-generated-identity.mjs'
+);
+requireEqual(
+  'activeProfile.tinyAgentGeneratedIdentityConsistency.qa.failClosed',
+  generatedIdentity?.qa?.failClosed,
+  true
+);
 for (const [label, pattern] of [
   ['bilingual parity report', /bilingual-parity-report\.json/],
   ['bilingual parity artifact hashes', /artifactHashes/],
   ['bilingual parity byte equality', /byte-identical/],
+  ['bilingual publishing-materials report', /bilingual-publishing-materials-report\.json/],
+  ['bilingual publishing-materials contract', /publishingMaterialsRule/],
+  ['bilingual publishing-materials hash binding', /expectedLocaleArtifacts/],
   ['recap display field', /recapDisplayText/],
   ['recap rendered scan', /renderedMarkerScanPass/],
   ['opening early reveal', /earlyRevealCount/],
@@ -963,8 +1152,30 @@ for (const [label, pattern] of [
   ['on-screen text completeness report', /on-screen-text-completeness-report\.json/],
   ['generated alpha report', /generated-art-alpha-report\.json/],
   ['source alpha inspection', /sips/],
+  ['generated identity contract', /generatedIdentityRule/],
+  ['generated identity report', /tiny-agent-identity-consistency-report\.json/],
+  ['generated identity artifact hashes', /artifactHashes/],
+  ['generated identity fixed-reference hashes', /fixedReferenceHashes/],
 ]) {
   requireMatch(`outputValidator.${label}`, text.outputValidator, pattern);
+}
+for (const [label, pattern] of [
+  ['fixed pack reference', /requiredPackId/],
+  ['reference image conditioning', /referenceConditioningUsed/],
+  ['all Agent characters use Tiny Agent identity', /allAgentsUseTinyAgentIdentity/],
+  ['hard identity anchors', /hardIdentityAnchors/],
+  ['secondary identity anchors', /secondaryIdentityAnchors/],
+  ['exact or minor variation decision', /approvedSimilarity/],
+  ['approved 2D or soft-3D finish', /approvedFinish/],
+  ['major redesign rejection', /noMajorRedesign/],
+  ['hash-bound artifacts', /artifactHashes/],
+  ['four fail-closed mutations', /four fail-closed mutations/],
+]) {
+  requireMatch(
+    `generatedIdentityValidator.${label}`,
+    text.generatedIdentityValidator,
+    pattern
+  );
 }
 for (const [label, pattern] of [
   ['shared contract', /bilingual-content-contract\.json/],
@@ -976,10 +1187,27 @@ for (const [label, pattern] of [
   ['shared opening typography', /openingTypography/],
   ['shared cover geometry', /coverGeometry/],
   ['shared cover action', /coverSemanticAction/],
+  ['shared localized cover ratios', /sharedCoverRatios/],
+  ['current cover-set identity', /coverSetProfileId/],
   ['hash-bound report', /artifactHashes/],
   ['fail-closed self-test', /four fail-closed mutations/],
 ]) {
   requireMatch(`bilingualParityValidator.${label}`, text.bilingualParityValidator, pattern);
+}
+for (const [label, pattern] of [
+  ['paired material files', /local-publishing-materials/],
+  ['metadata binding', /metadataBinding/],
+  ['exact interaction count', /interactionCount/],
+  ['stable interaction angles', /pairedInteractionIdsAndAngles/],
+  ['natural English counterpart', /naturalEnglishCounterpart/],
+  ['hash-bound report', /artifactHashes/],
+  ['fail-closed self-test', /four fail-closed mutations/],
+]) {
+  requireMatch(
+    `publishingMaterialsValidator.${label}`,
+    text.publishingMaterialsValidator,
+    pattern
+  );
 }
 requireEqual(
   'activeProfile.coverPrimaryTitleOnly.status',
@@ -1049,8 +1277,65 @@ for (const [label, pattern] of [
   ['line-density gate', /titleLineDensity/],
   ['title-block-height gate', /titleBlockHeightDensity/],
   ['title-intent gate', /titleQuestionActionOrBenefit/],
+  ['generated-identity effective gate', /generatedIdentityApplied/],
+  ['generated-identity declaration gate', /generatedIdentityDeclarationPass/],
+  ['fixed-reference conditioning', /referenceConditioningUsed/],
+  ['canonical fixed-reference paths', /canonicalReferenceImages/],
+  ['exact-or-minor similarity', /requiredSimilarityDecisions/],
+  ['approved finish classification', /allowedFinishClassifications/],
+  ['major redesign rejection', /majorRedesignDetected/],
 ]) {
   requireMatch(`zhCoverValidator.${label}`, text.zhCoverValidator, pattern);
+}
+const enCoverTitleDensity = profile.postSnapshotUserOverrides
+  ?.coverTitleTopicAlignment
+  ?.enRatioTitleInformationDensity;
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.enRatioTitleInformationDensity.status',
+  enCoverTitleDensity?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.enRatioTitleInformationDensity.effectiveFromRunKey',
+  enCoverTitleDensity?.effectiveFromRunKey,
+  '2026-07-29-03'
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.enRatioTitleInformationDensity.scope',
+  JSON.stringify(enCoverTitleDensity?.scope),
+  JSON.stringify(['en-US/4x3', 'en-US/3x4'])
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.enRatioTitleInformationDensity.minimumInformationUnitsBeyondIdentity',
+  enCoverTitleDensity?.minimumInformationUnitsBeyondIdentity,
+  4
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.enRatioTitleInformationDensity.titleLineCount',
+  JSON.stringify(enCoverTitleDensity?.titleLineCount),
+  JSON.stringify({ min: 3, max: 4 })
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.enRatioTitleInformationDensity.minimumTitleBlockHeightPercent',
+  JSON.stringify(enCoverTitleDensity?.minimumTitleBlockHeightPercent),
+  JSON.stringify({ '4x3': 55, '3x4': 42 })
+);
+for (const [label, pattern] of [
+  ['information-unit measurement', /countInformationUnitsBeyondIdentity/],
+  ['title-block measurement', /measureTitleBlock/],
+  ['information-density gate', /titleInformationDensity/],
+  ['line-density gate', /titleLineDensity/],
+  ['title-block-height gate', /titleBlockHeightDensity/],
+  ['title-intent gate', /titleQuestionActionOrBenefit/],
+  ['generated-identity effective gate', /generatedIdentityApplied/],
+  ['generated-identity declaration gate', /generatedIdentityDeclarationPass/],
+  ['fixed-reference conditioning', /referenceConditioningUsed/],
+  ['canonical fixed-reference paths', /canonicalReferenceImages/],
+  ['exact-or-minor similarity', /requiredSimilarityDecisions/],
+  ['approved finish classification', /allowedFinishClassifications/],
+  ['major redesign rejection', /majorRedesignDetected/],
+]) {
+  requireMatch(`enCoverValidator.${label}`, text.enCoverValidator, pattern);
 }
 requireEqual(
   'activeProfile.coverReferenceAlignment.status',
@@ -1060,7 +1345,7 @@ requireEqual(
 requireMatch(
   'activeProfile.coverReferenceAlignment.reference',
   profile.postSnapshotUserOverrides?.coverReferenceAlignment?.reference ?? '',
-  /2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/
+  /approved 2026-07-23 title-hero system[\s\S]*2026-07-26 4:3\/3:4 strict geometry/
 );
 requireMatch(
   'activeProfile.coverReferenceAlignment.titleColors',
@@ -1070,7 +1355,17 @@ requireMatch(
 requireMatch(
   'activeProfile.coverReferenceAlignment.character',
   profile.postSnapshotUserOverrides?.coverReferenceAlignment?.character ?? '',
-  /4:3 right-side hero and 3:4 lower hero must each be newly generated[\s\S]*English episode, the delivered 16:9 hero must likewise be newly generated/
+  /Chinese episode, the delivered 4:3 right-side hero and 3:4 lower hero must each be newly generated[\s\S]*English episode, the delivered 16:9, 4:3, and 3:4 heroes must each be newly generated/
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.character.generatedIdentityRule',
+  profile.postSnapshotUserOverrides?.coverReferenceAlignment?.character ?? '',
+  /tinyAgentGeneratedIdentityConsistency[\s\S]*actual fixed-pack reference image[\s\S]*Exact fixed-asset styling[\s\S]*minor 2D variation[\s\S]*restrained soft-3D variation[\s\S]*missing belt or hand-drawn outline alone is not a redesign[\s\S]*major character redesign/
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.qa.generatedIdentityEvidence',
+  profile.postSnapshotUserOverrides?.coverReferenceAlignment?.qa ?? '',
+  /identityProfileId[\s\S]*referenceConditioningUsed=true[\s\S]*exact\/minor similarity decision[\s\S]*majorRedesignDetected=false[\s\S]*identity-consistency report/
 );
 const zhCoverStrictGeometry = profile.postSnapshotUserOverrides
   ?.coverReferenceAlignment
@@ -1173,6 +1468,54 @@ for (const [label, pattern] of [
 ]) {
   requireMatch(`zhCoverValidator.${label}`, text.zhCoverValidator, pattern);
 }
+const enCoverStrictGeometry = profile.postSnapshotUserOverrides
+  ?.coverReferenceAlignment
+  ?.enRatioStrictGeometry;
+requireEqual(
+  'activeProfile.coverReferenceAlignment.enRatioStrictGeometry.status',
+  enCoverStrictGeometry?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.enRatioStrictGeometry.effectiveFromRunKey',
+  enCoverStrictGeometry?.effectiveFromRunKey,
+  '2026-07-29-03'
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.enRatioStrictGeometry.scope',
+  JSON.stringify(enCoverStrictGeometry?.scope),
+  JSON.stringify(['en-US/4x3', 'en-US/3x4'])
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.enRatioStrictGeometry.geometryProfileId',
+  enCoverStrictGeometry?.geometryProfileId,
+  'tiny-agent-en-cover-approved-geometry-2026-07-29'
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.enRatioStrictGeometry.inheritsGeometryFrom',
+  enCoverStrictGeometry?.inheritsGeometryFrom,
+  'postSnapshotUserOverrides.coverReferenceAlignment.zhRatioStrictGeometry'
+);
+for (const [label, pattern] of [
+  ['current ratio selection', /selectedRatios/],
+  ['strict geometry evaluator', /inspectStrictGeometry/],
+  ['strict profile id gate', /strictGeometryProfileId/],
+  ['cover-set profile id gate', /coverSetProfileId/],
+  ['strict title baseline gate', /titleBaselineGeometry/],
+  ['strict rounded-rule gate', /roundedRuleGeometry/],
+  ['strict hero box gate', /heroBoxGeometry/],
+  ['strict preview gate', /previewDimensions/],
+  ['strict evidence report', /strictGeometryEvidence/],
+]) {
+  requireMatch(`enCoverValidator.${label}`, text.enCoverValidator, pattern);
+}
+for (const [label, pattern] of [
+  ['current ratio selection', /currentCoverSetApplied/],
+  ['forbidden Chinese 16:9 artifacts', /forbidden16x9Artifacts/],
+  ['cover-set profile id gate', /coverSetProfileId/],
+]) {
+  requireMatch(`zhCoverValidator.${label}`, text.zhCoverValidator, pattern);
+}
 requireEqual(
   'activeProfile.publishingMetadata.status',
   profile.postSnapshotUserOverrides?.publishingMetadata?.status,
@@ -1207,6 +1550,68 @@ requireMatch(
   'activeProfile.publishingMetadata.titleSemanticAgency.qa',
   profile.postSnapshotUserOverrides?.publishingMetadata?.titleSemanticAgency?.qa ?? '',
   /hasAccurateAgency/
+);
+const bilingualPublishingMaterials = profile.postSnapshotUserOverrides
+  ?.bilingualPublishingMaterials;
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.status',
+  bilingualPublishingMaterials?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.effectiveFromRunKey',
+  bilingualPublishingMaterials?.effectiveFromRunKey,
+  '2026-07-29-03'
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.files',
+  JSON.stringify(bilingualPublishingMaterials?.files),
+  JSON.stringify({
+    'zh-CN': 'local-publishing-materials.zh-CN.json',
+    'en-US': 'local-publishing-materials.en-US.json',
+    report: 'qa/bilingual-publishing-materials-report.json',
+  })
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.interactionSuggestions.exactCount',
+  bilingualPublishingMaterials?.interactionSuggestions?.exactCount,
+  3
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.interactionSuggestions.stableIdsAndAngles',
+  JSON.stringify(
+    bilingualPublishingMaterials?.interactionSuggestions?.stableIdsAndAngles
+  ),
+  JSON.stringify([
+    { id: 'open-question', angle: 'open-question' },
+    { id: 'practical-tradeoff', angle: 'practical-tradeoff' },
+    { id: 'viewpoint-experience', angle: 'viewpoint-experience' },
+  ])
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.localization.canonicalLocale',
+  bilingualPublishingMaterials?.localization?.canonicalLocale,
+  'zh-CN'
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.localization.targetLocale',
+  bilingualPublishingMaterials?.localization?.targetLocale,
+  'en-US'
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.localization.naturalEnglishNotMechanicalTranslation',
+  bilingualPublishingMaterials?.localization?.naturalEnglishNotMechanicalTranslation,
+  true
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.qa.validator',
+  bilingualPublishingMaterials?.qa?.validator,
+  'scripts/ai-video-pipeline/validate-tiny-agent-bilingual-publishing-materials.mjs'
+);
+requireEqual(
+  'activeProfile.bilingualPublishingMaterials.qa.failClosed',
+  bilingualPublishingMaterials?.qa?.failClosed,
+  true
 );
 
 requireEqual('manifest.schemaVersion', manifest.schemaVersion, 1);
@@ -1313,6 +1718,16 @@ const contentPlanChecks = [
   /en-US-ChristopherNeural`，固定语速 `\+30%`/,
   /zh-CN-YunxiaNeural`，固定语速 `\+35%`/,
   /中英文长视频均为 `5-8` 分钟/,
+  /每期固定五张/,
+  /英文 `thumbnail\.en-US\.png` 4K `16:9` 发布母版/,
+  /中文只生成 `thumbnail\.zh-CN\.4x3\.png`/,
+  /不再生成中文 `16:9` 封面/,
+  /local-publishing-materials\.zh-CN\.json/,
+  /各三条互动建议/,
+  /临时图角色身份/,
+  /tiny-agent-v2/,
+  /与 `2026-07-28` 临时图相当的轻微/,
+  /显著身体\/脸部重设计直接阻塞生产/,
   /2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/,
   /2026-07-23-03-ai-agent-uncertainty-longform-en-US/,
 ];
@@ -1339,15 +1754,29 @@ const runbookChecks = [
   /bilingual-content-contract\.json/,
   /validate-tiny-agent-bilingual-parity\.mjs/,
   /qa\/bilingual-parity-report\.json/,
-  /tiny-agent-bilingual-cover-16x9-parity-2026-07-27/,
+  /englishChineseProductionParity\.coverSet/,
+  /英文固定生成 `16:9` 4K 发布母版、`4:3`、`3:4` 三张封面/,
+  /中文只生成 `4:3`、`3:4` 两张封面，不再生成或恢复中文 `16:9`/,
+  /validate-tiny-agent-bilingual-publishing-materials\.mjs/,
+  /qa\/bilingual-publishing-materials-report\.json/,
+  /local-publishing-materials\.zh-CN\.json/,
+  /各含恰好三条具名互动建议/,
   /只读取 active profile 的 `fixedBilingualGeneration` 与具名覆盖项/,
   /章节开场、正文和可朗读的三点编号小结/,
   /openingQuestionReadability/,
   /hookQuestionQuality/,
   /chapterRecapNarration\.screenCopy/,
   /generatedArtTransparency/,
+  /tinyAgentGeneratedIdentityConsistency/,
+  /实际传入 `tiny-agent-v2` 固定角色 PNG 作为图片参考/,
+  /与 `2026-07-28` 当期临时图相当的轻微/,
+  /validate-tiny-agent-generated-identity\.mjs/,
+  /qa\/tiny-agent-identity-consistency-report\.json/,
+  /majorRedesignDetected=false/,
   /coverTitleTopicAlignment\.zhRatioTitleInformationDensity/,
+  /enRatioTitleInformationDensity/,
   /coverReferenceAlignment\.zhRatioStrictGeometry/,
+  /enRatioStrictGeometry/,
   /titleSemanticAgency/,
   /validate-tiny-agent-longform-output\.mjs --project <PROJECT_DIR>/,
   /右下角的批准 Tiny Agent 从开场第一帧完整可见/,
@@ -1389,6 +1818,20 @@ const automationChecks = [
   /active profile 是唯一当前行为契约/,
   /fixedBilingualGeneration 和具名 postSnapshotUserOverrides/,
   /validate-tiny-agent-longform-output\.mjs --project <PROJECT_DIR>/,
+  /2026-07-29-03/,
+  /英文固定生成 `16:9`、`4:3`、`3:4`/,
+  /中文只生成 `4:3`、`3:4`/,
+  /不得生成或恢复中文 `16:9`/,
+  /local-publishing-materials\.zh-CN\.json/,
+  /local-publishing-materials\.en-US\.json/,
+  /各三条互动建议/,
+  /validate-tiny-agent-bilingual-publishing-materials\.mjs/,
+  /tinyAgentGeneratedIdentityConsistency/,
+  /validate-tiny-agent-generated-identity\.mjs/,
+  /固定角色 PNG 作为图片参考/,
+  /允许完全一致/,
+  /轻微姿态、表情、配件、线稿或克制软 3D 变化/,
+  /不得改变圆润白色紧凑轮廓、黑色脸屏、两只蓝眼、单根圆头天线、白黑蓝主配色和友好比例/,
 ];
 for (const pattern of automationChecks) {
   requireMatch('automationPrompt', automationPrompt, pattern);

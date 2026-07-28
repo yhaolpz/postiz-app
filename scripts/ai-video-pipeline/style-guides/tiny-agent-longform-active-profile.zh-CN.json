@@ -48,7 +48,7 @@
         "natural locale text, subtitles, and locale metadata",
         "zh-CN-YunxiaNeural +35% versus adult en-US-ChristopherNeural +30%",
         "absolute cue, scene, and animation timestamps derived independently from each locale's final TTS/VTT",
-        "English YouTube delivery uses a 3840x2160 16:9 master while Chinese local delivery retains its required 1280x720, 1200x900, and 900x1200 files"
+        "English delivery uses a 3840x2160 16:9 publication master plus 1200x900 4:3 and 900x1200 3:4 local covers; Chinese local delivery uses only 1200x900 4:3 and 900x1200 3:4 covers from run 2026-07-29-03 onward"
       ],
       "content": {
         "sharedContractFile": "bilingual-content-contract.json",
@@ -113,23 +113,52 @@
         "maximumNormalizedSceneShareDifference": 0.025,
         "rule": "Compare pacing after normalizing each locale to its own final duration. English may breathe naturally, but its chapter and scene duration shares must stay within the declared differences from Chinese. A different language is not permission to create a differently paced edit."
       },
-      "cover16x9": {
-        "geometryProfileId": "tiny-agent-bilingual-cover-16x9-parity-2026-07-27",
-        "approvedChineseReference": "var/hyperframes-showcases/2026-07-27-03-ai-agent-skills-longform-zh-CN/thumbnails/thumbnail.zh-CN.svg",
-        "baseCanvas": {"width": 1280, "height": 720},
-        "paperGrid": {"cellWidthPx": 44, "cellHeightPx": 44, "stroke": "#111413", "strokeWidthPx": 1, "opacity": 0.09},
-        "blueRule": {"x": 44, "y": 42, "width": 118, "height": 10},
-        "titleZone": {"x": 74, "y": 130, "width": 520, "height": 280, "lineCount": {"min": 1, "max": 3}},
-        "heroBox": {"x": 620, "y": 82, "width": 600, "height": 560},
-        "yellowRule": {"x": 44, "y": 652, "width": 1192, "height": 12},
-        "rule": "The English 16:9 cover is a language-localized rendering of the Chinese 16:9 cover system, not a separate YouTube art direction. At the 1280x720 SVG design coordinate system, both locales use the exact paper grid, blue rule, title zone, hero box, and yellow rule above. The title may reflow naturally inside the same zone; the semantic title, one complete current-topic Tiny Agent action, colors, and hierarchy remain aligned. Only the English 4K publication raster size differs.",
-        "qa": "The bilingual parity validator must parse both final 16:9 SVGs and their specs, verify this geometryProfileId, compare the actual grid/rules/title zone/hero box against the active profile, and reject any normalized geometry or cover-semantic mismatch."
+      "coverSet": {
+        "status": "active",
+        "coverSetProfileId": "tiny-agent-bilingual-cover-set-2026-07-29",
+        "effectiveFromRunKey": "2026-07-29-03",
+        "legacy16x9ParityBeforeEffectiveRun": {
+          "geometryProfileId": "tiny-agent-bilingual-cover-16x9-parity-2026-07-27",
+          "approvedChineseReference": "var/hyperframes-showcases/2026-07-27-03-ai-agent-skills-longform-zh-CN/thumbnails/thumbnail.zh-CN.svg",
+          "baseCanvas": {"width": 1280, "height": 720},
+          "paperGrid": {"cellWidthPx": 44, "cellHeightPx": 44, "stroke": "#111413", "strokeWidthPx": 1, "opacity": 0.09},
+          "blueRule": {"x": 44, "y": 42, "width": 118, "height": 10},
+          "titleZone": {"x": 74, "y": 130, "width": 520, "height": 280, "lineCount": {"min": 1, "max": 3}},
+          "heroBox": {"x": 620, "y": 82, "width": 600, "height": 560},
+          "yellowRule": {"x": 44, "y": 652, "width": 1192, "height": 12}
+        },
+        "requiredRatios": {
+          "en-US": ["16x9", "4x3", "3x4"],
+          "zh-CN": ["4x3", "3x4"]
+        },
+        "forbiddenRatios": {
+          "zh-CN": ["16x9"]
+        },
+        "outputs": {
+          "en-US": {
+            "16x9": {"png": "thumbnails/thumbnail.en-US.png", "svg": "thumbnails/thumbnail.en-US.svg", "spec": "thumbnails/thumbnail-spec.en-US.16x9.json", "width": 3840, "height": 2160, "qaPreviews": ["thumbnails/thumbnail.en-US.1280x720.png", "thumbnails/thumbnail.en-US.256x144.png"]},
+            "4x3": {"png": "thumbnails/thumbnail.en-US.4x3.png", "svg": "thumbnails/thumbnail.en-US.4x3.svg", "spec": "thumbnails/thumbnail-spec.en-US.4x3.json", "width": 1200, "height": 900, "qaPreview": "thumbnails/thumbnail.en-US.4x3.240x180.png"},
+            "3x4": {"png": "thumbnails/thumbnail.en-US.3x4.png", "svg": "thumbnails/thumbnail.en-US.3x4.svg", "spec": "thumbnails/thumbnail-spec.en-US.3x4.json", "width": 900, "height": 1200, "qaPreview": "thumbnails/thumbnail.en-US.3x4.180x240.png"}
+          },
+          "zh-CN": {
+            "4x3": {"png": "thumbnails/thumbnail.zh-CN.4x3.png", "svg": "thumbnails/thumbnail.zh-CN.4x3.svg", "spec": "thumbnails/thumbnail-spec.zh-CN.4x3.json", "width": 1200, "height": 900, "qaPreview": "thumbnails/thumbnail.zh-CN.4x3.240x180.png"},
+            "3x4": {"png": "thumbnails/thumbnail.zh-CN.3x4.png", "svg": "thumbnails/thumbnail.zh-CN.3x4.svg", "spec": "thumbnails/thumbnail-spec.zh-CN.3x4.json", "width": 900, "height": 1200, "qaPreview": "thumbnails/thumbnail.zh-CN.3x4.180x240.png"}
+          }
+        },
+        "englishPublication": {
+          "ratio": "16x9",
+          "file": "thumbnails/thumbnail.en-US.png",
+          "postizOnlyThisCover": true
+        },
+        "sharedLocalizedRatios": ["4x3", "3x4"],
+        "rule": "From 2026-07-29-03 onward, generate five delivered covers in total: English 16:9, 4:3, and 3:4; Chinese 4:3 and 3:4. Do not generate or restore a Chinese 16:9 cover. English and Chinese 4:3/3:4 covers are natural-language localizations of the same current-topic title-hero system, geometry, semantic action, and one-Agent composition. Only the English 16:9 4K master is submitted to Postiz; English 4:3/3:4 and both Chinese covers remain local delivery assets.",
+        "qa": "The bilingual parity validator compares the final English and Chinese 4:3/3:4 SVG geometry and bilingual action IDs for runs at or after effectiveFromRunKey. The English cover validator requires all three English ratios; the Chinese cover validator requires only 4:3/3:4 and rejects any newly generated Chinese 16:9 artifact. Runs before effectiveFromRunKey retain the legacy 16:9 parity branch for recovery only."
       },
       "qa": {
         "validator": "scripts/ai-video-pipeline/validate-tiny-agent-bilingual-parity.mjs",
         "report": "qa/bilingual-parity-report.json",
         "failClosed": true,
-        "rule": "Run the bilingual parity validator after both locale projects have final content maps, scripts, TTS/VTT-derived scene and animation plans, metadata, and 16:9 covers. It writes the same hash-bound report to both projects. Each per-project output validator must reject a missing, stale, failing, or wrong-pair report before render or publication."
+        "rule": "Run the bilingual parity validator after both locale projects have final content maps, scripts, TTS/VTT-derived scene and animation plans, metadata, and every required cover. At or after 2026-07-29-03, every 4:3/3:4 cover spec must declare the shared coverSetProfileId, its locale strictGeometryProfileId, and the shared bilingualActionId. The validator writes the same hash-bound report to both projects. Each per-project output validator must reject a missing, stale, failing, or wrong-pair report before render or publication."
       }
     },
     "chapterRecapNarration": {
@@ -259,6 +288,75 @@
       "composition": "Place only the isolated subject directly over the video composition's existing paper-grid background. Do not add a source-image background plate, opaque wrapper, or replacement grid behind it.",
       "qa": "Generate qa/generated-art-alpha-report.json with pass=true, sharedGridComposition=true, and one assets[] entry per referenced temporary generated-art file. Each entry records file, hasAlpha=true, four cornerAlpha values of 0, canvasEdgeBackgroundDetected=false, opaque-bounds versus canvas bounds, and sceneIds. Fail if any file lacks alpha, has a non-transparent corner, retains a canvas-edge background, or is not composed directly over the shared grid."
     },
+    "tinyAgentGeneratedIdentityConsistency": {
+      "status": "active",
+      "effectiveFromRunKey": "2026-07-29-03",
+      "identityProfileId": "tiny-agent-generated-identity-near-match-2026-07-29",
+      "scope": [
+        "temporary scene art containing any Agent character",
+        "temporary generated cover heroes"
+      ],
+      "purpose": "Keep every generated Agent recognizably in the owner's fixed Tiny Agent character family. Exact reuse is allowed; a modest pose, expression, accessory, line-finish, or restrained soft-3D variation comparable to the 2026-07-28 episode is allowed; a character redesign is not.",
+      "fixedReference": {
+        "activePackConfig": "scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-active.json",
+        "requiredPackId": "tiny-agent-v2",
+        "agentManifest": "scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-v2/manifests/agent.json",
+        "canonicalReferenceImages": [
+          "scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-v2/sprites/agent/idle.png",
+          "scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-v2/sprites/agent/plan-front.png",
+          "scripts/ai-video-pipeline/hyperframes/asset-packs/tiny-agent-v2/sprites/agent/execute.png"
+        ],
+        "referenceImageConditioningRequired": true,
+        "rule": "Every generated image that contains an Agent must use at least one canonical fixed Tiny Agent PNG as an actual image reference or conditioning input. A text-only description of the character is insufficient."
+      },
+      "hardIdentityAnchors": [
+        {"id": "rounded-white-compact-silhouette", "rule": "large rounded white head and compact short-bodied silhouette"},
+        {"id": "rounded-black-face-screen", "rule": "wide rounded black face screen"},
+        {"id": "two-cyan-blue-eyes", "rule": "exactly two cyan-blue oval eyes"},
+        {"id": "single-round-tip-antenna", "rule": "single top antenna with a round tip"},
+        {"id": "white-black-blue-palette", "rule": "white primary shell with black face and restrained blue-cyan accents"},
+        {"id": "friendly-cute-proportions", "rule": "friendly small mouth and non-threatening cute proportions"}
+      ],
+      "secondaryIdentityAnchors": [
+        {"id": "round-side-ear-modules", "rule": "round side ear modules"},
+        {"id": "utility-belt-or-waist-tool-motif", "rule": "brown utility belt or recognizable waist-tool motif when the waist is not hidden"},
+        {"id": "rounded-white-hands-and-boots", "rule": "simple rounded white hands and boots"},
+        {"id": "approved-finish-without-mecha-detail", "rule": "clean hand-drawn outline or restrained soft-3D finish without mecha detailing"}
+      ],
+      "minimumSecondaryAnchorMatches": 2,
+      "allowedVariation": [
+        "same fixed asset appearance",
+        "minor pose or camera-angle change",
+        "minor facial-expression change while preserving the face screen and eye system",
+        "topic-specific held object or small accessory",
+        "minor hand-drawn line variation",
+        "restrained soft-3D finish comparable to the 2026-07-28 generated scene art"
+      ],
+      "forbiddenVariation": [
+        "different head or face-screen geometry",
+        "missing, duplicated, or redesigned eyes or antenna",
+        "tall human-like, armored mecha, animal, or realistic humanoid body",
+        "dominant palette outside white, black, and blue-cyan",
+        "sharp aggressive facial features, realistic human face, or unrelated mascot styling",
+        "major limb, body-proportion, costume, or silhouette redesign"
+      ],
+      "evidence": {
+        "reviewFile": "qa/tiny-agent-identity-review.json",
+        "reportFile": "qa/tiny-agent-identity-consistency-report.json",
+        "requiredSimilarityDecisions": ["exact-match", "minor-variation"],
+        "allowedFinishClassifications": [
+          "fixed-asset-style",
+          "minor-2d-variation",
+          "minor-soft-3d-variation"
+        ],
+        "rule": "Review every referenced temporary scene image and generated cover hero side by side with the fixed references. Record the final asset hash, every actual reference image and hash, referenceConditioningUsed=true, Agent counts, all hard-anchor decisions, secondary-anchor matches, finish classification, similarity decision, and majorRedesignDetected=false. Every Agent character in the image must belong to the same Tiny Agent identity family; unrelated secondary Agent designs are forbidden."
+      },
+      "qa": {
+        "validator": "scripts/ai-video-pipeline/validate-tiny-agent-generated-identity.mjs",
+        "failClosed": true,
+        "rule": "Run after temporary scene art and all generated cover heroes are final, before per-project longform output validation. The validator must reject a missing or stale review, a non-fixed reference, text-only generation, any failed hard identity anchor, insufficient secondary anchors, an unapproved finish classification, an unrelated Agent character, or a major redesign."
+      }
+    },
     "englishAdultNarration": {
       "status": "active",
       "scope": ["en-US"],
@@ -320,12 +418,22 @@
         "rule": "Chinese 4:3 and 3:4 covers must carry a complete topic question, action, or benefit, not only an identity plus a bare topic noun such as AI Agent Skill. Match the approved prior-cover density: after removing the AI Agent identity, the primary title retains at least minimumInformationUnitsBeyondIdentity meaningful Han glyphs or alphanumeric words, uses titleLineCount large title lines, and fills at least the ratio-specific minimumTitleBlockHeightPercent of the canvas. This remains one primary title, not auxiliary copy.",
         "qa": "The Chinese cover-reference validator must measure the final SVG headline, line count, title-block height, information units beyond the AI Agent identity, and question/action/benefit intent. Fail 4:3 or 3:4 when any density value is below this active contract, even if the core cover keywords are present."
       },
+      "enRatioTitleInformationDensity": {
+        "status": "active",
+        "effectiveFromRunKey": "2026-07-29-03",
+        "scope": ["en-US/4x3", "en-US/3x4"],
+        "minimumInformationUnitsBeyondIdentity": 4,
+        "titleLineCount": {"min": 3, "max": 4},
+        "minimumTitleBlockHeightPercent": {"4x3": 55, "3x4": 42},
+        "rule": "English 4:3 and 3:4 covers must carry a natural, complete topic question, action, or benefit rather than an AI Agent identity plus a bare topic noun. After removing the AI Agent identity, retain at least four meaningful alphanumeric words, use three or four large title lines, and fill the ratio-specific title block while remaining readable. This is one deterministic primary title, never auxiliary copy or a mechanical translation of the Chinese headline.",
+        "qa": "The English cover-reference validator measures the final SVG headline, line count, title-block height, information units beyond the AI Agent identity, and question/action/benefit intent. It fails either new ratio when any density value is below this contract."
+      },
       "qa": "Run `validate-tiny-agent-zh-cover-reference.mjs` for zh-CN and `validate-tiny-agent-en-cover-reference.mjs` for en-US. They must reject a missing or malformed coverTitleContract, a publishing title that does not contain an approved equivalent for every core cover keyword, a normal delivered cover that omits a required keyword, or a cover whose generated hero action differs from the declared topic action. A ratio may omit a newly introduced keyword only when its spec records a concrete owner-requested revision-scope exemption; the exemption is not a reusable production rule."
     },
     "coverReferenceAlignment": {
       "status": "active",
       "scope": ["zh-CN", "en-US"],
-      "reference": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/thumbnails/thumbnail.zh-CN.svg and its three-ratio siblings",
+      "reference": "The approved 2026-07-23 title-hero system, with the 2026-07-26 4:3/3:4 strict geometry used for both natural-language locales from 2026-07-29-03 onward",
       "layout": "Use the reference title-hero system: neutral paper-grid background; a short blue rule at the top; title-led left/top zone; one complete Tiny Agent plus one topic object; and a single yellow rule at the bottom or the portrait 60/40 divider. The yellow rule is decorative only and never underlines title text.",
       "zhRatioStrictGeometry": {
         "status": "active",
@@ -371,9 +479,60 @@
         "rule": "Chinese 4:3 and 3:4 covers must use the approved deterministic SVG geometry above exactly: the paper grid, rounded blue and yellow rules, four title baselines, title group styling, and ratio-specific hero box are fixed. Only the episode title text, content-fitted font sizes within the declared range, and the current-topic transparent hero asset may change. Do not stretch the 4:3 yellow rule across the canvas, remove rounded ends, reduce the title to a high empty-space block, or move the portrait divider away from y=0.60H.",
         "qa": "The Chinese cover-reference validator must parse the final SVG and fail closed unless every scoped grid, rule, title-group, four-line baseline, dominant body-line size, hero-box, preview dimension, and strictGeometryProfileId value matches this geometry contract with zero pixel tolerance. A semantic-density pass alone is never sufficient."
       },
+      "enRatioStrictGeometry": {
+        "status": "active",
+        "effectiveFromRunKey": "2026-07-29-03",
+        "scope": ["en-US/4x3", "en-US/3x4"],
+        "geometryProfileId": "tiny-agent-en-cover-approved-geometry-2026-07-29",
+        "inheritsGeometryFrom": "postSnapshotUserOverrides.coverReferenceAlignment.zhRatioStrictGeometry",
+        "rule": "English 4:3 and 3:4 covers use the same deterministic paper grid, rounded blue/yellow rules, four title baselines, title group geometry, and ratio-specific hero boxes as the approved Chinese ratios. Only natural English title text, content-fitted font sizes inside the declared ranges, and the current-topic transparent English hero asset may differ.",
+        "qa": "The English cover-reference validator must parse both new ratio SVGs and fail closed on any geometry, title-density, current-topic hero, preview-dimension, or enRatioStrictGeometry profile mismatch."
+      },
       "titleColors": "Use exactly two title colors: #117ABD only for the AI Agent identity phrase, and #111413 for every remaining title glyph. #F4C542 is reserved for the decorative rule; #8A6500 and #C7362F are forbidden in title text.",
-      "character": "For every Chinese episode, the 4:3 right-side hero and 3:4 lower hero must each be newly generated as a temporary, current-topic illustration; for every English episode, the delivered 16:9 hero must likewise be newly generated as a temporary, current-topic illustration. Do not reuse a previous episode's hero, a stable Agent-plus-prop pairing, or a decorative prop. Each generated hero may include exactly one complete Tiny Agent only, preserve the approved white rounded body, black face screen, blue eyes and antenna, brown tool belt, and hand-drawn outline, and actively perform the `coverTitleContract` concrete topic action with its integrated topic object. It never permits a second character, collage, generated text, or an unrelated decorative prop. A ratio may remain in the older reference system only when its own spec records a concrete owner-requested revision-scope exemption; the exemption is not a reusable production rule.",
-      "qa": "Before approval, compare all ratios against the reference title-hero system and verify the blue rule, blue-plus-black title hierarchy, bottom yellow rule, one complete Tiny Agent, one complete topic action, no title underline, no auxiliary copy, and no generated text. Every normal zh-CN 4:3/3:4 SVG and every normal en-US 16:9 SVG must reference exactly one current-episode alpha PNG generated for that ratio, with a verified transparent corner; its ratio spec must record `characterCount=1`, the required Tiny Agent identity anchors, an integrated topic action matching `coverTitleContract`, chroma-key alpha removal, and `generatedIllustrationText=false`. Chinese 4:3/3:4 must additionally pass `zhRatioStrictGeometry`; semantic title density cannot substitute for exact geometry. Run the locale's cover-reference validator and fail the run on any ratio mismatch."
+      "character": "For every Chinese episode, the delivered 4:3 right-side hero and 3:4 lower hero must each be newly generated as a temporary, current-topic illustration. For every English episode, the delivered 16:9, 4:3, and 3:4 heroes must each be newly generated as temporary, current-topic illustrations. Do not reuse a previous episode's hero, a stable Agent-plus-prop pairing, or a decorative prop. Each generated hero may include exactly one complete Tiny Agent only and must execute `tinyAgentGeneratedIdentityConsistency`: preserve all hard identity anchors, match at least two secondary anchors, use an actual fixed-pack reference image, and actively perform the `coverTitleContract` concrete topic action with its integrated topic object. Exact fixed-asset styling, minor 2D variation, and restrained soft-3D variation are allowed; a missing belt or hand-drawn outline alone is not a redesign when the hard identity anchors and minimum secondary anchors still pass. It never permits a second character, collage, generated text, unrelated decorative prop, or a major character redesign.",
+      "qa": "Before approval, compare every delivered ratio against the reference title-hero system and verify the blue rule, blue-plus-black title hierarchy, yellow rule, one complete Tiny Agent, one complete topic action, no title underline, no auxiliary copy, and no generated text. Every delivered ratio SVG must reference exactly one current-episode alpha PNG generated for that locale and ratio, with a verified transparent corner; its ratio spec must record `characterCount=1`, the active identityProfileId, referenceConditioningUsed=true, an approved exact/minor similarity decision and finish classification, majorRedesignDetected=false, an integrated topic action matching `coverTitleContract`, alpha removal delivery, and `generatedIllustrationText=false`. The hash-bound Tiny Agent identity-consistency report remains authoritative for side-by-side anchor review. Chinese and English 4:3/3:4 must pass their active strict-geometry and title-density gates. Run both locale cover-reference validators and fail the run on any ratio mismatch or any Chinese 16:9 artifact at or after 2026-07-29-03."
+    },
+    "bilingualPublishingMaterials": {
+      "status": "active",
+      "effectiveFromRunKey": "2026-07-29-03",
+      "purpose": "Deliver a natural English counterpart for every reusable Chinese publishing-copy field and every author interaction suggestion, while keeping the existing English YouTube metadata and Chinese local-only platform boundary.",
+      "files": {
+        "zh-CN": "local-publishing-materials.zh-CN.json",
+        "en-US": "local-publishing-materials.en-US.json",
+        "report": "qa/bilingual-publishing-materials-report.json"
+      },
+      "requiredFields": [
+        "schemaVersion",
+        "materialId",
+        "locale",
+        "title",
+        "description",
+        "hashtags",
+        "keywords",
+        "interactionSuggestions",
+        "review"
+      ],
+      "interactionSuggestions": {
+        "exactCount": 3,
+        "stableIdsAndAngles": [
+          {"id": "open-question", "angle": "open-question"},
+          {"id": "practical-tradeoff", "angle": "practical-tradeoff"},
+          {"id": "viewpoint-experience", "angle": "viewpoint-experience"}
+        ],
+        "rule": "Both locales provide exactly three short, natural, directly copyable author interaction suggestions with the same stable IDs and topic intent: one open question, one practical trade-off or implementation prompt, and one viewpoint or experience invitation. English is written as natural English, not a literal line-by-line translation. Neither locale may fabricate source claims, results, or engagement data, and neither set is auto-published."
+      },
+      "localization": {
+        "canonicalLocale": "zh-CN",
+        "targetLocale": "en-US",
+        "identicalTopicAndClaims": true,
+        "naturalEnglishNotMechanicalTranslation": true,
+        "metadataBinding": "Each locale material title, description, hashtags, and keywords must exactly match the corresponding publish-metadata.<locale>.json audience-facing values for that locale. Both material files share materialId and preserve the same episode topic, benefits, boundaries, and three interaction angles."
+      },
+      "qa": {
+        "validator": "scripts/ai-video-pipeline/validate-tiny-agent-bilingual-publishing-materials.mjs",
+        "failClosed": true,
+        "rule": "Run after both locale metadata files and both local-publishing-materials files are final. The validator writes one byte-identical hash-bound report into both projects. Each per-project output validator rejects a missing, stale, failing, wrong-pair, or wrong-material report before rendering or publishing."
+      }
     },
     "publishingMetadata": {
       "status": "active",
@@ -420,7 +579,8 @@
     "timing-map.json",
     "scene-plan.json",
     "animation-plan.json",
-    "metadata and cover copy"
+    "metadata and cover copy",
+    "natural Chinese and English local publishing materials with three paired author interaction suggestions"
   ],
   "integrity": {
     "validator": "scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs",

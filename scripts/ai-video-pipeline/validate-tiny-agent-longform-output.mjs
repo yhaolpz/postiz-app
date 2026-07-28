@@ -98,6 +98,8 @@ const overrides = profile.postSnapshotUserOverrides ?? {};
 const opening = overrides.openingQuestionReadability ?? {};
 const recapRule = overrides.chapterRecapNarration?.screenCopy ?? {};
 const bilingualParityRule = overrides.englishChineseProductionParity ?? {};
+const publishingMaterialsRule = overrides.bilingualPublishingMaterials ?? {};
+const generatedIdentityRule = overrides.tinyAgentGeneratedIdentityConsistency ?? {};
 const episode = readJson('episode.json');
 const summary = readJson('summary.json');
 const scenePlan = readJson('scene-plan.json');
@@ -131,6 +133,10 @@ const expectedAudio = profile.fixedBilingualGeneration?.[locale];
 const durationRange = profile.fixedBilingualGeneration?.durationSeconds;
 const bilingualParityRequired = bilingualParityRule.status === 'active'
   && ruleIsEffective(bilingualParityRule, project);
+const publishingMaterialsRequired = publishingMaterialsRule.status === 'active'
+  && ruleIsEffective(publishingMaterialsRule, project);
+const generatedIdentityRequired = generatedIdentityRule.status === 'active'
+  && ruleIsEffective(generatedIdentityRule, project);
 
 if (!['zh-CN', 'en-US'].includes(locale)) {
   fail(`episode.json locale: unsupported ${JSON.stringify(locale)}`);
@@ -685,8 +691,15 @@ if (bilingualParityRequired) {
   if (parityReport.contractProfileId !== profile.profileId) {
     fail(`qa/bilingual-parity-report.json contractProfileId: expected ${profile.profileId}, received ${JSON.stringify(parityReport.contractProfileId)}`);
   }
+  const currentCoverSet = ruleIsEffective(bilingualParityRule.coverSet, project);
+  const expectedCoverIdentity = currentCoverSet
+    ? bilingualParityRule.coverSet?.coverSetProfileId
+    : bilingualParityRule.coverSet?.legacy16x9ParityBeforeEffectiveRun?.geometryProfileId;
+  const receivedCoverIdentity = currentCoverSet
+    ? parityReport.parityContract?.coverSetProfileId
+    : parityReport.parityContract?.geometryProfileId;
   if (parityReport.parityContract?.effectiveFromRunKey !== bilingualParityRule.effectiveFromRunKey
-    || parityReport.parityContract?.geometryProfileId !== bilingualParityRule.cover16x9?.geometryProfileId) {
+    || receivedCoverIdentity !== expectedCoverIdentity) {
     fail('qa/bilingual-parity-report.json: active parity contract identity is stale or mismatched');
   }
   const pairProject = locale === 'en-US'
@@ -727,6 +740,122 @@ if (bilingualParityRequired) {
     } catch (error) {
       fail(`qa/bilingual-parity-report.json sibling: ${error.message}`);
     }
+  }
+}
+
+if (publishingMaterialsRequired) {
+  const materialsReportRelativePath = publishingMaterialsRule.files?.report
+    ?? 'qa/bilingual-publishing-materials-report.json';
+  const materialsReportPath = path.join(project, materialsReportRelativePath);
+  let materialsReport = {};
+  let materialsReportBuffer = Buffer.alloc(0);
+  try {
+    materialsReportBuffer = fs.readFileSync(materialsReportPath);
+    materialsReport = JSON.parse(materialsReportBuffer.toString('utf8'));
+  } catch (error) {
+    fail(`${materialsReportRelativePath}: ${error.message}`);
+  }
+  isTrue(materialsReport.pass, `${materialsReportRelativePath} pass`);
+  isTrue(materialsReport.applicable, `${materialsReportRelativePath} applicable`);
+  if (materialsReport.contractProfileId !== profile.profileId
+    || materialsReport.effectiveFromRunKey !== publishingMaterialsRule.effectiveFromRunKey) {
+    fail(`${materialsReportRelativePath}: active publishing-materials contract identity is stale or mismatched`);
+  }
+  const pairProject = locale === 'en-US'
+    ? materialsReport.pair?.englishProject
+    : materialsReport.pair?.chineseProject;
+  if (!pairProject || path.resolve(pairProject) !== project) {
+    fail(`${materialsReportRelativePath}: current ${locale} project is not the validated project`);
+  }
+  if (materialsReport.pair?.runKey !== projectRunKey(project)) {
+    fail(`${materialsReportRelativePath} runKey: expected ${projectRunKey(project)}, received ${JSON.stringify(materialsReport.pair?.runKey)}`);
+  }
+  const localeHashes = materialsReport.artifactHashes?.[locale] ?? {};
+  const expectedLocaleArtifacts = [
+    `publish-metadata.${locale}.json`,
+    publishingMaterialsRule.files?.[locale] ?? `local-publishing-materials.${locale}.json`,
+  ];
+  if (!expectedLocaleArtifacts.every((relativePath) => typeof localeHashes[relativePath] === 'string')) {
+    fail(`${materialsReportRelativePath}: ${locale} metadata/material hashes are incomplete`);
+  }
+  for (const [relativePath, expectedHash] of Object.entries(localeHashes)) {
+    try {
+      const actualHash = sha256(fs.readFileSync(path.join(project, relativePath)));
+      if (actualHash !== expectedHash) {
+        fail(`${materialsReportRelativePath} stale artifact ${relativePath}: expected ${expectedHash}, received ${actualHash}`);
+      }
+    } catch (error) {
+      fail(`${materialsReportRelativePath} artifact ${relativePath}: ${error.message}`);
+    }
+  }
+  const siblingProject = locale === 'en-US'
+    ? materialsReport.pair?.chineseProject
+    : materialsReport.pair?.englishProject;
+  if (!siblingProject) {
+    fail(`${materialsReportRelativePath}: sibling project is missing`);
+  } else {
+    try {
+      const siblingReport = fs.readFileSync(path.join(
+        path.resolve(siblingProject),
+        materialsReportRelativePath,
+      ));
+      if (!materialsReportBuffer.equals(siblingReport)) {
+        fail(`${materialsReportRelativePath}: locale reports are not byte-identical`);
+      }
+    } catch (error) {
+      fail(`${materialsReportRelativePath} sibling: ${error.message}`);
+    }
+  }
+}
+
+if (generatedIdentityRequired) {
+  const identityReportRelativePath = generatedIdentityRule.evidence?.reportFile
+    ?? 'qa/tiny-agent-identity-consistency-report.json';
+  const identityReport = readJson(identityReportRelativePath);
+  isTrue(identityReport.pass, `${identityReportRelativePath} pass`);
+  isTrue(identityReport.applicable, `${identityReportRelativePath} applicable`);
+  if (identityReport.contractProfileId !== profile.profileId
+    || identityReport.identityProfileId !== generatedIdentityRule.identityProfileId
+    || identityReport.effectiveFromRunKey !== generatedIdentityRule.effectiveFromRunKey) {
+    fail(`${identityReportRelativePath}: active Tiny Agent identity contract is stale or mismatched`);
+  }
+  if (path.resolve(identityReport.project ?? '') !== project
+    || identityReport.runKey !== projectRunKey(project)
+    || identityReport.locale !== locale) {
+    fail(`${identityReportRelativePath}: current project, runKey, or locale binding is invalid`);
+  }
+  if (identityReport.activePackId !== generatedIdentityRule.fixedReference?.requiredPackId) {
+    fail(`${identityReportRelativePath}: fixed Tiny Agent asset-pack identity is invalid`);
+  }
+  const artifactHashes = identityReport.artifactHashes ?? {};
+  if (Object.keys(artifactHashes).length === 0) {
+    fail(`${identityReportRelativePath}: no generated artifact hashes were recorded`);
+  }
+  for (const [relativePath, expectedHash] of Object.entries(artifactHashes)) {
+    try {
+      const actualHash = sha256(fs.readFileSync(path.join(project, relativePath)));
+      if (actualHash !== expectedHash) {
+        fail(`${identityReportRelativePath} stale artifact ${relativePath}: expected ${expectedHash}, received ${actualHash}`);
+      }
+    } catch (error) {
+      fail(`${identityReportRelativePath} artifact ${relativePath}: ${error.message}`);
+    }
+  }
+  for (const referencePath of generatedIdentityRule.fixedReference
+    ?.canonicalReferenceImages ?? []) {
+    try {
+      const actualHash = sha256(fs.readFileSync(path.join(root, referencePath)));
+      if (identityReport.fixedReferenceHashes?.[referencePath] !== actualHash) {
+        fail(`${identityReportRelativePath} stale fixed reference ${referencePath}`);
+      }
+    } catch (error) {
+      fail(`${identityReportRelativePath} fixed reference ${referencePath}: ${error.message}`);
+    }
+  }
+  if (!Array.isArray(identityReport.entries)
+    || identityReport.entries.length === 0
+    || identityReport.entries.some((entry) => entry.pass !== true)) {
+    fail(`${identityReportRelativePath}: generated asset identity entries are missing or failing`);
   }
 }
 

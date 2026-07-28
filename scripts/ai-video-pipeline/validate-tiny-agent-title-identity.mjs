@@ -105,6 +105,10 @@ function coverText(spec) {
   return normalizeText(spec.headline || spec.titleLines?.join(' '));
 }
 
+function projectRunKey(projectDir) {
+  return projectDir.match(/\b(\d{4}-\d{2}-\d{2}-03)\b/)?.[1] ?? null;
+}
+
 function checkDescriptionFollowSentence(value, locale, scope) {
   const lines = String(value || '')
     .split(/\r?\n/)
@@ -130,14 +134,27 @@ async function writeReport(projectDir, report) {
 }
 
 export async function validateProjects(englishProject, chineseProject) {
-  const [englishMetadata, englishSummary, englishCover, chineseMetadata, chineseSummary] = await Promise.all([
+  const activeProfile = await readJson(path.join(
+    repoRoot,
+    'scripts/ai-video-pipeline/style-guides/tiny-agent-longform-active-profile.zh-CN.json',
+  ));
+  const coverSetRule = activeProfile.postSnapshotUserOverrides
+    ?.englishChineseProductionParity
+    ?.coverSet ?? {};
+  const runKey = projectRunKey(chineseProject);
+  const usesCurrentCoverSet = runKey !== null
+    && runKey.localeCompare(coverSetRule.effectiveFromRunKey ?? '9999-99-99-99') >= 0;
+  const englishCoverRatios = usesCurrentCoverSet ? ['16x9', '4x3', '3x4'] : ['16x9'];
+  const chineseCoverRatios = usesCurrentCoverSet ? ['4x3', '3x4'] : ['16x9', '4x3', '3x4'];
+  const [englishMetadata, englishSummary, chineseMetadata, chineseSummary] = await Promise.all([
     readJson(path.join(englishProject, 'publish-metadata.en-US.json')),
     readJson(path.join(englishProject, 'summary.json')),
-    readJson(path.join(englishProject, 'thumbnails/thumbnail-spec.en-US.16x9.json')),
     readJson(path.join(chineseProject, 'publish-metadata.zh-CN.json')),
     readJson(path.join(chineseProject, 'summary.json')),
   ]);
-  const chineseCoverRatios = ['16x9', '4x3', '3x4'];
+  const englishCovers = await Promise.all(englishCoverRatios.map((ratio) => (
+    readJson(path.join(englishProject, `thumbnails/thumbnail-spec.en-US.${ratio}.json`))
+  )));
   const chineseCovers = await Promise.all(chineseCoverRatios.map((ratio) => (
     readJson(path.join(chineseProject, `thumbnails/thumbnail-spec.zh-CN.${ratio}.json`))
   )));
@@ -149,7 +166,9 @@ export async function validateProjects(englishProject, chineseProject) {
     )),
     checkEnglishTitle(englishMetadata.thumbnailText, 'English metadata thumbnail text'),
     checkEnglishTitle(englishSummary.title, 'English in-video topic title'),
-    checkEnglishTitle(coverText(englishCover), 'English rendered cover title'),
+    ...englishCovers.map((spec, index) => (
+      checkEnglishTitle(coverText(spec), `English ${englishCoverRatios[index]} rendered cover title`)
+    )),
   ];
   const chineseChecks = [
     checkChineseTitle(chineseMetadata.title, 'Chinese generic title'),

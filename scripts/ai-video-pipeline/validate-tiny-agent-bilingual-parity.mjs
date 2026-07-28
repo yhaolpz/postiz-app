@@ -12,6 +12,11 @@ const profilePath = path.join(
 );
 const profile = JSON.parse(fs.readFileSync(profilePath, 'utf8'));
 const parity = profile.postSnapshotUserOverrides?.englishChineseProductionParity ?? {};
+const coverSet = parity.coverSet ?? {};
+const legacyCover = coverSet.legacy16x9ParityBeforeEffectiveRun ?? {};
+const referenceAlignment = profile.postSnapshotUserOverrides?.coverReferenceAlignment ?? {};
+const zhStrictGeometry = referenceAlignment.zhRatioStrictGeometry ?? {};
+const enStrictGeometry = referenceAlignment.enRatioStrictGeometry ?? {};
 
 function parseArgs(argv) {
   const args = {};
@@ -48,13 +53,18 @@ function sameValue(left, right) {
 
 function readProject(projectDir, locale) {
   const readBuffer = (relativePath) => fs.readFileSync(path.join(projectDir, relativePath));
-  const readText = (relativePath) => readBuffer(relativePath).toString('utf8');
-  const readJson = (relativePath) => JSON.parse(readText(relativePath));
   const coverPrefix = locale === 'zh-CN' ? 'thumbnail.zh-CN' : 'thumbnail.en-US';
-  const specName = locale === 'zh-CN'
-    ? 'thumbnails/thumbnail-spec.zh-CN.16x9.json'
-    : 'thumbnails/thumbnail-spec.en-US.16x9.json';
-  const svgName = `thumbnails/${coverPrefix}.svg`;
+  const runKey = projectRunKey(projectDir);
+  const currentCoverSet = runKey !== null
+    && runKey.localeCompare(coverSet.effectiveFromRunKey ?? '9999-99-99-99') >= 0;
+  const ratios = currentCoverSet ? (coverSet.sharedLocalizedRatios ?? []) : ['16x9'];
+  const coverPaths = Object.fromEntries(ratios.map((ratio) => {
+    const suffix = ratio === '16x9' ? '' : `.${ratio}`;
+    return [ratio, {
+      spec: `thumbnails/thumbnail-spec.${locale}.${ratio}.json`,
+      svg: `thumbnails/${coverPrefix}${suffix}.svg`,
+    }];
+  }));
   const trackedPaths = [
     'bilingual-content-contract.json',
     'content-map.json',
@@ -63,8 +73,7 @@ function readProject(projectDir, locale) {
     'episode.json',
     'summary.json',
     'qa/retention-opening-report.json',
-    specName,
-    svgName,
+    ...Object.values(coverPaths).flatMap(({ spec, svg }) => [spec, svg]),
   ];
   const buffers = Object.fromEntries(trackedPaths.map((relativePath) => [
     relativePath,
@@ -81,8 +90,14 @@ function readProject(projectDir, locale) {
     episode: JSON.parse(buffers['episode.json'].toString('utf8')),
     summary: JSON.parse(buffers['summary.json'].toString('utf8')),
     openingReport: JSON.parse(buffers['qa/retention-opening-report.json'].toString('utf8')),
-    coverSpec: JSON.parse(buffers[specName].toString('utf8')),
-    coverSvg: buffers[svgName].toString('utf8'),
+    currentCoverSet,
+    covers: Object.fromEntries(Object.entries(coverPaths).map(([ratio, files]) => [
+      ratio,
+      {
+        spec: JSON.parse(buffers[files.spec].toString('utf8')),
+        svg: buffers[files.svg].toString('utf8'),
+      },
+    ])),
     artifactHashes: Object.fromEntries(
       Object.entries(buffers).map(([relativePath, buffer]) => [relativePath, sha256(buffer)]),
     ),
@@ -107,12 +122,30 @@ function findElement(svg, tag, predicate) {
   return elements.find(predicate) ?? null;
 }
 
-function inspectCover(svg) {
+function coverGeometryContract(ratio, currentCoverSet) {
+  if (!currentCoverSet) {
+    return {
+      ...legacyCover,
+      titleBaselines: null,
+    };
+  }
+  const ratioRule = zhStrictGeometry[ratio] ?? {};
+  return {
+    baseCanvas: ratioRule.canvas,
+    paperGrid: zhStrictGeometry.shared?.paperGrid,
+    blueRule: ratioRule.blueRule,
+    yellowRule: ratioRule.yellowRule,
+    heroBox: ratioRule.heroBox,
+    titleBaselines: ratioRule.title?.baselineY,
+  };
+}
+
+function inspectCover(svg, geometry) {
   const root = svg.match(/<svg\b[^>]*>/)?.[0] ?? '';
   const width = numberAttribute(root, 'width');
   const height = numberAttribute(root, 'height');
-  const scaleX = width / parity.cover16x9.baseCanvas.width;
-  const scaleY = height / parity.cover16x9.baseCanvas.height;
+  const scaleX = width / geometry.baseCanvas.width;
+  const scaleY = height / geometry.baseCanvas.height;
   const normalizeBox = (fragment) => ({
     x: numberAttribute(fragment, 'x') / scaleX,
     y: numberAttribute(fragment, 'y') / scaleY,
@@ -124,7 +157,11 @@ function inspectCover(svg) {
   const blueRule = findElement(svg, 'rect', (fragment) => stringAttribute(fragment, 'fill') === '#117ABD');
   const yellowRule = findElement(svg, 'rect', (fragment) => stringAttribute(fragment, 'fill') === '#F4C542');
   const hero = findElement(svg, 'image', () => true);
-  const titleElements = [...svg.matchAll(/<text\b[^>]*>/g)].map((match) => match[0]);
+  const scopedTitleElements = [...svg.matchAll(/<text\b[^>]*data-cover-title-line="[^"]+"[^>]*>/g)]
+    .map((match) => match[0]);
+  const titleElements = scopedTitleElements.length > 0
+    ? scopedTitleElements
+    : [...svg.matchAll(/<text\b[^>]*>/g)].map((match) => match[0]);
   const titleBaselines = titleElements
     .map((fragment) => ({
       x: numberAttribute(fragment, 'x') / scaleX,
@@ -155,9 +192,20 @@ function exactBox(actual, expected) {
   return ['x', 'y', 'width', 'height'].every((key) => exactNumber(actual?.[key], expected?.[key]));
 }
 
-function coverMatchesProfile(cover) {
-  const expected = parity.cover16x9;
-  const zone = expected.titleZone;
+function coverMatchesProfile(cover, expected) {
+  const titleMatches = Array.isArray(expected.titleBaselines)
+    ? sameValue(
+      cover.titleBaselines.map(({ y }) => y),
+      expected.titleBaselines,
+    )
+      && cover.titleBaselines.every(({ x }) => exactNumber(x, expected.blueRule.x))
+    : cover.titleBaselines.length >= expected.titleZone.lineCount.min
+      && cover.titleBaselines.length <= expected.titleZone.lineCount.max
+      && cover.titleBaselines.every((line) => (
+        exactNumber(line.x, expected.titleZone.x)
+        && line.y >= expected.titleZone.y
+        && line.y <= expected.titleZone.y + expected.titleZone.height
+      ));
   return exactNumber(cover.paperGrid.cellWidthPx, expected.paperGrid.cellWidthPx)
     && exactNumber(cover.paperGrid.cellHeightPx, expected.paperGrid.cellHeightPx)
     && cover.paperGrid.stroke === expected.paperGrid.stroke
@@ -166,13 +214,7 @@ function coverMatchesProfile(cover) {
     && exactBox(cover.blueRule, expected.blueRule)
     && exactBox(cover.yellowRule, expected.yellowRule)
     && exactBox(cover.heroBox, expected.heroBox)
-    && cover.titleBaselines.length >= zone.lineCount.min
-    && cover.titleBaselines.length <= zone.lineCount.max
-    && cover.titleBaselines.every((line) => (
-      exactNumber(line.x, zone.x)
-      && line.y >= zone.y
-      && line.y <= zone.y + zone.height
-    ));
+    && titleMatches;
 }
 
 function normalizedDurationShares(scenes) {
@@ -222,8 +264,18 @@ function buildReport(english, chinese) {
   const chineseScenes = sceneList(chinese.scenePlan);
   const englishAnimationScenes = english.animationPlan.scenes ?? [];
   const chineseAnimationScenes = chinese.animationPlan.scenes ?? [];
-  const englishCover = inspectCover(english.coverSvg);
-  const chineseCover = inspectCover(chinese.coverSvg);
+  const runKey = projectRunKey(chinese.projectDir);
+  const currentCoverSet = runKey !== null
+    && runKey.localeCompare(coverSet.effectiveFromRunKey ?? '9999-99-99-99') >= 0;
+  const sharedCoverRatios = currentCoverSet ? (coverSet.sharedLocalizedRatios ?? []) : ['16x9'];
+  const coverEvidence = Object.fromEntries(sharedCoverRatios.map((ratio) => {
+    const geometry = coverGeometryContract(ratio, currentCoverSet);
+    return [ratio, {
+      geometry,
+      english: inspectCover(english.covers[ratio].svg, geometry),
+      chinese: inspectCover(chinese.covers[ratio].svg, geometry),
+    }];
+  }));
   const contract = chinese.contract;
   const requiredContractFields = contractRule.requiredFields ?? [];
   const requiredReviewFlags = contractRule.requiredReviewFlags ?? [];
@@ -269,9 +321,14 @@ function buildReport(english, chinese) {
   const chineseLineSizes = chineseTypography.lineFontSizesPx ?? [];
   const expectedEnglishAudio = profile.fixedBilingualGeneration?.['en-US'] ?? {};
   const expectedChineseAudio = profile.fixedBilingualGeneration?.['zh-CN'] ?? {};
-  const expectedGeometryProfileId = parity.cover16x9?.geometryProfileId;
-  const englishHeroActionId = english.coverSpec.generatedHeroIllustration?.bilingualActionId;
-  const chineseHeroActionId = chinese.coverSpec.generatedHeroIllustration?.bilingualActionId;
+  const expectedGeometryProfileId = currentCoverSet
+    ? coverSet.coverSetProfileId
+    : legacyCover.geometryProfileId;
+  const coverSpecs = sharedCoverRatios.map((ratio) => ({
+    ratio,
+    english: english.covers[ratio].spec,
+    chinese: chinese.covers[ratio].spec,
+  }));
 
   const checks = {
     activeContract: check(
@@ -392,48 +449,73 @@ function buildReport(english, chinese) {
     ),
     coverGeometryProfile: check(
       'coverGeometryProfile',
-      english.coverSpec.bilingualGeometryProfileId === expectedGeometryProfileId
-        && chinese.coverSpec.bilingualGeometryProfileId === expectedGeometryProfileId,
+      coverSpecs.every(({ english: englishSpec, chinese: chineseSpec }) => (
+        currentCoverSet
+          ? englishSpec.coverSetProfileId === coverSet.coverSetProfileId
+            && chineseSpec.coverSetProfileId === coverSet.coverSetProfileId
+            && englishSpec.strictGeometryProfileId === enStrictGeometry.geometryProfileId
+            && chineseSpec.strictGeometryProfileId === zhStrictGeometry.geometryProfileId
+          : englishSpec.bilingualGeometryProfileId === legacyCover.geometryProfileId
+            && chineseSpec.bilingualGeometryProfileId === legacyCover.geometryProfileId
+      )),
     ),
     coverGeometry: check(
       'coverGeometry',
-      coverMatchesProfile(englishCover)
-        && coverMatchesProfile(chineseCover)
+      Object.values(coverEvidence).every(({ geometry, english: englishCover, chinese: chineseCover }) => (
+        coverMatchesProfile(englishCover, geometry)
+        && coverMatchesProfile(chineseCover, geometry)
         && sameValue(englishCover.paperGrid, chineseCover.paperGrid)
         && sameValue(englishCover.blueRule, chineseCover.blueRule)
         && sameValue(englishCover.yellowRule, chineseCover.yellowRule)
-        && sameValue(englishCover.heroBox, chineseCover.heroBox),
-      { english: englishCover, chinese: chineseCover },
+        && sameValue(englishCover.heroBox, chineseCover.heroBox)
+        && sameValue(englishCover.titleBaselines, chineseCover.titleBaselines)
+      )),
+      coverEvidence,
     ),
     coverSemanticAction: check(
       'coverSemanticAction',
-      typeof englishHeroActionId === 'string'
-        && englishHeroActionId.length > 0
-        && englishHeroActionId === chineseHeroActionId
-        && englishHeroActionId === contract.coverActionId,
-      { englishHeroActionId, chineseHeroActionId },
+      coverSpecs.every(({ english: englishSpec, chinese: chineseSpec }) => {
+        const englishActionId = englishSpec.generatedHeroIllustration?.bilingualActionId;
+        const chineseActionId = chineseSpec.generatedHeroIllustration?.bilingualActionId;
+        return typeof englishActionId === 'string'
+          && englishActionId.length > 0
+          && englishActionId === chineseActionId
+          && englishActionId === contract.coverActionId;
+      }),
+      Object.fromEntries(coverSpecs.map(({ ratio, english: englishSpec, chinese: chineseSpec }) => [
+        ratio,
+        {
+          english: englishSpec.generatedHeroIllustration?.bilingualActionId,
+          chinese: chineseSpec.generatedHeroIllustration?.bilingualActionId,
+        },
+      ])),
     ),
     coverTitleSystem: check(
       'coverTitleSystem',
-      english.coverSpec.titlePalette?.agentIdentity === '#117ABD'
-        && chinese.coverSpec.titlePalette?.agentIdentity === '#117ABD'
-        && english.coverSpec.titlePalette?.remainingTitle === '#111413'
-        && chinese.coverSpec.titlePalette?.remainingTitle === '#111413'
-        && english.coverSpec.titlePalette?.decorativeRule === '#F4C542'
-        && chinese.coverSpec.titlePalette?.decorativeRule === '#F4C542'
-        && english.coverSpec.auxiliaryCoverCopy === false
-        && chinese.coverSpec.auxiliaryCoverCopy === false,
+      coverSpecs.every(({ english: englishSpec, chinese: chineseSpec }) => (
+        englishSpec.titlePalette?.agentIdentity === '#117ABD'
+        && chineseSpec.titlePalette?.agentIdentity === '#117ABD'
+        && englishSpec.titlePalette?.remainingTitle === '#111413'
+        && chineseSpec.titlePalette?.remainingTitle === '#111413'
+        && englishSpec.titlePalette?.decorativeRule === '#F4C542'
+        && chineseSpec.titlePalette?.decorativeRule === '#F4C542'
+        && englishSpec.auxiliaryCoverCopy === false
+        && chineseSpec.auxiliaryCoverCopy === false
+      )),
     ),
   };
 
   return {
-    version: 1,
+    version: 2,
     contractProfileId: profile.profileId,
     parityContract: {
       effectiveFromRunKey: parity.effectiveFromRunKey,
       canonicalLocale: parity.canonicalLocale,
       targetLocale: parity.targetLocale,
       geometryProfileId: expectedGeometryProfileId,
+      coverSetProfileId: currentCoverSet ? coverSet.coverSetProfileId : null,
+      coverSetEffectiveFromRunKey: coverSet.effectiveFromRunKey,
+      sharedCoverRatios,
     },
     pair: {
       runKey: projectRunKey(chinese.projectDir),
@@ -479,13 +561,20 @@ function selfTestFixture() {
     review: Object.fromEntries((parity.content.requiredReviewFlags ?? []).map((flag) => [flag, true])),
   };
   const contractBuffer = Buffer.from(`${JSON.stringify(contract)}\n`);
-  const svg = '<svg width="1280" height="720"><defs><pattern id="grid" width="44" height="44"><path stroke="#111413" stroke-opacity="0.09" stroke-width="1"/></pattern></defs><rect x="44" y="42" width="118" height="10" fill="#117ABD"/><text x="74" y="250"><tspan fill="#117ABD">AI Agent</tspan></text><image href="hero.png" x="620" y="82" width="600" height="560"/><rect x="44" y="652" width="1192" height="12" fill="#F4C542"/></svg>';
+  const makeSvg = (ratio) => {
+    const geometry = zhStrictGeometry[ratio];
+    const shared = zhStrictGeometry.shared;
+    const titleLines = geometry.title.baselineY
+      .map((y, index) => `<text data-cover-title-line="${index + 1}" x="${geometry.title.x}" y="${y}">Line ${index + 1}</text>`)
+      .join('');
+    return `<svg width="${geometry.canvas.width}" height="${geometry.canvas.height}"><defs><pattern id="grid" width="${shared.paperGrid.cellWidthPx}" height="${shared.paperGrid.cellHeightPx}"><path stroke="${shared.paperGrid.stroke}" stroke-opacity="${shared.paperGrid.opacity}" stroke-width="${shared.paperGrid.strokeWidthPx}"/></pattern></defs><rect x="${geometry.blueRule.x}" y="${geometry.blueRule.y}" width="${geometry.blueRule.width}" height="${geometry.blueRule.height}" rx="${geometry.blueRule.rx}" fill="#117ABD"/>${titleLines}<image href="hero.png" x="${geometry.heroBox.x}" y="${geometry.heroBox.y}" width="${geometry.heroBox.width}" height="${geometry.heroBox.height}"/><rect x="${geometry.yellowRule.x}" y="${geometry.yellowRule.y}" width="${geometry.yellowRule.width}" height="${geometry.yellowRule.height}" rx="${geometry.yellowRule.rx}" fill="#F4C542"/></svg>`;
+  };
   const scenes = [
     { id: 'c01-p01', chapterNumber: 1, paragraphNumber: 1, type: 'hook', layout: 'agent-prop', temporaryGenerated: false, generatedArtSide: null, highlightSide: null, motionType: null, human: 'idle', humanDirection: 'front', agent: 'plan-front', agentDirection: 'front', props: [{ id: 'workflow' }], renderHuman: false, renderAgent: true, coreObjectCount: 1, start: 0, end: 4 },
     { id: 'c01-p02', chapterNumber: 1, paragraphNumber: 2, type: 'outro', layout: 'outro', temporaryGenerated: false, generatedArtSide: null, highlightSide: null, motionType: null, human: 'idle', humanDirection: 'front', agent: 'success', agentDirection: 'front', props: [], renderHuman: false, renderAgent: true, coreObjectCount: 1, start: 4, end: 320 },
   ];
   const make = (locale) => ({
-    projectDir: `/tmp/2026-07-28-03-fixture-${locale}`,
+    projectDir: `/tmp/${coverSet.effectiveFromRunKey}-fixture-${locale}`,
     locale,
     contract,
     contractBuffer,
@@ -522,13 +611,22 @@ function selfTestFixture() {
         },
       },
     },
-    coverSpec: {
-      bilingualGeometryProfileId: parity.cover16x9.geometryProfileId,
-      titlePalette: { agentIdentity: '#117ABD', remainingTitle: '#111413', decorativeRule: '#F4C542' },
-      auxiliaryCoverCopy: false,
-      generatedHeroIllustration: { bilingualActionId: 'topic-action' },
-    },
-    coverSvg: svg,
+    currentCoverSet: true,
+    covers: Object.fromEntries((coverSet.sharedLocalizedRatios ?? []).map((ratio) => [
+      ratio,
+      {
+        spec: {
+          coverSetProfileId: coverSet.coverSetProfileId,
+          strictGeometryProfileId: locale === 'en-US'
+            ? enStrictGeometry.geometryProfileId
+            : zhStrictGeometry.geometryProfileId,
+          titlePalette: { agentIdentity: '#117ABD', remainingTitle: '#111413', decorativeRule: '#F4C542' },
+          auxiliaryCoverCopy: false,
+          generatedHeroIllustration: { bilingualActionId: 'topic-action' },
+        },
+        svg: makeSvg(ratio),
+      },
+    ])),
     artifactHashes: { fixture: sha256(locale) },
   });
   return { english: make('en-US'), chinese: make('zh-CN') };
@@ -559,7 +657,8 @@ function runSelfTest() {
   const coverMismatch = structuredClone(fixture);
   coverMismatch.english.contractBuffer = fixture.english.contractBuffer;
   coverMismatch.chinese.contractBuffer = fixture.chinese.contractBuffer;
-  coverMismatch.english.coverSvg = coverMismatch.english.coverSvg.replace('x="620"', 'x="600"');
+  coverMismatch.english.covers['4x3'].svg = coverMismatch.english.covers['4x3'].svg
+    .replace('x="640"', 'x="600"');
   if (buildReport(coverMismatch.english, coverMismatch.chinese).pass) {
     throw new Error('cover mismatch fixture unexpectedly passed');
   }

@@ -38,6 +38,10 @@ const ratios = {
 };
 const repoRoot = path.resolve(import.meta.dirname, '../..');
 
+function projectRunKey(projectDir) {
+  return projectDir.match(/\b(\d{4}-\d{2}-\d{2}-03)\b/)?.[1] ?? null;
+}
+
 function parseArgs(argv) {
   const args = {};
   for (let index = 0; index < argv.length; index += 1) {
@@ -317,6 +321,21 @@ async function validate(projectDir) {
   const strictGeometryRule = activeProfile.postSnapshotUserOverrides
     ?.coverReferenceAlignment
     ?.zhRatioStrictGeometry || {};
+  const coverSetRule = activeProfile.postSnapshotUserOverrides
+    ?.englishChineseProductionParity
+    ?.coverSet || {};
+  const generatedIdentityRule = activeProfile.postSnapshotUserOverrides
+    ?.tinyAgentGeneratedIdentityConsistency || {};
+  const runKey = projectRunKey(projectDir);
+  const usesCurrentCoverSet = runKey !== null
+    && runKey.localeCompare(coverSetRule.effectiveFromRunKey || '9999-99-99-99') >= 0;
+  const generatedIdentityApplied = runKey !== null
+    && runKey.localeCompare(
+      generatedIdentityRule.effectiveFromRunKey || '9999-99-99-99',
+    ) >= 0;
+  const selectedRatios = usesCurrentCoverSet
+    ? Object.fromEntries(Object.entries(ratios).filter(([ratio]) => ratio !== '16x9'))
+    : ratios;
   const metadata = JSON.parse(await fs.readFile(path.join(projectDir, 'publish-metadata.zh-CN.json'), 'utf8'));
   const coverTitleContract = metadata.coverTitleContract || {};
   const coreCoverKeywords = Array.isArray(coverTitleContract.coreCoverKeywords)
@@ -356,7 +375,7 @@ async function validate(projectDir) {
   };
   const checks = [metadataTitleTopicAlignment];
   const outputs = [];
-  for (const [ratio, expected] of Object.entries(ratios)) {
+  for (const [ratio, expected] of Object.entries(selectedRatios)) {
     const [specRaw, svg, png, previewPng] = await Promise.all([
       fs.readFile(path.join(thumbnailsDir, `thumbnail-spec.zh-CN.${ratio}.json`), 'utf8'),
       fs.readFile(path.join(thumbnailsDir, expected.svg), 'utf8'),
@@ -402,6 +421,27 @@ async function validate(projectDir) {
       && typeof spec.headlineIntentRationale === 'string'
       && spec.headlineIntentRationale.trim().length >= 12
       && (headlineIntent !== 'question' || /[？?]/.test(String(spec.headline || '')));
+    const generatedIdentityDeclarationPass = !usesGeneratedHero
+      ? true
+      : !generatedIdentityApplied
+        ? generatedHero.identityAnchors?.includes('white rounded body')
+          && generatedHero.identityAnchors?.includes('black face screen')
+          && generatedHero.identityAnchors?.includes('blue eyes and antenna')
+          && generatedHero.identityAnchors?.includes('brown tool belt')
+          && generatedHero.identityAnchors?.includes('hand-drawn outline')
+        : generatedHero.identityProfileId === generatedIdentityRule.identityProfileId
+          && generatedHero.referenceConditioningUsed === true
+          && Array.isArray(generatedHero.referenceImages)
+          && generatedHero.referenceImages.length > 0
+          && generatedHero.referenceImages.every((referenceImage) => (
+            generatedIdentityRule.fixedReference?.canonicalReferenceImages
+              ?.includes(referenceImage)
+          ))
+          && generatedIdentityRule.evidence?.requiredSimilarityDecisions
+            ?.includes(generatedHero.similarityDecision)
+          && generatedIdentityRule.evidence?.allowedFinishClassifications
+            ?.includes(generatedHero.finishClassification)
+          && generatedHero.majorRedesignDetected === false;
     const strictGeometry = evaluateStrictGeometry({
       ratio,
       svg,
@@ -415,6 +455,8 @@ async function validate(projectDir) {
       && preview.colorspace.toLowerCase() === 'srgb'
     );
     const ratioChecks = {
+      coverSetProfile: !usesCurrentCoverSet
+        || spec.coverSetProfileId === coverSetRule.coverSetProfileId,
       referenceLayout: spec.referenceLayout === '2026-07-23-approved-title-hero',
       referenceSvg: /2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/.test(spec.referenceSvg || ''),
       deterministicPrimaryTitle: typeof spec.headline === 'string'
@@ -458,11 +500,7 @@ async function validate(projectDir) {
         ? generatedHero.delivery === 'chroma-key alpha removal'
           && generatedHeroInspection.channels.toLowerCase().includes('a')
           && hasTransparentTopLeftCorner(generatedHeroPath)
-          && generatedHero.identityAnchors?.includes('white rounded body')
-          && generatedHero.identityAnchors?.includes('black face screen')
-          && generatedHero.identityAnchors?.includes('blue eyes and antenna')
-          && generatedHero.identityAnchors?.includes('brown tool belt')
-          && generatedHero.identityAnchors?.includes('hand-drawn outline')
+          && generatedIdentityDeclarationPass
         : spec.stableAgentTransform === 'alpha-trim only'
         && imagePixelHash(path.join(thumbnailsDir, spec.stableAgentAsset || ''))
           === imagePixelHash(path.resolve(thumbnailsDir, spec.stableAgentSource || ''), true),
@@ -529,15 +567,52 @@ async function validate(projectDir) {
       },
     });
   }
-  const png16x9 = await fs.readFile(path.join(thumbnailsDir, 'thumbnail.zh-CN.png'));
-  const expected16x9 = await fs.readFile(path.join(thumbnailsDir, 'thumbnail.zh-CN.16x9.png'));
+  const forbidden16x9Artifacts = [
+    'thumbnail.zh-CN.png',
+    'thumbnail.zh-CN.svg',
+    'thumbnail.zh-CN.16x9.png',
+    'thumbnail.zh-CN.16x9.svg',
+    'thumbnail.zh-CN.256x144.png',
+    'thumbnail-spec.zh-CN.16x9.json',
+    'generated-hero.zh-CN.16x9.png',
+  ];
+  const presentForbidden16x9Artifacts = usesCurrentCoverSet
+    ? (await Promise.all(forbidden16x9Artifacts.map(async (file) => {
+      try {
+        await fs.access(path.join(thumbnailsDir, file));
+        return file;
+      } catch {
+        return null;
+      }
+    }))).filter(Boolean)
+    : [];
+  let aliases = null;
+  if (!usesCurrentCoverSet) {
+    const png16x9 = await fs.readFile(path.join(thumbnailsDir, 'thumbnail.zh-CN.png'));
+    const expected16x9 = await fs.readFile(path.join(thumbnailsDir, 'thumbnail.zh-CN.16x9.png'));
+    aliases = { primary16x9Matches: sha256(png16x9) === sha256(expected16x9) };
+  } else {
+    checks.push({
+      scope: 'forbidden Chinese 16:9 artifacts',
+      forbidden16x9ArtifactCount: presentForbidden16x9Artifacts.length,
+      presentForbidden16x9Artifacts,
+      pass: presentForbidden16x9Artifacts.length === 0,
+    });
+  }
   const report = {
-    version: 4,
+    version: 5,
     reference: '2026-07-23-approved-title-hero',
+    runKey,
+    coverSetProfileId: usesCurrentCoverSet ? coverSetRule.coverSetProfileId : null,
+    currentCoverSetApplied: usesCurrentCoverSet,
     pass: checks.every((check) => check.pass),
     checks,
     outputs,
-    aliases: { primary16x9Matches: sha256(png16x9) === sha256(expected16x9) },
+    aliases,
+    forbidden16x9Artifacts: {
+      checked: usesCurrentCoverSet,
+      present: presentForbidden16x9Artifacts,
+    },
   };
   await fs.mkdir(path.join(thumbnailsDir, 'qa'), { recursive: true });
   await fs.writeFile(path.join(thumbnailsDir, 'qa/reference-alignment-qa.json'), `${JSON.stringify(report, null, 2)}\n`);
