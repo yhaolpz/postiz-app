@@ -1,0 +1,1143 @@
+[
+  {
+    "start": 0.1,
+    "end": 2.73,
+    "text": "How should AI Agents research in parallel?",
+    "segmentId": "c01-p01-u01",
+    "sceneId": "c01-p01"
+  },
+  {
+    "start": 2.73,
+    "end": 4.288,
+    "text": "First, test task fit.",
+    "segmentId": "c01-p01-u01",
+    "sceneId": "c01-p01"
+  },
+  {
+    "start": 4.288,
+    "end": 7.68,
+    "text": "Anthropic draws a useful boundary in its multi-agent research retrospective.",
+    "segmentId": "c01-p02-u01",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 7.68,
+    "end": 11.276,
+    "text": "Parallelism expands search breadth, but the coordination cost is worthwhile",
+    "segmentId": "c01-p02-u02",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 11.276,
+    "end": 14.92,
+    "text": "only when independent paths, a valuable result, and enough room for tool use",
+    "segmentId": "c01-p02-u02",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 14.92,
+    "end": 15.128,
+    "text": "appear together.",
+    "segmentId": "c01-p02-u02",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 15.128,
+    "end": 18.979,
+    "text": "In Anthropic’s internal research evaluation, an Opus 4 lead agent with",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 18.979,
+    "end": 21.672,
+    "text": "Sonnet 4 subagents outperformed a single Opus 4 agent by 90.",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 21.672,
+    "end": 22.411,
+    "text": "2 percent.",
+    "segmentId": "c01-p03-u02",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 22.411,
+    "end": 26.064,
+    "text": "That number belongs to one internal evaluation, not a promise for every",
+    "segmentId": "c01-p03-u03",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 26.064,
+    "end": 26.325,
+    "text": "In this episode, we will build a single-versus-multi-agent decision tree.",
+    "segmentId": "c01-p04-u01",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 26.325,
+    "end": 26.601,
+    "text": "task.",
+    "segmentId": "c01-p03-u03",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 29.305,
+    "end": 33.397,
+    "text": "We will test fit, define delegation, size the search, evaluate evidence, and",
+    "segmentId": "c01-p04-u02",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 33.397,
+    "end": 35.674,
+    "text": "add the recovery controls a production system needs.",
+    "segmentId": "c01-p04-u02",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 35.674,
+    "end": 39.031,
+    "text": "This video is packed with practical value to help you become better at using",
+    "segmentId": "c01-p05-u01",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 39.031,
+    "end": 39.501,
+    "text": "It is a longer episode, so follow and save it for later.",
+    "segmentId": "c01-p05-u02",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 39.501,
+    "end": 39.652,
+    "text": "AI.",
+    "segmentId": "c01-p05-u01",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 41.734,
+    "end": 43.454,
+    "text": "The first move is not adding agents.",
+    "segmentId": "c02-p01-u01",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 43.454,
+    "end": 46.913,
+    "text": "It is deciding whether the problem contains independent exploration paths",
+    "segmentId": "c02-p01-u02",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 46.913,
+    "end": 47.661,
+    "text": "that deserve parallel work.",
+    "segmentId": "c02-p01-u02",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 47.661,
+    "end": 50.72,
+    "text": "Research often fits because an answer may require several directions.",
+    "segmentId": "c02-p02-u01",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 50.72,
+    "end": 54.421,
+    "text": "Market, technology, user, and risk research can proceed separately before",
+    "segmentId": "c02-p02-u02",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 54.421,
+    "end": 56.452,
+    "text": "the lead agent compresses them into one conclusion.",
+    "segmentId": "c02-p02-u02",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 56.452,
+    "end": 60.367,
+    "text": "Subagents also help when one context window would otherwise hold too many",
+    "segmentId": "c02-p03-u01",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 60.367,
+    "end": 62.252,
+    "text": "sources, tool results, and working hypotheses.",
+    "segmentId": "c02-p03-u01",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 62.252,
+    "end": 65.212,
+    "text": "Each path can return a compact, high-signal research summary.",
+    "segmentId": "c02-p03-u02",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 65.212,
+    "end": 68.654,
+    "text": "But decomposition creates synchronization when every step depends on the",
+    "segmentId": "c02-p04-u01",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 68.654,
+    "end": 70.072,
+    "text": "exact state produced by the previous step.",
+    "segmentId": "c02-p04-u01",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 70.072,
+    "end": 74.189,
+    "text": "Many coding tasks share one codebase and test state, so one continuous agent",
+    "segmentId": "c02-p04-u02",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 74.189,
+    "end": 74.464,
+    "text": "may fit better.",
+    "segmentId": "c02-p04-u02",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 74.464,
+    "end": 75.66,
+    "text": "Economics matters too.",
+    "segmentId": "c02-p05-u01",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 75.66,
+    "end": 79.362,
+    "text": "In Anthropic’s usage data, agents used about four times the tokens of chat",
+    "segmentId": "c02-p05-u02",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 79.362,
+    "end": 82.487,
+    "text": "interactions, while multi-agent systems used about fifteen times as many.",
+    "segmentId": "c02-p05-u02",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 82.487,
+    "end": 85.748,
+    "text": "That makes multi-agent work sensible for valuable outcomes, expensive",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 85.748,
+    "end": 88.691,
+    "text": "mistakes, or questions where search breadth can materially change the",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 88.691,
+    "end": 89.009,
+    "text": "It should not add ceremony to a simple request.",
+    "segmentId": "c02-p06-u02",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 89.009,
+    "end": 89.34,
+    "text": "answer.",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 90.956,
+    "end": 92.502,
+    "text": "Turn the decision into three gates.",
+    "segmentId": "c02-p07-u01",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 92.502,
+    "end": 93.838,
+    "text": "Can paths run independently?",
+    "segmentId": "c02-p07-u02",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 93.838,
+    "end": 95.546,
+    "text": "Is one context becoming overloaded?",
+    "segmentId": "c02-p07-u03",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 95.546,
+    "end": 97.585,
+    "text": "Can the value of the result cover the extra cost?",
+    "segmentId": "c02-p07-u04",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 97.585,
+    "end": 100.34,
+    "text": "The more gates pass, the stronger the case for parallelism.",
+    "segmentId": "c02-p07-u05",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 100.34,
+    "end": 101.196,
+    "text": "Chapter recap.",
+    "segmentId": "c02-p08-u01",
+    "sceneId": "c02-p08"
+  },
+  {
+    "start": 101.196,
+    "end": 103.605,
+    "text": "First, look for paths that can progress independently.",
+    "segmentId": "c02-p08-u02",
+    "sceneId": "c02-p08"
+  },
+  {
+    "start": 103.605,
+    "end": 106.649,
+    "text": "Second, be cautious when the task depends on heavily shared state.",
+    "segmentId": "c02-p09-u01",
+    "sceneId": "c02-p09"
+  },
+  {
+    "start": 106.649,
+    "end": 109.504,
+    "text": "Third, reserve the higher cost for high-value outcomes.",
+    "segmentId": "c02-p10-u01",
+    "sceneId": "c02-p10"
+  },
+  {
+    "start": 109.504,
+    "end": 112.397,
+    "text": "After the fit gate, the lead agent’s main job is not searching.",
+    "segmentId": "c03-p01-u01",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 112.397,
+    "end": 115.942,
+    "text": "It is dividing the question into assignments that do not overlap and do not",
+    "segmentId": "c03-p01-u02",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 115.942,
+    "end": 115.967,
+    "text": "Every delegation should name an objective and the expected output.",
+    "segmentId": "c03-p02-u01",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 115.967,
+    "end": 116.491,
+    "text": "leave gaps.",
+    "segmentId": "c03-p01-u02",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 118.648,
+    "end": 122.699,
+    "text": "Instead of saying research competitors, ask for pricing, target users, and",
+    "segmentId": "c03-p02-u02",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 122.699,
+    "end": 124.578,
+    "text": "verifiable sources for three named products.",
+    "segmentId": "c03-p02-u02",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 124.578,
+    "end": 126.784,
+    "text": "Then declare the allowed tools and source boundary.",
+    "segmentId": "c03-p03-u01",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 126.784,
+    "end": 130.645,
+    "text": "Naming search, browsing, or databases and prioritizing primary sources keeps",
+    "segmentId": "c03-p03-u02",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 130.645,
+    "end": 132.47,
+    "text": "subagents from wandering through weak material.",
+    "segmentId": "c03-p03-u02",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 132.47,
+    "end": 134.305,
+    "text": "Tell each subagent what not to do as well.",
+    "segmentId": "c03-p04-u01",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 134.305,
+    "end": 138.032,
+    "text": "Covered regions, time ranges, and result formats should be explicit, or",
+    "segmentId": "c03-p04-u02",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 138.032,
+    "end": 139.807,
+    "text": "several agents may return the same evidence.",
+    "segmentId": "c03-p04-u02",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 139.807,
+    "end": 143.685,
+    "text": "Anthropic describes effective delegation through the objective, output",
+    "segmentId": "c03-p05-u01",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 143.685,
+    "end": 145.529,
+    "text": "format, tools, sources, and task boundaries.",
+    "segmentId": "c03-p05-u01",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 145.529,
+    "end": 148.782,
+    "text": "The lead agent should still revise assignments when the first findings",
+    "segmentId": "c03-p05-u02",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 148.782,
+    "end": 148.946,
+    "text": "change the map.",
+    "segmentId": "c03-p05-u02",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 148.946,
+    "end": 151.214,
+    "text": "Broad first and narrow second is often effective.",
+    "segmentId": "c03-p06-u01",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 151.214,
+    "end": 154.981,
+    "text": "Run a parallel scan for leads, then deepen only the branches that can change",
+    "segmentId": "c03-p06-u02",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 154.981,
+    "end": 155.402,
+    "text": "the final judgment.",
+    "segmentId": "c03-p06-u02",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 155.402,
+    "end": 156.788,
+    "text": "Collect more than conclusions.",
+    "segmentId": "c03-p07-u01",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 156.788,
+    "end": 160.29,
+    "text": "Require evidence links, important uncertainties, and the reason a path",
+    "segmentId": "c03-p07-u02",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 160.29,
+    "end": 163.313,
+    "text": "stopped, so the lead agent can decide which findings are safe to merge.",
+    "segmentId": "c03-p07-u02",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 163.313,
+    "end": 164.166,
+    "text": "Chapter recap.",
+    "segmentId": "c03-p08-u01",
+    "sceneId": "c03-p08"
+  },
+  {
+    "start": 164.166,
+    "end": 166.491,
+    "text": "First, make the objective and output explicit.",
+    "segmentId": "c03-p08-u02",
+    "sceneId": "c03-p08"
+  },
+  {
+    "start": 166.491,
+    "end": 169.845,
+    "text": "Second, specify sources, tools, and boundaries together.",
+    "segmentId": "c03-p09-u01",
+    "sceneId": "c03-p09"
+  },
+  {
+    "start": 169.845,
+    "end": 173.027,
+    "text": "Third, collect evidence and uncertainty, not conclusions alone.",
+    "segmentId": "c03-p10-u01",
+    "sceneId": "c03-p10"
+  },
+  {
+    "start": 173.027,
+    "end": 175.061,
+    "text": "Multi-agent does not mean more is always better.",
+    "segmentId": "c04-p01-u01",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 175.061,
+    "end": 178.332,
+    "text": "Search effort should scale with both question complexity and expected value.",
+    "segmentId": "c04-p01-u02",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 178.332,
+    "end": 182.357,
+    "text": "Anthropic’s examples suggest that a simple fact may need one agent and three",
+    "segmentId": "c04-p02-u01",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 182.357,
+    "end": 182.702,
+    "text": "to ten tool calls.",
+    "segmentId": "c04-p02-u01",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 182.702,
+    "end": 185.16,
+    "text": "That scale does not require another coordination layer.",
+    "segmentId": "c04-p02-u02",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 185.16,
+    "end": 189.03,
+    "text": "A comparison across several targets may use two to four agents, with roughly",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 189.03,
+    "end": 192.496,
+    "text": "ten to fifteen tool calls per agent, so each research path reaches useful",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 192.496,
+    "end": 192.747,
+    "text": "Complex research may use more than ten subagents, but that is not a default.",
+    "segmentId": "c04-p04-u01",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 192.747,
+    "end": 193.052,
+    "text": "depth.",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 195.896,
+    "end": 200.179,
+    "text": "The lead agent must see progress, detect duplication, and stop when marginal",
+    "segmentId": "c04-p04-u02",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 200.179,
+    "end": 200.316,
+    "text": "value falls.",
+    "segmentId": "c04-p04-u02",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 200.316,
+    "end": 203.088,
+    "text": "Tool calls can also run in parallel inside one subagent.",
+    "segmentId": "c04-p05-u01",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 203.088,
+    "end": 206.646,
+    "text": "Anthropic suggests that complex paths often use three to five subagents,",
+    "segmentId": "c04-p05-u02",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 206.646,
+    "end": 208.879,
+    "text": "with three or more tools running concurrently per agent.",
+    "segmentId": "c04-p05-u02",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 208.879,
+    "end": 212.811,
+    "text": "When paths are truly independent, parallel work can cut time by as much as",
+    "segmentId": "c04-p06-u01",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 212.811,
+    "end": 213.791,
+    "text": "90 percent on complex queries.",
+    "segmentId": "c04-p06-u01",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 213.791,
+    "end": 217.424,
+    "text": "The gain comes from overlapping waits, not from making each agent inherently",
+    "segmentId": "c04-p06-u02",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 217.424,
+    "end": 217.591,
+    "text": "Give the decision tree three effort tiers: light, comparison, and deep",
+    "segmentId": "c04-p07-u01",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 217.591,
+    "end": 217.991,
+    "text": "smarter.",
+    "segmentId": "c04-p06-u02",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 221.331,
+    "end": 221.41,
+    "text": "Each tier defines agent count, tool budget, stopping conditions, and the",
+    "segmentId": "c04-p07-u02",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 221.41,
+    "end": 221.922,
+    "text": "research.",
+    "segmentId": "c04-p07-u01",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 225.259,
+    "end": 226.376,
+    "text": "evidence required to escalate.",
+    "segmentId": "c04-p07-u02",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 226.376,
+    "end": 227.239,
+    "text": "Chapter recap.",
+    "segmentId": "c04-p08-u01",
+    "sceneId": "c04-p08"
+  },
+  {
+    "start": 227.239,
+    "end": 229.706,
+    "text": "First, choose an effort tier from task complexity.",
+    "segmentId": "c04-p08-u02",
+    "sceneId": "c04-p08"
+  },
+  {
+    "start": 229.706,
+    "end": 232.773,
+    "text": "Second, parallel gains come from overlapping independent waits.",
+    "segmentId": "c04-p09-u01",
+    "sceneId": "c04-p09"
+  },
+  {
+    "start": 232.773,
+    "end": 235.687,
+    "text": "Third, stop expanding when marginal value starts to fall.",
+    "segmentId": "c04-p10-u01",
+    "sceneId": "c04-p10"
+  },
+  {
+    "start": 235.687,
+    "end": 240.07,
+    "text": "Multi-agent paths change dynamically, so evaluation cannot require one fixed",
+    "segmentId": "c05-p01-u01",
+    "sceneId": "c05-p01"
+  },
+  {
+    "start": 240.07,
+    "end": 240.582,
+    "text": "sequence of steps.",
+    "segmentId": "c05-p01-u01",
+    "sceneId": "c05-p01"
+  },
+  {
+    "start": 240.582,
+    "end": 241.597,
+    "text": "Start with the result.",
+    "segmentId": "c05-p02-u01",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 241.597,
+    "end": 242.591,
+    "text": "Are the facts correct?",
+    "segmentId": "c05-p02-u02",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 242.591,
+    "end": 244.127,
+    "text": "Do citations support the claims?",
+    "segmentId": "c05-p02-u03",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 244.127,
+    "end": 245.093,
+    "text": "Is the question covered?",
+    "segmentId": "c05-p02-u04",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 245.093,
+    "end": 247.113,
+    "text": "Are the sources authoritative enough for the decision?",
+    "segmentId": "c05-p02-u05",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 247.113,
+    "end": 249.022,
+    "text": "Then inspect whether the process was reasonable.",
+    "segmentId": "c05-p03-u01",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 249.022,
+    "end": 251.137,
+    "text": "Did the decomposition leave gaps or duplication?",
+    "segmentId": "c05-p03-u02",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 251.137,
+    "end": 252.227,
+    "text": "Were tool calls useful?",
+    "segmentId": "c05-p03-u03",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 252.227,
+    "end": 254.752,
+    "text": "Did the lead agent revise its plan when new evidence appeared?",
+    "segmentId": "c05-p03-u04",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 254.752,
+    "end": 259.035,
+    "text": "Anthropic uses small-sample human review and criteria for factual accuracy,",
+    "segmentId": "c05-p04-u01",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 259.035,
+    "end": 261.937,
+    "text": "citations, completeness, source quality, and tool efficiency.",
+    "segmentId": "c05-p04-u01",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 261.937,
+    "end": 264.473,
+    "text": "The point is to create quality signals people can explain.",
+    "segmentId": "c05-p04-u02",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 264.473,
+    "end": 268.105,
+    "text": "If you score only the final answer, a system may get lucky through expensive",
+    "segmentId": "c05-p05-u01",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 268.105,
+    "end": 268.218,
+    "text": "If you demand one fixed trace, you punish reasonable paths that react to",
+    "segmentId": "c05-p05-u02",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 268.218,
+    "end": 268.711,
+    "text": "searching.",
+    "segmentId": "c05-p05-u01",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 271.98,
+    "end": 272.017,
+    "text": "A stronger design separates outcome standards from process guardrails.",
+    "segmentId": "c05-p06-u01",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 272.017,
+    "end": 272.506,
+    "text": "evidence.",
+    "segmentId": "c05-p05-u02",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 275.066,
+    "end": 278.802,
+    "text": "The outcome must pass, while the path may vary as long as it leaves evidence",
+    "segmentId": "c05-p06-u02",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 278.802,
+    "end": 279.645,
+    "text": "that a reviewer can inspect.",
+    "segmentId": "c05-p06-u02",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 279.645,
+    "end": 281.823,
+    "text": "Start with ten real questions for your own system.",
+    "segmentId": "c05-p07-u01",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 281.823,
+    "end": 285.709,
+    "text": "Compare a single-agent baseline, answer quality, tokens, latency, and",
+    "segmentId": "c05-p07-u02",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 285.709,
+    "end": 287.725,
+    "text": "failure types before expanding parallel work.",
+    "segmentId": "c05-p07-u02",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 287.725,
+    "end": 288.589,
+    "text": "Chapter recap.",
+    "segmentId": "c05-p08-u01",
+    "sceneId": "c05-p08"
+  },
+  {
+    "start": 288.589,
+    "end": 291.72,
+    "text": "First, evaluate facts, citations, and coverage.",
+    "segmentId": "c05-p08-u02",
+    "sceneId": "c05-p08"
+  },
+  {
+    "start": 291.72,
+    "end": 295.083,
+    "text": "Second, allow dynamic paths but require an explainable process.",
+    "segmentId": "c05-p09-u01",
+    "sceneId": "c05-p09"
+  },
+  {
+    "start": 295.083,
+    "end": 298.213,
+    "text": "Third, use a real baseline to decide whether parallelism pays.",
+    "segmentId": "c05-p10-u01",
+    "sceneId": "c05-p10"
+  },
+  {
+    "start": 298.213,
+    "end": 301.804,
+    "text": "A research demo that finishes once is not yet a multi-agent system that can",
+    "segmentId": "c06-p01-u01",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 301.804,
+    "end": 302.736,
+    "text": "recover reliably in production.",
+    "segmentId": "c06-p01-u01",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 302.736,
+    "end": 306.059,
+    "text": "Any subagent can time out, lose a tool, or return an empty result.",
+    "segmentId": "c06-p02-u01",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 306.059,
+    "end": 309.674,
+    "text": "Persist task state so a failure reruns only the affected path instead of",
+    "segmentId": "c06-p02-u02",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 309.674,
+    "end": 310.419,
+    "text": "restarting the whole tree.",
+    "segmentId": "c06-p02-u02",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 310.419,
+    "end": 314.516,
+    "text": "A useful checkpoint records the assignment, owner, current state, evidence",
+    "segmentId": "c06-p03-u01",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 314.516,
+    "end": 315.358,
+    "text": "location, and next action.",
+    "segmentId": "c06-p03-u01",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 315.358,
+    "end": 319.309,
+    "text": "After a process restart, the system can resume without treating old output",
+    "segmentId": "c06-p03-u02",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 319.309,
+    "end": 319.628,
+    "text": "as new evidence.",
+    "segmentId": "c06-p03-u02",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 319.628,
+    "end": 321.373,
+    "text": "Observability must cross the whole tree.",
+    "segmentId": "c06-p04-u01",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 321.373,
+    "end": 325.119,
+    "text": "Trace every delegation, tool call, retry, and synthesis step so you can",
+    "segmentId": "c06-p04-u02",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 325.119,
+    "end": 328.149,
+    "text": "distinguish search failure, coordination failure, and merge failure.",
+    "segmentId": "c06-p04-u02",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 328.149,
+    "end": 329.606,
+    "text": "Deployment should be gradual too.",
+    "segmentId": "c06-p05-u01",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 329.606,
+    "end": 332.819,
+    "text": "Anthropic describes rainbow deployments that keep old and new versions",
+    "segmentId": "c06-p05-u02",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 332.819,
+    "end": 335.401,
+    "text": "available so agents already running are not broken by a code change.",
+    "segmentId": "c06-p05-u02",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 335.401,
+    "end": 338.97,
+    "text": "The current architecture also has a synchronous bottleneck: the lead agent",
+    "segmentId": "c06-p06-u01",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 338.97,
+    "end": 340.344,
+    "text": "waits for all subagents before moving on.",
+    "segmentId": "c06-p06-u01",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 340.344,
+    "end": 344.033,
+    "text": "Async work can be faster, but it adds scheduling, concurrency, and",
+    "segmentId": "c06-p06-u02",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 344.033,
+    "end": 344.965,
+    "text": "result-merging complexity.",
+    "segmentId": "c06-p06-u02",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 344.965,
+    "end": 348.969,
+    "text": "The production checklist is persistent state, path-level retries, end-to-end",
+    "segmentId": "c06-p07-u01",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 348.969,
+    "end": 351.377,
+    "text": "tracing, gradual deployment, and explicit stopping rules.",
+    "segmentId": "c06-p07-u01",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 351.377,
+    "end": 354.085,
+    "text": "Speed is an outcome of reliability, not the only goal.",
+    "segmentId": "c06-p07-u02",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 354.085,
+    "end": 354.933,
+    "text": "Chapter recap.",
+    "segmentId": "c06-p08-u01",
+    "sceneId": "c06-p08"
+  },
+  {
+    "start": 354.933,
+    "end": 357.653,
+    "text": "First, persist state and evidence outside the process.",
+    "segmentId": "c06-p08-u02",
+    "sceneId": "c06-p08"
+  },
+  {
+    "start": 357.653,
+    "end": 360.844,
+    "text": "Second, retry only the failed path and preserve the full trace.",
+    "segmentId": "c06-p09-u01",
+    "sceneId": "c06-p09"
+  },
+  {
+    "start": 360.844,
+    "end": 364.123,
+    "text": "Third, protect production with gradual releases and stopping rules.",
+    "segmentId": "c06-p10-u01",
+    "sceneId": "c06-p10"
+  },
+  {
+    "start": 364.123,
+    "end": 365.455,
+    "text": "Now connect the decision tree.",
+    "segmentId": "c07-p01-u01",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 365.455,
+    "end": 369.143,
+    "text": "Ask whether paths are independent, whether one context is overloaded, and",
+    "segmentId": "c07-p01-u02",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 369.143,
+    "end": 370.571,
+    "text": "whether the result can justify the cost.",
+    "segmentId": "c07-p01-u02",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 370.571,
+    "end": 374.48,
+    "text": "Only then move into delegation, effort sizing, evaluation, and recovery.",
+    "segmentId": "c07-p01-u03",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 374.48,
+    "end": 377.891,
+    "text": "Keep a single agent when the task depends on shared state or one agent",
+    "segmentId": "c07-p02-u01",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 377.891,
+    "end": 378.763,
+    "text": "already completes it reliably.",
+    "segmentId": "c07-p02-u01",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 378.763,
+    "end": 381.738,
+    "text": "Multi-agent is a task architecture, not a badge of capability.",
+    "segmentId": "c07-p02-u02",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 381.738,
+    "end": 384.678,
+    "text": "Before your next deep-research job, draw three candidate paths.",
+    "segmentId": "c07-p03-u01",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 384.678,
+    "end": 388.359,
+    "text": "Give each one an objective, source boundary, output, and stopping condition.",
+    "segmentId": "c07-p03-u02",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 388.359,
+    "end": 391.17,
+    "text": "Run them in parallel only if they can truly progress independently.",
+    "segmentId": "c07-p03-u03",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 391.17,
+    "end": 393.767,
+    "text": "Follow Tiny Agent and become better at using AI!",
+    "segmentId": "c07-p04-u01",
+    "sceneId": "c07-p04"
+  }
+]

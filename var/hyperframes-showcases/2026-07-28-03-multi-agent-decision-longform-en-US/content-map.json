@@ -1,0 +1,140 @@
+{
+  "bilingualContractId": "2026-07-28-03-multi-agent-research-decision-v1",
+  "source": {
+    "publisher": "Anthropic",
+    "title": "How we built our multi-agent research system",
+    "published": "2025-06-13",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "facts": [
+      "In Anthropic’s internal research evaluation, an Opus 4 lead with Sonnet 4 subagents outperformed single-agent Opus 4 by 90.2 percent.",
+      "Anthropic usage data reports about four times chat tokens for agents and about fifteen times for multi-agent systems.",
+      "Complex queries can take up to 90 percent less time when independent paths run in parallel.",
+      "Tasks with heavy shared context or dependencies, including many coding tasks, often fit a single agent better."
+    ]
+  },
+  "centralThesis": "Multi-agent is not a default upgrade but a fit-and-economics decision: parallelism pays when a valuable task splits into independent paths and one context or tool budget becomes the bottleneck.",
+  "priorities": {
+    "P0": [
+      "Test fit first",
+      "Parallelize only independent paths",
+      "Value must cover cost"
+    ],
+    "P1": [
+      "Delegation contract",
+      "Effort tiers",
+      "Evidence and process evaluation"
+    ],
+    "P2": [
+      "Checkpoints and tracing",
+      "Synchronous bottleneck"
+    ],
+    "P3": [
+      "Treating agent count as success",
+      "Parallelism by default"
+    ]
+  },
+  "reusableArtifact": "Single-vs-multi-agent decision tree: independent paths, context pressure, result value, delegation contract, effort tier, evaluation, and recovery.",
+  "chapters": [
+    {
+      "id": "fit-gate",
+      "title": "Pass the fit gate",
+      "promise": "The first move is not adding agents. It is deciding whether the problem contains independent exploration paths that deserve parallel work.",
+      "recaps": [
+        {
+          "narration": "Chapter recap. First, look for paths that can progress independently.",
+          "screenText": "Paths must be independent"
+        },
+        {
+          "narration": "Second, be cautious when the task depends on heavily shared state.",
+          "screenText": "Shared state demands caution"
+        },
+        {
+          "narration": "Third, reserve the higher cost for high-value outcomes.",
+          "screenText": "Value must cover cost"
+        }
+      ]
+    },
+    {
+      "id": "delegation-contract",
+      "title": "Write a delegation contract",
+      "promise": "After the fit gate, the lead agent’s main job is not searching. It is dividing the question into assignments that do not overlap and do not leave gaps.",
+      "recaps": [
+        {
+          "narration": "Chapter recap. First, make the objective and output explicit.",
+          "screenText": "Objective and output"
+        },
+        {
+          "narration": "Second, specify sources, tools, and boundaries together.",
+          "screenText": "Tools, sources, and boundaries"
+        },
+        {
+          "narration": "Third, collect evidence and uncertainty, not conclusions alone.",
+          "screenText": "Collect more than conclusions"
+        }
+      ]
+    },
+    {
+      "id": "effort-sizing",
+      "title": "Size the effort",
+      "promise": "Multi-agent does not mean more is always better. Search effort should scale with both question complexity and expected value.",
+      "recaps": [
+        {
+          "narration": "Chapter recap. First, choose an effort tier from task complexity.",
+          "screenText": "Complexity sets effort"
+        },
+        {
+          "narration": "Second, parallel gains come from overlapping independent waits.",
+          "screenText": "Overlap creates the gain"
+        },
+        {
+          "narration": "Third, stop expanding when marginal value starts to fall.",
+          "screenText": "Stop at falling marginal value"
+        }
+      ]
+    },
+    {
+      "id": "evaluation",
+      "title": "Evaluate quality",
+      "promise": "Multi-agent paths change dynamically, so evaluation cannot require one fixed sequence of steps.",
+      "recaps": [
+        {
+          "narration": "Chapter recap. First, evaluate facts, citations, and coverage.",
+          "screenText": "Facts, citations, coverage"
+        },
+        {
+          "narration": "Second, allow dynamic paths but require an explainable process.",
+          "screenText": "Keep the process explainable"
+        },
+        {
+          "narration": "Third, use a real baseline to decide whether parallelism pays.",
+          "screenText": "Use a baseline to judge value"
+        }
+      ]
+    },
+    {
+      "id": "production-reliability",
+      "title": "Build for recovery",
+      "promise": "A research demo that finishes once is not yet a multi-agent system that can recover reliably in production.",
+      "recaps": [
+        {
+          "narration": "Chapter recap. First, persist state and evidence outside the process.",
+          "screenText": "Persist state outside the process"
+        },
+        {
+          "narration": "Second, retry only the failed path and preserve the full trace.",
+          "screenText": "Path retries and full tracing"
+        },
+        {
+          "narration": "Third, protect production with gradual releases and stopping rules.",
+          "screenText": "Gradual releases protect production"
+        }
+      ]
+    }
+  ],
+  "factBoundaries": [
+    "The 90.2 percent result is an internal Anthropic research evaluation, not a universal performance promise.",
+    "The four-times and fifteen-times token figures describe Anthropic usage patterns, not fixed costs for every implementation.",
+    "Agent counts and tool-call ranges are examples from Anthropic’s research system, not mandatory settings."
+  ],
+  "inference": "The single-vs-multi-agent decision tree is an applied synthesis of the source, not an official Anthropic template."
+}

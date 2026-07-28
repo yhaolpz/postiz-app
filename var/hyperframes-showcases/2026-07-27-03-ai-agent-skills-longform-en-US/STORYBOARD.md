@@ -1,295 +1,591 @@
 # Storyboard
 
-## Frame 1
+## Frame c01-p01
 
-- status: outline
-- src: body
-- beat: Turn a good workflow into a reusable skill
+status: outline
 
-## Frame 2
+src: index.html#scene-c01-p01
 
-- status: outline
-- src: authority
-- beat: OpenAI: skills make workflows reusable
+motion: hard-cut
 
-## Frame 3
+beat: Turn a good workflow into a reusable Skill
 
-- status: outline
-- src: body
-- beat: Repeated setup steals attention
+## Frame c01-p02
 
-## Frame 4
+status: outline
 
-- status: outline
-- src: body
-- beat: The seven-field AI Agent Skill Template
+src: index.html#scene-c01-p02
 
-## Frame 5
+motion: press-pulse
 
-- status: outline
-- src: body
-- beat: Reuse the setup, not your judgment
+beat: OpenAI: skills make workflows reusable
 
-## Frame 6
+## Frame c01-p03
 
-- status: outline
-- src: chapter-opening
-- beat: Start with a task that keeps returning, not with a document you hope people will read.
+status: outline
 
-## Frame 7
+src: index.html#scene-c01-p03
 
-- status: outline
-- src: body
-- beat: Start from a recognizable trigger
+motion: spring-pop
 
-## Frame 8
+beat: Repeated setup steals attention
 
-- status: outline
-- src: body
-- beat: Stable intent makes reuse possible
+## Frame c01-p04
 
-## Frame 9
+status: outline
 
-- status: outline
-- src: body
-- beat: Copying is not yet a skill
+src: index.html#scene-c01-p04
 
-## Frame 10
+motion: nudge
 
-- status: outline
-- src: body
-- beat: Write when to use it
+beat: The seven-field AI Agent Skill Template
 
-## Frame 11
+## Frame c01-p05
 
-- status: outline
-- src: recap
-- beat: Capture a recurring job
+status: outline
 
-## Frame 12
+src: index.html#scene-c01-p05
 
-- status: outline
-- src: recap
-- beat: Name the trigger
+motion: split-tilt
 
-## Frame 13
+beat: Save the method, then put it to work
 
-- status: outline
-- src: recap
-- beat: Keep discovery flexible
+## Frame c02-p01
 
-## Frame 14
+status: outline
 
-- status: outline
-- src: chapter-opening
-- beat: A skill should fetch the context that changes the decision, not every detail from the last project.
+src: index.html#scene-c02-p01
 
-## Frame 15
+motion: hard-cut
 
-- status: outline
-- src: body
-- beat: Keep only decision-changing context
+beat: Start with a task that keeps returning, not with a document you hope people will read.
 
-## Frame 16
+## Frame c02-p02
 
-- status: outline
-- src: body
-- beat: Put resources beside the decision
+status: outline
 
-## Frame 17
+src: index.html#scene-c02-p02
 
-- status: outline
-- src: body
-- beat: Turn caution into observable constraints
+motion: fly-in
 
-## Frame 18
+beat: Start from a recognizable trigger
 
-- status: outline
-- src: body
-- beat: Memory stores; a skill directs work
+## Frame c02-p03
 
-## Frame 19
+status: outline
 
-- status: outline
-- src: recap
-- beat: Declare the useful inputs
+src: index.html#scene-c02-p03
 
-## Frame 20
+motion: spin-in
 
-- status: outline
-- src: recap
-- beat: State the constraints
+beat: Start from a recognizable trigger
 
-## Frame 21
+## Frame c02-p04
 
-- status: outline
-- src: recap
-- beat: Attach resources at use time
+status: outline
 
-## Frame 22
+src: index.html#scene-c02-p04
 
-- status: outline
-- src: chapter-opening
-- beat: The heart of a skill is a small sequence of decisions that a capable teammate could inspect and challenge.
+motion: sine-float
 
-## Frame 23
+beat: Stable intent makes reuse possible
 
-- status: outline
-- src: body
-- beat: Write decisions, not theater
+## Frame c02-p05
 
-## Frame 24
+status: outline
 
-- status: outline
-- src: body
-- beat: Every step should change the state
+src: index.html#scene-c02-p05
 
-## Frame 25
+motion: press-pulse
 
-- status: outline
-- src: body
-- beat: Branch on consequential differences
+beat: Stable intent makes reuse possible
 
-## Frame 26
+## Frame c02-p06
 
-- status: outline
-- src: body
-- beat: Confidence is not evidence
+status: outline
 
-## Frame 27
+src: index.html#scene-c02-p06
 
-- status: outline
-- src: recap
-- beat: Separate goal and method
+motion: spring-pop
 
-## Frame 28
+beat: Copying is not yet a skill
 
-- status: outline
-- src: recap
-- beat: Expose real decisions
+## Frame c02-p07
 
-## Frame 29
+status: outline
 
-- status: outline
-- src: recap
-- beat: Require evidence for risk
+src: index.html#scene-c02-p07
 
-## Frame 30
+motion: nudge
 
-- status: outline
-- src: chapter-opening
-- beat: A reusable workflow ends with an output another person or Agent can check, edit, and continue.
+beat: Write when to use it
 
-## Frame 31
+## Frame c02-p08
 
-- status: outline
-- src: body
-- beat: Define an inspectable handoff
+status: outline
 
-## Frame 32
+src: index.html#scene-c02-p08
 
-- status: outline
-- src: body
-- beat: Make unknowns easy to find
+motion: hard-cut-cumulative-reveal
 
-## Frame 33
+beat: Capture a recurring job
 
-- status: outline
-- src: body
-- beat: Match the check to the work
+## Frame c02-p09
 
-## Frame 34
+status: outline
 
-- status: outline
-- src: body
-- beat: Make quality inspectable
+src: index.html#scene-c02-p09
 
-## Frame 35
+motion: hard-cut-cumulative-reveal
 
-- status: outline
-- src: recap
-- beat: Define the output contract
+beat: Name the trigger
 
-## Frame 36
+## Frame c02-p10
 
-- status: outline
-- src: recap
-- beat: Keep uncertainty visible
+status: outline
 
-## Frame 37
+src: index.html#scene-c02-p10
 
-- status: outline
-- src: recap
-- beat: Finish with a real check
+motion: hard-cut-cumulative-reveal
 
-## Frame 38
+beat: Keep discovery flexible
 
-- status: outline
-- src: chapter-opening
-- beat: Treat a skill as a maintained asset: revise it after failure patterns, not after every passing mood.
+## Frame c03-p01
 
-## Frame 39
+status: outline
 
-- status: outline
-- src: body
-- beat: Failures are revision evidence
+src: index.html#scene-c03-p01
 
-## Frame 40
+motion: hard-cut
 
-- status: outline
-- src: body
-- beat: Small skills compose better
+beat: A skill should fetch the context that changes the decision, not every detail from the last project.
 
-## Frame 41
+## Frame c03-p02
 
-- status: outline
-- src: body
-- beat: Test beyond the original example
+status: outline
 
-## Frame 42
+src: index.html#scene-c03-p02
 
-- status: outline
-- src: body
-- beat: Keep the shared contract lean
+motion: split-tilt
 
-## Frame 43
+beat: Keep only decision-changing context
 
-- status: outline
-- src: recap
-- beat: Revise from failures
+## Frame c03-p03
 
-## Frame 44
+status: outline
 
-- status: outline
-- src: recap
-- beat: Compose small skills
+src: index.html#scene-c03-p03
 
-## Frame 45
+motion: fly-in
 
-- status: outline
-- src: recap
-- beat: Retest on new work
+beat: Keep only decision-changing context
 
-## Frame 46
+## Frame c03-p04
 
-- status: outline
-- src: body
-- beat: Capture, direct, check, improve
+status: outline
 
-## Frame 47
+src: index.html#scene-c03-p04
 
-- status: outline
-- src: body
-- beat: A skill turns success into a method
+motion: spin-in
 
-## Frame 48
+beat: Put resources beside the decision
 
-- status: outline
-- src: body
-- beat: Start small, then revise from evidence
+## Frame c03-p05
 
-## Frame 49
+status: outline
 
-- status: outline
-- src: body
-- beat: Follow Tiny Agent
+src: index.html#scene-c03-p05
+
+motion: sine-float
+
+beat: Put resources beside the decision
+
+## Frame c03-p06
+
+status: outline
+
+src: index.html#scene-c03-p06
+
+motion: press-pulse
+
+beat: Turn caution into observable constraints
+
+## Frame c03-p07
+
+status: outline
+
+src: index.html#scene-c03-p07
+
+motion: spring-pop
+
+beat: Memory stores; a skill directs work
+
+## Frame c03-p08
+
+status: outline
+
+src: index.html#scene-c03-p08
+
+motion: hard-cut-cumulative-reveal
+
+beat: Declare the useful inputs
+
+## Frame c03-p09
+
+status: outline
+
+src: index.html#scene-c03-p09
+
+motion: hard-cut-cumulative-reveal
+
+beat: State the constraints
+
+## Frame c03-p10
+
+status: outline
+
+src: index.html#scene-c03-p10
+
+motion: hard-cut-cumulative-reveal
+
+beat: Attach resources at use time
+
+## Frame c04-p01
+
+status: outline
+
+src: index.html#scene-c04-p01
+
+motion: hard-cut
+
+beat: The heart of a skill is a small sequence of decisions that a capable teammate could inspect and challenge.
+
+## Frame c04-p02
+
+status: outline
+
+src: index.html#scene-c04-p02
+
+motion: nudge
+
+beat: Write decisions, not theater
+
+## Frame c04-p03
+
+status: outline
+
+src: index.html#scene-c04-p03
+
+motion: split-tilt
+
+beat: Write decisions, not theater
+
+## Frame c04-p04
+
+status: outline
+
+src: index.html#scene-c04-p04
+
+motion: fly-in
+
+beat: Every step should change the state
+
+## Frame c04-p05
+
+status: outline
+
+src: index.html#scene-c04-p05
+
+motion: spin-in
+
+beat: Every step should change the state
+
+## Frame c04-p06
+
+status: outline
+
+src: index.html#scene-c04-p06
+
+motion: sine-float
+
+beat: Branch on consequential differences
+
+## Frame c04-p07
+
+status: outline
+
+src: index.html#scene-c04-p07
+
+motion: press-pulse
+
+beat: Confidence is not evidence
+
+## Frame c04-p08
+
+status: outline
+
+src: index.html#scene-c04-p08
+
+motion: hard-cut-cumulative-reveal
+
+beat: Separate goal and method
+
+## Frame c04-p09
+
+status: outline
+
+src: index.html#scene-c04-p09
+
+motion: hard-cut-cumulative-reveal
+
+beat: Expose real decisions
+
+## Frame c04-p10
+
+status: outline
+
+src: index.html#scene-c04-p10
+
+motion: hard-cut-cumulative-reveal
+
+beat: Require evidence for risk
+
+## Frame c05-p01
+
+status: outline
+
+src: index.html#scene-c05-p01
+
+motion: hard-cut
+
+beat: A reusable workflow ends with an output another person or Agent can check, edit, and continue.
+
+## Frame c05-p02
+
+status: outline
+
+src: index.html#scene-c05-p02
+
+motion: spring-pop
+
+beat: Define an inspectable handoff
+
+## Frame c05-p03
+
+status: outline
+
+src: index.html#scene-c05-p03
+
+motion: nudge
+
+beat: Define an inspectable handoff
+
+## Frame c05-p04
+
+status: outline
+
+src: index.html#scene-c05-p04
+
+motion: split-tilt
+
+beat: Make unknowns easy to find
+
+## Frame c05-p05
+
+status: outline
+
+src: index.html#scene-c05-p05
+
+motion: fly-in
+
+beat: Make unknowns easy to find
+
+## Frame c05-p06
+
+status: outline
+
+src: index.html#scene-c05-p06
+
+motion: spin-in
+
+beat: Match the check to the work
+
+## Frame c05-p07
+
+status: outline
+
+src: index.html#scene-c05-p07
+
+motion: sine-float
+
+beat: Make quality inspectable
+
+## Frame c05-p08
+
+status: outline
+
+src: index.html#scene-c05-p08
+
+motion: hard-cut-cumulative-reveal
+
+beat: Define the output contract
+
+## Frame c05-p09
+
+status: outline
+
+src: index.html#scene-c05-p09
+
+motion: hard-cut-cumulative-reveal
+
+beat: Keep uncertainty visible
+
+## Frame c05-p10
+
+status: outline
+
+src: index.html#scene-c05-p10
+
+motion: hard-cut-cumulative-reveal
+
+beat: Finish with a real check
+
+## Frame c06-p01
+
+status: outline
+
+src: index.html#scene-c06-p01
+
+motion: hard-cut
+
+beat: Treat a skill as a maintained asset: revise it after failure patterns, not after every passing mood.
+
+## Frame c06-p02
+
+status: outline
+
+src: index.html#scene-c06-p02
+
+motion: press-pulse
+
+beat: Failures are revision evidence
+
+## Frame c06-p03
+
+status: outline
+
+src: index.html#scene-c06-p03
+
+motion: spring-pop
+
+beat: Failures are revision evidence
+
+## Frame c06-p04
+
+status: outline
+
+src: index.html#scene-c06-p04
+
+motion: nudge
+
+beat: Small skills compose better
+
+## Frame c06-p05
+
+status: outline
+
+src: index.html#scene-c06-p05
+
+motion: split-tilt
+
+beat: Small skills compose better
+
+## Frame c06-p06
+
+status: outline
+
+src: index.html#scene-c06-p06
+
+motion: fly-in
+
+beat: Test beyond the original example
+
+## Frame c06-p07
+
+status: outline
+
+src: index.html#scene-c06-p07
+
+motion: spin-in
+
+beat: Keep the shared contract lean
+
+## Frame c06-p08
+
+status: outline
+
+src: index.html#scene-c06-p08
+
+motion: hard-cut-cumulative-reveal
+
+beat: Revise from failures
+
+## Frame c06-p09
+
+status: outline
+
+src: index.html#scene-c06-p09
+
+motion: hard-cut-cumulative-reveal
+
+beat: Compose small skills
+
+## Frame c06-p10
+
+status: outline
+
+src: index.html#scene-c06-p10
+
+motion: hard-cut-cumulative-reveal
+
+beat: Retest on new work
+
+## Frame c07-p01
+
+status: outline
+
+src: index.html#scene-c07-p01
+
+motion: sine-float
+
+beat: Capture, direct, check, improve
+
+## Frame c07-p02
+
+status: outline
+
+src: index.html#scene-c07-p02
+
+motion: press-pulse
+
+beat: A skill turns success into a method
+
+## Frame c07-p03
+
+status: outline
+
+src: index.html#scene-c07-p03
+
+motion: spring-pop
+
+beat: Start small, then revise from evidence
+
+## Frame c07-p04
+
+status: outline
+
+src: index.html#scene-c07-p04
+
+motion: hard-cut
+
+beat: Follow Tiny Agent

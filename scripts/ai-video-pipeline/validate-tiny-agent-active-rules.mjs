@@ -38,6 +38,14 @@ const files = {
     root,
     'scripts/ai-video-pipeline/validate-tiny-agent-longform-output.mjs'
   ),
+  bilingualParityValidator: path.join(
+    root,
+    'scripts/ai-video-pipeline/validate-tiny-agent-bilingual-parity.mjs'
+  ),
+  zhCoverValidator: path.join(
+    root,
+    'scripts/ai-video-pipeline/validate-tiny-agent-zh-cover-reference.mjs'
+  ),
   manifest: path.join(snapshotDir, 'manifest.json'),
   invocation: path.join(snapshotDir, 'automation-invocation.txt'),
   prompt: path.join(snapshotDir, 'automation-prompt.txt'),
@@ -156,6 +164,11 @@ const text = {
   commonGuide: readText('commonGuide', files.commonGuide),
   activeProfile: readText('activeProfile', files.activeProfile),
   outputValidator: readText('outputValidator', files.outputValidator),
+  bilingualParityValidator: readText(
+    'bilingualParityValidator',
+    files.bilingualParityValidator
+  ),
+  zhCoverValidator: readText('zhCoverValidator', files.zhCoverValidator),
   manifest: readText('manifest', files.manifest),
   invocation: readText('invocation', files.invocation),
   prompt: readText('prompt', files.prompt),
@@ -222,6 +235,157 @@ requireEqual(
   JSON.stringify(expectedHashes)
 );
 requireEqual('activeProfile.failClosed', profile.integrity?.failClosed, true);
+const bilingualParity = profile.postSnapshotUserOverrides?.englishChineseProductionParity;
+requireEqual(
+  'activeProfile.englishChineseProductionParity.status',
+  bilingualParity?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.effectiveFromRunKey',
+  bilingualParity?.effectiveFromRunKey,
+  '2026-07-28-03'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.canonicalLocale',
+  bilingualParity?.canonicalLocale,
+  'zh-CN'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.targetLocale',
+  bilingualParity?.targetLocale,
+  'en-US'
+);
+requireMatch(
+  'activeProfile.englishChineseProductionParity.approvedChineseReferenceProject',
+  bilingualParity?.approvedChineseReferenceProject ?? '',
+  /2026-07-27-03-ai-agent-skills-longform-zh-CN/
+);
+requireMatch(
+  'activeProfile.englishChineseProductionParity.rule',
+  bilingualParity?.rule ?? '',
+  /Chinese is the canonical production grammar[\s\S]*English may not introduce a different hook concept/
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.content.sharedContractFile',
+  bilingualParity?.content?.sharedContractFile,
+  'bilingual-content-contract.json'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.content.identicalContractBytes',
+  bilingualParity?.content?.identicalContractBytes,
+  true
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.content.requiredFields',
+  JSON.stringify(bilingualParity?.content?.requiredFields),
+  JSON.stringify([
+    'schemaVersion',
+    'contractId',
+    'canonicalLocale',
+    'sourceCanonicalUrl',
+    'centralThesisId',
+    'reusableArtifactId',
+    'coverActionId',
+    'priorityIds',
+    'chapters',
+    'review',
+  ])
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.content.requiredReviewFlags',
+  JSON.stringify(bilingualParity?.content?.requiredReviewFlags),
+  JSON.stringify([
+    'sameFactsAndBoundaries',
+    'sameCentralThesis',
+    'sameP0P1P2Coverage',
+    'sameExamplesAndCaveats',
+    'sameReusableArtifact',
+    'naturalEnglishNotMechanicalTranslation',
+  ])
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.sceneStructure.requireIdenticalSceneIdsAndOrder',
+  bilingualParity?.sceneStructure?.requireIdenticalSceneIdsAndOrder,
+  true
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.pacing.totalDurationRatio',
+  JSON.stringify(bilingualParity?.pacing?.totalDurationRatio),
+  JSON.stringify({ min: 0.85, max: 1.15 })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.pacing.maximumNormalizedChapterShareDifference',
+  bilingualParity?.pacing?.maximumNormalizedChapterShareDifference,
+  0.025
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.pacing.maximumNormalizedSceneShareDifference',
+  bilingualParity?.pacing?.maximumNormalizedSceneShareDifference,
+  0.025
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.cover16x9.geometryProfileId',
+  bilingualParity?.cover16x9?.geometryProfileId,
+  'tiny-agent-bilingual-cover-16x9-parity-2026-07-27'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.cover16x9.baseCanvas',
+  JSON.stringify(bilingualParity?.cover16x9?.baseCanvas),
+  JSON.stringify({ width: 1280, height: 720 })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.cover16x9.paperGrid',
+  JSON.stringify(bilingualParity?.cover16x9?.paperGrid),
+  JSON.stringify({
+    cellWidthPx: 44,
+    cellHeightPx: 44,
+    stroke: '#111413',
+    strokeWidthPx: 1,
+    opacity: 0.09,
+  })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.cover16x9.blueRule',
+  JSON.stringify(bilingualParity?.cover16x9?.blueRule),
+  JSON.stringify({ x: 44, y: 42, width: 118, height: 10 })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.cover16x9.titleZone',
+  JSON.stringify(bilingualParity?.cover16x9?.titleZone),
+  JSON.stringify({
+    x: 74,
+    y: 130,
+    width: 520,
+    height: 280,
+    lineCount: { min: 1, max: 3 },
+  })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.cover16x9.heroBox',
+  JSON.stringify(bilingualParity?.cover16x9?.heroBox),
+  JSON.stringify({ x: 620, y: 82, width: 600, height: 560 })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.cover16x9.yellowRule',
+  JSON.stringify(bilingualParity?.cover16x9?.yellowRule),
+  JSON.stringify({ x: 44, y: 652, width: 1192, height: 12 })
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.qa.validator',
+  bilingualParity?.qa?.validator,
+  'scripts/ai-video-pipeline/validate-tiny-agent-bilingual-parity.mjs'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.qa.report',
+  bilingualParity?.qa?.report,
+  'qa/bilingual-parity-report.json'
+);
+requireEqual(
+  'activeProfile.englishChineseProductionParity.qa.failClosed',
+  bilingualParity?.qa?.failClosed,
+  true
+);
 requireEqual(
   'activeProfile.chapterRecapOverride.status',
   profile.postSnapshotUserOverrides?.chapterRecapNarration?.status,
@@ -436,7 +600,7 @@ requireEqual(
 requireEqual(
   'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.scope',
   JSON.stringify(openingOverride?.uniformAdaptiveTypography?.scope),
-  JSON.stringify(['zh-CN'])
+  JSON.stringify(['zh-CN', 'en-US'])
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.fontFamily',
@@ -464,13 +628,24 @@ requireMatch(
   /one largest safe final font size/
 );
 requireEqual(
-  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.accentTokens.zh-CN',
-  JSON.stringify(openingOverride?.uniformAdaptiveTypography?.accentTokens?.['zh-CN']),
-  JSON.stringify([
-    { token: 'AI Agent', tone: 'identity' },
-    { token: '长期任务', tone: 'topic' },
-    { token: '跑偏', tone: 'risk' },
-  ])
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.effectiveFromRunKey',
+  openingOverride?.uniformAdaptiveTypography?.effectiveFromRunKey,
+  '2026-07-28-03'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.accentTokenContract.source',
+  openingOverride?.uniformAdaptiveTypography?.accentTokenContract?.source,
+  'episode.openingAccentTokens'
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.accentTokenContract.requiredTones',
+  JSON.stringify(openingOverride?.uniformAdaptiveTypography?.accentTokenContract?.requiredTones),
+  JSON.stringify(['identity', 'topic', 'risk'])
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.accentTokenContract.identityToken',
+  openingOverride?.uniformAdaptiveTypography?.accentTokenContract?.identityToken,
+  'AI Agent'
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.accentColors',
@@ -480,7 +655,7 @@ requireEqual(
 requireMatch(
   'activeProfile.openingQuestionReadability.uniformAdaptiveTypography.qa',
   openingOverride?.uniformAdaptiveTypography?.qa ?? '',
-  /uniformFontSizePass/
+  /uniformFontSizePass[\s\S]*English and Chinese openings use different typography systems/
 );
 requireEqual(
   'activeProfile.openingQuestionReadability.agentFirstFrame',
@@ -551,6 +726,31 @@ requireEqual(
   'activeProfile.openingQuestionReadability.hookQuestionQuality.requireUnresolvedCuriosity',
   openingOverride?.hookQuestionQuality?.requireUnresolvedCuriosity,
   true
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.requireDirectEpisodeTopic',
+  openingOverride?.hookQuestionQuality?.requireDirectEpisodeTopic,
+  true
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.requireViewerValueOrCuriosity',
+  openingOverride?.hookQuestionQuality?.requireViewerValueOrCuriosity,
+  true
+);
+requireEqual(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.forbidTangentialScenarioSetup',
+  openingOverride?.hookQuestionQuality?.forbidTangentialScenarioSetup,
+  true
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.authoring',
+  openingOverride?.hookQuestionQuality?.authoring ?? '',
+  /what the episode actually teaches/
+);
+requireMatch(
+  'activeProfile.openingQuestionReadability.hookQuestionQuality.forbiddenQuestionForms',
+  JSON.stringify(openingOverride?.hookQuestionQuality?.forbiddenQuestionForms ?? []),
+  /tangential scenario or pain point/
 );
 requireMatch(
   'activeProfile.openingQuestionReadability.hookQuestionQuality.forbiddenQuestionForms',
@@ -726,6 +926,11 @@ requireEqual(
   JSON.stringify({ min: 300, max: 480 })
 );
 requireEqual(
+  'activeProfile.fixedBilingualGeneration.canonicalVisualLocale',
+  profile.fixedBilingualGeneration?.canonicalVisualLocale,
+  'zh-CN'
+);
+requireEqual(
   'activeProfile.fixedBilingualGeneration.en-US.voice',
   profile.fixedBilingualGeneration?.['en-US']?.voice,
   'en-US-ChristopherNeural'
@@ -746,6 +951,9 @@ requireMatch(
   /qa\/generated-art-alpha-report\.json/
 );
 for (const [label, pattern] of [
+  ['bilingual parity report', /bilingual-parity-report\.json/],
+  ['bilingual parity artifact hashes', /artifactHashes/],
+  ['bilingual parity byte equality', /byte-identical/],
   ['recap display field', /recapDisplayText/],
   ['recap rendered scan', /renderedMarkerScanPass/],
   ['opening early reveal', /earlyRevealCount/],
@@ -757,6 +965,21 @@ for (const [label, pattern] of [
   ['source alpha inspection', /sips/],
 ]) {
   requireMatch(`outputValidator.${label}`, text.outputValidator, pattern);
+}
+for (const [label, pattern] of [
+  ['shared contract', /bilingual-content-contract\.json/],
+  ['content contract bindings', /contentContractBindings/],
+  ['scene structure', /sceneStructure/],
+  ['animation structure', /animationStructure/],
+  ['normalized chapter pacing', /normalizedChapterPacing/],
+  ['normalized scene pacing', /normalizedScenePacing/],
+  ['shared opening typography', /openingTypography/],
+  ['shared cover geometry', /coverGeometry/],
+  ['shared cover action', /coverSemanticAction/],
+  ['hash-bound report', /artifactHashes/],
+  ['fail-closed self-test', /four fail-closed mutations/],
+]) {
+  requireMatch(`bilingualParityValidator.${label}`, text.bilingualParityValidator, pattern);
 }
 requireEqual(
   'activeProfile.coverPrimaryTitleOnly.status',
@@ -788,6 +1011,47 @@ requireMatch(
   profile.postSnapshotUserOverrides?.coverTitleTopicAlignment?.qa ?? '',
   /validate-tiny-agent-en-cover-reference\.mjs/
 );
+const zhCoverTitleDensity = profile.postSnapshotUserOverrides?.coverTitleTopicAlignment?.zhRatioTitleInformationDensity;
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.zhRatioTitleInformationDensity.status',
+  zhCoverTitleDensity?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.zhRatioTitleInformationDensity.scope',
+  JSON.stringify(zhCoverTitleDensity?.scope),
+  JSON.stringify(['zh-CN/4x3', 'zh-CN/3x4'])
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.zhRatioTitleInformationDensity.minimumInformationUnitsBeyondIdentity',
+  zhCoverTitleDensity?.minimumInformationUnitsBeyondIdentity,
+  6
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.zhRatioTitleInformationDensity.titleLineCount',
+  JSON.stringify(zhCoverTitleDensity?.titleLineCount),
+  JSON.stringify({ min: 3, max: 4 })
+);
+requireEqual(
+  'activeProfile.coverTitleTopicAlignment.zhRatioTitleInformationDensity.minimumTitleBlockHeightPercent',
+  JSON.stringify(zhCoverTitleDensity?.minimumTitleBlockHeightPercent),
+  JSON.stringify({ '4x3': 60, '3x4': 45 })
+);
+requireMatch(
+  'activeProfile.coverTitleTopicAlignment.zhRatioTitleInformationDensity.qa',
+  zhCoverTitleDensity?.qa ?? '',
+  /information units beyond the AI Agent identity/
+);
+for (const [label, pattern] of [
+  ['information-unit measurement', /countInformationUnitsBeyondIdentity/],
+  ['title-block measurement', /measureSvgTitleBlock/],
+  ['information-density gate', /titleInformationDensity/],
+  ['line-density gate', /titleLineDensity/],
+  ['title-block-height gate', /titleBlockHeightDensity/],
+  ['title-intent gate', /titleQuestionActionOrBenefit/],
+]) {
+  requireMatch(`zhCoverValidator.${label}`, text.zhCoverValidator, pattern);
+}
 requireEqual(
   'activeProfile.coverReferenceAlignment.status',
   profile.postSnapshotUserOverrides?.coverReferenceAlignment?.status,
@@ -808,6 +1072,107 @@ requireMatch(
   profile.postSnapshotUserOverrides?.coverReferenceAlignment?.character ?? '',
   /4:3 right-side hero and 3:4 lower hero must each be newly generated[\s\S]*English episode, the delivered 16:9 hero must likewise be newly generated/
 );
+const zhCoverStrictGeometry = profile.postSnapshotUserOverrides
+  ?.coverReferenceAlignment
+  ?.zhRatioStrictGeometry;
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.status',
+  zhCoverStrictGeometry?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.scope',
+  JSON.stringify(zhCoverStrictGeometry?.scope),
+  JSON.stringify(['zh-CN/4x3', 'zh-CN/3x4'])
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.geometryProfileId',
+  zhCoverStrictGeometry?.geometryProfileId,
+  'tiny-agent-zh-cover-approved-geometry-2026-07-26'
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.shared.paperGrid',
+  JSON.stringify(zhCoverStrictGeometry?.shared?.paperGrid),
+  JSON.stringify({
+    cellWidthPx: 48,
+    cellHeightPx: 48,
+    stroke: '#111413',
+    strokeWidthPx: 1,
+    opacity: 0.035,
+  })
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.shared.titleGroup',
+  JSON.stringify(zhCoverStrictGeometry?.shared?.titleGroup),
+  JSON.stringify({
+    fontFamilyTokens: ['Hiragino Sans GB', 'PingFang SC', 'sans-serif'],
+    fontWeight: 900,
+    fill: '#111413',
+    stroke: '#ECECEA',
+    strokeWidthPx: 9,
+    strokeLineJoin: 'round',
+    paintOrder: 'stroke',
+    letterSpacingPx: -4,
+    minimumBodyFontSizePx: 112,
+    maximumFontSizePx: 212,
+    minimumDominantBodyLineFontSizePx: 145,
+    minimumDominantBodyLineCount: 2,
+  })
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.shared.titleLineCount',
+  zhCoverStrictGeometry?.shared?.titleLineCount,
+  4
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.shared.geometryTolerancePx',
+  zhCoverStrictGeometry?.shared?.geometryTolerancePx,
+  0
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.4x3',
+  JSON.stringify(zhCoverStrictGeometry?.['4x3']),
+  JSON.stringify({
+    canvas: { width: 1200, height: 900 },
+    blueRule: { x: 38, y: 28, width: 176, height: 14, rx: 7 },
+    yellowRule: { x: 38, y: 882, width: 624, height: 18, rx: 9 },
+    title: { x: 38, baselineY: [166, 348, 550, 786], identityFontSizePx: { min: 130, max: 184 } },
+    heroBox: { x: 640, y: 230, width: 550, height: 640 },
+  })
+);
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.3x4',
+  JSON.stringify(zhCoverStrictGeometry?.['3x4']),
+  JSON.stringify({
+    canvas: { width: 900, height: 1200 },
+    blueRule: { x: 36, y: 30, width: 160, height: 14, rx: 7 },
+    yellowRule: { x: 36, y: 711, width: 828, height: 18, rx: 9 },
+    title: { x: 36, baselineY: [148, 316, 500, 684], identityFontSizePx: { min: 125, max: 168 } },
+    heroBox: { x: 75, y: 729, width: 750, height: 480 },
+  })
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.rule',
+  zhCoverStrictGeometry?.rule ?? '',
+  /approved deterministic SVG geometry/
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.qa',
+  zhCoverStrictGeometry?.qa ?? '',
+  /zero pixel tolerance/
+);
+for (const [label, pattern] of [
+  ['strict profile id gate', /strictGeometryProfileId/],
+  ['strict SVG parser', /parseSvgElementAttributes/],
+  ['strict geometry evaluator', /evaluateStrictGeometry/],
+  ['strict title baseline gate', /titleBaselineGeometry/],
+  ['strict rounded-rule gate', /roundedRuleGeometry/],
+  ['strict hero box gate', /heroBoxGeometry/],
+  ['strict preview gate', /previewDimensions/],
+  ['strict evidence report', /strictGeometryEvidence/],
+]) {
+  requireMatch(`zhCoverValidator.${label}`, text.zhCoverValidator, pattern);
+}
 requireEqual(
   'activeProfile.publishingMetadata.status',
   profile.postSnapshotUserOverrides?.publishingMetadata?.status,
@@ -822,6 +1187,26 @@ requireEqual(
   'activeProfile.publishingMetadata.en.fixedFollowSentence',
   profile.postSnapshotUserOverrides?.publishingMetadata?.['en-US']?.fixedFollowSentence,
   'Follow Tiny Agent. Tiny Agent helps you get better at using AI.'
+);
+requireEqual(
+  'activeProfile.publishingMetadata.titleSemanticAgency.status',
+  profile.postSnapshotUserOverrides?.publishingMetadata?.titleSemanticAgency?.status,
+  'active'
+);
+requireEqual(
+  'activeProfile.publishingMetadata.titleSemanticAgency.scope',
+  JSON.stringify(profile.postSnapshotUserOverrides?.publishingMetadata?.titleSemanticAgency?.scope),
+  JSON.stringify(['zh-CN', 'en-US'])
+);
+requireMatch(
+  'activeProfile.publishingMetadata.titleSemanticAgency.rule',
+  profile.postSnapshotUserOverrides?.publishingMetadata?.titleSemanticAgency?.rule ?? '',
+  /actual actor|semantic agency/
+);
+requireMatch(
+  'activeProfile.publishingMetadata.titleSemanticAgency.qa',
+  profile.postSnapshotUserOverrides?.publishingMetadata?.titleSemanticAgency?.qa ?? '',
+  /hasAccurateAgency/
 );
 
 requireEqual('manifest.schemaVersion', manifest.schemaVersion, 1);
@@ -923,6 +1308,8 @@ for (const pattern of exactGuideChecks) {
 
 const contentPlanChecks = [
   /2026-07-23-scheduled-6m18/,
+  /中文是内容呈现、场景、画面、动作、节奏和封面格式的主版本/,
+  /englishChineseProductionParity/,
   /en-US-ChristopherNeural`，固定语速 `\+30%`/,
   /zh-CN-YunxiaNeural`，固定语速 `\+35%`/,
   /中英文长视频均为 `5-8` 分钟/,
@@ -947,11 +1334,21 @@ forbidMatch(
 
 const runbookChecks = [
   /2026-07-23-scheduled-6m18/,
+  /englishChineseProductionParity/,
+  /中文是制作语法的主版本，英文只做自然英语本地化和成人英语旁白替换/,
+  /bilingual-content-contract\.json/,
+  /validate-tiny-agent-bilingual-parity\.mjs/,
+  /qa\/bilingual-parity-report\.json/,
+  /tiny-agent-bilingual-cover-16x9-parity-2026-07-27/,
   /只读取 active profile 的 `fixedBilingualGeneration` 与具名覆盖项/,
   /章节开场、正文和可朗读的三点编号小结/,
   /openingQuestionReadability/,
+  /hookQuestionQuality/,
   /chapterRecapNarration\.screenCopy/,
   /generatedArtTransparency/,
+  /coverTitleTopicAlignment\.zhRatioTitleInformationDensity/,
+  /coverReferenceAlignment\.zhRatioStrictGeometry/,
+  /titleSemanticAgency/,
   /validate-tiny-agent-longform-output\.mjs --project <PROJECT_DIR>/,
   /右下角的批准 Tiny Agent 从开场第一帧完整可见/,
   /不得出现独立进度条、左侧蓝色圆点或 `VOICE` 标签/,

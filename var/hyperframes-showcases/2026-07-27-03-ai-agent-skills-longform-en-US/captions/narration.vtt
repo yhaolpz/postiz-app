@@ -1,295 +1,577 @@
+WEBVTT
+
 1
-00:00:00,100 --> 00:00:03,569
-Why does an AI Agent repeat your best work instead of building on it?
+00:00:00.102 --> 00:00:03.271
+Why do AI Agents lose good methods on long tasks?
 
 2
-00:00:03,519 --> 00:00:05,644
-The answer is not a longer prompt.
+00:00:03.271 --> 00:00:04.410
+Skills preserve them.
 
 3
-00:00:05,644 --> 00:00:09,201
-It is a reusable skill that carries the parts of the workflow worth repeating.
-
-4
-00:00:09,201 --> 00:00:13,759
+00:00:04.410 --> 00:00:08.344
 OpenAI describes skills as reusable, shareable workflows for specific tasks.
 
+4
+00:00:08.344 --> 00:00:11.895
+A skill can carry a name, instructions, and supporting resources so the next
+
 5
-00:00:13,759 --> 00:00:20,500
-A skill can carry a name, instructions, and supporting resources so the next run starts from a useful operating pattern rather than a blank chat.
+00:00:11.895 --> 00:00:14.522
+run starts from a useful operating pattern rather than a blank chat.
 
 6
-00:00:20,500 --> 00:00:29,663
-The loss is familiar: you finally get a good research brief, handoff, analysis, or draft, then reconstruct the same context, constraints, and formatting rules next week.
+00:00:14.522 --> 00:00:18.303
+The loss is familiar: you finally get a good research brief, handoff,
 
 7
-00:00:29,663 --> 00:00:33,028
-The result is inconsistency before the real work even begins.
+00:00:18.303 --> 00:00:22.193
+analysis, or draft, then reconstruct the same context, constraints, and
 
 8
-00:00:33,028 --> 00:00:42,057
-In this video, you will build an AI Agent Skill Template with seven fields: trigger, inputs, workflow, output contract, guardrails, evidence, and revision note.
+00:00:22.193 --> 00:00:23.084
+formatting rules next week.
 
 9
-00:00:42,057 --> 00:00:45,153
-It is small enough to use and explicit enough to inspect.
+00:00:23.084 --> 00:00:25.903
+The result is inconsistency before the real work even begins.
 
 10
-00:00:45,153 --> 00:00:49,307
-Before we begin, save the idea that a useful skill does not replace judgment.
+00:00:25.903 --> 00:00:30.183
+In this video, you will build an AI Agent Skill Template with seven fields:
 
 11
-00:00:49,307 --> 00:00:53,826
-It removes the avoidable setup work so your judgment can focus on the parts that are genuinely new.
+00:00:30.183 --> 00:00:34.121
+trigger, inputs, workflow, output contract, guardrails, evidence, and
 
 12
-00:00:53,826 --> 00:00:56,807
-Look for a repeat that has a recognizable starting signal.
+00:00:34.121 --> 00:00:34.323
+revision note.
 
 13
-00:00:56,807 --> 00:01:01,403
-For example, a weekly customer summary starts when fresh notes and product data arrive.
+00:00:34.323 --> 00:00:36.879
+It is small enough to use and explicit enough to inspect.
 
 14
-00:01:01,403 --> 00:01:05,259
-The skill should describe that trigger, not merely say that it creates summaries.
+00:00:36.879 --> 00:00:40.506
+This video is packed with practical, high-value insights to help you get
 
 15
-00:01:05,259 --> 00:01:09,355
-A repeatable task has stable intent, even when the source material changes.
+00:00:40.506 --> 00:00:40.860
+better at using AI.
 
 16
-00:01:09,355 --> 00:01:15,769
-If the goal, audience, and success condition are different every time, you still have exploration, not a workflow ready to package.
+00:00:40.860 --> 00:00:44.216
+It's a longer one, so follow Tiny Agent and save it so you don't lose it.
 
 17
-00:01:15,769 --> 00:01:18,557
-Do not mistake frequent copying for repeatability.
+00:00:44.216 --> 00:00:47.770
+Start with a task that keeps returning, not with a document you hope people
 
 18
-00:01:18,557 --> 00:01:26,230
-A copied prompt may contain a useful sentence, but a skill earns its place when the same decisions, checks, and deliverable shape recur across several real runs.
+00:00:47.770 --> 00:00:47.820
+Look for a repeat that has a recognizable starting signal.
 
 19
-00:01:26,230 --> 00:01:31,596
-Write the trigger in ordinary language: when a decision-ready update is needed from new evidence, use this skill.
+00:00:47.820 --> 00:00:48.300
+will read.
 
 20
-00:01:31,596 --> 00:01:35,932
-That sentence prevents a good workflow from being activated for a nearby but different job.
+00:00:50.126 --> 00:00:54.070
+For example, a weekly customer summary starts when fresh notes and product
 
 21
-00:01:35,932 --> 00:01:38,663
-Next, list the inputs that change the answer.
+00:00:54.070 --> 00:00:54.196
+data arrive.
 
 22
-00:01:38,663 --> 00:01:44,413
-A source folder, a customer brief, a target audience, a deadline, and an approved vocabulary can matter.
+00:00:54.196 --> 00:00:57.510
+The skill should describe that trigger, not merely say that it creates
 
 23
-00:01:44,413 --> 00:01:46,884
-Old decorative examples usually do not.
+00:00:57.510 --> 00:00:57.559
+A repeatable task has stable intent, even when the source material changes.
 
 24
-00:01:46,884 --> 00:01:50,192
-Resources work best when they sit beside the step that needs them.
+00:00:57.559 --> 00:00:58.040
+summaries.
 
 25
-00:01:50,192 --> 00:01:56,221
-A research workflow can point to the source standard during evidence collection and to the delivery template only when the final brief is assembled.
+00:01:01.061 --> 00:01:04.705
+If the goal, audience, and success condition are different every time, you
 
 26
-00:01:56,221 --> 00:01:58,067
-Make constraints concrete.
+00:01:04.705 --> 00:01:06.921
+still have exploration, not a workflow ready to package.
 
 27
-00:01:58,067 --> 00:02:06,355
-Instead of saying be careful, specify what must not be invented, which records are authoritative, which action requires approval, and how uncertainty should be shown to the reviewer.
+00:01:06.921 --> 00:01:09.088
+Do not mistake frequent copying for repeatability.
 
 28
-00:02:06,355 --> 00:02:08,875
-This is also where a skill differs from memory.
+00:01:09.088 --> 00:01:12.653
+A copied prompt may contain a useful sentence, but a skill earns its place
 
 29
-00:02:08,875 --> 00:02:11,673
-Memory can remember a preference or prior fact.
+00:01:12.653 --> 00:01:16.220
+when the same decisions, checks, and deliverable shape recur across several
 
 30
-00:02:11,673 --> 00:02:16,759
-A skill tells the Agent which context to retrieve, how to use it, and what to do when it conflicts.
+00:01:16.220 --> 00:01:16.267
+Write the trigger in ordinary language: when a decision-ready update is
 
 31
-00:02:16,759 --> 00:02:19,817
-Now write the workflow as a short sequence of decisions.
+00:01:16.267 --> 00:01:16.749
+real runs.
 
 32
-00:02:19,817 --> 00:02:26,923
-Begin with the goal, inspect the inputs, identify missing information, choose a method, create the draft, and verify the promised outcome.
+00:01:19.613 --> 00:01:20.955
+needed from new evidence, use this skill.
 
 33
-00:02:26,923 --> 00:02:29,269
-Each step needs a reason to exist.
+00:01:20.955 --> 00:01:24.607
+That sentence prevents a good workflow from being activated for a nearby but
 
 34
-00:02:29,269 --> 00:02:33,096
-If a step only repeats what the previous step already required, remove it.
+00:01:24.607 --> 00:01:24.757
+different job.
 
 35
-00:02:33,096 --> 00:02:37,644
-If a step changes the evidence, the choice, or the handoff, make that change visible.
+00:01:24.757 --> 00:01:25.605
+Chapter recap.
 
 36
-00:02:37,644 --> 00:02:39,442
-Use branches sparingly.
+00:01:25.605 --> 00:01:28.879
+First, A skill begins with a recurring job, not a generic topic.
 
 37
-00:02:39,442 --> 00:02:45,355
-A useful branch sounds like this: if the source is incomplete, ask for the missing record and label the draft as provisional.
+00:01:28.879 --> 00:01:31.591
+Second, The trigger should make clear when the workflow applies.
 
 38
-00:02:45,355 --> 00:02:48,269
-It does not try to predict every imaginable exception.
+00:01:31.591 --> 00:01:34.279
+Third, One-off exploration can remain a conversation.
 
 39
-00:02:48,269 --> 00:02:51,269
-For high-risk claims, demand an evidence move.
+00:01:34.279 --> 00:01:38.013
+A skill should fetch the context that changes the decision, not every detail
 
 40
-00:02:51,269 --> 00:02:56,423
-The Agent can cite the record, show a calculation, name an assumption, or ask a human to decide.
+00:01:38.013 --> 00:01:38.574
+from the last project.
 
 41
-00:02:56,423 --> 00:02:59,509
-A confident sentence alone is not a verification step.
+00:01:38.574 --> 00:01:40.681
+Next, list the inputs that change the answer.
 
 42
-00:02:59,509 --> 00:03:02,134
-A good skill ends with a handoff contract.
+00:01:40.681 --> 00:01:44.692
+A source folder, a customer brief, a target audience, a deadline, and an
 
 43
-00:03:02,134 --> 00:03:06,971
-Define the audience, format, required fields, and the decision the output should support.
+00:01:44.692 --> 00:01:45.859
+approved vocabulary can matter.
 
 44
-00:03:06,971 --> 00:03:10,894
-This lets a reviewer check the result without reverse-engineering the original prompt.
+00:01:45.859 --> 00:01:47.797
+Old decorative examples usually do not.
 
 45
-00:03:10,894 --> 00:03:12,855
-Include an uncertainty rule.
+00:01:47.797 --> 00:01:50.545
+Resources work best when they sit beside the step that needs them.
 
 46
-00:03:12,855 --> 00:03:21,115
-If a source is missing, if two records disagree, or if a decision depends on human preference, the output should surface that condition instead of burying it in fluent language.
+00:01:50.545 --> 00:01:53.347
+A research workflow can point to the source standard during evidence
 
 47
-00:03:21,220 --> 00:03:23,477
-The final check should match the task.
+00:01:53.347 --> 00:01:56.034
+collection and to the delivery template only when the final brief is
 
 48
-00:03:23,427 --> 00:03:26,158
-A release note needs factual and link checks.
+00:01:56.034 --> 00:01:56.150
+Make constraints concrete.
 
 49
-00:03:26,158 --> 00:03:29,120
-A customer message needs audience and permission checks.
+00:01:56.150 --> 00:01:56.562
+assembled.
 
 50
-00:03:29,120 --> 00:03:32,889
-A plan needs owners, next steps, and unresolved decisions.
+00:01:57.269 --> 00:02:00.487
+Instead of saying be careful, specify what must not be invented, which
 
 51
-00:03:32,889 --> 00:03:34,764
-This makes skills shareable.
+00:02:00.487 --> 00:02:03.522
+records are authoritative, which action requires approval, and how
 
 52
-00:03:34,764 --> 00:03:38,802
-Another teammate does not need your private intuition to judge whether the run succeeded.
+00:02:03.522 --> 00:02:04.989
+uncertainty should be shown to the reviewer.
 
 53
-00:03:38,802 --> 00:03:43,245
-They can inspect the input, the decisions, the output contract, and the evidence.
+00:02:04.989 --> 00:02:06.872
+This is also where a skill differs from memory.
 
 54
-00:03:43,245 --> 00:03:45,975
-Do not freeze a skill after its first success.
+00:02:06.872 --> 00:02:09.069
+Memory can remember a preference or prior fact.
 
 55
-00:03:45,975 --> 00:03:54,158
-Record the failure pattern that led to a revision: a missing input, a misleading default, a weak output field, or a check that looked reassuring but missed the real error.
+00:02:09.069 --> 00:02:12.901
+A skill tells the Agent which context to retrieve, how to use it, and what
 
 56
-00:03:54,158 --> 00:03:55,754
-Keep the unit small.
+00:02:12.901 --> 00:02:13.626
+to do when it conflicts.
 
 57
-00:03:55,754 --> 00:04:01,446
-One skill can gather evidence, another can turn evidence into a decision brief, and a third can run a release check.
+00:02:13.626 --> 00:02:14.487
+Chapter recap.
 
 58
-00:04:01,446 --> 00:04:05,293
-Smaller skills are easier to understand, test, and recombine.
+00:02:14.487 --> 00:02:16.926
+First, Inputs explain what the Agent can use.
 
 59
-00:04:05,293 --> 00:04:07,841
-Retest after a revision on fresh work.
+00:02:16.926 --> 00:02:19.297
+Second, Constraints explain what it must protect.
 
 60
-00:04:07,841 --> 00:04:12,168
-Replaying the exact example that inspired the skill proves only that you preserved the past.
+00:02:19.297 --> 00:02:21.976
+Third, References belong beside the step that needs them.
 
 61
-00:04:12,168 --> 00:04:15,927
-A new input reveals whether the instructions carry the right judgment forward.
+00:02:21.976 --> 00:02:25.013
+The heart of a skill is a small sequence of decisions that a capable
 
 62
-00:04:15,927 --> 00:04:22,975
-When a skill becomes too long, ask which part is truly shared and which part belongs in a resource, a template, or a separate specialized skill.
+00:02:25.013 --> 00:02:26.139
+teammate could inspect and challenge.
 
 63
-00:04:22,975 --> 00:04:26,610
-The goal is reliable guidance, not a monument to every past lesson.
+00:02:26.139 --> 00:02:28.649
+Now write the workflow as a short sequence of decisions.
 
 64
-00:04:26,610 --> 00:04:28,735
-The practical sequence is simple.
+00:02:28.649 --> 00:02:32.274
+Begin with the goal, inspect the inputs, identify missing information,
 
 65
-00:04:28,735 --> 00:04:37,350
-Capture a real repeat, name the trigger, bring in the context that changes decisions, write the few steps that matter, define the handoff, and test the result against a fresh case.
+00:02:32.274 --> 00:02:35.207
+choose a method, create the draft, and verify the promised outcome.
 
 66
-00:04:37,350 --> 00:04:42,283
-That is how an AI Agent stops replaying your best prompt and starts using a maintained working method.
+00:02:35.207 --> 00:02:36.942
+Each step needs a reason to exist.
 
 67
-00:04:42,283 --> 00:04:44,802
-The skill does not make the Agent infallible.
+00:02:36.942 --> 00:02:40.220
+If a step only repeats what the previous step already required, remove it.
 
 68
-00:04:44,802 --> 00:04:48,437
-It makes the work easier to inspect, improve, and reuse.
+00:02:40.220 --> 00:02:44.199
+If a step changes the evidence, the choice, or the handoff, make that change
 
 69
-00:04:48,437 --> 00:04:51,446
-Try the template on one small recurring task this week.
+00:02:44.199 --> 00:02:44.324
+Use branches sparingly.
 
 70
-00:04:51,446 --> 00:05:00,504
-Write the trigger in one sentence, attach only the source material that changes a decision, name one check a reviewer can actually perform, and record one uncertainty that the Agent must not smooth over.
+00:02:44.324 --> 00:02:44.756
+visible.
 
 71
-00:05:00,504 --> 00:05:03,254
-If that version helps a second real run, keep it.
+00:02:45.396 --> 00:02:48.918
+A useful branch sounds like this: if the source is incomplete, ask for the
 
 72
-00:05:03,254 --> 00:05:07,937
-If it fails, revise the field that failed instead of adding unrelated instructions everywhere.
+00:02:48.918 --> 00:02:50.657
+missing record and label the draft as provisional.
 
 73
-00:05:07,937 --> 00:05:09,668
-Follow Tiny Agent.
+00:02:50.657 --> 00:02:53.018
+It does not try to predict every imaginable exception.
 
 74
-00:05:09,668 --> 00:05:12,264
+00:02:53.018 --> 00:02:55.398
+For high-risk claims, demand an evidence move.
+
+75
+00:02:55.398 --> 00:02:59.349
+The Agent can cite the record, show a calculation, name an assumption, or
+
+76
+00:02:59.349 --> 00:02:59.923
+ask a human to decide.
+
+77
+00:02:59.923 --> 00:03:02.465
+A confident sentence alone is not a verification step.
+
+78
+00:03:02.465 --> 00:03:03.324
+Chapter recap.
+
+79
+00:03:03.324 --> 00:03:05.313
+First, Separate the goal from the method.
+
+80
+00:03:05.313 --> 00:03:08.103
+Second, Write branches only where a real choice exists.
+
+81
+00:03:08.103 --> 00:03:10.730
+Third, Ask for evidence when a judgment is high risk.
+
+82
+00:03:10.730 --> 00:03:14.515
+A reusable workflow ends with an output another person or Agent can check,
+
+83
+00:03:14.515 --> 00:03:14.937
+edit, and continue.
+
+84
+00:03:14.937 --> 00:03:16.962
+A good skill ends with a handoff contract.
+
+85
+00:03:16.962 --> 00:03:20.965
+Define the audience, format, required fields, and the decision the output
+
+86
+00:03:20.965 --> 00:03:21.252
+should support.
+
+87
+00:03:21.252 --> 00:03:24.427
+This lets a reviewer check the result without reverse-engineering the
+
+88
+00:03:24.427 --> 00:03:24.627
+original prompt.
+
+89
+00:03:24.627 --> 00:03:26.044
+Include an uncertainty rule.
+
+90
+00:03:26.044 --> 00:03:29.626
+If a source is missing, if two records disagree, or if a decision depends on
+
+91
+00:03:29.626 --> 00:03:32.878
+human preference, the output should surface that condition instead of
+
+92
+00:03:32.878 --> 00:03:33.743
+burying it in fluent language.
+
+93
+00:03:33.743 --> 00:03:35.412
+The final check should match the task.
+
+94
+00:03:35.412 --> 00:03:37.547
+A release note needs factual and link checks.
+
+95
+00:03:37.547 --> 00:03:39.912
+A customer message needs audience and permission checks.
+
+96
+00:03:39.912 --> 00:03:43.150
+A plan needs owners, next steps, and unresolved decisions.
+
+97
+00:03:43.150 --> 00:03:44.388
+This makes skills shareable.
+
+98
+00:03:44.388 --> 00:03:47.773
+Another teammate does not need your private intuition to judge whether the
+
+99
+00:03:47.773 --> 00:03:47.817
+run succeeded.
+
+100
+00:03:47.817 --> 00:03:51.729
+They can inspect the input, the decisions, the output contract, and the
+
+101
+00:03:51.729 --> 00:03:51.749
+Chapter recap.
+
+102
+00:03:51.749 --> 00:03:52.247
+evidence.
+
+103
+00:03:52.582 --> 00:03:55.525
+First, Specify the format before execution starts.
+
+104
+00:03:55.525 --> 00:03:58.044
+Second, Make unknowns visible instead of hiding them.
+
+105
+00:03:58.044 --> 00:04:00.604
+Third, Include a final check that matches the task.
+
+106
+00:04:00.604 --> 00:04:04.519
+Treat a skill as a maintained asset: revise it after failure patterns, not
+
+107
+00:04:04.519 --> 00:04:05.287
+after every passing mood.
+
+108
+00:04:05.287 --> 00:04:07.479
+Do not freeze a skill after its first success.
+
+109
+00:04:07.479 --> 00:04:10.815
+Record the failure pattern that led to a revision: a missing input, a
+
+110
+00:04:10.815 --> 00:04:14.393
+misleading default, a weak output field, or a check that looked reassuring
+
+111
+00:04:14.393 --> 00:04:15.097
+but missed the real error.
+
+112
+00:04:15.097 --> 00:04:16.065
+Keep the unit small.
+
+113
+00:04:16.065 --> 00:04:19.621
+One skill can gather evidence, another can turn evidence into a decision
+
+114
+00:04:19.621 --> 00:04:21.177
+brief, and a third can run a release check.
+
+115
+00:04:21.177 --> 00:04:24.494
+Smaller skills are easier to understand, test, and recombine.
+
+116
+00:04:24.494 --> 00:04:26.443
+Retest after a revision on fresh work.
+
+117
+00:04:26.443 --> 00:04:29.857
+Replaying the exact example that inspired the skill proves only that you
+
+118
+00:04:29.857 --> 00:04:30.163
+preserved the past.
+
+119
+00:04:30.163 --> 00:04:33.351
+A new input reveals whether the instructions carry the right judgment
+
+120
+00:04:33.351 --> 00:04:33.522
+When a skill becomes too long, ask which part is truly shared and which part
+
+121
+00:04:33.522 --> 00:04:33.911
+forward.
+
+122
+00:04:37.090 --> 00:04:39.771
+belongs in a resource, a template, or a separate specialized skill.
+
+123
+00:04:39.771 --> 00:04:42.851
+The goal is reliable guidance, not a monument to every past lesson.
+
+124
+00:04:42.851 --> 00:04:43.711
+Chapter recap.
+
+125
+00:04:43.711 --> 00:04:46.168
+First, Record the failure that justified a revision.
+
+126
+00:04:46.168 --> 00:04:49.811
+Second, Keep small skills composable rather than creating one giant prompt.
+
+127
+00:04:49.811 --> 00:04:52.245
+Third, Retest the workflow on a fresh task.
+
+128
+00:04:52.245 --> 00:04:53.755
+The practical sequence is simple.
+
+129
+00:04:53.755 --> 00:04:57.332
+Capture a real repeat, name the trigger, bring in the context that changes
+
+130
+00:04:57.332 --> 00:05:01.005
+decisions, write the few steps that matter, define the handoff, and test the
+
+131
+00:05:01.005 --> 00:05:01.833
+result against a fresh case.
+
+132
+00:05:01.833 --> 00:05:05.487
+That is how an AI Agent stops replaying your best prompt and starts using a
+
+133
+00:05:05.487 --> 00:05:06.147
+maintained working method.
+
+134
+00:05:06.147 --> 00:05:08.064
+The skill does not make the Agent infallible.
+
+135
+00:05:08.064 --> 00:05:11.145
+It makes the work easier to inspect, improve, and reuse.
+
+136
+00:05:11.145 --> 00:05:13.550
+Try the template on one small recurring task this week.
+
+137
+00:05:13.550 --> 00:05:16.745
+Write the trigger in one sentence, attach only the source material that
+
+138
+00:05:16.745 --> 00:05:19.941
+changes a decision, name one check a reviewer can actually perform, and
+
+139
+00:05:19.941 --> 00:05:21.998
+record one uncertainty that the Agent must not smooth over.
+
+140
+00:05:21.998 --> 00:05:24.128
+If that version helps a second real run, keep it.
+
+141
+00:05:24.128 --> 00:05:27.594
+If it fails, revise the field that failed instead of adding unrelated
+
+142
+00:05:27.594 --> 00:05:28.237
+instructions everywhere.
+
+143
+00:05:28.237 --> 00:05:29.368
+Follow Tiny Agent.
+
+144
+00:05:29.368 --> 00:05:31.600
 Tiny Agent helps you get better at using AI.

@@ -4,12 +4,13 @@
   "profileId": "tiny-agent-longform-scheduled-6m18-2026-07-23",
   "locales": ["zh-CN", "en-US"],
   "activatedAt": "2026-07-24",
-  "purpose": "Reproduce the bilingual generation rules used by the 2026-07-23 scheduled run whose Chinese render is 6:18, without copying that episode's topic facts, script, or absolute timings.",
+  "purpose": "Use the approved Chinese production system as the canonical Tiny Agent longform behavior contract, then produce a natural English localization with the same content, scene grammar, visual system, pacing shape, and cover system; only locale text, locale subtitles, the approved adult English voice, and language-derived absolute timings may differ.",
   "sourceSnapshot": {
     "manifest": "scripts/ai-video-pipeline/style-guides/snapshots/2026-07-23-scheduled-6m18/manifest.json",
     "sourceCommit": "457ba42d110d259ed03c4b008e1af2cc8b0b9935",
     "referenceChineseRender": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/renders/2026-07-23-03-ai-agent-uncertainty-longform.zh-CN.mp4",
     "referenceChineseRenderSha256": "c3f3ca90f1de71caa5b4f86f3376bf2acc8a1c0e380b39cc8cdb38589b4ae4d4",
+    "currentApprovedChineseImplementation": "var/hyperframes-showcases/2026-07-27-03-ai-agent-skills-longform-zh-CN",
     "referenceEnglishRender": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-en-US/renders/2026-07-23-03-ai-agent-uncertainty-longform.en-US.mp4",
     "referenceEnglishRenderSha256": "ddc688cf2d531b7c24166cad8d7563bb4e4d3167ea8ca2da010b8d5b1de03d5b"
   },
@@ -36,6 +37,101 @@
     "forbiddenBlending": "Rules introduced after the 2026-07-23 03:02-04:17 scheduled run may not alter a generation dimension covered by the frozen snapshot. In particular, do not blend in the later V4 +10 percent rates, 9-12 minute target, one-story requirement, three-module limit, recap removal, 35-45-state target, opening glyph lead, complete-question hold, or later motion choreography, except where an explicit active postSnapshotUserOverrides rule names a narrower replacement."
   },
   "postSnapshotUserOverrides": {
+    "englishChineseProductionParity": {
+      "status": "active",
+      "effectiveFromRunKey": "2026-07-28-03",
+      "canonicalLocale": "zh-CN",
+      "targetLocale": "en-US",
+      "approvedChineseReferenceProject": "var/hyperframes-showcases/2026-07-27-03-ai-agent-skills-longform-zh-CN",
+      "rule": "Chinese is the canonical production grammar. Author and approve the shared content contract and Chinese scene system first, then localize that exact semantic and visual plan into natural English. English may not introduce a different hook concept, content claim, chapter, example, reusable artifact, scene type, layout family, role/prop assignment, generated-art semantic, motion type, transition grammar, caption treatment, chapter rail, recap layout, outro layout, or cover geometry. Do not mechanically translate wording and do not reuse Chinese timestamps; preserve meaning and production form while deriving English wording and absolute timing from final English TTS/VTT.",
+      "allowedDifferences": [
+        "natural locale text, subtitles, and locale metadata",
+        "zh-CN-YunxiaNeural +35% versus adult en-US-ChristopherNeural +30%",
+        "absolute cue, scene, and animation timestamps derived independently from each locale's final TTS/VTT",
+        "English YouTube delivery uses a 3840x2160 16:9 master while Chinese local delivery retains its required 1280x720, 1200x900, and 900x1200 files"
+      ],
+      "content": {
+        "sharedContractFile": "bilingual-content-contract.json",
+        "identicalContractBytes": true,
+        "requiredFields": [
+          "schemaVersion",
+          "contractId",
+          "canonicalLocale",
+          "sourceCanonicalUrl",
+          "centralThesisId",
+          "reusableArtifactId",
+          "coverActionId",
+          "priorityIds",
+          "chapters",
+          "review"
+        ],
+        "requiredReviewFlags": [
+          "sameFactsAndBoundaries",
+          "sameCentralThesis",
+          "sameP0P1P2Coverage",
+          "sameExamplesAndCaveats",
+          "sameReusableArtifact",
+          "naturalEnglishNotMechanicalTranslation"
+        ],
+        "rule": "Both locale projects must contain byte-identical bilingual-content-contract.json files. The contract maps the source, thesis, priorities, chapter IDs, scene IDs, recap IDs, examples, caveats, and reusable artifact before either localized script is approved. Every required review flag is true. Localized content-map.json and scene-plan.json files must reference the same contractId."
+      },
+      "sceneStructure": {
+        "requireIdenticalSceneIdsAndOrder": true,
+        "equalFields": [
+          "id",
+          "chapterNumber",
+          "paragraphNumber",
+          "type",
+          "layout",
+          "temporaryGenerated",
+          "generatedArtSide",
+          "highlightSide",
+          "motionType",
+          "human",
+          "humanDirection",
+          "agent",
+          "agentDirection",
+          "props",
+          "renderHuman",
+          "renderAgent",
+          "coreObjectCount"
+        ],
+        "localizedFields": [
+          "chapter",
+          "narration",
+          "headline",
+          "recapDisplayText",
+          "coreLabel"
+        ],
+        "timingFields": ["start", "end"],
+        "animationEqualFields": ["id", "layout", "generatedArt", "entrance", "motionType"],
+        "rule": "English and Chinese must use the same chapter count, scene count, recap count, generated-art scene positions, scene IDs/order, layout sequence, roles, props, semantic motion sequence, transition grammar, and outro position. Only localized copy and final-VTT-derived absolute timing fields may differ."
+      },
+      "pacing": {
+        "totalDurationRatio": {"min": 0.85, "max": 1.15},
+        "maximumNormalizedChapterShareDifference": 0.025,
+        "maximumNormalizedSceneShareDifference": 0.025,
+        "rule": "Compare pacing after normalizing each locale to its own final duration. English may breathe naturally, but its chapter and scene duration shares must stay within the declared differences from Chinese. A different language is not permission to create a differently paced edit."
+      },
+      "cover16x9": {
+        "geometryProfileId": "tiny-agent-bilingual-cover-16x9-parity-2026-07-27",
+        "approvedChineseReference": "var/hyperframes-showcases/2026-07-27-03-ai-agent-skills-longform-zh-CN/thumbnails/thumbnail.zh-CN.svg",
+        "baseCanvas": {"width": 1280, "height": 720},
+        "paperGrid": {"cellWidthPx": 44, "cellHeightPx": 44, "stroke": "#111413", "strokeWidthPx": 1, "opacity": 0.09},
+        "blueRule": {"x": 44, "y": 42, "width": 118, "height": 10},
+        "titleZone": {"x": 74, "y": 130, "width": 520, "height": 280, "lineCount": {"min": 1, "max": 3}},
+        "heroBox": {"x": 620, "y": 82, "width": 600, "height": 560},
+        "yellowRule": {"x": 44, "y": 652, "width": 1192, "height": 12},
+        "rule": "The English 16:9 cover is a language-localized rendering of the Chinese 16:9 cover system, not a separate YouTube art direction. At the 1280x720 SVG design coordinate system, both locales use the exact paper grid, blue rule, title zone, hero box, and yellow rule above. The title may reflow naturally inside the same zone; the semantic title, one complete current-topic Tiny Agent action, colors, and hierarchy remain aligned. Only the English 4K publication raster size differs.",
+        "qa": "The bilingual parity validator must parse both final 16:9 SVGs and their specs, verify this geometryProfileId, compare the actual grid/rules/title zone/hero box against the active profile, and reject any normalized geometry or cover-semantic mismatch."
+      },
+      "qa": {
+        "validator": "scripts/ai-video-pipeline/validate-tiny-agent-bilingual-parity.mjs",
+        "report": "qa/bilingual-parity-report.json",
+        "failClosed": true,
+        "rule": "Run the bilingual parity validator after both locale projects have final content maps, scripts, TTS/VTT-derived scene and animation plans, metadata, and 16:9 covers. It writes the same hash-bound report to both projects. Each per-project output validator must reject a missing, stale, failing, or wrong-pair report before render or publication."
+      }
+    },
     "chapterRecapNarration": {
       "status": "active",
       "scope": ["zh-CN", "en-US"],
@@ -91,21 +187,21 @@
       },
       "uniformAdaptiveTypography": {
         "status": "active",
-        "scope": ["zh-CN"],
+        "effectiveFromRunKey": "2026-07-28-03",
+        "scope": ["zh-CN", "en-US"],
         "fontFamily": "Hiragino Sans GB",
         "fontFile": "assets/fonts/HiraginoSansGB.ttc",
         "fontWeight": 700,
         "uniformFontSize": true,
-        "layout": "Use the bundled ordinary Hiragino Sans GB UI sans, not a decorative display face. Compute one largest safe final font size for the complete opening stack. Every visible question line uses that exact font size; when the Agent box or a canvas edge constrains the stack, reduce the single shared size for every line together. Never compensate by assigning a smaller size to a short line or a larger size to a long line.",
-        "accentTokens": {
-          "zh-CN": [
-            {"token": "AI Agent", "tone": "identity"},
-            {"token": "长期任务", "tone": "topic"},
-            {"token": "跑偏", "tone": "risk"}
-          ]
+        "layout": "Use the bundled ordinary Hiragino Sans GB UI sans for both locales, not a locale-specific display face. Compute one largest safe final font size for the complete opening stack. Every visible question line in that locale uses that exact font size; English may choose different natural line breaks, but may not use mixed per-line sizes or a different type system. When the Agent box or a canvas edge constrains the stack, reduce the single shared size for every line together.",
+        "accentTokenContract": {
+          "source": "episode.openingAccentTokens",
+          "requiredTones": ["identity", "topic", "risk"],
+          "identityToken": "AI Agent",
+          "rule": "Each locale declares natural, topic-specific openingAccentTokens in episode.json. Both must include the AI Agent identity, the same concrete topic concept, and the same risk/action concept in that locale; never retain keywords from a previous episode."
         },
         "accentColors": {"identity": "#117ABD", "topic": "#117ABD", "risk": "#D84B3E"},
-        "qa": "qa/retention-opening-report.json must record final computed font family, font weight, every line font size, uniformFontSizePass, accent runs, and accentTokenPass. Fail when active scoped opening lines do not use one exact final size, the embedded font contract is missing, or a configured keyword accent is absent or uses the wrong tone."
+        "qa": "qa/retention-opening-report.json must record final computed font family, font weight, every line font size, uniformFontSizePass, accent runs, and accentTokenPass. Fail when active scoped opening lines do not use one exact final size, the embedded font contract is missing, topic-specific episode.openingAccentTokens are missing, a configured keyword accent is absent or uses the wrong tone, or the English and Chinese openings use different typography systems."
       },
       "agentReservation": {"visibleAtFirstFrame": true, "position": "bottom-right", "reservedBoundsPx": {"left": 1480, "top": 620, "right": 1880, "bottom": 1032}, "minimumVisibleHeightPx": 420},
       "forbiddenOpeningUi": ["opening progress rail", "left blue circle", "VOICE label"],
@@ -138,14 +234,18 @@
       "hookQuestionQuality": {
         "status": "active",
         "scope": ["zh-CN", "en-US"],
-        "purpose": "Make the first visible question earn attention by naming the audience's real pain and opening a useful unknown. It must invite the viewer to understand causes, mechanisms, trade-offs, triggers, or an actionable path; it must never spend the opening on an obvious yes-or-no proposition whose answer is already common knowledge to the intended audience.",
+        "purpose": "Make the first visible question earn attention by directly naming the episode's concrete task/topic and opening a useful unknown or viewer benefit. It must invite the viewer to understand causes, mechanisms, trade-offs, triggers, or an actionable path; it must never replace the actual topic with an unrelated long-task, drift, memory, handoff, or other scenario, and it must never spend the opening on an obvious yes-or-no proposition whose answer is already common knowledge to the intended audience.",
         "allowedIntents": ["causal-diagnosis", "mechanism", "trade-off", "trigger", "actionable-path"],
         "requireTopicIdentity": true,
         "requireAudiencePainPoint": true,
         "requireUnresolvedCuriosity": true,
-        "forbiddenQuestionForms": ["obvious yes-or-no validation question", "restatement of a commonly known problem as a question", "question whose visible wording already supplies its own answer"],
+        "requireDirectEpisodeTopic": true,
+        "requireViewerValueOrCuriosity": true,
+        "forbidTangentialScenarioSetup": true,
+        "forbiddenQuestionForms": ["obvious yes-or-no validation question", "restatement of a commonly known problem as a question", "question whose visible wording already supplies its own answer", "tangential scenario or pain point that the episode does not actually teach"],
+        "authoring": "Start from what the episode actually teaches, not from a reusable dramatic template. Name the concrete task/topic in the question and ask the shortest natural causal, mechanism, trade-off, trigger, or actionable-path question that exposes its value. For an episode about writing an AI Agent Skill, ask directly how to write or design a useful reusable Skill; do not introduce long tasks or drift unless the episode itself teaches those topics.",
         "semanticLineBreak": "Keep the AI Agent identity and the concrete task/topic intact. When a Chinese causal marker such as 为什么、如何 or 怎么 begins the interrogative clause, keep the causal clause together as a compact adjacent lower stack; if it needs two lines to reach the required glyph mass, break only between whole Chinese words and never separate the causal marker from its immediate predicate.",
-        "qa": "Before rendering, write qa/opening-hook-quality-report.json. It must record the exact visibleQuestion, the audiencePainPoint, the knowledgeGap, the rejectedObviousQuestion, the selected allowed intent, and pass=true only when the question is topic-specific, uses an allowed intent, creates unresolved curiosity, and is not an obvious yes-or-no or self-answering question. The longform output validator must fail closed when this evidence is missing or does not match the final VTT hook."
+        "qa": "Before rendering, write qa/opening-hook-quality-report.json. It must record the exact visibleQuestion, one or more directTopicTerms that include a concrete episode topic beyond the generic AI Agent identity, the viewerValue, the audiencePainPoint, the knowledgeGap, the topicAlignmentRationale, tangentialSetupRisk, the rejectedObviousQuestion, the selected allowed intent, and measured checks for directEpisodeTopic, viewerValueOrCuriosity, and noTangentialScenarioSetup. pass=true only when the question directly asks about the actual episode topic, makes its value or knowledge gap clear, uses an allowed intent, creates unresolved curiosity, and is not tangential, obvious yes-or-no, or self-answering. The longform output validator must fail closed when this evidence is missing, generic, or does not match the final VTT hook."
       },
       "openingUi": "The opening contains no dedicated progress rail, blue circular progress marker, or VOICE label. Delete those elements from the opening DOM and timeline; the normal chapter progress may begin only after the opening hard cut.",
       "qa": "Generate qa/retention-opening-report.json from final VTT, final-font DOM measurement, and rendered first-frame inspection. Record each visible unit's VTT-derived audible onset, actual visual start, measured perGlyphAudibleLeadMilliseconds, literalQuestionCompletionLeadMilliseconds, firstGlyphLeadMilliseconds, fullQuestionReadLeadMilliseconds, canvas glyph coverage, Agent first-frame visibility and bounds, hard-cut time, and an opening-ui absence scan. Fail if any unit lead is outside the active perGlyphAudibleLeadMilliseconds range, the final unit does not settle before the literal question cue ends, any value is outside this profile, the Agent is absent at frame zero, a forbidden opening UI element is present, or any opening element clips, overlaps, or exceeds its safe area."
@@ -211,6 +311,15 @@
       "status": "active",
       "scope": ["zh-CN", "en-US"],
       "rule": "Every cover primary title must be a concise, natural expression of the same concrete topic as its local publishing title. Before cover authoring, declare a per-episode `coverTitleContract` in that locale's `publish-metadata.<locale>.json`: its core cover keywords, the title-term equivalents that prove each keyword is present in the publishing title, and the concrete topic action shown by the hero. Every normal delivered cover headline must contain every declared core cover keyword literally; choose the words that state the episode's actual pain point or action, not a vague slogan. For the current Chinese long-running-agent episode, the required literal cover keywords are `长任务` and `交接`, while `长期任务` is the approved publishing-title equivalent of `长任务`. The English counterpart uses the same intent: the English cover must carry the episode's concrete long-running-task and handoff keywords, not a detached generic Agent slogan.",
+      "zhRatioTitleInformationDensity": {
+        "status": "active",
+        "scope": ["zh-CN/4x3", "zh-CN/3x4"],
+        "minimumInformationUnitsBeyondIdentity": 6,
+        "titleLineCount": {"min": 3, "max": 4},
+        "minimumTitleBlockHeightPercent": {"4x3": 60, "3x4": 45},
+        "rule": "Chinese 4:3 and 3:4 covers must carry a complete topic question, action, or benefit, not only an identity plus a bare topic noun such as AI Agent Skill. Match the approved prior-cover density: after removing the AI Agent identity, the primary title retains at least minimumInformationUnitsBeyondIdentity meaningful Han glyphs or alphanumeric words, uses titleLineCount large title lines, and fills at least the ratio-specific minimumTitleBlockHeightPercent of the canvas. This remains one primary title, not auxiliary copy.",
+        "qa": "The Chinese cover-reference validator must measure the final SVG headline, line count, title-block height, information units beyond the AI Agent identity, and question/action/benefit intent. Fail 4:3 or 3:4 when any density value is below this active contract, even if the core cover keywords are present."
+      },
       "qa": "Run `validate-tiny-agent-zh-cover-reference.mjs` for zh-CN and `validate-tiny-agent-en-cover-reference.mjs` for en-US. They must reject a missing or malformed coverTitleContract, a publishing title that does not contain an approved equivalent for every core cover keyword, a normal delivered cover that omits a required keyword, or a cover whose generated hero action differs from the declared topic action. A ratio may omit a newly introduced keyword only when its spec records a concrete owner-requested revision-scope exemption; the exemption is not a reusable production rule."
     },
     "coverReferenceAlignment": {
@@ -218,14 +327,64 @@
       "scope": ["zh-CN", "en-US"],
       "reference": "var/hyperframes-showcases/2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/thumbnails/thumbnail.zh-CN.svg and its three-ratio siblings",
       "layout": "Use the reference title-hero system: neutral paper-grid background; a short blue rule at the top; title-led left/top zone; one complete Tiny Agent plus one topic object; and a single yellow rule at the bottom or the portrait 60/40 divider. The yellow rule is decorative only and never underlines title text.",
+      "zhRatioStrictGeometry": {
+        "status": "active",
+        "scope": ["zh-CN/4x3", "zh-CN/3x4"],
+        "geometryProfileId": "tiny-agent-zh-cover-approved-geometry-2026-07-26",
+        "approvedReference": {
+          "4x3": "var/hyperframes-showcases/2026-07-26-03-agent-long-running-harness-longform-zh-CN/thumbnails/thumbnail.zh-CN.4x3.svg",
+          "3x4": "var/hyperframes-showcases/2026-07-26-03-agent-long-running-harness-longform-zh-CN/thumbnails/thumbnail.zh-CN.3x4.svg"
+        },
+        "shared": {
+          "paperGrid": {"cellWidthPx": 48, "cellHeightPx": 48, "stroke": "#111413", "strokeWidthPx": 1, "opacity": 0.035},
+          "titleGroup": {
+            "fontFamilyTokens": ["Hiragino Sans GB", "PingFang SC", "sans-serif"],
+            "fontWeight": 900,
+            "fill": "#111413",
+            "stroke": "#ECECEA",
+            "strokeWidthPx": 9,
+            "strokeLineJoin": "round",
+            "paintOrder": "stroke",
+            "letterSpacingPx": -4,
+            "minimumBodyFontSizePx": 112,
+            "maximumFontSizePx": 212,
+            "minimumDominantBodyLineFontSizePx": 145,
+            "minimumDominantBodyLineCount": 2
+          },
+          "titleLineCount": 4,
+          "geometryTolerancePx": 0
+        },
+        "4x3": {
+          "canvas": {"width": 1200, "height": 900},
+          "blueRule": {"x": 38, "y": 28, "width": 176, "height": 14, "rx": 7},
+          "yellowRule": {"x": 38, "y": 882, "width": 624, "height": 18, "rx": 9},
+          "title": {"x": 38, "baselineY": [166, 348, 550, 786], "identityFontSizePx": {"min": 130, "max": 184}},
+          "heroBox": {"x": 640, "y": 230, "width": 550, "height": 640}
+        },
+        "3x4": {
+          "canvas": {"width": 900, "height": 1200},
+          "blueRule": {"x": 36, "y": 30, "width": 160, "height": 14, "rx": 7},
+          "yellowRule": {"x": 36, "y": 711, "width": 828, "height": 18, "rx": 9},
+          "title": {"x": 36, "baselineY": [148, 316, 500, 684], "identityFontSizePx": {"min": 125, "max": 168}},
+          "heroBox": {"x": 75, "y": 729, "width": 750, "height": 480}
+        },
+        "rule": "Chinese 4:3 and 3:4 covers must use the approved deterministic SVG geometry above exactly: the paper grid, rounded blue and yellow rules, four title baselines, title group styling, and ratio-specific hero box are fixed. Only the episode title text, content-fitted font sizes within the declared range, and the current-topic transparent hero asset may change. Do not stretch the 4:3 yellow rule across the canvas, remove rounded ends, reduce the title to a high empty-space block, or move the portrait divider away from y=0.60H.",
+        "qa": "The Chinese cover-reference validator must parse the final SVG and fail closed unless every scoped grid, rule, title-group, four-line baseline, dominant body-line size, hero-box, preview dimension, and strictGeometryProfileId value matches this geometry contract with zero pixel tolerance. A semantic-density pass alone is never sufficient."
+      },
       "titleColors": "Use exactly two title colors: #117ABD only for the AI Agent identity phrase, and #111413 for every remaining title glyph. #F4C542 is reserved for the decorative rule; #8A6500 and #C7362F are forbidden in title text.",
       "character": "For every Chinese episode, the 4:3 right-side hero and 3:4 lower hero must each be newly generated as a temporary, current-topic illustration; for every English episode, the delivered 16:9 hero must likewise be newly generated as a temporary, current-topic illustration. Do not reuse a previous episode's hero, a stable Agent-plus-prop pairing, or a decorative prop. Each generated hero may include exactly one complete Tiny Agent only, preserve the approved white rounded body, black face screen, blue eyes and antenna, brown tool belt, and hand-drawn outline, and actively perform the `coverTitleContract` concrete topic action with its integrated topic object. It never permits a second character, collage, generated text, or an unrelated decorative prop. A ratio may remain in the older reference system only when its own spec records a concrete owner-requested revision-scope exemption; the exemption is not a reusable production rule.",
-      "qa": "Before approval, compare all ratios against the reference title-hero system and verify the blue rule, blue-plus-black title hierarchy, bottom yellow rule, one complete Tiny Agent, one complete topic action, no title underline, no auxiliary copy, and no generated text. Every normal zh-CN 4:3/3:4 SVG and every normal en-US 16:9 SVG must reference exactly one current-episode alpha PNG generated for that ratio, with a verified transparent corner; its ratio spec must record `characterCount=1`, the required Tiny Agent identity anchors, an integrated topic action matching `coverTitleContract`, chroma-key alpha removal, and `generatedIllustrationText=false`. Run the locale's cover-reference validator and fail the run on any ratio mismatch."
+      "qa": "Before approval, compare all ratios against the reference title-hero system and verify the blue rule, blue-plus-black title hierarchy, bottom yellow rule, one complete Tiny Agent, one complete topic action, no title underline, no auxiliary copy, and no generated text. Every normal zh-CN 4:3/3:4 SVG and every normal en-US 16:9 SVG must reference exactly one current-episode alpha PNG generated for that ratio, with a verified transparent corner; its ratio spec must record `characterCount=1`, the required Tiny Agent identity anchors, an integrated topic action matching `coverTitleContract`, chroma-key alpha removal, and `generatedIllustrationText=false`. Chinese 4:3/3:4 must additionally pass `zhRatioStrictGeometry`; semantic title density cannot substitute for exact geometry. Run the locale's cover-reference validator and fail the run on any ratio mismatch."
     },
     "publishingMetadata": {
       "status": "active",
       "scope": ["zh-CN", "en-US"],
-      "titleIdentity": "Every platform/local metadata title, in-video topic title, and cover title must naturally identify AI Agent(s) or 智能体 and state the concrete topic, question, action, or benefit. Prefer the literal AI Agent wording whenever it reads naturally; never use a detached slogan that loses the Agent topic.",
+      "titleIdentity": "Every platform/local metadata title, in-video topic title, and cover title must naturally identify AI Agent(s) or 智能体 and state the concrete topic, question, action, or benefit. Prefer the literal AI Agent wording whenever it reads naturally; never use a detached slogan that loses the Agent topic. Grammar must also assign every action to its real actor: when a person writes, creates, designs, or turns work into a Skill for an AI Agent, the title must make the person/viewer the implied actor and the AI Agent the target or user, not falsely make the Agent the author.",
+      "titleSemanticAgency": {
+        "status": "active",
+        "scope": ["zh-CN", "en-US"],
+        "rule": "A title must preserve semantic agency from the source and script. Human-authored work uses a human/viewer construction such as 如何为 AI Agent 写出真正可复用的 Skill or How to write a reusable Skill for an AI Agent. Do not write AI Agent 怎样把一次好结果变成可复用 Skill or an equivalent Agent-as-author construction when the episode actually teaches the viewer to perform that transformation. An Agent may be the grammatical actor only when the cited source and episode explicitly teach the Agent performing that action autonomously.",
+        "qa": "The title-identity report must record hasAccurateAgency for every checked title and fail closed on a common Agent-as-author construction for human-authored Skill creation. Human review must also compare the publishing title with the episode's actual actor, action, target, and benefit before approval."
+      },
       "description": "Put the episode keyword and viewer benefit in the first two lines. Include exactly three topic-specific learning gains, then finish the final non-hashtag line with the locale's fixed follow sentence. Do not include source blocks, source-title stitching, or external links.",
       "zh-CN": {
         "fixedFollowSentence": "关注 Tiny Agent，成为更擅长使用 AI 的人！"
@@ -233,10 +392,11 @@
       "en-US": {
         "fixedFollowSentence": "Follow Tiny Agent. Tiny Agent helps you get better at using AI."
       },
-      "qa": "Run the title-identity metadata validator. It must reject a title without Agent identity or a description whose final non-hashtag line is not the locale's fixed follow sentence."
+      "qa": "Run the title-identity metadata validator. It must reject a title without Agent identity, concrete context, or accurate semantic agency, and reject a description whose final non-hashtag line is not the locale's fixed follow sentence."
     }
   },
   "fixedBilingualGeneration": {
+    "canonicalVisualLocale": "zh-CN",
     "duration": "5-8 minutes",
     "durationSeconds": {"min": 300, "max": 480},
     "zh-CN": {

@@ -1,0 +1,968 @@
+[
+  {
+    "start": 0.1,
+    "end": 2.953,
+    "text": "什么时候该让多个 AI Agent 并行工作？",
+    "segmentId": "c01-p01-u01",
+    "sceneId": "c01-p01"
+  },
+  {
+    "start": 2.953,
+    "end": 4.681,
+    "text": "答案先看任务能不能拆开。",
+    "segmentId": "c01-p01-u01",
+    "sceneId": "c01-p01"
+  },
+  {
+    "start": 4.681,
+    "end": 9.749,
+    "text": "Anthropic 在多 Agent 研究系统复盘中给出一个清楚边界：",
+    "segmentId": "c01-p02-u01",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 9.749,
+    "end": 12.356,
+    "text": "并行能扩大搜索广度，但只有独立路径、",
+    "segmentId": "c01-p02-u01",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 12.356,
+    "end": 15.59,
+    "text": "高价值结果和足够工具空间同时存在时，协调成本才值得。",
+    "segmentId": "c01-p02-u01",
+    "sceneId": "c01-p02"
+  },
+  {
+    "start": 15.59,
+    "end": 16.664,
+    "text": "它的内部研究评测里，",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 16.664,
+    "end": 20.423,
+    "text": "Opus 4 主 Agent 配合 Sonnet 4 子 Agent，",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 20.423,
+    "end": 22.087,
+    "text": "比单个 Opus 4 高出百分之九十点二。",
+    "segmentId": "c01-p03-u01",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 22.087,
+    "end": 26.491,
+    "text": "这个数字来自特定内部评测，不代表所有任务都会得到同样提升。",
+    "segmentId": "c01-p03-u02",
+    "sceneId": "c01-p03"
+  },
+  {
+    "start": 26.491,
+    "end": 29.387,
+    "text": "这期我们做一张单 Agent 和多 Agent 决策树。",
+    "segmentId": "c01-p04-u01",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 29.387,
+    "end": 33.874,
+    "text": "先判断适配度，再写委派契约、分配搜索力度、检查证据，",
+    "segmentId": "c01-p04-u02",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 33.874,
+    "end": 35.753,
+    "text": "最后给并行系统加上恢复能力。",
+    "segmentId": "c01-p04-u02",
+    "sceneId": "c01-p04"
+  },
+  {
+    "start": 35.753,
+    "end": 39.855,
+    "text": "视频全程干货高价值，让你成为更擅长使用 AI 的人，",
+    "segmentId": "c01-p05-u01",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 39.855,
+    "end": 41.709,
+    "text": "内容较长，点点关注收藏不迷路。",
+    "segmentId": "c01-p05-u01",
+    "sceneId": "c01-p05"
+  },
+  {
+    "start": 41.709,
+    "end": 43.655,
+    "text": "第一步不是增加 Agent，",
+    "segmentId": "c02-p01-u01",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 43.655,
+    "end": 46.309,
+    "text": "而是判断这个问题有没有值得并行的独立探索路径。",
+    "segmentId": "c02-p01-u01",
+    "sceneId": "c02-p01"
+  },
+  {
+    "start": 46.309,
+    "end": 49.591,
+    "text": "研究任务适合并行，因为答案通常来自许多方向。",
+    "segmentId": "c02-p02-u01",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 49.591,
+    "end": 52.358,
+    "text": "市场、技术、用户和风险可以分别搜索，",
+    "segmentId": "c02-p02-u02",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 52.358,
+    "end": 54.591,
+    "text": "再由主 Agent 压缩成一个结论。",
+    "segmentId": "c02-p02-u02",
+    "sceneId": "c02-p02"
+  },
+  {
+    "start": 54.591,
+    "end": 59.326,
+    "text": "当单个上下文窗口需要同时容纳太多来源、工具结果和中间假设时，",
+    "segmentId": "c02-p03-u01",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 59.326,
+    "end": 62.73,
+    "text": "子 Agent 还能把各自的搜索压缩成高信号摘要。",
+    "segmentId": "c02-p03-u01",
+    "sceneId": "c02-p03"
+  },
+  {
+    "start": 62.73,
+    "end": 66.596,
+    "text": "但如果每一步都依赖上一步的精确状态，拆分会制造大量同步。",
+    "segmentId": "c02-p04-u01",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 66.596,
+    "end": 69.492,
+    "text": "很多编码任务共享同一份代码和测试状态，",
+    "segmentId": "c02-p04-u02",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 69.492,
+    "end": 71.863,
+    "text": "往往更适合一个 Agent 连续推进。",
+    "segmentId": "c02-p04-u02",
+    "sceneId": "c02-p04"
+  },
+  {
+    "start": 71.863,
+    "end": 73.023,
+    "text": "还要检查经济性。",
+    "segmentId": "c02-p05-u01",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 73.023,
+    "end": 74.835,
+    "text": "Anthropic 的使用数据里，",
+    "segmentId": "c02-p05-u02",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 74.835,
+    "end": 77.605,
+    "text": "单 Agent 大约消耗普通聊天四倍的 token，",
+    "segmentId": "c02-p05-u02",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 77.605,
+    "end": 78.673,
+    "text": "多 Agent 大约是十五倍。",
+    "segmentId": "c02-p05-u02",
+    "sceneId": "c02-p05"
+  },
+  {
+    "start": 78.673,
+    "end": 82.873,
+    "text": "所以，多 Agent 应该留给价值足够高、错误代价足够大，",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 82.873,
+    "end": 85.335,
+    "text": "或者搜索广度会显著改变结果的任务，",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 85.335,
+    "end": 86.82,
+    "text": "而不是给简单问题增加仪式感。",
+    "segmentId": "c02-p06-u01",
+    "sceneId": "c02-p06"
+  },
+  {
+    "start": 86.82,
+    "end": 91.336,
+    "text": "把判断写成三个门：路径能否独立，单个上下文是否吃紧，",
+    "segmentId": "c02-p07-u01",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 91.336,
+    "end": 93.007,
+    "text": "结果价值能否覆盖额外成本。",
+    "segmentId": "c02-p07-u01",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 93.007,
+    "end": 95.107,
+    "text": "三个条件越齐，越值得并行。",
+    "segmentId": "c02-p07-u02",
+    "sceneId": "c02-p07"
+  },
+  {
+    "start": 95.107,
+    "end": 95.879,
+    "text": "本章小节。",
+    "segmentId": "c02-p08-u01",
+    "sceneId": "c02-p08"
+  },
+  {
+    "start": 95.879,
+    "end": 97.92,
+    "text": "第一，先找能独立推进的路径。",
+    "segmentId": "c02-p08-u02",
+    "sceneId": "c02-p08"
+  },
+  {
+    "start": 97.92,
+    "end": 100.807,
+    "text": "第二，共享状态越重，越应该谨慎拆分。",
+    "segmentId": "c02-p09-u01",
+    "sceneId": "c02-p09"
+  },
+  {
+    "start": 100.807,
+    "end": 103.656,
+    "text": "第三，高价值结果才配得上更高成本。",
+    "segmentId": "c02-p10-u01",
+    "sceneId": "c02-p10"
+  },
+  {
+    "start": 103.656,
+    "end": 107.872,
+    "text": "通过适配门之后，主 Agent 的核心工作不是亲自搜索，",
+    "segmentId": "c03-p01-u01",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 107.872,
+    "end": 110.335,
+    "text": "而是把问题拆成不会重复也不会漏掉的任务。",
+    "segmentId": "c03-p01-u01",
+    "sceneId": "c03-p01"
+  },
+  {
+    "start": 110.335,
+    "end": 112.612,
+    "text": "每个委派都要写清目标和预期输出。",
+    "segmentId": "c03-p02-u01",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 112.612,
+    "end": 116.599,
+    "text": "比如不是研究竞争对手，而是列出三家产品的定价、",
+    "segmentId": "c03-p02-u02",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 116.599,
+    "end": 117.992,
+    "text": "目标用户和可验证来源。",
+    "segmentId": "c03-p02-u02",
+    "sceneId": "c03-p02"
+  },
+  {
+    "start": 117.992,
+    "end": 119.973,
+    "text": "接着声明可用工具和来源边界。",
+    "segmentId": "c03-p03-u01",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 119.973,
+    "end": 123.62,
+    "text": "指定搜索、浏览或数据库，并说明优先使用原始来源，",
+    "segmentId": "c03-p03-u02",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 123.62,
+    "end": 126.269,
+    "text": "能减少子 Agent 在低质量材料里绕路。",
+    "segmentId": "c03-p03-u02",
+    "sceneId": "c03-p03"
+  },
+  {
+    "start": 126.269,
+    "end": 128.28,
+    "text": "还要告诉子 Agent 什么不要做。",
+    "segmentId": "c03-p04-u01",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 128.28,
+    "end": 131.509,
+    "text": "已经覆盖的地区、时间范围和结论格式都要明确，",
+    "segmentId": "c03-p04-u02",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 131.509,
+    "end": 134.209,
+    "text": "否则多个 Agent 很容易返回同一批信息。",
+    "segmentId": "c03-p04-u02",
+    "sceneId": "c03-p04"
+  },
+  {
+    "start": 134.209,
+    "end": 138.437,
+    "text": "Anthropic 把优秀委派总结为目标、输出格式、工具、",
+    "segmentId": "c03-p05-u01",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 138.437,
+    "end": 138.998,
+    "text": "来源和任务边界。",
+    "segmentId": "c03-p05-u01",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 138.998,
+    "end": 142.009,
+    "text": "主 Agent 还要根据第一轮发现继续调整分工。",
+    "segmentId": "c03-p05-u02",
+    "sceneId": "c03-p05"
+  },
+  {
+    "start": 142.009,
+    "end": 143.703,
+    "text": "先广后窄通常更有效。",
+    "segmentId": "c03-p06-u01",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 143.703,
+    "end": 145.142,
+    "text": "第一轮平行扫描线索，",
+    "segmentId": "c03-p06-u02",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 145.142,
+    "end": 148.08,
+    "text": "第二轮只让 Agent 深挖真正改变判断的分支。",
+    "segmentId": "c03-p06-u02",
+    "sceneId": "c03-p06"
+  },
+  {
+    "start": 148.08,
+    "end": 151.386,
+    "text": "最终回收的不只是结论，还要有证据链接、",
+    "segmentId": "c03-p07-u01",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 151.386,
+    "end": 152.868,
+    "text": "关键不确定项和停止原因。",
+    "segmentId": "c03-p07-u01",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 152.868,
+    "end": 155.768,
+    "text": "这样主 Agent 才能判断哪些结果可以合并。",
+    "segmentId": "c03-p07-u02",
+    "sceneId": "c03-p07"
+  },
+  {
+    "start": 155.768,
+    "end": 156.544,
+    "text": "本章小节。",
+    "segmentId": "c03-p08-u01",
+    "sceneId": "c03-p08"
+  },
+  {
+    "start": 156.544,
+    "end": 158.81,
+    "text": "第一，委派必须写清目标和输出。",
+    "segmentId": "c03-p08-u02",
+    "sceneId": "c03-p08"
+  },
+  {
+    "start": 158.81,
+    "end": 161.741,
+    "text": "第二，来源、工具和边界要一起交代。",
+    "segmentId": "c03-p09-u01",
+    "sceneId": "c03-p09"
+  },
+  {
+    "start": 161.741,
+    "end": 164.64,
+    "text": "第三，回收证据与未知项，不只收结论。",
+    "segmentId": "c03-p10-u01",
+    "sceneId": "c03-p10"
+  },
+  {
+    "start": 164.64,
+    "end": 166.977,
+    "text": "多 Agent 不等于越多越好，",
+    "segmentId": "c04-p01-u01",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 166.977,
+    "end": 169.658,
+    "text": "搜索力度应该跟问题复杂度和预期价值一起变化。",
+    "segmentId": "c04-p01-u01",
+    "sceneId": "c04-p01"
+  },
+  {
+    "start": 169.658,
+    "end": 171.835,
+    "text": "Anthropic 的经验示例里，",
+    "segmentId": "c04-p02-u01",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 171.835,
+    "end": 174.705,
+    "text": "简单事实可能只用一个 Agent 和三到十次工具调用。",
+    "segmentId": "c04-p02-u01",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 174.705,
+    "end": 176.57,
+    "text": "这个量级无需额外协调层。",
+    "segmentId": "c04-p02-u02",
+    "sceneId": "c04-p02"
+  },
+  {
+    "start": 176.57,
+    "end": 179.989,
+    "text": "需要对比多个对象时，可以使用两到四个 Agent，",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 179.989,
+    "end": 182.86,
+    "text": "每个 Agent 大约十到十五次工具调用，",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 182.86,
+    "end": 183.97,
+    "text": "让每条路径都有足够深度。",
+    "segmentId": "c04-p03-u01",
+    "sceneId": "c04-p03"
+  },
+  {
+    "start": 183.97,
+    "end": 187.703,
+    "text": "复杂研究可能使用十个以上子 Agent，但这不是默认答案。",
+    "segmentId": "c04-p04-u01",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 187.703,
+    "end": 191.043,
+    "text": "主 Agent 必须能够看见进度、发现重复，",
+    "segmentId": "c04-p04-u02",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 191.043,
+    "end": 192.334,
+    "text": "并在边际收益下降时停止。",
+    "segmentId": "c04-p04-u02",
+    "sceneId": "c04-p04"
+  },
+  {
+    "start": 192.334,
+    "end": 194.888,
+    "text": "同一个子 Agent 内也可以并行工具调用。",
+    "segmentId": "c04-p05-u01",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 194.888,
+    "end": 198.582,
+    "text": "Anthropic 建议复杂路径常用三到五个子 Agent，",
+    "segmentId": "c04-p05-u02",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 198.582,
+    "end": 200.749,
+    "text": "并让每个 Agent 同时使用三个以上工具。",
+    "segmentId": "c04-p05-u02",
+    "sceneId": "c04-p05"
+  },
+  {
+    "start": 200.749,
+    "end": 205.248,
+    "text": "当路径真的独立时，并行可让复杂查询耗时最多下降百分之九十。",
+    "segmentId": "c04-p06-u01",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 205.248,
+    "end": 206.955,
+    "text": "这个收益来自等待重叠，",
+    "segmentId": "c04-p06-u02",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 206.955,
+    "end": 209.532,
+    "text": "而不是让每个 Agent 思考得更聪明。",
+    "segmentId": "c04-p06-u02",
+    "sceneId": "c04-p06"
+  },
+  {
+    "start": 209.532,
+    "end": 212.793,
+    "text": "决策树的力度档位可以写成轻量、比较和深挖。",
+    "segmentId": "c04-p07-u01",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 212.793,
+    "end": 216.714,
+    "text": "每档规定 Agent 数、工具预算、停止条件和升级信号。",
+    "segmentId": "c04-p07-u02",
+    "sceneId": "c04-p07"
+  },
+  {
+    "start": 216.714,
+    "end": 217.498,
+    "text": "本章小节。",
+    "segmentId": "c04-p08-u01",
+    "sceneId": "c04-p08"
+  },
+  {
+    "start": 217.498,
+    "end": 219.932,
+    "text": "第一，先按复杂度选择力度档位。",
+    "segmentId": "c04-p08-u02",
+    "sceneId": "c04-p08"
+  },
+  {
+    "start": 219.932,
+    "end": 222.612,
+    "text": "第二，并行收益来自独立等待的重叠。",
+    "segmentId": "c04-p09-u01",
+    "sceneId": "c04-p09"
+  },
+  {
+    "start": 222.612,
+    "end": 225.357,
+    "text": "第三，边际收益下降时就停止扩张。",
+    "segmentId": "c04-p10-u01",
+    "sceneId": "c04-p10"
+  },
+  {
+    "start": 225.357,
+    "end": 227.918,
+    "text": "多 Agent 的路径会动态变化，",
+    "segmentId": "c05-p01-u01",
+    "sceneId": "c05-p01"
+  },
+  {
+    "start": 227.918,
+    "end": 230.692,
+    "text": "因此评估不能只检查它是否复现了一条固定步骤。",
+    "segmentId": "c05-p01-u01",
+    "sceneId": "c05-p01"
+  },
+  {
+    "start": 230.692,
+    "end": 234.902,
+    "text": "先看最终结果：事实是否正确，引用是否支持结论，",
+    "segmentId": "c05-p02-u01",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 234.902,
+    "end": 237.672,
+    "text": "问题是否覆盖完整，来源是否足够权威。",
+    "segmentId": "c05-p02-u01",
+    "sceneId": "c05-p02"
+  },
+  {
+    "start": 237.672,
+    "end": 241.005,
+    "text": "再看过程是否合理：任务拆分有没有重复或空白，",
+    "segmentId": "c05-p03-u01",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 241.005,
+    "end": 242.368,
+    "text": "工具调用是否有效，",
+    "segmentId": "c05-p03-u01",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 242.368,
+    "end": 245.311,
+    "text": "主 Agent 是否在新证据出现后调整了计划。",
+    "segmentId": "c05-p03-u01",
+    "sceneId": "c05-p03"
+  },
+  {
+    "start": 245.311,
+    "end": 249.71,
+    "text": "Anthropic 使用小样本人工评审，并把事实、引用、",
+    "segmentId": "c05-p04-u01",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 249.71,
+    "end": 252.248,
+    "text": "完整性、来源质量和工具效率放进评估标准。",
+    "segmentId": "c05-p04-u01",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 252.248,
+    "end": 254.399,
+    "text": "这里的重点是建立可解释的质量信号。",
+    "segmentId": "c05-p04-u02",
+    "sceneId": "c05-p04"
+  },
+  {
+    "start": 254.399,
+    "end": 258.964,
+    "text": "如果只给最终答案打分，系统可能靠高成本碰巧得到好结果；",
+    "segmentId": "c05-p05-u01",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 258.964,
+    "end": 261.976,
+    "text": "如果只要求固定轨迹，又会惩罚合理的新路径。",
+    "segmentId": "c05-p05-u01",
+    "sceneId": "c05-p05"
+  },
+  {
+    "start": 261.976,
+    "end": 265.196,
+    "text": "更稳妥的做法是把结果标准和过程护栏分开。",
+    "segmentId": "c05-p06-u01",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 265.196,
+    "end": 269.405,
+    "text": "结果必须达标，过程则允许多种路径，但要留下可审查证据。",
+    "segmentId": "c05-p06-u02",
+    "sceneId": "c05-p06"
+  },
+  {
+    "start": 269.405,
+    "end": 272.071,
+    "text": "对自己的系统，可以从十个真实问题开始。",
+    "segmentId": "c05-p07-u01",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 272.071,
+    "end": 275.566,
+    "text": "记录单 Agent 基线、答案质量、token、",
+    "segmentId": "c05-p07-u02",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 275.566,
+    "end": 277.658,
+    "text": "耗时和失败类型，再决定是否扩大并行。",
+    "segmentId": "c05-p07-u02",
+    "sceneId": "c05-p07"
+  },
+  {
+    "start": 277.658,
+    "end": 278.448,
+    "text": "本章小节。",
+    "segmentId": "c05-p08-u01",
+    "sceneId": "c05-p08"
+  },
+  {
+    "start": 278.448,
+    "end": 281.072,
+    "text": "第一，先评估事实、引用和覆盖度。",
+    "segmentId": "c05-p08-u02",
+    "sceneId": "c05-p08"
+  },
+  {
+    "start": 281.072,
+    "end": 283.857,
+    "text": "第二，允许动态路径，但过程要可解释。",
+    "segmentId": "c05-p09-u01",
+    "sceneId": "c05-p09"
+  },
+  {
+    "start": 283.857,
+    "end": 286.839,
+    "text": "第三，用真实基线判断并行是否值得。",
+    "segmentId": "c05-p10-u01",
+    "sceneId": "c05-p10"
+  },
+  {
+    "start": 286.839,
+    "end": 288.021,
+    "text": "研究演示能跑通，",
+    "segmentId": "c06-p01-u01",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 288.021,
+    "end": 291.178,
+    "text": "不代表多 Agent 系统已经能在生产中稳定恢复。",
+    "segmentId": "c06-p01-u01",
+    "sceneId": "c06-p01"
+  },
+  {
+    "start": 291.178,
+    "end": 294.976,
+    "text": "每个子 Agent 都可能超时、工具报错或返回空结果。",
+    "segmentId": "c06-p02-u01",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 294.976,
+    "end": 298.827,
+    "text": "主 Agent 需要保存任务状态，让失败只重跑受影响的路径。",
+    "segmentId": "c06-p02-u02",
+    "sceneId": "c06-p02"
+  },
+  {
+    "start": 298.827,
+    "end": 303.231,
+    "text": "检查点至少记录任务、负责人、当前状态、证据位置和下一步。",
+    "segmentId": "c06-p03-u01",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 303.231,
+    "end": 307.633,
+    "text": "这样进程重启后不必从头搜索，也不会把旧结果误当成新结果。",
+    "segmentId": "c06-p03-u02",
+    "sceneId": "c06-p03"
+  },
+  {
+    "start": 307.633,
+    "end": 309.178,
+    "text": "可观测性要穿过整个树。",
+    "segmentId": "c06-p04-u01",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 309.178,
+    "end": 313.106,
+    "text": "为每次委派、工具调用、重试和汇总保留 trace，",
+    "segmentId": "c06-p04-u02",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 313.106,
+    "end": 315.865,
+    "text": "才能分清是搜索失败、协调失败还是合并失败。",
+    "segmentId": "c06-p04-u02",
+    "sceneId": "c06-p04"
+  },
+  {
+    "start": 315.865,
+    "end": 316.83,
+    "text": "发布也要渐进。",
+    "segmentId": "c06-p05-u01",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 316.83,
+    "end": 320.503,
+    "text": "Anthropic 提到彩虹部署，让新旧版本同时运行，",
+    "segmentId": "c06-p05-u02",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 320.503,
+    "end": 323.089,
+    "text": "避免正在执行的 Agent 因代码切换而中断。",
+    "segmentId": "c06-p05-u02",
+    "sceneId": "c06-p05"
+  },
+  {
+    "start": 323.089,
+    "end": 324.828,
+    "text": "当前架构还有一个同步瓶颈：",
+    "segmentId": "c06-p06-u01",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 324.828,
+    "end": 327.716,
+    "text": "主 Agent 等所有子 Agent 返回后再继续。",
+    "segmentId": "c06-p06-u01",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 327.716,
+    "end": 331.916,
+    "text": "异步能够更快，但会引入优先级、并发和结果合并的新复杂度。",
+    "segmentId": "c06-p06-u02",
+    "sceneId": "c06-p06"
+  },
+  {
+    "start": 331.916,
+    "end": 336.605,
+    "text": "因此生产清单是状态持久化、路径级重试、端到端追踪、",
+    "segmentId": "c06-p07-u01",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 336.605,
+    "end": 338.272,
+    "text": "渐进发布和明确停止规则。",
+    "segmentId": "c06-p07-u01",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 338.272,
+    "end": 340.732,
+    "text": "速度只是最后的结果，不是唯一目标。",
+    "segmentId": "c06-p07-u02",
+    "sceneId": "c06-p07"
+  },
+  {
+    "start": 340.732,
+    "end": 341.517,
+    "text": "本章小节。",
+    "segmentId": "c06-p08-u01",
+    "sceneId": "c06-p08"
+  },
+  {
+    "start": 341.517,
+    "end": 343.723,
+    "text": "第一，把状态和证据写出进程。",
+    "segmentId": "c06-p08-u02",
+    "sceneId": "c06-p08"
+  },
+  {
+    "start": 343.723,
+    "end": 346.637,
+    "text": "第二，只重试失败路径，并保留完整 trace。",
+    "segmentId": "c06-p09-u01",
+    "sceneId": "c06-p09"
+  },
+  {
+    "start": 346.637,
+    "end": 349.9,
+    "text": "第三，用渐进发布和停止规则保护生产。",
+    "segmentId": "c06-p10-u01",
+    "sceneId": "c06-p10"
+  },
+  {
+    "start": 349.9,
+    "end": 354.537,
+    "text": "把决策树串起来：先问路径能否独立，再问上下文是否吃紧，",
+    "segmentId": "c07-p01-u01",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 354.537,
+    "end": 356.342,
+    "text": "然后确认结果价值能覆盖成本。",
+    "segmentId": "c07-p01-u01",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 356.342,
+    "end": 359.51,
+    "text": "通过之后，才进入委派、力度、评估和恢复。",
+    "segmentId": "c07-p01-u02",
+    "sceneId": "c07-p01"
+  },
+  {
+    "start": 359.51,
+    "end": 363.374,
+    "text": "如果任务共享状态很重，或者一个 Agent 已能稳定完成，",
+    "segmentId": "c07-p02-u01",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 363.374,
+    "end": 364.234,
+    "text": "就保留单 Agent。",
+    "segmentId": "c07-p02-u01",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 364.234,
+    "end": 366.881,
+    "text": "多 Agent 是一种任务架构，不是能力勋章。",
+    "segmentId": "c07-p02-u02",
+    "sceneId": "c07-p02"
+  },
+  {
+    "start": 366.881,
+    "end": 372.231,
+    "text": "下一次做深度研究时，先画出三条候选路径，并给每条写一行目标、",
+    "segmentId": "c07-p03-u01",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 372.231,
+    "end": 373.596,
+    "text": "来源、输出和停止条件。",
+    "segmentId": "c07-p03-u01",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 373.596,
+    "end": 377.38,
+    "text": "能独立推进，再开并行；不能，就让一个 Agent 继续做完。",
+    "segmentId": "c07-p03-u02",
+    "sceneId": "c07-p03"
+  },
+  {
+    "start": 377.38,
+    "end": 380.267,
+    "text": "关注 Tiny Agent，成为更擅长使用 AI 的人！",
+    "segmentId": "c07-p04-u01",
+    "sceneId": "c07-p04"
+  }
+]

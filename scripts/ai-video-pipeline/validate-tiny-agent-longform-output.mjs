@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
@@ -49,6 +50,10 @@ function isTrue(value, label) {
   if (value !== true) fail(`${label}: expected true, received ${JSON.stringify(value)}`);
 }
 
+function normalizeSemanticText(value) {
+  return String(value ?? '').replace(/\s+/g, '').toLocaleLowerCase();
+}
+
 function sceneList(scenePlan) {
   return (scenePlan.chapters ?? []).flatMap((chapter) => chapter.scenes ?? []);
 }
@@ -57,15 +62,42 @@ function assetName(entry) {
   return path.basename(entry.file ?? entry.path ?? entry.asset ?? '');
 }
 
+function sha256(buffer) {
+  return createHash('sha256').update(buffer).digest('hex');
+}
+
+function projectRunKey(projectPath) {
+  return projectPath.match(/\b(\d{4}-\d{2}-\d{2}-03)\b/)?.[1] ?? null;
+}
+
+function ruleIsEffective(rule, projectPath) {
+  if (!rule?.effectiveFromRunKey) return true;
+  const runKey = projectRunKey(projectPath);
+  return runKey === null || runKey >= rule.effectiveFromRunKey;
+}
+
 const profile = JSON.parse(
   fs.readFileSync(
     path.join(root, 'scripts/ai-video-pipeline/style-guides/tiny-agent-longform-active-profile.zh-CN.json'),
     'utf8'
   )
 );
+const snapshotManifest = JSON.parse(
+  fs.readFileSync(path.join(root, profile.sourceSnapshot.manifest), 'utf8')
+);
+const frozenImplementationSource = snapshotManifest.frozenRuleSources.find(
+  (source) => source.path.endsWith('/implementation-profile.zh-CN.json')
+);
+if (!frozenImplementationSource) {
+  throw new Error('Active snapshot manifest does not name its frozen implementation profile');
+}
+const frozenImplementationProfile = JSON.parse(
+  fs.readFileSync(path.join(root, frozenImplementationSource.path), 'utf8')
+);
 const overrides = profile.postSnapshotUserOverrides ?? {};
 const opening = overrides.openingQuestionReadability ?? {};
 const recapRule = overrides.chapterRecapNarration?.screenCopy ?? {};
+const bilingualParityRule = overrides.englishChineseProductionParity ?? {};
 const episode = readJson('episode.json');
 const summary = readJson('summary.json');
 const scenePlan = readJson('scene-plan.json');
@@ -78,13 +110,27 @@ const onScreenTextCompletenessReport = readJson('qa/on-screen-text-completeness-
 const finalCaptionCues = readJson('captions/cues.json');
 const recapReport = readJson('qa/recap-visual-copy-report.json');
 const alphaReport = readJson('qa/generated-art-alpha-report.json');
+const visualVariationReport = readJson('qa/visual-variation-report.json');
+const motionReport = readJson('qa/motion-report.json');
+const progressReport = readJson('qa/progress-report.json');
+const highlightLayoutReport = readJson('qa/highlight-layout-report.json');
+const internalPropStyleReport = readJson('qa/internal-prop-style-report.json');
+const visualCadenceReport = readJson('qa/visual-cadence-report.json');
+const speechPacingReport = readJson('qa/speech-pacing-report.json');
+const videoOutputReport = readJson('qa/video-output-report.json');
+const transitionReport = readJson('qa/transitions-report.json');
+const semanticsReport = readJson('qa/semantics-report.json');
+const balanceReport = readJson('qa/balance-report.json');
+const domLayoutReport = readJson('qa/dom-layout-report.json');
 const scenes = sceneList(scenePlan);
 const recaps = scenes.filter((scene) => scene.type === 'recap');
 const generated = scenes.filter((scene) => scene.temporaryGenerated || scene.generatedArt);
-const forbiddenRecapMarker = /本章小节|Chapter\s+recap|^(?:第?[一二三]|First|Second|Third)[，、.:：]|^\s*[123][.、]/i;
+const forbiddenRecapMarker = /本章小节|Chapter\s+recap|^(?:第?[一二三]|First|Second|Third)[，,、.:：]|^\s*[123][.、]/i;
 const locale = episode.locale;
 const expectedAudio = profile.fixedBilingualGeneration?.[locale];
 const durationRange = profile.fixedBilingualGeneration?.durationSeconds;
+const bilingualParityRequired = bilingualParityRule.status === 'active'
+  && ruleIsEffective(bilingualParityRule, project);
 
 if (!['zh-CN', 'en-US'].includes(locale)) {
   fail(`episode.json locale: unsupported ${JSON.stringify(locale)}`);
@@ -301,6 +347,40 @@ if (hookQualityRule.status !== 'active' || !Array.isArray(hookQualityRule.allowe
   if (hookQualityRule.requireUnresolvedCuriosity && hookQualityReport.checks?.unresolvedCuriosity !== true) {
     fail('opening hook quality: unresolved curiosity is missing');
   }
+  if (hookQualityRule.requireDirectEpisodeTopic) {
+    const directTopicTerms = Array.isArray(hookQualityReport.directTopicTerms)
+      ? hookQualityReport.directTopicTerms.map((term) => String(term).trim()).filter(Boolean)
+      : [];
+    const concreteTopicTerms = directTopicTerms.filter((term) => {
+      const normalized = normalizeSemanticText(term);
+      return normalized.length >= 3 && !/^(?:ai-?agents?|智能体)$/.test(normalized);
+    });
+    const normalizedQuestion = normalizeSemanticText(hookQualityReport.visibleQuestion);
+    const allTermsPresent = concreteTopicTerms.length > 0
+      && concreteTopicTerms.every((term) => normalizedQuestion.includes(normalizeSemanticText(term)));
+    if (!allTermsPresent || hookQualityReport.checks?.directEpisodeTopic !== true) {
+      fail('opening hook quality: directTopicTerms must name the concrete episode topic in the visible question');
+    }
+  }
+  if (hookQualityRule.requireViewerValueOrCuriosity) {
+    if (
+      typeof hookQualityReport.viewerValue !== 'string'
+      || hookQualityReport.viewerValue.trim().length < 12
+      || hookQualityReport.checks?.viewerValueOrCuriosity !== true
+    ) {
+      fail('opening hook quality: viewer value or useful curiosity is missing');
+    }
+  }
+  if (hookQualityRule.forbidTangentialScenarioSetup) {
+    if (
+      hookQualityReport.tangentialSetupRisk !== 'none'
+      || typeof hookQualityReport.topicAlignmentRationale !== 'string'
+      || hookQualityReport.topicAlignmentRationale.trim().length < 12
+      || hookQualityReport.checks?.noTangentialScenarioSetup !== true
+    ) {
+      fail('opening hook quality: tangential scenario setup is present or not reviewed');
+    }
+  }
   if (hookQualityReport.checks?.causalOrDiscoveryForm !== true || hookQualityReport.checks?.noObviousYesNoForm !== true) {
     fail('opening hook quality: question must use a causal/discovery form and cannot be an obvious yes-or-no question');
   }
@@ -381,7 +461,7 @@ if (compactTextBlock.status !== 'active') {
 const uniformTypography = opening.uniformAdaptiveTypography ?? {};
 if (uniformTypography.status !== 'active') {
   fail('active profile: opening uniform-adaptive-typography rule is missing or inactive');
-} else if (uniformTypography.scope?.includes(locale)) {
+} else if (uniformTypography.scope?.includes(locale) && ruleIsEffective(uniformTypography, project)) {
   const typographyMeasurement = openingReport.domMeasurement?.typography ?? {};
   isTrue(typographyMeasurement.uniformFontSizePass, 'opening typography uniformFontSizePass');
   isTrue(typographyMeasurement.fontFamilyPass, 'opening typography fontFamilyPass');
@@ -396,7 +476,24 @@ if (uniformTypography.status !== 'active') {
   if (typographyMeasurement.fontWeight !== String(uniformTypography.fontWeight)) {
     fail(`opening typography fontWeight: expected ${uniformTypography.fontWeight}, received ${JSON.stringify(typographyMeasurement.fontWeight)}`);
   }
-  const expectedAccentTokens = uniformTypography.accentTokens?.[locale] ?? [];
+  const accentTokenContract = uniformTypography.accentTokenContract ?? {};
+  const expectedAccentTokens = episode.openingAccentTokens ?? [];
+  if (!Array.isArray(expectedAccentTokens) || expectedAccentTokens.length === 0) {
+    fail('opening typography accent: episode.openingAccentTokens is required');
+  }
+  const expectedTones = new Set(expectedAccentTokens.map((entry) => entry?.tone));
+  for (const requiredTone of accentTokenContract.requiredTones ?? []) {
+    if (!expectedTones.has(requiredTone)) {
+      fail(`opening typography accent: missing required tone ${requiredTone}`);
+    }
+  }
+  const identityEntry = expectedAccentTokens.find((entry) => entry?.tone === 'identity');
+  if (!normalizeSemanticText(identityEntry?.token).includes(normalizeSemanticText(accentTokenContract.identityToken))) {
+    fail(`opening typography accent: identity token must include ${accentTokenContract.identityToken}`);
+  }
+  if (new Set(typographyMeasurement.lineFontSizesPx ?? []).size !== 1) {
+    fail('opening typography lineFontSizesPx: every line must use one shared final size');
+  }
   const accentRuns = typographyMeasurement.accentRuns ?? [];
   for (const expectedAccent of expectedAccentTokens) {
     const normalizedExpected = String(expectedAccent.token).replace(/\s+/g, '');
@@ -420,8 +517,217 @@ for (const [key, expected] of Object.entries({ progressRailPresent: false, leftB
 try {
   const html = fs.readFileSync(path.join(project, 'index.html'), 'utf8');
   if (html.includes('id="hook-voice"')) fail('index.html: forbidden opening voice/progress UI remains in the DOM');
+  const frozenVisual = frozenImplementationProfile.visual ?? {};
+  const requiredTokens = [
+    'id="chapter-progress"',
+    'class="caption-cue"',
+    `font-size:${frozenVisual.captionPx}px`,
+    `border:${frozenVisual.captionBorderPx}px solid var(--ink)`,
+    `height:${snapshotManifest.generationContract.visual.chapterBar.match(/(\d+)px/)?.[1]}px`,
+  ];
+  for (const token of requiredTokens) {
+    if (!html.includes(token)) fail(`index.html: frozen visual token is missing: ${token}`);
+  }
 } catch (error) {
   fail(`index.html: ${error.message}`);
+}
+
+const frozenVisual = frozenImplementationProfile.visual ?? {};
+const eligibleScenes = scenes.filter((scene) => scene.type !== 'outro');
+const generatedScenes = eligibleScenes.filter((scene) => scene.temporaryGenerated || scene.generatedArt);
+const generatedRatio = generatedScenes.length / Math.max(1, eligibleScenes.length);
+const generatedRatioMatch = snapshotManifest.generationContract.visual.temporaryGeneratedSceneRatio.match(/(\d+)-(\d+)/);
+const generatedRatioMinimum = generatedRatioMatch ? Number(generatedRatioMatch[1]) / 100 : frozenVisual.temporaryGeneratedSceneRatioMinimum;
+const generatedRatioMaximum = generatedRatioMatch ? Number(generatedRatioMatch[2]) / 100 : 0.2;
+
+isTrue(visualVariationReport.pass, 'qa/visual-variation-report.json pass');
+if (visualVariationReport.eligibleScenes !== eligibleScenes.length
+  || visualVariationReport.generatedSceneCount !== generatedScenes.length
+  || Math.abs((visualVariationReport.generatedRatio ?? -1) - Number(generatedRatio.toFixed(4))) > 0.0001) {
+  fail('qa/visual-variation-report.json: scene counts or generated-art ratio are stale');
+}
+inRange(generatedRatio, { min: generatedRatioMinimum, max: generatedRatioMaximum }, 'temporary generated-art scene ratio');
+if ((visualVariationReport.humanVisibleScenes ?? 0) < 1 || (visualVariationReport.agentVisibleScenes ?? 0) < 1) {
+  fail('qa/visual-variation-report.json: frozen human and Tiny Agent visual roles are missing');
+}
+
+let previousLayout;
+let consecutiveLayoutCount = 0;
+for (const scene of scenes.filter((candidate) => !['recap', 'outro'].includes(candidate.type))) {
+  if (scene.layout === previousLayout) {
+    consecutiveLayoutCount += 1;
+  } else {
+    previousLayout = scene.layout;
+    consecutiveLayoutCount = 1;
+  }
+  if (consecutiveLayoutCount > 2) {
+    fail(`scene-plan.json: layout ${scene.layout} repeats more than twice at ${scene.id}`);
+  }
+}
+for (const chapter of (scenePlan.chapters ?? []).slice(1, -1)) {
+  const chapterScenes = (chapter.scenes ?? []).filter((scene) => !['recap', 'outro'].includes(scene.type));
+  const chapterDuration = (chapter.scenes?.at(-1)?.end ?? 0) - (chapter.scenes?.[0]?.start ?? 0);
+  const requiredLayouts = chapterDuration > 60 ? 3 : 2;
+  const distinctLayouts = new Set(chapterScenes.map((scene) => scene.layout)).size;
+  if (distinctLayouts < requiredLayouts) {
+    fail(`scene-plan.json: ${chapter.label ?? chapter.title} requires ${requiredLayouts} frozen layout families, received ${distinctLayouts}`);
+  }
+}
+
+isTrue(motionReport.pass, 'qa/motion-report.json pass');
+if (motionReport.typeCount < frozenVisual.motionTypeMinimum
+  || motionReport.beatCount < frozenVisual.motionBeatMinimum) {
+  fail(`qa/motion-report.json: expected at least ${frozenVisual.motionTypeMinimum} motion types and ${frozenVisual.motionBeatMinimum} motion beats`);
+}
+const motionScenes = scenes.filter((scene) => scene.motionType && scene.type !== 'recap');
+if (motionReport.beatCount !== motionScenes.length
+  || motionReport.typeCount !== new Set(motionScenes.map((scene) => scene.motionType)).size) {
+  fail('qa/motion-report.json: motion evidence is stale');
+}
+
+isTrue(progressReport.pass, 'qa/progress-report.json pass');
+if (progressReport.widthPx !== 1920
+  || progressReport.heightPx !== 52
+  || progressReport.playedColor !== '#A8D8F0'
+  || progressReport.unplayedColor !== '#DDE0DA'
+  || progressReport.labelColor !== frozenVisual.ink
+  || progressReport.visibleAt !== timingMap.hookTiming?.hookTimelineCutAt && progressReport.visibleAt !== timingMap.checkpoints?.hookTimelineCutAt) {
+  fail('qa/progress-report.json: frozen full-width chapter rail contract is not satisfied');
+}
+
+isTrue(visualCadenceReport.pass, 'qa/visual-cadence-report.json pass');
+const referenceCadence = snapshotManifest.implementationReference.chinese;
+if (visualCadenceReport.sceneCount !== scenes.length
+  || visualCadenceReport.chapterCount !== (scenePlan.chapters ?? []).length
+  || visualCadenceReport.recapSceneCount !== recaps.length) {
+  fail('qa/visual-cadence-report.json: current scene, chapter, or recap counts are stale');
+}
+if (visualCadenceReport.referenceComparison?.reference?.scenes !== referenceCadence.sceneCount
+  || visualCadenceReport.referenceComparison?.reference?.chapters !== referenceCadence.chapterCount
+  || visualCadenceReport.referenceComparison?.reference?.recaps !== referenceCadence.recapSceneCount
+  || !visualCadenceReport.referenceComparison?.reason) {
+  fail('qa/visual-cadence-report.json: frozen 63/7/15 comparison or episode-specific variance reason is missing');
+}
+
+isTrue(speechPacingReport.pass, 'qa/speech-pacing-report.json pass');
+if (speechPacingReport.locale !== locale
+  || speechPacingReport.voice !== expectedAudio?.voice
+  || speechPacingReport.rate !== expectedAudio?.rate
+  || speechPacingReport.durationSeconds !== timingMap.duration
+  || speechPacingReport.timingAuthority !== 'final-vtt') {
+  fail('qa/speech-pacing-report.json: locale, voice, rate, duration, or final-VTT authority is stale');
+}
+
+isTrue(videoOutputReport.pass, 'qa/video-output-report.json pass');
+const renderedFilePath = path.join(project, videoOutputReport.renderedFile ?? '');
+inRange(videoOutputReport.durationSeconds, durationRange ?? {}, 'qa/video-output-report.json durationSeconds');
+if (Math.abs((videoOutputReport.durationSeconds ?? 0) - timingMap.duration) > 0.1) {
+  fail('qa/video-output-report.json: rendered duration differs from the final timing map by more than 100ms');
+}
+if (videoOutputReport.pendingRender === true) {
+  const expected = videoOutputReport.expected ?? {};
+  if (expected.width !== 1920
+    || expected.height !== 1080
+    || expected.fps !== 30
+    || expected.videoCodec !== 'h264'
+    || expected.audioCodec !== 'aac'
+    || expected.pixelFormat !== 'yuv420p'
+    || expected.colorSpace !== 'bt709'
+    || expected.colorTransfer !== 'bt709'
+    || expected.colorPrimaries !== 'bt709'
+    || expected.blackDetectThresholdSeconds !== 0.5) {
+    fail('qa/video-output-report.json: pre-render technical-output contract is incomplete');
+  }
+  if (fs.existsSync(renderedFilePath)) {
+    fail('qa/video-output-report.json: pending-render validation requires the stale delivery file to be archived before rendering');
+  }
+} else {
+  if (videoOutputReport.pendingRender !== false
+    || videoOutputReport.width !== 1920
+    || videoOutputReport.height !== 1080
+    || videoOutputReport.fps !== 30
+    || videoOutputReport.videoCodec !== 'h264'
+    || videoOutputReport.audioCodec !== 'aac'
+    || videoOutputReport.pixelFormat !== 'yuv420p'
+    || videoOutputReport.colorSpace !== 'bt709'
+    || videoOutputReport.colorTransfer !== 'bt709'
+    || videoOutputReport.colorPrimaries !== 'bt709'
+    || videoOutputReport.blackDetect?.detected !== false) {
+    fail('qa/video-output-report.json: rendered 1920x1080/30fps H.264/AAC BT.709 or black-frame evidence is invalid');
+  }
+  if (!fs.existsSync(renderedFilePath)) {
+    fail(`qa/video-output-report.json: rendered file is missing: ${JSON.stringify(videoOutputReport.renderedFile)}`);
+  }
+}
+
+for (const [report, label] of [
+  [highlightLayoutReport, 'qa/highlight-layout-report.json pass'],
+  [internalPropStyleReport, 'qa/internal-prop-style-report.json pass'],
+  [transitionReport, 'qa/transitions-report.json pass'],
+  [semanticsReport, 'qa/semantics-report.json pass'],
+  [balanceReport, 'qa/balance-report.json pass'],
+  [domLayoutReport, 'qa/dom-layout-report.json pass'],
+]) {
+  isTrue(report.pass, label);
+}
+
+if (bilingualParityRequired) {
+  const parityReportPath = path.join(project, bilingualParityRule.qa?.report ?? 'qa/bilingual-parity-report.json');
+  let parityReport = {};
+  let parityReportBuffer = Buffer.alloc(0);
+  try {
+    parityReportBuffer = fs.readFileSync(parityReportPath);
+    parityReport = JSON.parse(parityReportBuffer.toString('utf8'));
+  } catch (error) {
+    fail(`qa/bilingual-parity-report.json: ${error.message}`);
+  }
+  isTrue(parityReport.pass, 'qa/bilingual-parity-report.json pass');
+  if (parityReport.contractProfileId !== profile.profileId) {
+    fail(`qa/bilingual-parity-report.json contractProfileId: expected ${profile.profileId}, received ${JSON.stringify(parityReport.contractProfileId)}`);
+  }
+  if (parityReport.parityContract?.effectiveFromRunKey !== bilingualParityRule.effectiveFromRunKey
+    || parityReport.parityContract?.geometryProfileId !== bilingualParityRule.cover16x9?.geometryProfileId) {
+    fail('qa/bilingual-parity-report.json: active parity contract identity is stale or mismatched');
+  }
+  const pairProject = locale === 'en-US'
+    ? parityReport.pair?.englishProject
+    : parityReport.pair?.chineseProject;
+  if (!pairProject || path.resolve(pairProject) !== project) {
+    fail(`qa/bilingual-parity-report.json pair: current ${locale} project is not the validated project`);
+  }
+  if (parityReport.pair?.runKey !== projectRunKey(project)) {
+    fail(`qa/bilingual-parity-report.json runKey: expected ${projectRunKey(project)}, received ${JSON.stringify(parityReport.pair?.runKey)}`);
+  }
+  const localeHashes = parityReport.artifactHashes?.[locale] ?? {};
+  for (const [relativePath, expectedHash] of Object.entries(localeHashes)) {
+    const file = path.join(project, relativePath);
+    try {
+      const actualHash = sha256(fs.readFileSync(file));
+      if (actualHash !== expectedHash) {
+        fail(`qa/bilingual-parity-report.json stale artifact ${relativePath}: expected ${expectedHash}, received ${actualHash}`);
+      }
+    } catch (error) {
+      fail(`qa/bilingual-parity-report.json artifact ${relativePath}: ${error.message}`);
+    }
+  }
+  const siblingProject = locale === 'en-US'
+    ? parityReport.pair?.chineseProject
+    : parityReport.pair?.englishProject;
+  if (!siblingProject) {
+    fail('qa/bilingual-parity-report.json pair: sibling project is missing');
+  } else {
+    try {
+      const siblingReport = fs.readFileSync(path.join(
+        path.resolve(siblingProject),
+        bilingualParityRule.qa?.report ?? 'qa/bilingual-parity-report.json',
+      ));
+      if (!parityReportBuffer.equals(siblingReport)) {
+        fail('qa/bilingual-parity-report.json: locale reports are not byte-identical');
+      }
+    } catch (error) {
+      fail(`qa/bilingual-parity-report.json sibling: ${error.message}`);
+    }
+  }
 }
 
 isTrue(alphaReport.pass, 'qa/generated-art-alpha-report.json pass');

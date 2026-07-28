@@ -1,0 +1,1893 @@
+{
+  "locale": "en-US",
+  "profile": "tiny-agent-longform-kinetic-retention-2026-07-23-en-US",
+  "bilingualContractId": "2026-07-28-03-multi-agent-research-decision-v1",
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "label": "Introduction",
+      "scenes": [
+        {
+          "id": "c01-p01",
+          "chapter": "Introduction",
+          "chapterNumber": 1,
+          "paragraphNumber": 1,
+          "narration": "How should AI Agents research in parallel? First, test task fit.",
+          "headline": "When one agent is not enough",
+          "recapDisplayText": null,
+          "coreLabel": "When one agent is not enough",
+          "type": "hook",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "ask-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "question"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 0,
+          "end": 4.188
+        },
+        {
+          "id": "c01-p02",
+          "chapter": "Introduction",
+          "chapterNumber": 1,
+          "paragraphNumber": 2,
+          "narration": "Anthropic draws a useful boundary in its multi-agent research retrospective. Parallelism expands search breadth, but the coordination cost is worthwhile only when independent paths, a valuable result, and enough room for tool use appear together.",
+          "headline": "Anthropic’s multi-agent boundary",
+          "recapDisplayText": null,
+          "coreLabel": "Anthropic’s multi-agent boundary",
+          "type": "authority",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "review-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "parallel-agents"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 4.188,
+          "end": 15.028
+        },
+        {
+          "id": "c01-p03",
+          "chapter": "Introduction",
+          "chapterNumber": 1,
+          "paragraphNumber": 3,
+          "narration": "In Anthropic’s internal research evaluation, an Opus 4 lead agent with Sonnet 4 subagents outperformed a single Opus 4 agent by 90.2 percent. That number belongs to one internal evaluation, not a promise for every task.",
+          "headline": "90.2% was an internal evaluation",
+          "recapDisplayText": null,
+          "coreLabel": "90.2% was an internal evaluation",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 15.028,
+          "end": 25.964
+        },
+        {
+          "id": "c01-p04",
+          "chapter": "Introduction",
+          "chapterNumber": 1,
+          "paragraphNumber": 4,
+          "narration": "In this episode, we will build a single-versus-multi-agent decision tree. We will test fit, define delegation, size the search, evaluate evidence, and add the recovery controls a production system needs.",
+          "headline": "Single vs. multi-agent decision tree",
+          "recapDisplayText": null,
+          "coreLabel": "Single vs. multi-agent decision tree",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "nudge",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 25.964,
+          "end": 35.574
+        },
+        {
+          "id": "c01-p05",
+          "chapter": "Introduction",
+          "chapterNumber": 1,
+          "paragraphNumber": 5,
+          "narration": "This video is packed with practical value to help you become better at using AI. It is a longer episode, so follow and save it for later.",
+          "headline": "Save this high-value guide",
+          "recapDisplayText": null,
+          "coreLabel": "Save this high-value guide",
+          "type": "promise",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "split-tilt",
+          "human": "write-front",
+          "humanDirection": "front",
+          "agent": "handoff-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "task-list"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 35.574,
+          "end": 41.634
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "label": "Pass the fit gate",
+      "scenes": [
+        {
+          "id": "c02-p01",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 1,
+          "narration": "The first move is not adding agents. It is deciding whether the problem contains independent exploration paths that deserve parallel work.",
+          "headline": "Test whether the task can split",
+          "recapDisplayText": null,
+          "coreLabel": "Test whether the task can split",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "review-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 41.634,
+          "end": 47.561
+        },
+        {
+          "id": "c02-p02",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 2,
+          "narration": "Research often fits because an answer may require several directions. Market, technology, user, and risk research can proceed separately before the lead agent compresses them into one conclusion.",
+          "headline": "Research has parallel paths",
+          "recapDisplayText": null,
+          "coreLabel": "Research has parallel paths",
+          "type": "generic",
+          "layout": "big-text",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "parallel-agents"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 47.561,
+          "end": 56.352
+        },
+        {
+          "id": "c02-p03",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 3,
+          "narration": "Subagents also help when one context window would otherwise hold too many sources, tool results, and working hypotheses. Each path can return a compact, high-signal research summary.",
+          "headline": "Subagents compress signal",
+          "recapDisplayText": null,
+          "coreLabel": "Subagents compress signal",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "spin-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "summary"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 56.352,
+          "end": 65.112
+        },
+        {
+          "id": "c02-p04",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 4,
+          "narration": "But decomposition creates synchronization when every step depends on the exact state produced by the previous step. Many coding tasks share one codebase and test state, so one continuous agent may fit better.",
+          "headline": "Shared state resists splitting",
+          "recapDisplayText": null,
+          "coreLabel": "Shared state resists splitting",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "sine-float",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "blocked-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "dependency"
+            },
+            {
+              "id": "dependency"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 65.112,
+          "end": 74.364
+        },
+        {
+          "id": "c02-p05",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 5,
+          "narration": "Economics matters too. In Anthropic’s usage data, agents used about four times the tokens of chat interactions, while multi-agent systems used about fifteen times as many.",
+          "headline": "Multi-agent used about 15x tokens",
+          "recapDisplayText": null,
+          "coreLabel": "Multi-agent used about 15x tokens",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 74.364,
+          "end": 82.387
+        },
+        {
+          "id": "c02-p06",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 6,
+          "narration": "That makes multi-agent work sensible for valuable outcomes, expensive mistakes, or questions where search breadth can materially change the answer. It should not add ceremony to a simple request.",
+          "headline": "Scale only for valuable work",
+          "recapDisplayText": null,
+          "coreLabel": "Scale only for valuable work",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spring-pop",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "reason-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 82.387,
+          "end": 90.856
+        },
+        {
+          "id": "c02-p07",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 7,
+          "narration": "Turn the decision into three gates. Can paths run independently? Is one context becoming overloaded? Can the value of the result cover the extra cost? The more gates pass, the stronger the case for parallelism.",
+          "headline": "The three fit gates",
+          "recapDisplayText": null,
+          "coreLabel": "The three fit gates",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-delegation.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "nudge",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "checklist"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 90.856,
+          "end": 100.24
+        },
+        {
+          "id": "c02-p08",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 8,
+          "narration": "Chapter recap. First, look for paths that can progress independently.",
+          "headline": "Paths must be independent",
+          "recapDisplayText": "Paths must be independent",
+          "coreLabel": "Paths must be independent",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 100.24,
+          "end": 103.505
+        },
+        {
+          "id": "c02-p09",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 9,
+          "narration": "Second, be cautious when the task depends on heavily shared state.",
+          "headline": "Shared state demands caution",
+          "recapDisplayText": "Shared state demands caution",
+          "coreLabel": "Shared state demands caution",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "dependency"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 103.505,
+          "end": 106.549
+        },
+        {
+          "id": "c02-p10",
+          "chapter": "Pass the fit gate",
+          "chapterNumber": 2,
+          "paragraphNumber": 10,
+          "narration": "Third, reserve the higher cost for high-value outcomes.",
+          "headline": "Value must cover cost",
+          "recapDisplayText": "Value must cover cost",
+          "coreLabel": "Value must cover cost",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 106.549,
+          "end": 109.404
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "label": "Write a delegation contract",
+      "scenes": [
+        {
+          "id": "c03-p01",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 1,
+          "narration": "After the fit gate, the lead agent’s main job is not searching. It is dividing the question into assignments that do not overlap and do not leave gaps.",
+          "headline": "The lead agent decomposes",
+          "recapDisplayText": null,
+          "coreLabel": "The lead agent decomposes",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "operate-right",
+          "humanDirection": "right",
+          "agent": "delegate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "workflow"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 109.404,
+          "end": 115.842
+        },
+        {
+          "id": "c03-p02",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 2,
+          "narration": "Every delegation should name an objective and the expected output. Instead of saying research competitors, ask for pricing, target users, and verifiable sources for three named products.",
+          "headline": "Make objectives and outputs concrete",
+          "recapDisplayText": null,
+          "coreLabel": "Make objectives and outputs concrete",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "split-tilt",
+          "human": "explain-front",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 115.842,
+          "end": 124.478
+        },
+        {
+          "id": "c03-p03",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 3,
+          "narration": "Then declare the allowed tools and source boundary. Naming search, browsing, or databases and prioritizing primary sources keeps subagents from wandering through weak material.",
+          "headline": "Name tools and primary sources",
+          "recapDisplayText": null,
+          "coreLabel": "Name tools and primary sources",
+          "type": "generic",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "receive-tool",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 124.478,
+          "end": 132.37
+        },
+        {
+          "id": "c03-p04",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 4,
+          "narration": "Tell each subagent what not to do as well. Covered regions, time ranges, and result formats should be explicit, or several agents may return the same evidence.",
+          "headline": "Prevent duplicated coverage",
+          "recapDisplayText": null,
+          "coreLabel": "Prevent duplicated coverage",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-delegation.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "spin-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "delegate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "task-list"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 132.37,
+          "end": 139.707
+        },
+        {
+          "id": "c03-p05",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 5,
+          "narration": "Anthropic describes effective delegation through the objective, output format, tools, sources, and task boundaries. The lead agent should still revise assignments when the first findings change the map.",
+          "headline": "The five delegation fields",
+          "recapDisplayText": null,
+          "coreLabel": "The five delegation fields",
+          "type": "generic",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "sine-float",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 139.707,
+          "end": 148.846
+        },
+        {
+          "id": "c03-p06",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 6,
+          "narration": "Broad first and narrow second is often effective. Run a parallel scan for leads, then deepen only the branches that can change the final judgment.",
+          "headline": "Broad first, narrow second",
+          "recapDisplayText": null,
+          "coreLabel": "Broad first, narrow second",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "search",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "search"
+            },
+            {
+              "id": "citation"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 148.846,
+          "end": 155.302
+        },
+        {
+          "id": "c03-p07",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 7,
+          "narration": "Collect more than conclusions. Require evidence links, important uncertainties, and the reason a path stopped, so the lead agent can decide which findings are safe to merge.",
+          "headline": "Return evidence and uncertainty",
+          "recapDisplayText": null,
+          "coreLabel": "Return evidence and uncertainty",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 155.302,
+          "end": 163.213
+        },
+        {
+          "id": "c03-p08",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 8,
+          "narration": "Chapter recap. First, make the objective and output explicit.",
+          "headline": "Objective and output",
+          "recapDisplayText": "Objective and output",
+          "coreLabel": "Objective and output",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 163.213,
+          "end": 166.391
+        },
+        {
+          "id": "c03-p09",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 9,
+          "narration": "Second, specify sources, tools, and boundaries together.",
+          "headline": "Tools, sources, and boundaries",
+          "recapDisplayText": "Tools, sources, and boundaries",
+          "coreLabel": "Tools, sources, and boundaries",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "receive-tool",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 166.391,
+          "end": 169.745
+        },
+        {
+          "id": "c03-p10",
+          "chapter": "Write a delegation contract",
+          "chapterNumber": 3,
+          "paragraphNumber": 10,
+          "narration": "Third, collect evidence and uncertainty, not conclusions alone.",
+          "headline": "Collect more than conclusions",
+          "recapDisplayText": "Collect more than conclusions",
+          "coreLabel": "Collect more than conclusions",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 169.745,
+          "end": 172.927
+        }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "label": "Size the effort",
+      "scenes": [
+        {
+          "id": "c04-p01",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 1,
+          "narration": "Multi-agent does not mean more is always better. Search effort should scale with both question complexity and expected value.",
+          "headline": "Scale effort with complexity",
+          "recapDisplayText": null,
+          "coreLabel": "Scale effort with complexity",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "explain-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "scorecard"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 172.927,
+          "end": 178.232
+        },
+        {
+          "id": "c04-p02",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 2,
+          "narration": "Anthropic’s examples suggest that a simple fact may need one agent and three to ten tool calls. That scale does not require another coordination layer.",
+          "headline": "Simple fact: one agent",
+          "recapDisplayText": null,
+          "coreLabel": "Simple fact: one agent",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "nudge",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "single-agent"
+            },
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 178.232,
+          "end": 185.06
+        },
+        {
+          "id": "c04-p03",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 3,
+          "narration": "A comparison across several targets may use two to four agents, with roughly ten to fifteen tool calls per agent, so each research path reaches useful depth.",
+          "headline": "Comparison: two to four agents",
+          "recapDisplayText": null,
+          "coreLabel": "Comparison: two to four agents",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "split-tilt",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "compare-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "compare"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 185.06,
+          "end": 192.396
+        },
+        {
+          "id": "c04-p04",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 4,
+          "narration": "Complex research may use more than ten subagents, but that is not a default. The lead agent must see progress, detect duplication, and stop when marginal value falls.",
+          "headline": "Deep research: more than ten",
+          "recapDisplayText": null,
+          "coreLabel": "Deep research: more than ten",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "delegate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "parallel-agents"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 192.396,
+          "end": 200.216
+        },
+        {
+          "id": "c04-p05",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 5,
+          "narration": "Tool calls can also run in parallel inside one subagent. Anthropic suggests that complex paths often use three to five subagents, with three or more tools running concurrently per agent.",
+          "headline": "Parallel tools inside each agent",
+          "recapDisplayText": null,
+          "coreLabel": "Parallel tools inside each agent",
+          "type": "generic",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spin-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "receive-tool",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 200.216,
+          "end": 208.779
+        },
+        {
+          "id": "c04-p06",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 6,
+          "narration": "When paths are truly independent, parallel work can cut time by as much as 90 percent on complex queries. The gain comes from overlapping waits, not from making each agent inherently smarter.",
+          "headline": "Up to 90% faster on complex queries",
+          "recapDisplayText": null,
+          "coreLabel": "Up to 90% faster on complex queries",
+          "type": "generic",
+          "layout": "big-text",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "sine-float",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 208.779,
+          "end": 217.324
+        },
+        {
+          "id": "c04-p07",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 7,
+          "narration": "Give the decision tree three effort tiers: light, comparison, and deep research. Each tier defines agent count, tool budget, stopping conditions, and the evidence required to escalate.",
+          "headline": "Light / compare / deep",
+          "recapDisplayText": null,
+          "coreLabel": "Light / compare / deep",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-delegation.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "press-pulse",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "ruler"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 217.324,
+          "end": 226.276
+        },
+        {
+          "id": "c04-p08",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 8,
+          "narration": "Chapter recap. First, choose an effort tier from task complexity.",
+          "headline": "Complexity sets effort",
+          "recapDisplayText": "Complexity sets effort",
+          "coreLabel": "Complexity sets effort",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "scorecard"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 226.276,
+          "end": 229.606
+        },
+        {
+          "id": "c04-p09",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 9,
+          "narration": "Second, parallel gains come from overlapping independent waits.",
+          "headline": "Overlap creates the gain",
+          "recapDisplayText": "Overlap creates the gain",
+          "coreLabel": "Overlap creates the gain",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 229.606,
+          "end": 232.673
+        },
+        {
+          "id": "c04-p10",
+          "chapter": "Size the effort",
+          "chapterNumber": 4,
+          "paragraphNumber": 10,
+          "narration": "Third, stop expanding when marginal value starts to fall.",
+          "headline": "Stop at falling marginal value",
+          "recapDisplayText": "Stop at falling marginal value",
+          "coreLabel": "Stop at falling marginal value",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "blocked-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "stop"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 232.673,
+          "end": 235.587
+        }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "label": "Evaluate quality",
+      "scenes": [
+        {
+          "id": "c05-p01",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 1,
+          "narration": "Multi-agent paths change dynamically, so evaluation cannot require one fixed sequence of steps.",
+          "headline": "Evaluate dynamic paths",
+          "recapDisplayText": null,
+          "coreLabel": "Evaluate dynamic paths",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "write-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "checklist"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 235.587,
+          "end": 240.482
+        },
+        {
+          "id": "c05-p02",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 2,
+          "narration": "Start with the result. Are the facts correct? Do citations support the claims? Is the question covered? Are the sources authoritative enough for the decision?",
+          "headline": "Check facts and citations first",
+          "recapDisplayText": null,
+          "coreLabel": "Check facts and citations first",
+          "type": "generic",
+          "layout": "big-text",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 240.482,
+          "end": 247.013
+        },
+        {
+          "id": "c05-p03",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 3,
+          "narration": "Then inspect whether the process was reasonable. Did the decomposition leave gaps or duplication? Were tool calls useful? Did the lead agent revise its plan when new evidence appeared?",
+          "headline": "Then inspect decomposition and tools",
+          "recapDisplayText": null,
+          "coreLabel": "Then inspect decomposition and tools",
+          "type": "generic",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "nudge",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "workflow"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 247.013,
+          "end": 254.652
+        },
+        {
+          "id": "c05-p04",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 4,
+          "narration": "Anthropic uses small-sample human review and criteria for factual accuracy, citations, completeness, source quality, and tool efficiency. The point is to create quality signals people can explain.",
+          "headline": "Human-reviewed quality signals",
+          "recapDisplayText": null,
+          "coreLabel": "Human-reviewed quality signals",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-reliability.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "split-tilt",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "scorecard"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 254.652,
+          "end": 264.373
+        },
+        {
+          "id": "c05-p05",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 5,
+          "narration": "If you score only the final answer, a system may get lucky through expensive searching. If you demand one fixed trace, you punish reasonable paths that react to evidence.",
+          "headline": "Do not score only the answer",
+          "recapDisplayText": null,
+          "coreLabel": "Do not score only the answer",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "alert-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "warning"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 264.373,
+          "end": 271.88
+        },
+        {
+          "id": "c05-p06",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 6,
+          "narration": "A stronger design separates outcome standards from process guardrails. The outcome must pass, while the path may vary as long as it leaves evidence that a reviewer can inspect.",
+          "headline": "Separate outcomes from guardrails",
+          "recapDisplayText": null,
+          "coreLabel": "Separate outcomes from guardrails",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spin-in",
+          "human": "explain-front",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 271.88,
+          "end": 279.545
+        },
+        {
+          "id": "c05-p07",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 7,
+          "narration": "Start with ten real questions for your own system. Compare a single-agent baseline, answer quality, tokens, latency, and failure types before expanding parallel work.",
+          "headline": "Ten-question baseline",
+          "recapDisplayText": null,
+          "coreLabel": "Ten-question baseline",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "sine-float",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "experiment"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 279.545,
+          "end": 287.625
+        },
+        {
+          "id": "c05-p08",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 8,
+          "narration": "Chapter recap. First, evaluate facts, citations, and coverage.",
+          "headline": "Facts, citations, coverage",
+          "recapDisplayText": "Facts, citations, coverage",
+          "coreLabel": "Facts, citations, coverage",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 287.625,
+          "end": 291.62
+        },
+        {
+          "id": "c05-p09",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 9,
+          "narration": "Second, allow dynamic paths but require an explainable process.",
+          "headline": "Keep the process explainable",
+          "recapDisplayText": "Keep the process explainable",
+          "coreLabel": "Keep the process explainable",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "workflow"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 291.62,
+          "end": 294.983
+        },
+        {
+          "id": "c05-p10",
+          "chapter": "Evaluate quality",
+          "chapterNumber": 5,
+          "paragraphNumber": 10,
+          "narration": "Third, use a real baseline to decide whether parallelism pays.",
+          "headline": "Use a baseline to judge value",
+          "recapDisplayText": "Use a baseline to judge value",
+          "coreLabel": "Use a baseline to judge value",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "experiment"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 294.983,
+          "end": 298.113
+        }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "label": "Build for recovery",
+      "scenes": [
+        {
+          "id": "c06-p01",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 1,
+          "narration": "A research demo that finishes once is not yet a multi-agent system that can recover reliably in production.",
+          "headline": "Production must recover",
+          "recapDisplayText": null,
+          "coreLabel": "Production must recover",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "decide-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 298.113,
+          "end": 302.636
+        },
+        {
+          "id": "c06-p02",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 2,
+          "narration": "Any subagent can time out, lose a tool, or return an empty result. Persist task state so a failure reruns only the affected path instead of restarting the whole tree.",
+          "headline": "Retry only one failed path",
+          "recapDisplayText": null,
+          "coreLabel": "Retry only one failed path",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "retry-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "error"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 302.636,
+          "end": 310.319
+        },
+        {
+          "id": "c06-p03",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 3,
+          "narration": "A useful checkpoint records the assignment, owner, current state, evidence location, and next action. After a process restart, the system can resume without treating old output as new evidence.",
+          "headline": "Checkpoints preserve work state",
+          "recapDisplayText": null,
+          "coreLabel": "Checkpoints preserve work state",
+          "type": "generic",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "progress"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 310.319,
+          "end": 319.528
+        },
+        {
+          "id": "c06-p04",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 4,
+          "narration": "Observability must cross the whole tree. Trace every delegation, tool call, retry, and synthesis step so you can distinguish search failure, coordination failure, and merge failure.",
+          "headline": "Trace the entire tree",
+          "recapDisplayText": null,
+          "coreLabel": "Trace the entire tree",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-reliability.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "nudge",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "dashboard"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 319.528,
+          "end": 328.049
+        },
+        {
+          "id": "c06-p05",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 5,
+          "narration": "Deployment should be gradual too. Anthropic describes rainbow deployments that keep old and new versions available so agents already running are not broken by a code change.",
+          "headline": "Rainbow deployment protects live work",
+          "recapDisplayText": null,
+          "coreLabel": "Rainbow deployment protects live work",
+          "type": "generic",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "split-tilt",
+          "human": "explain-front",
+          "humanDirection": "front",
+          "agent": "handoff-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 328.049,
+          "end": 335.301
+        },
+        {
+          "id": "c06-p06",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 6,
+          "narration": "The current architecture also has a synchronous bottleneck: the lead agent waits for all subagents before moving on. Async work can be faster, but it adds scheduling, concurrency, and result-merging complexity.",
+          "headline": "A synchronous bottleneck remains",
+          "recapDisplayText": null,
+          "coreLabel": "A synchronous bottleneck remains",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "wait-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "queue"
+            },
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 335.301,
+          "end": 344.865
+        },
+        {
+          "id": "c06-p07",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 7,
+          "narration": "The production checklist is persistent state, path-level retries, end-to-end tracing, gradual deployment, and explicit stopping rules. Speed is an outcome of reliability, not the only goal.",
+          "headline": "The five production controls",
+          "recapDisplayText": null,
+          "coreLabel": "The five production controls",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spin-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "checklist"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 344.865,
+          "end": 353.985
+        },
+        {
+          "id": "c06-p08",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 8,
+          "narration": "Chapter recap. First, persist state and evidence outside the process.",
+          "headline": "Persist state outside the process",
+          "recapDisplayText": "Persist state outside the process",
+          "coreLabel": "Persist state outside the process",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "progress"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 353.985,
+          "end": 357.553
+        },
+        {
+          "id": "c06-p09",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 9,
+          "narration": "Second, retry only the failed path and preserve the full trace.",
+          "headline": "Path retries and full tracing",
+          "recapDisplayText": "Path retries and full tracing",
+          "coreLabel": "Path retries and full tracing",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "dashboard"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 357.553,
+          "end": 360.744
+        },
+        {
+          "id": "c06-p10",
+          "chapter": "Build for recovery",
+          "chapterNumber": 6,
+          "paragraphNumber": 10,
+          "narration": "Third, protect production with gradual releases and stopping rules.",
+          "headline": "Gradual releases protect production",
+          "recapDisplayText": "Gradual releases protect production",
+          "coreLabel": "Gradual releases protect production",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 360.744,
+          "end": 364.023
+        }
+      ]
+    },
+    {
+      "id": "chapter-7",
+      "label": "Summary",
+      "scenes": [
+        {
+          "id": "c07-p01",
+          "chapter": "Summary",
+          "chapterNumber": 7,
+          "paragraphNumber": 1,
+          "narration": "Now connect the decision tree. Ask whether paths are independent, whether one context is overloaded, and whether the result can justify the cost. Only then move into delegation, effort sizing, evaluation, and recovery.",
+          "headline": "Fit before parallelism",
+          "recapDisplayText": null,
+          "coreLabel": "Fit before parallelism",
+          "type": "generic",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "sine-float",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "route"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 364.023,
+          "end": 374.38
+        },
+        {
+          "id": "c07-p02",
+          "chapter": "Summary",
+          "chapterNumber": 7,
+          "paragraphNumber": 2,
+          "narration": "Keep a single agent when the task depends on shared state or one agent already completes it reliably. Multi-agent is a task architecture, not a badge of capability.",
+          "headline": "A single agent is still a good answer",
+          "recapDisplayText": null,
+          "coreLabel": "A single agent is still a good answer",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "single-agent"
+            },
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 374.38,
+          "end": 381.638
+        },
+        {
+          "id": "c07-p03",
+          "chapter": "Summary",
+          "chapterNumber": 7,
+          "paragraphNumber": 3,
+          "narration": "Before your next deep-research job, draw three candidate paths. Give each one an objective, source boundary, output, and stopping condition. Run them in parallel only if they can truly progress independently.",
+          "headline": "The four-field path card",
+          "recapDisplayText": null,
+          "coreLabel": "The four-field path card",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "write-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "task-list"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 381.638,
+          "end": 391.07
+        },
+        {
+          "id": "c07-p04",
+          "chapter": "Summary",
+          "chapterNumber": 7,
+          "paragraphNumber": 4,
+          "narration": "Follow Tiny Agent and become better at using AI!",
+          "headline": "Follow Tiny Agent",
+          "recapDisplayText": null,
+          "coreLabel": "Follow Tiny Agent",
+          "type": "outro",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "celebrate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "success"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 391.07,
+          "end": 393.766667
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,653 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:02.730
+How should AI Agents research in parallel?
+
+2
+00:00:02.730 --> 00:00:04.288
+First, test task fit.
+
+3
+00:00:04.288 --> 00:00:07.680
+Anthropic draws a useful boundary in its multi-agent research retrospective.
+
+4
+00:00:07.680 --> 00:00:11.276
+Parallelism expands search breadth, but the coordination cost is worthwhile
+
+5
+00:00:11.276 --> 00:00:14.920
+only when independent paths, a valuable result, and enough room for tool use
+
+6
+00:00:14.920 --> 00:00:15.128
+appear together.
+
+7
+00:00:15.128 --> 00:00:18.979
+In Anthropic’s internal research evaluation, an Opus 4 lead agent with
+
+8
+00:00:18.979 --> 00:00:21.672
+Sonnet 4 subagents outperformed a single Opus 4 agent by 90.
+
+9
+00:00:21.672 --> 00:00:22.411
+2 percent.
+
+10
+00:00:22.411 --> 00:00:26.064
+That number belongs to one internal evaluation, not a promise for every
+
+11
+00:00:26.064 --> 00:00:26.325
+In this episode, we will build a single-versus-multi-agent decision tree.
+
+12
+00:00:26.325 --> 00:00:26.601
+task.
+
+13
+00:00:29.305 --> 00:00:33.397
+We will test fit, define delegation, size the search, evaluate evidence, and
+
+14
+00:00:33.397 --> 00:00:35.674
+add the recovery controls a production system needs.
+
+15
+00:00:35.674 --> 00:00:39.031
+This video is packed with practical value to help you become better at using
+
+16
+00:00:39.031 --> 00:00:39.501
+It is a longer episode, so follow and save it for later.
+
+17
+00:00:39.501 --> 00:00:39.652
+AI.
+
+18
+00:00:41.734 --> 00:00:43.454
+The first move is not adding agents.
+
+19
+00:00:43.454 --> 00:00:46.913
+It is deciding whether the problem contains independent exploration paths
+
+20
+00:00:46.913 --> 00:00:47.661
+that deserve parallel work.
+
+21
+00:00:47.661 --> 00:00:50.720
+Research often fits because an answer may require several directions.
+
+22
+00:00:50.720 --> 00:00:54.421
+Market, technology, user, and risk research can proceed separately before
+
+23
+00:00:54.421 --> 00:00:56.452
+the lead agent compresses them into one conclusion.
+
+24
+00:00:56.452 --> 00:01:00.367
+Subagents also help when one context window would otherwise hold too many
+
+25
+00:01:00.367 --> 00:01:02.252
+sources, tool results, and working hypotheses.
+
+26
+00:01:02.252 --> 00:01:05.212
+Each path can return a compact, high-signal research summary.
+
+27
+00:01:05.212 --> 00:01:08.654
+But decomposition creates synchronization when every step depends on the
+
+28
+00:01:08.654 --> 00:01:10.072
+exact state produced by the previous step.
+
+29
+00:01:10.072 --> 00:01:14.189
+Many coding tasks share one codebase and test state, so one continuous agent
+
+30
+00:01:14.189 --> 00:01:14.464
+may fit better.
+
+31
+00:01:14.464 --> 00:01:15.660
+Economics matters too.
+
+32
+00:01:15.660 --> 00:01:19.362
+In Anthropic’s usage data, agents used about four times the tokens of chat
+
+33
+00:01:19.362 --> 00:01:22.487
+interactions, while multi-agent systems used about fifteen times as many.
+
+34
+00:01:22.487 --> 00:01:25.748
+That makes multi-agent work sensible for valuable outcomes, expensive
+
+35
+00:01:25.748 --> 00:01:28.691
+mistakes, or questions where search breadth can materially change the
+
+36
+00:01:28.691 --> 00:01:29.009
+It should not add ceremony to a simple request.
+
+37
+00:01:29.009 --> 00:01:29.340
+answer.
+
+38
+00:01:30.956 --> 00:01:32.502
+Turn the decision into three gates.
+
+39
+00:01:32.502 --> 00:01:33.838
+Can paths run independently?
+
+40
+00:01:33.838 --> 00:01:35.546
+Is one context becoming overloaded?
+
+41
+00:01:35.546 --> 00:01:37.585
+Can the value of the result cover the extra cost?
+
+42
+00:01:37.585 --> 00:01:40.340
+The more gates pass, the stronger the case for parallelism.
+
+43
+00:01:40.340 --> 00:01:41.196
+Chapter recap.
+
+44
+00:01:41.196 --> 00:01:43.605
+First, look for paths that can progress independently.
+
+45
+00:01:43.605 --> 00:01:46.649
+Second, be cautious when the task depends on heavily shared state.
+
+46
+00:01:46.649 --> 00:01:49.504
+Third, reserve the higher cost for high-value outcomes.
+
+47
+00:01:49.504 --> 00:01:52.397
+After the fit gate, the lead agent’s main job is not searching.
+
+48
+00:01:52.397 --> 00:01:55.942
+It is dividing the question into assignments that do not overlap and do not
+
+49
+00:01:55.942 --> 00:01:55.967
+Every delegation should name an objective and the expected output.
+
+50
+00:01:55.967 --> 00:01:56.491
+leave gaps.
+
+51
+00:01:58.648 --> 00:02:02.699
+Instead of saying research competitors, ask for pricing, target users, and
+
+52
+00:02:02.699 --> 00:02:04.578
+verifiable sources for three named products.
+
+53
+00:02:04.578 --> 00:02:06.784
+Then declare the allowed tools and source boundary.
+
+54
+00:02:06.784 --> 00:02:10.645
+Naming search, browsing, or databases and prioritizing primary sources keeps
+
+55
+00:02:10.645 --> 00:02:12.470
+subagents from wandering through weak material.
+
+56
+00:02:12.470 --> 00:02:14.305
+Tell each subagent what not to do as well.
+
+57
+00:02:14.305 --> 00:02:18.032
+Covered regions, time ranges, and result formats should be explicit, or
+
+58
+00:02:18.032 --> 00:02:19.807
+several agents may return the same evidence.
+
+59
+00:02:19.807 --> 00:02:23.685
+Anthropic describes effective delegation through the objective, output
+
+60
+00:02:23.685 --> 00:02:25.529
+format, tools, sources, and task boundaries.
+
+61
+00:02:25.529 --> 00:02:28.782
+The lead agent should still revise assignments when the first findings
+
+62
+00:02:28.782 --> 00:02:28.946
+change the map.
+
+63
+00:02:28.946 --> 00:02:31.214
+Broad first and narrow second is often effective.
+
+64
+00:02:31.214 --> 00:02:34.981
+Run a parallel scan for leads, then deepen only the branches that can change
+
+65
+00:02:34.981 --> 00:02:35.402
+the final judgment.
+
+66
+00:02:35.402 --> 00:02:36.788
+Collect more than conclusions.
+
+67
+00:02:36.788 --> 00:02:40.290
+Require evidence links, important uncertainties, and the reason a path
+
+68
+00:02:40.290 --> 00:02:43.313
+stopped, so the lead agent can decide which findings are safe to merge.
+
+69
+00:02:43.313 --> 00:02:44.166
+Chapter recap.
+
+70
+00:02:44.166 --> 00:02:46.491
+First, make the objective and output explicit.
+
+71
+00:02:46.491 --> 00:02:49.845
+Second, specify sources, tools, and boundaries together.
+
+72
+00:02:49.845 --> 00:02:53.027
+Third, collect evidence and uncertainty, not conclusions alone.
+
+73
+00:02:53.027 --> 00:02:55.061
+Multi-agent does not mean more is always better.
+
+74
+00:02:55.061 --> 00:02:58.332
+Search effort should scale with both question complexity and expected value.
+
+75
+00:02:58.332 --> 00:03:02.357
+Anthropic’s examples suggest that a simple fact may need one agent and three
+
+76
+00:03:02.357 --> 00:03:02.702
+to ten tool calls.
+
+77
+00:03:02.702 --> 00:03:05.160
+That scale does not require another coordination layer.
+
+78
+00:03:05.160 --> 00:03:09.030
+A comparison across several targets may use two to four agents, with roughly
+
+79
+00:03:09.030 --> 00:03:12.496
+ten to fifteen tool calls per agent, so each research path reaches useful
+
+80
+00:03:12.496 --> 00:03:12.747
+Complex research may use more than ten subagents, but that is not a default.
+
+81
+00:03:12.747 --> 00:03:13.052
+depth.
+
+82
+00:03:15.896 --> 00:03:20.179
+The lead agent must see progress, detect duplication, and stop when marginal
+
+83
+00:03:20.179 --> 00:03:20.316
+value falls.
+
+84
+00:03:20.316 --> 00:03:23.088
+Tool calls can also run in parallel inside one subagent.
+
+85
+00:03:23.088 --> 00:03:26.646
+Anthropic suggests that complex paths often use three to five subagents,
+
+86
+00:03:26.646 --> 00:03:28.879
+with three or more tools running concurrently per agent.
+
+87
+00:03:28.879 --> 00:03:32.811
+When paths are truly independent, parallel work can cut time by as much as
+
+88
+00:03:32.811 --> 00:03:33.791
+90 percent on complex queries.
+
+89
+00:03:33.791 --> 00:03:37.424
+The gain comes from overlapping waits, not from making each agent inherently
+
+90
+00:03:37.424 --> 00:03:37.591
+Give the decision tree three effort tiers: light, comparison, and deep
+
+91
+00:03:37.591 --> 00:03:37.991
+smarter.
+
+92
+00:03:41.331 --> 00:03:41.410
+Each tier defines agent count, tool budget, stopping conditions, and the
+
+93
+00:03:41.410 --> 00:03:41.922
+research.
+
+94
+00:03:45.259 --> 00:03:46.376
+evidence required to escalate.
+
+95
+00:03:46.376 --> 00:03:47.239
+Chapter recap.
+
+96
+00:03:47.239 --> 00:03:49.706
+First, choose an effort tier from task complexity.
+
+97
+00:03:49.706 --> 00:03:52.773
+Second, parallel gains come from overlapping independent waits.
+
+98
+00:03:52.773 --> 00:03:55.687
+Third, stop expanding when marginal value starts to fall.
+
+99
+00:03:55.687 --> 00:04:00.070
+Multi-agent paths change dynamically, so evaluation cannot require one fixed
+
+100
+00:04:00.070 --> 00:04:00.582
+sequence of steps.
+
+101
+00:04:00.582 --> 00:04:01.597
+Start with the result.
+
+102
+00:04:01.597 --> 00:04:02.591
+Are the facts correct?
+
+103
+00:04:02.591 --> 00:04:04.127
+Do citations support the claims?
+
+104
+00:04:04.127 --> 00:04:05.093
+Is the question covered?
+
+105
+00:04:05.093 --> 00:04:07.113
+Are the sources authoritative enough for the decision?
+
+106
+00:04:07.113 --> 00:04:09.022
+Then inspect whether the process was reasonable.
+
+107
+00:04:09.022 --> 00:04:11.137
+Did the decomposition leave gaps or duplication?
+
+108
+00:04:11.137 --> 00:04:12.227
+Were tool calls useful?
+
+109
+00:04:12.227 --> 00:04:14.752
+Did the lead agent revise its plan when new evidence appeared?
+
+110
+00:04:14.752 --> 00:04:19.035
+Anthropic uses small-sample human review and criteria for factual accuracy,
+
+111
+00:04:19.035 --> 00:04:21.937
+citations, completeness, source quality, and tool efficiency.
+
+112
+00:04:21.937 --> 00:04:24.473
+The point is to create quality signals people can explain.
+
+113
+00:04:24.473 --> 00:04:28.105
+If you score only the final answer, a system may get lucky through expensive
+
+114
+00:04:28.105 --> 00:04:28.218
+If you demand one fixed trace, you punish reasonable paths that react to
+
+115
+00:04:28.218 --> 00:04:28.711
+searching.
+
+116
+00:04:31.980 --> 00:04:32.017
+A stronger design separates outcome standards from process guardrails.
+
+117
+00:04:32.017 --> 00:04:32.506
+evidence.
+
+118
+00:04:35.066 --> 00:04:38.802
+The outcome must pass, while the path may vary as long as it leaves evidence
+
+119
+00:04:38.802 --> 00:04:39.645
+that a reviewer can inspect.
+
+120
+00:04:39.645 --> 00:04:41.823
+Start with ten real questions for your own system.
+
+121
+00:04:41.823 --> 00:04:45.709
+Compare a single-agent baseline, answer quality, tokens, latency, and
+
+122
+00:04:45.709 --> 00:04:47.725
+failure types before expanding parallel work.
+
+123
+00:04:47.725 --> 00:04:48.589
+Chapter recap.
+
+124
+00:04:48.589 --> 00:04:51.720
+First, evaluate facts, citations, and coverage.
+
+125
+00:04:51.720 --> 00:04:55.083
+Second, allow dynamic paths but require an explainable process.
+
+126
+00:04:55.083 --> 00:04:58.213
+Third, use a real baseline to decide whether parallelism pays.
+
+127
+00:04:58.213 --> 00:05:01.804
+A research demo that finishes once is not yet a multi-agent system that can
+
+128
+00:05:01.804 --> 00:05:02.736
+recover reliably in production.
+
+129
+00:05:02.736 --> 00:05:06.059
+Any subagent can time out, lose a tool, or return an empty result.
+
+130
+00:05:06.059 --> 00:05:09.674
+Persist task state so a failure reruns only the affected path instead of
+
+131
+00:05:09.674 --> 00:05:10.419
+restarting the whole tree.
+
+132
+00:05:10.419 --> 00:05:14.516
+A useful checkpoint records the assignment, owner, current state, evidence
+
+133
+00:05:14.516 --> 00:05:15.358
+location, and next action.
+
+134
+00:05:15.358 --> 00:05:19.309
+After a process restart, the system can resume without treating old output
+
+135
+00:05:19.309 --> 00:05:19.628
+as new evidence.
+
+136
+00:05:19.628 --> 00:05:21.373
+Observability must cross the whole tree.
+
+137
+00:05:21.373 --> 00:05:25.119
+Trace every delegation, tool call, retry, and synthesis step so you can
+
+138
+00:05:25.119 --> 00:05:28.149
+distinguish search failure, coordination failure, and merge failure.
+
+139
+00:05:28.149 --> 00:05:29.606
+Deployment should be gradual too.
+
+140
+00:05:29.606 --> 00:05:32.819
+Anthropic describes rainbow deployments that keep old and new versions
+
+141
+00:05:32.819 --> 00:05:35.401
+available so agents already running are not broken by a code change.
+
+142
+00:05:35.401 --> 00:05:38.970
+The current architecture also has a synchronous bottleneck: the lead agent
+
+143
+00:05:38.970 --> 00:05:40.344
+waits for all subagents before moving on.
+
+144
+00:05:40.344 --> 00:05:44.033
+Async work can be faster, but it adds scheduling, concurrency, and
+
+145
+00:05:44.033 --> 00:05:44.965
+result-merging complexity.
+
+146
+00:05:44.965 --> 00:05:48.969
+The production checklist is persistent state, path-level retries, end-to-end
+
+147
+00:05:48.969 --> 00:05:51.377
+tracing, gradual deployment, and explicit stopping rules.
+
+148
+00:05:51.377 --> 00:05:54.085
+Speed is an outcome of reliability, not the only goal.
+
+149
+00:05:54.085 --> 00:05:54.933
+Chapter recap.
+
+150
+00:05:54.933 --> 00:05:57.653
+First, persist state and evidence outside the process.
+
+151
+00:05:57.653 --> 00:06:00.844
+Second, retry only the failed path and preserve the full trace.
+
+152
+00:06:00.844 --> 00:06:04.123
+Third, protect production with gradual releases and stopping rules.
+
+153
+00:06:04.123 --> 00:06:05.455
+Now connect the decision tree.
+
+154
+00:06:05.455 --> 00:06:09.143
+Ask whether paths are independent, whether one context is overloaded, and
+
+155
+00:06:09.143 --> 00:06:10.571
+whether the result can justify the cost.
+
+156
+00:06:10.571 --> 00:06:14.480
+Only then move into delegation, effort sizing, evaluation, and recovery.
+
+157
+00:06:14.480 --> 00:06:17.891
+Keep a single agent when the task depends on shared state or one agent
+
+158
+00:06:17.891 --> 00:06:18.763
+already completes it reliably.
+
+159
+00:06:18.763 --> 00:06:21.738
+Multi-agent is a task architecture, not a badge of capability.
+
+160
+00:06:21.738 --> 00:06:24.678
+Before your next deep-research job, draw three candidate paths.
+
+161
+00:06:24.678 --> 00:06:28.359
+Give each one an objective, source boundary, output, and stopping condition.
+
+162
+00:06:28.359 --> 00:06:31.170
+Run them in parallel only if they can truly progress independently.
+
+163
+00:06:31.170 --> 00:06:33.767
+Follow Tiny Agent and become better at using AI!

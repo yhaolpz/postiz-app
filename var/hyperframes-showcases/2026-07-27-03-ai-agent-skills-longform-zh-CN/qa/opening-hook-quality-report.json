@@ -1,22 +1,32 @@
 {
-  "pass": false,
-  "narrationAlignment": {
-    "expectedSceneCount": 49,
-    "finalNarrationSegmentCount": 29,
-    "pass": false
-  },
-  "blocker": "Every final scene requires a matched final narration/VTT segment before rendering.",
-  "visibleQuestion": "AI Agent 为什么总在重复你的好结果？",
-  "audiencePainPoint": "一次得到好结果后，人们仍反复重建上下文、限制和输出格式。",
-  "knowledgeGap": "观众需要知道怎样把一次成功变成可检查的流程，而不是把错误假设固化下来。",
-  "rejectedObviousQuestion": "AI Agent 好用吗？",
-  "intent": "mechanism",
+  "pass": true,
+  "visibleQuestion": "怎么写好 AI Agent Skill 才真正可复用？",
+  "intent": "actionable-path",
+  "audiencePainPoint": "很多人把提示词或说明文直接当成 Skill，下一次任务仍要重新解释边界、判断方式和验收标准。",
+  "knowledgeGap": "观众需要知道哪些字段必须写清，才能让 Skill 可触发、可执行、可检查并持续修订。",
+  "curiosityRationale": "问题直接点明制作 AI Agent Skill 的目标，但把七字段写法留到后续章节逐步展开。",
+  "directTopicTerms": [
+    "AI Agent Skill",
+    "Skill"
+  ],
+  "viewerValue": "观众将知道怎样写出可触发、可执行、可检查并能持续修订的 Skill。",
+  "topicAlignmentRationale": "视频实际讲解 Skill 的七字段写法与验证方法，开场直接询问怎样写好 AI Agent Skill，没有借用长期任务或跑偏等无关情境。",
+  "tangentialSetupRisk": "none",
+  "obviousAnswerRisk": "none",
+  "rejectedObviousQuestion": "AI Agent 需要 Skill 吗？",
   "checks": {
+    "questionMatchesReview": true,
+    "allowedIntent": true,
+    "causalOrDiscoveryForm": true,
+    "noObviousYesNoForm": true,
     "topicIdentityPresent": true,
     "audiencePainPointPresent": true,
+    "knowledgeGapPresent": true,
+    "rejectedObviousQuestionPresent": true,
     "unresolvedCuriosity": true,
-    "causalOrDiscoveryForm": true,
-    "noObviousYesNoForm": true
-  },
-  "obviousAnswerRisk": "none"
+    "directEpisodeTopic": true,
+    "viewerValueOrCuriosity": true,
+    "noTangentialScenarioSetup": true,
+    "terminalQuestionMark": true
+  }
 }

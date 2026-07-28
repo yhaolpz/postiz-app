@@ -1,0 +1,140 @@
+{
+  "bilingualContractId": "2026-07-28-03-multi-agent-research-decision-v1",
+  "source": {
+    "publisher": "Anthropic",
+    "title": "How we built our multi-agent research system",
+    "published": "2025-06-13",
+    "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+    "facts": [
+      "Anthropic 的内部研究评测中，Opus 4 主 Agent 配合 Sonnet 4 子 Agent，比单个 Opus 4 高出 90.2%。",
+      "Anthropic 使用数据中，单 Agent 约为普通聊天 4 倍 token，多 Agent 约为 15 倍。",
+      "复杂查询在独立路径并行时，耗时最多可下降 90%。",
+      "共享上下文和依赖很重的任务，包括许多编码任务，通常不适合并行拆分。"
+    ]
+  },
+  "centralThesis": "多 Agent 不是默认升级，而是一项适配度与经济性决策：只有高价值任务能拆成独立路径，且单个上下文与工具空间已成为瓶颈时，并行才值得。",
+  "priorities": {
+    "P0": [
+      "先做适配判断",
+      "独立路径才并行",
+      "高价值结果覆盖成本"
+    ],
+    "P1": [
+      "委派契约",
+      "力度分档",
+      "证据与过程评估"
+    ],
+    "P2": [
+      "检查点与 trace",
+      "同步瓶颈"
+    ],
+    "P3": [
+      "把 Agent 数量当成绩",
+      "默认并行"
+    ]
+  },
+  "reusableArtifact": "单 Agent / 多 Agent 决策树：独立路径、上下文压力、结果价值、委派契约、力度档位、评估与恢复。",
+  "chapters": [
+    {
+      "id": "fit-gate",
+      "title": "先过适配门",
+      "promise": "第一步不是增加 Agent，而是判断这个问题有没有值得并行的独立探索路径。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，先找能独立推进的路径。",
+          "screenText": "路径必须独立"
+        },
+        {
+          "narration": "第二，共享状态越重，越应该谨慎拆分。",
+          "screenText": "共享状态越重越谨慎"
+        },
+        {
+          "narration": "第三，高价值结果才配得上更高成本。",
+          "screenText": "价值覆盖成本"
+        }
+      ]
+    },
+    {
+      "id": "delegation-contract",
+      "title": "写好委派契约",
+      "promise": "通过适配门之后，主 Agent 的核心工作不是亲自搜索，而是把问题拆成不会重复也不会漏掉的任务。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，委派必须写清目标和输出。",
+          "screenText": "目标与输出明确"
+        },
+        {
+          "narration": "第二，来源、工具和边界要一起交代。",
+          "screenText": "工具来源边界齐全"
+        },
+        {
+          "narration": "第三，回收证据与未知项，不只收结论。",
+          "screenText": "不只回收结论"
+        }
+      ]
+    },
+    {
+      "id": "effort-sizing",
+      "title": "按任务分配算力",
+      "promise": "多 Agent 不等于越多越好，搜索力度应该跟问题复杂度和预期价值一起变化。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，先按复杂度选择力度档位。",
+          "screenText": "复杂度决定力度"
+        },
+        {
+          "narration": "第二，并行收益来自独立等待的重叠。",
+          "screenText": "收益来自等待重叠"
+        },
+        {
+          "narration": "第三，边际收益下降时就停止扩张。",
+          "screenText": "边际收益下降就停"
+        }
+      ]
+    },
+    {
+      "id": "evaluation",
+      "title": "用结果和过程评估",
+      "promise": "多 Agent 的路径会动态变化，因此评估不能只检查它是否复现了一条固定步骤。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，先评估事实、引用和覆盖度。",
+          "screenText": "评事实引用覆盖"
+        },
+        {
+          "narration": "第二，允许动态路径，但过程要可解释。",
+          "screenText": "过程必须可解释"
+        },
+        {
+          "narration": "第三，用真实基线判断并行是否值得。",
+          "screenText": "用基线判断价值"
+        }
+      ]
+    },
+    {
+      "id": "production-reliability",
+      "title": "为并行系统兜底",
+      "promise": "研究演示能跑通，不代表多 Agent 系统已经能在生产中稳定恢复。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，把状态和证据写出进程。",
+          "screenText": "状态写出进程"
+        },
+        {
+          "narration": "第二，只重试失败路径，并保留完整 trace。",
+          "screenText": "路径级重试与 trace"
+        },
+        {
+          "narration": "第三，用渐进发布和停止规则保护生产。",
+          "screenText": "渐进发布保护生产"
+        }
+      ]
+    }
+  ],
+  "factBoundaries": [
+    "90.2% 是 Anthropic 内部研究评测结果，不是通用性能承诺。",
+    "4 倍与 15 倍 token 是 Anthropic 报告的使用模式，不代表所有实现的固定成本。",
+    "Agent 数量与工具调用范围是其研究系统的经验示例，不是强制配置。"
+  ],
+  "inference": "单 Agent / 多 Agent 决策树是对来源的实践化整理，不是 Anthropic 发布的官方模板。"
+}

@@ -31,6 +31,39 @@ function normalizeText(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
 }
 
+export function checkEnglishTitleAgency(value) {
+  const text = normalizeText(value);
+  const agentSkillTopicLead = /^AI[\s-]+Agents?\s+Skills?\b/i.test(text);
+  const agentActorLead = /^(?:How\s+(?:(?:can|do|does)\s+)?)?AI[\s-]+Agents?\b/i.test(text);
+  const humanAuthoredSkillAction = /(?:write|create|design|build|make|turn|convert|transform).{0,48}\bSkills?\b/i.test(text);
+  const explicitForAgentTarget = /\bfor\s+(?:an?\s+)?AI[\s-]+Agents?\b/i.test(text);
+  const ambiguousAgentAsAuthor = agentActorLead
+    && !agentSkillTopicLead
+    && humanAuthoredSkillAction
+    && !explicitForAgentTarget;
+  return {
+    hasAccurateAgency: !ambiguousAgentAsAuthor,
+    agencyRisk: ambiguousAgentAsAuthor ? 'agent-as-author-for-human-authored-skill' : 'none',
+  };
+}
+
+export function checkChineseTitleAgency(value) {
+  const text = normalizeText(value);
+  const agentSkillTopicLead = /^(?:AI[\s-]*Agents?|智能体)\s*(?:Skills?|技能)\b/i.test(text);
+  const agentActorLead = /^(?:AI[\s-]*Agents?|智能体)(?!\s*(?:Skills?|技能)\b)/i.test(text);
+  const directSkillCreation = /(?:写(?:好|出)?|编写|创建|制作|设计|构建|打造).{0,24}(?:Skills?|技能)/i.test(text);
+  const transformIntoSkill = /把.{0,32}(?:变成|转成|转化成|沉淀成).{0,20}(?:Skills?|技能)/i.test(text);
+  const explicitForAgentTarget = /(?:为|给|面向)\s*(?:AI[\s-]*Agents?|智能体)/i.test(text);
+  const ambiguousAgentAsAuthor = agentActorLead
+    && !agentSkillTopicLead
+    && (directSkillCreation || transformIntoSkill)
+    && !explicitForAgentTarget;
+  return {
+    hasAccurateAgency: !ambiguousAgentAsAuthor,
+    agencyRisk: ambiguousAgentAsAuthor ? 'agent-as-author-for-human-authored-skill' : 'none',
+  };
+}
+
 export function checkEnglishTitle(value, scope = 'English title') {
   const text = normalizeText(value);
   const contextWords = text
@@ -38,12 +71,14 @@ export function checkEnglishTitle(value, scope = 'English title') {
     .match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*/g) || [];
   const hasIdentity = englishIdentityPattern.test(text);
   const hasSpecificContext = contextWords.length >= 2;
+  const agency = checkEnglishTitleAgency(text);
   return {
     scope,
     text,
     hasIdentity,
     hasSpecificContext,
-    pass: hasIdentity && hasSpecificContext,
+    ...agency,
+    pass: hasIdentity && hasSpecificContext && agency.hasAccurateAgency,
   };
 }
 
@@ -55,12 +90,14 @@ export function checkChineseTitle(value, scope = 'Chinese title') {
     .replace(/[^\p{L}\p{N}]/gu, '');
   const hasIdentity = chineseIdentityPattern.test(text);
   const hasSpecificContext = context.length >= 4;
+  const agency = checkChineseTitleAgency(text);
   return {
     scope,
     text,
     hasIdentity,
     hasSpecificContext,
-    pass: hasIdentity && hasSpecificContext,
+    ...agency,
+    pass: hasIdentity && hasSpecificContext && agency.hasAccurateAgency,
   };
 }
 
@@ -136,8 +173,8 @@ export async function validateProjects(englishProject, chineseProject) {
   ];
   const checks = [...englishChecks, ...chineseChecks, ...metadataChecks];
   const report = {
-    version: 2,
-    rule: 'Every audience-facing title identifies AI Agent(s) or 智能体 and states a concrete topic; each publishing description ends with the locale fixed follow sentence before hashtags.',
+    version: 3,
+    rule: 'Every audience-facing title identifies AI Agent(s) or 智能体, states a concrete topic, and preserves the real semantic actor; each publishing description ends with the locale fixed follow sentence before hashtags.',
     pass: checks.every((check) => check.pass),
     checks,
   };

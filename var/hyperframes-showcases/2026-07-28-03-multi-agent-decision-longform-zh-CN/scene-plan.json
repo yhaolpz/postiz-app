@@ -1,0 +1,1893 @@
+{
+  "locale": "zh-CN",
+  "profile": "tiny-agent-longform-kinetic-retention-2026-07-23-zh-CN",
+  "bilingualContractId": "2026-07-28-03-multi-agent-research-decision-v1",
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "label": "前言",
+      "scenes": [
+        {
+          "id": "c01-p01",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 1,
+          "narration": "什么时候该让多个 AI Agent 并行工作？答案先看任务能不能拆开。",
+          "headline": "一个 Agent 什么时候不够用",
+          "recapDisplayText": null,
+          "coreLabel": "一个 Agent 什么时候不够用",
+          "type": "hook",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "ask-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "question"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 0,
+          "end": 4.581
+        },
+        {
+          "id": "c01-p02",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 2,
+          "narration": "Anthropic 在多 Agent 研究系统复盘中给出一个清楚边界：并行能扩大搜索广度，但只有独立路径、高价值结果和足够工具空间同时存在时，协调成本才值得。",
+          "headline": "Anthropic 的多 Agent 边界",
+          "recapDisplayText": null,
+          "coreLabel": "Anthropic 的多 Agent 边界",
+          "type": "authority",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "review-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "parallel-agents"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 4.581,
+          "end": 15.49
+        },
+        {
+          "id": "c01-p03",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 3,
+          "narration": "它的内部研究评测里，Opus 4 主 Agent 配合 Sonnet 4 子 Agent，比单个 Opus 4 高出百分之九十点二。这个数字来自特定内部评测，不代表所有任务都会得到同样提升。",
+          "headline": "90.2% 是内部研究评测",
+          "recapDisplayText": null,
+          "coreLabel": "90.2% 是内部研究评测",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 15.49,
+          "end": 26.391
+        },
+        {
+          "id": "c01-p04",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 4,
+          "narration": "这期我们做一张单 Agent 和多 Agent 决策树。先判断适配度，再写委派契约、分配搜索力度、检查证据，最后给并行系统加上恢复能力。",
+          "headline": "单 Agent / 多 Agent 决策树",
+          "recapDisplayText": null,
+          "coreLabel": "单 Agent / 多 Agent 决策树",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "nudge",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 26.391,
+          "end": 35.653
+        },
+        {
+          "id": "c01-p05",
+          "chapter": "前言",
+          "chapterNumber": 1,
+          "paragraphNumber": 5,
+          "narration": "视频全程干货高价值，让你成为更擅长使用 AI 的人，内容较长，点点关注收藏不迷路。",
+          "headline": "高价值内容先收藏",
+          "recapDisplayText": null,
+          "coreLabel": "高价值内容先收藏",
+          "type": "promise",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "split-tilt",
+          "human": "write-front",
+          "humanDirection": "front",
+          "agent": "handoff-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "task-list"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 35.653,
+          "end": 41.609
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "label": "先过适配门",
+      "scenes": [
+        {
+          "id": "c02-p01",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 1,
+          "narration": "第一步不是增加 Agent，而是判断这个问题有没有值得并行的独立探索路径。",
+          "headline": "先判断能不能拆",
+          "recapDisplayText": null,
+          "coreLabel": "先判断能不能拆",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "review-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 41.609,
+          "end": 46.209
+        },
+        {
+          "id": "c02-p02",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 2,
+          "narration": "研究任务适合并行，因为答案通常来自许多方向。市场、技术、用户和风险可以分别搜索，再由主 Agent 压缩成一个结论。",
+          "headline": "研究天然有多条路径",
+          "recapDisplayText": null,
+          "coreLabel": "研究天然有多条路径",
+          "type": "generic",
+          "layout": "big-text",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "parallel-agents"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 46.209,
+          "end": 54.491
+        },
+        {
+          "id": "c02-p03",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 3,
+          "narration": "当单个上下文窗口需要同时容纳太多来源、工具结果和中间假设时，子 Agent 还能把各自的搜索压缩成高信号摘要。",
+          "headline": "子 Agent 压缩高信号",
+          "recapDisplayText": null,
+          "coreLabel": "子 Agent 压缩高信号",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "spin-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "summary"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 54.491,
+          "end": 62.63
+        },
+        {
+          "id": "c02-p04",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 4,
+          "narration": "但如果每一步都依赖上一步的精确状态，拆分会制造大量同步。很多编码任务共享同一份代码和测试状态，往往更适合一个 Agent 连续推进。",
+          "headline": "共享状态重，不适合拆",
+          "recapDisplayText": null,
+          "coreLabel": "共享状态重，不适合拆",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "sine-float",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "blocked-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "dependency"
+            },
+            {
+              "id": "dependency"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 62.63,
+          "end": 71.763
+        },
+        {
+          "id": "c02-p05",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 5,
+          "narration": "还要检查经济性。Anthropic 的使用数据里，单 Agent 大约消耗普通聊天四倍的 token，多 Agent 大约是十五倍。",
+          "headline": "多 Agent 约 15 倍 token",
+          "recapDisplayText": null,
+          "coreLabel": "多 Agent 约 15 倍 token",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 71.763,
+          "end": 78.573
+        },
+        {
+          "id": "c02-p06",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 6,
+          "narration": "所以，多 Agent 应该留给价值足够高、错误代价足够大，或者搜索广度会显著改变结果的任务，而不是给简单问题增加仪式感。",
+          "headline": "只为高价值任务扩张",
+          "recapDisplayText": null,
+          "coreLabel": "只为高价值任务扩张",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spring-pop",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "reason-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 78.573,
+          "end": 86.72
+        },
+        {
+          "id": "c02-p07",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 7,
+          "narration": "把判断写成三个门：路径能否独立，单个上下文是否吃紧，结果价值能否覆盖额外成本。三个条件越齐，越值得并行。",
+          "headline": "三个适配门",
+          "recapDisplayText": null,
+          "coreLabel": "三个适配门",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-delegation.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "nudge",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "checklist"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 86.72,
+          "end": 95.007
+        },
+        {
+          "id": "c02-p08",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 8,
+          "narration": "本章小节。第一，先找能独立推进的路径。",
+          "headline": "路径必须独立",
+          "recapDisplayText": "路径必须独立",
+          "coreLabel": "路径必须独立",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 95.007,
+          "end": 97.82
+        },
+        {
+          "id": "c02-p09",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 9,
+          "narration": "第二，共享状态越重，越应该谨慎拆分。",
+          "headline": "共享状态越重越谨慎",
+          "recapDisplayText": "共享状态越重越谨慎",
+          "coreLabel": "共享状态越重越谨慎",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "dependency"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 97.82,
+          "end": 100.707
+        },
+        {
+          "id": "c02-p10",
+          "chapter": "先过适配门",
+          "chapterNumber": 2,
+          "paragraphNumber": 10,
+          "narration": "第三，高价值结果才配得上更高成本。",
+          "headline": "价值覆盖成本",
+          "recapDisplayText": "价值覆盖成本",
+          "coreLabel": "价值覆盖成本",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 100.707,
+          "end": 103.556
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "label": "写好委派契约",
+      "scenes": [
+        {
+          "id": "c03-p01",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 1,
+          "narration": "通过适配门之后，主 Agent 的核心工作不是亲自搜索，而是把问题拆成不会重复也不会漏掉的任务。",
+          "headline": "主 Agent 负责拆分",
+          "recapDisplayText": null,
+          "coreLabel": "主 Agent 负责拆分",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "operate-right",
+          "humanDirection": "right",
+          "agent": "delegate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "workflow"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 103.556,
+          "end": 110.235
+        },
+        {
+          "id": "c03-p02",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 2,
+          "narration": "每个委派都要写清目标和预期输出。比如不是研究竞争对手，而是列出三家产品的定价、目标用户和可验证来源。",
+          "headline": "目标与输出要具体",
+          "recapDisplayText": null,
+          "coreLabel": "目标与输出要具体",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "split-tilt",
+          "human": "explain-front",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 110.235,
+          "end": 117.892
+        },
+        {
+          "id": "c03-p03",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 3,
+          "narration": "接着声明可用工具和来源边界。指定搜索、浏览或数据库，并说明优先使用原始来源，能减少子 Agent 在低质量材料里绕路。",
+          "headline": "指定工具和原始来源",
+          "recapDisplayText": null,
+          "coreLabel": "指定工具和原始来源",
+          "type": "generic",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "receive-tool",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 117.892,
+          "end": 126.169
+        },
+        {
+          "id": "c03-p04",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 4,
+          "narration": "还要告诉子 Agent 什么不要做。已经覆盖的地区、时间范围和结论格式都要明确，否则多个 Agent 很容易返回同一批信息。",
+          "headline": "写清不要重复什么",
+          "recapDisplayText": null,
+          "coreLabel": "写清不要重复什么",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-delegation.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "spin-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "delegate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "task-list"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 126.169,
+          "end": 134.109
+        },
+        {
+          "id": "c03-p05",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 5,
+          "narration": "Anthropic 把优秀委派总结为目标、输出格式、工具、来源和任务边界。主 Agent 还要根据第一轮发现继续调整分工。",
+          "headline": "委派五要素",
+          "recapDisplayText": null,
+          "coreLabel": "委派五要素",
+          "type": "generic",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "sine-float",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 134.109,
+          "end": 141.909
+        },
+        {
+          "id": "c03-p06",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 6,
+          "narration": "先广后窄通常更有效。第一轮平行扫描线索，第二轮只让 Agent 深挖真正改变判断的分支。",
+          "headline": "两轮收敛策略",
+          "recapDisplayText": null,
+          "coreLabel": "两轮收敛策略",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "search",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "search"
+            },
+            {
+              "id": "citation"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 141.909,
+          "end": 147.98
+        },
+        {
+          "id": "c03-p07",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 7,
+          "narration": "最终回收的不只是结论，还要有证据链接、关键不确定项和停止原因。这样主 Agent 才能判断哪些结果可以合并。",
+          "headline": "回收证据和未知项",
+          "recapDisplayText": null,
+          "coreLabel": "回收证据和未知项",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 147.98,
+          "end": 155.668
+        },
+        {
+          "id": "c03-p08",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 8,
+          "narration": "本章小节。第一，委派必须写清目标和输出。",
+          "headline": "目标与输出明确",
+          "recapDisplayText": "目标与输出明确",
+          "coreLabel": "目标与输出明确",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 155.668,
+          "end": 158.71
+        },
+        {
+          "id": "c03-p09",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 9,
+          "narration": "第二，来源、工具和边界要一起交代。",
+          "headline": "工具来源边界齐全",
+          "recapDisplayText": "工具来源边界齐全",
+          "coreLabel": "工具来源边界齐全",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "receive-tool",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 158.71,
+          "end": 161.641
+        },
+        {
+          "id": "c03-p10",
+          "chapter": "写好委派契约",
+          "chapterNumber": 3,
+          "paragraphNumber": 10,
+          "narration": "第三，回收证据与未知项，不只收结论。",
+          "headline": "不只回收结论",
+          "recapDisplayText": "不只回收结论",
+          "coreLabel": "不只回收结论",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 161.641,
+          "end": 164.54
+        }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "label": "按任务分配算力",
+      "scenes": [
+        {
+          "id": "c04-p01",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 1,
+          "narration": "多 Agent 不等于越多越好，搜索力度应该跟问题复杂度和预期价值一起变化。",
+          "headline": "按复杂度分档",
+          "recapDisplayText": null,
+          "coreLabel": "按复杂度分档",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "explain-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "scorecard"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 164.54,
+          "end": 169.558
+        },
+        {
+          "id": "c04-p02",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 2,
+          "narration": "Anthropic 的经验示例里，简单事实可能只用一个 Agent 和三到十次工具调用。这个量级无需额外协调层。",
+          "headline": "简单事实：1 个 Agent",
+          "recapDisplayText": null,
+          "coreLabel": "简单事实：1 个 Agent",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "nudge",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "single-agent"
+            },
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 169.558,
+          "end": 176.47
+        },
+        {
+          "id": "c04-p03",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 3,
+          "narration": "需要对比多个对象时，可以使用两到四个 Agent，每个 Agent 大约十到十五次工具调用，让每条路径都有足够深度。",
+          "headline": "比较任务：2 到 4 个",
+          "recapDisplayText": null,
+          "coreLabel": "比较任务：2 到 4 个",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "split-tilt",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "compare-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "compare"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 176.47,
+          "end": 183.87
+        },
+        {
+          "id": "c04-p04",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 4,
+          "narration": "复杂研究可能使用十个以上子 Agent，但这不是默认答案。主 Agent 必须能够看见进度、发现重复，并在边际收益下降时停止。",
+          "headline": "复杂研究：可超 10 个",
+          "recapDisplayText": null,
+          "coreLabel": "复杂研究：可超 10 个",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "delegate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "parallel-agents"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 183.87,
+          "end": 192.234
+        },
+        {
+          "id": "c04-p05",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 5,
+          "narration": "同一个子 Agent 内也可以并行工具调用。Anthropic 建议复杂路径常用三到五个子 Agent，并让每个 Agent 同时使用三个以上工具。",
+          "headline": "Agent 内也能并行工具",
+          "recapDisplayText": null,
+          "coreLabel": "Agent 内也能并行工具",
+          "type": "generic",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spin-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "receive-tool",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "tool"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 192.234,
+          "end": 200.649
+        },
+        {
+          "id": "c04-p06",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 6,
+          "narration": "当路径真的独立时，并行可让复杂查询耗时最多下降百分之九十。这个收益来自等待重叠，而不是让每个 Agent 思考得更聪明。",
+          "headline": "复杂查询最多快 90%",
+          "recapDisplayText": null,
+          "coreLabel": "复杂查询最多快 90%",
+          "type": "generic",
+          "layout": "big-text",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "sine-float",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 200.649,
+          "end": 209.432
+        },
+        {
+          "id": "c04-p07",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 7,
+          "narration": "决策树的力度档位可以写成轻量、比较和深挖。每档规定 Agent 数、工具预算、停止条件和升级信号。",
+          "headline": "轻量 / 比较 / 深挖",
+          "recapDisplayText": null,
+          "coreLabel": "轻量 / 比较 / 深挖",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-delegation.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "press-pulse",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "ruler"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 209.432,
+          "end": 216.614
+        },
+        {
+          "id": "c04-p08",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 8,
+          "narration": "本章小节。第一，先按复杂度选择力度档位。",
+          "headline": "复杂度决定力度",
+          "recapDisplayText": "复杂度决定力度",
+          "coreLabel": "复杂度决定力度",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "scorecard"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 216.614,
+          "end": 219.832
+        },
+        {
+          "id": "c04-p09",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 9,
+          "narration": "第二，并行收益来自独立等待的重叠。",
+          "headline": "收益来自等待重叠",
+          "recapDisplayText": "收益来自等待重叠",
+          "coreLabel": "收益来自等待重叠",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "timer"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 219.832,
+          "end": 222.512
+        },
+        {
+          "id": "c04-p10",
+          "chapter": "按任务分配算力",
+          "chapterNumber": 4,
+          "paragraphNumber": 10,
+          "narration": "第三，边际收益下降时就停止扩张。",
+          "headline": "边际收益下降就停",
+          "recapDisplayText": "边际收益下降就停",
+          "coreLabel": "边际收益下降就停",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "blocked-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "stop"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 222.512,
+          "end": 225.257
+        }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "label": "用结果和过程评估",
+      "scenes": [
+        {
+          "id": "c05-p01",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 1,
+          "narration": "多 Agent 的路径会动态变化，因此评估不能只检查它是否复现了一条固定步骤。",
+          "headline": "评估动态路径",
+          "recapDisplayText": null,
+          "coreLabel": "评估动态路径",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "write-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "checklist"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 225.257,
+          "end": 230.592
+        },
+        {
+          "id": "c05-p02",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 2,
+          "narration": "先看最终结果：事实是否正确，引用是否支持结论，问题是否覆盖完整，来源是否足够权威。",
+          "headline": "先看事实与引用",
+          "recapDisplayText": null,
+          "coreLabel": "先看事实与引用",
+          "type": "generic",
+          "layout": "big-text",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 230.592,
+          "end": 237.572
+        },
+        {
+          "id": "c05-p03",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 3,
+          "narration": "再看过程是否合理：任务拆分有没有重复或空白，工具调用是否有效，主 Agent 是否在新证据出现后调整了计划。",
+          "headline": "再看拆分与工具效率",
+          "recapDisplayText": null,
+          "coreLabel": "再看拆分与工具效率",
+          "type": "generic",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "nudge",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "workflow"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 237.572,
+          "end": 245.211
+        },
+        {
+          "id": "c05-p04",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 4,
+          "narration": "Anthropic 使用小样本人工评审，并把事实、引用、完整性、来源质量和工具效率放进评估标准。这里的重点是建立可解释的质量信号。",
+          "headline": "人工评审质量信号",
+          "recapDisplayText": null,
+          "coreLabel": "人工评审质量信号",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-reliability.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "split-tilt",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "scorecard"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 245.211,
+          "end": 254.299
+        },
+        {
+          "id": "c05-p05",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 5,
+          "narration": "如果只给最终答案打分，系统可能靠高成本碰巧得到好结果；如果只要求固定轨迹，又会惩罚合理的新路径。",
+          "headline": "别只看最终分数",
+          "recapDisplayText": null,
+          "coreLabel": "别只看最终分数",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "alert-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "warning"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 254.299,
+          "end": 261.876
+        },
+        {
+          "id": "c05-p06",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 6,
+          "narration": "更稳妥的做法是把结果标准和过程护栏分开。结果必须达标，过程则允许多种路径，但要留下可审查证据。",
+          "headline": "结果标准与过程护栏分开",
+          "recapDisplayText": null,
+          "coreLabel": "结果标准与过程护栏分开",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spin-in",
+          "human": "explain-front",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 261.876,
+          "end": 269.305
+        },
+        {
+          "id": "c05-p07",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 7,
+          "narration": "对自己的系统，可以从十个真实问题开始。记录单 Agent 基线、答案质量、token、耗时和失败类型，再决定是否扩大并行。",
+          "headline": "先做十题真实基线",
+          "recapDisplayText": null,
+          "coreLabel": "先做十题真实基线",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-paths.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "left",
+          "highlightSide": "right",
+          "motionType": "sine-float",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "experiment"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 269.305,
+          "end": 277.558
+        },
+        {
+          "id": "c05-p08",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 8,
+          "narration": "本章小节。第一，先评估事实、引用和覆盖度。",
+          "headline": "评事实引用覆盖",
+          "recapDisplayText": "评事实引用覆盖",
+          "coreLabel": "评事实引用覆盖",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "evidence"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 277.558,
+          "end": 280.972
+        },
+        {
+          "id": "c05-p09",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 9,
+          "narration": "第二，允许动态路径，但过程要可解释。",
+          "headline": "过程必须可解释",
+          "recapDisplayText": "过程必须可解释",
+          "coreLabel": "过程必须可解释",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "workflow"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 280.972,
+          "end": 283.757
+        },
+        {
+          "id": "c05-p10",
+          "chapter": "用结果和过程评估",
+          "chapterNumber": 5,
+          "paragraphNumber": 10,
+          "narration": "第三，用真实基线判断并行是否值得。",
+          "headline": "用基线判断价值",
+          "recapDisplayText": "用基线判断价值",
+          "coreLabel": "用基线判断价值",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "experiment"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 283.757,
+          "end": 286.739
+        }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "label": "为并行系统兜底",
+      "scenes": [
+        {
+          "id": "c06-p01",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 1,
+          "narration": "研究演示能跑通，不代表多 Agent 系统已经能在生产中稳定恢复。",
+          "headline": "生产系统要能恢复",
+          "recapDisplayText": null,
+          "coreLabel": "生产系统要能恢复",
+          "type": "chapter-intro",
+          "layout": "chapter-intro",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "decide-front",
+          "humanDirection": "front",
+          "agent": "present-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 286.739,
+          "end": 291.078
+        },
+        {
+          "id": "c06-p02",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 2,
+          "narration": "每个子 Agent 都可能超时、工具报错或返回空结果。主 Agent 需要保存任务状态，让失败只重跑受影响的路径。",
+          "headline": "失败只重跑一条路径",
+          "recapDisplayText": null,
+          "coreLabel": "失败只重跑一条路径",
+          "type": "generic",
+          "layout": "human-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "retry-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "error"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 291.078,
+          "end": 298.727
+        },
+        {
+          "id": "c06-p03",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 3,
+          "narration": "检查点至少记录任务、负责人、当前状态、证据位置和下一步。这样进程重启后不必从头搜索，也不会把旧结果误当成新结果。",
+          "headline": "检查点保存工作状态",
+          "recapDisplayText": null,
+          "coreLabel": "检查点保存工作状态",
+          "type": "generic",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "progress"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 298.727,
+          "end": 307.533
+        },
+        {
+          "id": "c06-p04",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 4,
+          "narration": "可观测性要穿过整个树。为每次委派、工具调用、重试和汇总保留 trace，才能分清是搜索失败、协调失败还是合并失败。",
+          "headline": "trace 穿过整棵树",
+          "recapDisplayText": null,
+          "coreLabel": "trace 穿过整棵树",
+          "type": "generic",
+          "layout": "generated",
+          "generatedArt": "multi-agent-reliability.png",
+          "temporaryGenerated": true,
+          "generatedArtSide": "right",
+          "highlightSide": "left",
+          "motionType": "nudge",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "dashboard"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 307.533,
+          "end": 315.765
+        },
+        {
+          "id": "c06-p05",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 5,
+          "narration": "发布也要渐进。Anthropic 提到彩虹部署，让新旧版本同时运行，避免正在执行的 Agent 因代码切换而中断。",
+          "headline": "彩虹部署保护运行中任务",
+          "recapDisplayText": null,
+          "coreLabel": "彩虹部署保护运行中任务",
+          "type": "generic",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "split-tilt",
+          "human": "explain-front",
+          "humanDirection": "front",
+          "agent": "handoff-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "branch"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 315.765,
+          "end": 322.989
+        },
+        {
+          "id": "c06-p06",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 6,
+          "narration": "当前架构还有一个同步瓶颈：主 Agent 等所有子 Agent 返回后再继续。异步能够更快，但会引入优先级、并发和结果合并的新复杂度。",
+          "headline": "同步瓶颈仍然存在",
+          "recapDisplayText": null,
+          "coreLabel": "同步瓶颈仍然存在",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "fly-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "wait-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "queue"
+            },
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 322.989,
+          "end": 331.816
+        },
+        {
+          "id": "c06-p07",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 7,
+          "narration": "因此生产清单是状态持久化、路径级重试、端到端追踪、渐进发布和明确停止规则。速度只是最后的结果，不是唯一目标。",
+          "headline": "五项生产清单",
+          "recapDisplayText": null,
+          "coreLabel": "五项生产清单",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spin-in",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "checklist"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 331.816,
+          "end": 340.632
+        },
+        {
+          "id": "c06-p08",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 8,
+          "narration": "本章小节。第一，把状态和证据写出进程。",
+          "headline": "状态写出进程",
+          "recapDisplayText": "状态写出进程",
+          "coreLabel": "状态写出进程",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "store-memory",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "progress"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 340.632,
+          "end": 343.623
+        },
+        {
+          "id": "c06-p09",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 9,
+          "narration": "第二，只重试失败路径，并保留完整 trace。",
+          "headline": "路径级重试与 trace",
+          "recapDisplayText": "路径级重试与 trace",
+          "coreLabel": "路径级重试与 trace",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "monitor-left",
+          "agentDirection": "left",
+          "props": [
+            {
+              "id": "dashboard"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 343.623,
+          "end": 346.537
+        },
+        {
+          "id": "c06-p10",
+          "chapter": "为并行系统兜底",
+          "chapterNumber": 6,
+          "paragraphNumber": 10,
+          "narration": "第三，用渐进发布和停止规则保护生产。",
+          "headline": "渐进发布保护生产",
+          "recapDisplayText": "渐进发布保护生产",
+          "coreLabel": "渐进发布保护生产",
+          "type": "recap",
+          "layout": "recap",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "verify-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "shield"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 1,
+          "start": 346.537,
+          "end": 349.8
+        }
+      ]
+    },
+    {
+      "id": "chapter-7",
+      "label": "总结",
+      "scenes": [
+        {
+          "id": "c07-p01",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 1,
+          "narration": "把决策树串起来：先问路径能否独立，再问上下文是否吃紧，然后确认结果价值能覆盖成本。通过之后，才进入委派、力度、评估和恢复。",
+          "headline": "先适配，再并行",
+          "recapDisplayText": null,
+          "coreLabel": "先适配，再并行",
+          "type": "generic",
+          "layout": "human-agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "sine-float",
+          "human": "present-right",
+          "humanDirection": "right",
+          "agent": "plan-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "route"
+            }
+          ],
+          "renderHuman": true,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 349.8,
+          "end": 359.41
+        },
+        {
+          "id": "c07-p02",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 2,
+          "narration": "如果任务共享状态很重，或者一个 Agent 已能稳定完成，就保留单 Agent。多 Agent 是一种任务架构，不是能力勋章。",
+          "headline": "单 Agent 仍是好答案",
+          "recapDisplayText": null,
+          "coreLabel": "单 Agent 仍是好答案",
+          "type": "generic",
+          "layout": "two-props",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "press-pulse",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "evaluate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "single-agent"
+            },
+            {
+              "id": "target"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": false,
+          "coreObjectCount": 2,
+          "start": 359.41,
+          "end": 366.781
+        },
+        {
+          "id": "c07-p03",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 3,
+          "narration": "下一次做深度研究时，先画出三条候选路径，并给每条写一行目标、来源、输出和停止条件。能独立推进，再开并行；不能，就让一个 Agent 继续做完。",
+          "headline": "四字段路径卡",
+          "recapDisplayText": null,
+          "coreLabel": "四字段路径卡",
+          "type": "generic",
+          "layout": "agent-center",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": "spring-pop",
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "write-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "task-list"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 366.781,
+          "end": 377.28
+        },
+        {
+          "id": "c07-p04",
+          "chapter": "总结",
+          "chapterNumber": 7,
+          "paragraphNumber": 4,
+          "narration": "关注 Tiny Agent，成为更擅长使用 AI 的人！",
+          "headline": "关注 Tiny Agent",
+          "recapDisplayText": null,
+          "coreLabel": "关注 Tiny Agent",
+          "type": "outro",
+          "layout": "agent-prop",
+          "generatedArt": null,
+          "temporaryGenerated": false,
+          "generatedArtSide": null,
+          "highlightSide": null,
+          "motionType": null,
+          "human": "idle",
+          "humanDirection": "front",
+          "agent": "celebrate-front",
+          "agentDirection": "front",
+          "props": [
+            {
+              "id": "success"
+            }
+          ],
+          "renderHuman": false,
+          "renderAgent": true,
+          "coreObjectCount": 1,
+          "start": 377.28,
+          "end": 380.266667
+        }
+      ]
+    }
+  ]
+}

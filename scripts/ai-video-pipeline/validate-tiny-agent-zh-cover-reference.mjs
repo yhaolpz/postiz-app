@@ -5,10 +5,38 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const ratios = {
-  '16x9': { svg: 'thumbnail.zh-CN.svg', png: 'thumbnail.zh-CN.png', width: 1280, height: 720, portrait: false },
-  '4x3': { svg: 'thumbnail.zh-CN.4x3.svg', png: 'thumbnail.zh-CN.4x3.png', width: 1200, height: 900, portrait: false },
-  '3x4': { svg: 'thumbnail.zh-CN.3x4.svg', png: 'thumbnail.zh-CN.3x4.png', width: 900, height: 1200, portrait: true },
+  '16x9': {
+    svg: 'thumbnail.zh-CN.svg',
+    png: 'thumbnail.zh-CN.png',
+    preview: 'thumbnail.zh-CN.256x144.png',
+    width: 1280,
+    height: 720,
+    previewWidth: 256,
+    previewHeight: 144,
+    portrait: false,
+  },
+  '4x3': {
+    svg: 'thumbnail.zh-CN.4x3.svg',
+    png: 'thumbnail.zh-CN.4x3.png',
+    preview: 'thumbnail.zh-CN.4x3.240x180.png',
+    width: 1200,
+    height: 900,
+    previewWidth: 240,
+    previewHeight: 180,
+    portrait: false,
+  },
+  '3x4': {
+    svg: 'thumbnail.zh-CN.3x4.svg',
+    png: 'thumbnail.zh-CN.3x4.png',
+    preview: 'thumbnail.zh-CN.3x4.180x240.png',
+    width: 900,
+    height: 1200,
+    previewWidth: 180,
+    previewHeight: 240,
+    portrait: true,
+  },
 };
+const repoRoot = path.resolve(import.meta.dirname, '../..');
 
 function parseArgs(argv) {
   const args = {};
@@ -67,8 +95,228 @@ function sameMembers(actual, expected) {
     && [...actualSet].every((item) => expectedSet.has(item));
 }
 
+function countInformationUnitsBeyondIdentity(headline) {
+  const withoutIdentity = String(headline || '')
+    .replace(/AI[\s-]*Agents?/gi, ' ')
+    .replace(/智能体/g, ' ');
+  const hanGlyphs = withoutIdentity.match(/\p{Script=Han}/gu) || [];
+  const alphanumericWords = withoutIdentity.match(/[A-Za-z0-9]+/g) || [];
+  return hanGlyphs.length + alphanumericWords.length;
+}
+
+function measureSvgTitleBlock(svg, canvasHeight) {
+  const lines = [...svg.matchAll(/<text\b[^>]*data-cover-title-line="[^"]+"[^>]*>/g)]
+    .map(([tag]) => {
+      const y = Number(tag.match(/\by="([\d.]+)"/)?.[1]);
+      const fontSize = Number(tag.match(/\bfont-size="([\d.]+)"/)?.[1]);
+      return { y, fontSize };
+    })
+    .filter(({ y, fontSize }) => Number.isFinite(y) && Number.isFinite(fontSize));
+  if (!lines.length) return { lineCount: 0, heightPx: 0, heightPercent: 0 };
+  const top = Math.min(...lines.map(({ y, fontSize }) => y - fontSize * 0.9));
+  const bottom = Math.max(...lines.map(({ y, fontSize }) => y + fontSize * 0.2));
+  const heightPx = Math.max(0, bottom - top);
+  return {
+    lineCount: lines.length,
+    heightPx: Number(heightPx.toFixed(2)),
+    heightPercent: Number(((heightPx / canvasHeight) * 100).toFixed(2)),
+  };
+}
+
+function parseSvgElementAttributes(tag) {
+  const attributes = {};
+  for (const match of String(tag || '').matchAll(/([A-Za-z_:][\w:.-]*)="([^"]*)"/g)) {
+    attributes[match[1]] = match[2];
+  }
+  return attributes;
+}
+
+function numericAttribute(attributes, name) {
+  const value = Number(attributes?.[name]);
+  return Number.isFinite(value) ? value : null;
+}
+
+function sameNumericGeometry(actual, expected, keys) {
+  return keys.every((key) => numericAttribute(actual, key) === expected?.[key]);
+}
+
+function normalizeVisibleTitle(value) {
+  return String(value || '')
+    .replace(/<[^>]+>/g, '')
+    .replaceAll('&amp;', '&')
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replace(/\s+/g, '');
+}
+
+function evaluateStrictGeometry({ ratio, svg, spec, generatedHeroAsset, strictGeometryRule }) {
+  const scoped = strictGeometryRule?.status === 'active'
+    && Array.isArray(strictGeometryRule.scope)
+    && strictGeometryRule.scope.includes(`zh-CN/${ratio}`);
+  if (!scoped) {
+    return {
+      scoped: false,
+      checks: {
+        strictGeometryProfileId: true,
+        paperGridGeometry: true,
+        roundedRuleGeometry: true,
+        titleGroupGeometry: true,
+        titleBaselineGeometry: true,
+        titleFontScale: true,
+        heroBoxGeometry: true,
+        strictPrimaryTitleOnly: true,
+        strictTitleTextMatchesSpec: true,
+      },
+      evidence: null,
+    };
+  }
+
+  const expected = strictGeometryRule[ratio] || {};
+  const shared = strictGeometryRule.shared || {};
+  const patternTags = [...svg.matchAll(/<pattern\b[^>]*>/g)].map(([tag]) => ({
+    tag,
+    attributes: parseSvgElementAttributes(tag),
+  }));
+  const gridPattern = patternTags.find(({ attributes }) => attributes.id === 'paper-grid');
+  const pathTags = [...svg.matchAll(/<path\b[^>]*>/g)].map(([tag]) => ({
+    tag,
+    attributes: parseSvgElementAttributes(tag),
+  }));
+  const gridPath = pathTags.find(({ attributes }) => attributes.stroke === shared.paperGrid?.stroke);
+  const rectTags = [...svg.matchAll(/<rect\b[^>]*>/g)].map(([tag]) => ({
+    tag,
+    attributes: parseSvgElementAttributes(tag),
+  }));
+  const blueRules = rectTags.filter(({ attributes }) => attributes.fill === '#117ABD');
+  const yellowRules = rectTags.filter(({ attributes }) => attributes.fill === '#F4C542');
+  const blueRule = blueRules[0]?.attributes || {};
+  const yellowRule = yellowRules[0]?.attributes || {};
+  const groupTags = [...svg.matchAll(/<g\b[^>]*>/g)].map(([tag]) => ({
+    tag,
+    attributes: parseSvgElementAttributes(tag),
+  }));
+  const titleGroup = groupTags.find(({ attributes }) => attributes['font-family'])?.attributes || {};
+  const titleLineFragments = [...svg.matchAll(/<text\b[^>]*data-cover-title-line="[^"]+"[^>]*>[\s\S]*?<\/text>/g)]
+    .map(([fragment]) => {
+      const tag = fragment.match(/<text\b[^>]*>/)?.[0] || '';
+      const attributes = parseSvgElementAttributes(tag);
+      return {
+        fragment,
+        attributes,
+        index: numericAttribute(attributes, 'data-cover-title-line'),
+        x: numericAttribute(attributes, 'x'),
+        y: numericAttribute(attributes, 'y'),
+        fontSize: numericAttribute(attributes, 'font-size'),
+        visibleText: normalizeVisibleTitle(fragment),
+      };
+    })
+    .sort((left, right) => left.index - right.index);
+  const imageTags = [...svg.matchAll(/<image\b[^>]*>/g)].map(([tag]) => ({
+    tag,
+    attributes: parseSvgElementAttributes(tag),
+  }));
+  const heroImage = imageTags.find(({ attributes }) => (
+    attributes.href === generatedHeroAsset || attributes['xlink:href'] === generatedHeroAsset
+  ))?.attributes || {};
+  const fontFamily = String(titleGroup['font-family'] || '');
+  const bodyFontSizes = titleLineFragments.slice(1).map(({ fontSize }) => fontSize);
+  const titleTextFromSvg = titleLineFragments.map(({ visibleText }) => visibleText).join('');
+  const expectedTitleText = Array.isArray(spec.titleLines)
+    ? spec.titleLines.join('')
+    : spec.headline;
+  const strictTitleTextMatchesSpec = titleTextFromSvg === normalizeVisibleTitle(expectedTitleText)
+    && titleTextFromSvg === normalizeVisibleTitle(spec.headline);
+  const titleBaselineGeometry = titleLineFragments.length === shared.titleLineCount
+    && titleLineFragments.every((line, index) => (
+      line.index === index + 1
+      && line.x === expected.title?.x
+      && line.y === expected.title?.baselineY?.[index]
+    ));
+  const titleFontScale = titleLineFragments.length === shared.titleLineCount
+    && titleLineFragments.every(({ fontSize }) => (
+      Number.isFinite(fontSize)
+      && fontSize >= shared.titleGroup?.minimumBodyFontSizePx
+      && fontSize <= shared.titleGroup?.maximumFontSizePx
+    ))
+    && titleLineFragments[0].fontSize >= expected.title?.identityFontSizePx?.min
+    && titleLineFragments[0].fontSize <= expected.title?.identityFontSizePx?.max
+    && bodyFontSizes.filter((fontSize) => (
+      fontSize >= shared.titleGroup?.minimumDominantBodyLineFontSizePx
+    )).length >= shared.titleGroup?.minimumDominantBodyLineCount;
+  const titleGroupGeometry = shared.titleGroup?.fontFamilyTokens?.every((token) => fontFamily.includes(token))
+    && numericAttribute(titleGroup, 'font-weight') === shared.titleGroup?.fontWeight
+    && titleGroup.fill === shared.titleGroup?.fill
+    && titleGroup.stroke === shared.titleGroup?.stroke
+    && numericAttribute(titleGroup, 'stroke-width') === shared.titleGroup?.strokeWidthPx
+    && titleGroup['stroke-linejoin'] === shared.titleGroup?.strokeLineJoin
+    && titleGroup['paint-order'] === shared.titleGroup?.paintOrder
+    && numericAttribute(titleGroup, 'letter-spacing') === shared.titleGroup?.letterSpacingPx;
+  const paperGridGeometry = sameNumericGeometry(
+    gridPattern?.attributes || {},
+    { width: shared.paperGrid?.cellWidthPx, height: shared.paperGrid?.cellHeightPx },
+    ['width', 'height'],
+  )
+    && gridPath?.attributes?.stroke === shared.paperGrid?.stroke
+    && numericAttribute(gridPath?.attributes, 'stroke-width') === shared.paperGrid?.strokeWidthPx
+    && numericAttribute(gridPath?.attributes, 'opacity') === shared.paperGrid?.opacity;
+  const roundedRuleGeometry = blueRules.length === 1
+    && yellowRules.length === 1
+    && sameNumericGeometry(blueRule, expected.blueRule, ['x', 'y', 'width', 'height', 'rx'])
+    && sameNumericGeometry(yellowRule, expected.yellowRule, ['x', 'y', 'width', 'height', 'rx']);
+  const heroBoxGeometry = imageTags.length === 1
+    && sameNumericGeometry(heroImage, expected.heroBox, ['x', 'y', 'width', 'height'])
+    && heroImage.preserveAspectRatio === 'xMidYMid meet';
+  const strictPrimaryTitleOnly = countMatches(svg, /<text\b/g) === shared.titleLineCount
+    && titleLineFragments.length === shared.titleLineCount
+    && /<tspan fill="#117ABD">AI Agent<\/tspan>/.test(titleLineFragments[0]?.fragment || '')
+    && titleLineFragments.slice(1).every(({ fragment }) => !/#117ABD/.test(fragment));
+  const checks = {
+    strictGeometryProfileId: spec.strictGeometryProfileId === strictGeometryRule.geometryProfileId,
+    paperGridGeometry,
+    roundedRuleGeometry,
+    titleGroupGeometry,
+    titleBaselineGeometry,
+    titleFontScale,
+    heroBoxGeometry,
+    strictPrimaryTitleOnly,
+    strictTitleTextMatchesSpec,
+  };
+  return {
+    scoped: true,
+    checks,
+    evidence: {
+      geometryProfileId: spec.strictGeometryProfileId || null,
+      expectedGeometryProfileId: strictGeometryRule.geometryProfileId,
+      gridPattern: gridPattern?.attributes || null,
+      gridPath: gridPath?.attributes || null,
+      blueRule,
+      yellowRule,
+      titleGroup,
+      titleLines: titleLineFragments.map(({ index, x, y, fontSize, visibleText }) => ({
+        index,
+        x,
+        y,
+        fontSize,
+        visibleText,
+      })),
+      heroBox: heroImage,
+      expected,
+    },
+  };
+}
+
 async function validate(projectDir) {
   const thumbnailsDir = path.join(projectDir, 'thumbnails');
+  const activeProfile = JSON.parse(await fs.readFile(
+    path.join(repoRoot, 'scripts/ai-video-pipeline/style-guides/tiny-agent-longform-active-profile.zh-CN.json'),
+    'utf8',
+  ));
+  const titleDensityRule = activeProfile.postSnapshotUserOverrides
+    ?.coverTitleTopicAlignment
+    ?.zhRatioTitleInformationDensity || {};
+  const strictGeometryRule = activeProfile.postSnapshotUserOverrides
+    ?.coverReferenceAlignment
+    ?.zhRatioStrictGeometry || {};
   const metadata = JSON.parse(await fs.readFile(path.join(projectDir, 'publish-metadata.zh-CN.json'), 'utf8'));
   const coverTitleContract = metadata.coverTitleContract || {};
   const coreCoverKeywords = Array.isArray(coverTitleContract.coreCoverKeywords)
@@ -109,13 +357,15 @@ async function validate(projectDir) {
   const checks = [metadataTitleTopicAlignment];
   const outputs = [];
   for (const [ratio, expected] of Object.entries(ratios)) {
-    const [specRaw, svg, png] = await Promise.all([
+    const [specRaw, svg, png, previewPng] = await Promise.all([
       fs.readFile(path.join(thumbnailsDir, `thumbnail-spec.zh-CN.${ratio}.json`), 'utf8'),
       fs.readFile(path.join(thumbnailsDir, expected.svg), 'utf8'),
       fs.readFile(path.join(thumbnailsDir, expected.png)),
+      fs.readFile(path.join(thumbnailsDir, expected.preview)),
     ]);
     const spec = JSON.parse(specRaw);
     const image = inspectPng(path.join(thumbnailsDir, expected.png));
+    const preview = inspectPng(path.join(thumbnailsDir, expected.preview));
     const generatedHero = spec.generatedHeroIllustration || null;
     const usesGeneratedHero = Boolean(generatedHero?.asset);
     const generatedHeroPath = usesGeneratedHero
@@ -142,6 +392,28 @@ async function validate(projectDir) {
     const headlineContainsRequiredKeywords = coreCoverKeywords.every((keyword) => (
       String(spec.headline || '').includes(keyword)
     ));
+    const titleDensityScoped = ratio === '4x3' || ratio === '3x4';
+    const titleBlock = measureSvgTitleBlock(svg, expected.height);
+    const informationUnitsBeyondIdentity = countInformationUnitsBeyondIdentity(spec.headline);
+    const titleLineRange = titleDensityRule.titleLineCount || {};
+    const minimumTitleBlockHeightPercent = titleDensityRule.minimumTitleBlockHeightPercent?.[ratio];
+    const headlineIntent = spec.headlineIntent;
+    const validHeadlineIntent = ['question', 'action', 'benefit'].includes(headlineIntent)
+      && typeof spec.headlineIntentRationale === 'string'
+      && spec.headlineIntentRationale.trim().length >= 12
+      && (headlineIntent !== 'question' || /[？?]/.test(String(spec.headline || '')));
+    const strictGeometry = evaluateStrictGeometry({
+      ratio,
+      svg,
+      spec,
+      generatedHeroAsset: generatedHero?.asset || null,
+      strictGeometryRule,
+    });
+    const previewDimensions = !strictGeometry.scoped || (
+      preview.width === expected.previewWidth
+      && preview.height === expected.previewHeight
+      && preview.colorspace.toLowerCase() === 'srgb'
+    );
     const ratioChecks = {
       referenceLayout: spec.referenceLayout === '2026-07-23-approved-title-hero',
       referenceSvg: /2026-07-23-03-ai-agent-uncertainty-longform-zh-CN/.test(spec.referenceSvg || ''),
@@ -155,6 +427,19 @@ async function validate(projectDir) {
         sameMembers(spec.requiredCoverKeywords, coreCoverKeywords) && headlineContainsRequiredKeywords
       ),
       keywordRevisionExemptionScope: !titleKeywordRevisionExempt || permittedKeywordRevisionExempt,
+      titleInformationDensity: !titleDensityScoped || (
+        titleDensityRule.status === 'active'
+        && informationUnitsBeyondIdentity >= titleDensityRule.minimumInformationUnitsBeyondIdentity
+      ),
+      titleLineDensity: !titleDensityScoped || (
+        titleBlock.lineCount >= titleLineRange.min
+        && titleBlock.lineCount <= titleLineRange.max
+      ),
+      titleBlockHeightDensity: !titleDensityScoped || (
+        Number.isFinite(minimumTitleBlockHeightPercent)
+        && titleBlock.heightPercent >= minimumTitleBlockHeightPercent
+      ),
+      titleQuestionActionOrBenefit: !titleDensityScoped || validHeadlineIntent,
       titleHeroComposition: expected.portrait
         ? /top-60-percent-title; bottom-40-percent-contained/.test(spec.composition || '')
         : /text-left .*right/.test(spec.composition || ''),
@@ -196,15 +481,58 @@ async function validate(projectDir) {
       noForbiddenTitleColors: !/#8A6500|#C7362F/.test(svg),
       expectedBinaryPresent: png.length > 0,
       expectedDimensions: image.width === expected.width && image.height === expected.height && image.colorspace.toLowerCase() === 'srgb',
+      expectedFileSize: png.length < 2 * 1024 * 1024,
+      ...strictGeometry.checks,
+      previewDimensions,
     };
     const pass = Object.values(ratioChecks).every(Boolean);
-    checks.push({ ratio, pass, ...ratioChecks });
-    outputs.push({ ratio, path: expected.png, ...image, sizeBytes: png.length, sha256: sha256(png) });
+    checks.push({
+      ratio,
+      pass,
+      ...ratioChecks,
+      titleDensityEvidence: {
+        scoped: titleDensityScoped,
+        headline: spec.headline || null,
+        informationUnitsBeyondIdentity,
+        minimumInformationUnitsBeyondIdentity: titleDensityRule.minimumInformationUnitsBeyondIdentity ?? null,
+        lineCount: titleBlock.lineCount,
+        requiredLineCount: titleLineRange,
+        titleBlockHeightPx: titleBlock.heightPx,
+        titleBlockHeightPercent: titleBlock.heightPercent,
+        minimumTitleBlockHeightPercent: minimumTitleBlockHeightPercent ?? null,
+        headlineIntent: headlineIntent || null,
+        headlineIntentRationale: spec.headlineIntentRationale || null,
+      },
+      strictGeometryEvidence: {
+        scoped: strictGeometry.scoped,
+        preview: {
+          path: expected.preview,
+          width: preview.width,
+          height: preview.height,
+          colorspace: preview.colorspace,
+          sizeBytes: previewPng.length,
+        },
+        geometry: strictGeometry.evidence,
+      },
+    });
+    outputs.push({
+      ratio,
+      path: expected.png,
+      ...image,
+      sizeBytes: png.length,
+      sha256: sha256(png),
+      preview: {
+        path: expected.preview,
+        ...preview,
+        sizeBytes: previewPng.length,
+        sha256: sha256(previewPng),
+      },
+    });
   }
   const png16x9 = await fs.readFile(path.join(thumbnailsDir, 'thumbnail.zh-CN.png'));
   const expected16x9 = await fs.readFile(path.join(thumbnailsDir, 'thumbnail.zh-CN.16x9.png'));
   const report = {
-    version: 3,
+    version: 4,
     reference: '2026-07-23-approved-title-hero',
     pass: checks.every((check) => check.pass),
     checks,
