@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://indieseek.co/schemas/video-release-bundle-v1.json",
+  "title": "Seek video release bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "bundleId",
+    "producer",
+    "createdAt",
+    "runKey",
+    "topic",
+    "locale",
+    "source",
+    "technical",
+    "qa",
+    "ownership",
+    "artifacts"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "seek.video-release.v1"
+    },
+    "bundleId": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]+$"
+    },
+    "producer": {
+      "const": "@seek/video-production"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "runKey": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}-\\d{2}$"
+    },
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "title"],
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "locale": {
+      "enum": ["en-US", "zh-CN"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "projectPath", "sourceAttribution"],
+      "properties": {
+        "repository": {
+          "const": "seek"
+        },
+        "projectPath": {
+          "type": "string"
+        },
+        "sourceAttribution": {
+          "type": "object"
+        }
+      }
+    },
+    "technical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "fps", "videoCodec", "audioCodec", "durationSeconds"],
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "videoCodec": {
+          "type": "string"
+        },
+        "audioCodec": {
+          "type": "string"
+        },
+        "durationSeconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "qa": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "summaryArtifact"],
+      "properties": {
+        "status": {
+          "const": "passed"
+        },
+        "summaryArtifact": {
+          "const": "qa/qa-summary.json"
+        }
+      }
+    },
+    "ownership": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceRepository", "immutable", "distributorMayDeleteSource"],
+      "properties": {
+        "sourceRepository": {
+          "const": "seek"
+        },
+        "immutable": {
+          "const": true
+        },
+        "distributorMayDeleteSource": {
+          "const": false
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "file", "contentType", "bytes", "sha256"],
+        "properties": {
+          "role": {
+            "enum": [
+              "video",
+              "cover-16x9",
+              "cover-4x3",
+              "cover-3x4",
+              "publishing-metadata",
+              "publishing-materials",
+              "qa-summary"
+            ]
+          },
+          "file": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

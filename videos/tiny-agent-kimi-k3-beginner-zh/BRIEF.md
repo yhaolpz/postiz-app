@@ -26,7 +26,9 @@ narration: yes
 
 ## Customizations
 
-- 服从 `scripts/ai-video-pipeline/style-guides/tiny-agent-ai-news-short.md`。
+- 原始制作规范已迁移至
+  `/Volumes/SSD/Workspace/seek/apps/video-production/style-guides/tiny-agent-ai-news-short.md`；
+  本目录仅作为历史项目保留。
 - 使用大号粗体、纯色背景、真实截图主视觉；禁止网格、常驻线条、页面编号、二维码块和信息卡片堆叠。
 - 每个镜头只讲一个选择或一个行动建议。
 - Tiny Agent 只在开头和结尾出现，不能遮挡产品截图。
