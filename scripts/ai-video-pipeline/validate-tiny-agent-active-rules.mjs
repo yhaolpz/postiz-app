@@ -26,6 +26,14 @@ const files = {
     root,
     'scripts/ai-video-pipeline/automation-guides/tiny-agent-daily-longform.md'
   ),
+  longformCleanup: path.join(
+    root,
+    'scripts/ai-video-pipeline/cleanup-published-longform.mjs'
+  ),
+  shortsCleanup: path.join(
+    root,
+    'scripts/ai-video-pipeline/cleanup-published-shorts.mjs'
+  ),
   commonGuide: path.join(
     root,
     'scripts/ai-video-pipeline/style-guides/tiny-agent-longform.md'
@@ -45,6 +53,10 @@ const files = {
   zhCoverValidator: path.join(
     root,
     'scripts/ai-video-pipeline/validate-tiny-agent-zh-cover-reference.mjs'
+  ),
+  zhCoverValidatorTest: path.join(
+    root,
+    'scripts/ai-video-pipeline/validate-tiny-agent-zh-cover-reference.test.mjs'
   ),
   enCoverValidator: path.join(
     root,
@@ -173,6 +185,8 @@ function readCommitted(relativePath) {
 const text = {
   contentPlan: readText('contentPlan', files.contentPlan),
   runbook: readText('runbook', files.runbook),
+  longformCleanup: readText('longformCleanup', files.longformCleanup),
+  shortsCleanup: readText('shortsCleanup', files.shortsCleanup),
   commonGuide: readText('commonGuide', files.commonGuide),
   activeProfile: readText('activeProfile', files.activeProfile),
   outputValidator: readText('outputValidator', files.outputValidator),
@@ -181,6 +195,7 @@ const text = {
     files.bilingualParityValidator
   ),
   zhCoverValidator: readText('zhCoverValidator', files.zhCoverValidator),
+  zhCoverValidatorTest: readText('zhCoverValidatorTest', files.zhCoverValidatorTest),
   enCoverValidator: readText('enCoverValidator', files.enCoverValidator),
   publishingMaterialsValidator: readText(
     'publishingMaterialsValidator',
@@ -994,6 +1009,11 @@ requireEqual(
   'active'
 );
 requireEqual(
+  'activeProfile.englishAdultNarration.effectiveFromRunKey',
+  profile.postSnapshotUserOverrides?.englishAdultNarration?.effectiveFromRunKey,
+  '2026-07-29-03'
+);
+requireEqual(
   'activeProfile.englishAdultNarration.voice',
   profile.postSnapshotUserOverrides?.englishAdultNarration?.voice,
   'en-US-ChristopherNeural'
@@ -1001,7 +1021,7 @@ requireEqual(
 requireEqual(
   'activeProfile.englishAdultNarration.rate',
   profile.postSnapshotUserOverrides?.englishAdultNarration?.rate,
-  '+30%'
+  '+15%'
 );
 requireEqual(
   'activeProfile.englishAdultNarration.forbiddenVoice',
@@ -1031,7 +1051,7 @@ requireEqual(
 requireEqual(
   'activeProfile.fixedBilingualGeneration.en-US.rate',
   profile.fixedBilingualGeneration?.['en-US']?.rate,
-  '+30%'
+  '+15%'
 );
 requireMatch(
   'activeProfile.generatedArtTransparency.deliveryAsset',
@@ -1410,7 +1430,7 @@ requireEqual(
     letterSpacingPx: -4,
     minimumBodyFontSizePx: 112,
     maximumFontSizePx: 212,
-    minimumDominantBodyLineFontSizePx: 145,
+    minimumDominantBodyLineFontSizePx: 112,
     minimumDominantBodyLineCount: 2,
   })
 );
@@ -1423,6 +1443,43 @@ requireEqual(
   'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.shared.geometryTolerancePx',
   zhCoverStrictGeometry?.shared?.geometryTolerancePx,
   0
+);
+const zhHeroContentFit = zhCoverStrictGeometry?.shared?.heroContentFit;
+requireEqual(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.shared.heroContentFit',
+  JSON.stringify(zhHeroContentFit),
+  JSON.stringify({
+    status: 'active',
+    profileId: 'tiny-agent-cover-content-fit-2026-07-30',
+    effectiveFromRunKey: '2026-07-30-03',
+    manualRevisionOptInField: 'contentFitProfileId',
+    alphaPaddingPercent: { min: 3, max: 6 },
+    fullyContained: true,
+    minimumVisibleHeroHeightPercent: {
+      '4x3Canvas': 50,
+      '3x4HeroBox': 85,
+    },
+    minimumVisibleHeroBoundsAreaPercentOfBox: {
+      '4x3': 45,
+      '3x4': 40,
+    },
+    minimumTitleHeroGapPx: {
+      '4x3Horizontal': 24,
+      '3x4Vertical': 12,
+    },
+    rule: zhHeroContentFit?.rule,
+    qa: zhHeroContentFit?.qa,
+  })
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.shared.heroContentFit.rule',
+  zhHeroContentFit?.rule ?? '',
+  /real alpha subject bounds[\s\S]*24px[\s\S]*85%/
+);
+requireMatch(
+  'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.shared.heroContentFit.qa',
+  zhHeroContentFit?.qa ?? '',
+  /raster-measure[\s\S]*fail closed/
 );
 requireEqual(
   'activeProfile.coverReferenceAlignment.zhRatioStrictGeometry.4x3',
@@ -1463,11 +1520,29 @@ for (const [label, pattern] of [
   ['strict title baseline gate', /titleBaselineGeometry/],
   ['strict rounded-rule gate', /roundedRuleGeometry/],
   ['strict hero box gate', /heroBoxGeometry/],
+  ['hero alpha-bounds inspection', /inspectAlphaBounds/],
+  ['raster title-bounds inspection', /renderTitleBounds/],
+  ['visible hero height gate', /visibleHeroHeight/],
+  ['visible hero area gate', /visibleHeroArea/],
+  ['title-hero clearance gate', /titleHeroClearance/],
+  ['content-fit evidence report', /heroContentFitEvidence/],
   ['strict preview gate', /previewDimensions/],
   ['strict evidence report', /strictGeometryEvidence/],
 ]) {
   requireMatch(`zhCoverValidator.${label}`, text.zhCoverValidator, pattern);
 }
+for (const [label, pattern] of [
+  ['positive fixture', /expected positive content-fit fixture to pass/],
+  ['4x3 overlap rejection', /titleHeroClearance/],
+  ['3x4 padded-hero rejection', /heroAlphaPadding[\s\S]*visibleHeroHeight[\s\S]*visibleHeroArea/],
+]) {
+  requireMatch(`zhCoverValidatorTest.${label}`, text.zhCoverValidatorTest, pattern);
+}
+requireMatch(
+  'runbook hero alpha-content fit',
+  text.runbook,
+  /3%-6%[\s\S]*24px[\s\S]*12px/
+);
 const enCoverStrictGeometry = profile.postSnapshotUserOverrides
   ?.coverReferenceAlignment
   ?.enRatioStrictGeometry;
@@ -1715,8 +1790,13 @@ const contentPlanChecks = [
   /2026-07-23-scheduled-6m18/,
   /中文是内容呈现、场景、画面、动作、节奏和封面格式的主版本/,
   /englishChineseProductionParity/,
-  /en-US-ChristopherNeural`，固定语速 `\+30%`/,
+  /en-US-ChristopherNeural`，横屏长视频固定语速 `\+15%`/,
+  /Shorts 保持独立的 `\+30%` 语速/,
   /zh-CN-YunxiaNeural`，固定语速 `\+35%`/,
+  /cleanup-published-longform\.mjs --retention-hours 120 --apply/,
+  /距离英文版实际 `publishedAt` 已满 `5` 天（`120` 小时）/,
+  /"retentionHours": 120/,
+  /"eligibleAt": "publishedAt 加 120 小时"/,
   /中英文长视频均为 `5-8` 分钟/,
   /每期固定五张/,
   /英文 `thumbnail\.en-US\.png` 4K `16:9` 发布母版/,
@@ -1751,6 +1831,10 @@ const runbookChecks = [
   /2026-07-23-scheduled-6m18/,
   /englishChineseProductionParity/,
   /中文是制作语法的主版本，英文只做自然英语本地化和成人英语旁白替换/,
+  /en-US-ChristopherNeural \+15%/,
+  /英文 Shorts 仍使用自己的 `\+30%` 规则/,
+  /cleanup-published-longform\.mjs --retention-hours 120 --apply/,
+  /英文公开发布已满 `5` 天（`120` 小时）/,
   /bilingual-content-contract\.json/,
   /validate-tiny-agent-bilingual-parity\.mjs/,
   /qa\/bilingual-parity-report\.json/,
@@ -1788,6 +1872,17 @@ const runbookChecks = [
 ];
 for (const pattern of runbookChecks) {
   requireMatch('runbook', text.runbook, pattern);
+}
+for (const [label, cleanupText] of [
+  ['longformCleanup', text.longformCleanup],
+  ['shortsCleanup', text.shortsCleanup],
+]) {
+  requireMatch(label, cleanupText, /const MIN_RETENTION_HOURS = 5 \* 24;/);
+  requireMatch(
+    label,
+    cleanupText,
+    /Retention must be at least 120 hours \(5 days\)\./
+  );
 }
 forbidMatch(
   'runbook',
@@ -1859,7 +1954,7 @@ const memoryActive = text.memory.split('\n## Formal automation state')[0] ?? '';
 const memoryChecks = [
   /tiny-agent-longform-scheduled-6m18-2026-07-23/,
   /zh-CN-YunxiaNeural \+35%/,
-  /en-US-ChristopherNeural \+30%/,
+  /en-US-ChristopherNeural \+15%/,
   /5-8 minutes/,
   /63` scenes, `7` chapters, and `15` recap scenes/,
   /Active bilingual opening readability override/,
@@ -1876,7 +1971,7 @@ for (const pattern of memoryChecks) {
 requireMatch(
   'voiceReadme',
   text.voiceReadme,
-  /当前活跃长视频 contract 固定为中文 `zh-CN-YunxiaNeural \+35%`、英文 `en-US-ChristopherNeural \+30%`/
+  /当前活跃长视频 contract 固定为中文 `zh-CN-YunxiaNeural \+35%`、英文 `en-US-ChristopherNeural \+15%`/
 );
 
 for (const [relativePath, expected] of Object.entries(referenceArtifacts)) {

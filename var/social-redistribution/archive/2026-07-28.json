@@ -1,0 +1,315 @@
+{
+  "version": 1,
+  "date": "2026-07-28",
+  "runAt": "2026-07-28T12:24:54.000Z",
+  "health": {
+    "backend": "HTTP 200",
+    "frontend": "HTTP 200 for the local media endpoint used during publishing",
+    "orchestrator": "HTTP 200",
+    "temporal": "SERVING",
+    "queueBacklog": {
+      "main": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0,
+      "x": 0
+    }
+  },
+  "excludedProviders": [
+    "facebook"
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "supported": false
+    }
+  ],
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Cloudflare Agents 0.20: migrate to MCP SDK v2 without breaking legacy clients.",
+      "url": "https://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/",
+      "shareImage": "https://indieseek.co/shared/assets/indieseek-og-image.png"
+    },
+    {
+      "key": "short",
+      "title": "Tool Use Is Four Decisions",
+      "url": "https://www.youtube.com/watch?v=KRwkiJZztbM",
+      "videoId": "KRwkiJZztbM",
+      "thumbnail": "https://i.ytimg.com/vi/KRwkiJZztbM/hqdefault.jpg"
+    },
+    {
+      "key": "long",
+      "title": "When Multiple AI Agents Should Work in Parallel",
+      "url": "https://www.youtube.com/watch?v=bppXyaWMNLg",
+      "videoId": "bppXyaWMNLg",
+      "englishThumbnail": "var/hyperframes-showcases/2026-07-28-03-multi-agent-decision-longform-en-US/thumbnails/thumbnail.en-US.png"
+    }
+  ],
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-07-28&utm_content=blog",
+      "generatedCopy": "Migrate Cloudflare Agents 0.20 without breaking legacy MCP sessions. #MCP\n\nhttps://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-07-28&utm_content=blog",
+      "postId": "cms4mmrme000bltefjnaoxxsf",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "X API HTTP 402: payment or account credits required; provider marked the failure non-retryable.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": true
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/",
+      "generatedCopy": "Cloudflare Agents 0.20 moves MCP servers toward SDK v2 and a stateless factory, but legacy sessions do not disappear just because an API is deprecated. This guide adds a migration-lane decision matrix, eight acceptance tests, and an explicit session-drain and rollback record for Workers teams.",
+      "postId": "cms4ix0450000lt568igmnpeu",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7487820013714714624",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": true
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-07-28&utm_content=blog",
+      "generatedCopy": "McpAgent is deprecated, but legacy sessions do not vanish with an upgrade.\n\nThis Cloudflare Agents 0.20 guide shows how to choose a stateless or temporary legacy lane, run eight canaries, and drain old sessions safely. #MCP #Cloudflare\n\nhttps://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-07-28&utm_content=blog",
+      "postId": "cms4mlfu40006ltef8u53pwlp",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/116997576074944328",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cms4mb2ix0000ltefb4bsg90b",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "Postiz local media fetch blocked by SSRF protection after Temporal reached its maximum attempts.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cms4mlfu40006ltef8u53pwlp",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/116997576074944328",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-07-28&utm_content=blog",
+      "generatedCopy": "Cloudflare Agents 0.20 favors stateless MCP SDK v2 servers, but old sessions can still break a clean-looking migration. Use a lane decision, eight canaries, and an explicit drain/rollback record.\n\nhttps://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-07-28&utm_content=blog",
+      "postId": "cms4mgkj70001ltefg67qwfgd",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/80d562f2510f673a38c94a0ecd2bb9475fa07f9fe95dfba5f7df25c252860149",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com"
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://www.youtube.com/watch?v=KRwkiJZztbM",
+      "generatedCopy": "Tool use is four decisions: whether to call, what and when, which arguments, and how to use the result. #AIAgents\n\nhttps://www.youtube.com/watch?v=KRwkiJZztbM",
+      "postId": "cms4mlht20007ltefxe1hdltk",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "X API HTTP 402: payment or account credits required; provider marked the failure non-retryable.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": true
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://www.youtube.com/watch?v=KRwkiJZztbM",
+      "generatedCopy": "Reliable tool use is not a single “call an API” step.\n\nThis short breaks it into four decisions: whether a tool is needed, which API and when, what arguments to pass, and how the returned result should affect the next prediction.\n\nhttps://www.youtube.com/watch?v=KRwkiJZztbM",
+      "postId": "cms4mhher0002ltef5a2r73zj",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7487844143210094592",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": true
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://www.youtube.com/watch?v=KRwkiJZztbM",
+      "generatedCopy": "Tool use is not one decision—it’s four.\n\nSee how Toolformer separates whether to call, what and when, which arguments, and how the result changes the next prediction. #AIAgents #Toolformer\n\nhttps://www.youtube.com/watch?v=KRwkiJZztbM",
+      "postId": "cms4mllou0008ltefvqx6rwg8",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/116997576552523952",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "thumbnailFallbackReason": "The run already confirmed Postiz localhost media is blocked by Mastodon SSRF protection."
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://www.youtube.com/watch?v=KRwkiJZztbM",
+      "generatedCopy": "Tool use is four decisions: whether to call, what and when, which arguments, and how to use the result. This short makes the hidden control loop visible.\n\nhttps://www.youtube.com/watch?v=KRwkiJZztbM",
+      "postId": "cms4mht100003ltefoq20kosb",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/328a9f0e4382123dabf015a69c9b9a66fa10d98b2125bd6167ec0977d510ba03",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com"
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://www.youtube.com/watch?v=bppXyaWMNLg",
+      "generatedCopy": "More agents do not automatically mean better research. Use a fit gate, delegation contract, evidence checks, and recovery controls. #AIAgents\n\nhttps://www.youtube.com/watch?v=bppXyaWMNLg",
+      "postId": "cms4mlnmx0009ltefep35tfec",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "X API HTTP 402: payment or account credits required; provider marked the failure non-retryable.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": true
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://www.youtube.com/watch?v=bppXyaWMNLg",
+      "generatedCopy": "Multi-agent research is worth the coordination cost only when the search paths are genuinely independent and broader exploration can change the conclusion.\n\nThis episode turns that judgment into a practical decision tree covering task fit, delegation, effort sizing, evaluation, and production recovery.\n\nhttps://www.youtube.com/watch?v=bppXyaWMNLg",
+      "postId": "cms4minzm0004ltefxzx6ms31",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7487844383485210625",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": true
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://www.youtube.com/watch?v=bppXyaWMNLg",
+      "generatedCopy": "More agents do not automatically mean better research.\n\nUse a practical single-vs-multi-agent decision tree for task fit, delegation, effort sizing, evidence quality, and recovery. #AIAgents #MultiAgent\n\nhttps://www.youtube.com/watch?v=bppXyaWMNLg",
+      "postId": "cms4mlpkz000altef62d03xkw",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/116997576909540613",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "thumbnailFallbackReason": "The run already confirmed Postiz localhost media is blocked by Mastodon SSRF protection."
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://www.youtube.com/watch?v=bppXyaWMNLg",
+      "generatedCopy": "Use multiple agents only when research paths are independent and wider search can change the answer. This episode turns that rule into a fit, delegation, evaluation, and recovery decision tree.\n\nhttps://www.youtube.com/watch?v=bppXyaWMNLg",
+      "postId": "cms4mj1k00005ltefn9j8erqw",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/00a367be3cf1440144cf2b1bd5a6e6b4809ddeb47df787731199921f08a9f56e",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com"
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://indieseek.co/blogs/cloudflare-agents-0-20-mcp-sdk-v2-migration-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no video uploaded.",
+      "dedupe": false,
+      "reused": false
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://www.youtube.com/watch?v=KRwkiJZztbM",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no video uploaded.",
+      "dedupe": false,
+      "reused": false
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://www.youtube.com/watch?v=bppXyaWMNLg",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no video uploaded.",
+      "dedupe": false,
+      "reused": false
+    }
+  ]
+}

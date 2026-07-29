@@ -11,22 +11,14 @@
 - 风格名：`A - 白板火柴人 / Whiteboard Stick Figure`
 - 系列展示名：`Tiny Agent`
 - 样片主题：`What Makes an AI Agent Different?`
-- 本地样片：`/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/style-a-whiteboard.mp4`
-- 样片规格：`1080x1920`，`30 fps`，`24.0s`，`h264` 视频，`aac` 单声道音频
-- 关键预览图：
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/previews-final-style-a-whiteboard/2s.jpg`
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/previews-final-style-a-whiteboard/7s.jpg`
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/previews-final-style-a-whiteboard/13s.jpg`
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/previews-final-style-a-whiteboard/20s.jpg`
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/agent-style-samples/previews-final-style-a-whiteboard/contact.jpg`
-- 第一条成片角色锚点：`/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/video.mp4`
-- 第一条成片关键帧：
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/keyframes/keyframe-01.png`
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/keyframes/keyframe-02.png`
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/keyframes/keyframe-03.png`
-  - `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-06-tiny-agent-postiz-private-v6/keyframes/keyframe-04.png`
+- 持久化资产说明：[Tiny Agent v2 asset pack](../hyperframes/asset-packs/tiny-agent-v2/README.md)
+- 人物与道具参考：
+  - [Tiny Agent 角色表](../hyperframes/asset-packs/tiny-agent-v2/qa/agent-contact-sheet.png)
+  - [程序员角色表](../hyperframes/asset-packs/tiny-agent-v2/qa/human-contact-sheet.png)
+  - [道具表](../hyperframes/asset-packs/tiny-agent-v2/qa/props-contact-sheet.png)
+- 资产校验结果：[qa/report.md](../hyperframes/asset-packs/tiny-agent-v2/qa/report.md)
 
-后续视频以这条样片、第一条成片和这些预览图作为构图、人物比例、字幕框、留白、线条粗细、颜色克制度和节奏的基准。
+历史样片和关键帧位于可清理的 `var/` 运行目录，不再作为持久化引用或运行依赖。后续视频以本节资产包和本文规则作为构图、人物比例、字幕框、留白、线条粗细、颜色克制度和节奏的基准。
 
 ## 固定原则
 
@@ -41,7 +33,7 @@
 
 ## 角色与跨平台构图锚点
 
-7 月 6 日第一条成片继续作为人物外形参考；从 2026-07-11 起，YouTube Shorts、TikTok 和 Facebook Reels 共用 `cross-platform-balanced` 构图。当前验收样片是 `/Users/bytedance/Documents/postiz-app/var/ai-video-pipeline/runs/2026-07-11-cross-platform-balanced-preview-v2/video.mp4`。
+人物外形以仓库内 Tiny Agent v2 角色表为准；从 2026-07-11 起，YouTube Shorts、TikTok 和 Facebook Reels 共用 `cross-platform-balanced` 构图。当前构图要求以本节规则和[来源驱动内容计划](../content-plans/2026-07-source-led-video-material.zh-CN.md)为准，不依赖可清理的 `var/` 验收样片。
 
 - 画布固定为 `1080x1920`，所有固定层以 `x=540` 为中心，左右视觉边距一致。
 - 主画面区域固定为 `y=300-1110`，生成图先去除外围底色边，再等比适配到最大 `820x780`；程序员、Tiny Agent 和关键道具合计 bbox 宽度不得低于画布的 `68%`，推荐约 `75%`。
@@ -59,7 +51,7 @@
 
 Tiny Agent 系列的主画面必须由图片生成模型生成关键帧，再由合成脚本配音、加时长、加转场并输出视频。
 
-- 每条默认生成 `8-10` 张图片关键帧，通常为 `9` 张，并以上面的样片和预览图作为 reference；每个语义镜头一张，关键帧通过风格检查后，才能合成视频。
+- 每条默认生成 `8-10` 张图片关键帧，通常为 `9` 张，并以上面的资产包和角色表作为 reference；每个语义镜头一张，关键帧通过风格检查后，才能合成视频。
 - Codex 日更自动化默认优先使用 Codex image generation 生成关键帧，保存到 `var/ai-video-pipeline/provided-keyframes/<date>-<slug>/`，再通过 `--keyframes-dir` 交给合成脚本；这一路径比直接让本地 runner 调图片 API 更容易在生成后人工/自动检查人物和机器人比例。
 - 禁止使用 Canvas、SVG、HTML、纯代码绘图或程序化线框来“自己画”中国程序员、Tiny Agent、聊天气泡、工具动作、白板主画面或最终关键帧。
 - Canvas / ffmpeg / 脚本只允许用于后处理：缩放、裁切、拼接、轻微 pan/zoom、音频合成、字幕时间轴、格式转码和发布投递。

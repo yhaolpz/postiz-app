@@ -15,6 +15,7 @@ const defaultManifestDir = path.join(
   rootDir,
   'var/ai-video-pipeline/longform/published'
 );
+const MIN_RETENTION_HOURS = 5 * 24;
 
 function loadDotEnv(filePath) {
   if (!fssync.existsSync(filePath)) return;
@@ -169,9 +170,14 @@ async function main() {
   loadDotEnv(path.join(rootDir, '.env'));
   const args = parseArgs(process.argv.slice(2));
   const apply = Boolean(args.apply);
-  const retentionHours = Number(args['retention-hours'] || 48);
-  if (!Number.isFinite(retentionHours) || retentionHours < 48) {
-    throw new Error('Retention must be at least 48 hours.');
+  const retentionHours = Number(
+    args['retention-hours'] || MIN_RETENTION_HOURS
+  );
+  if (
+    !Number.isFinite(retentionHours) ||
+    retentionHours < MIN_RETENTION_HOURS
+  ) {
+    throw new Error('Retention must be at least 120 hours (5 days).');
   }
 
   const manifestDir = path.resolve(args['manifest-dir'] || defaultManifestDir);

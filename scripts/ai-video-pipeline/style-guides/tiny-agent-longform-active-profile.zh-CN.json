@@ -46,7 +46,7 @@
       "rule": "Chinese is the canonical production grammar. Author and approve the shared content contract and Chinese scene system first, then localize that exact semantic and visual plan into natural English. English may not introduce a different hook concept, content claim, chapter, example, reusable artifact, scene type, layout family, role/prop assignment, generated-art semantic, motion type, transition grammar, caption treatment, chapter rail, recap layout, outro layout, or cover geometry. Do not mechanically translate wording and do not reuse Chinese timestamps; preserve meaning and production form while deriving English wording and absolute timing from final English TTS/VTT.",
       "allowedDifferences": [
         "natural locale text, subtitles, and locale metadata",
-        "zh-CN-YunxiaNeural +35% versus adult en-US-ChristopherNeural +30%",
+        "zh-CN-YunxiaNeural +35% versus adult en-US-ChristopherNeural +15%",
         "absolute cue, scene, and animation timestamps derived independently from each locale's final TTS/VTT",
         "English delivery uses a 3840x2160 16:9 publication master plus 1200x900 4:3 and 900x1200 3:4 local covers; Chinese local delivery uses only 1200x900 4:3 and 900x1200 3:4 covers from run 2026-07-29-03 onward"
       ],
@@ -359,13 +359,14 @@
     },
     "englishAdultNarration": {
       "status": "active",
+      "effectiveFromRunKey": "2026-07-29-03",
       "scope": ["en-US"],
       "voice": "en-US-ChristopherNeural",
-      "rate": "+30%",
+      "rate": "+15%",
       "forbiddenVoice": "en-US-AnaNeural",
       "selection": "Use the mainstream adult US-English Christopher voice: news/narration oriented, reliable and authoritative. It is the only permitted English longform narrator.",
-      "purpose": "Use a clearly adult, reliable, authoritative English narration instead of the former cute/conversational voice.",
-      "qa": "The final English episode.json, summary.json, timing-map.json, TTS command evidence, and speech-pacing report must all name en-US-ChristopherNeural at +30%. Reject en-US-AnaNeural and every other English longform voice."
+      "purpose": "Use a clearly adult, reliable, authoritative English narration instead of the former cute/conversational voice, while keeping technical longform pacing easier to follow.",
+      "qa": "The final English episode.json, summary.json, timing-map.json, TTS command evidence, and speech-pacing report must all name en-US-ChristopherNeural at +15%. Reject en-US-AnaNeural, every other English longform voice, and stale +30% English longform output."
     },
     "chinesePronunciation": {
       "status": "active",
@@ -456,11 +457,33 @@
             "letterSpacingPx": -4,
             "minimumBodyFontSizePx": 112,
             "maximumFontSizePx": 212,
-            "minimumDominantBodyLineFontSizePx": 145,
+            "minimumDominantBodyLineFontSizePx": 112,
             "minimumDominantBodyLineCount": 2
           },
           "titleLineCount": 4,
-          "geometryTolerancePx": 0
+          "geometryTolerancePx": 0,
+          "heroContentFit": {
+            "status": "active",
+            "profileId": "tiny-agent-cover-content-fit-2026-07-30",
+            "effectiveFromRunKey": "2026-07-30-03",
+            "manualRevisionOptInField": "contentFitProfileId",
+            "alphaPaddingPercent": {"min": 3, "max": 6},
+            "fullyContained": true,
+            "minimumVisibleHeroHeightPercent": {
+              "4x3Canvas": 50,
+              "3x4HeroBox": 85
+            },
+            "minimumVisibleHeroBoundsAreaPercentOfBox": {
+              "4x3": 45,
+              "3x4": 40
+            },
+            "minimumTitleHeroGapPx": {
+              "4x3Horizontal": 24,
+              "3x4Vertical": 12
+            },
+            "rule": "Normalize every final 4:3 and 3:4 generated hero to its real alpha subject bounds with 3%-6% transparent padding before composing it into the fixed hero box. The fixed box is not proof of visible size. In 4:3, content-fit title sizing must keep the rendered title at least 24px left of the visible hero while the visible hero height remains at least 50% of the canvas. In 3:4, the fixed lower 40% hero box remains unchanged, but the visible hero must use at least 85% of its height and 40% of its bounding-box area, with at least 12px between the rendered title and visible hero. The complete Agent, antenna, limbs, tools, and integrated topic object remain fully visible.",
+            "qa": "The Chinese cover-reference validator must inspect the final hero PNG alpha bounds, map those real bounds through the SVG preserveAspectRatio transform, raster-measure the final title bounds, and fail closed on excessive transparent padding, insufficient visible hero height or area, title/hero overlap or inadequate gap, clipping, a missing contentFitProfileId on applicable runs, or a fixed outer box whose visible subject is still too small. From the effective run onward this gate is mandatory; an owner-requested repair may opt in earlier by declaring the same profile ID in the ratio spec."
+          }
         },
         "4x3": {
           "canvas": {"width": 1200, "height": 900},
@@ -476,8 +499,8 @@
           "title": {"x": 36, "baselineY": [148, 316, 500, 684], "identityFontSizePx": {"min": 125, "max": 168}},
           "heroBox": {"x": 75, "y": 729, "width": 750, "height": 480}
         },
-        "rule": "Chinese 4:3 and 3:4 covers must use the approved deterministic SVG geometry above exactly: the paper grid, rounded blue and yellow rules, four title baselines, title group styling, and ratio-specific hero box are fixed. Only the episode title text, content-fitted font sizes within the declared range, and the current-topic transparent hero asset may change. Do not stretch the 4:3 yellow rule across the canvas, remove rounded ends, reduce the title to a high empty-space block, or move the portrait divider away from y=0.60H.",
-        "qa": "The Chinese cover-reference validator must parse the final SVG and fail closed unless every scoped grid, rule, title-group, four-line baseline, dominant body-line size, hero-box, preview dimension, and strictGeometryProfileId value matches this geometry contract with zero pixel tolerance. A semantic-density pass alone is never sufficient."
+        "rule": "Chinese 4:3 and 3:4 covers must use the approved deterministic SVG geometry above exactly: the paper grid, rounded blue and yellow rules, four title baselines, title group styling, and ratio-specific hero box are fixed. Only the episode title text, content-fitted font sizes within the declared range, and the current-topic transparent hero asset may change. Content-fit sizing must prefer a smaller readable title over invading the visible hero. The generated hero must be alpha-normalized and fill the fixed ratio box according to shared.heroContentFit; an unchanged outer box with a small padded subject is not compliant. Do not stretch the 4:3 yellow rule across the canvas, remove rounded ends, reduce the title to a high empty-space block, or move the portrait divider away from y=0.60H.",
+        "qa": "The Chinese cover-reference validator must parse the final SVG and fail closed unless every scoped grid, rule, title-group, four-line baseline, readable font range, hero-box, actual hero alpha-content fit, title/hero clearance, preview dimension, and strictGeometryProfileId value matches this geometry contract. Geometry uses zero pixel tolerance; content fit uses the explicit shared.heroContentFit thresholds. A semantic-density or outer-box pass alone is never sufficient."
       },
       "enRatioStrictGeometry": {
         "status": "active",
@@ -564,7 +587,7 @@
     },
     "en-US": {
       "voice": "en-US-ChristopherNeural",
-      "rate": "+30%"
+      "rate": "+15%"
     },
     "chapterPattern": "chapter opening, body, and spoken three-point recap",
     "opening": "voice-synced kinetic question using the active readable-full-question coverage and accelerated completion override; no extended later-V4 hold",

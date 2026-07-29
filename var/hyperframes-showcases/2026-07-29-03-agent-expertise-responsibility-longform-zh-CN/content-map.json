@@ -1,0 +1,139 @@
+{
+  "bilingualContractId": "2026-07-29-03-topic-b-agent-expertise-v1",
+  "source": {
+    "publisher": "Anthropic",
+    "title": "Agentic coding and persistent returns to expertise",
+    "published": "2026-06-16",
+    "url": "https://www.anthropic.com/research/claude-code-expertise",
+    "facts": [
+      "Anthropic 分析约四十万次交互会话，典型会话中人平均做出约百分之七十的规划决策和约百分之二十的执行决策。",
+      "典型新手会话每条提示约触发五个动作和六百词输出，典型专家会话约触发十二个动作和三千二百词输出。",
+      "严格验证成功率在新手会话中约为百分之十五，在中级及以上会话中约为百分之二十八到三十三。"
+    ]
+  },
+  "centralThesis": "领域专业度不会被 AI Agent 自动替代；它通过更清楚的目标、约束、验证和接管条件，让 Agent 能承担更长、更安全的执行链。",
+  "priorities": {
+    "P0": [
+      "指定规划所有者",
+      "定义执行授权",
+      "指定失败所有者"
+    ],
+    "P1": [
+      "预先写验证证据",
+      "设置升级触发器",
+      "把专业知识写成约束"
+    ],
+    "P2": [
+      "保留恢复路径",
+      "检查动作可逆性"
+    ],
+    "P3": [
+      "把输出量当质量",
+      "照抄固定委派比例"
+    ]
+  },
+  "reusableArtifact": "AI Agent 责任分工卡：规划所有者、执行授权、验证证据、失败所有者。",
+  "chapters": [
+    {
+      "id": "observed-division-of-labor",
+      "title": "先看真实分工",
+      "promise": "第一步先看真实分工，而不是把自主程度想成一个开或关的按钮。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，把做什么和怎样做分开记录。",
+          "screenText": "规划与执行分开"
+        },
+        {
+          "narration": "第二，让 Agent 承担可验证的执行链，而不是替人定义目标。",
+          "screenText": "执行要可验证"
+        },
+        {
+          "narration": "第三，用阶段检查点保持方向可纠正。",
+          "screenText": "检查点保持纠偏"
+        }
+      ]
+    },
+    {
+      "id": "expertise-expands-agent-work",
+      "title": "专业度怎样放大 Agent",
+      "promise": "第二步要理解为什么专业度会放大 Agent，而不是简单压缩 Agent 的空间。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，专业度是针对当前任务的理解。",
+          "screenText": "专业度不是职位"
+        },
+        {
+          "narration": "第二，明确约束会延长 Agent 的有效行动链。",
+          "screenText": "明确约束延长行动链"
+        },
+        {
+          "narration": "第三，用可验证产物衡量工作，不用输出长度代替质量。",
+          "screenText": "证据比字数重要"
+        }
+      ]
+    },
+    {
+      "id": "allocate-by-risk",
+      "title": "按风险划分责任",
+      "promise": "第三步是按能力与不确定性分工，而不是按人和机器简单切一刀。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，按可逆性和不确定性决定委派深度。",
+          "screenText": "看可逆性与不确定性"
+        },
+        {
+          "narration": "第二，把目标、价值和高代价取舍留给人。",
+          "screenText": "高代价取舍留给人"
+        },
+        {
+          "narration": "第三，预先写明失败与冲突何时触发接管。",
+          "screenText": "失败时及时接管"
+        }
+      ]
+    },
+    {
+      "id": "make-responsibility-observable",
+      "title": "把专业度变成责任动作",
+      "promise": "第四步是把专业度转成可观察的责任动作。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，把专业知识写成约束和完成证据。",
+          "screenText": "知识写成约束与证据"
+        },
+        {
+          "narration": "第二，在关键节点主动纠偏，不把流畅当正确。",
+          "screenText": "流畅不等于正确"
+        },
+        {
+          "narration": "第三，为失败后的诊断、缩小范围和人工接管留出路径。",
+          "screenText": "为故障预留接管路径"
+        }
+      ]
+    },
+    {
+      "id": "agent-responsibility-card",
+      "title": "使用责任分工卡",
+      "promise": "第五步，把这些原则落到一张四栏责任分工卡。",
+      "recaps": [
+        {
+          "narration": "本章小节。第一，先指定规划与失败责任人。",
+          "screenText": "先指定责任人"
+        },
+        {
+          "narration": "第二，再开放有边界的执行授权。",
+          "screenText": "再开放执行授权"
+        },
+        {
+          "narration": "第三，用预先约定的证据决定是否完成。",
+          "screenText": "证据决定完成"
+        }
+      ]
+    }
+  ],
+  "factBoundaries": [
+    "研究使用隐私保护的转录分类器和遥测信号，不能直接证明真实世界业务结果。",
+    "样本聚焦纳入分析的 Claude Code 交互会话，不含非交互式使用。",
+    "责任分工卡是本期基于研究发现的实践推导，不是 Anthropic 官方模板。"
+  ],
+  "inference": "把规划、执行、验证和失败接管整理成四栏，是为了让研究中的分工与专业度信号变成可执行工作流。"
+}

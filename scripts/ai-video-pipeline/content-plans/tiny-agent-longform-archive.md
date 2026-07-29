@@ -4,7 +4,7 @@
 
 本文件记录已经进入制作的横屏长视频选题、运行时段，以及同一选题的英文和中文产物，用于避免重复、恢复发布失败任务，并为后续新选题提供内容覆盖参考。
 
-自 `2026-07-29-03` 起，中文版只要求本地成片、通用中文元数据和 `4:3`、`3:4` 两张中文封面，不再生成中文 `16:9`；英文除 `16:9` 4K 发布母版外，新增 `4:3`、`3:4` 两张本地封面。每期还同步生成自然中文与自然英文两套发布文案和各三条互动建议。所有临时场景图与封面 hero 中的 Agent 必须实际参考固定 `tiny-agent-v2` 图片生成，并保持同一角色身份；允许完全一致或与 `2026-07-28` 相当的轻微变化，不允许显著角色重设计。仍不准备哔哩哔哩、抖音或小红书上传表单，也不生成平台专用标题或文案。历史封面和平台状态继续保留为当时事实，但不构成新规则下的恢复项或阻塞条件。
+自 `2026-07-29-03` 起，中英文均只做本地交付，不进入 Postiz、YouTube 或中文平台。中文版要求本地成片、通用中文元数据和 `4:3`、`3:4` 两张中文封面，不再生成中文 `16:9`；英文要求本地成片、`16:9` 4K、`4:3`、`3:4` 三张封面，并在全部 QA 通过后把英文交付包同步到 iCloud Drive。每期还同步生成自然中文与自然英文两套发布文案和各三条互动建议。所有临时场景图与封面 hero 中的 Agent 必须实际参考固定 `tiny-agent-v2` 图片生成，并保持同一角色身份；允许完全一致或与 `2026-07-28` 相当的轻微变化，不允许显著角色重设计。历史封面和平台状态继续保留为当时事实，但不构成新规则下的恢复项或阻塞条件。
 
 自动选题必须同时检查本归档和 `tiny-agent-longform-plan.md`。以下任一项高度重合时默认视为重复：
 
@@ -35,6 +35,8 @@
 | 2026-07-26-03 | Anthropic：[Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)，2025-11-26 | 长任务跨越上下文窗口时，如何避免 AI Agent 重复劳动或误判完成；用可核验工作底座、单一下一步和证据化交接保持连续性 | AI Agent 长任务进度与交接模板 | [YouTube](https://www.youtube.com/watch?v=qQaSzi3V_qs)；`var/hyperframes-showcases/2026-07-26-03-agent-long-running-harness-longform-en-US/renders/2026-07-26-03-agent-long-running-harness-longform.en-US.mp4` | `var/hyperframes-showcases/2026-07-26-03-agent-long-running-harness-longform-zh-CN/renders/2026-07-26-03-agent-long-running-harness-longform.zh-CN.mp4` | 英文已发布；中文本地成片已生成 | 与记忆保留/提炼主题不同，本期解决跨上下文窗口的项目连续性：把可验证状态、未证实项和下一步写成可接手的工作卡。双语本地准出与固定封面通过；英文由 Postiz 公开发布并验证属于播放列表 `PLJffvaWRvGC8`，中文仅本地保留。 |
 | 2026-07-27-03 | OpenAI：[Using skills](https://openai.com/academy/skills/)，2026-04-10 | AI Agent 做长期任务时，怎样让一次成功方法不再跑偏；把可重复的触发条件、上下文、判断、交付和检查写成可复用 Skill | AI Agent Skill 七字段模板 | [YouTube](https://www.youtube.com/watch?v=YjSsSoimeqg)；`var/hyperframes-showcases/2026-07-27-03-ai-agent-skills-longform-en-US/renders/2026-07-27-03-ai-agent-skills-longform.en-US.mp4` | `var/hyperframes-showcases/2026-07-27-03-ai-agent-skills-longform-zh-CN/renders/2026-07-27-03-ai-agent-skills-longform.zh-CN.mp4` | 英文已发布；中文本地成片已生成 | 与“长任务进度与交接模板”不同，本期聚焦把一次有效方法封装成可检查、可复用的工作契约；双语成片和四张封面通过准出，英文 4K 封面经 Postiz 提交，已确认公开视频属于播放列表 `PLJffvaWRvGC8`，中文仅本地保留。 |
 | 2026-07-28-03 | Anthropic：[How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)，2025-06-13 | 什么时候该让多个 AI Agent 并行工作；只有探索路径相对独立、结果价值足够高且搜索广度能改变结论时，多 Agent 的协调与 token 成本才值得 | 单 Agent / 多 Agent 决策树 | [YouTube](https://www.youtube.com/watch?v=bppXyaWMNLg)；`var/hyperframes-showcases/2026-07-28-03-multi-agent-decision-longform-en-US/renders/2026-07-28-03-multi-agent-decision-longform.en-US.mp4` | `var/hyperframes-showcases/2026-07-28-03-multi-agent-decision-longform-zh-CN/renders/2026-07-28-03-multi-agent-decision-longform.zh-CN.mp4`；通用中文元数据与三张固定封面已生成 | 英文已发布；中文本地成片已生成 | 与“从最简单可行架构开始”的总体架构选择不同，本期聚焦研究任务的并行适配门、委派契约、搜索力度、证据评估和失败恢复。双语内容合同、59 个场景、归一化节奏与四张固定封面通过准出；英文 4K 封面经 Postiz 随视频提交，已确认公开视频属于目标公开播放列表，中文未打开、代填或上传任何平台。 |
+| 2026-07-29-03-topic-a | Microsoft Research：[Rethinking AI in Knowledge Work: From Assistant to Tool for Thought](https://www.microsoft.com/en-us/research/articles/rethinking-ai-in-knowledge-work-from-assistant-to-tool-for-thought/)，2025-09-24 | AI 帮得越多，为什么人的判断力可能反而变弱；关键不是减少 AI 使用，而是把探索、对照、异议和最终判断显式保留下来 | AI 思考保留卡 | `var/hyperframes-showcases/2026-07-29-03-ai-thinking-preservation-longform-en-US/renders/2026-07-29-03-ai-thinking-preservation-longform.en-US.mp4`；通用英文元数据、发布素材与三张封面已生成 | `var/hyperframes-showcases/2026-07-29-03-ai-thinking-preservation-longform-zh-CN/renders/2026-07-29-03-ai-thinking-preservation-longform.zh-CN.mp4`；通用中文元数据、发布素材与两张封面已生成 | 中英文仅本地完成；英文 iCloud 已同步 | 与“AI 能力自查”或“验收 AI 输出”不同，本期聚焦知识工作过程中的思考保留：在获得答案前记录自己的假设，在采纳前保留对照与异议，并明确由谁承担最终判断。双语独立脚本、TTS/VTT、59 个场景、封面与全部 QA 通过；英文交付包同步至 iCloud slot 1，未调用 Postiz、YouTube 或任何中文平台。 |
+| 2026-07-29-03-topic-b | Anthropic：[Agentic coding and persistent returns to expertise](https://www.anthropic.com/research/claude-code-expertise)，2026-06-16 | Agent 越强，为什么专业知识反而更值钱；经验会把工作重心从逐步执行推向规划、判断、验证和恢复，责任边界必须随之显式化 | AI Agent 人机分工责任表 | `var/hyperframes-showcases/2026-07-29-03-agent-expertise-responsibility-longform-en-US/renders/2026-07-29-03-agent-expertise-responsibility-longform.en-US.mp4`；通用英文元数据、发布素材与三张封面已生成 | `var/hyperframes-showcases/2026-07-29-03-agent-expertise-responsibility-longform-zh-CN/renders/2026-07-29-03-agent-expertise-responsibility-longform.zh-CN.mp4`；通用中文元数据、发布素材与两张封面已生成 | 中英文仅本地完成；英文 iCloud 已同步 | 与 Topic A 的“保留人的思考过程”不同，本期依据近 40 万次 Claude Code 会话研究，聚焦专业水平如何改变 Agent 使用方式：经验越深，越多时间用于规划、扩大任务、检查结果与恢复失败。双语独立脚本、TTS/VTT、59 个场景、封面与全部 QA 通过；英文交付包同步至 iCloud slot 2，未调用 Postiz、YouTube 或任何中文平台。 |
 
 2026-07-19 中文封面历史回补：`2026-07-16`、`2026-07-17`、`2026-07-18`、`2026-07-19-03` 四期均已按当前 `title-hero` 规范重做 `16:9`、`4:3`、`3:4` 三种比例。新版只叠加标题与短装饰线，使用单一完整主题插画；`4:3` 标题实测覆盖画布 `52.7%-59.6%`，`3:4` 固定为上方 `60%` 文字、下方 `40%` 完整插画，标题实测覆盖文字区 `71.7%-76.7%`。原封面保存在各项目 `thumbnails/archive/pre-title-hero-2026-07-19/`。
 
@@ -48,6 +50,7 @@
 
 状态含义：
 
+- 自 `2026-07-29-03` 起，`中英文仅本地完成` 表示两种语言的本地成片、元数据、规定封面、发布素材和全部 QA 均已完成；英文 iCloud 包按独立同步结果登记，不代表任何平台已发布。
 - `双语已生成`：英文和中文成片均通过本地准出，但尚未确认英文版在 YouTube 公开发布。
 - `英文已发布`：英文版已取得 YouTube 公开视频 URL，并确认加入目标播放列表；中文版本地路径有效。
 - `阻塞`：已进入制作或发布流程但未完成；必须写明英文或中文的失败阶段，并保留可恢复产物路径。
@@ -57,7 +60,7 @@
 
 ## 本地视频清理记录
 
-英文发布成功后记录 `publishedAt` 和清理清单路径。满 `48` 小时并通过公开状态与播放列表复核后，删除中英文 MP4，并将状态更新为 `已清理`。删除后仍保留原始本地路径、YouTube URL、脚本、字幕、时间轴、元数据和 QA 结果。
+英文发布成功后记录 `publishedAt` 和清理清单路径。满 `5` 天（`120` 小时）并通过公开状态与播放列表复核后，删除中英文 MP4，并将状态更新为 `已清理`。删除后仍保留原始本地路径、YouTube URL、脚本、字幕、时间轴、元数据和 QA 结果。已清理行保留当时实际执行的历史 `eligibleAt`；待清理行执行当前 120 小时规则。
 
 | 选题日期   | publishedAt          | 清理清单                                                                             | eligibleAt           | 状态   | deletedAt |
 | ---------- | -------------------- | ------------------------------------------------------------------------------------ | -------------------- | ------ | --------- |
@@ -73,6 +76,6 @@
 | 2026-07-23-03 | 2026-07-22T20:15:00Z | `var/ai-video-pipeline/longform/published/2026-07-23-03-ai-agent-uncertainty.json` | 2026-07-24T20:15:00Z | 已清理 | 2026-07-26T03:02:48+08:00 |
 | 2026-07-24-03 | 2026-07-23T20:30:00Z | `var/ai-video-pipeline/longform/published/2026-07-24-03-ai-agent-action-permissions.json` | 2026-07-25T20:30:00Z | 已清理 | 2026-07-26T19:03:50.536Z |
 | 2026-07-25-03 | 2026-07-24T19:38:46Z | `var/ai-video-pipeline/longform/published/2026-07-25-03-agent-memory-retention.json` | 2026-07-26T19:38:46Z | 已清理 | 2026-07-27T19:04:15.226Z |
-| 2026-07-26-03 | 2026-07-25T19:57:17Z | `var/ai-video-pipeline/longform/published/2026-07-26-03-agent-long-running-harness.json` | 2026-07-27T19:57:17Z | 待清理 |           |
-| 2026-07-27-03 | 2026-07-27T04:03:31Z | `var/ai-video-pipeline/longform/published/2026-07-27-03-ai-agent-skills.json` | 2026-07-29T04:03:31Z | 待清理 |           |
-| 2026-07-28-03 | 2026-07-27T20:14:46Z | `var/ai-video-pipeline/longform/published/2026-07-28-03-multi-agent-decision.json` | 2026-07-29T20:14:46Z | 待清理 |           |
+| 2026-07-26-03 | 2026-07-25T19:57:17Z | `var/ai-video-pipeline/longform/published/2026-07-26-03-agent-long-running-harness.json` | 2026-07-30T19:57:17Z | 待清理 |           |
+| 2026-07-27-03 | 2026-07-27T04:03:31Z | `var/ai-video-pipeline/longform/published/2026-07-27-03-ai-agent-skills.json` | 2026-08-01T04:03:31Z | 待清理 |           |
+| 2026-07-28-03 | 2026-07-27T20:14:46Z | `var/ai-video-pipeline/longform/published/2026-07-28-03-multi-agent-decision.json` | 2026-08-01T20:14:46Z | 待清理 |           |

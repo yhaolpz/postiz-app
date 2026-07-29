@@ -1,0 +1,521 @@
+WEBVTT
+
+1
+00:00:00.100 --> 00:00:02.902
+How can an expert let AI Agent do more?
+
+2
+00:00:02.902 --> 00:00:04.296
+Ownership stays clear.
+
+3
+00:00:04.296 --> 00:00:08.613
+In June 2026, Anthropic published a privacy-preserving analysis of roughly
+
+4
+00:00:08.613 --> 00:00:12.639
+four hundred thousand interactive Claude Code sessions from about two
+
+5
+00:00:12.639 --> 00:00:16.741
+hundred thirty-five thousand people, observed between October 2025 and April
+
+6
+00:00:16.741 --> 00:00:17.073
+The pattern is not that experts micromanage every action.
+
+7
+00:00:17.073 --> 00:00:17.365
+2026.
+
+8
+00:00:19.468 --> 00:00:23.114
+Stronger domain understanding is associated with longer action chains per
+
+9
+00:00:23.114 --> 00:00:26.084
+instruction and a better ability to recover when the session goes wrong.
+
+10
+00:00:26.084 --> 00:00:29.927
+This episode turns the findings into a responsibility card: who owns
+
+11
+00:00:29.927 --> 00:00:34.109
+planning, what execution is delegated, which evidence verifies the result,
+
+12
+00:00:34.109 --> 00:00:35.100
+and who takes over on failure.
+
+13
+00:00:35.100 --> 00:00:38.278
+The card is our practical synthesis, not an Anthropic template.
+
+14
+00:00:38.278 --> 00:00:42.384
+This video is packed with practical, high-value insights to help you get
+
+15
+00:00:42.384 --> 00:00:42.740
+better at using AI.
+
+16
+00:00:42.740 --> 00:00:46.656
+It is a longer one, so follow Tiny Agent and save it so you do not lose it.
+
+17
+00:00:46.656 --> 00:00:50.580
+Start with the observed division of labor instead of treating autonomy as a
+
+18
+00:00:50.580 --> 00:00:51.230
+single on-or-off setting.
+
+19
+00:00:51.230 --> 00:00:54.286
+The study separates planning decisions from execution decisions.
+
+20
+00:00:54.286 --> 00:00:58.002
+Planning covers what to do, which approach to take, and what counts as done.
+
+21
+00:00:58.002 --> 00:01:01.662
+Execution covers files, code, tools, and commands.
+
+22
+00:01:01.662 --> 00:01:05.171
+In a typical session, people make about seventy percent of planning
+
+23
+00:01:05.171 --> 00:01:07.822
+decisions but only about twenty percent of execution decisions.
+
+24
+00:01:07.822 --> 00:01:11.761
+The common pattern is simple: the person decides what to build, while the
+
+25
+00:01:11.761 --> 00:01:12.755
+agent decides how to build it.
+
+26
+00:01:12.755 --> 00:01:15.133
+That does not mean one prompt and a silent exit.
+
+27
+00:01:15.133 --> 00:01:19.026
+A typical session has about four back-and-forth turns, each offering a
+
+28
+00:01:19.026 --> 00:01:19.942
+chance to correct direction.
+
+29
+00:01:19.942 --> 00:01:23.803
+Each user prompt triggers around ten agent actions on average, and the
+
+30
+00:01:23.803 --> 00:01:24.721
+distribution has a long tail.
+
+31
+00:01:24.721 --> 00:01:27.811
+One check-in can therefore govern a substantial chain of work.
+
+32
+00:01:27.811 --> 00:01:30.726
+The useful question is not how many steps the agent may take.
+
+33
+00:01:30.726 --> 00:01:33.979
+It is which decisions must stay with the person who understands the problem.
+
+34
+00:01:33.979 --> 00:01:34.952
+Chapter recap.
+
+35
+00:01:34.952 --> 00:01:37.615
+First, separate what to do from how to execute it.
+
+36
+00:01:37.615 --> 00:01:41.265
+Second, delegate verifiable execution without giving away the goal.
+
+37
+00:01:41.265 --> 00:01:44.459
+Third, use staged check-ins to keep the direction correctable.
+
+38
+00:01:44.459 --> 00:01:48.450
+Next, understand why expertise can expand the agent role instead of
+
+39
+00:01:48.450 --> 00:01:48.591
+shrinking it.
+
+40
+00:01:48.591 --> 00:01:52.505
+The study rates apparent task expertise on five levels using precise
+
+41
+00:01:52.505 --> 00:01:54.961
+framing, requested verification, and who corrects whom.
+
+42
+00:01:54.961 --> 00:01:57.655
+It is not a job title or a measure of general ability.
+
+43
+00:01:57.655 --> 00:02:00.727
+A senior engineer can be a novice in an unfamiliar language.
+
+44
+00:02:00.727 --> 00:02:04.776
+An accountant who defines reconciliation rules and catches a month-end edge
+
+45
+00:02:04.776 --> 00:02:06.091
+case can be an expert for that task.
+
+46
+00:02:06.091 --> 00:02:10.335
+In typical novice sessions, one prompt triggers about five agent actions and
+
+47
+00:02:10.335 --> 00:02:11.713
+roughly six hundred words of output.
+
+48
+00:02:11.713 --> 00:02:16.086
+In typical expert sessions, the chain exceeds twice as many actions, around
+
+49
+00:02:16.086 --> 00:02:20.401
+twelve, and carries roughly thirty-two hundred words, about five times the
+
+50
+00:02:20.401 --> 00:02:20.588
+novice output.
+
+51
+00:02:20.588 --> 00:02:24.576
+After controls for work mode, task value, month, occupation, and model
+
+52
+00:02:24.576 --> 00:02:28.677
+family, each expertise level is still associated with about nine percent
+
+53
+00:02:28.677 --> 00:02:30.688
+more actions and thirteen percent more output.
+
+54
+00:02:30.688 --> 00:02:32.569
+More text is not automatically better.
+
+55
+00:02:32.569 --> 00:02:36.683
+Precise constraints let the agent safely advance more checkable work before
+
+56
+00:02:36.683 --> 00:02:37.002
+the next handoff.
+
+57
+00:02:37.002 --> 00:02:37.982
+Chapter recap.
+
+58
+00:02:37.982 --> 00:02:40.914
+First, expertise is specific to the task at hand.
+
+59
+00:02:40.914 --> 00:02:44.569
+Second, precise constraints expand the agent’s useful action chain.
+
+60
+00:02:44.569 --> 00:02:48.577
+Third, judge progress by verifiable artifacts, not output length.
+
+61
+00:02:48.577 --> 00:02:52.847
+Now divide responsibility by capability and uncertainty, not by drawing a
+
+62
+00:02:52.847 --> 00:02:54.144
+simple human-versus-machine line.
+
+63
+00:02:54.144 --> 00:02:58.433
+Stable, reversible, rule-bound execution can be delegated in batches:
+
+64
+00:02:58.433 --> 00:03:02.731
+reading files, making mechanical edits, running checks, and collecting
+
+65
+00:03:02.731 --> 00:03:02.785
+Goals, value conflicts, hidden constraints, and costly trade-offs stay with
+
+66
+00:03:02.785 --> 00:03:03.344
+evidence.
+
+67
+00:03:07.109 --> 00:03:10.204
+a person because they depend on domain context and consequences.
+
+68
+00:03:10.204 --> 00:03:13.868
+When rules are clear but the environment is unfamiliar, let the agent
+
+69
+00:03:13.868 --> 00:03:17.272
+investigate and list assumptions, then confirm the boundary before
+
+70
+00:03:17.272 --> 00:03:17.373
+When failures repeat, evidence conflicts, or the affected scope expands,
+
+71
+00:03:17.373 --> 00:03:17.904
+execution.
+
+72
+00:03:21.286 --> 00:03:24.518
+autonomy should decrease and responsibility should return to a person.
+
+73
+00:03:24.518 --> 00:03:28.421
+The observed Claude Code split is directional evidence from interactive
+
+74
+00:03:28.421 --> 00:03:30.935
+coding sessions, not a universal ratio for every industry.
+
+75
+00:03:30.935 --> 00:03:33.630
+Write decision types and escalation triggers on the card.
+
+76
+00:03:33.630 --> 00:03:36.827
+Do not copy seventy and twenty as fixed operating targets.
+
+77
+00:03:36.827 --> 00:03:37.800
+Chapter recap.
+
+78
+00:03:37.800 --> 00:03:41.332
+First, set delegation depth by reversibility and uncertainty.
+
+79
+00:03:41.332 --> 00:03:45.379
+Second, keep goals, values, and costly trade-offs with a person.
+
+80
+00:03:45.379 --> 00:03:48.735
+Third, define the failures and conflicts that trigger a takeover.
+
+81
+00:03:48.735 --> 00:03:52.675
+Turn expertise into observable responsibility actions rather than a vague
+
+82
+00:03:52.675 --> 00:03:53.795
+claim that an expert is present.
+
+83
+00:03:53.795 --> 00:03:58.556
+A clear task definition names the object, constraints, completion evidence,
+
+84
+00:03:58.556 --> 00:03:59.336
+and prohibited actions.
+
+85
+00:03:59.336 --> 00:04:01.013
+A polished wish is not enough.
+
+86
+00:04:01.013 --> 00:04:05.220
+Write verification before execution: required tests, primary data,
+
+87
+00:04:05.220 --> 00:04:08.144
+comparison checks, and the audit trail that must remain.
+
+88
+00:04:08.144 --> 00:04:12.063
+Expert users correct the agent at pivotal points because they can recognize
+
+89
+00:04:12.063 --> 00:04:13.599
+fluent work that violates the domain rule.
+
+90
+00:04:13.599 --> 00:04:17.321
+The study’s strict verified-success rate is fifteen percent for novice-rated
+
+91
+00:04:17.321 --> 00:04:20.945
+sessions and roughly twenty-eight to thirty-three percent for intermediate
+
+92
+00:04:20.945 --> 00:04:21.254
+or higher sessions.
+
+93
+00:04:21.254 --> 00:04:23.929
+Most of the gain occurs between novice and intermediate.
+
+94
+00:04:23.929 --> 00:04:28.062
+Working competence captures much of the benefit, while deep mastery adds a
+
+95
+00:04:28.062 --> 00:04:28.262
+smaller margin.
+
+96
+00:04:28.262 --> 00:04:31.136
+Experts also recover more often when sessions hit trouble.
+
+97
+00:04:31.136 --> 00:04:34.991
+A responsible workflow needs a recovery path, not only a happy path.
+
+98
+00:04:34.991 --> 00:04:35.973
+Chapter recap.
+
+99
+00:04:35.973 --> 00:04:39.538
+First, encode expertise as constraints and completion evidence.
+
+100
+00:04:39.538 --> 00:04:43.169
+Second, correct pivotal deviations instead of trusting fluency.
+
+101
+00:04:43.169 --> 00:04:47.180
+Third, preserve a path to diagnose, narrow scope, and take over.
+
+102
+00:04:47.180 --> 00:04:50.219
+Put the principles into a four-field agent responsibility card.
+
+103
+00:04:50.219 --> 00:04:54.660
+Field one is the planning owner: who defines the goal, priorities, allowed
+
+104
+00:04:54.660 --> 00:04:56.164
+trade-offs, and completion standard.
+
+105
+00:04:56.164 --> 00:05:00.956
+Field two is execution authority: what the agent may read, change, run, and
+
+106
+00:05:00.956 --> 00:05:03.175
+combine, plus actions that remain prohibited.
+
+107
+00:05:03.175 --> 00:05:07.644
+Field three is verification evidence: tests, primary sources, diffs, or
+
+108
+00:05:07.644 --> 00:05:10.851
+reproducible commands attached to every consequential result.
+
+109
+00:05:10.851 --> 00:05:15.075
+Field four is the failure owner: who takes over after repeated failure,
+
+110
+00:05:15.075 --> 00:05:18.294
+conflicting evidence, scope expansion, or an irreversible action.
+
+111
+00:05:18.294 --> 00:05:20.430
+Fill the planning and failure owners first.
+
+112
+00:05:20.430 --> 00:05:24.586
+Then open execution authority and close the loop by checking each required
+
+113
+00:05:24.586 --> 00:05:24.968
+piece of evidence.
+
+114
+00:05:24.968 --> 00:05:28.841
+This card is a workflow inference from the study’s division of labor and
+
+115
+00:05:28.841 --> 00:05:29.120
+expertise signals.
+
+116
+00:05:29.120 --> 00:05:31.491
+The report did not validate this specific card.
+
+117
+00:05:31.491 --> 00:05:32.468
+Chapter recap.
+
+118
+00:05:32.468 --> 00:05:35.025
+First, name the planning and failure owners.
+
+119
+00:05:35.025 --> 00:05:37.532
+Second, grant bounded execution authority.
+
+120
+00:05:37.532 --> 00:05:40.521
+Third, let agreed evidence determine whether the work is done.
+
+121
+00:05:40.521 --> 00:05:44.544
+Domain experts are effective with agents not because they make agents do
+
+122
+00:05:44.544 --> 00:05:48.391
+less, but because they clarify goals, constraints, evidence, and takeover
+
+123
+00:05:48.391 --> 00:05:48.623
+Keep the research boundary visible.
+
+124
+00:05:48.623 --> 00:05:49.014
+points.
+
+125
+00:05:50.095 --> 00:05:54.502
+Success is inferred from transcript classifiers and verifiable signals, not
+
+126
+00:05:54.502 --> 00:05:57.321
+real-world outcomes, and non-interactive usage is excluded.
+
+127
+00:05:57.321 --> 00:06:02.149
+Before the next AI Agent run, write four fields: planning owner, execution
+
+128
+00:06:02.149 --> 00:06:04.887
+authority, verification evidence, and failure owner.
+
+129
+00:06:04.887 --> 00:06:06.156
+Follow Tiny Agent.
+
+130
+00:06:06.156 --> 00:06:08.633
+Tiny Agent helps you get better at using AI.

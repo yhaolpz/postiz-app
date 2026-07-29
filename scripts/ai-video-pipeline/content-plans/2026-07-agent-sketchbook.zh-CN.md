@@ -5,7 +5,7 @@
 
 这份文件只用于中文审核。正式生成视频、字幕、标题、描述和上传时仍使用英文版：
 
-[2026-07-agent-sketchbook.md](/Users/bytedance/Documents/postiz-app/scripts/ai-video-pipeline/content-plans/2026-07-agent-sketchbook.md)
+[2026-07-agent-sketchbook.md](./2026-07-agent-sketchbook.md)
 
 ## 总体意思
 

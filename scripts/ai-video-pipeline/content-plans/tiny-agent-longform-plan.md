@@ -17,7 +17,7 @@
 | 发布平台         | 仅英文版自动发布到 YouTube，`public`；中文版只生成本地素材，不自动上传、代填或发布到任何中文平台                                                                                                                                                                                                                                                                                                                                                               |
 | 中文交付边界     | 生成中文 MP4、通用中文标题/简介/hashtag，以及 `4:3`、`3:4` 两比例封面后结束；不生成中文 `16:9` 或其它中文封面，不打开浏览器上传页，不生成小红书专用标题或文案                                                                                                                                                                                                                                                                                                           |
 | 播放列表         | `AI Agents: From Chat to Done`，ID `PLJffvaWRvGC8`                                                                                                                                                                                                                                                                                                                                                                                                             |
-| 英文声音         | `edge-tts` 的 `en-US-ChristopherNeural`，固定语速 `+30%`；英文横屏长视频与英文 Shorts 共用此成人旁白                                                                                                                                                                                                                                                                                                                                                             |
+| 英文声音         | `edge-tts` 的 `en-US-ChristopherNeural`，横屏长视频固定语速 `+15%`；与英文 Shorts 共用成人音色，但 Shorts 保持独立的 `+30%` 语速                                                                                                                                                                                                                                                                                                                                 |
 | 中文声音         | `edge-tts` 的 `zh-CN-YunxiaNeural`，固定语速 `+35%`。前 `30 秒`普通句间停顿不超过 `0.2 秒`；其余停顿按最终自然语音和章节节奏生成，不套用后来 V4 的三档停顿                                                                                                                                                                                                                                                                                                    |
 | 双语固定结束页   | 全片总结后按对应语言 CTA 的 VTT 起点硬切。英文念出并显示 `Follow Tiny Agent. Tiny Agent helps you get better at using AI.`；中文念出并显示 `关注 Tiny Agent，成为更擅长使用 AI 的人！`。两版必须使用相同笑脸/挥手 Tiny Agent 角色图、纸灰构图、配色和动效，不显示当期标题、字幕框或章节进度条                                                                                                                                                                  |
 | 章节导航         | 底部固定 `1920x52` 全宽分段条，章节按真实 VTT 时长分配宽度；标签从 `1` 开始连续显示为 `1. 前言`、`2. 方法`、`3. 总结`，英文同样使用 `1. Introduction` 格式                                                                                                                                                                                                                                                                                                         |
@@ -66,8 +66,8 @@
 
 | 预计消费时段     | 来源与发布日期                                                                                                                                                                                               | 视频方向                                                     | 必须交付                       | 状态   |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------ | ------ |
-| 2026-07-25 03:00 | Microsoft Research：[Rethinking AI in Knowledge Work: From Assistant to Tool for Thought](https://www.microsoft.com/en-us/research/articles/rethinking-ai-in-knowledge-work-from-assistant-to-tool-for-thought/)，2025-09-24 | AI 帮得越多，为什么人的判断力可能反而变弱？                 | AI 思考保留卡                  | 待执行 |
-| 2026-07-25 15:00 | Anthropic：[Agentic coding and persistent returns to expertise](https://www.anthropic.com/research/claude-code-expertise)，2026-06-16                                                                          | Agent 越强，专业知识为什么反而越值钱？                       | 人机分工责任表                 | 待执行 |
+| 2026-07-25 03:00 | Microsoft Research：[Rethinking AI in Knowledge Work: From Assistant to Tool for Thought](https://www.microsoft.com/en-us/research/articles/rethinking-ai-in-knowledge-work-from-assistant-to-tool-for-thought/)，2025-09-24 | AI 帮得越多，为什么人的判断力可能反而变弱？                 | AI 思考保留卡                  | 中英文仅本地完成（RUN_KEY `2026-07-29-03-topic-a`；英文 iCloud slot 1 已同步） |
+| 2026-07-25 15:00 | Anthropic：[Agentic coding and persistent returns to expertise](https://www.anthropic.com/research/claude-code-expertise)，2026-06-16                                                                          | Agent 越强，专业知识为什么反而越值钱？                       | 人机分工责任表                 | 中英文仅本地完成（RUN_KEY `2026-07-29-03-topic-b`；英文 iCloud slot 2 已同步） |
 | 2026-07-26 03:00 | OpenAI：[How to manage AI investments in the agentic era](https://openai.com/index/managing-ai-investments-in-agentic-era/)，2026-07-14                                                                        | 便宜模型真的更省钱吗？                                       | 合格结果真实成本表             | 待执行 |
 | 2026-07-26 15:00 | Anthropic：[Writing effective tools for agents — with agents](https://www.anthropic.com/engineering/writing-tools-for-agents)，2025-09-11                                                                     | 工具越多，Agent 为什么反而更容易选错？                       | Agent 工具规格检查表           | 待执行 |
 | 2026-07-27 03:00 | Microsoft Research：[Goals as First-Class Abstractions in Human-AI Collaboration](https://www.microsoft.com/en-us/research/publication/goals-as-first-class-abstractions-in-human-ai-collaboration/)，2026-04 | 把任务交给 AI 前，怎样说清目标而不只是罗列产物？             | AI 目标契约                    | 待执行 |
@@ -128,14 +128,14 @@
 每次运行开始新视频制作前运行：
 
 ```bash
-node scripts/ai-video-pipeline/cleanup-published-longform.mjs --apply
+node scripts/ai-video-pipeline/cleanup-published-longform.mjs --retention-hours 120 --apply
 ```
 
 清理只处理本任务生成的双语横屏长视频，并同时满足以下条件：
 
 1. 英文版已经由 YouTube API 再次确认是 `public`，并且仍位于播放列表 `PLJffvaWRvGC8`。
 2. 英文和中文两个 MP4 都已完成准出，中文路径已经出现在任务报告和归档中。
-3. 距离英文版实际 `publishedAt` 已满 `48` 小时。
+3. 距离英文版实际 `publishedAt` 已满 `5` 天（`120` 小时）。
 4. 发布成功后已经写入 `var/ai-video-pipeline/longform/published/<run-key>-<slug>.json` 清理清单。
 
 清理清单固定包含：
@@ -156,9 +156,9 @@ node scripts/ai-video-pipeline/cleanup-published-longform.mjs --apply
     "var/hyperframes-showcases/<date>-<slug>-longform-zh-CN/renders/video.mp4"
   ],
   "cleanup": {
-    "retentionHours": 48,
+    "retentionHours": 120,
     "status": "pending",
-    "eligibleAt": "publishedAt 加 48 小时"
+    "eligibleAt": "publishedAt 加 120 小时"
   }
 }
 ```

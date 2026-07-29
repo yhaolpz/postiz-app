@@ -12,6 +12,7 @@ const defaultManifestDir = path.join(
   rootDir,
   'var/ai-video-pipeline/shorts/published'
 );
+const MIN_RETENTION_HOURS = 5 * 24;
 
 function parseArgs(argv) {
   const args = {};
@@ -193,8 +194,10 @@ async function registerSummary({
       )
     : publicationTime;
   const retentionHours = Math.max(
-    48,
-    Number(existing?.manifest.cleanup?.retentionHours || 48)
+    MIN_RETENTION_HOURS,
+    Number(
+      existing?.manifest.cleanup?.retentionHours || MIN_RETENTION_HOURS
+    )
   );
   const cleanupStatus = existing?.manifest.cleanup?.status || 'pending';
   const manifest = {
@@ -374,9 +377,14 @@ async function cleanPublishedVideos({ manifestDir, retentionHours, apply }) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const retentionHours = Number(args['retention-hours'] || 48);
-  if (!Number.isFinite(retentionHours) || retentionHours < 48) {
-    throw new Error('Retention must be at least 48 hours.');
+  const retentionHours = Number(
+    args['retention-hours'] || MIN_RETENTION_HOURS
+  );
+  if (
+    !Number.isFinite(retentionHours) ||
+    retentionHours < MIN_RETENTION_HOURS
+  ) {
+    throw new Error('Retention must be at least 120 hours (5 days).');
   }
 
   const manifestDir = path.resolve(args['manifest-dir'] || defaultManifestDir);

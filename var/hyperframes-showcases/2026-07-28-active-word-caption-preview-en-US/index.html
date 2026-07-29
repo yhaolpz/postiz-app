@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920,height=1080">
+  <title>Tiny Agent active-word caption preview</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{width:1920px;height:1080px;margin:0;overflow:hidden;background:#ECECEA}
+    #composition{position:relative;width:1920px;height:1080px;overflow:hidden;background:#ECECEA;font-family:Inter,Arial,sans-serif}
+    #source-video{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover}
+    .caption-cover{position:absolute;z-index:20;left:0;right:0;top:848px;height:180px;background-color:#ECECEA;background-image:linear-gradient(rgba(17,20,19,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(17,20,19,.055) 1px,transparent 1px);background-size:64px 64px;background-position:0 -16px;box-shadow:0 -6px 18px rgba(17,20,19,.04)}
+    .caption-layer{position:absolute;z-index:30;left:90px;right:90px;top:866px;height:142px;display:grid;place-items:center}
+    .caption-group{position:absolute;visibility:hidden;opacity:0;max-width:1740px;min-height:92px;padding:13px 24px 15px;border:6px solid #111413;border-radius:24px;background:rgba(236,236,234,.98);box-shadow:10px 10px 0 rgba(17,20,19,.12);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;column-gap:3px;row-gap:6px;font-size:46px;line-height:1.14;font-weight:800;text-align:center}
+    .caption-word{display:inline-block;max-width:1600px;overflow:hidden;padding:2px 8px 4px;border-radius:9px;background:rgba(17,122,189,0);color:#111413;white-space:nowrap}
+  </style>
+</head>
+<body>
+  <div
+    data-hf-id="hf-root"
+    id="composition"
+    data-composition-id="active-word-caption-preview"
+    data-start="0"
+    data-duration="60"
+    data-fps="30"
+    data-width="1920"
+    data-height="1080"
+  >
+    <video
+      data-hf-id="hf-source-video"
+      id="source-video"
+      class="clip"
+      data-start="0"
+      data-duration="60"
+      data-media-start="103.313"
+      data-track-index="1"
+      data-volume="1"
+      data-has-audio="true"
+      src="assets/source.mp4"
+    ></video>
+    <div data-hf-id="hf-caption-cover" class="caption-cover"></div>
+    <div data-hf-id="hf-caption-layer" class="caption-layer">
+  <div data-hf-id="hf-caption-group-1" id="caption-group-1" class="caption-group">
+    <span data-hf-id="hf-caption-word-1" id="caption-word-1" class="caption-word">Second,</span><span data-hf-id="hf-caption-word-2" id="caption-word-2" class="caption-word">be</span><span data-hf-id="hf-caption-word-3" id="caption-word-3" class="caption-word">cautious</span><span data-hf-id="hf-caption-word-4" id="caption-word-4" class="caption-word">when</span><span data-hf-id="hf-caption-word-5" id="caption-word-5" class="caption-word">the</span><span data-hf-id="hf-caption-word-6" id="caption-word-6" class="caption-word">task</span>
+  </div>
+  <div data-hf-id="hf-caption-group-2" id="caption-group-2" class="caption-group">
+    <span data-hf-id="hf-caption-word-7" id="caption-word-7" class="caption-word">depends</span><span data-hf-id="hf-caption-word-8" id="caption-word-8" class="caption-word">on</span><span data-hf-id="hf-caption-word-9" id="caption-word-9" class="caption-word">heavily</span><span data-hf-id="hf-caption-word-10" id="caption-word-10" class="caption-word">shared</span><span data-hf-id="hf-caption-word-11" id="caption-word-11" class="caption-word">state.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-3" id="caption-group-3" class="caption-group">
+    <span data-hf-id="hf-caption-word-12" id="caption-word-12" class="caption-word">Third,</span><span data-hf-id="hf-caption-word-13" id="caption-word-13" class="caption-word">reserve</span><span data-hf-id="hf-caption-word-14" id="caption-word-14" class="caption-word">the</span><span data-hf-id="hf-caption-word-15" id="caption-word-15" class="caption-word">higher</span><span data-hf-id="hf-caption-word-16" id="caption-word-16" class="caption-word">cost</span>
+  </div>
+  <div data-hf-id="hf-caption-group-4" id="caption-group-4" class="caption-group">
+    <span data-hf-id="hf-caption-word-17" id="caption-word-17" class="caption-word">for</span><span data-hf-id="hf-caption-word-18" id="caption-word-18" class="caption-word">high</span><span data-hf-id="hf-caption-word-19" id="caption-word-19" class="caption-word">value</span><span data-hf-id="hf-caption-word-20" id="caption-word-20" class="caption-word">outcomes.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-5" id="caption-group-5" class="caption-group">
+    <span data-hf-id="hf-caption-word-21" id="caption-word-21" class="caption-word">After</span><span data-hf-id="hf-caption-word-22" id="caption-word-22" class="caption-word">the</span><span data-hf-id="hf-caption-word-23" id="caption-word-23" class="caption-word">fit</span><span data-hf-id="hf-caption-word-24" id="caption-word-24" class="caption-word">gate,</span><span data-hf-id="hf-caption-word-25" id="caption-word-25" class="caption-word">the</span><span data-hf-id="hf-caption-word-26" id="caption-word-26" class="caption-word">lead</span>
+  </div>
+  <div data-hf-id="hf-caption-group-6" id="caption-group-6" class="caption-group">
+    <span data-hf-id="hf-caption-word-27" id="caption-word-27" class="caption-word">agent's</span><span data-hf-id="hf-caption-word-28" id="caption-word-28" class="caption-word">main</span><span data-hf-id="hf-caption-word-29" id="caption-word-29" class="caption-word">job</span><span data-hf-id="hf-caption-word-30" id="caption-word-30" class="caption-word">is</span><span data-hf-id="hf-caption-word-31" id="caption-word-31" class="caption-word">not</span><span data-hf-id="hf-caption-word-32" id="caption-word-32" class="caption-word">searching.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-7" id="caption-group-7" class="caption-group">
+    <span data-hf-id="hf-caption-word-33" id="caption-word-33" class="caption-word">It</span><span data-hf-id="hf-caption-word-34" id="caption-word-34" class="caption-word">is</span><span data-hf-id="hf-caption-word-35" id="caption-word-35" class="caption-word">dividing</span><span data-hf-id="hf-caption-word-36" id="caption-word-36" class="caption-word">the</span><span data-hf-id="hf-caption-word-37" id="caption-word-37" class="caption-word">question</span><span data-hf-id="hf-caption-word-38" id="caption-word-38" class="caption-word">into</span>
+  </div>
+  <div data-hf-id="hf-caption-group-8" id="caption-group-8" class="caption-group">
+    <span data-hf-id="hf-caption-word-39" id="caption-word-39" class="caption-word">assignments</span><span data-hf-id="hf-caption-word-40" id="caption-word-40" class="caption-word">that</span><span data-hf-id="hf-caption-word-41" id="caption-word-41" class="caption-word">do</span><span data-hf-id="hf-caption-word-42" id="caption-word-42" class="caption-word">not</span><span data-hf-id="hf-caption-word-43" id="caption-word-43" class="caption-word">overlap</span>
+  </div>
+  <div data-hf-id="hf-caption-group-9" id="caption-group-9" class="caption-group">
+    <span data-hf-id="hf-caption-word-44" id="caption-word-44" class="caption-word">and</span><span data-hf-id="hf-caption-word-45" id="caption-word-45" class="caption-word">do</span><span data-hf-id="hf-caption-word-46" id="caption-word-46" class="caption-word">not</span><span data-hf-id="hf-caption-word-47" id="caption-word-47" class="caption-word">leave</span><span data-hf-id="hf-caption-word-48" id="caption-word-48" class="caption-word">gaps.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-10" id="caption-group-10" class="caption-group">
+    <span data-hf-id="hf-caption-word-49" id="caption-word-49" class="caption-word">Every</span><span data-hf-id="hf-caption-word-50" id="caption-word-50" class="caption-word">delegation</span><span data-hf-id="hf-caption-word-51" id="caption-word-51" class="caption-word">should</span><span data-hf-id="hf-caption-word-52" id="caption-word-52" class="caption-word">name</span><span data-hf-id="hf-caption-word-53" id="caption-word-53" class="caption-word">an</span>
+  </div>
+  <div data-hf-id="hf-caption-group-11" id="caption-group-11" class="caption-group">
+    <span data-hf-id="hf-caption-word-54" id="caption-word-54" class="caption-word">objective</span><span data-hf-id="hf-caption-word-55" id="caption-word-55" class="caption-word">and</span><span data-hf-id="hf-caption-word-56" id="caption-word-56" class="caption-word">the</span><span data-hf-id="hf-caption-word-57" id="caption-word-57" class="caption-word">expected</span><span data-hf-id="hf-caption-word-58" id="caption-word-58" class="caption-word">output.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-12" id="caption-group-12" class="caption-group">
+    <span data-hf-id="hf-caption-word-59" id="caption-word-59" class="caption-word">Instead</span><span data-hf-id="hf-caption-word-60" id="caption-word-60" class="caption-word">of</span><span data-hf-id="hf-caption-word-61" id="caption-word-61" class="caption-word">saying</span><span data-hf-id="hf-caption-word-62" id="caption-word-62" class="caption-word">research</span><span data-hf-id="hf-caption-word-63" id="caption-word-63" class="caption-word">competitors,</span><span data-hf-id="hf-caption-word-64" id="caption-word-64" class="caption-word">ask</span>
+  </div>
+  <div data-hf-id="hf-caption-group-13" id="caption-group-13" class="caption-group">
+    <span data-hf-id="hf-caption-word-65" id="caption-word-65" class="caption-word">for</span><span data-hf-id="hf-caption-word-66" id="caption-word-66" class="caption-word">pricing,</span><span data-hf-id="hf-caption-word-67" id="caption-word-67" class="caption-word">target</span><span data-hf-id="hf-caption-word-68" id="caption-word-68" class="caption-word">users,</span><span data-hf-id="hf-caption-word-69" id="caption-word-69" class="caption-word">and</span><span data-hf-id="hf-caption-word-70" id="caption-word-70" class="caption-word">verifiable</span>
+  </div>
+  <div data-hf-id="hf-caption-group-14" id="caption-group-14" class="caption-group">
+    <span data-hf-id="hf-caption-word-71" id="caption-word-71" class="caption-word">sources</span><span data-hf-id="hf-caption-word-72" id="caption-word-72" class="caption-word">for</span><span data-hf-id="hf-caption-word-73" id="caption-word-73" class="caption-word">three</span><span data-hf-id="hf-caption-word-74" id="caption-word-74" class="caption-word">named</span><span data-hf-id="hf-caption-word-75" id="caption-word-75" class="caption-word">products.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-15" id="caption-group-15" class="caption-group">
+    <span data-hf-id="hf-caption-word-76" id="caption-word-76" class="caption-word">Then</span><span data-hf-id="hf-caption-word-77" id="caption-word-77" class="caption-word">declare</span><span data-hf-id="hf-caption-word-78" id="caption-word-78" class="caption-word">the</span><span data-hf-id="hf-caption-word-79" id="caption-word-79" class="caption-word">allowed</span>
+  </div>
+  <div data-hf-id="hf-caption-group-16" id="caption-group-16" class="caption-group">
+    <span data-hf-id="hf-caption-word-80" id="caption-word-80" class="caption-word">tools</span><span data-hf-id="hf-caption-word-81" id="caption-word-81" class="caption-word">and</span><span data-hf-id="hf-caption-word-82" id="caption-word-82" class="caption-word">source</span><span data-hf-id="hf-caption-word-83" id="caption-word-83" class="caption-word">boundary.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-17" id="caption-group-17" class="caption-group">
+    <span data-hf-id="hf-caption-word-84" id="caption-word-84" class="caption-word">Naming</span><span data-hf-id="hf-caption-word-85" id="caption-word-85" class="caption-word">search,</span><span data-hf-id="hf-caption-word-86" id="caption-word-86" class="caption-word">browsing,</span><span data-hf-id="hf-caption-word-87" id="caption-word-87" class="caption-word">or</span><span data-hf-id="hf-caption-word-88" id="caption-word-88" class="caption-word">databases</span>
+  </div>
+  <div data-hf-id="hf-caption-group-18" id="caption-group-18" class="caption-group">
+    <span data-hf-id="hf-caption-word-89" id="caption-word-89" class="caption-word">and</span><span data-hf-id="hf-caption-word-90" id="caption-word-90" class="caption-word">prioritizing</span><span data-hf-id="hf-caption-word-91" id="caption-word-91" class="caption-word">primary</span><span data-hf-id="hf-caption-word-92" id="caption-word-92" class="caption-word">sources</span>
+  </div>
+  <div data-hf-id="hf-caption-group-19" id="caption-group-19" class="caption-group">
+    <span data-hf-id="hf-caption-word-93" id="caption-word-93" class="caption-word">keeps</span><span data-hf-id="hf-caption-word-94" id="caption-word-94" class="caption-word">subagents</span><span data-hf-id="hf-caption-word-95" id="caption-word-95" class="caption-word">from</span><span data-hf-id="hf-caption-word-96" id="caption-word-96" class="caption-word">wandering</span><span data-hf-id="hf-caption-word-97" id="caption-word-97" class="caption-word">through</span><span data-hf-id="hf-caption-word-98" id="caption-word-98" class="caption-word">weak</span><span data-hf-id="hf-caption-word-99" id="caption-word-99" class="caption-word">material.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-20" id="caption-group-20" class="caption-group">
+    <span data-hf-id="hf-caption-word-100" id="caption-word-100" class="caption-word">Tell</span><span data-hf-id="hf-caption-word-101" id="caption-word-101" class="caption-word">each</span><span data-hf-id="hf-caption-word-102" id="caption-word-102" class="caption-word">subagent</span><span data-hf-id="hf-caption-word-103" id="caption-word-103" class="caption-word">what</span><span data-hf-id="hf-caption-word-104" id="caption-word-104" class="caption-word">not</span>
+  </div>
+  <div data-hf-id="hf-caption-group-21" id="caption-group-21" class="caption-group">
+    <span data-hf-id="hf-caption-word-105" id="caption-word-105" class="caption-word">to</span><span data-hf-id="hf-caption-word-106" id="caption-word-106" class="caption-word">do</span><span data-hf-id="hf-caption-word-107" id="caption-word-107" class="caption-word">as</span><span data-hf-id="hf-caption-word-108" id="caption-word-108" class="caption-word">well.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-22" id="caption-group-22" class="caption-group">
+    <span data-hf-id="hf-caption-word-109" id="caption-word-109" class="caption-word">Covered</span><span data-hf-id="hf-caption-word-110" id="caption-word-110" class="caption-word">regions,</span><span data-hf-id="hf-caption-word-111" id="caption-word-111" class="caption-word">time</span><span data-hf-id="hf-caption-word-112" id="caption-word-112" class="caption-word">ranges,</span><span data-hf-id="hf-caption-word-113" id="caption-word-113" class="caption-word">and</span><span data-hf-id="hf-caption-word-114" id="caption-word-114" class="caption-word">result</span>
+  </div>
+  <div data-hf-id="hf-caption-group-23" id="caption-group-23" class="caption-group">
+    <span data-hf-id="hf-caption-word-115" id="caption-word-115" class="caption-word">formats</span><span data-hf-id="hf-caption-word-116" id="caption-word-116" class="caption-word">should</span><span data-hf-id="hf-caption-word-117" id="caption-word-117" class="caption-word">be</span><span data-hf-id="hf-caption-word-118" id="caption-word-118" class="caption-word">explicit,</span><span data-hf-id="hf-caption-word-119" id="caption-word-119" class="caption-word">or</span><span data-hf-id="hf-caption-word-120" id="caption-word-120" class="caption-word">several</span>
+  </div>
+  <div data-hf-id="hf-caption-group-24" id="caption-group-24" class="caption-group">
+    <span data-hf-id="hf-caption-word-121" id="caption-word-121" class="caption-word">agents</span><span data-hf-id="hf-caption-word-122" id="caption-word-122" class="caption-word">may</span><span data-hf-id="hf-caption-word-123" id="caption-word-123" class="caption-word">return</span><span data-hf-id="hf-caption-word-124" id="caption-word-124" class="caption-word">the</span><span data-hf-id="hf-caption-word-125" id="caption-word-125" class="caption-word">same</span><span data-hf-id="hf-caption-word-126" id="caption-word-126" class="caption-word">evidence.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-25" id="caption-group-25" class="caption-group">
+    <span data-hf-id="hf-caption-word-127" id="caption-word-127" class="caption-word">Anthropic</span><span data-hf-id="hf-caption-word-128" id="caption-word-128" class="caption-word">describes</span><span data-hf-id="hf-caption-word-129" id="caption-word-129" class="caption-word">effective</span><span data-hf-id="hf-caption-word-130" id="caption-word-130" class="caption-word">delegation</span><span data-hf-id="hf-caption-word-131" id="caption-word-131" class="caption-word">through</span>
+  </div>
+  <div data-hf-id="hf-caption-group-26" id="caption-group-26" class="caption-group">
+    <span data-hf-id="hf-caption-word-132" id="caption-word-132" class="caption-word">the</span><span data-hf-id="hf-caption-word-133" id="caption-word-133" class="caption-word">objective,</span><span data-hf-id="hf-caption-word-134" id="caption-word-134" class="caption-word">output</span><span data-hf-id="hf-caption-word-135" id="caption-word-135" class="caption-word">format,</span><span data-hf-id="hf-caption-word-136" id="caption-word-136" class="caption-word">tools,</span>
+  </div>
+  <div data-hf-id="hf-caption-group-27" id="caption-group-27" class="caption-group">
+    <span data-hf-id="hf-caption-word-137" id="caption-word-137" class="caption-word">sources,</span><span data-hf-id="hf-caption-word-138" id="caption-word-138" class="caption-word">and</span><span data-hf-id="hf-caption-word-139" id="caption-word-139" class="caption-word">task</span><span data-hf-id="hf-caption-word-140" id="caption-word-140" class="caption-word">boundaries.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-28" id="caption-group-28" class="caption-group">
+    <span data-hf-id="hf-caption-word-141" id="caption-word-141" class="caption-word">The</span><span data-hf-id="hf-caption-word-142" id="caption-word-142" class="caption-word">lead</span><span data-hf-id="hf-caption-word-143" id="caption-word-143" class="caption-word">agent</span><span data-hf-id="hf-caption-word-144" id="caption-word-144" class="caption-word">should</span><span data-hf-id="hf-caption-word-145" id="caption-word-145" class="caption-word">still</span>
+  </div>
+  <div data-hf-id="hf-caption-group-29" id="caption-group-29" class="caption-group">
+    <span data-hf-id="hf-caption-word-146" id="caption-word-146" class="caption-word">revise</span><span data-hf-id="hf-caption-word-147" id="caption-word-147" class="caption-word">assignments</span><span data-hf-id="hf-caption-word-148" id="caption-word-148" class="caption-word">when</span><span data-hf-id="hf-caption-word-149" id="caption-word-149" class="caption-word">the</span><span data-hf-id="hf-caption-word-150" id="caption-word-150" class="caption-word">first</span>
+  </div>
+  <div data-hf-id="hf-caption-group-30" id="caption-group-30" class="caption-group">
+    <span data-hf-id="hf-caption-word-151" id="caption-word-151" class="caption-word">findings</span><span data-hf-id="hf-caption-word-152" id="caption-word-152" class="caption-word">change</span><span data-hf-id="hf-caption-word-153" id="caption-word-153" class="caption-word">the</span><span data-hf-id="hf-caption-word-154" id="caption-word-154" class="caption-word">map.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-31" id="caption-group-31" class="caption-group">
+    <span data-hf-id="hf-caption-word-155" id="caption-word-155" class="caption-word">Broad</span><span data-hf-id="hf-caption-word-156" id="caption-word-156" class="caption-word">first</span><span data-hf-id="hf-caption-word-157" id="caption-word-157" class="caption-word">and</span><span data-hf-id="hf-caption-word-158" id="caption-word-158" class="caption-word">narrow</span>
+  </div>
+  <div data-hf-id="hf-caption-group-32" id="caption-group-32" class="caption-group">
+    <span data-hf-id="hf-caption-word-159" id="caption-word-159" class="caption-word">second</span><span data-hf-id="hf-caption-word-160" id="caption-word-160" class="caption-word">is</span><span data-hf-id="hf-caption-word-161" id="caption-word-161" class="caption-word">often</span><span data-hf-id="hf-caption-word-162" id="caption-word-162" class="caption-word">effective.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-33" id="caption-group-33" class="caption-group">
+    <span data-hf-id="hf-caption-word-163" id="caption-word-163" class="caption-word">Run</span><span data-hf-id="hf-caption-word-164" id="caption-word-164" class="caption-word">a</span><span data-hf-id="hf-caption-word-165" id="caption-word-165" class="caption-word">parallel</span><span data-hf-id="hf-caption-word-166" id="caption-word-166" class="caption-word">scan</span><span data-hf-id="hf-caption-word-167" id="caption-word-167" class="caption-word">for</span>
+  </div>
+  <div data-hf-id="hf-caption-group-34" id="caption-group-34" class="caption-group">
+    <span data-hf-id="hf-caption-word-168" id="caption-word-168" class="caption-word">leads,</span><span data-hf-id="hf-caption-word-169" id="caption-word-169" class="caption-word">then</span><span data-hf-id="hf-caption-word-170" id="caption-word-170" class="caption-word">deepen</span><span data-hf-id="hf-caption-word-171" id="caption-word-171" class="caption-word">only</span><span data-hf-id="hf-caption-word-172" id="caption-word-172" class="caption-word">the</span>
+  </div>
+  <div data-hf-id="hf-caption-group-35" id="caption-group-35" class="caption-group">
+    <span data-hf-id="hf-caption-word-173" id="caption-word-173" class="caption-word">branches</span><span data-hf-id="hf-caption-word-174" id="caption-word-174" class="caption-word">that</span><span data-hf-id="hf-caption-word-175" id="caption-word-175" class="caption-word">can</span><span data-hf-id="hf-caption-word-176" id="caption-word-176" class="caption-word">change</span><span data-hf-id="hf-caption-word-177" id="caption-word-177" class="caption-word">the</span>
+  </div>
+  <div data-hf-id="hf-caption-group-36" id="caption-group-36" class="caption-group">
+    <span data-hf-id="hf-caption-word-178" id="caption-word-178" class="caption-word">final</span><span data-hf-id="hf-caption-word-179" id="caption-word-179" class="caption-word">judgment.</span><span data-hf-id="hf-caption-word-180" id="caption-word-180" class="caption-word">Collect</span><span data-hf-id="hf-caption-word-181" id="caption-word-181" class="caption-word">more</span><span data-hf-id="hf-caption-word-182" id="caption-word-182" class="caption-word">than</span><span data-hf-id="hf-caption-word-183" id="caption-word-183" class="caption-word">conclusions.</span>
+  </div>
+  <div data-hf-id="hf-caption-group-37" id="caption-group-37" class="caption-group">
+    <span data-hf-id="hf-caption-word-184" id="caption-word-184" class="caption-word">Require</span><span data-hf-id="hf-caption-word-185" id="caption-word-185" class="caption-word">evidence</span><span data-hf-id="hf-caption-word-186" id="caption-word-186" class="caption-word">links,</span><span data-hf-id="hf-caption-word-187" id="caption-word-187" class="caption-word">important</span><span data-hf-id="hf-caption-word-188" id="caption-word-188" class="caption-word">uncertainties,</span><span data-hf-id="hf-caption-word-189" id="caption-word-189" class="caption-word">and</span>
+  </div>
+  <div data-hf-id="hf-caption-group-38" id="caption-group-38" class="caption-group">
+    <span data-hf-id="hf-caption-word-190" id="caption-word-190" class="caption-word">the</span><span data-hf-id="hf-caption-word-191" id="caption-word-191" class="caption-word">reason</span><span data-hf-id="hf-caption-word-192" id="caption-word-192" class="caption-word">a</span><span data-hf-id="hf-caption-word-193" id="caption-word-193" class="caption-word">path</span><span data-hf-id="hf-caption-word-194" id="caption-word-194" class="caption-word">stopped,</span><span data-hf-id="hf-caption-word-195" id="caption-word-195" class="caption-word">so</span>
+  </div>
+  <div data-hf-id="hf-caption-group-39" id="caption-group-39" class="caption-group">
+    <span data-hf-id="hf-caption-word-196" id="caption-word-196" class="caption-word">the</span><span data-hf-id="hf-caption-word-197" id="caption-word-197" class="caption-word">lead</span><span data-hf-id="hf-caption-word-198" id="caption-word-198" class="caption-word">agent</span><span data-hf-id="hf-caption-word-199" id="caption-word-199" class="caption-word">can</span><span data-hf-id="hf-caption-word-200" id="caption-word-200" class="caption-word">decide</span><span data-hf-id="hf-caption-word-201" id="caption-word-201" class="caption-word">which</span>
+  </div>
+  <div data-hf-id="hf-caption-group-40" id="caption-group-40" class="caption-group">
+    <span data-hf-id="hf-caption-word-202" id="caption-word-202" class="caption-word">findings</span><span data-hf-id="hf-caption-word-203" id="caption-word-203" class="caption-word">are</span><span data-hf-id="hf-caption-word-204" id="caption-word-204" class="caption-word">safe</span><span data-hf-id="hf-caption-word-205" id="caption-word-205" class="caption-word">to</span><span data-hf-id="hf-caption-word-206" id="caption-word-206" class="caption-word">merge.</span>
+  </div></div>
+  </div>
+  <script>
+    window.__timelines=window.__timelines||{};
+    const tl=gsap.timeline({paused:true});
+    tl.set("#caption-group-1",{autoAlpha:1},0.000);
+    tl.set("#caption-word-1",{backgroundColor:"#117ABD",color:"#ECECEA"},0.000);
+    tl.set("#caption-word-1",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},0.500);
+    tl.set("#caption-word-2",{backgroundColor:"#117ABD",color:"#ECECEA"},0.500);
+    tl.set("#caption-word-2",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},0.630);
+    tl.set("#caption-word-3",{backgroundColor:"#117ABD",color:"#ECECEA"},0.630);
+    tl.set("#caption-word-3",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},1.130);
+    tl.set("#caption-word-4",{backgroundColor:"#117ABD",color:"#ECECEA"},1.130);
+    tl.set("#caption-word-4",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},1.380);
+    tl.set("#caption-word-5",{backgroundColor:"#117ABD",color:"#ECECEA"},1.380);
+    tl.set("#caption-word-5",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},1.480);
+    tl.set("#caption-word-6",{backgroundColor:"#117ABD",color:"#ECECEA"},1.480);
+    tl.set("#caption-word-6",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},1.670);
+    tl.set("#caption-group-1",{autoAlpha:0},1.670);
+    tl.set("#caption-group-2",{autoAlpha:1},1.710);
+    tl.set("#caption-word-7",{backgroundColor:"#117ABD",color:"#ECECEA"},1.710);
+    tl.set("#caption-word-7",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},2.200);
+    tl.set("#caption-word-8",{backgroundColor:"#117ABD",color:"#ECECEA"},2.200);
+    tl.set("#caption-word-8",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},2.280);
+    tl.set("#caption-word-9",{backgroundColor:"#117ABD",color:"#ECECEA"},2.280);
+    tl.set("#caption-word-9",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},2.550);
+    tl.set("#caption-word-10",{backgroundColor:"#117ABD",color:"#ECECEA"},2.550);
+    tl.set("#caption-word-10",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},2.780);
+    tl.set("#caption-word-11",{backgroundColor:"#117ABD",color:"#ECECEA"},2.780);
+    tl.set("#caption-word-11",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},3.200);
+    tl.set("#caption-group-2",{autoAlpha:0},3.240);
+    tl.set("#caption-group-3",{autoAlpha:1},3.360);
+    tl.set("#caption-word-12",{backgroundColor:"#117ABD",color:"#ECECEA"},3.360);
+    tl.set("#caption-word-12",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},3.760);
+    tl.set("#caption-word-13",{backgroundColor:"#117ABD",color:"#ECECEA"},3.760);
+    tl.set("#caption-word-13",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},4.300);
+    tl.set("#caption-word-14",{backgroundColor:"#117ABD",color:"#ECECEA"},4.300);
+    tl.set("#caption-word-14",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},4.340);
+    tl.set("#caption-word-15",{backgroundColor:"#117ABD",color:"#ECECEA"},4.340);
+    tl.set("#caption-word-15",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},4.690);
+    tl.set("#caption-word-16",{backgroundColor:"#117ABD",color:"#ECECEA"},4.690);
+    tl.set("#caption-word-16",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},4.880);
+    tl.set("#caption-group-3",{autoAlpha:0},4.880);
+    tl.set("#caption-group-4",{autoAlpha:1},4.920);
+    tl.set("#caption-word-17",{backgroundColor:"#117ABD",color:"#ECECEA"},4.920);
+    tl.set("#caption-word-17",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},5.090);
+    tl.set("#caption-word-18",{backgroundColor:"#117ABD",color:"#ECECEA"},5.090);
+    tl.set("#caption-word-18",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},5.390);
+    tl.set("#caption-word-19",{backgroundColor:"#117ABD",color:"#ECECEA"},5.390);
+    tl.set("#caption-word-19",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},5.610);
+    tl.set("#caption-word-20",{backgroundColor:"#117ABD",color:"#ECECEA"},5.610);
+    tl.set("#caption-word-20",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},6.440);
+    tl.set("#caption-group-4",{autoAlpha:0},6.440);
+    tl.set("#caption-group-5",{autoAlpha:1},6.480);
+    tl.set("#caption-word-21",{backgroundColor:"#117ABD",color:"#ECECEA"},6.480);
+    tl.set("#caption-word-21",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},6.640);
+    tl.set("#caption-word-22",{backgroundColor:"#117ABD",color:"#ECECEA"},6.640);
+    tl.set("#caption-word-22",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},6.880);
+    tl.set("#caption-word-23",{backgroundColor:"#117ABD",color:"#ECECEA"},6.880);
+    tl.set("#caption-word-23",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},7.000);
+    tl.set("#caption-word-24",{backgroundColor:"#117ABD",color:"#ECECEA"},7.000);
+    tl.set("#caption-word-24",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},7.250);
+    tl.set("#caption-word-25",{backgroundColor:"#117ABD",color:"#ECECEA"},7.250);
+    tl.set("#caption-word-25",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},7.430);
+    tl.set("#caption-word-26",{backgroundColor:"#117ABD",color:"#ECECEA"},7.430);
+    tl.set("#caption-word-26",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},7.570);
+    tl.set("#caption-group-5",{autoAlpha:0},7.570);
+    tl.set("#caption-group-6",{autoAlpha:1},7.610);
+    tl.set("#caption-word-27",{backgroundColor:"#117ABD",color:"#ECECEA"},7.610);
+    tl.set("#caption-word-27",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},7.960);
+    tl.set("#caption-word-28",{backgroundColor:"#117ABD",color:"#ECECEA"},7.960);
+    tl.set("#caption-word-28",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},8.150);
+    tl.set("#caption-word-29",{backgroundColor:"#117ABD",color:"#ECECEA"},8.150);
+    tl.set("#caption-word-29",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},8.270);
+    tl.set("#caption-word-30",{backgroundColor:"#117ABD",color:"#ECECEA"},8.270);
+    tl.set("#caption-word-30",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},8.410);
+    tl.set("#caption-word-31",{backgroundColor:"#117ABD",color:"#ECECEA"},8.410);
+    tl.set("#caption-word-31",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},8.510);
+    tl.set("#caption-word-32",{backgroundColor:"#117ABD",color:"#ECECEA"},8.510);
+    tl.set("#caption-word-32",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},9.180);
+    tl.set("#caption-group-6",{autoAlpha:0},9.180);
+    tl.set("#caption-group-7",{autoAlpha:1},9.220);
+    tl.set("#caption-word-33",{backgroundColor:"#117ABD",color:"#ECECEA"},9.220);
+    tl.set("#caption-word-33",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},9.310);
+    tl.set("#caption-word-34",{backgroundColor:"#117ABD",color:"#ECECEA"},9.310);
+    tl.set("#caption-word-34",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},9.610);
+    tl.set("#caption-word-35",{backgroundColor:"#117ABD",color:"#ECECEA"},9.610);
+    tl.set("#caption-word-35",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},9.830);
+    tl.set("#caption-word-36",{backgroundColor:"#117ABD",color:"#ECECEA"},9.830);
+    tl.set("#caption-word-36",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},9.920);
+    tl.set("#caption-word-37",{backgroundColor:"#117ABD",color:"#ECECEA"},9.920);
+    tl.set("#caption-word-37",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},10.320);
+    tl.set("#caption-word-38",{backgroundColor:"#117ABD",color:"#ECECEA"},10.320);
+    tl.set("#caption-word-38",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},10.480);
+    tl.set("#caption-group-7",{autoAlpha:0},10.480);
+    tl.set("#caption-group-8",{autoAlpha:1},10.520);
+    tl.set("#caption-word-39",{backgroundColor:"#117ABD",color:"#ECECEA"},10.520);
+    tl.set("#caption-word-39",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},11.050);
+    tl.set("#caption-word-40",{backgroundColor:"#117ABD",color:"#ECECEA"},11.050);
+    tl.set("#caption-word-40",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},11.250);
+    tl.set("#caption-word-41",{backgroundColor:"#117ABD",color:"#ECECEA"},11.250);
+    tl.set("#caption-word-41",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},11.330);
+    tl.set("#caption-word-42",{backgroundColor:"#117ABD",color:"#ECECEA"},11.330);
+    tl.set("#caption-word-42",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},11.470);
+    tl.set("#caption-word-43",{backgroundColor:"#117ABD",color:"#ECECEA"},11.470);
+    tl.set("#caption-word-43",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},11.770);
+    tl.set("#caption-group-8",{autoAlpha:0},11.770);
+    tl.set("#caption-group-9",{autoAlpha:1},11.810);
+    tl.set("#caption-word-44",{backgroundColor:"#117ABD",color:"#ECECEA"},11.810);
+    tl.set("#caption-word-44",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},11.950);
+    tl.set("#caption-word-45",{backgroundColor:"#117ABD",color:"#ECECEA"},11.950);
+    tl.set("#caption-word-45",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},12.040);
+    tl.set("#caption-word-46",{backgroundColor:"#117ABD",color:"#ECECEA"},12.040);
+    tl.set("#caption-word-46",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},12.180);
+    tl.set("#caption-word-47",{backgroundColor:"#117ABD",color:"#ECECEA"},12.180);
+    tl.set("#caption-word-47",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},12.400);
+    tl.set("#caption-word-48",{backgroundColor:"#117ABD",color:"#ECECEA"},12.400);
+    tl.set("#caption-word-48",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},12.840);
+    tl.set("#caption-group-9",{autoAlpha:0},12.840);
+    tl.set("#caption-group-10",{autoAlpha:1},12.880);
+    tl.set("#caption-word-49",{backgroundColor:"#117ABD",color:"#ECECEA"},12.880);
+    tl.set("#caption-word-49",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},13.270);
+    tl.set("#caption-word-50",{backgroundColor:"#117ABD",color:"#ECECEA"},13.270);
+    tl.set("#caption-word-50",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},13.540);
+    tl.set("#caption-word-51",{backgroundColor:"#117ABD",color:"#ECECEA"},13.540);
+    tl.set("#caption-word-51",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},13.830);
+    tl.set("#caption-word-52",{backgroundColor:"#117ABD",color:"#ECECEA"},13.830);
+    tl.set("#caption-word-52",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},13.970);
+    tl.set("#caption-word-53",{backgroundColor:"#117ABD",color:"#ECECEA"},13.970);
+    tl.set("#caption-word-53",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},14.010);
+    tl.set("#caption-group-10",{autoAlpha:0},14.010);
+    tl.set("#caption-group-11",{autoAlpha:1},14.050);
+    tl.set("#caption-word-54",{backgroundColor:"#117ABD",color:"#ECECEA"},14.050);
+    tl.set("#caption-word-54",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},14.450);
+    tl.set("#caption-word-55",{backgroundColor:"#117ABD",color:"#ECECEA"},14.450);
+    tl.set("#caption-word-55",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},14.580);
+    tl.set("#caption-word-56",{backgroundColor:"#117ABD",color:"#ECECEA"},14.580);
+    tl.set("#caption-word-56",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},14.710);
+    tl.set("#caption-word-57",{backgroundColor:"#117ABD",color:"#ECECEA"},14.710);
+    tl.set("#caption-word-57",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},15.060);
+    tl.set("#caption-word-58",{backgroundColor:"#117ABD",color:"#ECECEA"},15.060);
+    tl.set("#caption-word-58",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},15.480);
+    tl.set("#caption-group-11",{autoAlpha:0},15.480);
+    tl.set("#caption-group-12",{autoAlpha:1},15.520);
+    tl.set("#caption-word-59",{backgroundColor:"#117ABD",color:"#ECECEA"},15.520);
+    tl.set("#caption-word-59",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},15.920);
+    tl.set("#caption-word-60",{backgroundColor:"#117ABD",color:"#ECECEA"},15.920);
+    tl.set("#caption-word-60",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},15.990);
+    tl.set("#caption-word-61",{backgroundColor:"#117ABD",color:"#ECECEA"},15.990);
+    tl.set("#caption-word-61",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},16.470);
+    tl.set("#caption-word-62",{backgroundColor:"#117ABD",color:"#ECECEA"},16.470);
+    tl.set("#caption-word-62",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},16.730);
+    tl.set("#caption-word-63",{backgroundColor:"#117ABD",color:"#ECECEA"},16.730);
+    tl.set("#caption-word-63",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},17.450);
+    tl.set("#caption-word-64",{backgroundColor:"#117ABD",color:"#ECECEA"},17.450);
+    tl.set("#caption-word-64",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},17.530);
+    tl.set("#caption-group-12",{autoAlpha:0},17.530);
+    tl.set("#caption-group-13",{autoAlpha:1},17.570);
+    tl.set("#caption-word-65",{backgroundColor:"#117ABD",color:"#ECECEA"},17.570);
+    tl.set("#caption-word-65",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},17.730);
+    tl.set("#caption-word-66",{backgroundColor:"#117ABD",color:"#ECECEA"},17.730);
+    tl.set("#caption-word-66",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},18.200);
+    tl.set("#caption-word-67",{backgroundColor:"#117ABD",color:"#ECECEA"},18.200);
+    tl.set("#caption-word-67",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},18.520);
+    tl.set("#caption-word-68",{backgroundColor:"#117ABD",color:"#ECECEA"},18.520);
+    tl.set("#caption-word-68",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},19.010);
+    tl.set("#caption-word-69",{backgroundColor:"#117ABD",color:"#ECECEA"},19.010);
+    tl.set("#caption-word-69",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},19.040);
+    tl.set("#caption-word-70",{backgroundColor:"#117ABD",color:"#ECECEA"},19.040);
+    tl.set("#caption-word-70",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},19.600);
+    tl.set("#caption-group-13",{autoAlpha:0},19.600);
+    tl.set("#caption-group-14",{autoAlpha:1},19.640);
+    tl.set("#caption-word-71",{backgroundColor:"#117ABD",color:"#ECECEA"},19.640);
+    tl.set("#caption-word-71",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},20.050);
+    tl.set("#caption-word-72",{backgroundColor:"#117ABD",color:"#ECECEA"},20.050);
+    tl.set("#caption-word-72",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},20.250);
+    tl.set("#caption-word-73",{backgroundColor:"#117ABD",color:"#ECECEA"},20.250);
+    tl.set("#caption-word-73",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},20.590);
+    tl.set("#caption-word-74",{backgroundColor:"#117ABD",color:"#ECECEA"},20.590);
+    tl.set("#caption-word-74",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},20.800);
+    tl.set("#caption-word-75",{backgroundColor:"#117ABD",color:"#ECECEA"},20.800);
+    tl.set("#caption-word-75",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},21.440);
+    tl.set("#caption-group-14",{autoAlpha:0},21.440);
+    tl.set("#caption-group-15",{autoAlpha:1},21.480);
+    tl.set("#caption-word-76",{backgroundColor:"#117ABD",color:"#ECECEA"},21.480);
+    tl.set("#caption-word-76",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},21.870);
+    tl.set("#caption-word-77",{backgroundColor:"#117ABD",color:"#ECECEA"},21.870);
+    tl.set("#caption-word-77",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},22.010);
+    tl.set("#caption-word-78",{backgroundColor:"#117ABD",color:"#ECECEA"},22.010);
+    tl.set("#caption-word-78",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},22.140);
+    tl.set("#caption-word-79",{backgroundColor:"#117ABD",color:"#ECECEA"},22.140);
+    tl.set("#caption-word-79",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},22.520);
+    tl.set("#caption-group-15",{autoAlpha:0},22.520);
+    tl.set("#caption-group-16",{autoAlpha:1},22.560);
+    tl.set("#caption-word-80",{backgroundColor:"#117ABD",color:"#ECECEA"},22.560);
+    tl.set("#caption-word-80",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},22.730);
+    tl.set("#caption-word-81",{backgroundColor:"#117ABD",color:"#ECECEA"},22.730);
+    tl.set("#caption-word-81",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},22.870);
+    tl.set("#caption-word-82",{backgroundColor:"#117ABD",color:"#ECECEA"},22.870);
+    tl.set("#caption-word-82",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},23.190);
+    tl.set("#caption-word-83",{backgroundColor:"#117ABD",color:"#ECECEA"},23.190);
+    tl.set("#caption-word-83",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},23.680);
+    tl.set("#caption-group-16",{autoAlpha:0},23.680);
+    tl.set("#caption-group-17",{autoAlpha:1},23.720);
+    tl.set("#caption-word-84",{backgroundColor:"#117ABD",color:"#ECECEA"},23.720);
+    tl.set("#caption-word-84",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},24.110);
+    tl.set("#caption-word-85",{backgroundColor:"#117ABD",color:"#ECECEA"},24.110);
+    tl.set("#caption-word-85",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},24.440);
+    tl.set("#caption-word-86",{backgroundColor:"#117ABD",color:"#ECECEA"},24.440);
+    tl.set("#caption-word-86",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},24.950);
+    tl.set("#caption-word-87",{backgroundColor:"#117ABD",color:"#ECECEA"},24.950);
+    tl.set("#caption-word-87",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},25.050);
+    tl.set("#caption-word-88",{backgroundColor:"#117ABD",color:"#ECECEA"},25.050);
+    tl.set("#caption-word-88",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},25.480);
+    tl.set("#caption-group-17",{autoAlpha:0},25.480);
+    tl.set("#caption-group-18",{autoAlpha:1},25.520);
+    tl.set("#caption-word-89",{backgroundColor:"#117ABD",color:"#ECECEA"},25.520);
+    tl.set("#caption-word-89",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},25.670);
+    tl.set("#caption-word-90",{backgroundColor:"#117ABD",color:"#ECECEA"},25.670);
+    tl.set("#caption-word-90",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},26.290);
+    tl.set("#caption-word-91",{backgroundColor:"#117ABD",color:"#ECECEA"},26.290);
+    tl.set("#caption-word-91",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},26.650);
+    tl.set("#caption-word-92",{backgroundColor:"#117ABD",color:"#ECECEA"},26.650);
+    tl.set("#caption-word-92",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},26.910);
+    tl.set("#caption-group-18",{autoAlpha:0},26.950);
+    tl.set("#caption-group-19",{autoAlpha:1},27.210);
+    tl.set("#caption-word-93",{backgroundColor:"#117ABD",color:"#ECECEA"},27.210);
+    tl.set("#caption-word-93",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},27.220);
+    tl.set("#caption-word-94",{backgroundColor:"#117ABD",color:"#ECECEA"},27.220);
+    tl.set("#caption-word-94",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},27.760);
+    tl.set("#caption-word-95",{backgroundColor:"#117ABD",color:"#ECECEA"},27.760);
+    tl.set("#caption-word-95",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},28.150);
+    tl.set("#caption-word-96",{backgroundColor:"#117ABD",color:"#ECECEA"},28.150);
+    tl.set("#caption-word-96",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},28.370);
+    tl.set("#caption-word-97",{backgroundColor:"#117ABD",color:"#ECECEA"},28.370);
+    tl.set("#caption-word-97",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},28.710);
+    tl.set("#caption-word-98",{backgroundColor:"#117ABD",color:"#ECECEA"},28.710);
+    tl.set("#caption-word-98",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},28.850);
+    tl.set("#caption-word-99",{backgroundColor:"#117ABD",color:"#ECECEA"},28.850);
+    tl.set("#caption-word-99",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},29.320);
+    tl.set("#caption-group-19",{autoAlpha:0},29.320);
+    tl.set("#caption-group-20",{autoAlpha:1},29.360);
+    tl.set("#caption-word-100",{backgroundColor:"#117ABD",color:"#ECECEA"},29.360);
+    tl.set("#caption-word-100",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},29.510);
+    tl.set("#caption-word-101",{backgroundColor:"#117ABD",color:"#ECECEA"},29.510);
+    tl.set("#caption-word-101",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},29.760);
+    tl.set("#caption-word-102",{backgroundColor:"#117ABD",color:"#ECECEA"},29.760);
+    tl.set("#caption-word-102",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},30.100);
+    tl.set("#caption-word-103",{backgroundColor:"#117ABD",color:"#ECECEA"},30.100);
+    tl.set("#caption-word-103",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},30.310);
+    tl.set("#caption-word-104",{backgroundColor:"#117ABD",color:"#ECECEA"},30.310);
+    tl.set("#caption-word-104",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},30.400);
+    tl.set("#caption-group-20",{autoAlpha:0},30.400);
+    tl.set("#caption-group-21",{autoAlpha:1},30.440);
+    tl.set("#caption-word-105",{backgroundColor:"#117ABD",color:"#ECECEA"},30.440);
+    tl.set("#caption-word-105",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},30.530);
+    tl.set("#caption-word-106",{backgroundColor:"#117ABD",color:"#ECECEA"},30.530);
+    tl.set("#caption-word-106",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},30.620);
+    tl.set("#caption-word-107",{backgroundColor:"#117ABD",color:"#ECECEA"},30.620);
+    tl.set("#caption-word-107",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},30.710);
+    tl.set("#caption-word-108",{backgroundColor:"#117ABD",color:"#ECECEA"},30.710);
+    tl.set("#caption-word-108",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},31.040);
+    tl.set("#caption-group-21",{autoAlpha:0},31.040);
+    tl.set("#caption-group-22",{autoAlpha:1},31.080);
+    tl.set("#caption-word-109",{backgroundColor:"#117ABD",color:"#ECECEA"},31.080);
+    tl.set("#caption-word-109",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},31.470);
+    tl.set("#caption-word-110",{backgroundColor:"#117ABD",color:"#ECECEA"},31.470);
+    tl.set("#caption-word-110",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},32.030);
+    tl.set("#caption-word-111",{backgroundColor:"#117ABD",color:"#ECECEA"},32.030);
+    tl.set("#caption-word-111",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},32.150);
+    tl.set("#caption-word-112",{backgroundColor:"#117ABD",color:"#ECECEA"},32.150);
+    tl.set("#caption-word-112",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},32.560);
+    tl.set("#caption-word-113",{backgroundColor:"#117ABD",color:"#ECECEA"},32.560);
+    tl.set("#caption-word-113",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},32.750);
+    tl.set("#caption-word-114",{backgroundColor:"#117ABD",color:"#ECECEA"},32.750);
+    tl.set("#caption-word-114",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},33.070);
+    tl.set("#caption-group-22",{autoAlpha:0},33.070);
+    tl.set("#caption-group-23",{autoAlpha:1},33.110);
+    tl.set("#caption-word-115",{backgroundColor:"#117ABD",color:"#ECECEA"},33.110);
+    tl.set("#caption-word-115",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},33.470);
+    tl.set("#caption-word-116",{backgroundColor:"#117ABD",color:"#ECECEA"},33.470);
+    tl.set("#caption-word-116",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},33.740);
+    tl.set("#caption-word-117",{backgroundColor:"#117ABD",color:"#ECECEA"},33.740);
+    tl.set("#caption-word-117",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},33.840);
+    tl.set("#caption-word-118",{backgroundColor:"#117ABD",color:"#ECECEA"},33.840);
+    tl.set("#caption-word-118",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},34.480);
+    tl.set("#caption-word-119",{backgroundColor:"#117ABD",color:"#ECECEA"},34.480);
+    tl.set("#caption-word-119",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},34.570);
+    tl.set("#caption-word-120",{backgroundColor:"#117ABD",color:"#ECECEA"},34.570);
+    tl.set("#caption-word-120",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},34.870);
+    tl.set("#caption-group-23",{autoAlpha:0},34.910);
+    tl.set("#caption-group-24",{autoAlpha:1},35.050);
+    tl.set("#caption-word-121",{backgroundColor:"#117ABD",color:"#ECECEA"},35.050);
+    tl.set("#caption-word-121",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},35.160);
+    tl.set("#caption-word-122",{backgroundColor:"#117ABD",color:"#ECECEA"},35.160);
+    tl.set("#caption-word-122",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},35.240);
+    tl.set("#caption-word-123",{backgroundColor:"#117ABD",color:"#ECECEA"},35.240);
+    tl.set("#caption-word-123",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},35.680);
+    tl.set("#caption-word-124",{backgroundColor:"#117ABD",color:"#ECECEA"},35.680);
+    tl.set("#caption-word-124",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},35.900);
+    tl.set("#caption-word-125",{backgroundColor:"#117ABD",color:"#ECECEA"},35.900);
+    tl.set("#caption-word-125",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},36.190);
+    tl.set("#caption-word-126",{backgroundColor:"#117ABD",color:"#ECECEA"},36.190);
+    tl.set("#caption-word-126",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},36.960);
+    tl.set("#caption-group-24",{autoAlpha:0},36.960);
+    tl.set("#caption-group-25",{autoAlpha:1},37.000);
+    tl.set("#caption-word-127",{backgroundColor:"#117ABD",color:"#ECECEA"},37.000);
+    tl.set("#caption-word-127",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},37.420);
+    tl.set("#caption-word-128",{backgroundColor:"#117ABD",color:"#ECECEA"},37.420);
+    tl.set("#caption-word-128",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},37.950);
+    tl.set("#caption-word-129",{backgroundColor:"#117ABD",color:"#ECECEA"},37.950);
+    tl.set("#caption-word-129",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},38.280);
+    tl.set("#caption-word-130",{backgroundColor:"#117ABD",color:"#ECECEA"},38.280);
+    tl.set("#caption-word-130",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},38.760);
+    tl.set("#caption-word-131",{backgroundColor:"#117ABD",color:"#ECECEA"},38.760);
+    tl.set("#caption-word-131",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},39.050);
+    tl.set("#caption-group-25",{autoAlpha:0},39.050);
+    tl.set("#caption-group-26",{autoAlpha:1},39.090);
+    tl.set("#caption-word-132",{backgroundColor:"#117ABD",color:"#ECECEA"},39.090);
+    tl.set("#caption-word-132",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},39.230);
+    tl.set("#caption-word-133",{backgroundColor:"#117ABD",color:"#ECECEA"},39.230);
+    tl.set("#caption-word-133",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},39.750);
+    tl.set("#caption-word-134",{backgroundColor:"#117ABD",color:"#ECECEA"},39.750);
+    tl.set("#caption-word-134",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},40.040);
+    tl.set("#caption-word-135",{backgroundColor:"#117ABD",color:"#ECECEA"},40.040);
+    tl.set("#caption-word-135",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},40.490);
+    tl.set("#caption-word-136",{backgroundColor:"#117ABD",color:"#ECECEA"},40.490);
+    tl.set("#caption-word-136",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},40.790);
+    tl.set("#caption-group-26",{autoAlpha:0},40.830);
+    tl.set("#caption-group-27",{autoAlpha:1},40.970);
+    tl.set("#caption-word-137",{backgroundColor:"#117ABD",color:"#ECECEA"},40.970);
+    tl.set("#caption-word-137",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},41.320);
+    tl.set("#caption-word-138",{backgroundColor:"#117ABD",color:"#ECECEA"},41.320);
+    tl.set("#caption-word-138",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},41.460);
+    tl.set("#caption-word-139",{backgroundColor:"#117ABD",color:"#ECECEA"},41.460);
+    tl.set("#caption-word-139",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},41.710);
+    tl.set("#caption-word-140",{backgroundColor:"#117ABD",color:"#ECECEA"},41.710);
+    tl.set("#caption-word-140",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},42.280);
+    tl.set("#caption-group-27",{autoAlpha:0},42.280);
+    tl.set("#caption-group-28",{autoAlpha:1},42.320);
+    tl.set("#caption-word-141",{backgroundColor:"#117ABD",color:"#ECECEA"},42.320);
+    tl.set("#caption-word-141",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},42.450);
+    tl.set("#caption-word-142",{backgroundColor:"#117ABD",color:"#ECECEA"},42.450);
+    tl.set("#caption-word-142",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},42.710);
+    tl.set("#caption-word-143",{backgroundColor:"#117ABD",color:"#ECECEA"},42.710);
+    tl.set("#caption-word-143",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},42.850);
+    tl.set("#caption-word-144",{backgroundColor:"#117ABD",color:"#ECECEA"},42.850);
+    tl.set("#caption-word-144",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},43.260);
+    tl.set("#caption-word-145",{backgroundColor:"#117ABD",color:"#ECECEA"},43.260);
+    tl.set("#caption-word-145",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},43.350);
+    tl.set("#caption-group-28",{autoAlpha:0},43.350);
+    tl.set("#caption-group-29",{autoAlpha:1},43.390);
+    tl.set("#caption-word-146",{backgroundColor:"#117ABD",color:"#ECECEA"},43.390);
+    tl.set("#caption-word-146",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},43.620);
+    tl.set("#caption-word-147",{backgroundColor:"#117ABD",color:"#ECECEA"},43.620);
+    tl.set("#caption-word-147",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},44.100);
+    tl.set("#caption-word-148",{backgroundColor:"#117ABD",color:"#ECECEA"},44.100);
+    tl.set("#caption-word-148",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},44.350);
+    tl.set("#caption-word-149",{backgroundColor:"#117ABD",color:"#ECECEA"},44.350);
+    tl.set("#caption-word-149",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},44.410);
+    tl.set("#caption-word-150",{backgroundColor:"#117ABD",color:"#ECECEA"},44.410);
+    tl.set("#caption-word-150",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},44.590);
+    tl.set("#caption-group-29",{autoAlpha:0},44.590);
+    tl.set("#caption-group-30",{autoAlpha:1},44.630);
+    tl.set("#caption-word-151",{backgroundColor:"#117ABD",color:"#ECECEA"},44.630);
+    tl.set("#caption-word-151",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},44.990);
+    tl.set("#caption-word-152",{backgroundColor:"#117ABD",color:"#ECECEA"},44.990);
+    tl.set("#caption-word-152",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},45.260);
+    tl.set("#caption-word-153",{backgroundColor:"#117ABD",color:"#ECECEA"},45.260);
+    tl.set("#caption-word-153",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},45.390);
+    tl.set("#caption-word-154",{backgroundColor:"#117ABD",color:"#ECECEA"},45.390);
+    tl.set("#caption-word-154",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},45.600);
+    tl.set("#caption-group-30",{autoAlpha:0},45.640);
+    tl.set("#caption-group-31",{autoAlpha:1},45.720);
+    tl.set("#caption-word-155",{backgroundColor:"#117ABD",color:"#ECECEA"},45.720);
+    tl.set("#caption-word-155",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},46.110);
+    tl.set("#caption-word-156",{backgroundColor:"#117ABD",color:"#ECECEA"},46.110);
+    tl.set("#caption-word-156",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},46.260);
+    tl.set("#caption-word-157",{backgroundColor:"#117ABD",color:"#ECECEA"},46.260);
+    tl.set("#caption-word-157",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},46.410);
+    tl.set("#caption-word-158",{backgroundColor:"#117ABD",color:"#ECECEA"},46.410);
+    tl.set("#caption-word-158",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},46.750);
+    tl.set("#caption-group-31",{autoAlpha:0},46.750);
+    tl.set("#caption-group-32",{autoAlpha:1},46.790);
+    tl.set("#caption-word-159",{backgroundColor:"#117ABD",color:"#ECECEA"},46.790);
+    tl.set("#caption-word-159",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},47.060);
+    tl.set("#caption-word-160",{backgroundColor:"#117ABD",color:"#ECECEA"},47.060);
+    tl.set("#caption-word-160",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},47.200);
+    tl.set("#caption-word-161",{backgroundColor:"#117ABD",color:"#ECECEA"},47.200);
+    tl.set("#caption-word-161",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},47.430);
+    tl.set("#caption-word-162",{backgroundColor:"#117ABD",color:"#ECECEA"},47.430);
+    tl.set("#caption-word-162",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},48.080);
+    tl.set("#caption-group-32",{autoAlpha:0},48.080);
+    tl.set("#caption-group-33",{autoAlpha:1},48.120);
+    tl.set("#caption-word-163",{backgroundColor:"#117ABD",color:"#ECECEA"},48.120);
+    tl.set("#caption-word-163",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},48.260);
+    tl.set("#caption-word-164",{backgroundColor:"#117ABD",color:"#ECECEA"},48.260);
+    tl.set("#caption-word-164",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},48.510);
+    tl.set("#caption-word-165",{backgroundColor:"#117ABD",color:"#ECECEA"},48.510);
+    tl.set("#caption-word-165",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},48.730);
+    tl.set("#caption-word-166",{backgroundColor:"#117ABD",color:"#ECECEA"},48.730);
+    tl.set("#caption-word-166",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},48.860);
+    tl.set("#caption-word-167",{backgroundColor:"#117ABD",color:"#ECECEA"},48.860);
+    tl.set("#caption-word-167",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},49.030);
+    tl.set("#caption-group-33",{autoAlpha:0},49.030);
+    tl.set("#caption-group-34",{autoAlpha:1},49.070);
+    tl.set("#caption-word-168",{backgroundColor:"#117ABD",color:"#ECECEA"},49.070);
+    tl.set("#caption-word-168",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},49.350);
+    tl.set("#caption-word-169",{backgroundColor:"#117ABD",color:"#ECECEA"},49.350);
+    tl.set("#caption-word-169",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},49.540);
+    tl.set("#caption-word-170",{backgroundColor:"#117ABD",color:"#ECECEA"},49.540);
+    tl.set("#caption-word-170",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},49.820);
+    tl.set("#caption-word-171",{backgroundColor:"#117ABD",color:"#ECECEA"},49.820);
+    tl.set("#caption-word-171",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},50.050);
+    tl.set("#caption-word-172",{backgroundColor:"#117ABD",color:"#ECECEA"},50.050);
+    tl.set("#caption-word-172",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},50.120);
+    tl.set("#caption-group-34",{autoAlpha:0},50.120);
+    tl.set("#caption-group-35",{autoAlpha:1},50.160);
+    tl.set("#caption-word-173",{backgroundColor:"#117ABD",color:"#ECECEA"},50.160);
+    tl.set("#caption-word-173",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},50.550);
+    tl.set("#caption-word-174",{backgroundColor:"#117ABD",color:"#ECECEA"},50.550);
+    tl.set("#caption-word-174",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},50.750);
+    tl.set("#caption-word-175",{backgroundColor:"#117ABD",color:"#ECECEA"},50.750);
+    tl.set("#caption-word-175",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},50.880);
+    tl.set("#caption-word-176",{backgroundColor:"#117ABD",color:"#ECECEA"},50.880);
+    tl.set("#caption-word-176",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},51.170);
+    tl.set("#caption-word-177",{backgroundColor:"#117ABD",color:"#ECECEA"},51.170);
+    tl.set("#caption-word-177",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},51.310);
+    tl.set("#caption-group-35",{autoAlpha:0},51.350);
+    tl.set("#caption-group-36",{autoAlpha:1},51.610);
+    tl.set("#caption-word-178",{backgroundColor:"#117ABD",color:"#ECECEA"},51.610);
+    tl.set("#caption-word-178",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},51.680);
+    tl.set("#caption-word-179",{backgroundColor:"#117ABD",color:"#ECECEA"},51.680);
+    tl.set("#caption-word-179",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},52.680);
+    tl.set("#caption-word-180",{backgroundColor:"#117ABD",color:"#ECECEA"},52.680);
+    tl.set("#caption-word-180",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},52.840);
+    tl.set("#caption-word-181",{backgroundColor:"#117ABD",color:"#ECECEA"},52.840);
+    tl.set("#caption-word-181",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},53.080);
+    tl.set("#caption-word-182",{backgroundColor:"#117ABD",color:"#ECECEA"},53.080);
+    tl.set("#caption-word-182",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},53.180);
+    tl.set("#caption-word-183",{backgroundColor:"#117ABD",color:"#ECECEA"},53.180);
+    tl.set("#caption-word-183",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},53.640);
+    tl.set("#caption-group-36",{autoAlpha:0},53.640);
+    tl.set("#caption-group-37",{autoAlpha:1},53.680);
+    tl.set("#caption-word-184",{backgroundColor:"#117ABD",color:"#ECECEA"},53.680);
+    tl.set("#caption-word-184",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},54.070);
+    tl.set("#caption-word-185",{backgroundColor:"#117ABD",color:"#ECECEA"},54.070);
+    tl.set("#caption-word-185",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},54.400);
+    tl.set("#caption-word-186",{backgroundColor:"#117ABD",color:"#ECECEA"},54.400);
+    tl.set("#caption-word-186",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},54.750);
+    tl.set("#caption-word-187",{backgroundColor:"#117ABD",color:"#ECECEA"},54.750);
+    tl.set("#caption-word-187",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},55.170);
+    tl.set("#caption-word-188",{backgroundColor:"#117ABD",color:"#ECECEA"},55.170);
+    tl.set("#caption-word-188",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},55.900);
+    tl.set("#caption-word-189",{backgroundColor:"#117ABD",color:"#ECECEA"},55.900);
+    tl.set("#caption-word-189",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},56.020);
+    tl.set("#caption-group-37",{autoAlpha:0},56.020);
+    tl.set("#caption-group-38",{autoAlpha:1},56.060);
+    tl.set("#caption-word-190",{backgroundColor:"#117ABD",color:"#ECECEA"},56.060);
+    tl.set("#caption-word-190",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},56.180);
+    tl.set("#caption-word-191",{backgroundColor:"#117ABD",color:"#ECECEA"},56.180);
+    tl.set("#caption-word-191",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},56.470);
+    tl.set("#caption-word-192",{backgroundColor:"#117ABD",color:"#ECECEA"},56.470);
+    tl.set("#caption-word-192",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},56.510);
+    tl.set("#caption-word-193",{backgroundColor:"#117ABD",color:"#ECECEA"},56.510);
+    tl.set("#caption-word-193",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},56.700);
+    tl.set("#caption-word-194",{backgroundColor:"#117ABD",color:"#ECECEA"},56.700);
+    tl.set("#caption-word-194",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},57.170);
+    tl.set("#caption-word-195",{backgroundColor:"#117ABD",color:"#ECECEA"},57.170);
+    tl.set("#caption-word-195",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},57.180);
+    tl.set("#caption-group-38",{autoAlpha:0},57.180);
+    tl.set("#caption-group-39",{autoAlpha:1},57.220);
+    tl.set("#caption-word-196",{backgroundColor:"#117ABD",color:"#ECECEA"},57.220);
+    tl.set("#caption-word-196",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},57.360);
+    tl.set("#caption-word-197",{backgroundColor:"#117ABD",color:"#ECECEA"},57.360);
+    tl.set("#caption-word-197",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},57.680);
+    tl.set("#caption-word-198",{backgroundColor:"#117ABD",color:"#ECECEA"},57.680);
+    tl.set("#caption-word-198",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},58.070);
+    tl.set("#caption-word-199",{backgroundColor:"#117ABD",color:"#ECECEA"},58.070);
+    tl.set("#caption-word-199",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},58.100);
+    tl.set("#caption-word-200",{backgroundColor:"#117ABD",color:"#ECECEA"},58.100);
+    tl.set("#caption-word-200",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},58.420);
+    tl.set("#caption-word-201",{backgroundColor:"#117ABD",color:"#ECECEA"},58.420);
+    tl.set("#caption-word-201",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},58.640);
+    tl.set("#caption-group-39",{autoAlpha:0},58.640);
+    tl.set("#caption-group-40",{autoAlpha:1},58.680);
+    tl.set("#caption-word-202",{backgroundColor:"#117ABD",color:"#ECECEA"},58.680);
+    tl.set("#caption-word-202",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},59.100);
+    tl.set("#caption-word-203",{backgroundColor:"#117ABD",color:"#ECECEA"},59.100);
+    tl.set("#caption-word-203",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},59.260);
+    tl.set("#caption-word-204",{backgroundColor:"#117ABD",color:"#ECECEA"},59.260);
+    tl.set("#caption-word-204",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},59.470);
+    tl.set("#caption-word-205",{backgroundColor:"#117ABD",color:"#ECECEA"},59.470);
+    tl.set("#caption-word-205",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},59.610);
+    tl.set("#caption-word-206",{backgroundColor:"#117ABD",color:"#ECECEA"},59.610);
+    tl.set("#caption-word-206",{backgroundColor:"rgba(17,122,189,0)",color:"#111413"},59.960);
+    tl.set("#caption-group-40",{autoAlpha:0},59.960);
+    tl.set({}, {}, 60);
+    tl.render(0,true,true);
+    window.__timelines["active-word-caption-preview"]=tl;
+  </script>
+</body>
+</html>

@@ -69,6 +69,80 @@ function inspectPng(filePath) {
   return { width: Number(width), height: Number(height), colorspace, channels };
 }
 
+function parseTrimGeometry(value) {
+  const match = String(value || '').trim().match(/^(\d+)x(\d+)\+(-?\d+)\+(-?\d+)$/);
+  if (!match) return null;
+  return {
+    width: Number(match[1]),
+    height: Number(match[2]),
+    x: Number(match[3]),
+    y: Number(match[4]),
+  };
+}
+
+function inspectAlphaBounds(filePath) {
+  const geometry = execFileSync(
+    'magick',
+    [
+      filePath,
+      '-alpha',
+      'extract',
+      '-threshold',
+      '0',
+      '-format',
+      '%@',
+      'info:',
+    ],
+    { encoding: 'utf8' },
+  ).trim();
+  return parseTrimGeometry(geometry);
+}
+
+function renderTitleBounds(svg, width, height) {
+  const titleOnlySvg = svg
+    .replace(/<rect\b[^>]*\/?>/g, '')
+    .replace(/<image\b[^>]*\/?>/g, '');
+  const titlePng = execFileSync(
+    'rsvg-convert',
+    ['-w', String(width), '-h', String(height)],
+    { input: titleOnlySvg, maxBuffer: 32 * 1024 * 1024 },
+  );
+  const geometry = execFileSync(
+    'magick',
+    [
+      'png:-',
+      '-alpha',
+      'extract',
+      '-threshold',
+      '0',
+      '-format',
+      '%@',
+      'info:',
+    ],
+    { input: titlePng, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 },
+  ).trim();
+  return parseTrimGeometry(geometry);
+}
+
+function mapAlphaBoundsToHeroBox(alphaBounds, source, heroBox) {
+  if (!alphaBounds || !source || !heroBox) return null;
+  const scale = Math.min(heroBox.width / source.width, heroBox.height / source.height);
+  const renderedWidth = source.width * scale;
+  const renderedHeight = source.height * scale;
+  const originX = heroBox.x + (heroBox.width - renderedWidth) / 2;
+  const originY = heroBox.y + (heroBox.height - renderedHeight) / 2;
+  return {
+    x: originX + alphaBounds.x * scale,
+    y: originY + alphaBounds.y * scale,
+    width: alphaBounds.width * scale,
+    height: alphaBounds.height * scale,
+  };
+}
+
+function percent(value) {
+  return Number((value * 100).toFixed(2));
+}
+
 function imagePixelHash(filePath, trim = false) {
   const args = [filePath];
   if (trim) args.push('-trim');
@@ -309,6 +383,151 @@ function evaluateStrictGeometry({ ratio, svg, spec, generatedHeroAsset, strictGe
   };
 }
 
+function evaluateHeroContentFit({
+  ratio,
+  svg,
+  spec,
+  runKey,
+  generatedHeroPath,
+  generatedHeroInspection,
+  strictGeometry,
+  contentFitRule,
+}) {
+  const optedIn = spec?.[contentFitRule?.manualRevisionOptInField] === contentFitRule?.profileId;
+  const effective = runKey !== null
+    && runKey.localeCompare(contentFitRule?.effectiveFromRunKey || '9999-99-99-99') >= 0;
+  const applicable = contentFitRule?.status === 'active' && (effective || optedIn);
+  const passChecks = {
+    contentFitProfileId: true,
+    heroAlphaPadding: true,
+    heroFullyContained: true,
+    visibleHeroHeight: true,
+    visibleHeroArea: true,
+    titleHeroClearance: true,
+  };
+  if (!applicable) {
+    return {
+      applicable: false,
+      checks: passChecks,
+      evidence: {
+        effectiveFromRunKey: contentFitRule?.effectiveFromRunKey || null,
+        optedIn,
+      },
+    };
+  }
+
+  const heroBoxAttributes = strictGeometry?.evidence?.heroBox || {};
+  const heroBox = {
+    x: numericAttribute(heroBoxAttributes, 'x'),
+    y: numericAttribute(heroBoxAttributes, 'y'),
+    width: numericAttribute(heroBoxAttributes, 'width'),
+    height: numericAttribute(heroBoxAttributes, 'height'),
+  };
+  const canvas = strictGeometry?.evidence?.expected?.canvas || {};
+  const alphaBounds = inspectAlphaBounds(generatedHeroPath);
+  const titleBounds = renderTitleBounds(svg, canvas.width, canvas.height);
+  const mappedHeroBounds = mapAlphaBoundsToHeroBox(
+    alphaBounds,
+    generatedHeroInspection,
+    heroBox,
+  );
+  const paddingPercent = alphaBounds ? {
+    left: percent(alphaBounds.x / generatedHeroInspection.width),
+    top: percent(alphaBounds.y / generatedHeroInspection.height),
+    right: percent(
+      (generatedHeroInspection.width - alphaBounds.x - alphaBounds.width)
+        / generatedHeroInspection.width,
+    ),
+    bottom: percent(
+      (generatedHeroInspection.height - alphaBounds.y - alphaBounds.height)
+        / generatedHeroInspection.height,
+    ),
+  } : null;
+  const paddingValues = paddingPercent ? Object.values(paddingPercent) : [];
+  const paddingRule = contentFitRule.alphaPaddingPercent || {};
+  const visibleHeightPercent = mappedHeroBounds
+    ? {
+      canvas: percent(mappedHeroBounds.height / canvas.height),
+      heroBox: percent(mappedHeroBounds.height / heroBox.height),
+    }
+    : null;
+  const visibleAreaPercentOfBox = mappedHeroBounds
+    ? percent(
+      (mappedHeroBounds.width * mappedHeroBounds.height)
+        / (heroBox.width * heroBox.height),
+    )
+    : null;
+  const clearance = mappedHeroBounds && titleBounds
+    ? ratio === '4x3'
+      ? mappedHeroBounds.x - (titleBounds.x + titleBounds.width)
+      : mappedHeroBounds.y - (titleBounds.y + titleBounds.height)
+    : Number.NEGATIVE_INFINITY;
+  const minimumClearance = ratio === '4x3'
+    ? contentFitRule.minimumTitleHeroGapPx?.['4x3Horizontal']
+    : contentFitRule.minimumTitleHeroGapPx?.['3x4Vertical'];
+  const minimumVisibleHeight = ratio === '4x3'
+    ? contentFitRule.minimumVisibleHeroHeightPercent?.['4x3Canvas']
+    : contentFitRule.minimumVisibleHeroHeightPercent?.['3x4HeroBox'];
+  const actualVisibleHeight = ratio === '4x3'
+    ? visibleHeightPercent?.canvas
+    : visibleHeightPercent?.heroBox;
+  const minimumVisibleArea = contentFitRule
+    .minimumVisibleHeroBoundsAreaPercentOfBox?.[ratio];
+  const fullyContained = Boolean(mappedHeroBounds)
+    && mappedHeroBounds.x >= heroBox.x
+    && mappedHeroBounds.y >= heroBox.y
+    && mappedHeroBounds.x + mappedHeroBounds.width <= heroBox.x + heroBox.width
+    && mappedHeroBounds.y + mappedHeroBounds.height <= heroBox.y + heroBox.height
+    && mappedHeroBounds.x >= 0
+    && mappedHeroBounds.y >= 0
+    && mappedHeroBounds.x + mappedHeroBounds.width <= canvas.width
+    && mappedHeroBounds.y + mappedHeroBounds.height <= canvas.height;
+  const checks = {
+    contentFitProfileId: optedIn || (
+      effective && spec?.[contentFitRule.manualRevisionOptInField] === contentFitRule.profileId
+    ),
+    heroAlphaPadding: paddingValues.length === 4
+      && paddingValues.every((value) => (
+        value >= paddingRule.min && value <= paddingRule.max
+      )),
+    heroFullyContained: contentFitRule.fullyContained === true && fullyContained,
+    visibleHeroHeight: Number.isFinite(actualVisibleHeight)
+      && actualVisibleHeight >= minimumVisibleHeight,
+    visibleHeroArea: Number.isFinite(visibleAreaPercentOfBox)
+      && visibleAreaPercentOfBox >= minimumVisibleArea,
+    titleHeroClearance: Number.isFinite(clearance)
+      && Number.isFinite(minimumClearance)
+      && clearance >= minimumClearance,
+  };
+  return {
+    applicable: true,
+    checks,
+    evidence: {
+      profileId: spec?.[contentFitRule.manualRevisionOptInField] || null,
+      effectiveFromRunKey: contentFitRule.effectiveFromRunKey,
+      optedIn,
+      source: {
+        width: generatedHeroInspection.width,
+        height: generatedHeroInspection.height,
+        alphaBounds,
+        paddingPercent,
+      },
+      heroBox,
+      mappedHeroBounds,
+      titleBounds,
+      visibleHeightPercent,
+      visibleAreaPercentOfBox,
+      clearance: Number(clearance.toFixed(2)),
+      minimums: {
+        paddingPercent: paddingRule,
+        visibleHeightPercent: minimumVisibleHeight,
+        visibleAreaPercentOfBox: minimumVisibleArea,
+        titleHeroGapPx: minimumClearance,
+      },
+    },
+  };
+}
+
 async function validate(projectDir) {
   const thumbnailsDir = path.join(projectDir, 'thumbnails');
   const activeProfile = JSON.parse(await fs.readFile(
@@ -321,6 +540,7 @@ async function validate(projectDir) {
   const strictGeometryRule = activeProfile.postSnapshotUserOverrides
     ?.coverReferenceAlignment
     ?.zhRatioStrictGeometry || {};
+  const heroContentFitRule = strictGeometryRule.shared?.heroContentFit || {};
   const coverSetRule = activeProfile.postSnapshotUserOverrides
     ?.englishChineseProductionParity
     ?.coverSet || {};
@@ -449,6 +669,29 @@ async function validate(projectDir) {
       generatedHeroAsset: generatedHero?.asset || null,
       strictGeometryRule,
     });
+    const heroContentFit = usesGeneratedHero
+      ? evaluateHeroContentFit({
+        ratio,
+        svg,
+        spec,
+        runKey,
+        generatedHeroPath,
+        generatedHeroInspection,
+        strictGeometry,
+        contentFitRule: heroContentFitRule,
+      })
+      : {
+        applicable: false,
+        checks: {
+          contentFitProfileId: true,
+          heroAlphaPadding: true,
+          heroFullyContained: true,
+          visibleHeroHeight: true,
+          visibleHeroArea: true,
+          titleHeroClearance: true,
+        },
+        evidence: null,
+      };
     const previewDimensions = !strictGeometry.scoped || (
       preview.width === expected.previewWidth
       && preview.height === expected.previewHeight
@@ -521,6 +764,7 @@ async function validate(projectDir) {
       expectedDimensions: image.width === expected.width && image.height === expected.height && image.colorspace.toLowerCase() === 'srgb',
       expectedFileSize: png.length < 2 * 1024 * 1024,
       ...strictGeometry.checks,
+      ...heroContentFit.checks,
       previewDimensions,
     };
     const pass = Object.values(ratioChecks).every(Boolean);
@@ -551,6 +795,10 @@ async function validate(projectDir) {
           sizeBytes: previewPng.length,
         },
         geometry: strictGeometry.evidence,
+      },
+      heroContentFitEvidence: {
+        applicable: heroContentFit.applicable,
+        ...heroContentFit.evidence,
       },
     });
     outputs.push({

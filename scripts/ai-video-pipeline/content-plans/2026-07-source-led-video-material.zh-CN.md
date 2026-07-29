@@ -7,7 +7,7 @@
 - 时长：每集目标 50-60 秒。
 - 形式：每集默认 9 个语义镜头，约 5-7 秒切换一次；以台词语义结束为实际切点，不机械按秒切换。
 - 产物边界：本文只定义台词、图片大意和字幕，不生成实际图片。
-- 证据来源：[2026-07-source-led-evidence.md](/Users/bytedance/Documents/postiz-app/scripts/ai-video-pipeline/content-plans/sources/2026-07-source-led-evidence.md)
+- 证据来源：[2026-07-source-led-evidence.md](./sources/2026-07-source-led-evidence.md)
 
 ## 镜头联动规则
 

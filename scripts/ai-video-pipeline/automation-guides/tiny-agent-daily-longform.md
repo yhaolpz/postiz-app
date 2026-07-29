@@ -63,7 +63,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
    }
    ```
 2. 中文作为 canonical locale 先确定内容地图、场景骨架和视觉语义。英文使用相同 `contractId`，保持相同章节数、场景数、场景 ID/顺序、三点小结、布局序列、角色与道具、生成图语义、动作类型、转场、字幕样式、章节进度条和结束页；只改自然英文文案与字幕。
-3. 两版分别生成 TTS/VTT 和绝对秒点。英文使用 `en-US-ChristopherNeural +30%` 成人旁白，中文使用 `zh-CN-YunxiaNeural +35%`。绝对时间允许随语言自然变化，但归一化后的章节和场景时长占比必须通过 active profile 的 pacing 门槛。
+3. 两版分别生成 TTS/VTT 和绝对秒点。英文长视频使用 `en-US-ChristopherNeural +15%` 成人旁白，中文使用 `zh-CN-YunxiaNeural +35%`。英文 Shorts 仍使用自己的 `+30%` 规则，不得把短视频语速带入横屏长视频。绝对时间允许随语言自然变化，但归一化后的章节和场景时长占比必须通过 active profile 的 pacing 门槛。
 4. 两版开头执行同一字体、同一字号计算方式、同一画布覆盖率、同一关键词语义色和同一入场节奏。每种语言在 `episode.openingAccentTokens` 中声明当期自然的 `identity/topic/risk` 三类词；不得让英文使用混合行字号、另一套字体或上一期关键词。
 5. 自 `2026-07-29-03` 起执行 active profile 的 `englishChineseProductionParity.coverSet`：英文固定生成 `16:9` 4K 发布母版、`4:3`、`3:4` 三张封面；中文只生成 `4:3`、`3:4` 两张封面，不再生成或恢复中文 `16:9`。中英文 `4:3`、`3:4` 使用同一严格 title-hero 几何、主题动作和单 Agent 构图，只替换自然语言标题与对应语言的当期主题插画；只有英文 `16:9` 4K 母版进入 Postiz。
 6. 两个语言项目的内容、场景、动画和封面完成后，先运行：
@@ -82,8 +82,8 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 
 ## 1. 清理与恢复
 
-1. 运行 `node scripts/ai-video-pipeline/cleanup-published-longform.mjs --apply`。
-2. 只处理清理清单明确记录、英文公开发布已满 `48` 小时、再次确认仍为 `public` 且属于播放列表 `PLJffvaWRvGC8` 的双语 MP4。
+1. 运行 `node scripts/ai-video-pipeline/cleanup-published-longform.mjs --retention-hours 120 --apply`。
+2. 只处理清理清单明确记录、英文公开发布已满 `5` 天（`120` 小时）、再次确认仍为 `public` 且属于播放列表 `PLJffvaWRvGC8` 的双语 MP4。
 3. 单个旧清单清理失败时记录原因并继续生产，不扩大删除范围；把成功删除记录同步到选题归档。
 4. 按 `Asia/Shanghai` 生成 `RUN_KEY=<YYYY-MM-DD>-03`，检查计划、归档、本地产物和发布证据：
    - 英文已发布且中文已完成：停止重复生产。
@@ -172,7 +172,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 2. 五张封面都只允许一个大号 Tiny Agent 作为唯一角色，并配一个与主题直接相关的核心物体；禁止人物、第二个机器人、多角色群组、角色拼贴和小角色墙。英文 `16:9` 保留 4K YouTube 发布系统；中英文 `4:3`、`3:4` 执行 active profile 的共享严格比例几何和同一主题动作。全部封面对齐 title-hero 系统：短蓝色顶线、蓝色 `AI Agent` 身份词、黑色其余标题文字、黄色底部/纵向分区线。生成插画不得包含文字、字母或数字；每个语言和比例都使用当期主题的单一完整 Tiny Agent 动作插画。标题只做确定性叠加，禁止金色/红色标题字、标题下划线和辅助封面文案。
    - 封面临时 Agent 同样执行 `tinyAgentGeneratedIdentityConsistency`。允许直接保持固定素材形象或做轻微同角色变化；不允许只靠文字描述重新发明一个机器人。每个封面生成请求必须实际引用固定素材 PNG，最终角色必须与场景临时图一起进入同一身份一致性审查。
 3. 中文 `4:3`、`3:4` 同时执行 `coverTitleTopicAlignment.zhRatioTitleInformationDensity` 与 `coverReferenceAlignment.zhRatioStrictGeometry`；英文 `4:3`、`3:4` 同时执行对应的 `enRatioTitleInformationDensity` 与 `enRatioStrictGeometry`。每个主标题本身都是完整的主题问题、动作或收益，保持批准封面的多行大标题信息密度；纸质网格、圆角蓝/黄线、四行标题基线、标题组样式和比例插画框逐项匹配 active profile。这仍是一个主标题，不得用辅助小字补数量。
-4. 英文 `16:9`、中英文 `4:3` 的 Tiny Agent 可见高度不得低于画布 `50%`；中英文 `3:4` 的 Tiny Agent 可见高度不得低于底部 `40%` 插画区的 `85%`。角色、天线、手脚、工具和核心物体必须完整可辨。
+4. 英文 `16:9`、中英文 `4:3` 的 Tiny Agent 可见高度不得低于画布 `50%`；中英文 `3:4` 的固定下方 `40%` 插画区不得缩小，最终 hero 的真实 alpha 主体高度不得低于该区域 `85%`。中文版两个比例还必须执行以下失败关闭规则：真实主体包围盒面积不得低于 `4:3` hero box 的 `45%`、`3:4` hero box 的 `40%`；生成后先按真实 alpha 主体裁切并保留 `3%-6%` 透明安全边距，再放入固定 hero box，不得把带大面积透明留白的原图直接 `contain` 后用外框尺寸冒充主体尺寸。中文 `4:3` 的确定性标题必须按可用左侧宽度自适应字号，最终栅格化文字与可见 hero 至少保留 `24px` 水平间距；中文 `3:4` 标题与可见 hero 至少保留 `12px` 垂直间距。发生冲突时优先缩小到可读字号，不得让文字遮挡角色或主题物体。角色、天线、手脚、工具和核心物体必须完整可辨。
 5. 双语标题、片内主题标题和封面标题必须通过 AI Agent 主题身份规则，并执行 active profile 的 `publishingMetadata.titleSemanticAgency`：标题中的动作主语必须与来源和脚本里的真实执行者一致，不得把人创建、编写或沉淀 Skill 的动作错误写成 AI Agent 自己完成。
 6. 运行：
 
@@ -220,7 +220,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
    - 两版观众可见的制作规则、布局名、动效名和 QA 名称数量均为 `0`；来源事实、安全、自然语言、标题身份与语义主语、固定结束页和音视频技术门槛全部通过。
 2. 运行 HyperFrames check、渲染与 `ffprobe`；抽查首字出现、逐字出现中点、问号收束、正文首帧、章节开场、章节正文、三点小结、最终总结、工具回收和独立结束页。
 3. 检查 H.264/AAC、`1920x1080`、`30fps`、BT.709、字幕同步、黑帧、静音尾巴、固定 CTA 音轨和结束页首帧对齐。
-4. 五张固定封面全部通过原尺寸和缩略尺寸检查；中英文 `4:3`/`3:4` 的共享几何和各自 strict geometry 失败数必须为 `0`，中文 `16:9` 禁用产物数必须为 `0`，单一大号 Tiny Agent、无人物/第二机器人/拼贴、生成插画无文字、静态语义标题色和角色高度门槛失败数均为 `0`。英文发布只能提交 `thumbnail.en-US.png` 4K 母版。
+4. 五张固定封面全部通过原尺寸和缩略尺寸检查；中英文 `4:3`/`3:4` 的共享几何和各自 strict geometry 失败数必须为 `0`，中文 `16:9` 禁用产物数必须为 `0`，单一大号 Tiny Agent、无人物/第二机器人/拼贴、生成插画无文字、静态语义标题色、真实 alpha 主体占用率和标题—hero 间距门槛失败数均为 `0`。QA 必须记录裁切前后主体包围盒、四边透明边距、映射后的可见宽高/面积、最终文字包围盒与实际间距；只记录固定 hero box 坐标不算通过。英文发布只能提交 `thumbnail.en-US.png` 4K 母版。
 5. 任一双语视频、固定封面、双语发布素材或 Tiny Agent 临时图身份一致性检查失败时停止发布，修复源文件并重新准出；不得把失败项目写成完成。
 
 ## 6. 英文发布
@@ -242,7 +242,7 @@ node scripts/ai-video-pipeline/validate-tiny-agent-active-rules.mjs
 
 ## 7. 持久化与报告
 
-1. 双语 QA 和英文发布验证成功后，创建 `var/ai-video-pipeline/longform/published/<RUN_KEY>-<SLUG>.json`，记录实际发布时间、YouTube 证据、双语 MP4 相对路径和 `48` 小时清理状态。
+1. 双语 QA 和英文发布验证成功后，创建 `var/ai-video-pipeline/longform/published/<RUN_KEY>-<SLUG>.json`，记录实际发布时间、YouTube 证据、双语 MP4 相对路径和 `120` 小时清理状态。
 2. 实时更新计划、归档和 automation memory。英文发布失败时保留完整双语产物并标记为优先补投。
 3. 最终用中文简短报告：执行时间、来源、英文标题、可复用产物、双语 MP4 与时长、五张固定封面、双语视频/封面/发布素材 QA、英文 YouTube URL、播放列表验证、清理结果和计划/归档更新。中文交付段列出中文母版、中文 `4:3`/`3:4` 两张封面路径与尺寸；发布素材段同时给出中文与自然英文两套标题、简介、hashtag、关键词，以及各自恰好三条可复制的作者互动评论建议。两种语言的三条评论都按开放问题、可执行取舍、个人观点/经验邀请三个稳定角度生成；不得伪造来源、成果或互动数据，不自动发布到任何平台。
 4. 只有双语成片、五张封面、双语发布素材、英文 4K 封面提交、英文 public 状态和播放列表验证全部成功，才能声称当次生产成功。

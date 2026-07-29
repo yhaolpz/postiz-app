@@ -1,0 +1,14 @@
+{
+  "name": "2026-07-29-03-topic-b-agent-expertise-responsibility-en-us",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tts": "node build.mjs --tts",
+    "build": "node build.mjs --compile",
+    "check:transitions": "node qa/check-production.mjs transitions",
+    "check:semantics": "node qa/check-production.mjs semantics",
+    "check:balance": "node qa/check-production.mjs balance",
+    "check": "pnpm dlx hyperframes@0.7.76 check . --snapshots --frame-check=severity=error",
+    "render": "pnpm dlx hyperframes@0.7.76 render . --quality high --strict --quiet --workers 1 --low-memory-mode --video-bitrate 8M --output renders/2026-07-29-03-agent-expertise-responsibility-longform.en-US.mp4"
+  }
+}
