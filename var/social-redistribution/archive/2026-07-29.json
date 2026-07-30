@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "date": "2026-07-29",
+  "runAt": "2026-07-29T12:13:29.000Z",
+  "health": {
+    "backend": "HTTP 200",
+    "frontend": "HTTP 307 redirect to authentication",
+    "orchestrator": "HTTP 200",
+    "temporal": "SERVING",
+    "queueBacklog": {
+      "main": 0,
+      "x": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0
+    }
+  },
+  "sourceWait": {
+    "maxWaitMinutes": 60,
+    "endedEarly": true,
+    "reason": "There was no running or newly unstable public manifest to wait for: the Short automation is PAUSED, and the active longform automation explicitly produces local-only deliverables with Postiz and YouTube disabled.",
+    "checks": [
+      {
+        "at": "2026-07-29T12:00:38.000Z",
+        "shortPublishedManifestFound": false,
+        "longPublishedManifestFound": false
+      },
+      {
+        "at": "2026-07-29T12:10:38.000Z",
+        "shortPublishedManifestFound": false,
+        "longPublishedManifestFound": false
+      }
+    ]
+  },
+  "excludedProviders": [
+    "facebook"
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "supported": false
+    }
+  ],
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Codex CLI 0.146 Agent Plugins: migrate manifests and publish safely.",
+      "url": "https://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/",
+      "description": "Migrate Codex Agent Plugin manifests, choose skills or MCP, test a local marketplace, gate workspace publishing, and pass eight rollout checks.",
+      "shareImage": "https://indieseek.co/shared/assets/indieseek-og-image.png",
+      "status": "PUBLISHED"
+    },
+    {
+      "key": "short",
+      "title": null,
+      "url": null,
+      "videoId": null,
+      "status": "SOURCE_MISSING",
+      "error": "No date=2026-07-29 PUBLISHED manifest exists. The Tiny Agent Short automation is PAUSED, so no prior-day source was substituted."
+    },
+    {
+      "key": "long",
+      "title": null,
+      "url": null,
+      "videoId": null,
+      "status": "SOURCE_MISSING",
+      "error": "No 2026-07-29 public YouTube manifest exists. The active Tiny Agent longform automation is local-only and explicitly disables Postiz and YouTube publication."
+    }
+  ],
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-07-29&utm_content=blog",
+      "generatedCopy": "Codex plugins can hide non-portable assumptions. Use eight rollout gates. #Codex\n\nhttps://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-07-29&utm_content=blog",
+      "postId": "cms61lc9d000lltefh79pldip",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "X API HTTP 402: credits depleted; provider marked the no-image repair non-retryable.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cms61isv4000ilteftpbpv947",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The uploaded Postiz thumbnail could not be fetched by the provider because the local media request ended with socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cms61lc9d000lltefh79pldip",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402: credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/",
+      "generatedCopy": "Codex CLI 0.146 adds Agent Plugins manifest support and a capability-gated path to workspace publishing. This guide turns the release into a practical migration matrix: choose the smallest plugin shape, separate portable and Codex-only configuration, validate permissions, and prove rollback with eight gates. Read it before moving a personal skill into a team marketplace.",
+      "postId": "cms5y996k000hltefnbryi75u",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7488180636898181120",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": false
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-07-29&utm_content=blog",
+      "generatedCopy": "Codex Agent Plugins can look portable while hiding workspace-only assumptions.\n\nUse a package-shape matrix, manifest boundary, permission checks, and eight rollout gates before publishing. #Codex #AIAgents\n\nhttps://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-07-29&utm_content=blog",
+      "postId": "cms61jfsz000jltef1c0825oa",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117003183844963703",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "thumbnailFallbackReason": "The current run had already confirmed that Postiz local media fetches ended with socket hang up, so the permitted no-image link path was used."
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-07-29&utm_content=blog",
+      "generatedCopy": "Codex Agent Plugins need more than a manifest. Separate portable from Codex-only configuration, validate permissions, and prove rollback through eight gates.\n\nhttps://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-07-29&utm_content=blog",
+      "postId": "cms61jjtf000kltefb3nayzdy",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/1310bc543931514d20913f5c1cdd8518b72a1785805fe52433efb4388bedf0c7",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com",
+      "stateReconciled": true,
+      "stateReconcileReason": "The delayed original workflow had already published the deterministic event. A redundant workflow start returned Already posted and temporarily changed the Postiz row to ERROR; relay verification confirmed the one intended event and the terminal row was reconciled to PUBLISHED without creating another post."
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://indieseek.co/blogs/codex-cli-0-146-agent-plugins-workspace-rollout-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no video was uploaded.",
+      "dedupe": false,
+      "reused": false
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public Short source exists because the Short automation is PAUSED; no post was created."
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public Short source exists because the Short automation is PAUSED; no post was created."
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public Short source exists because the Short automation is PAUSED; no post was created."
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public Short source exists because the Short automation is PAUSED; no post was created."
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public Short source exists; no duplicate video or text/link post was uploaded."
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public longform source exists because the active longform automation is local-only with Postiz and YouTube disabled; no post was created."
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public longform source exists because the active longform automation is local-only with Postiz and YouTube disabled; no post was created."
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public longform source exists because the active longform automation is local-only with Postiz and YouTube disabled; no post was created."
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public longform source exists because the active longform automation is local-only with Postiz and YouTube disabled; no post was created."
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-29 public longform source exists; no duplicate video or text/link post was uploaded."
+    }
+  ]
+}
