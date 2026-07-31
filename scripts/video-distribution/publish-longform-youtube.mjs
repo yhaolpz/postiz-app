@@ -6,6 +6,11 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import { validateImportedBundle } from './import-release-bundle.mjs';
+import {
+  buildYoutubeDescription,
+  buildYoutubeTags,
+  resolveYoutubeLongformPolicy,
+} from './youtube-longform-policy.mjs';
 
 const require = createRequire(import.meta.url);
 const { PrismaClient } = require('@prisma/client');
@@ -43,6 +48,7 @@ function parseArgs(argv) {
   const args = {};
   for (let index = 0; index < argv.length; index += 1) {
     const item = argv[index];
+    if (item === '--') continue;
     if (!item.startsWith('--')) continue;
     const key = item.slice(2);
     if (['preflight', 'wait'].includes(key)) {
@@ -134,13 +140,16 @@ function validateThumbnail(thumbnailPath) {
   return { path: thumbnailPath, width: Number(width), height: Number(height), colorSpace, sizeBytes };
 }
 
-function validateInputs(videoPath, metadata) {
-  assert(metadata.language === 'en-US', 'Only en-US long-form metadata may be published.');
-  assert(metadata.youtube?.visibility === 'public', 'YouTube visibility must be public.');
-  assert(metadata.youtube?.selfDeclaredMadeForKids === 'no', 'selfDeclaredMadeForKids must be no.');
-  assert(metadata.youtube?.playlistId === 'PLJffvaWRvGC8', 'Unexpected YouTube playlist ID.');
-  assert(metadata.youtube?.playlistTitle === 'AI Agents: From Chat to Done', 'Unexpected YouTube playlist title.');
-  assert(metadata.youtube?.playlistPrivacyStatus === 'public', 'Playlist privacy must be public.');
+function validateInputs(videoPath, metadata, youtubePolicy) {
+  assert(
+    (metadata.language || metadata.locale) === 'en-US',
+    'Only en-US long-form metadata may be published.'
+  );
+  assert(youtubePolicy.visibility === 'public', 'YouTube visibility must be public.');
+  assert(youtubePolicy.selfDeclaredMadeForKids === 'no', 'selfDeclaredMadeForKids must be no.');
+  assert(youtubePolicy.playlistId === 'PLJffvaWRvGC8', 'Unexpected YouTube playlist ID.');
+  assert(youtubePolicy.playlistTitle === 'AI Agents: From Chat to Done', 'Unexpected YouTube playlist title.');
+  assert(youtubePolicy.playlistPrivacyStatus === 'public', 'Playlist privacy must be public.');
   assert(Array.isArray(metadata.titleCandidates) && metadata.titleCandidates.length === 3, 'Exactly three title candidates are required.');
   assert(hasAiAgentIdentity(metadata.title), 'Final YouTube title must naturally contain AI Agent or AI Agents.');
   metadata.titleCandidates.forEach((title, index) => {
@@ -244,7 +253,14 @@ async function uploadMedia(apiKey, filePath, mimeType) {
   });
 }
 
-async function createPost(apiKey, integrationId, media, thumbnail, metadata) {
+async function createPost(
+  apiKey,
+  integrationId,
+  media,
+  thumbnail,
+  metadata,
+  youtubePolicy
+) {
   const mediaDto = { id: media.id, path: media.path };
   const thumbnailDto = { id: thumbnail.id, path: thumbnail.path };
   const body = {
@@ -257,12 +273,12 @@ async function createPost(apiKey, integrationId, media, thumbnail, metadata) {
       integration: { id: integrationId },
       settings: {
         title: metadata.title,
-        type: 'public',
-        selfDeclaredMadeForKids: 'no',
+        type: youtubePolicy.visibility,
+        selfDeclaredMadeForKids: youtubePolicy.selfDeclaredMadeForKids,
         tags: metadata.tags.slice(0, 10).map((tag) => ({ value: tag, label: tag })),
-        playlistId: metadata.youtube.playlistId,
-        playlistTitle: metadata.youtube.playlistTitle,
-        playlistPrivacyStatus: metadata.youtube.playlistPrivacyStatus,
+        playlistId: youtubePolicy.playlistId,
+        playlistTitle: youtubePolicy.playlistTitle,
+        playlistPrivacyStatus: youtubePolicy.playlistPrivacyStatus,
         thumbnail: thumbnailDto,
       },
       value: [{ content: metadata.description, image: [mediaDto] }],
@@ -335,7 +351,7 @@ function youtubeVideoId(url) {
   return undefined;
 }
 
-async function verifyYoutube(accessToken, releaseURL, metadata) {
+async function verifyYoutube(accessToken, releaseURL, metadata, youtubePolicy) {
   const videoId = youtubeVideoId(releaseURL);
   assert(videoId, `Unable to parse a YouTube video ID from ${releaseURL}.`);
   const auth = new google.auth.OAuth2();
@@ -344,8 +360,8 @@ async function verifyYoutube(accessToken, releaseURL, metadata) {
 
   const [videoResponse, playlistItemResponse, playlistResponse, pageResponse] = await Promise.all([
     youtube.videos.list({ part: ['snippet', 'status'], id: [videoId] }),
-    youtube.playlistItems.list({ part: ['snippet'], playlistId: metadata.youtube.playlistId, videoId, maxResults: 1 }),
-    youtube.playlists.list({ part: ['snippet', 'status'], id: [metadata.youtube.playlistId] }),
+    youtube.playlistItems.list({ part: ['snippet'], playlistId: youtubePolicy.playlistId, videoId, maxResults: 1 }),
+    youtube.playlists.list({ part: ['snippet', 'status'], id: [youtubePolicy.playlistId] }),
     fetch(releaseURL, { redirect: 'follow' }),
   ]);
   const video = videoResponse.data.items?.[0];
@@ -354,7 +370,7 @@ async function verifyYoutube(accessToken, releaseURL, metadata) {
   assert(video.status?.privacyStatus === 'public', `YouTube privacy is ${video.status?.privacyStatus || 'unknown'}, not public.`);
   assert(playlistItemResponse.data.items?.length > 0, 'The video is not in the required playlist.');
   assert(playlist, 'The required playlist was not found.');
-  assert(playlist.snippet?.title === metadata.youtube.playlistTitle, `Playlist title is ${playlist.snippet?.title || 'unknown'}.`);
+  assert(playlist.snippet?.title === youtubePolicy.playlistTitle, `Playlist title is ${playlist.snippet?.title || 'unknown'}.`);
   assert(playlist.status?.privacyStatus === 'public', `Playlist privacy is ${playlist.status?.privacyStatus || 'unknown'}.`);
   assert(pageResponse.ok, `Public release URL returned HTTP ${pageResponse.status}.`);
 
@@ -367,11 +383,101 @@ async function verifyYoutube(accessToken, releaseURL, metadata) {
     privacyStatus: video.status?.privacyStatus,
     selfDeclaredMadeForKids: video.status?.selfDeclaredMadeForKids ?? false,
     releaseUrlHttpStatus: pageResponse.status,
-    playlistId: metadata.youtube.playlistId,
+    playlistId: youtubePolicy.playlistId,
     playlistTitle: playlist.snippet?.title,
     playlistPrivacyStatus: playlist.status?.privacyStatus,
     inPlaylist: true,
   };
+}
+
+async function findExistingYoutubeVideo(
+  accessToken,
+  metadata,
+  youtubePolicy,
+  thumbnailPath
+) {
+  const auth = new google.auth.OAuth2();
+  auth.setCredentials({ access_token: accessToken });
+  const youtube = google.youtube({ version: 'v3', auth });
+  const targetPlaylist = await youtube.playlistItems.list({
+    part: ['snippet'],
+    playlistId: youtubePolicy.playlistId,
+    maxResults: 50,
+  });
+  const targetMatch = targetPlaylist.data.items?.find(
+    (item) => item.snippet?.title === metadata.title
+  );
+  const targetVideoId = targetMatch?.snippet?.resourceId?.videoId;
+  if (targetVideoId) {
+    return verifyYoutube(
+      accessToken,
+      `https://www.youtube.com/watch?v=${targetVideoId}`,
+      metadata,
+      youtubePolicy
+    );
+  }
+
+  const channels = await youtube.channels.list({
+    part: ['contentDetails'],
+    mine: true,
+  });
+  const uploadsPlaylistId =
+    channels.data.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+  assert(uploadsPlaylistId, 'YouTube uploads playlist could not be identified.');
+  const matches = [];
+  let pageToken;
+  do {
+    const response = await youtube.playlistItems.list({
+      part: ['snippet'],
+      playlistId: uploadsPlaylistId,
+      maxResults: 50,
+      pageToken,
+    });
+    for (const item of response.data.items || []) {
+      if (item.snippet?.title === metadata.title) {
+        matches.push(item.snippet?.resourceId?.videoId);
+      }
+    }
+    pageToken = response.data.nextPageToken;
+  } while (pageToken);
+  const videoIds = matches.filter(Boolean);
+  if (videoIds.length === 0) return undefined;
+  const videos = await youtube.videos.list({
+    part: ['status'],
+    id: videoIds,
+  });
+  const publicIds = (videos.data.items || [])
+    .filter((video) => video.status?.privacyStatus === 'public')
+    .map((video) => video.id)
+    .filter(Boolean);
+  assert(
+    publicIds.length <= 1,
+    `Multiple public YouTube videos already use this exact title: ${publicIds.join(', ')}`
+  );
+  if (publicIds.length === 0) return undefined;
+  const [videoId] = publicIds;
+  await youtube.thumbnails.set({
+    videoId,
+    media: { body: fssync.createReadStream(thumbnailPath) },
+  });
+  await youtube.playlistItems.insert({
+    part: ['snippet'],
+    requestBody: {
+      snippet: {
+        playlistId: youtubePolicy.playlistId,
+        resourceId: {
+          kind: 'youtube#video',
+          videoId,
+        },
+      },
+    },
+  });
+  return verifyYoutube(
+    accessToken,
+    `https://www.youtube.com/watch?v=${videoId}`,
+    metadata,
+    youtubePolicy
+  );
 }
 
 async function main() {
@@ -393,6 +499,12 @@ async function main() {
   const metadataPath = artifactPath('publishing-metadata');
   const videoPath = artifactPath('video');
   const metadata = JSON.parse(await fs.readFile(metadataPath, 'utf8'));
+  const youtubeMetadata = {
+    ...metadata,
+    description: buildYoutubeDescription(metadata),
+    tags: buildYoutubeTags(metadata),
+  };
+  const youtubePolicy = resolveYoutubeLongformPolicy(youtubeMetadata);
   const thumbnailPath = artifactPath('cover-16x9');
   const organization = await getLocalOrganization();
   assert(organization?.apiKey && organization?.id, 'No local Postiz organization/API key was found.');
@@ -411,32 +523,94 @@ async function main() {
       postizUrl: getPostizBaseUrl(),
       organizationId: organization.id,
       integration: { id: integration.id, name: integration.name, identifier: integration.identifier },
-      playlistId: metadata.youtube?.playlistId,
+      youtubePolicy,
+      descriptionSanitized: youtubeMetadata.description !== metadata.description,
       thumbnailPath,
     }, null, 2)}\n`);
     return;
   }
 
   assert(fssync.existsSync(videoPath), 'Imported bundle video is missing.');
-  const probe = validateInputs(videoPath, metadata);
+  const probe = validateInputs(videoPath, youtubeMetadata, youtubePolicy);
   const thumbnailProbe = validateThumbnail(thumbnailPath);
   const accessToken = await refreshYoutubeIntegration(integration.id);
+  const resultPath = path.join(imported.bundleDir, 'youtube-publish-result.json');
+  try {
+    const previous = JSON.parse(await fs.readFile(resultPath, 'utf8'));
+    const verified = await verifyYoutube(
+      accessToken,
+      previous.youtube?.url,
+      youtubeMetadata,
+      youtubePolicy
+    );
+    process.stdout.write(`${JSON.stringify({
+      ok: true,
+      status: 'already-published',
+      resultPath,
+      youtube: verified,
+    }, null, 2)}\n`);
+    return;
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw new Error(
+        `Existing publish receipt could not be verified; refusing a duplicate upload: ${error.message}`
+      );
+    }
+  }
+  const existingYoutube = await findExistingYoutubeVideo(
+    accessToken,
+    youtubeMetadata,
+    youtubePolicy,
+    thumbnailPath
+  );
+  if (existingYoutube) {
+    const result = {
+      publishedVia: 'existing-youtube-playlist-entry',
+      createdAt: new Date().toISOString(),
+      bundleId: imported.manifest.bundleId,
+      postiz: null,
+      video: { path: videoPath, ...probe },
+      thumbnail: { ...thumbnailProbe, submittedWithPostizVideo: false },
+      youtube: existingYoutube,
+    };
+    await fs.writeFile(resultPath, `${JSON.stringify(result, null, 2)}\n`);
+    process.stdout.write(`${JSON.stringify({
+      ok: true,
+      status: 'already-published',
+      resultPath,
+      youtube: existingYoutube,
+    }, null, 2)}\n`);
+    return;
+  }
   await ensureTemporalSearchAttributes();
   const media = await uploadMedia(organization.apiKey, videoPath, 'video/mp4');
   assert(media?.id && media?.path, 'Postiz upload did not return a media id/path.');
   const thumbnail = await uploadMedia(organization.apiKey, thumbnailPath, 'image/png');
   assert(thumbnail?.id && thumbnail?.path, 'Postiz thumbnail upload did not return a media id/path.');
-  const postResponse = await createPost(organization.apiKey, integration.id, media, thumbnail, metadata);
+  const postResponse = await createPost(
+    organization.apiKey,
+    integration.id,
+    media,
+    thumbnail,
+    youtubeMetadata,
+    youtubePolicy
+  );
   const postId = postResponse?.[0]?.postId;
   assert(postId, 'Postiz did not return a post ID.');
   await startWorkflow(postId, organization.id);
   const post = await waitForPost(postId, Number(args.timeout || 1200));
   assert(post.state === 'PUBLISHED', `Postiz publishing failed: ${post.error || post.state}`);
   assert(post.releaseURL, 'Postiz published without a release URL.');
-  const youtube = await verifyYoutube(accessToken, post.releaseURL, metadata);
+  const youtube = await verifyYoutube(
+    accessToken,
+    post.releaseURL,
+    youtubeMetadata,
+    youtubePolicy
+  );
   const result = {
     publishedVia: 'local-postiz',
     createdAt: new Date().toISOString(),
+    bundleId: imported.manifest.bundleId,
     postiz: {
       postId,
       state: post.state,
@@ -449,7 +623,6 @@ async function main() {
     thumbnail: { ...thumbnailProbe, submittedWithPostizVideo: true },
     youtube,
   };
-  const resultPath = path.join(imported.bundleDir, 'youtube-publish-result.json');
   await fs.writeFile(resultPath, `${JSON.stringify(result, null, 2)}\n`);
   process.stdout.write(`${JSON.stringify({ ok: true, resultPath, youtube }, null, 2)}\n`);
 }

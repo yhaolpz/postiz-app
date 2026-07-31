@@ -1,0 +1,310 @@
+{
+  "version": 1,
+  "date": "2026-07-30",
+  "runAt": "2026-07-30T12:14:09.000Z",
+  "health": {
+    "backend": "HTTP 200",
+    "frontend": "HTTP 307 redirect to authentication",
+    "orchestrator": "HTTP 200",
+    "temporal": "SERVING",
+    "queueBacklog": {
+      "main": 0,
+      "x": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0
+    }
+  },
+  "sourceWait": {
+    "maxWaitMinutes": 60,
+    "endedEarly": true,
+    "reason": "There was no running or newly unstable public manifest to wait for: the Short automation is PAUSED, and the active longform automation explicitly produces local-only deliverables with Postiz and YouTube disabled.",
+    "checks": [
+      {
+        "at": "2026-07-30T12:01:48.000Z",
+        "shortPublishedManifestFound": false,
+        "longPublishedManifestFound": false
+      }
+    ]
+  },
+  "excludedProviders": [
+    "facebook"
+  ],
+  "nonTargetProviders": [
+    "youtube",
+    "devto",
+    "cnblogs"
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "supported": false
+    }
+  ],
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Qwen Code 0.21.1: stop polling CI inside AI review agents.",
+      "url": "https://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/",
+      "description": "Replace CI polling inside AI review agents with a commit-bound handoff, workflow_run finalizer, closed-green evidence gate, and eight acceptance tests.",
+      "shareImage": "https://indieseek.co/shared/assets/indieseek-og-image.png",
+      "status": "PUBLISHED"
+    },
+    {
+      "key": "short",
+      "title": null,
+      "url": null,
+      "videoId": null,
+      "status": "SOURCE_MISSING",
+      "error": "No date=2026-07-30 PUBLISHED manifest exists. The Tiny Agent Short automation is PAUSED, so no prior-day source was substituted."
+    },
+    {
+      "key": "long",
+      "title": null,
+      "url": null,
+      "videoId": null,
+      "status": "SOURCE_MISSING",
+      "error": "No 2026-07-30 public YouTube manifest exists. The active Tiny Agent longform automation is local-only and explicitly disables Postiz and YouTube publication."
+    }
+  ],
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-07-30&utm_content=blog",
+      "generatedCopy": "Stop making AI agents poll CI. Use an event-driven finalizer. #AIAgents\n\nhttps://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-07-30&utm_content=blog",
+      "postId": "cms7gy1rf000tltefmy8hfgg6",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "X API HTTP 402: credits depleted; provider marked the no-image repair non-retryable.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cms7gx6kg000sltef51c7v0ws",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The uploaded Postiz thumbnail could not be fetched by the provider because the local media request ended with socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cms7gy1rf000tltefmy8hfgg6",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402: credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/",
+      "generatedCopy": "Qwen Code 0.21.1 exposes a useful AI-agent control pattern: stop polling CI inside the agent turn and finalize only after the workflow reaches a terminal state. This guide adds a commit-bound handoff contract, a closed-green approval gate, and eight acceptance tests for preventing stale evidence and early approvals. Use it when a review agent can finish before CI does.",
+      "postId": "cms7dzra4000rltefxwpz8kdu",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7488545107453890561",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": false
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-07-30&utm_content=blog",
+      "generatedCopy": "AI review agents should reason about code—not burn their turn polling CI.\n\nThis checklist separates review from waiting with a commit-bound handoff, a workflow_run finalizer, and eight fail-closed tests. #AIAgents #DevOps\n\nhttps://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-07-30&utm_content=blog",
+      "postId": "cms7h4evx000wltefy6b3x3fk",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117008861826533121",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "thumbnailFallbackReason": "The uploaded thumbnail could not be fetched after the existing Temporal retry policy completed, so one no-image link repair was published.",
+      "attempts": [
+        {
+          "postId": "cms7gyowh000ultefggldop59",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The uploaded Postiz thumbnail could not be fetched by the provider because the local media request returned fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cms7h4evx000wltefy6b3x3fk",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117008861826533121",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-07-30&utm_content=blog",
+      "generatedCopy": "Waiting for CI is a scheduler problem, not a model problem. Bind the review to one commit, wake a deterministic finalizer on workflow_run, and approve only when the evidence set closes green.\n\nhttps://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-07-30&utm_content=blog",
+      "postId": "cms7h14qx000vlteftyuvoxku",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/9c9b4277dd9b5c9a07c05db94858584cf73c1795f50e18700b62a38539e573ff",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com",
+      "targetUrlCount": 1
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-1-event-driven-ci-finalizer-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no video was uploaded.",
+      "dedupe": false,
+      "reused": false
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public Short source exists because the Short automation is PAUSED; no post was created."
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public Short source exists because the Short automation is PAUSED; no post was created."
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public Short source exists because the Short automation is PAUSED; no post was created."
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public Short source exists because the Short automation is PAUSED; no post was created."
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public Short source exists; no duplicate video or text/link post was uploaded."
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public longform source exists because the active longform automation is local-only with Postiz and YouTube disabled; no post was created."
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public longform source exists because the active longform automation is local-only with Postiz and YouTube disabled; no post was created."
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public longform source exists because the active longform automation is local-only with Postiz and YouTube disabled; no post was created."
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public longform source exists because the active longform automation is local-only with Postiz and YouTube disabled; no post was created."
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No 2026-07-30 public longform source exists; no duplicate video or text/link post was uploaded."
+    }
+  ]
+}

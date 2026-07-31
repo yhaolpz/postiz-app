@@ -20,6 +20,35 @@ import dayjs from 'dayjs';
 import { GaxiosResponse } from 'gaxios/build/src/common';
 import Schema$Video = youtube_v3.Schema$Video;
 import { Rules } from '@gitroom/nestjs-libraries/chat/rules.description.decorator';
+import { createReadStream } from 'node:fs';
+import { resolve, sep } from 'node:path';
+
+const localUploadStream = (mediaUrl: string) => {
+  if (
+    process.env.STORAGE_PROVIDER !== 'local' ||
+    !process.env.UPLOAD_DIRECTORY ||
+    !process.env.FRONTEND_URL
+  ) {
+    return undefined;
+  }
+  const media = new URL(mediaUrl);
+  const frontend = new URL(process.env.FRONTEND_URL);
+  if (
+    media.origin !== frontend.origin ||
+    !media.pathname.startsWith('/uploads/')
+  ) {
+    return undefined;
+  }
+  const uploadRoot = resolve(process.env.UPLOAD_DIRECTORY);
+  const relativePath = decodeURIComponent(
+    media.pathname.slice('/uploads/'.length)
+  );
+  const filePath = resolve(uploadRoot, relativePath);
+  if (filePath !== uploadRoot && !filePath.startsWith(`${uploadRoot}${sep}`)) {
+    throw new Error('Local YouTube upload path escapes UPLOAD_DIRECTORY.');
+  }
+  return createReadStream(filePath);
+};
 
 const clientAndYoutube = () => {
   const client = new google.auth.OAuth2({
@@ -514,11 +543,15 @@ export class YoutubeProvider extends SocialAbstract implements SocialProvider {
 
     const { settings }: { settings: YoutubeSettingsDto } = firstPost;
 
-    const response = await axios({
-      url: firstPost?.media?.[0]?.path,
-      method: 'GET',
-      responseType: 'stream',
-    });
+    const mediaPath = firstPost?.media?.[0]?.path;
+    const localMedia = localUploadStream(mediaPath);
+    const response = localMedia
+      ? undefined
+      : await axios({
+          url: mediaPath,
+          method: 'GET',
+          responseType: 'stream',
+        });
 
     const all: GaxiosResponse<Schema$Video> = await this.runInConcurrent(
       async () =>
@@ -540,24 +573,26 @@ export class YoutubeProvider extends SocialAbstract implements SocialProvider {
             },
           },
           media: {
-            body: response.data,
+            body: localMedia || response?.data,
           },
         }),
       true
     );
 
     if (settings?.thumbnail?.path) {
+      const localThumbnail = localUploadStream(settings.thumbnail.path);
+      const thumbnailResponse = localThumbnail
+        ? undefined
+        : await axios({
+            url: settings.thumbnail.path,
+            method: 'GET',
+            responseType: 'stream',
+          });
       await this.runInConcurrent(async () =>
         youtubeClient.thumbnails.set({
           videoId: all?.data?.id!,
           media: {
-            body: (
-              await axios({
-                url: settings?.thumbnail?.path,
-                method: 'GET',
-                responseType: 'stream',
-              })
-            ).data,
+            body: localThumbnail || thumbnailResponse?.data,
           },
         })
       );
