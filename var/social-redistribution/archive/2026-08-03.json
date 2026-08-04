@@ -1,0 +1,416 @@
+{
+  "version": 1,
+  "date": "2026-08-03",
+  "runAt": "2026-08-03T12:23:56.000Z",
+  "runScope": "daily_blog_tiny_agent_social_redistribution",
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Qwen Code 0.21.4: test forked subagent prompt isolation.",
+      "url": "https://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/",
+      "description": "Upgrade Qwen Code, test sibling prompt isolation with three unique sentinels, inspect inherited history safely, and gate parallel fork workflows.",
+      "image": "https://indieseek.co/shared/assets/indieseek-og-image.png",
+      "status": "PUBLISHED",
+      "englishHttpStatus": 200,
+      "chineseHttpStatus": 200,
+      "imageHttpStatus": 200
+    },
+    {
+      "key": "short",
+      "title": null,
+      "url": null,
+      "status": "SOURCE_MISSING",
+      "error": "No date=2026-08-03 PUBLISHED Short manifest exists; the Short automation is paused, so no prior-day source was substituted."
+    },
+    {
+      "key": "long",
+      "title": "Proactive AI Agents Need to Know When Not to Interrupt.",
+      "url": "https://www.youtube.com/watch?v=FOakM2DJp5c",
+      "videoId": "FOakM2DJp5c",
+      "description": "Use gaze, hand availability, and noise to route proactive help to visual cues, voice, confirmation, or wait, while retaining the controlled-study tradeoff and scope boundary.",
+      "englishThumbnail": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-03-03-proactive-agent-interruption-matrix-en-US/covers/thumbnail.en-US.png",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-03-03-proactive-agent-interruption-matrix-en-US/youtube-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "releaseUrlHttpStatus": 200,
+      "inPlaylist": true,
+      "playlistId": "PLJffvaWRvGC8"
+    }
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "supported": false
+    }
+  ],
+  "excludedProviders": [
+    "facebook"
+  ],
+  "nonTargetProviders": [
+    "youtube",
+    "devto",
+    "cnblogs"
+  ],
+  "health": {
+    "backend": "HTTP 200",
+    "orchestrator": "HTTP 200",
+    "temporal": "SERVING",
+    "queueBacklog": {
+      "main": 0,
+      "x": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0
+    },
+    "remainingCreatedQueueRows": 0
+  },
+  "media": {
+    "blogThumbnailUpload": "uploaded",
+    "longThumbnailUpload": "uploaded",
+    "nostrThumbnailPolicy": "omitted so each kind-1 event contains only the intended target URL"
+  },
+  "relayVerification": {
+    "relay": "wss://purplerelay.com",
+    "blogEventId": "751971c77e0647bf9f8b3d0b5f1a28fcbbadd2a88e64c02f35baf9ce58f6dec5",
+    "blogExpectedUrlOnly": true,
+    "longEventId": "b15b046c046a91abfe213cf8db3dd11233473ddc55c9bd4282b2d8105a5790cd",
+    "longExpectedUrlOnly": true
+  },
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-03&utm_content=blog",
+      "generatedCopy": "Can one forked subagent see another’s prompt? Run this Qwen Code 0.21.4 isolation test.\n\nhttps://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-03&utm_content=blog",
+      "postId": "cmsd6pn6k002rltef8bzuztzd",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsd6pkrk002qltefqdvuhcnj",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsd6pn6k002rltef8bzuztzd",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/",
+      "generatedCopy": "Parallel AI workers are only trustworthy when each child receives the directive intended for it.\n\nQwen Code 0.21.4 fixes same-turn sibling prompt exposure. This guide turns the patch into a three-sentinel canary, bounded history check, and eight rollout gates.\n\nIt also keeps the important boundary explicit: older parent history and tool permissions still need separate controls.\n\nRead the checklist: https://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/",
+      "postId": "cmsd2xlv8002pltefbxj1v2ba",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7489988874065084416",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": false,
+      "attempts": []
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-03&utm_content=blog",
+      "generatedCopy": "Parallel agents are only safe when sibling prompts stay isolated. This Qwen Code 0.21.4 checklist gives you a three-sentinel canary, bounded history check, and eight rollout gates. #AIAgents #Security\n\nhttps://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-03&utm_content=blog",
+      "postId": "cmsd78fqu002xltefwktm5ej1",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117031549630556550",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsd6ppjn002sltefnwffu0qa",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The uploaded local media could not be fetched by the provider.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsd78fqu002xltefwktm5ej1",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117031549630556550",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-03&utm_content=blog",
+      "generatedCopy": "A forked subagent can execute its own task yet still inherit sibling directives. This Qwen Code 0.21.4 checklist uses three harmless sentinels to expose that leak before you trust parallel forks.\n\nhttps://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-03&utm_content=blog",
+      "postId": "cmsd6uv4i002tltef6y10r386",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/751971c77e0647bf9f8b3d0b5f1a28fcbbadd2a88e64c02f35baf9ce58f6dec5",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com",
+      "targetUrlCount": 1,
+      "attempts": [
+        {
+          "postId": "cmsd6uv4i002tltef6y10r386",
+          "state": "PUBLISHED",
+          "releaseURL": "https://primal.net/e/751971c77e0647bf9f8b3d0b5f1a28fcbbadd2a88e64c02f35baf9ce58f6dec5",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-4-forked-subagent-prompt-isolation-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-03 PUBLISHED Short manifest or public releaseURL exists; no prior-day source was substituted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-03 PUBLISHED Short manifest or public releaseURL exists; no prior-day source was substituted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-03 PUBLISHED Short manifest or public releaseURL exists; no prior-day source was substituted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-03 PUBLISHED Short manifest or public releaseURL exists; no prior-day source was substituted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No public Short source exists for 2026-08-03; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://www.youtube.com/watch?v=FOakM2DJp5c",
+      "generatedCopy": "A proactive AI agent should not optimize for speaking sooner. Route help by gaze, hand availability, and noise—or wait. #AIAgents\n\nhttps://www.youtube.com/watch?v=FOakM2DJp5c",
+      "postId": null,
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "Not created: the same-run Blog repair already confirmed X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false,
+      "attempts": []
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://www.youtube.com/watch?v=FOakM2DJp5c",
+      "generatedCopy": "Proactive help should not optimize only for speaking sooner.\n\nA controlled AR study suggests gaze, hand availability, and noise can route assistance to visual, voice, confirmation, or wait. The video turns that evidence—and its slower-interaction tradeoff—into a reusable Proactive Assistance Decision Matrix.\n\nhttps://www.youtube.com/watch?v=FOakM2DJp5c",
+      "postId": "cmsd78khf002yltefggk9g81g",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7490019199008796672",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsd6vrnj002ultefffy4uou3",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsd78khf002yltefggk9g81g",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7490019199008796672",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://www.youtube.com/watch?v=FOakM2DJp5c",
+      "generatedCopy": "The best proactive agent may choose not to speak. This video turns gaze, hand availability, and noise into a practical matrix for visual cues, voice, confirmation, or wait—without overgeneralizing one controlled AR study. #AIAgents #HCI\n\nhttps://www.youtube.com/watch?v=FOakM2DJp5c",
+      "postId": "cmsd78mv1002zltef8f7zw4kb",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117031550211751558",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsd70xa6002vltefnhudo6n4",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The uploaded local media could not be fetched by the provider.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsd78mv1002zltef8f7zw4kb",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117031550211751558",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://www.youtube.com/watch?v=FOakM2DJp5c",
+      "generatedCopy": "A proactive agent needs a wait state, not just a faster trigger. Use this decision matrix to route help across visual cues, voice, and confirmation from gaze, hand availability, and noise.\n\nhttps://www.youtube.com/watch?v=FOakM2DJp5c",
+      "postId": "cmsd762v2002wltefsm7enujs",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/b15b046c046a91abfe213cf8db3dd11233473ddc55c9bd4282b2d8105a5790cd",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com",
+      "targetUrlCount": 1,
+      "attempts": [
+        {
+          "postId": "cmsd762v2002wltefsm7enujs",
+          "state": "PUBLISHED",
+          "releaseURL": "https://primal.net/e/b15b046c046a91abfe213cf8db3dd11233473ddc55c9bd4282b2d8105a5790cd",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://www.youtube.com/watch?v=FOakM2DJp5c",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    }
+  ]
+}
