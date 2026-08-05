@@ -1,0 +1,431 @@
+{
+  "version": 1,
+  "date": "2026-08-04",
+  "runAt": "2026-08-04T12:25:08.000Z",
+  "runScope": "daily_blog_tiny_agent_social_redistribution",
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Qwen Code 0.21.5: stop duplicate MCP writes after disconnects.",
+      "url": "https://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/",
+      "description": "Test Qwen Code 0.21.5 against post-commit disconnects, untrusted tool annotations, rediscovery drift, and unknown outcomes before enabling MCP replay.",
+      "image": "https://indieseek.co/shared/assets/indieseek-og-image.png",
+      "status": "PUBLISHED",
+      "englishHttpStatus": 200,
+      "chineseHttpStatus": 200,
+      "imageHttpStatus": 200
+    },
+    {
+      "key": "short",
+      "title": null,
+      "url": null,
+      "status": "SOURCE_MISSING",
+      "error": "No date=2026-08-04 PUBLISHED Short manifest exists; the Short publishing automation is paused, so no prior-day source was substituted."
+    },
+    {
+      "key": "long",
+      "title": "AI Agent Negotiations Can Feel Fair While Leaving You Worse Off.",
+      "url": "https://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "videoId": "ciGgE6wdEjQ",
+      "description": "Separate perceived fairness from objective deal outcomes, then audit authority, evidence, outcomes, and risk while keeping the pilot's statistical limits explicit.",
+      "englishThumbnail": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-04-03-agent-negotiation-audit-en-US/covers/thumbnail.en-US.png",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-04-03-agent-negotiation-audit-en-US/youtube-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "releaseUrlHttpStatus": 200,
+      "inPlaylist": true,
+      "playlistId": "PLJffvaWRvGC8"
+    }
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "supported": false
+    }
+  ],
+  "excludedProviders": [
+    "facebook"
+  ],
+  "nonTargetProviders": [
+    "youtube",
+    "devto",
+    "cnblogs"
+  ],
+  "health": {
+    "backend": "HTTP 200",
+    "orchestrator": "HTTP 200",
+    "temporal": "SERVING",
+    "queueBacklog": {
+      "main": 0,
+      "x": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0
+    },
+    "remainingCreatedQueueRows": 0
+  },
+  "media": {
+    "blogThumbnailUpload": "uploaded",
+    "longThumbnailUpload": "uploaded",
+    "nostrThumbnailPolicy": "omitted so each kind-1 event contains only the intended target URL"
+  },
+  "relayVerification": {
+    "relay": "wss://purplerelay.com",
+    "blogEventId": "cb9055b1b4200e103e40c210e35b2845ed569fe74e7f809f2613ba5cd50ea5f7",
+    "blogExpectedUrlOnly": true,
+    "longEventId": "c0ea53d3b3d6e6cc49ebee95c7404a7d3e9bbe4f0eecb8f39f3c3db1e6c328eb",
+    "longExpectedUrlOnly": true
+  },
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-04&utm_content=blog",
+      "generatedCopy": "An MCP write can succeed even when its call looks failed. Test safe replay before retrying. #AIAgents\n\nhttps://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-04&utm_content=blog",
+      "postId": "cmsemp6o7003fltefaibvxh1u",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsemp2ra003elteffajnfv30",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsemp6o7003fltefaibvxh1u",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/",
+      "generatedCopy": "An MCP write can succeed on the server even when its response disappears in a reconnect.\n\nQwen Code 0.21.5 narrows automatic replay to trusted, explicitly idempotent or consistently read-only tools. This checklist adds a post-commit disconnect lab, rediscovery-drift tests, and an unknown-outcome reconciliation runbook.\n\nRead the checklist: https://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/",
+      "postId": "cmseiipcn0036ltefztezv1sl",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7490352288734019585",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": false,
+      "attempts": []
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-04&utm_content=blog",
+      "generatedCopy": "A dropped MCP response does not prove the write failed. This Qwen Code 0.21.5 checklist turns replay safety into a testable trust, annotation, rediscovery, and outcome-reconciliation gate. #AIAgents #MCP\n\nhttps://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-04&utm_content=blog",
+      "postId": "cmsempalt003gltefdkojqcms",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117037214954070879",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsem5p7w0037ltef82paw08w",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The uploaded local media could not be fetched by the provider.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsempalt003gltefdkojqcms",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117037214954070879",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-04&utm_content=blog",
+      "generatedCopy": "Your MCP call may fail at the transport layer after the server already committed the write. Use this Qwen Code 0.21.5 checklist to decide when replay is safe and when external-state reconciliation must come first.\n\nhttps://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-04&utm_content=blog",
+      "postId": "cmsemavjw0038lteftg9ahyma",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/cb9055b1b4200e103e40c210e35b2845ed569fe74e7f809f2613ba5cd50ea5f7",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com",
+      "targetUrlCount": 1,
+      "attempts": [
+        {
+          "postId": "cmsemavjw0038lteftg9ahyma",
+          "state": "PUBLISHED",
+          "releaseURL": "https://primal.net/e/cb9055b1b4200e103e40c210e35b2845ed569fe74e7f809f2613ba5cd50ea5f7",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-5-mcp-safe-replay-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-04 PUBLISHED Short manifest exists; the Short publishing automation is paused, so no prior-day source was substituted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-04 PUBLISHED Short manifest exists; the Short publishing automation is paused, so no prior-day source was substituted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-04 PUBLISHED Short manifest exists; the Short publishing automation is paused, so no prior-day source was substituted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-04 PUBLISHED Short manifest exists; the Short publishing automation is paused, so no prior-day source was substituted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": null,
+      "generatedCopy": null,
+      "postId": null,
+      "state": "SOURCE_MISSING",
+      "releaseURL": null,
+      "error": "No date=2026-08-04 PUBLISHED Short manifest exists; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "targetUrl": "https://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "generatedCopy": "A smooth AI agent negotiation can still leave you with the worse deal. Separate perceived fairness from price, alternatives, authority, and risk. #AIAgents\n\nhttps://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "postId": "cmsembycy003altefw1flqi6p",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsembufa0039ltefrnir9ixo",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsembycy003altefw1flqi6p",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "targetUrl": "https://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "generatedCopy": "A negotiation can feel fair while producing a worse deal.\n\nAnthropic's Project Deal pilot shows why perceived fairness needs a separate audit of price, alternatives, authority, evidence, and risk. This video turns that boundary into a reusable four-column review—without generalizing beyond the pilot.\n\nhttps://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "postId": "cmsempeir003hltef7bi02vyp",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7490381778365390849",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsemc2aq003bltefoioxkzt9",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsempeir003hltef7bi02vyp",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7490381778365390849",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "targetUrl": "https://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "generatedCopy": "A smooth AI agent negotiation can still leave you worse off. This video separates perceived fairness from price, alternatives, authority, evidence, and risk with a four-column audit. #AIAgents #AgentNegotiation\n\nhttps://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "postId": "cmsempigg003iltefdx33t3nn",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117037215615064599",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsemh7sz003clteft7eybzq0",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The uploaded local media could not be fetched by the provider.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsempigg003iltefdx33t3nn",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117037215615064599",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "targetUrl": "https://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "generatedCopy": "A deal can feel fair and still be objectively worse. This video turns AI agent negotiation into a four-column audit of authority, evidence, outcomes, and risk—while keeping the pilot's statistical limits visible.\n\nhttps://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "postId": "cmsemme1f003dltefmta6criu",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/c0ea53d3b3d6e6cc49ebee95c7404a7d3e9bbe4f0eecb8f39f3c3db1e6c328eb",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true,
+      "nostrRelay": "wss://purplerelay.com",
+      "targetUrlCount": 1,
+      "attempts": [
+        {
+          "postId": "cmsemme1f003dltefmta6criu",
+          "state": "PUBLISHED",
+          "releaseURL": "https://primal.net/e/c0ea53d3b3d6e6cc49ebee95c7404a7d3e9bbe4f0eecb8f39f3c3db1e6c328eb",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "targetUrl": "https://www.youtube.com/watch?v=ciGgE6wdEjQ",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    }
+  ]
+}
