@@ -51,7 +51,7 @@ function parseArgs(argv) {
     if (item === '--') continue;
     if (!item.startsWith('--')) continue;
     const key = item.slice(2);
-    if (['preflight', 'wait'].includes(key)) {
+    if (['preflight', 'wait', 'recover-existing-without-thumbnail'].includes(key)) {
       args[key] = true;
     } else {
       args[key] = argv[index + 1];
@@ -394,7 +394,8 @@ async function findExistingYoutubeVideo(
   accessToken,
   metadata,
   youtubePolicy,
-  thumbnailPath
+  thumbnailPath,
+  { skipThumbnail = false } = {},
 ) {
   const auth = new google.auth.OAuth2();
   auth.setCredentials({ access_token: accessToken });
@@ -456,10 +457,12 @@ async function findExistingYoutubeVideo(
   );
   if (publicIds.length === 0) return undefined;
   const [videoId] = publicIds;
-  await youtube.thumbnails.set({
-    videoId,
-    media: { body: fssync.createReadStream(thumbnailPath) },
-  });
+  if (!skipThumbnail) {
+    await youtube.thumbnails.set({
+      videoId,
+      media: { body: fssync.createReadStream(thumbnailPath) },
+    });
+  }
   await youtube.playlistItems.insert({
     part: ['snippet'],
     requestBody: {
@@ -561,7 +564,8 @@ async function main() {
     accessToken,
     youtubeMetadata,
     youtubePolicy,
-    thumbnailPath
+    thumbnailPath,
+    { skipThumbnail: Boolean(args['recover-existing-without-thumbnail']) },
   );
   if (existingYoutube) {
     const result = {
@@ -570,7 +574,11 @@ async function main() {
       bundleId: imported.manifest.bundleId,
       postiz: null,
       video: { path: videoPath, ...probe },
-      thumbnail: { ...thumbnailProbe, submittedWithPostizVideo: false },
+      thumbnail: {
+        ...thumbnailProbe,
+        submittedWithPostizVideo: false,
+        skippedDuringExistingVideoRecovery: Boolean(args['recover-existing-without-thumbnail']),
+      },
       youtube: existingYoutube,
     };
     await fs.writeFile(resultPath, `${JSON.stringify(result, null, 2)}\n`);
@@ -582,6 +590,10 @@ async function main() {
     }, null, 2)}\n`);
     return;
   }
+  assert(
+    !args['recover-existing-without-thumbnail'],
+    'Recovery mode found no existing public video; refusing a duplicate upload.'
+  );
   await ensureTemporalSearchAttributes();
   const media = await uploadMedia(organization.apiKey, videoPath, 'video/mp4');
   assert(media?.id && media?.path, 'Postiz upload did not return a media id/path.');
