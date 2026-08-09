@@ -48,6 +48,7 @@ async function fixture() {
   }
   const manifest = {
     schemaVersion: 'seek.video-release.v1',
+    videoKind: 'longform',
     bundleId: '2026-07-29-03-import-contract-en-US',
     producer: '@seek/video-production',
     createdAt: '2026-07-29T08:00:00.000Z',
@@ -125,6 +126,24 @@ test('rejects a source artifact changed after manifest creation', async (t) => {
   await assert.rejects(validateSourceBundle(source), /Artifact size mismatch/);
 });
 
+test('accepts an English Short bundle without a longform 16x9 cover', async (t) => {
+  const { root, source, manifest } = await fixture();
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  manifest.videoKind = 'short';
+  manifest.technical = {
+    ...manifest.technical,
+    width: 1080,
+    height: 1920,
+    durationSeconds: 60,
+  };
+  manifest.artifacts = manifest.artifacts.filter((artifact) => artifact.role !== 'cover-16x9');
+  await fs.writeFile(
+    path.join(source, 'manifest.json'),
+    `${JSON.stringify(manifest, null, 2)}\n`,
+  );
+  assert.equal((await validateSourceBundle(source)).manifest.videoKind, 'short');
+});
+
 test('platform entry points require an imported inbox bundle', async (t) => {
   const { root, source, inbox } = await fixture();
   t.after(() => fs.rm(root, { recursive: true, force: true }));
@@ -148,4 +167,13 @@ test('platform entry points require an imported inbox bundle', async (t) => {
       /path\.resolve\(args\.(?:video|metadata|thumbnail)/
     );
   }
+
+  const youtubePublisher = await fs.readFile(
+    new URL('publish-longform-youtube.mjs', import.meta.url),
+    'utf8',
+  );
+  assert.match(youtubePublisher, /videoKind === 'short'/);
+  assert.match(youtubePublisher, /2026-08-08-04/);
+  assert.match(youtubePublisher, /uploadStatus === 'processed'/);
+  assert.match(youtubePublisher, /youtube\.com\/shorts/);
 });

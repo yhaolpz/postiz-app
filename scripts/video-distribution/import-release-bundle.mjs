@@ -105,7 +105,11 @@ export async function validateSourceBundle(bundleInput) {
   ]) {
     if (!roles.has(role)) throw new Error(`Missing required artifact role: ${role}`);
   }
-  if (manifest.locale === 'en-US' && !roles.has('cover-16x9')) {
+  const videoKind = manifest.videoKind || 'longform';
+  if (!['longform', 'short'].includes(videoKind)) {
+    throw new Error(`Unsupported video kind: ${videoKind}`);
+  }
+  if (videoKind === 'longform' && manifest.locale === 'en-US' && !roles.has('cover-16x9')) {
     throw new Error('English release bundle requires a 16:9 cover.');
   }
   if (manifest.locale === 'zh-CN' && roles.has('cover-16x9')) {
