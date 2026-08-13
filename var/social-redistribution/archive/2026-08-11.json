@@ -1,0 +1,508 @@
+{
+  "version": 1,
+  "date": "2026-08-11",
+  "runAt": "2026-08-11T20:34:19+08:00",
+  "runScope": "daily_blog_tiny_agent_social_redistribution",
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Claude Code 2.1.227: restore Bash in Claude Code Action without dropping the sandbox.",
+      "url": "https://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/",
+      "description": "Fix Claude Code Action Bash failures with allowed_non_write_users: verify CLI 2.1.227, retain subprocess isolation, and gate the recovery with six canaries.",
+      "image": "https://indieseek.co/shared/assets/indieseek-og-image.png",
+      "status": "PUBLISHED",
+      "englishHttpStatus": 200,
+      "chineseHttpStatus": 200,
+      "imageHttpStatus": 200
+    },
+    {
+      "key": "short",
+      "title": "Understand Random Token Selection in One Minute",
+      "url": "https://www.youtube.com/watch?v=0xhoQLMpCUQ",
+      "shortUrl": "https://www.youtube.com/shorts/0xhoQLMpCUQ",
+      "videoId": "0xhoQLMpCUQ",
+      "description": "How random token selection changes later context and can redirect the full continuation, while variation remains possible rather than guaranteed.",
+      "thumbnail": "https://i.ytimg.com/vi/0xhoQLMpCUQ/maxresdefault.jpg",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-11-04-one-minute-random-token-selection-en-US/youtube-short-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "releaseUrlHttpStatus": 200
+    },
+    {
+      "key": "long",
+      "title": "When the Same AI Agent Performs Worse, Check Context and Runtime Settings First.",
+      "url": "https://www.youtube.com/watch?v=464RTUy5D3s",
+      "videoId": "464RTUy5D3s",
+      "description": "Use a frozen baseline and one-variable evidence to separate model capability from context continuity and runtime settings before repairing the workflow or switching models.",
+      "englishThumbnail": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-11-03-ai-performance-context-runtime-checklist-en-US/covers/thumbnail.en-US.png",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-11-03-ai-performance-context-runtime-checklist-en-US/youtube-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "releaseUrlHttpStatus": 200,
+      "inPlaylist": true,
+      "playlistId": "PLJffvaWRvGC8"
+    }
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab",
+      "id": "cmr69rfrq0001ltypr4a2rv7s"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang",
+      "id": "cmr6kyhqy0001ltk43f1mh19c"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek",
+      "id": "cmrarebsj0001ltyeovjzo3ur"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek",
+      "id": "cmr6qnjif0003lt4k1fo2r7ik"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "id": "cmram39o60001ltclo0lx3hgq",
+      "supported": false
+    }
+  ],
+  "excludedProviders": [
+    "facebook"
+  ],
+  "nonTargetProviders": [
+    "youtube",
+    "devto",
+    "cnblogs",
+    "medium"
+  ],
+  "authorizationRecovery": [],
+  "manualItems": [],
+  "media": {
+    "blogThumbnailUpload": "uploaded",
+    "blogMediaId": "bc22c503-b2a8-4d36-951d-b5f63ee4920f",
+    "shortThumbnailUpload": "uploaded from the public YouTube thumbnail",
+    "shortMediaId": "a281d96b-7539-4d80-83ce-212ea786a1db",
+    "longThumbnailUpload": "uploaded",
+    "longMediaId": "c8ac2bb0-4f1a-49a1-bb51-eae007c5a48d",
+    "nostrThumbnailPolicy": "omitted so each kind-1 event contains only the intended target URL"
+  },
+  "health": {
+    "backend": "HTTP 200",
+    "frontend": "HTTP 307 to authentication",
+    "orchestrator": "HTTP 200",
+    "temporal": "SERVING",
+    "queuePollers": {
+      "main": 2,
+      "x": 2,
+      "linkedin": 2,
+      "mastodon": 2,
+      "nostr": 2
+    },
+    "queueBacklog": {
+      "main": 0,
+      "x": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0
+    },
+    "remainingCreatedQueueRows": 0
+  },
+  "relayVerification": {
+    "relay": "wss://purplerelay.com",
+    "blogEventId": "635d297973335ab19e0b9b43c6719908978672a38d5b723e0737a7487b944f7b",
+    "blogExpectedUrlOnly": true,
+    "shortEventId": "a4d499952fc36ffefb418f95e698e9eda7498ce3dbfe50d9745fda7a3ab2d2c7",
+    "shortExpectedUrlOnly": true,
+    "longEventId": "0b5ddd868981ff3ce20fda45997375679cba13392e6a9aae00bbf6b2d5ba8e8b",
+    "longExpectedUrlOnly": true
+  },
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-11&utm_content=blog",
+      "generatedCopy": "Bash works again—but don't weaken the sandbox.\n\nSix canaries for Claude Code 2.1.227:\nhttps://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-11&utm_content=blog #ClaudeCode",
+      "postId": "cmsomab51001flt1169lll4cc",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsoma77l001elt11yg02ola6",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsomab51001flt1169lll4cc",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/",
+      "generatedCopy": "Claude Code 2.1.227 fixes a nasty GitHub-hosted runner regression: every Bash command could fail in claude-code-action when allowed_non_write_users was enabled. This guide shows how to prove the effective CLI, keep subprocess isolation on, and gate recovery with an external marker plus six canaries. Use it before restoring write-capable automation for untrusted contributors.",
+      "postId": "cmsoil1dc001dlt11qn8l2xdf",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7492888880917032960",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/",
+      "thumbnailAttached": false
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-11&utm_content=blog",
+      "generatedCopy": "Every Bash command can fail in Claude Code Action—and disabling subprocess scrubbing is the wrong production fix. Pin 2.1.227, prove execution with an external marker, and run six canaries before restoring writes.\n\nhttps://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-11&utm_content=blog #ClaudeCode #DevSecOps",
+      "postId": "cmsomfobq001hlt11jbu15vnc",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117076812742170533",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsomaf19001glt11znjzxv6f",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsomfobq001hlt11jbu15vnc",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117076812742170533",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-11&utm_content=blog",
+      "generatedCopy": "Restoring Bash should not mean weakening the sandbox. Pin Claude Code 2.1.227, prove real execution outside the model narrative, and gate write access with six canaries.\n\nhttps://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-11&utm_content=blog",
+      "postId": "cmsomfs8n001ilt11hoq30baa",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/635d297973335ab19e0b9b43c6719908978672a38d5b723e0737a7487b944f7b",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://indieseek.co/blogs/claude-code-action-2-1-227-bash-sandbox-fix-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://www.youtube.com/watch?v=0xhoQLMpCUQ",
+      "generatedCopy": "Random token selection can change an entire answer: each sampled token becomes context for the next prediction. See the one-minute explanation—and its limits.\n\nhttps://www.youtube.com/watch?v=0xhoQLMpCUQ #LLM",
+      "postId": "cmsomguxo001klt112w0oeone",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsomgr1v001jlt110t567mfl",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsomguxo001klt112w0oeone",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://www.youtube.com/watch?v=0xhoQLMpCUQ",
+      "generatedCopy": "LLMs generate probabilities, but applications still choose how the next token is selected. This one-minute Tiny Agent breakdown shows why one random selection can redirect later predictions—and why variation is possible, not guaranteed.",
+      "postId": "cmsomm84u001mlt11nu8qi9bx",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7492917292452892672",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://www.youtube.com/watch?v=0xhoQLMpCUQ",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsomgyti001llt11tq14o7jm",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsomm84u001mlt11nu8qi9bx",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7492917292452892672",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://www.youtube.com/watch?v=0xhoQLMpCUQ",
+      "generatedCopy": "One random token can redirect the rest of an answer because it becomes context for every later prediction. This one-minute explanation separates probability generation from the application's selection rule.\n\nhttps://www.youtube.com/watch?v=0xhoQLMpCUQ #LLM #TinyAgent",
+      "postId": "cmsomrlcw001olt112tzvlzpi",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117076849140812238",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsommc28001nlt11i1ybfaxn",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsomrlcw001olt112tzvlzpi",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117076849140812238",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://www.youtube.com/watch?v=0xhoQLMpCUQ",
+      "generatedCopy": "An LLM produces probabilities; the application decides how to select the next token. One random choice can change later context and the whole continuation—variation is possible, not guaranteed.\n\nhttps://www.youtube.com/watch?v=0xhoQLMpCUQ",
+      "postId": "cmsomrp8l001plt110ts80g45",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/a4d499952fc36ffefb418f95e698e9eda7498ce3dbfe50d9745fda7a3ab2d2c7",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://www.youtube.com/watch?v=0xhoQLMpCUQ",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://www.youtube.com/watch?v=464RTUy5D3s",
+      "generatedCopy": "Don't switch AI models before checking the context and runtime.\n\nUse a frozen baseline and one-variable evidence to diagnose sudden performance drops:\nhttps://www.youtube.com/watch?v=464RTUy5D3s #AIAgents",
+      "postId": "cmsomsrxh001rlt115yf1juf7",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsomso17001qlt11t3kxdvfb",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsomsrxh001rlt115yf1juf7",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://www.youtube.com/watch?v=464RTUy5D3s",
+      "generatedCopy": "The same AI agent can look worse because its context continuity or runtime settings changed—not because the model suddenly lost capability. This episode shows a reusable diagnosis: freeze the baseline, test one variable at a time, then repair the workflow, narrow the task, trigger human takeover, or switch models.",
+      "postId": "cmsomy53b001tlt11zc8l4hkf",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with LinkedIn GATEWAY_INTERNAL_ERROR: Restricted Location.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://www.youtube.com/watch?v=464RTUy5D3s",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsomsvte001slt1155d3l003",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsomy53b001tlt11zc8l4hkf",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "LinkedIn returned non-retryable GATEWAY_INTERNAL_ERROR: Restricted Location.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://www.youtube.com/watch?v=464RTUy5D3s",
+      "generatedCopy": "Before blaming the model, freeze the baseline and inspect context continuity, long-task handling, and runtime settings. This episode shows how one-variable evidence turns a vague performance drop into a repair, narrower task, human takeover, or justified model switch.\n\nhttps://www.youtube.com/watch?v=464RTUy5D3s #AIAgents #ContextEngineering",
+      "postId": "cmson3i8y001vlt11eeu9icde",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117076885566278029",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsomy8z1001ult11ek98da1g",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmson3i8y001vlt11eeu9icde",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117076885566278029",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://www.youtube.com/watch?v=464RTUy5D3s",
+      "generatedCopy": "When the same AI agent suddenly performs worse, the model may not be the changed variable. Freeze the baseline, inspect context continuity and runtime settings, then change one thing at a time.\n\nhttps://www.youtube.com/watch?v=464RTUy5D3s",
+      "postId": "cmson3m4y001wlt1156rtafd7",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/0b5ddd868981ff3ce20fda45997375679cba13392e6a9aae00bbf6b2d5ba8e8b",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://www.youtube.com/watch?v=464RTUy5D3s",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    }
+  ]
+}

@@ -1,0 +1,506 @@
+{
+  "version": 1,
+  "date": "2026-08-12",
+  "runAt": "2026-08-12T20:34:28+08:00",
+  "runScope": "daily_blog_tiny_agent_social_redistribution",
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Chrome DevTools MCP 1.7: debug memory leaks without reading raw heap snapshots.",
+      "url": "https://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/",
+      "description": "Use Chrome DevTools MCP 1.7 to capture three heap snapshots, compare retained growth, inspect native contexts and object retainers, and close every snapshot safely.",
+      "image": "https://indieseek.co/shared/assets/indieseek-og-image.png",
+      "status": "PUBLISHED",
+      "englishHttpStatus": 200,
+      "chineseHttpStatus": 200,
+      "imageHttpStatus": 200
+    },
+    {
+      "key": "short",
+      "title": "Understand Context Window Token Limits in One Minute",
+      "url": "https://www.youtube.com/watch?v=9UzqgmYjWCY",
+      "shortUrl": "https://www.youtube.com/shorts/9UzqgmYjWCY",
+      "videoId": "9UzqgmYjWCY",
+      "description": "Input, output, instructions, and tool results share one finite context window; the exact limit and overflow behavior vary by model and application.",
+      "thumbnail": "https://i.ytimg.com/vi/9UzqgmYjWCY/maxresdefault.jpg",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-12-04-one-minute-context-window-capacity-en-US/youtube-short-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "releaseUrlHttpStatus": 200
+    },
+    {
+      "key": "long",
+      "title": "An AI Agent Can Report Success Without Actually Completing the Task.",
+      "url": "https://www.youtube.com/watch?v=n73z19NsyCE",
+      "videoId": "n73z19NsyCE",
+      "description": "Separate process health from outcome evidence, verify required tools, approvals, and external writes, and use cross-session evidence to prioritize repair or human takeover.",
+      "englishThumbnail": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-12-03-ai-agent-silent-failure-checklist-en-US/covers/thumbnail.en-US.png",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-12-03-ai-agent-silent-failure-checklist-en-US/youtube-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "releaseUrlHttpStatus": 200,
+      "inPlaylist": true,
+      "playlistId": "PLJffvaWRvGC8"
+    }
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab",
+      "id": "cmr69rfrq0001ltypr4a2rv7s"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang",
+      "id": "cmr6kyhqy0001ltk43f1mh19c"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek",
+      "id": "cmrarebsj0001ltyeovjzo3ur"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek",
+      "id": "cmr6qnjif0003lt4k1fo2r7ik"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "id": "cmram39o60001ltclo0lx3hgq",
+      "supported": false
+    }
+  ],
+  "excludedProviders": [
+    "facebook"
+  ],
+  "nonTargetProviders": [
+    "cnblogs",
+    "devto",
+    "youtube"
+  ],
+  "authorizationRecovery": [],
+  "manualItems": [],
+  "media": {
+    "blogThumbnailUpload": "uploaded",
+    "blogMediaId": "c00a6bfe-5716-4166-8e94-62be57ffe0f0",
+    "shortThumbnailUpload": "uploaded from the public YouTube thumbnail",
+    "shortMediaId": "a9b20eff-2abb-435e-a498-93686e59fd4c",
+    "longThumbnailUpload": "uploaded",
+    "longMediaId": "ce53a8d5-13e8-4d27-b781-36d49666b152",
+    "nostrThumbnailPolicy": "omitted so each kind-1 event contains only the intended target URL"
+  },
+  "health": {
+    "backend": "authenticated Public API HTTP 200",
+    "orchestrator": "HTTP 200",
+    "temporal": "namespace Registered",
+    "queuePollers": {
+      "main": 1,
+      "x": 1,
+      "linkedin": 1,
+      "mastodon": 1,
+      "nostr": 1
+    },
+    "queueBacklog": {
+      "main": 0,
+      "x": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0
+    },
+    "remainingCreatedQueueRows": 0
+  },
+  "relayVerification": {
+    "relay": "wss://purplerelay.com",
+    "blogEventId": "bfa72c061c047dcfd16f0fc1a2d774a0cfe2620be450f8f994fd2af356402d09",
+    "blogExpectedUrlOnly": true,
+    "shortEventId": "7279c231062f2f8ce73b0f16013c600612a69674b0174657f79d75c69e785f18",
+    "shortExpectedUrlOnly": true,
+    "longEventId": "1bb511120b32caeb26823de930382a0879f49b7f29abce14c78afcfb86190cb1",
+    "longExpectedUrlOnly": true
+  },
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-12&utm_content=blog",
+      "generatedCopy": "One snapshot can mislead. Compare baseline, target, and cleanup before fixing code:\nhttps://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-12&utm_content=blog #DevTools",
+      "postId": "cmsq1qart0026lt11s2poc8tt",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsq1q6v00025lt11ub2xjilm",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsq1qart0026lt11s2poc8tt",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/",
+      "generatedCopy": "Chrome DevTools MCP 1.7 gives AI coding agents native heap-object and context analysis, but a large snapshot still is not proof of a leak. This guide turns the release into a three-snapshot, ten-cycle workflow: isolate retained growth, follow one retaining path into application code, replay against a fixed budget, and close every snapshot. Use it when you need reviewable evidence instead of an agent guess.",
+      "postId": "cmspxuwt30023lt11lbtfewlw",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7493250097322020864",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/",
+      "thumbnailAttached": false
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-12&utm_content=blog",
+      "generatedCopy": "A huge heap snapshot is evidence, not a diagnosis. Chrome DevTools MCP 1.7 lets an agent compare baseline, target, and cleanup snapshots, isolate native contexts, then follow one retaining chain before editing code.\n\nhttps://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-12&utm_content=blog #DevTools #AICoding",
+      "postId": "cmsq1vnxi0028lt115b8f9wt0",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117082475381839036",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsq1qenf0027lt11i3xh0rre",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsq1vnxi0028lt115b8f9wt0",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117082475381839036",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-12&utm_content=blog",
+      "generatedCopy": "Don't feed a multi-gigabyte heap snapshot to an LLM. Use three snapshots, compare what survives cleanup, inspect one representative object, and prove the fix against a declared memory budget.\n\nhttps://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-12&utm_content=blog",
+      "postId": "cmsq1vru90029lt115tm04gg9",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/bfa72c061c047dcfd16f0fc1a2d774a0cfe2620be450f8f994fd2af356402d09",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://indieseek.co/blogs/chrome-devtools-mcp-1-7-memory-leak-debugging-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://www.youtube.com/watch?v=9UzqgmYjWCY",
+      "generatedCopy": "Your context window is one shared budget: input, output, instructions, and tool results all compete for space.\n\nSee the one-minute mental model:\nhttps://www.youtube.com/watch?v=9UzqgmYjWCY #LLM",
+      "postId": "cmsq1wuiu002blt11giodsg3i",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsq1wqmy002alt112oqkcnto",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsq1wuiu002blt11giodsg3i",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://www.youtube.com/watch?v=9UzqgmYjWCY",
+      "generatedCopy": "Context windows are not separate buckets for prompts and answers. Input, output, instructions, and tool results share a finite token budget, while the exact limit and overflow behavior vary by model and application. This one-minute Tiny Agent breakdown gives you the mental model to diagnose why long sessions lose earlier context.",
+      "postId": "cmsq227p3002dlt117tatncbx",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7493279706197147648",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://www.youtube.com/watch?v=9UzqgmYjWCY",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsq1wyf5002clt11xyl6al66",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsq227p3002dlt117tatncbx",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7493279706197147648",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://www.youtube.com/watch?v=9UzqgmYjWCY",
+      "generatedCopy": "Your prompt and answer do not get separate context budgets. Input, output, instructions, and tool results all share one finite window; the exact limit and overflow behavior depend on the model and app.\n\nhttps://www.youtube.com/watch?v=9UzqgmYjWCY #LLM #TinyAgent",
+      "postId": "cmsq27kud002flt11bscrgdrg",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117082511822506715",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsq22blm002elt11tx3fotw5",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsq27kud002flt11bscrgdrg",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117082511822506715",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://www.youtube.com/watch?v=9UzqgmYjWCY",
+      "generatedCopy": "A context window is one shared token budget, not separate space for prompts and answers. Instructions, tool results, input, and output all compete for it—and the exact overflow behavior varies by model and app.\n\nhttps://www.youtube.com/watch?v=9UzqgmYjWCY",
+      "postId": "cmsq27opy002glt11ta29gdko",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/7279c231062f2f8ce73b0f16013c600612a69674b0174657f79d75c69e785f18",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://www.youtube.com/watch?v=9UzqgmYjWCY",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://www.youtube.com/watch?v=n73z19NsyCE",
+      "generatedCopy": "Every health check can stay green while the real task never changes state.\n\nVerify outcomes, required tools, approvals, and external writes before trusting an AI agent's “done”:\nhttps://www.youtube.com/watch?v=n73z19NsyCE #AIAgents",
+      "postId": "cmsq28nj2002ilt11y8c42qks",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsq28jmz002hlt11ejir2erv",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsq28nj2002ilt11y8c42qks",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://www.youtube.com/watch?v=n73z19NsyCE",
+      "generatedCopy": "A green agent run can still hide an unfinished order, missing file, or skipped approval. This episode separates process health from outcome evidence, then shows how to verify non-skippable tools and external writes—and when repeated silent failures should trigger repair or human takeover.",
+      "postId": "cmsq2e0mr002klt11gg9plj7g",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7493282015987834882",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://www.youtube.com/watch?v=n73z19NsyCE",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsq28rf4002jlt11kpgtxpm6",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsq2e0mr002klt11gg9plj7g",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7493282015987834882",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://www.youtube.com/watch?v=n73z19NsyCE",
+      "generatedCopy": "Every health check can stay green while the actual order, file, or publication state never changes. Verify outcome receipts, required tools, approvals, and external writes before trusting an agent's “done.”\n\nhttps://www.youtube.com/watch?v=n73z19NsyCE #AIAgents #AgentOps",
+      "postId": "cmsq2jdra002mlt11suuukfev",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117082547917812141",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsq2e4ig002llt11bht2c27d",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsq2jdra002mlt11suuukfev",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117082547917812141",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://www.youtube.com/watch?v=n73z19NsyCE",
+      "generatedCopy": "An agent can report success while the real-world task remains unfinished. Separate process health from outcome evidence, verify non-skippable tools and approvals, and use repeated silent failures to trigger repair or human takeover.\n\nhttps://www.youtube.com/watch?v=n73z19NsyCE",
+      "postId": "cmsq2jhng002nlt11yghoyh1k",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/1bb511120b32caeb26823de930382a0879f49b7f29abce14c78afcfb86190cb1",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://www.youtube.com/watch?v=n73z19NsyCE",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    }
+  ]
+}
