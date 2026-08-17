@@ -1,0 +1,526 @@
+{
+  "version": 1,
+  "date": "2026-08-16",
+  "runAt": "2026-08-16T20:42:10+08:00",
+  "runScope": "daily_blog_tiny_agent_social_redistribution",
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Qwen Code 0.21.12: require review evidence and stop autofix loops before they bloat a PR.",
+      "url": "https://indieseek.co/blogs/qwen-code-0-21-12-review-witness-autofix-growth-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/qwen-code-0-21-12-review-witness-autofix-growth-checklist/",
+      "description": "Require an executed witness for Critical findings, split source and test growth budgets, test Critical-only behavior, and hand non-converging autofix loops to a maintainer.",
+      "image": "https://indieseek.co/shared/assets/indieseek-og-image.png",
+      "status": "PUBLISHED",
+      "englishHttpStatus": 200,
+      "chineseHttpStatus": 200,
+      "imageHttpStatus": 200
+    },
+    {
+      "key": "short",
+      "title": "Understand AI Agent Loop in One Minute",
+      "url": "https://www.youtube.com/watch?v=9j3ZyMRIFoU",
+      "shortUrl": "https://www.youtube.com/shorts/9j3ZyMRIFoU",
+      "videoId": "9j3ZyMRIFoU",
+      "description": "A one-minute explanation of how agent loops use feedback to choose the next step and rely on explicit stopping or human-handoff rules.",
+      "thumbnail": "https://i.ytimg.com/vi/9j3ZyMRIFoU/maxresdefault.jpg",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-16-04-one-minute-agent-loop-en-US/youtube-short-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "releaseUrlHttpStatus": 200
+    },
+    {
+      "key": "long",
+      "title": "AI Agent Action Logs Can Show What Happened but Still Miss the Reason.",
+      "url": "https://www.youtube.com/watch?v=N7ZCK1697-o",
+      "videoId": "N7ZCK1697-o",
+      "description": "Reconnect user intent, tool approval, agent action, and observed result with a practical audit chain for acceptance and human triage.",
+      "englishThumbnail": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-16-03-agent-intent-action-result-audit-en-US/covers/thumbnail.en-US.png",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-16-03-agent-intent-action-result-audit-en-US/youtube-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "releaseUrlHttpStatus": 200,
+      "playlistId": "PLJffvaWRvGC8",
+      "inPlaylist": true
+    }
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab",
+      "id": "cmr69rfrq0001ltypr4a2rv7s"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang",
+      "id": "cmr6kyhqy0001ltk43f1mh19c"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek",
+      "id": "cmrarebsj0001ltyeovjzo3ur"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek",
+      "id": "cmr6qnjif0003lt4k1fo2r7ik"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "id": "cmram39o60001ltclo0lx3hgq",
+      "supported": false
+    }
+  ],
+  "excludedProviders": ["facebook"],
+  "nonTargetProviders": ["cnblogs", "devto", "youtube"],
+  "authorizationRecovery": [],
+  "manualItems": [],
+  "sourceStability": {
+    "longformRunningAtStart": false,
+    "unstableManifestDetected": false,
+    "waitApplied": false,
+    "reason": "All three current-day sources were stable and already met their public release gates before the 20:00 preflight. The legacy ai-video-pipeline published directories stopped receiving new receipts in July, so the current immutable release bundles and Postiz-owned YouTube receipts were used without substituting prior-day content."
+  },
+  "media": {
+    "blogThumbnailUpload": "uploaded",
+    "blogMediaId": "231ebd57-4f5b-4242-85e6-8b25a4cd752f",
+    "shortThumbnailUpload": "uploaded from the public YouTube thumbnail",
+    "shortMediaId": "b2448e42-7233-4c17-a16c-596e9bc2e123",
+    "longThumbnailUpload": "uploaded from englishThumbnail",
+    "longMediaId": "1b28981e-81c4-4d55-a243-53559c2988d2",
+    "providerMediaResult": "All X, Mastodon, and video LinkedIn media attempts ended with socket hang up or fetch failed; the single duplicate-checked no-image repair was then used where permitted.",
+    "nostrThumbnailPolicy": "omitted so each kind-1 event contains only the intended target URL"
+  },
+  "health": {
+    "backend": "authenticated Public API HTTP 200",
+    "orchestrator": "HTTP 200 on localhost:3002/health/status",
+    "temporal": "SERVING; namespace Registered",
+    "queuePollers": {
+      "main": 2,
+      "x": 2,
+      "linkedin": 2,
+      "mastodon": 2,
+      "nostr": 2
+    },
+    "queuePollerKinds": "one workflow and one activity poller per queue",
+    "queueBacklog": {
+      "main": 0,
+      "x": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0
+    },
+    "remainingCreatedQueueRows": 0,
+    "createdPostRowsChecked": 20,
+    "createdPostRowsMatched": 20,
+    "creationMethodApiRows": 20,
+    "publishedWithoutReleaseUrl": 0,
+    "duplicatePublishedSourceProviderGroups": 0,
+    "facebookCreatedRows": 0
+  },
+  "relayVerification": {
+    "relay": "wss://purplerelay.com",
+    "blogEventId": "6dd83b801ac6d02428c94e4577588b147097bfe5ac82fe969dec477001238191",
+    "blogExpectedUrlOnly": true,
+    "shortEventId": "7daecbbe0ed77049fb111e91b6b9842a1feb782390009c70a020abc9226fe83a",
+    "shortExpectedUrlOnly": true,
+    "longEventId": "8ae4c60bc41d0ee755a98df856b7f56ea0f94291637384675559d328d187951a",
+    "longExpectedUrlOnly": true
+  },
+  "summary": {
+    "resultCount": 15,
+    "publishedOrReused": 9,
+    "errors": 3,
+    "unsupported": 3,
+    "sourceMissing": 0,
+    "facebookRecords": 0
+  },
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-12-review-witness-autofix-growth-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-16&utm_content=blog",
+      "generatedCopy": "A code review can be right yet still unproven. Require a witness—and cap autofix growth.",
+      "postId": "cmsvrlk0t000zltcpzxlzqg0h",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsvrlc96000yltcpm27m721w",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsvrlk0t000zltcpzxlzqg0h",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-12-review-witness-autofix-growth-checklist/",
+      "generatedCopy": "Qwen Code 0.21.12 adds a useful two-part control for AI review loops: Critical findings need execution evidence, while Qwen’s repository autofix workflow tracks separate source and test growth budgets. This guide turns those changes into a seven-canary rollout, a non-convergence decision tree, and a reusable claim-budget/change-budget record. It also separates packaged /review behavior from repository-specific workflow variables so teams do not copy the wrong boundary.",
+      "postId": "cmsvo60ze000xltcpvbo5p2cg",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7494703507518959616",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://indieseek.co/blogs/qwen-code-0-21-12-review-witness-autofix-growth-checklist/",
+      "thumbnailAttached": false
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-12-review-witness-autofix-growth-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-16&utm_content=blog",
+      "generatedCopy": "A Critical review finding without executed evidence is still a claim. This guide pairs a witness gate with separate source/test growth budgets, then stops non-converging autofix loops for human review. #CodeReview #AIAgents",
+      "postId": "cmsvrr4tf0011ltcpxtoh29sa",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117105137106167171",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsvrlrsc0010ltcprarjp279",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsvrr4tf0011ltcpxtoh29sa",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117105137106167171",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-12-review-witness-autofix-growth-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-16&utm_content=blog",
+      "generatedCopy": "A Critical review finding without an executed witness is still a claim. Pair evidence gates with source/test growth budgets so autofix loops cannot quietly bloat a PR.",
+      "postId": "cmsvrrck50012ltcpj661g7xd",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/6dd83b801ac6d02428c94e4577588b147097bfe5ac82fe969dec477001238191",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://indieseek.co/blogs/qwen-code-0-21-12-review-witness-autofix-growth-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://www.youtube.com/watch?v=9j3ZyMRIFoU",
+      "generatedCopy": "Agent loops need one thing most demos skip: a stop rule. See the loop in under a minute.",
+      "postId": "cmsvrsnno0014ltcpws7t7pmp",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsvrsfwv0013ltcpk8zxzspf",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsvrsnno0014ltcpws7t7pmp",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://www.youtube.com/watch?v=9j3ZyMRIFoU",
+      "generatedCopy": "An agent loop is more than repeated tool calls. Feedback must change the next step, and an explicit rule must stop the loop or return control to a human. This one-minute explainer makes that control structure easy to see.",
+      "postId": "cmsvry8gi0016ltcpnc27hord",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7494730161771196416",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://www.youtube.com/watch?v=9j3ZyMRIFoU",
+      "articleTitle": "Understand AI Agent Loop in One Minute",
+      "articleDescription": "A one-minute explanation of how agent loops use feedback to choose the next step and rely on explicit stopping or human-handoff rules.",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsvrsved0015ltcpte9xcwtd",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsvry8gi0016ltcpnc27hord",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7494730161771196416",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://www.youtube.com/watch?v=9j3ZyMRIFoU",
+      "generatedCopy": "Agent loops are useful only when feedback changes the next step—and a rule knows when to stop. See the control pattern in under a minute. #AIAgents #AgentLoop",
+      "postId": "cmsvs3ta40018ltcphskbkung",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117105175979178386",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsvryg750017ltcp10pnrcpz",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsvs3ta40018ltcphskbkung",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117105175979178386",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://www.youtube.com/watch?v=9j3ZyMRIFoU",
+      "generatedCopy": "An agent loop is not “run forever.” Feedback changes the next step; a rule stops the loop or returns control to a human. One-minute explainer.",
+      "postId": "cmsvs41280019ltcpno6g60id",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/7daecbbe0ed77049fb111e91b6b9842a1feb782390009c70a020abc9226fe83a",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://www.youtube.com/watch?v=9j3ZyMRIFoU",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://www.youtube.com/watch?v=N7ZCK1697-o",
+      "generatedCopy": "Action logs can show what happened while hiding why an AI agent acted. Reconnect intent, approval, action, and result.",
+      "postId": "cmsvs53rl001bltcpc21rkv3y",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsvs4w16001altcps9xemh9f",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsvs53rl001bltcpc21rkv3y",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://www.youtube.com/watch?v=N7ZCK1697-o",
+      "generatedCopy": "Action logs can prove what an AI agent did while still missing why it acted. This video reconnects user intent, approval, tool use, and outcomes in an Intent–Action–Result Audit Chain. Use it as an acceptance and human-triage aid, not as an automatic safety guarantee.",
+      "postId": "cmsvsaoja001dltcpw5x134uy",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7494732597558947840",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "postType": "article",
+      "articleUrl": "https://www.youtube.com/watch?v=N7ZCK1697-o",
+      "articleTitle": "AI Agent Action Logs Can Show What Happened but Still Miss the Reason.",
+      "articleDescription": "Reconnect user intent, tool approval, agent action, and observed result with a practical audit chain for acceptance and human triage.",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsvs5bi6001cltcpkx88cbtt",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsvsaoja001dltcpw5x134uy",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7494732597558947840",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://www.youtube.com/watch?v=N7ZCK1697-o",
+      "generatedCopy": "Action logs can show what happened and still miss why an AI agent acted. Reconnect intent, approval, tool use, and results with a practical audit chain. #AIAgents #Observability",
+      "postId": "cmsvsg9cl001fltcpiztln07l",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117105213889670056",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsvsawag001eltcpzbfmlfmj",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsvsg9cl001fltcpiztln07l",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117105213889670056",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://www.youtube.com/watch?v=N7ZCK1697-o",
+      "generatedCopy": "Action logs answer “what happened.” They can still miss “why.” Reconnect intent, approval, action, and result for acceptance and human triage.",
+      "postId": "cmsvsgh3a001gltcpuh444oi4",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/8ae4c60bc41d0ee755a98df856b7f56ea0f94291637384675559d328d187951a",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://www.youtube.com/watch?v=N7ZCK1697-o",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    }
+  ]
+}
