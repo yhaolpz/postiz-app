@@ -1,0 +1,528 @@
+{
+  "version": 1,
+  "date": "2026-08-17",
+  "runAt": "2026-08-17T20:36:47+08:00",
+  "runScope": "daily_blog_tiny_agent_social_redistribution",
+  "sources": [
+    {
+      "key": "blog",
+      "title": "Imagen 4 API shutdown: migrate to Gemini 3.1 Flash Image without a blind model-ID swap.",
+      "url": "https://indieseek.co/blogs/imagen-4-shutdown-gemini-3-1-flash-image-migration-checklist/",
+      "zhUrl": "https://indieseek.co/zh/blogs/imagen-4-shutdown-gemini-3-1-flash-image-migration-checklist/",
+      "description": "Replace the retired Imagen 4 request and response contract, compare accepted-image economics, replay paired visual fixtures, and keep a canary rollback path.",
+      "image": "https://indieseek.co/shared/assets/indieseek-og-image.png",
+      "status": "PUBLISHED",
+      "englishHttpStatus": 200,
+      "chineseHttpStatus": 200,
+      "imageHttpStatus": 200
+    },
+    {
+      "key": "short",
+      "title": "Understand AI Agent Tools in One Minute",
+      "url": "https://www.youtube.com/watch?v=xFX_maByJ2I",
+      "shortUrl": "https://www.youtube.com/shorts/xFX_maByJ2I",
+      "videoId": "xFX_maByJ2I",
+      "description": "A one-minute explanation of how agent tools retrieve data, take action, or call other agents while the model still controls the workflow inside guardrails.",
+      "thumbnail": "https://i.ytimg.com/vi/xFX_maByJ2I/maxresdefault.jpg",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-17-04-one-minute-agent-tools-en-US/youtube-short-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "releaseUrlHttpStatus": 200
+    },
+    {
+      "key": "long",
+      "title": "The Stronger an AI Agent Gets, the Less You Can Rely on It to Police Itself.",
+      "url": "https://www.youtube.com/watch?v=BE0IaEsX3Qc",
+      "videoId": "BE0IaEsX3Qc",
+      "description": "Separate model, runtime-environment, and external-content defenses with an Agent Blast-Radius Control Map for access, takeover, and recovery.",
+      "englishThumbnail": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-17-03-ai-agent-blast-radius-control-en-US/covers/thumbnail.en-US.png",
+      "receipt": "/Volumes/SSD/Workspace/postiz-app/var/video-distribution/inbox/2026-08-17-03-ai-agent-blast-radius-control-en-US/youtube-publish-result.json",
+      "status": "PUBLISHED",
+      "privacyStatus": "public",
+      "uploadStatus": "processed",
+      "processingStatus": "succeeded",
+      "releaseUrlHttpStatus": 200,
+      "playlistId": "PLJffvaWRvGC8",
+      "inPlaylist": true
+    }
+  ],
+  "integrations": [
+    {
+      "provider": "x",
+      "name": "Ahab",
+      "id": "cmr69rfrq0001ltypr4a2rv7s"
+    },
+    {
+      "provider": "linkedin",
+      "name": "Ahab Wang",
+      "id": "cmr6kyhqy0001ltk43f1mh19c"
+    },
+    {
+      "provider": "mastodon",
+      "name": "ahabindieseek",
+      "id": "cmrarebsj0001ltyeovjzo3ur"
+    },
+    {
+      "provider": "nostr",
+      "name": "Ahab at IndieSeek",
+      "id": "cmr6qnjif0003lt4k1fo2r7ik"
+    },
+    {
+      "provider": "tiktok",
+      "name": "Tiny Agent",
+      "id": "cmram39o60001ltclo0lx3hgq",
+      "supported": false
+    }
+  ],
+  "excludedProviders": ["facebook"],
+  "nonTargetProviders": ["cnblogs", "devto", "youtube"],
+  "authorizationRecovery": [],
+  "manualItems": [],
+  "sourceStability": {
+    "longformRunningAtStart": false,
+    "unstableManifestDetected": false,
+    "waitApplied": false,
+    "reason": "All three current-day sources were stable and already met their public release gates before the 20:00 preflight. The legacy ai-video-pipeline published directories stopped receiving new receipts in July, so current immutable release bundles and Postiz-owned YouTube receipts were used without substituting prior-day content."
+  },
+  "media": {
+    "blogThumbnailUpload": "uploaded",
+    "blogMediaId": "606fa438-f1b0-4409-85bd-c9ae63ada6b3",
+    "shortThumbnailUpload": "uploaded from the public YouTube thumbnail",
+    "shortMediaId": "5f73b376-b2d8-4e43-a482-f38edfd98978",
+    "longThumbnailUpload": "uploaded from englishThumbnail",
+    "longMediaId": "515a992f-9279-4525-b03f-d6630f05078d",
+    "providerMediaResult": "All X, Mastodon, and video LinkedIn media attempts ended with socket hang up or fetch failed; the single duplicate-checked no-image repair was then used where permitted.",
+    "nostrThumbnailPolicy": "omitted so each kind-1 event contains only the intended target URL"
+  },
+  "health": {
+    "backend": "authenticated Public API HTTP 200",
+    "orchestrator": "HTTP 200 on localhost:3002/health/status",
+    "temporal": "SERVING",
+    "queuePollers": {
+      "main": 2,
+      "x": 2,
+      "linkedin": 2,
+      "mastodon": 2,
+      "nostr": 2
+    },
+    "queuePollerKinds": "one workflow and one activity poller per queue",
+    "queueBacklog": {
+      "main": 0,
+      "x": 0,
+      "linkedin": 0,
+      "mastodon": 0,
+      "nostr": 0
+    },
+    "remainingCreatedQueueRows": 0,
+    "createdPostRowsChecked": 20,
+    "createdPostRowsMatched": 20,
+    "creationMethodApiRows": 20,
+    "publishedWithoutReleaseUrl": 0,
+    "duplicatePublishedSourceProviderGroups": 0,
+    "facebookCreatedRows": 0
+  },
+  "relayVerification": {
+    "relay": "wss://purplerelay.com",
+    "blogEventId": "c7094d591d6d49233a1c4902c511fc12df30146566529f34b287956fd7702cff",
+    "blogExpectedUrlOnly": true,
+    "shortEventId": "9460a08efca7cc167338d9c00d74c16bbd47316424ff1a4d074862908cfaad09",
+    "shortExpectedUrlOnly": true,
+    "longEventId": "926244e89ac6754e640e17ef09f78cbb347029746363bde5cc577fee5c8ef9f9",
+    "longExpectedUrlOnly": true
+  },
+  "summary": {
+    "resultCount": 15,
+    "publishedOrReused": 9,
+    "errors": 3,
+    "unsupported": 3,
+    "sourceMissing": 0,
+    "facebookRecords": 0
+  },
+  "records": [
+    {
+      "source": "blog",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://indieseek.co/blogs/imagen-4-shutdown-gemini-3-1-flash-image-migration-checklist/?utm_source=x&utm_medium=social&utm_campaign=daily_content_2026-08-17&utm_content=blog",
+      "generatedCopy": "Imagen 4 is gone. A model-ID swap is not a migration—replace the API contract.",
+      "postId": "cmsx6uqtg0004ltyg2lm4clbm",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsx6uj130003ltygi6b6wu0z",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsx6uqtg0004ltyg2lm4clbm",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://indieseek.co/blogs/imagen-4-shutdown-gemini-3-1-flash-image-migration-checklist/",
+      "generatedCopy": "Google lists three Imagen 4 Gemini API model IDs for shutdown on August 17, 2026, so a model-name swap is too shallow. This guide maps endpoint and response changes, pricing guardrails, a 12-prompt paired visual fixture, and a reversible canary rollout. Use it to migrate toward Gemini 3.1 Flash Image with evidence for accepted-image quality and cost.",
+      "postId": "cmsx386es0002ltygr31svt3l",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7495063215169630209",
+      "error": null,
+      "dedupe": true,
+      "reused": true,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "postType": "article",
+      "articleUrl": "https://indieseek.co/blogs/imagen-4-shutdown-gemini-3-1-flash-image-migration-checklist/",
+      "articleTitle": "Imagen 4 API shutdown: migrate to Gemini 3.1 Flash Image without a blind model-ID swap.",
+      "articleDescription": "Replace the retired Imagen 4 request and response contract, compare accepted-image economics, replay paired visual fixtures, and keep a canary rollback path."
+    },
+    {
+      "source": "blog",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://indieseek.co/blogs/imagen-4-shutdown-gemini-3-1-flash-image-migration-checklist/?utm_source=mastodon&utm_medium=social&utm_campaign=daily_content_2026-08-17&utm_content=blog",
+      "generatedCopy": "Imagen 4 is shut down. Swapping only the model ID leaves a broken request/response contract behind. This checklist covers paired visual evals, accepted-image cost, canaries, and rollback evidence. #GeminiAPI #AIEvaluation",
+      "postId": "cmsx70blt0006ltygomdf6a6r",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117110779033215067",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsx6uykk0005ltyg91qc4ty7",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsx70blt0006ltygomdf6a6r",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117110779033215067",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "blog",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://indieseek.co/blogs/imagen-4-shutdown-gemini-3-1-flash-image-migration-checklist/?utm_source=nostr&utm_medium=social&utm_campaign=daily_content_2026-08-17&utm_content=blog",
+      "generatedCopy": "Imagen 4 is shut down. The migration is an API-contract change, not a model-ID swap. Use paired visual evals, accepted-image cost, canaries, and rollback evidence.",
+      "postId": "cmsx70jd60007ltygpk8o3yig",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/c7094d591d6d49233a1c4902c511fc12df30146566529f34b287956fd7702cff",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "blog",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://indieseek.co/blogs/imagen-4-shutdown-gemini-3-1-flash-image-migration-checklist/",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "short",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://www.youtube.com/watch?v=xFX_maByJ2I",
+      "generatedCopy": "An AI agent’s tools do three jobs: retrieve data, take action, or call other agents. Learn the split in one minute.",
+      "postId": "cmsx71ul60009ltyg2np958s3",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsx71mtw0008ltygdqi3bpeo",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsx71ul60009ltyg2np958s3",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://www.youtube.com/watch?v=xFX_maByJ2I",
+      "generatedCopy": "“Agent tools” is too broad to be useful unless you separate what they actually do. In one minute, see the difference between retrieving data, taking action, and calling other agents—and why adding one tool does not automatically make an app an agent.",
+      "postId": "cmsx77fgk000bltygvzblf3v6",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7495091247733321729",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsx722bx000altygu8vqskjc",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsx77fgk000bltygvzblf3v6",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7495091247733321729",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ],
+      "postType": "article",
+      "articleUrl": "https://www.youtube.com/watch?v=xFX_maByJ2I",
+      "articleTitle": "Understand AI Agent Tools in One Minute",
+      "articleDescription": "A one-minute explanation of how agent tools retrieve data, take action, or call other agents while the model still controls the workflow inside guardrails."
+    },
+    {
+      "source": "short",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://www.youtube.com/watch?v=xFX_maByJ2I",
+      "generatedCopy": "An AI agent’s tools do three different jobs: retrieve data, take action, or call other agents. Learn the split in one minute—and why one tool alone does not make an agent. #AIAgents #AgentTools",
+      "postId": "cmsx7d099000dltygon16ptup",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117110817806471107",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsx77n7h000cltygox6twd48",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsx7d099000dltygon16ptup",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117110817806471107",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "short",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://www.youtube.com/watch?v=xFX_maByJ2I",
+      "generatedCopy": "Agent tools are not one bucket. They retrieve data, take action, or call other agents—and one tool alone does not make an app an agent. One-minute explainer.",
+      "postId": "cmsx7d812000eltygrdvvdn76",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/9460a08efca7cc167338d9c00d74c16bbd47316424ff1a4d074862908cfaad09",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "short",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://www.youtube.com/watch?v=xFX_maByJ2I",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    },
+    {
+      "source": "long",
+      "provider": "x",
+      "integrationName": "Ahab",
+      "integrationId": "cmr69rfrq0001ltypr4a2rv7s",
+      "targetUrl": "https://www.youtube.com/watch?v=BE0IaEsX3Qc",
+      "generatedCopy": "A stronger AI agent needs a smaller, explicit blast radius. Separate model, runtime, and external-content defenses—and plan takeover and recovery.",
+      "postId": "cmsx7eigv000gltyg9oj0vr2h",
+      "state": "ERROR",
+      "releaseURL": null,
+      "error": "The thumbnail attempt ended with socket hang up; the single duplicate-checked no-image repair then failed non-retryably with X API HTTP 402 credits depleted.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsx7eaq8000fltygm8t2mfy6",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsx7eigv000gltyg9oj0vr2h",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "X API HTTP 402 credits depleted; provider marked the failure non-retryable.",
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "linkedin",
+      "integrationName": "Ahab Wang",
+      "integrationId": "cmr6kyhqy0001ltk43f1mh19c",
+      "targetUrl": "https://www.youtube.com/watch?v=BE0IaEsX3Qc",
+      "generatedCopy": "Permission prompts are not containment. As AI agents gain access, defense has to live across the model, runtime environment, and external-content boundary. This video turns that into an Agent Blast-Radius Control Map for access, human takeover, and recovery.",
+      "postId": "cmsx7k3a0000iltyge9uuf7xp",
+      "state": "PUBLISHED",
+      "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7495093725107343360",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsx7eq7h000hltyg1t4bd7n2",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media: socket hang up.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsx7k3a0000iltyge9uuf7xp",
+          "state": "PUBLISHED",
+          "releaseURL": "https://www.linkedin.com/feed/update/urn:li:share:7495093725107343360",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ],
+      "postType": "article",
+      "articleUrl": "https://www.youtube.com/watch?v=BE0IaEsX3Qc",
+      "articleTitle": "The Stronger an AI Agent Gets, the Less You Can Rely on It to Police Itself.",
+      "articleDescription": "Separate model, runtime-environment, and external-content defenses with an Agent Blast-Radius Control Map for access, takeover, and recovery."
+    },
+    {
+      "source": "long",
+      "provider": "mastodon",
+      "integrationName": "ahabindieseek",
+      "integrationId": "cmrarebsj0001ltyeovjzo3ur",
+      "targetUrl": "https://www.youtube.com/watch?v=BE0IaEsX3Qc",
+      "generatedCopy": "A stronger AI agent needs a smaller, explicit blast radius. Separate model, runtime, and external-content defenses—then plan human takeover and recovery. #AIAgents #AgentSafety",
+      "postId": "cmsx7po30000kltygdhxpzla9",
+      "state": "PUBLISHED",
+      "releaseURL": "https://social.vivaldi.net/statuses/117110856522961607",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "attempts": [
+        {
+          "postId": "cmsx7kb1u000jltygn3k9rjdz",
+          "state": "ERROR",
+          "releaseURL": null,
+          "error": "The provider could not fetch the uploaded local media after the existing retry policy: fetch failed.",
+          "thumbnailAttached": true
+        },
+        {
+          "postId": "cmsx7po30000kltygdhxpzla9",
+          "state": "PUBLISHED",
+          "releaseURL": "https://social.vivaldi.net/statuses/117110856522961607",
+          "error": null,
+          "thumbnailAttached": false
+        }
+      ]
+    },
+    {
+      "source": "long",
+      "provider": "nostr",
+      "integrationName": "Ahab at IndieSeek",
+      "integrationId": "cmr6qnjif0003lt4k1fo2r7ik",
+      "targetUrl": "https://www.youtube.com/watch?v=BE0IaEsX3Qc",
+      "generatedCopy": "A stronger AI agent needs a smaller, explicit blast radius. Separate model, runtime, and external-content defenses, then plan takeover and recovery.",
+      "postId": "cmsx7pvtw000lltygmf9xxutl",
+      "state": "PUBLISHED",
+      "releaseURL": "https://primal.net/e/926244e89ac6754e640e17ef09f78cbb347029746363bde5cc577fee5c8ef9f9",
+      "error": null,
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": "API",
+      "thumbnailAttached": false,
+      "nostrRelayVerified": true
+    },
+    {
+      "source": "long",
+      "provider": "tiktok",
+      "integrationName": "Tiny Agent",
+      "integrationId": "cmram39o60001ltclo0lx3hgq",
+      "targetUrl": "https://www.youtube.com/watch?v=BE0IaEsX3Qc",
+      "generatedCopy": null,
+      "postId": null,
+      "state": "UNSUPPORTED",
+      "releaseURL": null,
+      "error": "TikTok does not support this text/link redistribution; no duplicate video was uploaded.",
+      "dedupe": false,
+      "reused": false,
+      "creationMethod": null,
+      "thumbnailAttached": false
+    }
+  ]
+}
