@@ -15,6 +15,7 @@ import {
   buildYoutubeShortTags,
   resolveYoutubeShortPolicy,
 } from './youtube-short-policy.mjs';
+import { hasYoutubeLongformIdentity } from './title-identity-policy.mjs';
 
 const require = createRequire(import.meta.url);
 const { PrismaClient } = require('@prisma/client');
@@ -75,10 +76,6 @@ function parseArgs(argv) {
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
-}
-
-function hasAiAgentIdentity(title) {
-  return /\bAI[\s-]+Agents?\b/i.test(String(title || ''));
 }
 
 function getPostizBaseUrl() {
@@ -230,19 +227,19 @@ function validateInputs(videoPath, metadata, youtubePolicy, videoKind) {
       'Title candidates must include the final YouTube title.'
     );
     assert(
-      hasAiAgentIdentity(metadata.title),
+      hasYoutubeLongformIdentity(metadata.title, metadata),
       'Final YouTube title must naturally contain AI Agent or AI Agents.'
     );
     metadata.titleCandidates.forEach((title, index) => {
       assert(
-        hasAiAgentIdentity(title),
+        hasYoutubeLongformIdentity(title, metadata),
         `YouTube title candidate ${
           index + 1
         } must naturally contain AI Agent or AI Agents.`
       );
     });
     assert(
-      hasAiAgentIdentity(metadata.thumbnailText),
+      hasYoutubeLongformIdentity(metadata.thumbnailText, metadata),
       'English thumbnail text must naturally contain AI Agent or AI Agents.'
     );
   } else {
