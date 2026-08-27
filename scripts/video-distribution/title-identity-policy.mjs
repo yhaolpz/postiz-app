@@ -17,6 +17,16 @@ const approvedDeepSeekHarnessH07 = Object.freeze({
   sourceCommit: 'b150a551b8d465e31e418e1b2eaf5e79bbb7d28e',
 });
 
+const approvedDeepSeekHarnessH08 = Object.freeze({
+  title:
+    'Is It Safe to Connect MCP to DeepSeek Harness? Beginners Should Check What It Will Run.',
+  publisher: 'DeepSeek AI',
+  sourceTitle:
+    'DeepSeek Harness dsh-v0.1.1-rc.2 MCP client, CLI trust boundary, and process sandbox documentation',
+  releaseTag: 'dsh-v0.1.1-rc.2',
+  sourceCommit: 'b150a551b8d465e31e418e1b2eaf5e79bbb7d28e',
+});
+
 function isApprovedDeepSeekHarnessH03(text, metadata) {
   return (
     String(text || '') === approvedDeepSeekHarnessH03.title &&
@@ -37,10 +47,21 @@ function isApprovedDeepSeekHarnessH07(text, metadata) {
   );
 }
 
+function isApprovedDeepSeekHarnessH08(text, metadata) {
+  return (
+    String(text || '') === approvedDeepSeekHarnessH08.title &&
+    metadata?.source?.publisher === approvedDeepSeekHarnessH08.publisher &&
+    metadata?.source?.title === approvedDeepSeekHarnessH08.sourceTitle &&
+    metadata?.source?.releaseTag === approvedDeepSeekHarnessH08.releaseTag &&
+    metadata?.source?.sourceCommit === approvedDeepSeekHarnessH08.sourceCommit
+  );
+}
+
 export function hasYoutubeLongformIdentity(text, metadata = {}) {
   return (
     /\bAI[\s-]+Agents?\b/i.test(String(text || '')) ||
     isApprovedDeepSeekHarnessH03(text, metadata) ||
-    isApprovedDeepSeekHarnessH07(text, metadata)
+    isApprovedDeepSeekHarnessH07(text, metadata) ||
+    isApprovedDeepSeekHarnessH08(text, metadata)
   );
 }

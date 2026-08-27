@@ -21,6 +21,16 @@ const approvedH07Metadata = {
   },
 };
 
+const approvedH08Metadata = {
+  source: {
+    publisher: 'DeepSeek AI',
+    title:
+      'DeepSeek Harness dsh-v0.1.1-rc.2 MCP client, CLI trust boundary, and process sandbox documentation',
+    releaseTag: 'dsh-v0.1.1-rc.2',
+    sourceCommit: 'b150a551b8d465e31e418e1b2eaf5e79bbb7d28e',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -58,6 +68,19 @@ test('accepts only the exact approved DeepSeek Harness H07 title with immutable 
   );
 });
 
+test('accepts only the exact approved DeepSeek Harness H08 title with immutable source evidence', () => {
+  const title =
+    'Is It Safe to Connect MCP to DeepSeek Harness? Beginners Should Check What It Will Run.';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedH08Metadata), true);
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedH08Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+});
+
 test('does not broaden the named exception to arbitrary AI or altered Harness titles', () => {
   assert.equal(
     hasYoutubeLongformIdentity(
@@ -77,6 +100,13 @@ test('does not broaden the named exception to arbitrary AI or altered Harness ti
     hasYoutubeLongformIdentity(
       'Worried a DeepSeek Harness Plugin Will Break Your Setup? Test It in a Separate Profile.',
       approvedH07Metadata
+    ),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'Is It Safe to Connect MCP to DeepSeek Harness? Check What It Will Run.',
+      approvedH08Metadata
     ),
     false
   );
