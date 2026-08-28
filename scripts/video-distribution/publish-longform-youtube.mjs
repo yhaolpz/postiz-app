@@ -12,6 +12,7 @@ import {
   resolveYoutubeLongformPolicy,
 } from './youtube-longform-policy.mjs';
 import {
+  buildYoutubeShortDescription,
   buildYoutubeShortTags,
   resolveYoutubeShortPolicy,
 } from './youtube-short-policy.mjs';
@@ -262,7 +263,7 @@ function validateInputs(videoPath, metadata, youtubePolicy, videoKind) {
   }
   assert(metadata.title.length <= 100, 'YouTube title exceeds 100 characters.');
   assert(
-    !/https?:\/\//i.test(metadata.description),
+    videoKind === 'short' || !/https?:\/\//i.test(metadata.description),
     'YouTube description must not contain external URLs.'
   );
   assert(
@@ -580,6 +581,16 @@ async function verifyYoutube(
     video.status?.selfDeclaredMadeForKids !== true,
     'YouTube video is unexpectedly declared made for kids.'
   );
+  if (videoKind === 'short') {
+    assert(
+      video.snippet?.title === metadata.title,
+      'YouTube Short title does not match the immutable bundle metadata.'
+    );
+    assert(
+      video.snippet?.description === metadata.description,
+      'YouTube Short description does not match the immutable bundle metadata.'
+    );
+  }
   const pageResponse = await fetch(publicUrl, { redirect: 'follow' });
   assert(
     pageResponse.ok,
@@ -597,6 +608,13 @@ async function verifyYoutube(
     selfDeclaredMadeForKids: video.status?.selfDeclaredMadeForKids ?? false,
     releaseUrlHttpStatus: pageResponse.status,
   };
+  if (videoKind === 'short') {
+    Object.assign(verified, {
+      titleMatchesBundle: video.snippet?.title === metadata.title,
+      descriptionMatchesBundle:
+        video.snippet?.description === metadata.description,
+    });
+  }
   if (videoKind === 'longform') {
     const [playlistItemResponse, playlistResponse] = await Promise.all([
       youtube.playlistItems.list({
@@ -780,7 +798,14 @@ async function main() {
   const metadata = JSON.parse(await fs.readFile(metadataPath, 'utf8'));
   const youtubeMetadata =
     videoKind === 'short'
-      ? { ...metadata, description: '', tags: buildYoutubeShortTags(metadata) }
+      ? {
+          ...metadata,
+          description: buildYoutubeShortDescription(
+            metadata,
+            imported.manifest.runKey
+          ),
+          tags: buildYoutubeShortTags(metadata),
+        }
       : {
           ...metadata,
           description: buildYoutubeDescription(metadata),

@@ -60,8 +60,13 @@ pnpm video-distribution:publish-short -- \
 
 The command rejects non-Short bundles, non-English metadata, non-vertical
 masters, durations outside 50–65 seconds, private visibility, playlist leakage,
-and arbitrary source paths. It is duplicate-safe by immutable receipt and exact
-public YouTube title. Completion requires Postiz `PUBLISHED`, or a reverified
+and arbitrary source paths. From `RUN_KEY=2026-08-28-04`, it requires and
+preserves the fixed description and bare `https://tapto.top` URL from the
+immutable bundle; Markdown link syntax is rejected. Earlier Short descriptions
+must remain empty. Public verification requires both
+the title and description to match the bundle metadata. It is
+duplicate-safe by immutable receipt and exact public YouTube title. Completion
+requires Postiz `PUBLISHED`, or a reverified
 `already-published` result, plus YouTube `privacyStatus=public`,
 `uploadStatus=processed`, and HTTP 200 from the public `/shorts/<videoId>` URL.
 Import, upload, queueing, or a video ID alone is not completion. The historical
