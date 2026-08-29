@@ -27,6 +27,14 @@ const approvedDeepSeekHarnessH08 = Object.freeze({
   sourceCommit: 'b150a551b8d465e31e418e1b2eaf5e79bbb7d28e',
 });
 
+const approvedCodexCX01 = Object.freeze({
+  title: 'How Do You Keep Codex on the Right Files?',
+  publisher: 'OpenAI',
+  sourceTitle: 'Codex as a platform: build on the open agent harness',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 function isApprovedDeepSeekHarnessH03(text, metadata) {
   return (
     String(text || '') === approvedDeepSeekHarnessH03.title &&
@@ -57,11 +65,22 @@ function isApprovedDeepSeekHarnessH08(text, metadata) {
   );
 }
 
+function isApprovedCodexCX01(text, metadata) {
+  return (
+    String(text || '') === approvedCodexCX01.title &&
+    metadata?.source?.publisher === approvedCodexCX01.publisher &&
+    metadata?.source?.title === approvedCodexCX01.sourceTitle &&
+    metadata?.source?.releaseTag === approvedCodexCX01.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX01.sourceCommit
+  );
+}
+
 export function hasYoutubeLongformIdentity(text, metadata = {}) {
   return (
     /\bAI[\s-]+Agents?\b/i.test(String(text || '')) ||
     isApprovedDeepSeekHarnessH03(text, metadata) ||
     isApprovedDeepSeekHarnessH07(text, metadata) ||
-    isApprovedDeepSeekHarnessH08(text, metadata)
+    isApprovedDeepSeekHarnessH08(text, metadata) ||
+    isApprovedCodexCX01(text, metadata)
   );
 }

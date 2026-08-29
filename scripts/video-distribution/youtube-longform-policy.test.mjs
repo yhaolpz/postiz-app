@@ -4,6 +4,7 @@ import {
   buildYoutubeDescription,
   buildYoutubeTags,
   fixedYoutubeLongformPolicy,
+  fixedTinyAgentLongformPromotion,
   resolveYoutubeLongformPolicy,
 } from './youtube-longform-policy.mjs';
 
@@ -59,6 +60,42 @@ test('removes source branding from the YouTube description without changing the 
         'This checklist is a practical synthesis, not an official Anthropic template.',
     }),
     'This checklist is a practical synthesis, not an official source template.'
+  );
+});
+
+test('allows only the exact fixed tapto.top promotion in longform descriptions', () => {
+  assert.equal(
+    buildYoutubeDescription({
+      description: `Three takeaways.\n\n${fixedTinyAgentLongformPromotion}\n\nFollow Tiny Agent.`,
+    }),
+    `Three takeaways.\n\n${fixedTinyAgentLongformPromotion}\n\nFollow Tiny Agent.`
+  );
+  assert.throws(
+    () =>
+      buildYoutubeDescription({
+        description: fixedTinyAgentLongformPromotion.replace(
+          'https://tapto.top',
+          '[https://tapto.top](https://tapto.top)'
+        ),
+      }),
+    /fixed tapto\.top promotion/
+  );
+  assert.throws(
+    () =>
+      buildYoutubeDescription({
+        description: `${fixedTinyAgentLongformPromotion}\nhttps://example.com`,
+      }),
+    /fixed tapto\.top promotion/
+  );
+  assert.throws(
+    () =>
+      buildYoutubeDescription({
+        description: fixedTinyAgentLongformPromotion.replace(
+          'tapto.top',
+          'TapTo.Top'
+        ),
+      }),
+    /fixed tapto\.top promotion/
   );
 });
 

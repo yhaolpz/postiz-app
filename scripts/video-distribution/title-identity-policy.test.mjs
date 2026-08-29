@@ -31,6 +31,15 @@ const approvedH08Metadata = {
   },
 };
 
+const approvedCX01Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform: build on the open agent harness',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -81,6 +90,25 @@ test('accepts only the exact approved DeepSeek Harness H08 title with immutable 
   );
 });
 
+test('accepts only the exact approved Codex CX01 title with immutable source evidence', () => {
+  const title = 'How Do You Keep Codex on the Right Files?';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedCX01Metadata), true);
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX01Metadata.source, releaseTag: 'wrong-tag' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Do You Keep Codex on the Intended Files?',
+      approvedCX01Metadata
+    ),
+    false
+  );
+});
+
 test('does not broaden the named exception to arbitrary AI or altered Harness titles', () => {
   assert.equal(
     hasYoutubeLongformIdentity(
@@ -108,6 +136,12 @@ test('does not broaden the named exception to arbitrary AI or altered Harness ti
       'Is It Safe to Connect MCP to DeepSeek Harness? Check What It Will Run.',
       approvedH08Metadata
     ),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity('How Do You Keep Codex on the Right Files?', {
+      source: { ...approvedCX01Metadata.source, publisher: 'Not OpenAI' },
+    }),
     false
   );
 });

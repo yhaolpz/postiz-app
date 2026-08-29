@@ -10,6 +10,7 @@ import {
   buildYoutubeDescription,
   buildYoutubeTags,
   resolveYoutubeLongformPolicy,
+  validateYoutubeLongformDescriptionUrls,
 } from './youtube-longform-policy.mjs';
 import {
   buildYoutubeShortDescription,
@@ -229,19 +230,19 @@ function validateInputs(videoPath, metadata, youtubePolicy, videoKind) {
     );
     assert(
       hasYoutubeLongformIdentity(metadata.title, metadata),
-      'Final YouTube title must naturally contain AI Agent or AI Agents.'
+      'Final YouTube title must contain AI Agent(s) or match an approved evidence-bound named series.'
     );
     metadata.titleCandidates.forEach((title, index) => {
       assert(
         hasYoutubeLongformIdentity(title, metadata),
         `YouTube title candidate ${
           index + 1
-        } must naturally contain AI Agent or AI Agents.`
+        } must contain AI Agent(s) or match an approved evidence-bound named series.`
       );
     });
     assert(
       hasYoutubeLongformIdentity(metadata.thumbnailText, metadata),
-      'English thumbnail text must naturally contain AI Agent or AI Agents.'
+      'English thumbnail text must contain AI Agent(s) or match an approved evidence-bound named series.'
     );
   } else {
     assert(
@@ -262,10 +263,9 @@ function validateInputs(videoPath, metadata, youtubePolicy, videoKind) {
     );
   }
   assert(metadata.title.length <= 100, 'YouTube title exceeds 100 characters.');
-  assert(
-    videoKind === 'short' || !/https?:\/\//i.test(metadata.description),
-    'YouTube description must not contain external URLs.'
-  );
+  if (videoKind === 'longform') {
+    validateYoutubeLongformDescriptionUrls(metadata.description);
+  }
   assert(
     !metadata.source?.publisher ||
       !metadata.description

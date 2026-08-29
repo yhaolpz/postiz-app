@@ -6,6 +6,9 @@ const fixedYoutubeLongformPolicy = Object.freeze({
   playlistPrivacyStatus: 'public',
 });
 
+export const fixedTinyAgentLongformPromotion =
+  'Building something? Take a 60-sec game break. Score to rank your product or profile on https://tapto.top and get more exposure📈 —free, no signup.';
+
 export function resolveYoutubeLongformPolicy(metadata = {}) {
   const requested = metadata.youtube;
   if (requested != null) {
@@ -42,10 +45,7 @@ export function buildYoutubeDescription(metadata = {}) {
         new RegExp(`official\\s+${publisherPattern}\\s+template`, 'gi'),
         'official source template'
       )
-      .replace(
-        new RegExp(`${publisherPattern}(?:['’]s)?`, 'gi'),
-        'the source'
-      );
+      .replace(new RegExp(`${publisherPattern}(?:['’]s)?`, 'gi'), 'the source');
   }
   if (sourceTitle) {
     description = description.replace(
@@ -53,10 +53,30 @@ export function buildYoutubeDescription(metadata = {}) {
       'the source article'
     );
   }
-  return description
+  description = description
     .replace(/[ \t]+([,.;:!?])/g, '$1')
     .replace(/[ \t]{2,}/g, ' ')
     .trim();
+  validateYoutubeLongformDescriptionUrls(description);
+  return description;
+}
+
+export function validateYoutubeLongformDescriptionUrls(description = '') {
+  const value = String(description);
+  const urls = value.match(/https?:\/\/[^\s)]+/gi) || [];
+  if (urls.length === 0) return true;
+
+  const promotionLines = value
+    .split(/\r?\n/)
+    .filter((line) => line === fixedTinyAgentLongformPromotion);
+  const exactAllowedUrl = urls.length === 1 && urls[0] === 'https://tapto.top';
+  const markdownLink = /\[[^\]]+\]\(https?:\/\//i.test(value);
+  if (promotionLines.length !== 1 || !exactAllowedUrl || markdownLink) {
+    throw new Error(
+      'YouTube longform description may contain only the fixed tapto.top promotion with its bare lowercase URL.'
+    );
+  }
+  return true;
 }
 
 export function buildYoutubeTags(metadata = {}) {
