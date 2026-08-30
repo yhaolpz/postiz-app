@@ -40,6 +40,15 @@ const approvedCX01Metadata = {
   },
 };
 
+const approvedCX02Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform: build on the open agent harness',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -104,6 +113,26 @@ test('accepts only the exact approved Codex CX01 title with immutable source evi
     hasYoutubeLongformIdentity(
       'How Do You Keep Codex on the Intended Files?',
       approvedCX01Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX02 title with immutable source evidence', () => {
+  const title =
+    'How Do You Give Codex One Request and Carry It All the Way to Acceptance?';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedCX02Metadata), true);
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX02Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Do You Give Codex a Request and Carry It to Acceptance?',
+      approvedCX02Metadata
     ),
     false
   );

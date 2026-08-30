@@ -35,6 +35,15 @@ const approvedCodexCX01 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX02 = Object.freeze({
+  title:
+    'How Do You Give Codex One Request and Carry It All the Way to Acceptance?',
+  publisher: 'OpenAI',
+  sourceTitle: 'Codex as a platform: build on the open agent harness',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 function isApprovedDeepSeekHarnessH03(text, metadata) {
   return (
     String(text || '') === approvedDeepSeekHarnessH03.title &&
@@ -75,12 +84,23 @@ function isApprovedCodexCX01(text, metadata) {
   );
 }
 
+function isApprovedCodexCX02(text, metadata) {
+  return (
+    String(text || '') === approvedCodexCX02.title &&
+    metadata?.source?.publisher === approvedCodexCX02.publisher &&
+    metadata?.source?.title === approvedCodexCX02.sourceTitle &&
+    metadata?.source?.releaseTag === approvedCodexCX02.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX02.sourceCommit
+  );
+}
+
 export function hasYoutubeLongformIdentity(text, metadata = {}) {
   return (
     /\bAI[\s-]+Agents?\b/i.test(String(text || '')) ||
     isApprovedDeepSeekHarnessH03(text, metadata) ||
     isApprovedDeepSeekHarnessH07(text, metadata) ||
     isApprovedDeepSeekHarnessH08(text, metadata) ||
-    isApprovedCodexCX01(text, metadata)
+    isApprovedCodexCX01(text, metadata) ||
+    isApprovedCodexCX02(text, metadata)
   );
 }
