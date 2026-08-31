@@ -44,6 +44,17 @@ const approvedCodexCX02 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX03 = Object.freeze({
+  title:
+    'When Codex Runs Commands, How Do You Prevent Accidental Deletes and Secret Leaks?',
+  publisher: 'OpenAI',
+  sourceTitle: 'Codex as a platform: build on the open agent harness',
+  sourceUrl: 'https://learn.chatgpt.com/blog/codex-as-a-platform',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 function isApprovedDeepSeekHarnessH03(text, metadata) {
   return (
     String(text || '') === approvedDeepSeekHarnessH03.title &&
@@ -94,6 +105,18 @@ function isApprovedCodexCX02(text, metadata) {
   );
 }
 
+function isApprovedCodexCX03(text, metadata) {
+  return (
+    String(text || '') === approvedCodexCX03.title &&
+    metadata?.source?.publisher === approvedCodexCX03.publisher &&
+    metadata?.source?.title === approvedCodexCX03.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX03.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX03.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX03.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX03.sourceCommit
+  );
+}
+
 export function hasYoutubeLongformIdentity(text, metadata = {}) {
   return (
     /\bAI[\s-]+Agents?\b/i.test(String(text || '')) ||
@@ -101,6 +124,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedDeepSeekHarnessH07(text, metadata) ||
     isApprovedDeepSeekHarnessH08(text, metadata) ||
     isApprovedCodexCX01(text, metadata) ||
-    isApprovedCodexCX02(text, metadata)
+    isApprovedCodexCX02(text, metadata) ||
+    isApprovedCodexCX03(text, metadata)
   );
 }

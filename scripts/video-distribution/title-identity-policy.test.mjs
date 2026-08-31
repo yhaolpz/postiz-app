@@ -49,6 +49,17 @@ const approvedCX02Metadata = {
   },
 };
 
+const approvedCX03Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform: build on the open agent harness',
+    url: 'https://learn.chatgpt.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -133,6 +144,32 @@ test('accepts only the exact approved Codex CX02 title with immutable source evi
     hasYoutubeLongformIdentity(
       'How Do You Give Codex a Request and Carry It to Acceptance?',
       approvedCX02Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX03 title with immutable source evidence', () => {
+  const title =
+    'When Codex Runs Commands, How Do You Prevent Accidental Deletes and Secret Leaks?';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedCX03Metadata), true);
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX03Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX03Metadata.source, publicationDate: '2026-08-20' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'When Codex Runs Commands, How Do You Prevent Deletes and Secret Leaks?',
+      approvedCX03Metadata
     ),
     false
   );
