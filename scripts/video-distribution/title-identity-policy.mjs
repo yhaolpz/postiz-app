@@ -65,6 +65,16 @@ const approvedCodexCX04 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX05 = Object.freeze({
+  title: 'How Do You Stop Teaching Codex the Same Repetitive Task Every Time?',
+  publisher: 'OpenAI',
+  sourceTitle: 'Codex as a platform: build on the open agent harness',
+  sourceUrl: 'https://developers.openai.com/blog/codex-as-a-platform',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 function isApprovedDeepSeekHarnessH03(text, metadata) {
   return (
     String(text || '') === approvedDeepSeekHarnessH03.title &&
@@ -139,6 +149,18 @@ function isApprovedCodexCX04(text, metadata) {
   );
 }
 
+function isApprovedCodexCX05(text, metadata) {
+  return (
+    String(text || '') === approvedCodexCX05.title &&
+    metadata?.source?.publisher === approvedCodexCX05.publisher &&
+    metadata?.source?.title === approvedCodexCX05.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX05.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX05.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX05.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX05.sourceCommit
+  );
+}
+
 export function hasYoutubeLongformIdentity(text, metadata = {}) {
   return (
     /\bAI[\s-]+Agents?\b/i.test(String(text || '')) ||
@@ -148,6 +170,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX01(text, metadata) ||
     isApprovedCodexCX02(text, metadata) ||
     isApprovedCodexCX03(text, metadata) ||
-    isApprovedCodexCX04(text, metadata)
+    isApprovedCodexCX04(text, metadata) ||
+    isApprovedCodexCX05(text, metadata)
   );
 }
