@@ -75,6 +75,17 @@ const approvedCodexCX05 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX06 = Object.freeze({
+  title:
+    'How Do You Give Codex Multiple Tasks Without Missing Steps or Causing Rework?',
+  publisher: 'OpenAI',
+  sourceTitle: 'Codex as a platform: build on the open agent harness',
+  sourceUrl: 'https://developers.openai.com/blog/codex-as-a-platform',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 function isApprovedDeepSeekHarnessH03(text, metadata) {
   return (
     String(text || '') === approvedDeepSeekHarnessH03.title &&
@@ -161,6 +172,18 @@ function isApprovedCodexCX05(text, metadata) {
   );
 }
 
+function isApprovedCodexCX06(text, metadata) {
+  return (
+    String(text || '') === approvedCodexCX06.title &&
+    metadata?.source?.publisher === approvedCodexCX06.publisher &&
+    metadata?.source?.title === approvedCodexCX06.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX06.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX06.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX06.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX06.sourceCommit
+  );
+}
+
 export function hasYoutubeLongformIdentity(text, metadata = {}) {
   return (
     /\bAI[\s-]+Agents?\b/i.test(String(text || '')) ||
@@ -171,6 +194,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX02(text, metadata) ||
     isApprovedCodexCX03(text, metadata) ||
     isApprovedCodexCX04(text, metadata) ||
-    isApprovedCodexCX05(text, metadata)
+    isApprovedCodexCX05(text, metadata) ||
+    isApprovedCodexCX06(text, metadata)
   );
 }

@@ -82,6 +82,17 @@ const approvedCX05Metadata = {
   },
 };
 
+const approvedCX06Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform: build on the open agent harness',
+    url: 'https://developers.openai.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -243,6 +254,32 @@ test('accepts only the exact approved Codex CX05 title with immutable source evi
     hasYoutubeLongformIdentity(
       'How Do You Stop Teaching Codex Repetitive Tasks Every Time?',
       approvedCX05Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX06 title with immutable source evidence', () => {
+  const title =
+    'How Do You Give Codex Multiple Tasks Without Missing Steps or Causing Rework?';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedCX06Metadata), true);
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX06Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX06Metadata.source, publicationDate: '2026-08-20' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Do You Give Codex Multiple Tasks Without Missing Steps or Rework?',
+      approvedCX06Metadata
     ),
     false
   );
