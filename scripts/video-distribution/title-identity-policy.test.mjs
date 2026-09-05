@@ -93,6 +93,17 @@ const approvedCX06Metadata = {
   },
 };
 
+const approvedCX07Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex prompting: fix a bug with reproduction and verification',
+    url: 'https://learn.chatgpt.com/docs/prompting',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -280,6 +291,31 @@ test('accepts only the exact approved Codex CX06 title with immutable source evi
     hasYoutubeLongformIdentity(
       'How Do You Give Codex Multiple Tasks Without Missing Steps or Rework?',
       approvedCX06Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX07 title with immutable source evidence', () => {
+  const title = 'How Do You Stop Codex From Fixing Only the Symptom of a Bug?';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedCX07Metadata), true);
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX07Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX07Metadata.source, url: 'https://example.com' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Do You Stop Codex From Fixing the Symptom of a Bug?',
+      approvedCX07Metadata
     ),
     false
   );

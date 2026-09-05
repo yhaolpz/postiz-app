@@ -86,6 +86,26 @@ const approvedCodexCX06 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX07 = Object.freeze({
+  title: 'How Do You Stop Codex From Fixing Only the Symptom of a Bug?',
+  publisher: 'OpenAI',
+  sourceTitle: 'Codex prompting: fix a bug with reproduction and verification',
+  sourceUrl: 'https://learn.chatgpt.com/docs/prompting',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
+const approvedGpt6AstraG6A01 = Object.freeze({
+  title: 'GPT-6 Astra Is Here: Why So Powerful?',
+  publisher: 'OpenAI',
+  sourceTitle: 'GPT-6 Astra: A new generation of intelligence',
+  sourceUrl: 'https://openai.com/index/gpt-6-astra/',
+  publicationDate: '2026-09-03',
+  releaseTag: 'gpt-6-astra',
+  sourceCommit: 'official-model-page-gpt-6-astra',
+});
+
 function isApprovedDeepSeekHarnessH03(text, metadata) {
   return (
     String(text || '') === approvedDeepSeekHarnessH03.title &&
@@ -184,6 +204,31 @@ function isApprovedCodexCX06(text, metadata) {
   );
 }
 
+function isApprovedCodexCX07(text, metadata) {
+  return (
+    String(text || '') === approvedCodexCX07.title &&
+    metadata?.source?.publisher === approvedCodexCX07.publisher &&
+    metadata?.source?.title === approvedCodexCX07.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX07.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX07.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX07.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX07.sourceCommit
+  );
+}
+
+function isApprovedGpt6AstraG6A01(text, metadata) {
+  return (
+    String(text || '') === approvedGpt6AstraG6A01.title &&
+    metadata?.source?.publisher === approvedGpt6AstraG6A01.publisher &&
+    metadata?.source?.title === approvedGpt6AstraG6A01.sourceTitle &&
+    metadata?.source?.url === approvedGpt6AstraG6A01.sourceUrl &&
+    metadata?.source?.publicationDate ===
+      approvedGpt6AstraG6A01.publicationDate &&
+    metadata?.source?.releaseTag === approvedGpt6AstraG6A01.releaseTag &&
+    metadata?.source?.sourceCommit === approvedGpt6AstraG6A01.sourceCommit
+  );
+}
+
 export function hasYoutubeLongformIdentity(text, metadata = {}) {
   return (
     /\bAI[\s-]+Agents?\b/i.test(String(text || '')) ||
@@ -195,6 +240,8 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX03(text, metadata) ||
     isApprovedCodexCX04(text, metadata) ||
     isApprovedCodexCX05(text, metadata) ||
-    isApprovedCodexCX06(text, metadata)
+    isApprovedCodexCX06(text, metadata) ||
+    isApprovedCodexCX07(text, metadata) ||
+    isApprovedGpt6AstraG6A01(text, metadata)
   );
 }
