@@ -104,6 +104,18 @@ const approvedCX07Metadata = {
   },
 };
 
+const approvedCX08Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title:
+      'Codex as a platform; Long-running work; Code review; Codex app-server',
+    url: 'https://developers.openai.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -316,6 +328,31 @@ test('accepts only the exact approved Codex CX07 title with immutable source evi
     hasYoutubeLongformIdentity(
       'How Do You Stop Codex From Fixing the Symptom of a Bug?',
       approvedCX07Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX08 title with immutable source evidence', () => {
+  const title = 'When Codex Drifts, How Do You Bring the Task Back on Track?';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedCX08Metadata), true);
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX08Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX08Metadata.source, title: 'Codex as a platform' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'When Codex Drifts, Can You Bring the Task Back on Track?',
+      approvedCX08Metadata
     ),
     false
   );

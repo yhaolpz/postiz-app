@@ -96,6 +96,17 @@ const approvedCodexCX07 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX08 = Object.freeze({
+  title: 'When Codex Drifts, How Do You Bring the Task Back on Track?',
+  publisher: 'OpenAI',
+  sourceTitle:
+    'Codex as a platform; Long-running work; Code review; Codex app-server',
+  sourceUrl: 'https://developers.openai.com/blog/codex-as-a-platform',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 const approvedGpt6AstraG6A01 = Object.freeze({
   title: 'GPT-6 Astra Is Here: Why So Powerful?',
   publisher: 'OpenAI',
@@ -216,6 +227,18 @@ function isApprovedCodexCX07(text, metadata) {
   );
 }
 
+function isApprovedCodexCX08(text, metadata) {
+  return (
+    String(text || '') === approvedCodexCX08.title &&
+    metadata?.source?.publisher === approvedCodexCX08.publisher &&
+    metadata?.source?.title === approvedCodexCX08.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX08.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX08.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX08.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX08.sourceCommit
+  );
+}
+
 function isApprovedGpt6AstraG6A01(text, metadata) {
   return (
     String(text || '') === approvedGpt6AstraG6A01.title &&
@@ -242,6 +265,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX05(text, metadata) ||
     isApprovedCodexCX06(text, metadata) ||
     isApprovedCodexCX07(text, metadata) ||
+    isApprovedCodexCX08(text, metadata) ||
     isApprovedGpt6AstraG6A01(text, metadata)
   );
 }
