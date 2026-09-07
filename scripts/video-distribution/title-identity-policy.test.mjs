@@ -116,6 +116,17 @@ const approvedCX08Metadata = {
   },
 };
 
+const approvedCX09Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Model guidance; Long-running work; Codex exec event protocol',
+    url: 'https://developers.openai.com/api/docs/guides/latest-model?model=gpt-5.5',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -353,6 +364,26 @@ test('accepts only the exact approved Codex CX08 title with immutable source evi
     hasYoutubeLongformIdentity(
       'When Codex Drifts, Can You Bring the Task Back on Track?',
       approvedCX08Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX09 title with immutable source evidence', () => {
+  const title =
+    'When Codex Says Tests Pass, How Do You Check It Did Not Miss a Critical Path?';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedCX09Metadata), true);
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX09Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'When Codex Says Tests Pass, Did It Miss a Critical Path?',
+      approvedCX09Metadata
     ),
     false
   );

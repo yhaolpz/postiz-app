@@ -107,6 +107,18 @@ const approvedCodexCX08 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX09 = Object.freeze({
+  title:
+    'When Codex Says Tests Pass, How Do You Check It Did Not Miss a Critical Path?',
+  publisher: 'OpenAI',
+  sourceTitle: 'Model guidance; Long-running work; Codex exec event protocol',
+  sourceUrl:
+    'https://developers.openai.com/api/docs/guides/latest-model?model=gpt-5.5',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 const approvedGpt6AstraG6A01 = Object.freeze({
   title: 'GPT-6 Astra Is Here: Why So Powerful?',
   publisher: 'OpenAI',
@@ -239,6 +251,18 @@ function isApprovedCodexCX08(text, metadata) {
   );
 }
 
+function isApprovedCodexCX09(text, metadata) {
+  return (
+    String(text || '') === approvedCodexCX09.title &&
+    metadata?.source?.publisher === approvedCodexCX09.publisher &&
+    metadata?.source?.title === approvedCodexCX09.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX09.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX09.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX09.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX09.sourceCommit
+  );
+}
+
 function isApprovedGpt6AstraG6A01(text, metadata) {
   return (
     String(text || '') === approvedGpt6AstraG6A01.title &&
@@ -266,6 +290,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX06(text, metadata) ||
     isApprovedCodexCX07(text, metadata) ||
     isApprovedCodexCX08(text, metadata) ||
+    isApprovedCodexCX09(text, metadata) ||
     isApprovedGpt6AstraG6A01(text, metadata)
   );
 }
