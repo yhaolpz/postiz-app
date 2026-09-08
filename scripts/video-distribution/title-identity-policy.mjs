@@ -119,6 +119,21 @@ const approvedCodexCX09 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX10 = Object.freeze({
+  title: 'How Do You Refactor With Codex Without Changing Behavior?',
+  titleCandidates: Object.freeze([
+    'How Do You Refactor With Codex Without Changing Behavior?',
+    'How Can Codex Refactor Code Without Changing Behavior?',
+    'Use Codex to Refactor Safely With Behavior Invariants',
+  ]),
+  publisher: 'OpenAI',
+  sourceTitle: 'Refactor your codebase; Codex as a platform',
+  sourceUrl: 'https://learn.chatgpt.com/use-cases/refactor-your-codebase',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 const approvedGpt6AstraG6A01 = Object.freeze({
   title: 'GPT-6 Astra Is Here: Why So Powerful?',
   publisher: 'OpenAI',
@@ -263,6 +278,18 @@ function isApprovedCodexCX09(text, metadata) {
   );
 }
 
+function isApprovedCodexCX10(text, metadata) {
+  return (
+    approvedCodexCX10.titleCandidates.includes(String(text || '')) &&
+    metadata?.source?.publisher === approvedCodexCX10.publisher &&
+    metadata?.source?.title === approvedCodexCX10.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX10.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX10.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX10.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX10.sourceCommit
+  );
+}
+
 function isApprovedGpt6AstraG6A01(text, metadata) {
   return (
     String(text || '') === approvedGpt6AstraG6A01.title &&
@@ -291,6 +318,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX07(text, metadata) ||
     isApprovedCodexCX08(text, metadata) ||
     isApprovedCodexCX09(text, metadata) ||
+    isApprovedCodexCX10(text, metadata) ||
     isApprovedGpt6AstraG6A01(text, metadata)
   );
 }

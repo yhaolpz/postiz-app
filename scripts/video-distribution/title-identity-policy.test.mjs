@@ -127,6 +127,17 @@ const approvedCX09Metadata = {
   },
 };
 
+const approvedCX10Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Refactor your codebase; Codex as a platform',
+    url: 'https://learn.chatgpt.com/use-cases/refactor-your-codebase',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -384,6 +395,39 @@ test('accepts only the exact approved Codex CX09 title with immutable source evi
     hasYoutubeLongformIdentity(
       'When Codex Says Tests Pass, Did It Miss a Critical Path?',
       approvedCX09Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX10 title with immutable source evidence', () => {
+  const title = 'How Do You Refactor With Codex Without Changing Behavior?';
+  assert.equal(hasYoutubeLongformIdentity(title, approvedCX10Metadata), true);
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Can Codex Refactor Code Without Changing Behavior?',
+      approvedCX10Metadata
+    ),
+    true
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'Use Codex to Refactor Safely With Behavior Invariants',
+      approvedCX10Metadata
+    ),
+    true
+  );
+  assert.equal(hasYoutubeLongformIdentity(title), false);
+  assert.equal(
+    hasYoutubeLongformIdentity(title, {
+      source: { ...approvedCX10Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Can You Refactor With Codex Without Changing Behavior?',
+      approvedCX10Metadata
     ),
     false
   );
