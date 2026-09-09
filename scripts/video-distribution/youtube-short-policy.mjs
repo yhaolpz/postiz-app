@@ -3,9 +3,12 @@ const fixedYoutubeShortPolicy = Object.freeze({
   selfDeclaredMadeForKids: 'no',
 });
 
-const fixedTinyAgentShortDescription =
+const legacyTinyAgentShortDescription =
   'Building something? Take a 60-sec game break. Score to rank your product or profile on https://tapto.top and get more exposure📈 —free, no signup.';
 const tinyAgentShortDescriptionFromRunKey = '2026-08-28-04';
+const fixedTinyAgentShortDescription =
+  'Building something? Turn your product page into a show people want to watch with https://promofast.show/ —hosted, embeddable, and ready to export.';
+const promoFastShortDescriptionFromRunKey = '2026-09-09-04';
 
 export function resolveYoutubeShortPolicy(metadata = {}) {
   const requested = metadata.youtube;
@@ -52,10 +55,14 @@ export function buildYoutubeShortTags(metadata = {}) {
 
 export function buildYoutubeShortDescription(metadata = {}, runKey = '') {
   const description = String(metadata.description ?? '').trim();
+  const expectedDescription =
+    String(runKey) >= promoFastShortDescriptionFromRunKey
+      ? fixedTinyAgentShortDescription
+      : legacyTinyAgentShortDescription;
   if (String(runKey) >= tinyAgentShortDescriptionFromRunKey) {
-    if (description !== fixedTinyAgentShortDescription) {
+    if (description !== expectedDescription) {
       throw new Error(
-        'YouTube Short description does not match the fixed tapto.top promotion.'
+        'YouTube Short description does not match the fixed promotion for this run key.'
       );
     }
   } else if (description) {
@@ -67,5 +74,7 @@ export function buildYoutubeShortDescription(metadata = {}, runKey = '') {
 export {
   fixedTinyAgentShortDescription,
   fixedYoutubeShortPolicy,
+  legacyTinyAgentShortDescription,
+  promoFastShortDescriptionFromRunKey,
   tinyAgentShortDescriptionFromRunKey,
 };

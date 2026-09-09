@@ -5,6 +5,7 @@ import {
   buildYoutubeShortTags,
   fixedTinyAgentShortDescription,
   fixedYoutubeShortPolicy,
+  legacyTinyAgentShortDescription,
   resolveYoutubeShortPolicy,
 } from './youtube-short-policy.mjs';
 
@@ -37,9 +38,16 @@ test('preserves the immutable Short description from the imported bundle', () =>
   assert.equal(
     buildYoutubeShortDescription(
       { description: fixedTinyAgentShortDescription },
-      '2026-08-28-04'
+      '2026-09-09-04'
     ),
     fixedTinyAgentShortDescription
+  );
+  assert.equal(
+    buildYoutubeShortDescription(
+      { description: legacyTinyAgentShortDescription },
+      '2026-09-08-04'
+    ),
+    legacyTinyAgentShortDescription
   );
   assert.equal(
     buildYoutubeShortDescription({ description: '' }, '2026-08-27-04'),
@@ -47,12 +55,12 @@ test('preserves the immutable Short description from the imported bundle', () =>
   );
   assert.throws(
     () => buildYoutubeShortDescription({ description: '' }, '2026-08-28-04'),
-    /fixed tapto\.top promotion/
+    /fixed promotion for this run key/
   );
   assert.throws(
     () =>
       buildYoutubeShortDescription(
-        { description: fixedTinyAgentShortDescription },
+        { description: legacyTinyAgentShortDescription },
         '2026-08-27-04'
       ),
     /Historical.*must remain empty/
@@ -62,12 +70,12 @@ test('preserves the immutable Short description from the imported bundle', () =>
       buildYoutubeShortDescription(
         {
           description: fixedTinyAgentShortDescription.replace(
-            'https://tapto.top',
-            '[https://tapto.top](https://tapto.top)'
+            'https://promofast.show/',
+            '[https://promofast.show/](https://promofast.show/)'
           ),
         },
-        '2026-08-28-04'
+        '2026-09-09-04'
       ),
-    /fixed tapto\.top promotion/
+    /fixed promotion for this run key/
   );
 });

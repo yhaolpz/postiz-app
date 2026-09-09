@@ -134,6 +134,20 @@ const approvedCodexCX10 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX11 = Object.freeze({
+  titleCandidates: Object.freeze([
+    'When Codex Offers Multiple Solutions, How Do You Choose the One With the Least Rework?',
+    'Codex Gave You Three Solutions. Which One Minimizes Rework?',
+    'Use a Rework Scorecard to Choose Among Codex Solutions',
+  ]),
+  publisher: 'OpenAI',
+  sourceTitle: 'Codex as a platform; Code review; Model optimization',
+  sourceUrl: 'https://developers.openai.com/blog/codex-as-a-platform',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 const approvedGpt6AstraG6A01 = Object.freeze({
   title: 'GPT-6 Astra Is Here: Why So Powerful?',
   publisher: 'OpenAI',
@@ -290,6 +304,18 @@ function isApprovedCodexCX10(text, metadata) {
   );
 }
 
+function isApprovedCodexCX11(text, metadata) {
+  return (
+    approvedCodexCX11.titleCandidates.includes(String(text || '')) &&
+    metadata?.source?.publisher === approvedCodexCX11.publisher &&
+    metadata?.source?.title === approvedCodexCX11.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX11.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX11.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX11.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX11.sourceCommit
+  );
+}
+
 function isApprovedGpt6AstraG6A01(text, metadata) {
   return (
     String(text || '') === approvedGpt6AstraG6A01.title &&
@@ -319,6 +345,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX08(text, metadata) ||
     isApprovedCodexCX09(text, metadata) ||
     isApprovedCodexCX10(text, metadata) ||
+    isApprovedCodexCX11(text, metadata) ||
     isApprovedGpt6AstraG6A01(text, metadata)
   );
 }

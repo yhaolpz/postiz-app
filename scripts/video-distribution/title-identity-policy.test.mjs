@@ -138,6 +138,17 @@ const approvedCX10Metadata = {
   },
 };
 
+const approvedCX11Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform; Code review; Model optimization',
+    url: 'https://developers.openai.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -428,6 +439,31 @@ test('accepts only the exact approved Codex CX10 title with immutable source evi
     hasYoutubeLongformIdentity(
       'How Can You Refactor With Codex Without Changing Behavior?',
       approvedCX10Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the approved Codex CX11 titles with immutable source evidence', () => {
+  const titles = [
+    'When Codex Offers Multiple Solutions, How Do You Choose the One With the Least Rework?',
+    'Codex Gave You Three Solutions. Which One Minimizes Rework?',
+    'Use a Rework Scorecard to Choose Among Codex Solutions',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCX11Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCX11Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'When Codex Offers Multiple Solutions, Which One Has the Least Rework?',
+      approvedCX11Metadata
     ),
     false
   );

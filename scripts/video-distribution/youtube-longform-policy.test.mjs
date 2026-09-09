@@ -63,7 +63,7 @@ test('removes source branding from the YouTube description without changing the 
   );
 });
 
-test('allows only the exact fixed tapto.top promotion in longform descriptions', () => {
+test('allows only an exact fixed promotion in longform descriptions', () => {
   assert.equal(
     buildYoutubeDescription({
       description: `Three takeaways.\n\n${fixedTinyAgentLongformPromotion}\n\nFollow Tiny Agent.`,
@@ -74,28 +74,28 @@ test('allows only the exact fixed tapto.top promotion in longform descriptions',
     () =>
       buildYoutubeDescription({
         description: fixedTinyAgentLongformPromotion.replace(
-          'https://tapto.top',
-          '[https://tapto.top](https://tapto.top)'
+          'https://promofast.show/',
+          '[https://promofast.show/](https://promofast.show/)'
         ),
       }),
-    /fixed tapto\.top promotion/
+    /exact fixed promotion/
   );
   assert.throws(
     () =>
       buildYoutubeDescription({
         description: `${fixedTinyAgentLongformPromotion}\nhttps://example.com`,
       }),
-    /fixed tapto\.top promotion/
+    /exact fixed promotion/
   );
   assert.throws(
     () =>
       buildYoutubeDescription({
         description: fixedTinyAgentLongformPromotion.replace(
-          'tapto.top',
-          'TapTo.Top'
+          'promofast.show',
+          'PromoFast.Show'
         ),
       }),
-    /fixed tapto\.top promotion/
+    /exact fixed promotion/
   );
 });
 

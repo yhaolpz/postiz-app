@@ -7,6 +7,8 @@ const fixedYoutubeLongformPolicy = Object.freeze({
 });
 
 export const fixedTinyAgentLongformPromotion =
+  'Building something? Turn your product page into a show people want to watch with https://promofast.show/ —hosted, embeddable, and ready to export.';
+const legacyTinyAgentLongformPromotion =
   'Building something? Take a 60-sec game break. Score to rank your product or profile on https://tapto.top and get more exposure📈 —free, no signup.';
 
 export function resolveYoutubeLongformPolicy(metadata = {}) {
@@ -66,14 +68,27 @@ export function validateYoutubeLongformDescriptionUrls(description = '') {
   const urls = value.match(/https?:\/\/[^\s)]+/gi) || [];
   if (urls.length === 0) return true;
 
-  const promotionLines = value
-    .split(/\r?\n/)
-    .filter((line) => line === fixedTinyAgentLongformPromotion);
-  const exactAllowedUrl = urls.length === 1 && urls[0] === 'https://tapto.top';
+  const lines = value.split(/\r?\n/);
+  const currentPromotionLines = lines.filter(
+    (line) => line === fixedTinyAgentLongformPromotion
+  );
+  const legacyPromotionLines = lines.filter(
+    (line) => line === legacyTinyAgentLongformPromotion
+  );
+  const exactCurrentPromotion =
+    currentPromotionLines.length === 1 &&
+    legacyPromotionLines.length === 0 &&
+    urls.length === 1 &&
+    urls[0] === 'https://promofast.show/';
+  const exactLegacyPromotion =
+    currentPromotionLines.length === 0 &&
+    legacyPromotionLines.length === 1 &&
+    urls.length === 1 &&
+    urls[0] === 'https://tapto.top';
   const markdownLink = /\[[^\]]+\]\(https?:\/\//i.test(value);
-  if (promotionLines.length !== 1 || !exactAllowedUrl || markdownLink) {
+  if ((!exactCurrentPromotion && !exactLegacyPromotion) || markdownLink) {
     throw new Error(
-      'YouTube longform description may contain only the fixed tapto.top promotion with its bare lowercase URL.'
+      'YouTube longform description may contain only an exact fixed promotion with its bare lowercase URL.'
     );
   }
   return true;
