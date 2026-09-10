@@ -149,6 +149,17 @@ const approvedCX11Metadata = {
   },
 };
 
+const approvedCX12Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform; Troubleshooting ChatGPT for Work',
+    url: 'https://developers.openai.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -464,6 +475,31 @@ test('accepts only the approved Codex CX11 titles with immutable source evidence
     hasYoutubeLongformIdentity(
       'When Codex Offers Multiple Solutions, Which One Has the Least Rework?',
       approvedCX11Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the approved Codex CX12 titles with immutable source evidence', () => {
+  const titles = [
+    'When Codex Gets Stuck, How Do You Find What It Is Waiting For?',
+    'Codex Went Quiet. Which State Should You Check First?',
+    'How to Diagnose What Codex Is Waiting For Before You Interrupt It',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCX12Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCX12Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'When Codex Gets Stuck, What Is It Waiting For?',
+      approvedCX12Metadata
     ),
     false
   );
