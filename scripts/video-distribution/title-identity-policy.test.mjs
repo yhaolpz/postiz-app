@@ -160,6 +160,17 @@ const approvedCX12Metadata = {
   },
 };
 
+const approvedCX13Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform; Introducing upgrades to Codex; Codex Security',
+    url: 'https://developers.openai.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -500,6 +511,31 @@ test('accepts only the approved Codex CX12 titles with immutable source evidence
     hasYoutubeLongformIdentity(
       'When Codex Gets Stuck, What Is It Waiting For?',
       approvedCX12Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX13 title with immutable source evidence', () => {
+  const titles = [
+    'How Do You Get Codex to Find Real Risks in Code Review?',
+    'How Can Codex Prioritize High-Impact Risks in a Code Diff?',
+    'Codex Code Review: Trace Impact Before You Trust a Finding',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCX13Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCX13Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Do You Get Codex to Find Risks in Code Review?',
+      approvedCX13Metadata
     ),
     false
   );
