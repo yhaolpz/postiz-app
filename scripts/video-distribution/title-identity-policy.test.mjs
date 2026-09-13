@@ -171,6 +171,17 @@ const approvedCX13Metadata = {
   },
 };
 
+const approvedCX14Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform; Add evals to your AI app',
+    url: 'https://developers.openai.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -536,6 +547,31 @@ test('accepts only the exact approved Codex CX13 title with immutable source evi
     hasYoutubeLongformIdentity(
       'How Do You Get Codex to Find Risks in Code Review?',
       approvedCX13Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX14 title with immutable source evidence', () => {
+  const titles = [
+    'After Codex Builds a Feature, How Do You Make It Search for Counterexamples?',
+    'How Can Codex Turn Hidden Assumptions Into Counterexamples?',
+    'Codex Edge Cases: Reproduce Failure Before Repair',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCX14Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCX14Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'After Codex Builds a Feature, How Do You Make It Search for Edge Cases?',
+      approvedCX14Metadata
     ),
     false
   );
