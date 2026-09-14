@@ -182,6 +182,29 @@ const approvedCX14Metadata = {
   },
 };
 
+const approvedCX15Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title:
+      'Codex as a platform; How OpenAI uses Codex; Running Codex safely at OpenAI',
+    url: 'https://developers.openai.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
+const approvedCX16Metadata = {
+  source: {
+    publisher: 'OpenAI',
+    title: 'Codex as a platform; Introducing upgrades to Codex',
+    url: 'https://developers.openai.com/blog/codex-as-a-platform',
+    publicationDate: '2026-08-19',
+    releaseTag: 'rust-v0.150.1',
+    sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -572,6 +595,56 @@ test('accepts only the exact approved Codex CX14 title with immutable source evi
     hasYoutubeLongformIdentity(
       'After Codex Builds a Feature, How Do You Make It Search for Edge Cases?',
       approvedCX14Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX15 title with immutable source evidence', () => {
+  const titles = [
+    'After Codex Changes the Code, How Do You Decide It Is Ready to Ship?',
+    'The Codex Code Is Done. Is the Release Evidence Ready?',
+    'Six Gates Before You Ship a Codex Change',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCX15Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCX15Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'After Codex Changes the Code, How Do You Know It Is Ready to Ship?',
+      approvedCX15Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex CX16 title with immutable source evidence', () => {
+  const titles = [
+    'When Codex Fixes a UI From a Screenshot, How Do You Avoid Close Enough?',
+    'Codex Matched the Screenshot. Does the Interface Actually Work?',
+    'Six Checks Before You Accept a Codex Screenshot-Driven UI',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCX16Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCX16Metadata.source, sourceCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'When Codex Fixes a UI From a Screenshot, Is It Close Enough?',
+      approvedCX16Metadata
     ),
     false
   );

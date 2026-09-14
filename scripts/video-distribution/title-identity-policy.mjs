@@ -191,6 +191,35 @@ const approvedCodexCX14 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexCX15 = Object.freeze({
+  titleCandidates: Object.freeze([
+    'After Codex Changes the Code, How Do You Decide It Is Ready to Ship?',
+    'The Codex Code Is Done. Is the Release Evidence Ready?',
+    'Six Gates Before You Ship a Codex Change',
+  ]),
+  publisher: 'OpenAI',
+  sourceTitle:
+    'Codex as a platform; How OpenAI uses Codex; Running Codex safely at OpenAI',
+  sourceUrl: 'https://developers.openai.com/blog/codex-as-a-platform',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
+const approvedCodexCX16 = Object.freeze({
+  titleCandidates: Object.freeze([
+    'When Codex Fixes a UI From a Screenshot, How Do You Avoid Close Enough?',
+    'Codex Matched the Screenshot. Does the Interface Actually Work?',
+    'Six Checks Before You Accept a Codex Screenshot-Driven UI',
+  ]),
+  publisher: 'OpenAI',
+  sourceTitle: 'Codex as a platform; Introducing upgrades to Codex',
+  sourceUrl: 'https://developers.openai.com/blog/codex-as-a-platform',
+  publicationDate: '2026-08-19',
+  releaseTag: 'rust-v0.150.1',
+  sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+});
+
 const approvedGpt6AstraG6A01 = Object.freeze({
   title: 'GPT-6 Astra Is Here: Why So Powerful?',
   publisher: 'OpenAI',
@@ -395,6 +424,30 @@ function isApprovedCodexCX14(text, metadata) {
   );
 }
 
+function isApprovedCodexCX15(text, metadata) {
+  return (
+    approvedCodexCX15.titleCandidates.includes(String(text || '')) &&
+    metadata?.source?.publisher === approvedCodexCX15.publisher &&
+    metadata?.source?.title === approvedCodexCX15.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX15.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX15.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX15.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX15.sourceCommit
+  );
+}
+
+function isApprovedCodexCX16(text, metadata) {
+  return (
+    approvedCodexCX16.titleCandidates.includes(String(text || '')) &&
+    metadata?.source?.publisher === approvedCodexCX16.publisher &&
+    metadata?.source?.title === approvedCodexCX16.sourceTitle &&
+    metadata?.source?.url === approvedCodexCX16.sourceUrl &&
+    metadata?.source?.publicationDate === approvedCodexCX16.publicationDate &&
+    metadata?.source?.releaseTag === approvedCodexCX16.releaseTag &&
+    metadata?.source?.sourceCommit === approvedCodexCX16.sourceCommit
+  );
+}
+
 function isApprovedGpt6AstraG6A01(text, metadata) {
   return (
     String(text || '') === approvedGpt6AstraG6A01.title &&
@@ -428,6 +481,8 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX12(text, metadata) ||
     isApprovedCodexCX13(text, metadata) ||
     isApprovedCodexCX14(text, metadata) ||
+    isApprovedCodexCX15(text, metadata) ||
+    isApprovedCodexCX16(text, metadata) ||
     isApprovedGpt6AstraG6A01(text, metadata)
   );
 }
