@@ -205,6 +205,20 @@ const approvedCX16Metadata = {
   },
 };
 
+const approvedCV01Metadata = {
+  source: {
+    publisher: 'OpenAI and Anthropic',
+    title: 'Codex AGENTS.md and Claude Code memory documentation',
+    url: 'https://learn.chatgpt.com/docs/agent-configuration/agents-md',
+    claudeCodeUrl: 'https://code.claude.com/docs/en/memory',
+    publicationDate: '2026-09-02',
+    codexReleaseTag: 'rust-v0.150.1',
+    codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+    claudeCodeReleaseTag: 'v2.1.259',
+    claudeCodeReleaseCommit: 'f173a69',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -645,6 +659,31 @@ test('accepts only the exact approved Codex CX16 title with immutable source evi
     hasYoutubeLongformIdentity(
       'When Codex Fixes a UI From a Screenshot, Is It Close Enough?',
       approvedCX16Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex and Claude Code CV01 titles with dual-source evidence', () => {
+  const titles = [
+    'How Do Codex and Claude Code Differ on Project Context?',
+    'The Same Repository Can Give Codex and Claude Code Different Rules',
+    'Map Project Context Before Comparing Codex and Claude Code',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCV01Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCV01Metadata.source, claudeCodeReleaseCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Are Codex and Claude Code Different on Project Context?',
+      approvedCV01Metadata
     ),
     false
   );

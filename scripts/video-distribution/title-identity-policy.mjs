@@ -220,6 +220,23 @@ const approvedCodexCX16 = Object.freeze({
   sourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
 });
 
+const approvedCodexClaudeCV01 = Object.freeze({
+  titleCandidates: Object.freeze([
+    'How Do Codex and Claude Code Differ on Project Context?',
+    'The Same Repository Can Give Codex and Claude Code Different Rules',
+    'Map Project Context Before Comparing Codex and Claude Code',
+  ]),
+  publisher: 'OpenAI and Anthropic',
+  sourceTitle: 'Codex AGENTS.md and Claude Code memory documentation',
+  sourceUrl: 'https://learn.chatgpt.com/docs/agent-configuration/agents-md',
+  claudeCodeUrl: 'https://code.claude.com/docs/en/memory',
+  publicationDate: '2026-09-02',
+  codexReleaseTag: 'rust-v0.150.1',
+  codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  claudeCodeReleaseTag: 'v2.1.259',
+  claudeCodeReleaseCommit: 'f173a69',
+});
+
 const approvedGpt6AstraG6A01 = Object.freeze({
   title: 'GPT-6 Astra Is Here: Why So Powerful?',
   publisher: 'OpenAI',
@@ -448,6 +465,21 @@ function isApprovedCodexCX16(text, metadata) {
   );
 }
 
+function isApprovedCodexClaudeCV01(text, metadata) {
+  return (
+    approvedCodexClaudeCV01.titleCandidates.includes(String(text || '')) &&
+    metadata?.source?.publisher === approvedCodexClaudeCV01.publisher &&
+    metadata?.source?.title === approvedCodexClaudeCV01.sourceTitle &&
+    metadata?.source?.url === approvedCodexClaudeCV01.sourceUrl &&
+    metadata?.source?.claudeCodeUrl === approvedCodexClaudeCV01.claudeCodeUrl &&
+    metadata?.source?.publicationDate === approvedCodexClaudeCV01.publicationDate &&
+    metadata?.source?.codexReleaseTag === approvedCodexClaudeCV01.codexReleaseTag &&
+    metadata?.source?.codexSourceCommit === approvedCodexClaudeCV01.codexSourceCommit &&
+    metadata?.source?.claudeCodeReleaseTag === approvedCodexClaudeCV01.claudeCodeReleaseTag &&
+    metadata?.source?.claudeCodeReleaseCommit === approvedCodexClaudeCV01.claudeCodeReleaseCommit
+  );
+}
+
 function isApprovedGpt6AstraG6A01(text, metadata) {
   return (
     String(text || '') === approvedGpt6AstraG6A01.title &&
@@ -483,6 +515,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexCX14(text, metadata) ||
     isApprovedCodexCX15(text, metadata) ||
     isApprovedCodexCX16(text, metadata) ||
+    isApprovedCodexClaudeCV01(text, metadata) ||
     isApprovedGpt6AstraG6A01(text, metadata)
   );
 }
