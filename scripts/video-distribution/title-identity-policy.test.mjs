@@ -219,6 +219,36 @@ const approvedCV01Metadata = {
   },
 };
 
+const approvedCV02Metadata = {
+  source: {
+    publisher: 'OpenAI and Anthropic',
+    title: 'Codex Plan mode and Claude Code permission mode documentation',
+    url: 'https://github.com/openai/codex/blob/main/codex-rs/collaboration-mode-templates/templates/plan.md',
+    claudeCodeUrl: 'https://code.claude.com/docs/en/permission-modes',
+    publicationDate: '2026-09-02',
+    codexReleaseTag: 'rust-v0.150.1',
+    codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+    claudeCodeReleaseTag: 'v2.1.259',
+    claudeCodeReleaseCommit: 'f173a69',
+  },
+};
+
+const approvedCV03Metadata = {
+  source: {
+    publisher: 'OpenAI and Anthropic',
+    title: 'Codex apply_patch and Claude Code file-editing documentation',
+    url: 'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/prompts/templates/apply_patch_tool_instructions.md',
+    claudeCodeUrl: 'https://code.claude.com/docs/en/tools-reference',
+    claudeDesktopUrl: 'https://code.claude.com/docs/en/desktop',
+    claudeCheckpointUrl: 'https://code.claude.com/docs/en/agent-sdk/file-checkpointing',
+    publicationDate: '2026-09-02',
+    codexReleaseTag: 'rust-v0.150.1',
+    codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+    claudeCodeReleaseTag: 'v2.1.259',
+    claudeCodeReleaseCommit: 'f173a69',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -684,6 +714,56 @@ test('accepts only the exact approved Codex and Claude Code CV01 titles with dua
     hasYoutubeLongformIdentity(
       'How Are Codex and Claude Code Different on Project Context?',
       approvedCV01Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex and Claude Code CV02 titles with dual-source evidence', () => {
+  const titles = [
+    'How Do Codex and Claude Code Differ on Task Planning?',
+    'Why Codex and Claude Code Exit Task Planning Differently',
+    'How Codex and Claude Code Move Plans Into Execution',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCV02Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCV02Metadata.source, claudeCodeReleaseCommit: 'wrong-commit' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Are Codex and Claude Code Different on Task Planning?',
+      approvedCV02Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex and Claude Code CV03 titles with dual-source evidence', () => {
+  const titles = [
+    'How Do Codex and Claude Code Differ on File Editing?',
+    'Why Codex and Claude Code File Edits Still Need Review',
+    'How Codex and Claude Code Use Patch, Write, and Diff',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCV03Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCV03Metadata.source, claudeCheckpointUrl: 'wrong-url' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Are Codex and Claude Code Different on File Editing?',
+      approvedCV03Metadata
     ),
     false
   );
