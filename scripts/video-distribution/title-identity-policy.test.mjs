@@ -249,6 +249,45 @@ const approvedCV03Metadata = {
   },
 };
 
+const approvedCV04Metadata = {
+  source: {
+    publisher: 'OpenAI and Anthropic',
+    title:
+      'Codex approvals and sandboxing plus Claude Code permissions, sandboxing, and hooks documentation',
+    url: 'https://learn.chatgpt.com/docs/agent-approvals-security',
+    codexPolicyUrl:
+      'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/core/src/exec_policy.rs',
+    codexSandboxUrl:
+      'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/core/src/tools/sandboxing.rs',
+    claudePermissionsUrl: 'https://code.claude.com/docs/en/permissions',
+    claudeSandboxUrl: 'https://code.claude.com/docs/en/sandboxing',
+    claudeHooksUrl: 'https://code.claude.com/docs/en/hooks',
+    publicationDate: '2026-09-02',
+    codexReleaseTag: 'rust-v0.150.1',
+    codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+    claudeCodeReleaseTag: 'v2.1.259',
+    claudeCodeReleaseCommit: 'f173a69',
+  },
+};
+
+const approvedCV05Metadata = {
+  source: {
+    publisher: 'OpenAI and Anthropic',
+    title: 'Codex Model Context Protocol documentation and Claude Code MCP documentation',
+    url: 'https://learn.chatgpt.com/docs/extend/mcp?surface=cli',
+    codexMcpConfigUrl:
+      'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/config/src/mcp_types.rs',
+    codexMcpRuntimeUrl:
+      'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/codex-mcp/src/server.rs',
+    claudeMcpUrl: 'https://code.claude.com/docs/en/mcp',
+    publicationDate: '2026-09-19',
+    codexReleaseTag: 'rust-v0.150.1',
+    codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+    claudeCodeReleaseTag: 'v2.1.259',
+    claudeCodeReleaseCommit: 'f173a69',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -764,6 +803,56 @@ test('accepts only the exact approved Codex and Claude Code CV03 titles with dua
     hasYoutubeLongformIdentity(
       'How Are Codex and Claude Code Different on File Editing?',
       approvedCV03Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex and Claude Code CV04 titles with dual-source evidence', () => {
+  const titles = [
+    'How Do Codex and Claude Code Differ on Command Permissions?',
+    'Why Codex and Claude Code Command Approval Is Not a Safety Proof',
+    'How Codex and Claude Code Set Different Permission Boundaries',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCV04Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCV04Metadata.source, claudeHooksUrl: 'wrong-url' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Are Codex and Claude Code Different on Command Permissions?',
+      approvedCV04Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex and Claude Code CV05 titles with dual-source evidence', () => {
+  const titles = [
+    'How Do Codex and Claude Code Differ on MCP Tools?',
+    'Why MCP Can Look Connected but Fail in Codex and Claude Code',
+    'How Codex and Claude Code Set Different MCP Trust Boundaries',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCV05Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCV05Metadata.source, claudeMcpUrl: 'wrong-url' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Are Codex and Claude Code Different on MCP Tools?',
+      approvedCV05Metadata
     ),
     false
   );

@@ -275,6 +275,51 @@ const approvedCodexClaudeCV03 = Object.freeze({
   claudeCodeReleaseCommit: 'f173a69',
 });
 
+const approvedCodexClaudeCV04 = Object.freeze({
+  titleCandidates: Object.freeze([
+    'How Do Codex and Claude Code Differ on Command Permissions?',
+    'Why Codex and Claude Code Command Approval Is Not a Safety Proof',
+    'How Codex and Claude Code Set Different Permission Boundaries',
+  ]),
+  publisher: 'OpenAI and Anthropic',
+  sourceTitle:
+    'Codex approvals and sandboxing plus Claude Code permissions, sandboxing, and hooks documentation',
+  sourceUrl: 'https://learn.chatgpt.com/docs/agent-approvals-security',
+  codexPolicyUrl:
+    'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/core/src/exec_policy.rs',
+  codexSandboxUrl:
+    'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/core/src/tools/sandboxing.rs',
+  claudePermissionsUrl: 'https://code.claude.com/docs/en/permissions',
+  claudeSandboxUrl: 'https://code.claude.com/docs/en/sandboxing',
+  claudeHooksUrl: 'https://code.claude.com/docs/en/hooks',
+  publicationDate: '2026-09-02',
+  codexReleaseTag: 'rust-v0.150.1',
+  codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  claudeCodeReleaseTag: 'v2.1.259',
+  claudeCodeReleaseCommit: 'f173a69',
+});
+
+const approvedCodexClaudeCV05 = Object.freeze({
+  titleCandidates: Object.freeze([
+    'How Do Codex and Claude Code Differ on MCP Tools?',
+    'Why MCP Can Look Connected but Fail in Codex and Claude Code',
+    'How Codex and Claude Code Set Different MCP Trust Boundaries',
+  ]),
+  publisher: 'OpenAI and Anthropic',
+  sourceTitle: 'Codex Model Context Protocol documentation and Claude Code MCP documentation',
+  sourceUrl: 'https://learn.chatgpt.com/docs/extend/mcp?surface=cli',
+  codexMcpConfigUrl:
+    'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/config/src/mcp_types.rs',
+  codexMcpRuntimeUrl:
+    'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/codex-mcp/src/server.rs',
+  claudeMcpUrl: 'https://code.claude.com/docs/en/mcp',
+  publicationDate: '2026-09-19',
+  codexReleaseTag: 'rust-v0.150.1',
+  codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  claudeCodeReleaseTag: 'v2.1.259',
+  claudeCodeReleaseCommit: 'f173a69',
+});
+
 const approvedGpt6AstraG6A01 = Object.freeze({
   title: 'GPT-6 Astra Is Here: Why So Powerful?',
   publisher: 'OpenAI',
@@ -550,6 +595,42 @@ function isApprovedCodexClaudeCV03(text, metadata) {
   );
 }
 
+function isApprovedCodexClaudeCV04(text, metadata) {
+  return (
+    approvedCodexClaudeCV04.titleCandidates.includes(String(text || '')) &&
+    metadata?.source?.publisher === approvedCodexClaudeCV04.publisher &&
+    metadata?.source?.title === approvedCodexClaudeCV04.sourceTitle &&
+    metadata?.source?.url === approvedCodexClaudeCV04.sourceUrl &&
+    metadata?.source?.codexPolicyUrl === approvedCodexClaudeCV04.codexPolicyUrl &&
+    metadata?.source?.codexSandboxUrl === approvedCodexClaudeCV04.codexSandboxUrl &&
+    metadata?.source?.claudePermissionsUrl === approvedCodexClaudeCV04.claudePermissionsUrl &&
+    metadata?.source?.claudeSandboxUrl === approvedCodexClaudeCV04.claudeSandboxUrl &&
+    metadata?.source?.claudeHooksUrl === approvedCodexClaudeCV04.claudeHooksUrl &&
+    metadata?.source?.publicationDate === approvedCodexClaudeCV04.publicationDate &&
+    metadata?.source?.codexReleaseTag === approvedCodexClaudeCV04.codexReleaseTag &&
+    metadata?.source?.codexSourceCommit === approvedCodexClaudeCV04.codexSourceCommit &&
+    metadata?.source?.claudeCodeReleaseTag === approvedCodexClaudeCV04.claudeCodeReleaseTag &&
+    metadata?.source?.claudeCodeReleaseCommit === approvedCodexClaudeCV04.claudeCodeReleaseCommit
+  );
+}
+
+function isApprovedCodexClaudeCV05(text, metadata) {
+  return (
+    approvedCodexClaudeCV05.titleCandidates.includes(String(text || '')) &&
+    metadata?.source?.publisher === approvedCodexClaudeCV05.publisher &&
+    metadata?.source?.title === approvedCodexClaudeCV05.sourceTitle &&
+    metadata?.source?.url === approvedCodexClaudeCV05.sourceUrl &&
+    metadata?.source?.codexMcpConfigUrl === approvedCodexClaudeCV05.codexMcpConfigUrl &&
+    metadata?.source?.codexMcpRuntimeUrl === approvedCodexClaudeCV05.codexMcpRuntimeUrl &&
+    metadata?.source?.claudeMcpUrl === approvedCodexClaudeCV05.claudeMcpUrl &&
+    metadata?.source?.publicationDate === approvedCodexClaudeCV05.publicationDate &&
+    metadata?.source?.codexReleaseTag === approvedCodexClaudeCV05.codexReleaseTag &&
+    metadata?.source?.codexSourceCommit === approvedCodexClaudeCV05.codexSourceCommit &&
+    metadata?.source?.claudeCodeReleaseTag === approvedCodexClaudeCV05.claudeCodeReleaseTag &&
+    metadata?.source?.claudeCodeReleaseCommit === approvedCodexClaudeCV05.claudeCodeReleaseCommit
+  );
+}
+
 function isApprovedGpt6AstraG6A01(text, metadata) {
   return (
     String(text || '') === approvedGpt6AstraG6A01.title &&
@@ -588,6 +669,8 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexClaudeCV01(text, metadata) ||
     isApprovedCodexClaudeCV02(text, metadata) ||
     isApprovedCodexClaudeCV03(text, metadata) ||
+    isApprovedCodexClaudeCV04(text, metadata) ||
+    isApprovedCodexClaudeCV05(text, metadata) ||
     isApprovedGpt6AstraG6A01(text, metadata)
   );
 }
