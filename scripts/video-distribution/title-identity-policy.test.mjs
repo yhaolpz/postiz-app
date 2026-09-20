@@ -288,6 +288,25 @@ const approvedCV05Metadata = {
   },
 };
 
+const approvedCV06Metadata = {
+  source: {
+    publisher: 'OpenAI and Anthropic',
+    title: 'Codex as a platform, pinned Codex turn and diff source, and Claude Code workflows and hooks',
+    url: 'https://learn.chatgpt.com/blog/codex-as-a-platform',
+    codexTurnUrl:
+      'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/core/src/session/turn.rs',
+    codexDiffUrl:
+      'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/core/src/turn_diff_tracker.rs',
+    claudeWorkflowUrl: 'https://code.claude.com/docs/en/common-workflows',
+    claudeHooksUrl: 'https://code.claude.com/docs/en/hooks',
+    publicationDate: '2026-09-20',
+    codexReleaseTag: 'rust-v0.150.1',
+    codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+    claudeCodeReleaseTag: 'v2.1.259',
+    claudeCodeReleaseCommit: 'f173a69',
+  },
+};
+
 test('accepts the ordinary AI Agent identity contract', () => {
   assert.equal(
     hasYoutubeLongformIdentity('An AI Agent Can Verify This Result.'),
@@ -853,6 +872,31 @@ test('accepts only the exact approved Codex and Claude Code CV05 titles with dua
     hasYoutubeLongformIdentity(
       'How Are Codex and Claude Code Different on MCP Tools?',
       approvedCV05Metadata
+    ),
+    false
+  );
+});
+
+test('accepts only the exact approved Codex and Claude Code CV06 titles with dual-source evidence', () => {
+  const titles = [
+    'How Do Codex and Claude Code Differ on Task Acceptance?',
+    'How Do Codex and Claude Code Verify Completion Evidence?',
+    'What Do Codex and Claude Code Show Before Task Acceptance?',
+  ];
+  for (const title of titles) {
+    assert.equal(hasYoutubeLongformIdentity(title, approvedCV06Metadata), true);
+    assert.equal(hasYoutubeLongformIdentity(title), false);
+  }
+  assert.equal(
+    hasYoutubeLongformIdentity(titles[0], {
+      source: { ...approvedCV06Metadata.source, claudeHooksUrl: 'wrong-url' },
+    }),
+    false
+  );
+  assert.equal(
+    hasYoutubeLongformIdentity(
+      'How Are Codex and Claude Code Different on Task Acceptance?',
+      approvedCV06Metadata
     ),
     false
   );

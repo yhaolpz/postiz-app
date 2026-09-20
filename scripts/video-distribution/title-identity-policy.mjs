@@ -320,6 +320,28 @@ const approvedCodexClaudeCV05 = Object.freeze({
   claudeCodeReleaseCommit: 'f173a69',
 });
 
+const approvedCodexClaudeCV06 = Object.freeze({
+  titleCandidates: Object.freeze([
+    'How Do Codex and Claude Code Differ on Task Acceptance?',
+    'How Do Codex and Claude Code Verify Completion Evidence?',
+    'What Do Codex and Claude Code Show Before Task Acceptance?',
+  ]),
+  publisher: 'OpenAI and Anthropic',
+  sourceTitle: 'Codex as a platform, pinned Codex turn and diff source, and Claude Code workflows and hooks',
+  sourceUrl: 'https://learn.chatgpt.com/blog/codex-as-a-platform',
+  codexTurnUrl:
+    'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/core/src/session/turn.rs',
+  codexDiffUrl:
+    'https://github.com/openai/codex/blob/rust-v0.150.1/codex-rs/core/src/turn_diff_tracker.rs',
+  claudeWorkflowUrl: 'https://code.claude.com/docs/en/common-workflows',
+  claudeHooksUrl: 'https://code.claude.com/docs/en/hooks',
+  publicationDate: '2026-09-20',
+  codexReleaseTag: 'rust-v0.150.1',
+  codexSourceCommit: '90854393966b21e9ebfd21b122334eb09a20c93d',
+  claudeCodeReleaseTag: 'v2.1.259',
+  claudeCodeReleaseCommit: 'f173a69',
+});
+
 const approvedGpt6AstraG6A01 = Object.freeze({
   title: 'GPT-6 Astra Is Here: Why So Powerful?',
   publisher: 'OpenAI',
@@ -631,6 +653,24 @@ function isApprovedCodexClaudeCV05(text, metadata) {
   );
 }
 
+function isApprovedCodexClaudeCV06(text, metadata) {
+  return (
+    approvedCodexClaudeCV06.titleCandidates.includes(String(text || '')) &&
+    metadata?.source?.publisher === approvedCodexClaudeCV06.publisher &&
+    metadata?.source?.title === approvedCodexClaudeCV06.sourceTitle &&
+    metadata?.source?.url === approvedCodexClaudeCV06.sourceUrl &&
+    metadata?.source?.codexTurnUrl === approvedCodexClaudeCV06.codexTurnUrl &&
+    metadata?.source?.codexDiffUrl === approvedCodexClaudeCV06.codexDiffUrl &&
+    metadata?.source?.claudeWorkflowUrl === approvedCodexClaudeCV06.claudeWorkflowUrl &&
+    metadata?.source?.claudeHooksUrl === approvedCodexClaudeCV06.claudeHooksUrl &&
+    metadata?.source?.publicationDate === approvedCodexClaudeCV06.publicationDate &&
+    metadata?.source?.codexReleaseTag === approvedCodexClaudeCV06.codexReleaseTag &&
+    metadata?.source?.codexSourceCommit === approvedCodexClaudeCV06.codexSourceCommit &&
+    metadata?.source?.claudeCodeReleaseTag === approvedCodexClaudeCV06.claudeCodeReleaseTag &&
+    metadata?.source?.claudeCodeReleaseCommit === approvedCodexClaudeCV06.claudeCodeReleaseCommit
+  );
+}
+
 function isApprovedGpt6AstraG6A01(text, metadata) {
   return (
     String(text || '') === approvedGpt6AstraG6A01.title &&
@@ -671,6 +711,7 @@ export function hasYoutubeLongformIdentity(text, metadata = {}) {
     isApprovedCodexClaudeCV03(text, metadata) ||
     isApprovedCodexClaudeCV04(text, metadata) ||
     isApprovedCodexClaudeCV05(text, metadata) ||
+    isApprovedCodexClaudeCV06(text, metadata) ||
     isApprovedGpt6AstraG6A01(text, metadata)
   );
 }
